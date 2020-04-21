@@ -98,12 +98,27 @@
 #' When `period = 1 or 12`, it can be used as a tuning parameter.
 #'  No date or date-time feature is required.
 #'
+#'
+#' __Univariate (No xreg's):__
+#'
+#' For univariate analysis, simply use:
+#'
+#'  - `fit(y ~ 1)` will ignore xreg.
+#'  - `fit_xy(x = NULL, y)` will ignore xreg.
+#'
+#'  Alternatively, you can have a date or date-time feature in the `fit()` interface, and this
+#'  will still result in a univariate analysis. The additional benefit is using `period = "auto"`
+#'  to automate the `period` assignment.
+#'
+#'  - `fit(y ~ date)` is a univariate analysis if date is a date or date time feature.
+#'  - `fit_xy(x = dplyr::select(data, date), y)` is a univariate analysis if date is a date or date time feature.
+#'
 #' __xreg (Exogenous Regressors)__
 #'
 #'  The `xreg` parameter is populated using the `fit()` or `fit_xy()` function:
 #'
 #'  - Only `factor`, `ordered factor`, and `numeric` data will be used as xregs.
-#'  - Date and Date-time variables are ingored
+#'  - Date and Date-time variables are not used as xregs
 #'  - `character` data should be converted to factor.
 #'
 #'  _Xreg Example:_ Suppose you have 3 features:
@@ -121,9 +136,6 @@
 #'
 #'  Note that date or date-time class values are excluded from `xreg`.
 #'
-#'  If no `xreg` is used, simply use:
-#'
-#'  - `fit(y ~ 1)` will ignore xreg.
 #'
 #'
 #' @seealso [fit.arima_reg()], [set_engine()]

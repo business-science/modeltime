@@ -122,12 +122,28 @@ feature. You can specify one using the format:
 When \verb{period = 1 or 12}, it can be used as a tuning parameter.
 No date or date-time feature is required.
 
+\strong{Univariate (No xreg's):}
+
+For univariate analysis, simply use:
+\itemize{
+\item \code{fit(y ~ 1)} will ignore xreg.
+\item \code{fit_xy(x = NULL, y)} will ignore xreg.
+}
+
+Alternatively, you can have a date or date-time feature in the \code{fit()} interface, and this
+will still result in a univariate analysis. The additional benefit is using \code{period = "auto"}
+to automate the \code{period} assignment.
+\itemize{
+\item \code{fit(y ~ date)} is a univariate analysis if date is a date or date time feature.
+\item \code{fit_xy(x = dplyr::select(data, date), y)} is a univariate analysis if date is a date or date time feature.
+}
+
 \strong{xreg (Exogenous Regressors)}
 
 The \code{xreg} parameter is populated using the \code{fit()} or \code{fit_xy()} function:
 \itemize{
 \item Only \code{factor}, \verb{ordered factor}, and \code{numeric} data will be used as xregs.
-\item Date and Date-time variables are ingored
+\item Date and Date-time variables are not used as xregs
 \item \code{character} data should be converted to factor.
 }
 
@@ -147,11 +163,6 @@ and possibly the \code{date} feature. Only \code{month.lbl} will be used as an e
 }
 
 Note that date or date-time class values are excluded from \code{xreg}.
-
-If no \code{xreg} is used, simply use:
-\itemize{
-\item \code{fit(y ~ 1)} will ignore xreg.
-}
 }
 
 \examples{

@@ -30,6 +30,7 @@ Imports:
     tidyr,
     dplyr,
     purrr,
+    stringr,
     magrittr,
     forecast, 
     prophet
