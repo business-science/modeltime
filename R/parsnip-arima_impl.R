@@ -2,6 +2,15 @@
 
 # MODELING -----
 
+
+#' Low-Level ARIMA function for translating modeltime to forecast
+#'
+#' @inheritParams arima_reg
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param ... Additional arguments passed to `forecast::Arima`
+#'
+#' @export
 Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0, ...) {
 
     # print(head(x))
@@ -64,6 +73,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
 
 }
 
+#' @export
 print.Arima_fit_impl <- function(x, ...) {
     print(x[1])
     invisible(x)
@@ -72,10 +82,18 @@ print.Arima_fit_impl <- function(x, ...) {
 
 # PREDICTION ----
 
+
+#' @export
 predict.Arima_fit_impl <- function(object, new_data, ...) {
     Arima_predict_impl(object, new_data, ...)
 }
 
+#' Low-Level ARIMA function for translating modeltime to forecast
+#'
+#' @inheritParams parsnip::predict.model_fit
+#' @param ... Additional arguments passed to `forecast::forcast.Arima()`
+#'
+#' @export
 Arima_predict_impl <- function(object, new_data, ...) {
 
     model       <- object$model

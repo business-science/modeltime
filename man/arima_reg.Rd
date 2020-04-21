@@ -108,7 +108,6 @@ Note that date or date-time class values are excluded from \code{xreg}.
 If no \code{xreg} is used, simply use:
 \itemize{
 \item \code{fit(y ~ 1)} will ignore xreg.
-\item \code{fit_xy(x = NULL, y)} will ignore xreg.
 }
 }
 

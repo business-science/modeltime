@@ -86,7 +86,6 @@
 #'  If no `xreg` is used, simply use:
 #'
 #'  - `fit(y ~ 1)` will ignore xreg.
-#'  - `fit_xy(x = NULL, y)` will ignore xreg.
 #'
 #'
 #' @seealso [fit.arima_reg()], [set_engine()]
