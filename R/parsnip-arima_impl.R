@@ -36,6 +36,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     if (tolower(period) == "auto" | is.character(period)) {
         tryCatch({
             # Try to get a period from a user-provided index
+            idx    <- predictor %>% timetk::tk_index()
             period <- timetk::tk_get_frequency(idx, period, message = TRUE)
         }, error = function(e) {
             # If not possible, period = 1
