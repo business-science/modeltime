@@ -32,7 +32,7 @@
 #'
 #' The main arguments (tuning parameters) for the model are:
 #'
-#'  - `period`: A seasonal frequency. If none is present, use 1.
+#'  - `period`: The periodic nature of the seasonality. If none is present, use 1.
 #'  - `p`: The order of the non-seasonal auto-regressive (AR) terms.
 #'  - `d`: The order of integration for non-seasonal differencing.
 #'  - `q`: The order of the non-seasonal moving average (MA) terms.

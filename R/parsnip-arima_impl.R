@@ -126,7 +126,13 @@ Arima_predict_impl <- function(object, new_data, ...) {
 
         xreg_matrix <- xreg_matrix[,xreg_terms]
 
-        if (ncol(xreg_matrix) == 0) xreg_matrix <- NULL
+        # print(xreg_matrix)
+
+        if (length(xreg_matrix) == 0) {
+            xreg_matrix <- NULL
+        } else if (ncol(xreg_matrix) == 0) {
+            xreg_matrix <- NULL
+        }
 
     }
 

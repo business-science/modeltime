@@ -37,6 +37,7 @@ Imports:
 Suggests:
     recipes,
     rsample,
+    yardstick, 
     tidyverse,
     testthat
 Roxygen: list(markdown = TRUE)

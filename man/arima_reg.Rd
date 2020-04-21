@@ -56,7 +56,7 @@ following \emph{engines}:
 
 The main arguments (tuning parameters) for the model are:
 \itemize{
-\item \code{period}: A seasonal frequency. If none is present, use 1.
+\item \code{period}: The periodic nature of the seasonality. If none is present, use 1.
 \item \code{p}: The order of the non-seasonal auto-regressive (AR) terms.
 \item \code{d}: The order of integration for non-seasonal differencing.
 \item \code{q}: The order of the non-seasonal moving average (MA) terms.

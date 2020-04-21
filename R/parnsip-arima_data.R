@@ -22,7 +22,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "period",
         original     = "period",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "period"),
         has_submodel = FALSE
     )
 
@@ -31,7 +31,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "p",
         original     = "p",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "p"),
         has_submodel = FALSE
     )
 
@@ -40,7 +40,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "d",
         original     = "d",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "d"),
         has_submodel = FALSE
     )
 
@@ -49,7 +49,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "q",
         original     = "q",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "q"),
         has_submodel = FALSE
     )
 
@@ -58,7 +58,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "P",
         original     = "P",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "P"),
         has_submodel = FALSE
     )
 
@@ -67,7 +67,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "D",
         original     = "D",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "D"),
         has_submodel = FALSE
     )
 
@@ -76,7 +76,7 @@ make_arima_reg <- function() {
         eng          = "forecast",
         parsnip      = "Q",
         original     = "Q",
-        func         = list(pkg = "foo", fun = "bar"),
+        func         = list(fun = "Q"),
         has_submodel = FALSE
     )
 
