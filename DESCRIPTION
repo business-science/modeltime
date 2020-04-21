@@ -30,7 +30,9 @@ Imports:
     tidyr,
     dplyr,
     purrr,
-    magrittr
+    magrittr,
+    forecast, 
+    prophet
 Suggests:
     recipes,
     rsample,

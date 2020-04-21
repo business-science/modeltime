@@ -3,7 +3,8 @@
 
 #' @importFrom utils globalVariables
 utils::globalVariables(
-    c("new_data", "object")
+    c("new_data", "object", "factor_count", "fail_check", "unique_count",
+      "key")
 )
 
 # ON LOAD ----
