@@ -22,6 +22,13 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     outcome    <- y
     predictor  <- x
 
+    # Handle fit_xy() interface if x is NULL, ..indicator variable is added, and needs dropped
+    if (!is.null(x)) {
+        if ("..indicator" %in% names(predictor)) {
+            predictor <- predictor %>% dplyr::select(-..indicator)
+        }
+    }
+
     # PERIOD ----
 
     # Determine Period

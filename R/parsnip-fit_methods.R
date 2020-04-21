@@ -70,8 +70,12 @@ fit.arima_reg <- function(object, formula, data, control = control_parsnip(), ..
 #' @importFrom parsnip control_parsnip
 fit_xy.arima_reg <- function(object, x, y, control = control_parsnip(), ...) {
 
-    # Needed to preserve date and date time attributes
-    # - Note this approach will not expand factors into dummy variables.
-    parsnip::fit_xy.model_spec(object, x, y, control = control_parsnip(), ..., indicators = FALSE)
+    # Needed to handle when x is NULL
+    if (is.null(x)) {
+        # This feature is constant and will get dropped in Arima_fit_impl
+        x <- tibble::tibble(..indicator = rep(1, length(y)))
+    }
+
+    parsnip::fit_xy.model_spec(object, x, y, control = control_parsnip(), ...)
 
 }

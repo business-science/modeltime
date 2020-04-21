@@ -19,7 +19,10 @@ arima_reg(
 \item{mode}{A single character string for the type of model.
 The only possible value for this model is "regression".}
 
-\item{period}{A seasonal frequency. If none is present, use 1.}
+\item{period}{A seasonal frequency. If none is present, use 1.
+A character phrase of "auto" or time-based phrase of "2 weeks"
+can be used if a date or date-time variable is provided.
+See Fit Details below.}
 
 \item{p}{The order of the non-seasonal auto-regressive (AR) terms.}
 
@@ -40,18 +43,18 @@ different packages. Currently the only package is \code{forecast}.
 }
 \details{
 The data given to the function are not saved and are only used
-to determine the \emph{mode} of the model. For \code{linear_reg()}, the
+to determine the \emph{mode} of the model. For \code{arima_reg()}, the
 mode will always be "regression".
 
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item \pkg{R}:  \code{"forecast"}  (the default)
+\item \strong{R}: "forecast" (default)
 }
 
 \strong{Main Arguments}
 
-The main arguments for the model are:
+The main arguments (tuning parameters) for the model are:
 \itemize{
 \item \code{period}: A seasonal frequency. If none is present, use 1.
 \item \code{p}: The order of the non-seasonal auto-regressive (AR) terms.
@@ -66,9 +69,7 @@ These arguments are converted to their specific names at the
 time that the model is fit.
 
 Other options and argument can be
-set using \code{set_engine()}. If left to their defaults
-here (\code{NULL}), the values are taken from the underlying model
-functions.
+set using \code{set_engine()} (See Engine Details below).
 
 If parameters need to be modified, \code{update()} can be used
 in lieu of recreating the object from scratch.
@@ -76,31 +77,73 @@ in lieu of recreating the object from scratch.
 \section{Engine Details}{
 
 
-The standardized parameter names in parsnip can be mapped to their original
+The standardized parameter names in \code{modeltime} can be mapped to their original
 names in each engine:\tabular{ll}{
    modeltime \tab forecast \cr
    period \tab ts(frequency) \cr
    p, d, q \tab order = c(p,d,q) \cr
    P, D, Q \tab seasonal = c(P,D,Q) \cr
-   Other options and argument can be set using \code{set_engine()}. \tab  \cr
 }
 
 
-\strong{forecast}\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
+Other options can be set using \code{set_engine()}.
+
+\strong{forecast}
+
+The order and seasonal terms are provided via \code{arima_reg()} parameters.
+Other options and argument can be set using \code{set_engine()}.\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
 ##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, 
 ##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
+}
+
+Parameter Notes:
+\itemize{
+\item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
+(so don't provide this manually). See Fit Details (below).
 }
 }
 
 \section{Fit Details}{
 
 
+\strong{Date and Date-Time Variable}
+
+It's very common to work with date and date-time variables when working with time series.
+The \code{fit()} interface accepts date and date-time features and handles them internally.
+
+\emph{Period Specification}
+
+When \verb{period = "auto" or "12 months"}, the \code{fit()} interface will require a date or date-time
+feature. You can specify one using the format:
+\itemize{
+\item \code{fit(y ~ date)}
+}
+
+When \verb{period = 1 or 12}, it can be used as a tuning parameter.
+No date or date-time feature is required.
+
 \strong{xreg (Exogenous Regressors)}
 
-The \code{xreg} paramater is populated using the \code{fit()} or \code{fit_xy()} function.
+The \code{xreg} parameter is populated using the \code{fit()} or \code{fit_xy()} function:
 \itemize{
-\item \code{fit(y ~ x)} will pass x on as an exogenous regressor.
-\item \code{fit_xy(x, y)} will pass x on as an exogenous regressor.
+\item Only \code{factor}, \verb{ordered factor}, and \code{numeric} data will be used as xregs.
+\item Date and Date-time variables are ingored
+\item \code{character} data should be converted to factor.
+}
+
+\emph{Xreg Example:} Suppose you have 3 features:
+\enumerate{
+\item \code{y} (target)
+\item \code{date} (time stamp),
+\item \code{month.lbl} (labeled month as a ordered factor).
+}
+
+The \code{month.lbl} is an exogenous regressor that can be passed to the \code{arima_reg()} using
+\code{fit()}:
+\itemize{
+\item \code{fit(y ~ date + month.lbl)} will pass \code{month.lbl} on as an exogenous regressor.
+\item \code{fit_xy(x, y)} will pass x, where x is a data frame containing \code{month.lbl}
+and possibly the \code{date} feature. Only \code{month.lbl} will be used as an exogenous regressor.
 }
 
 Note that date or date-time class values are excluded from \code{xreg}.

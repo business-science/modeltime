@@ -22,7 +22,10 @@ Arima_fit_impl(
 
 \item{y}{A numeric vector of values to fit}
 
-\item{period}{A seasonal frequency. If none is present, use 1.}
+\item{period}{A seasonal frequency. If none is present, use 1.
+A character phrase of "auto" or time-based phrase of "2 weeks"
+can be used if a date or date-time variable is provided.
+See Fit Details below.}
 
 \item{p}{The order of the non-seasonal auto-regressive (AR) terms.}
 
