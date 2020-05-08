@@ -62,12 +62,12 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     if (!is.null(xreg_matrix)) {
         if (ncol(xreg_matrix) > 0) {
             xreg_matrix <- as.matrix(xreg_matrix)
-            fit_arima   <- forecast::Arima(outcome_ts, order = c(p, d, q), seasonal = c(P, D, Q), xreg = xreg_matrix, ...)
+            fit_arima   <- forecast::Arima(outcome_ts, order = c(p, d, q), seasonal = c(P, D, Q), xreg = xreg_matrix, method = "ML", ...)
         } else {
-            fit_arima   <- forecast::Arima(outcome_ts, order = c(p, d, q), seasonal = c(P, D, Q), ...)
+            fit_arima   <- forecast::Arima(outcome_ts, order = c(p, d, q), seasonal = c(P, D, Q), method = "ML", ...)
         }
     } else {
-        fit_arima <- forecast::Arima(outcome_ts, order = c(p, d, q), seasonal = c(P, D, Q), ...)
+        fit_arima <- forecast::Arima(outcome_ts, order = c(p, d, q), seasonal = c(P, D, Q), method = "ML", ...)
     }
 
     # RETURN
