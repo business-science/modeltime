@@ -15,6 +15,7 @@ make_arima_reg <- function() {
 
     # Model ----
     parsnip::set_model_engine("arima_reg", mode = "regression", eng = "forecast")
+    parsnip::set_dependency("arima_reg", "forecast", "stats")
 
     # Args ----
     parsnip::set_model_arg(
