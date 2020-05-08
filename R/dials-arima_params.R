@@ -44,7 +44,7 @@ p <- function(range = c(0L, 5L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
-        inclusive = c(TRUE, FALSE),
+        inclusive = c(TRUE, TRUE),
         trans     = trans,
         label     = c(p = "Non-seasonal AR Term"),
         finalize  = NULL
@@ -57,7 +57,7 @@ d <- function(range = c(0L, 2L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
-        inclusive = c(TRUE, FALSE),
+        inclusive = c(TRUE, TRUE),
         trans     = trans,
         label     = c(d = "Non-seasonal Differencing Term"),
         finalize  = NULL
@@ -70,7 +70,7 @@ q <- function(range = c(0L, 5L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
-        inclusive = c(TRUE, FALSE),
+        inclusive = c(TRUE, TRUE),
         trans     = trans,
         label     = c(q = "Non-seasonal MA Term"),
         finalize  = NULL
@@ -83,7 +83,7 @@ P <- function(range = c(0L, 2L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
-        inclusive = c(TRUE, FALSE),
+        inclusive = c(TRUE, TRUE),
         trans     = trans,
         label     = c(P = "Seasonal AR Term"),
         finalize  = NULL
@@ -96,7 +96,7 @@ D <- function(range = c(0L, 1L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
-        inclusive = c(TRUE, FALSE),
+        inclusive = c(TRUE, TRUE),
         trans     = trans,
         label     = c(D = "Seasonal Differencing Term"),
         finalize  = NULL
@@ -109,9 +109,9 @@ Q <- function(range = c(0L, 2L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
-        inclusive = c(TRUE, FALSE),
+        inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(A = "Seasonal MA Term"),
+        label     = c(Q = "Seasonal MA Term"),
         finalize  = NULL
     )
 }
