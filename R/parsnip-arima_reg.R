@@ -144,7 +144,7 @@
 #' # TODO
 #'
 #' @export
-arima_reg <- function(mode = "regression", period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0) {
+arima_reg <- function(mode = "regression", period = NULL, p = NULL, d = NULL, q = NULL, P = NULL, D = NULL, Q = NULL) {
 
     args <- list(
         period = rlang::enquo(period),
@@ -183,8 +183,9 @@ print.arima_reg <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.arima_reg <- function(object, parameters = NULL,
-                             period = 1, p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
+                             period = NULL, p = NULL, d = NULL, q = NULL, P = NULL, D = NULL, Q = NULL,
                              fresh = FALSE, ...) {
+
     parsnip::update_dot_check(...)
 
     if (!is.null(parameters)) {
