@@ -32,8 +32,7 @@ Imports:
     purrr,
     stringr,
     magrittr,
-    forecast, 
-    prophet
+    forecast
 Suggests:
     recipes,
     rsample,
