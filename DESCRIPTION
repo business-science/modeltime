@@ -22,10 +22,11 @@ Depends:
 Imports:
     timetk (>= 1.0.0),
     parsnip (>= 0.1.0),
+    dials,
+    workflows,
     hardhat,
     rlang,
     glue,
-    dials,
     tibble,
     tidyr,
     dplyr,
