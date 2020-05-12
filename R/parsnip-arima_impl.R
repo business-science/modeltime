@@ -33,23 +33,25 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
 
     # Determine Period
     idx <- NULL
-    if (tolower(period) == "auto" | is.character(period)) {
-        tryCatch({
-            # Try to get a period from a user-provided index
-            idx    <- predictor %>% timetk::tk_index()
-            period <- timetk::tk_get_frequency(idx, period, message = TRUE)
-        }, error = function(e) {
-            # If not possible, period = 1
-            rlang::abort("No date or date-time variable provided. Please supply a date or date-time variable as a predictor or set `period` to a numeric value.")
-            # period <- 1
-        })
-    }
+    tryCatch({
+        # Try to get a period from a user-provided index
+        idx_col <- timetk::tk_get_timeseries_variables(predictor)[1]
+        idx     <- predictor %>% timetk::tk_index() # Will generate an error if no time series index
+        if (tolower(period) == "auto" | is.character(period)) {
+            period  <- timetk::tk_get_frequency(idx, period, message = TRUE)
+        }
+    }, error = function(e) {
+        # If not possible, period = 1
+        rlang::abort("No date or date-time variable provided. Please supply a date or date-time variable as a predictor or set `period` to a numeric value.")
+        # period <- 1
+    })
+
 
     # XREG ----
 
     # Drop outcome and any date features
     xreg_df <- predictor %>%
-        dplyr::select_if(~ ! timetk:::is_date_class(.))
+        dplyr::select_if(~ ! timetk::is_date_class(.))
 
     xreg_matrix <- prep_xreg_matrix_from_df(xreg_df)
 
@@ -73,7 +75,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     # RETURN
     ret <- list(
         model      = fit_arima,
-        index      = idx,
+        index      = tibble::tibble(!! idx_col := idx),
         xreg_terms = c(colnames(xreg_matrix))
     )
 
@@ -105,7 +107,7 @@ predict.Arima_fit_impl <- function(object, new_data, ...) {
 Arima_predict_impl <- function(object, new_data, ...) {
 
     model       <- object$model
-    idx_train   <- object$index
+    idx_train   <- object$index %>% timetk::tk_index()
     xreg_terms  <- object$xreg_terms
     h_horizon   <- nrow(new_data)
 
@@ -113,7 +115,7 @@ Arima_predict_impl <- function(object, new_data, ...) {
 
     # Drop outcome and any date features
     xreg_df <- new_data %>%
-        dplyr::select_if(~ ! timetk:::is_date_class(.))
+        dplyr::select_if(~ ! timetk::is_date_class(.))
 
     # Prep as matrix
     xreg_matrix <- NULL
