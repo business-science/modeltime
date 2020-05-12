@@ -8,6 +8,12 @@
 #' @inheritParams arima_reg
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
+#' @param p The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
+#' @param d The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.
+#' @param q The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.
+#' @param P The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.
+#' @param D The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.
+#' @param Q The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.
 #' @param ... Additional arguments passed to `forecast::Arima`
 #'
 #' @export

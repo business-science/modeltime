@@ -10,12 +10,12 @@
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
-#' @param p The order of the non-seasonal auto-regressive (AR) terms.
-#' @param d The order of integration for non-seasonal differencing.
-#' @param q The order of the non-seasonal moving average (MA) terms.
-#' @param P The order of the seasonal auto-regressive (SAR) terms.
-#' @param D The order of integration for seasonal differencing.
-#' @param Q The order of the seasonal moving average (SMA) terms.
+#' @param non_seasonal_ar The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
+#' @param non_seasonal_differences The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.
+#' @param non_seasonal_ma The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.
+#' @param seasonal_ar The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.
+#' @param seasonal_differences The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.
+#' @param seasonal_ma The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.
 #'
 #'
 #' @details
@@ -33,12 +33,12 @@
 #' The main arguments (tuning parameters) for the model are:
 #'
 #'  - `period`: The periodic nature of the seasonality. If none is present, use 1.
-#'  - `p`: The order of the non-seasonal auto-regressive (AR) terms.
-#'  - `d`: The order of integration for non-seasonal differencing.
-#'  - `q`: The order of the non-seasonal moving average (MA) terms.
-#'  - `P`: The order of the seasonal auto-regressive (SAR) terms.
-#'  - `D`: The order of integration for seasonal differencing.
-#'  - `Q`: The order of the seasonal moving average (SMA) terms.
+#'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
+#'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
+#'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
+#'  - `seasonal_ar`: The order of the seasonal auto-regressive (SAR) terms.
+#'  - `seasonal_differences`: The order of integration for seasonal differencing.
+#'  - `seasonal_ma`: The order of the seasonal moving average (SMA) terms.
 #'
 #' These arguments are converted to their specific names at the
 #'  time that the model is fit.
@@ -60,8 +60,8 @@
 #' tibble::tribble(
 #'     ~ modeltime, ~ forecast,
 #'     "period", "ts(frequency)",
-#'     "p, d, q", "order = c(p,d,q)",
-#'     "P, D, Q", "seasonal = c(P,D,Q)"
+#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "order = c(p,d,q)",
+#'     "seasonal_ar, seasonal_differences, seasonal_ma", "seasonal = c(P,D,Q)"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -85,35 +85,29 @@
 #'
 #' __Date and Date-Time Variable__
 #'
-#' It's very common to work with date and date-time variables when working with time series.
+#' It's a requirement to have a date or date-time variable as a predictor.
 #' The `fit()` interface accepts date and date-time features and handles them internally.
-#'
-#' _Period Specification_
-#'
-#' When `period = "auto" or "12 months"`, the `fit()` interface will require a date or date-time
-#' feature. You can specify one using the format:
 #'
 #' - `fit(y ~ date)`
 #'
-#' When `period = 1 or 12`, it can be used as a tuning parameter.
-#'  No date or date-time feature is required.
+#' _Period Specification_
+#'
+#' The period can be non-seasonal (`period = 1`) or seasonal (e.g. `period = 12` or `period = "12 months"`).
+#' There are 3 ways to specify:
+#'
+#' 1. `period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+#' 2. `period = 12`: A numeric frequency. For example, 12 is common for monthly data
+#' 3. `period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 #'
 #'
 #' __Univariate (No xreg's):__
 #'
-#' For univariate analysis, simply use:
+#' For univariate analysis, you must include a date or date-time feature. Simply use:
 #'
-#'  - `fit(y ~ 1)` will ignore xreg.
-#'  - `fit_xy(x = NULL, y)` will ignore xreg.
+#'  - Formula Interface (recommended): `fit(y ~ date)` will ignore xreg's.
+#'  - XY Interface: `fit_xy(x = data[,"date"], y = data$y)` will ignore xreg's.
 #'
-#'  Alternatively, you can have a date or date-time feature in the `fit()` interface, and this
-#'  will still result in a univariate analysis. The additional benefit is using `period = "auto"`
-#'  to automate the `period` assignment.
-#'
-#'  - `fit(y ~ date)` is a univariate analysis if date is a date or date time feature.
-#'  - `fit_xy(x = dplyr::select(data, date), y)` is a univariate analysis if date is a date or date time feature.
-#'
-#' __xreg (Exogenous Regressors)__
+#' __Xreg's (Exogenous Regressors)__
 #'
 #'  The `xreg` parameter is populated using the `fit()` or `fit_xy()` function:
 #'
@@ -131,8 +125,8 @@
 #'  `fit()`:
 #'
 #'  - `fit(y ~ date + month.lbl)` will pass `month.lbl` on as an exogenous regressor.
-#'  - `fit_xy(x, y)` will pass x, where x is a data frame containing `month.lbl`
-#'   and possibly the `date` feature. Only `month.lbl` will be used as an exogenous regressor.
+#'  - `fit_xy(data[,c("date", "month.lbl")], y = data$y)` will pass x, where x is a data frame containing `month.lbl`
+#'   and the `date` feature. Only `month.lbl` will be used as an exogenous regressor.
 #'
 #'  Note that date or date-time class values are excluded from `xreg`.
 #'
@@ -141,21 +135,48 @@
 #' @seealso [fit.arima_reg()], [set_engine()]
 #'
 #' @examples
-#' # TODO
+#' library(dplyr)
+#' library(parsnip)
+#' library(rsample)
+#' library(timetk)
+#' library(modeltime)
+#'
+#' # Data
+#' m750 <- m4_monthly %>% filter(id == "M750")
+#' m750
+#'
+#' # Split Data 80/20
+#' splits <- initial_time_split(m750, prop = 0.8)
+#'
+#' # Model Spec
+#' model_spec <- arima_reg(
+#'         period                   = 12,
+#'         non_seasonal_ar          = 3,
+#'         non_seasonal_differences = 1,
+#'         non_seasonal_ma          = 3,
+#'         seasonal_ar              = 1,
+#'         seasonal_differences     = 0,
+#'         seasonal_ma              = 1
+#'     ) %>%
+#'     set_engine("forecast")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
 #'
 #' @export
 arima_reg <- function(mode = "regression", period = NULL,
-                      order_ar = NULL, order_differences = NULL, order_ma = NULL,
-                      order_seasonal_ar = NULL, order_seasonal_differences = NULL, order_seasonal_ma = NULL) {
+                      non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
+                      seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL) {
 
     args <- list(
-        period                     = rlang::enquo(period),
-        order_ar                   = rlang::enquo(order_ar),
-        order_differences          = rlang::enquo(order_differences),
-        order_ma                   = rlang::enquo(order_ma),
-        order_seasonal_ar          = rlang::enquo(order_seasonal_ar),
-        order_seasonal_differences = rlang::enquo(order_seasonal_differences),
-        order_seasonal_ma          = rlang::enquo(order_seasonal_ma)
+        period                    = rlang::enquo(period),
+        non_seasonal_ar           = rlang::enquo(non_seasonal_ar),
+        non_seasonal_differences  = rlang::enquo(non_seasonal_differences),
+        non_seasonal_ma           = rlang::enquo(non_seasonal_ma),
+        seasonal_ar               = rlang::enquo(seasonal_ar),
+        seasonal_differences      = rlang::enquo(seasonal_differences),
+        seasonal_ma               = rlang::enquo(seasonal_ma)
     )
 
     parsnip::new_model_spec(
@@ -185,8 +206,8 @@ print.arima_reg <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.arima_reg <- function(object, parameters = NULL,
-                             period = NULL, order_ar = NULL, order_differences = NULL, order_ma = NULL,
-                             order_seasonal_ar = NULL, order_seasonal_differences = NULL, order_seasonal_ma = NULL,
+                             period = NULL, non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
+                             seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                              fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
@@ -197,12 +218,12 @@ update.arima_reg <- function(object, parameters = NULL,
 
     args <- list(
         period                     = rlang::enquo(period),
-        order_ar                   = rlang::enquo(order_ar),
-        order_differences          = rlang::enquo(order_differences),
-        order_ma                   = rlang::enquo(order_ma),
-        order_seasonal_ar          = rlang::enquo(order_seasonal_ar),
-        order_seasonal_differences = rlang::enquo(order_seasonal_differences),
-        order_seasonal_ma          = rlang::enquo(order_seasonal_ma)
+        non_seasonal_ar            = rlang::enquo(non_seasonal_ar),
+        non_seasonal_differences   = rlang::enquo(non_seasonal_differences),
+        non_seasonal_ma            = rlang::enquo(non_seasonal_ma),
+        seasonal_ar                = rlang::enquo(seasonal_ar),
+        seasonal_differences       = rlang::enquo(seasonal_differences),
+        seasonal_ma                = rlang::enquo(seasonal_ma)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)

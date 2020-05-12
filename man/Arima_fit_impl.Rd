@@ -27,17 +27,17 @@ A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
 
-\item{p}{The order of the non-seasonal auto-regressive (AR) terms.}
+\item{p}{The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.}
 
-\item{d}{The order of integration for non-seasonal differencing.}
+\item{d}{The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.}
 
-\item{q}{The order of the non-seasonal moving average (MA) terms.}
+\item{q}{The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.}
 
-\item{P}{The order of the seasonal auto-regressive (SAR) terms.}
+\item{P}{The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.}
 
-\item{D}{The order of integration for seasonal differencing.}
+\item{D}{The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.}
 
-\item{Q}{The order of the seasonal moving average (SMA) terms.}
+\item{Q}{The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.}
 
 \item{...}{Additional arguments passed to \code{forecast::Arima}}
 }

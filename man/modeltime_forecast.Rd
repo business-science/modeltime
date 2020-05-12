@@ -41,7 +41,15 @@ m750
 splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
-model_spec <- arima_reg() \%>\%
+model_spec <- arima_reg(
+        period                   = 12,
+        non_seasonal_ar          = 3,
+        non_seasonal_differences = 1,
+        non_seasonal_ma          = 3,
+        seasonal_ar              = 1,
+        seasonal_differences     = 0,
+        seasonal_ma              = 1
+    ) \%>\%
     set_engine("forecast")
 
 # Fit Spec

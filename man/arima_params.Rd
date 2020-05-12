@@ -3,27 +3,27 @@
 \name{arima_params}
 \alias{arima_params}
 \alias{period}
-\alias{order_ar}
-\alias{order_differences}
-\alias{order_ma}
-\alias{order_seasonal_ar}
-\alias{order_seasonal_differences}
-\alias{order_seasonal_ma}
+\alias{non_seasonal_ar}
+\alias{non_seasonal_differences}
+\alias{non_seasonal_ma}
+\alias{seasonal_ar}
+\alias{seasonal_differences}
+\alias{seasonal_ma}
 \title{Tuning Parameters for ARIMA Models}
 \usage{
 period(range = c(1L, 12L), trans = NULL)
 
-order_ar(range = c(0L, 5L), trans = NULL)
+non_seasonal_ar(range = c(0L, 5L), trans = NULL)
 
-order_differences(range = c(0L, 2L), trans = NULL)
+non_seasonal_differences(range = c(0L, 2L), trans = NULL)
 
-order_ma(range = c(0L, 5L), trans = NULL)
+non_seasonal_ma(range = c(0L, 5L), trans = NULL)
 
-order_seasonal_ar(range = c(0L, 2L), trans = NULL)
+seasonal_ar(range = c(0L, 2L), trans = NULL)
 
-order_seasonal_differences(range = c(0L, 1L), trans = NULL)
+seasonal_differences(range = c(0L, 1L), trans = NULL)
 
-order_seasonal_ma(range = c(0L, 2L), trans = NULL)
+seasonal_ma(range = c(0L, 2L), trans = NULL)
 }
 \arguments{
 \item{range}{A two-element vector holding the \emph{defaults} for the smallest and
@@ -41,20 +41,20 @@ Tuning Parameters for ARIMA Models
 The main parameters for ARIMA models are:
 \itemize{
 \item \code{period}: The periodic nature of the seasonality. Set 1 for non-seasonal.
-\item \code{p}: The order of the non-seasonal auto-regressive (AR) terms.
-\item \code{d}: The order of integration for non-seasonal differencing.
-\item \code{q}: The order of the non-seasonal moving average (MA) terms.
-\item \code{P}: The order of the seasonal auto-regressive (SAR) terms.
-\item \code{D}: The order of integration for seasonal differencing.
-\item \code{Q}: The order of the seasonal moving average (SMA) terms.
+\item \code{non_seasonal_ar}: The order of the non-seasonal auto-regressive (AR) terms.
+\item \code{non_seasonal_differences}: The order of integration for non-seasonal differencing.
+\item \code{non_seasonal_ma}: The order of the non-seasonal moving average (MA) terms.
+\item \code{seasonal_ar}: The order of the seasonal auto-regressive (SAR) terms.
+\item \code{seasonal_differences}: The order of integration for seasonal differencing.
+\item \code{seasonal_ma}: The order of the seasonal moving average (SMA) terms.
 }
 }
 \examples{
-p()
+non_seasonal_ar()
 
-d()
+non_seasonal_differences()
 
-q()
+non_seasonal_ma()
 
 
 }

@@ -7,12 +7,12 @@
 arima_reg(
   mode = "regression",
   period = NULL,
-  order_ar = NULL,
-  order_differences = NULL,
-  order_ma = NULL,
-  order_seasonal_ar = NULL,
-  order_seasonal_differences = NULL,
-  order_seasonal_ma = NULL
+  non_seasonal_ar = NULL,
+  non_seasonal_differences = NULL,
+  non_seasonal_ma = NULL,
+  seasonal_ar = NULL,
+  seasonal_differences = NULL,
+  seasonal_ma = NULL
 )
 }
 \arguments{
@@ -24,17 +24,17 @@ A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
 
-\item{p}{The order of the non-seasonal auto-regressive (AR) terms.}
+\item{non_seasonal_ar}{The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.}
 
-\item{d}{The order of integration for non-seasonal differencing.}
+\item{non_seasonal_differences}{The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.}
 
-\item{q}{The order of the non-seasonal moving average (MA) terms.}
+\item{non_seasonal_ma}{The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.}
 
-\item{P}{The order of the seasonal auto-regressive (SAR) terms.}
+\item{seasonal_ar}{The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.}
 
-\item{D}{The order of integration for seasonal differencing.}
+\item{seasonal_differences}{The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.}
 
-\item{Q}{The order of the seasonal moving average (SMA) terms.}
+\item{seasonal_ma}{The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.}
 }
 \description{
 \code{arima_reg()} is a way to generate a \emph{specification} of a model
@@ -57,12 +57,12 @@ following \emph{engines}:
 The main arguments (tuning parameters) for the model are:
 \itemize{
 \item \code{period}: The periodic nature of the seasonality. If none is present, use 1.
-\item \code{p}: The order of the non-seasonal auto-regressive (AR) terms.
-\item \code{d}: The order of integration for non-seasonal differencing.
-\item \code{q}: The order of the non-seasonal moving average (MA) terms.
-\item \code{P}: The order of the seasonal auto-regressive (SAR) terms.
-\item \code{D}: The order of integration for seasonal differencing.
-\item \code{Q}: The order of the seasonal moving average (SMA) terms.
+\item \code{non_seasonal_ar}: The order of the non-seasonal auto-regressive (AR) terms.
+\item \code{non_seasonal_differences}: The order of integration for non-seasonal differencing.
+\item \code{non_seasonal_ma}: The order of the non-seasonal moving average (MA) terms.
+\item \code{seasonal_ar}: The order of the seasonal auto-regressive (SAR) terms.
+\item \code{seasonal_differences}: The order of integration for seasonal differencing.
+\item \code{seasonal_ma}: The order of the seasonal moving average (SMA) terms.
 }
 
 These arguments are converted to their specific names at the
@@ -81,8 +81,8 @@ The standardized parameter names in \code{modeltime} can be mapped to their orig
 names in each engine:\tabular{ll}{
    modeltime \tab forecast \cr
    period \tab ts(frequency) \cr
-   p, d, q \tab order = c(p,d,q) \cr
-   P, D, Q \tab seasonal = c(P,D,Q) \cr
+   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab order = c(p,d,q) \cr
+   seasonal_ar, seasonal_differences, seasonal_ma \tab seasonal = c(P,D,Q) \cr
 }
 
 
@@ -91,8 +91,9 @@ Other options can be set using \code{set_engine()}.
 \strong{forecast}
 
 The order and seasonal terms are provided via \code{arima_reg()} parameters.
-Other options and argument can be set using \code{set_engine()}.\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, include.drift = FALSE, include.constant, 
-##     lambda = model$lambda, biasadj = FALSE, method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
+Other options and argument can be set using \code{set_engine()}.\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
+##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, 
+##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
 }
 
 Parameter Notes:
@@ -107,37 +108,31 @@ Parameter Notes:
 
 \strong{Date and Date-Time Variable}
 
-It's very common to work with date and date-time variables when working with time series.
+It's a requirement to have a date or date-time variable as a predictor.
 The \code{fit()} interface accepts date and date-time features and handles them internally.
-
-\emph{Period Specification}
-
-When \verb{period = "auto" or "12 months"}, the \code{fit()} interface will require a date or date-time
-feature. You can specify one using the format:
 \itemize{
 \item \code{fit(y ~ date)}
 }
 
-When \verb{period = 1 or 12}, it can be used as a tuning parameter.
-No date or date-time feature is required.
+\emph{Period Specification}
+
+The period can be non-seasonal (\code{period = 1}) or seasonal (e.g. \code{period = 12} or \code{period = "12 months"}).
+There are 3 ways to specify:
+\enumerate{
+\item \code{period = "auto"}: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+\item \code{period = 12}: A numeric frequency. For example, 12 is common for monthly data
+\item \code{period = "1 year"}: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+}
 
 \strong{Univariate (No xreg's):}
 
-For univariate analysis, simply use:
+For univariate analysis, you must include a date or date-time feature. Simply use:
 \itemize{
-\item \code{fit(y ~ 1)} will ignore xreg.
-\item \code{fit_xy(x = NULL, y)} will ignore xreg.
+\item Formula Interface (recommended): \code{fit(y ~ date)} will ignore xreg's.
+\item XY Interface: \code{fit_xy(x = data[,"date"], y = data$y)} will ignore xreg's.
 }
 
-Alternatively, you can have a date or date-time feature in the \code{fit()} interface, and this
-will still result in a univariate analysis. The additional benefit is using \code{period = "auto"}
-to automate the \code{period} assignment.
-\itemize{
-\item \code{fit(y ~ date)} is a univariate analysis if date is a date or date time feature.
-\item \code{fit_xy(x = dplyr::select(data, date), y)} is a univariate analysis if date is a date or date time feature.
-}
-
-\strong{xreg (Exogenous Regressors)}
+\strong{Xreg's (Exogenous Regressors)}
 
 The \code{xreg} parameter is populated using the \code{fit()} or \code{fit_xy()} function:
 \itemize{
@@ -157,15 +152,42 @@ The \code{month.lbl} is an exogenous regressor that can be passed to the \code{a
 \code{fit()}:
 \itemize{
 \item \code{fit(y ~ date + month.lbl)} will pass \code{month.lbl} on as an exogenous regressor.
-\item \code{fit_xy(x, y)} will pass x, where x is a data frame containing \code{month.lbl}
-and possibly the \code{date} feature. Only \code{month.lbl} will be used as an exogenous regressor.
+\item \code{fit_xy(data[,c("date", "month.lbl")], y = data$y)} will pass x, where x is a data frame containing \code{month.lbl}
+and the \code{date} feature. Only \code{month.lbl} will be used as an exogenous regressor.
 }
 
 Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
-# TODO
+library(dplyr)
+library(parsnip)
+library(rsample)
+library(timetk)
+library(modeltime)
+
+# Data
+m750 <- m4_monthly \%>\% filter(id == "M750")
+m750
+
+# Split Data 80/20
+splits <- initial_time_split(m750, prop = 0.8)
+
+# Model Spec
+model_spec <- arima_reg(
+        period                   = 12,
+        non_seasonal_ar          = 3,
+        non_seasonal_differences = 1,
+        non_seasonal_ma          = 3,
+        seasonal_ar              = 1,
+        seasonal_differences     = 0,
+        seasonal_ma              = 1
+    ) \%>\%
+    set_engine("forecast")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(log(value) ~ date, data = training(splits))
 
 }
 \seealso{
