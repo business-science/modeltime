@@ -3,27 +3,27 @@
 \name{arima_params}
 \alias{arima_params}
 \alias{period}
-\alias{p}
-\alias{d}
-\alias{q}
-\alias{P}
-\alias{D}
-\alias{Q}
+\alias{order_ar}
+\alias{order_differences}
+\alias{order_ma}
+\alias{order_seasonal_ar}
+\alias{order_seasonal_differences}
+\alias{order_seasonal_ma}
 \title{Tuning Parameters for ARIMA Models}
 \usage{
 period(range = c(1L, 12L), trans = NULL)
 
-p(range = c(0L, 5L), trans = NULL)
+order_ar(range = c(0L, 5L), trans = NULL)
 
-d(range = c(0L, 2L), trans = NULL)
+order_differences(range = c(0L, 2L), trans = NULL)
 
-q(range = c(0L, 5L), trans = NULL)
+order_ma(range = c(0L, 5L), trans = NULL)
 
-P(range = c(0L, 2L), trans = NULL)
+order_seasonal_ar(range = c(0L, 2L), trans = NULL)
 
-D(range = c(0L, 1L), trans = NULL)
+order_seasonal_differences(range = c(0L, 1L), trans = NULL)
 
-Q(range = c(0L, 2L), trans = NULL)
+order_seasonal_ma(range = c(0L, 2L), trans = NULL)
 }
 \arguments{
 \item{range}{A two-element vector holding the \emph{defaults} for the smallest and

@@ -40,78 +40,78 @@ period <- function(range = c(1L, 12L), trans = NULL) {
 
 #' @export
 #' @rdname arima_params
-p <- function(range = c(0L, 5L), trans = NULL) {
+order_ar <- function(range = c(0L, 5L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(p = "Non-seasonal AR Term"),
+        label     = c(order_ar = "Non-seasonal AR Term"),
         finalize  = NULL
     )
 }
 
 #' @export
 #' @rdname arima_params
-d <- function(range = c(0L, 2L), trans = NULL) {
+order_differences <- function(range = c(0L, 2L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(d = "Non-seasonal Differencing Term"),
+        label     = c(order_differences = "Non-seasonal Differencing Term"),
         finalize  = NULL
     )
 }
 
 #' @export
 #' @rdname arima_params
-q <- function(range = c(0L, 5L), trans = NULL) {
+order_ma <- function(range = c(0L, 5L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(q = "Non-seasonal MA Term"),
+        label     = c(order_ma = "Non-seasonal MA Term"),
         finalize  = NULL
     )
 }
 
 #' @export
 #' @rdname arima_params
-P <- function(range = c(0L, 2L), trans = NULL) {
+order_seasonal_ar <- function(range = c(0L, 2L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(P = "Seasonal AR Term"),
+        label     = c(order_seasonal_ar = "Seasonal AR Term"),
         finalize  = NULL
     )
 }
 
 #' @export
 #' @rdname arima_params
-D <- function(range = c(0L, 1L), trans = NULL) {
+order_seasonal_differences <- function(range = c(0L, 1L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(D = "Seasonal Differencing Term"),
+        label     = c(order_seasonal_differences = "Seasonal Differencing Term"),
         finalize  = NULL
     )
 }
 
 #' @export
 #' @rdname arima_params
-Q <- function(range = c(0L, 2L), trans = NULL) {
+order_seasonal_ma <- function(range = c(0L, 2L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(Q = "Seasonal MA Term"),
+        label     = c(order_seasonal_ma = "Seasonal MA Term"),
         finalize  = NULL
     )
 }

@@ -144,16 +144,18 @@
 #' # TODO
 #'
 #' @export
-arima_reg <- function(mode = "regression", period = NULL, p = NULL, d = NULL, q = NULL, P = NULL, D = NULL, Q = NULL) {
+arima_reg <- function(mode = "regression", period = NULL,
+                      order_ar = NULL, order_differences = NULL, order_ma = NULL,
+                      order_seasonal_ar = NULL, order_seasonal_differences = NULL, order_seasonal_ma = NULL) {
 
     args <- list(
-        period = rlang::enquo(period),
-        p = rlang::enquo(p),
-        d = rlang::enquo(d),
-        q = rlang::enquo(q),
-        P = rlang::enquo(P),
-        D = rlang::enquo(D),
-        Q = rlang::enquo(Q)
+        period                     = rlang::enquo(period),
+        order_ar                   = rlang::enquo(order_ar),
+        order_differences          = rlang::enquo(order_differences),
+        order_ma                   = rlang::enquo(order_ma),
+        order_seasonal_ar          = rlang::enquo(order_seasonal_ar),
+        order_seasonal_differences = rlang::enquo(order_seasonal_differences),
+        order_seasonal_ma          = rlang::enquo(order_seasonal_ma)
     )
 
     parsnip::new_model_spec(
@@ -183,7 +185,8 @@ print.arima_reg <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.arima_reg <- function(object, parameters = NULL,
-                             period = NULL, p = NULL, d = NULL, q = NULL, P = NULL, D = NULL, Q = NULL,
+                             period = NULL, order_ar = NULL, order_differences = NULL, order_ma = NULL,
+                             order_seasonal_ar = NULL, order_seasonal_differences = NULL, order_seasonal_ma = NULL,
                              fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
@@ -193,13 +196,13 @@ update.arima_reg <- function(object, parameters = NULL,
     }
 
     args <- list(
-        period = rlang::enquo(period),
-        p = rlang::enquo(p),
-        d = rlang::enquo(d),
-        q = rlang::enquo(q),
-        P = rlang::enquo(P),
-        D = rlang::enquo(D),
-        Q = rlang::enquo(Q)
+        period                     = rlang::enquo(period),
+        order_ar                   = rlang::enquo(order_ar),
+        order_differences          = rlang::enquo(order_differences),
+        order_ma                   = rlang::enquo(order_ma),
+        order_seasonal_ar          = rlang::enquo(order_seasonal_ar),
+        order_seasonal_differences = rlang::enquo(order_seasonal_differences),
+        order_seasonal_ma          = rlang::enquo(order_seasonal_ma)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)

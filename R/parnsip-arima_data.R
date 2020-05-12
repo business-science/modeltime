@@ -30,54 +30,54 @@ make_arima_reg <- function() {
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "forecast",
-        parsnip      = "p",
+        parsnip      = "order_ar",
         original     = "p",
-        func         = list(pkg = "modeltime", fun = "p"),
+        func         = list(pkg = "modeltime", fun = "order_ar"),
         has_submodel = FALSE
     )
 
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "forecast",
-        parsnip      = "d",
+        parsnip      = "order_differences",
         original     = "d",
-        func         = list(pkg = "modeltime", fun = "d"),
+        func         = list(pkg = "modeltime", fun = "order_differences"),
         has_submodel = FALSE
     )
 
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "forecast",
-        parsnip      = "q",
+        parsnip      = "order_ma",
         original     = "q",
-        func         = list(pkg = "modeltime", fun = "q"),
+        func         = list(pkg = "modeltime", fun = "order_ma"),
         has_submodel = FALSE
     )
 
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "forecast",
-        parsnip      = "P",
+        parsnip      = "order_seasonal_ar",
         original     = "P",
-        func         = list(pkg = "modeltime", fun = "P"),
+        func         = list(pkg = "modeltime", fun = "order_seasonal_ar"),
         has_submodel = FALSE
     )
 
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "forecast",
-        parsnip      = "D",
+        parsnip      = "order_seasonal_differences",
         original     = "D",
-        func         = list(pkg = "modeltime", fun = "D"),
+        func         = list(pkg = "modeltime", fun = "order_seasonal_differences"),
         has_submodel = FALSE
     )
 
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "forecast",
-        parsnip      = "Q",
+        parsnip      = "order_seasonal_ma",
         original     = "Q",
-        func         = list(pkg = "modeltime", fun = "Q"),
+        func         = list(pkg = "modeltime", fun = "order_seasonal_ma"),
         has_submodel = FALSE
     )
 
