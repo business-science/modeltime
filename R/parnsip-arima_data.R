@@ -90,7 +90,7 @@ make_arima_reg <- function() {
             interface = "data.frame",
             protect   = c("x", "y"),
             func      = c(fun = "Arima_fit_impl"),
-            defaults  = list()
+            defaults  = list(method = "ML")
         )
     )
 
