@@ -1,7 +1,7 @@
-#' Interactive Plotting for One or More Time Series
+#' Interactive Forecast Visualization
 #'
-#' A workhorse time-series plotting function that generates interactive `plotly` plots,
-#' consolidates 20+ lines of `ggplot2` code, and scales well to many time series.
+#' This is a wrapper for [plot_time_series()] that generates an interactive (`plotly`) or static
+#' (`ggplot2`) plot with the forecasted data.
 #'
 #' @inheritParams timetk::plot_time_series
 #' @param .data A `tibble` or `data.frame` with '.id', '.index', and .value' columns
@@ -9,9 +9,6 @@
 #'
 #' @return A static `ggplot2` plot or an interactive `plotly` plot containing a forecast
 #'
-#' @details
-#'
-#' TODO
 #'
 #'
 #' @examples
@@ -49,6 +46,7 @@
 #' # Combining forecast with actual values
 #' model_fit %>%
 #'     modeltime_forecast(h = "3 years", actual_data = training(splits)) %>%
+#'     mutate(.value = exp(.value)) %>%
 #'     plot_modeltime_forecast(.interactive = FALSE)
 #'
 #' @export

@@ -37,7 +37,7 @@ See Fit Details below.}
 \item{seasonal_ma}{The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.}
 }
 \description{
-\code{arima_reg()} is a way to generate a \emph{specification} of a model
+\code{arima_reg()} is a way to generate a \emph{specification} of an ARIMA model
 before fitting and allows the model to be created using
 different packages. Currently the only package is \code{forecast}.
 }
@@ -90,16 +90,16 @@ Other options can be set using \code{set_engine()}.
 
 \strong{forecast}
 
-The order and seasonal terms are provided via \code{arima_reg()} parameters.
-Other options and argument can be set using \code{set_engine()}.\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
-##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, 
-##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
+The nonseasonal (order) and seasonal ARIMA terms are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{arima_reg()} parameters.
+Other options and argument can be set using \code{set_engine()}.\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, include.drift = FALSE, include.constant, 
+##     lambda = model$lambda, biasadj = FALSE, method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
 }
 
 Parameter Notes:
 \itemize{
 \item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
 (so don't provide this manually). See Fit Details (below).
+\item \code{method} - The default is set to "ML". This method is more robust at the expense of speed.
 }
 }
 
@@ -124,7 +124,7 @@ There are 3 ways to specify:
 \item \code{period = "1 year"}: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 }
 
-\strong{Univariate (No xreg's):}
+\strong{Univariate (No xregs, Exogenous Regressors):}
 
 For univariate analysis, you must include a date or date-time feature. Simply use:
 \itemize{
@@ -132,7 +132,7 @@ For univariate analysis, you must include a date or date-time feature. Simply us
 \item XY Interface: \code{fit_xy(x = data[,"date"], y = data$y)} will ignore xreg's.
 }
 
-\strong{Xreg's (Exogenous Regressors)}
+\strong{Multivariate (xregs, Exogenous Regressors)}
 
 The \code{xreg} parameter is populated using the \code{fit()} or \code{fit_xy()} function:
 \itemize{

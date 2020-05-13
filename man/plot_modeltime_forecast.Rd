@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-forecast-plot.R
 \name{plot_modeltime_forecast}
 \alias{plot_modeltime_forecast}
-\title{Interactive Plotting for One or More Time Series}
+\title{Interactive Forecast Visualization}
 \usage{
 plot_modeltime_forecast(
   .data,
@@ -33,11 +33,8 @@ plot_modeltime_forecast(
 A static \code{ggplot2} plot or an interactive \code{plotly} plot containing a forecast
 }
 \description{
-A workhorse time-series plotting function that generates interactive \code{plotly} plots,
-consolidates 20+ lines of \code{ggplot2} code, and scales well to many time series.
-}
-\details{
-TODO
+This is a wrapper for \code{\link[=plot_time_series]{plot_time_series()}} that generates an interactive (\code{plotly}) or static
+(\code{ggplot2}) plot with the forecasted data.
 }
 \examples{
 library(dplyr)
@@ -74,6 +71,7 @@ model_fit <- model_spec \%>\%
 # Combining forecast with actual values
 model_fit \%>\%
     modeltime_forecast(h = "3 years", actual_data = training(splits)) \%>\%
+    mutate(.value = exp(.value)) \%>\%
     plot_modeltime_forecast(.interactive = FALSE)
 
 }

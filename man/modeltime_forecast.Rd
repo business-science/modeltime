@@ -23,8 +23,44 @@ time series with no exogenous regressors).}
 A tibble with predictions and time-stamp data.
 }
 \description{
-This is a wrapper for \code{predict()} that is useful for forecasting
-future data from a fitted \code{workflow} (trained workflows object) or \code{model_fit} (trained parsnip model).
+This is a wrapper for \code{predict()} that is simplifies forecasting
+future data from a fitted \code{workflow} (trained workflow) or \code{model_fit} (trained parsnip model).
+}
+\details{
+The goal of \code{modeltime_forecast()} is to simplify the process of
+forecasting future data (controlled by \code{new_data} or \code{h}) and
+combining with existing data (controlled by \code{actual_data}).
+
+\strong{Specifying Future Data}
+
+When forecasting without external regressors, meaning that features are dependent on the
+date feature alone, you can specify future data using:
+\enumerate{
+\item \verb{h = "3 years" or "36 months" or 36}:
+\item \verb{new_data = tibble with date column extending the trained dates}
+}
+
+\strong{Interfaces}
+
+There are 2 interfaces:
+\enumerate{
+\item Fitted Parsnip Model
+\item Fitted Workflow
+}
+
+\strong{Interface 1: Fitted Parsnip Model (\code{model_fit} class)}
+\itemize{
+\item Currently, only the \strong{formula format} is supported (e.g. \code{model_fit <- model_spec \%>\% fit(y ~ date)}).
+\item New data and actual data are processed according to the formula (e.g. \code{fit(log(y) ~ date)} will
+result in a log transformation applied to future data and new data)
+}
+
+\strong{Interface 2: Fitted Workflow (\code{workflow} with \verb{$trained = TRUE})}
+\itemize{
+\item Currently, only the \strong{recipe format} is supported. However, \code{tidymodels/workflows} Issue #34
+will correct issues with indicators, which prevents the \strong{formula format}.
+\item Transformations are applied according to the \code{recipe}. New data is forged with \code{hardhat::forge}.
+}
 }
 \examples{
 library(dplyr)

@@ -1,7 +1,7 @@
 #' Forecast future data
 #'
-#' This is a wrapper for `predict()` that is useful for forecasting
-#' future data from a fitted `workflow` (trained workflows object) or `model_fit` (trained parsnip model).
+#' This is a wrapper for `predict()` that is simplifies forecasting
+#' future data from a fitted `workflow` (trained workflow) or `model_fit` (trained parsnip model).
 #'
 #' @param object A fitted model object that is either (1) a workflow that has been fit by [fit.workflow()] or
 #'  (2) a parsnip model that has been fit using [fit.model_spec()]
@@ -13,6 +13,39 @@
 #'
 #'
 #' @return A tibble with predictions and time-stamp data.
+#'
+#' @details
+#'
+#' The goal of `modeltime_forecast()` is to simplify the process of
+#' forecasting future data (controlled by `new_data` or `h`) and
+#' combining with existing data (controlled by `actual_data`).
+#'
+#' __Specifying Future Data__
+#'
+#' When forecasting without external regressors, meaning that features are dependent on the
+#' date feature alone, you can specify future data using:
+#'
+#' 1. `h = "3 years" or "36 months" or 36`:
+#' 2. `new_data = tibble with date column extending the trained dates`
+#'
+#' __Interfaces__
+#'
+#' There are 2 interfaces:
+#'
+#' 1. Fitted Parsnip Model
+#' 2. Fitted Workflow
+#'
+#' __Interface 1: Fitted Parsnip Model (`model_fit` class)__
+#'
+#' - Currently, only the __formula format__ is supported (e.g. `model_fit <- model_spec %>% fit(y ~ date)`).
+#' - New data and actual data are processed according to the formula (e.g. `fit(log(y) ~ date)` will
+#' result in a log transformation applied to future data and new data)
+#'
+#' __Interface 2: Fitted Workflow (`workflow` with `$trained = TRUE`)__
+#'
+#' - Currently, only the __recipe format__ is supported. However, `tidymodels/workflows` Issue #34
+#' will correct issues with indicators, which prevents the __formula format__.
+#' - Transformations are applied according to the `recipe`. New data is forged with `hardhat::forge`.
 #'
 #'
 #' @examples

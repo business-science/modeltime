@@ -1,6 +1,6 @@
 #' General Interface for ARIMA Regression Models
 #'
-#' `arima_reg()` is a way to generate a _specification_ of a model
+#' `arima_reg()` is a way to generate a _specification_ of an ARIMA model
 #'  before fitting and allows the model to be created using
 #'  different packages. Currently the only package is `forecast`.
 #'
@@ -69,8 +69,9 @@
 #'
 #' __forecast__
 #'
-#' The order and seasonal terms are provided via `arima_reg()` parameters.
+#' The nonseasonal (order) and seasonal ARIMA terms are provided to [forecast::Arima()] via `arima_reg()` parameters.
 #' Other options and argument can be set using `set_engine()`.
+#'
 #'
 #' ```{r echo = FALSE}
 #' # forecast::Arima() parameters
@@ -79,6 +80,7 @@
 #' Parameter Notes:
 #' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
 #'  (so don't provide this manually). See Fit Details (below).
+#' - `method` - The default is set to "ML". This method is more robust at the expense of speed.
 #'
 #'
 #' @section Fit Details:
@@ -100,14 +102,14 @@
 #' 3. `period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 #'
 #'
-#' __Univariate (No xreg's):__
+#' __Univariate (No xregs, Exogenous Regressors):__
 #'
 #' For univariate analysis, you must include a date or date-time feature. Simply use:
 #'
 #'  - Formula Interface (recommended): `fit(y ~ date)` will ignore xreg's.
 #'  - XY Interface: `fit_xy(x = data[,"date"], y = data$y)` will ignore xreg's.
 #'
-#' __Xreg's (Exogenous Regressors)__
+#' __Multivariate (xregs, Exogenous Regressors)__
 #'
 #'  The `xreg` parameter is populated using the `fit()` or `fit_xy()` function:
 #'
