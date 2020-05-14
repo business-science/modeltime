@@ -49,7 +49,8 @@ mode will always be "regression".
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item \strong{R}: "forecast" (default)
+\item "forecast::auto.arima" (default)
+\item "forecast::Arima"
 }
 
 \strong{Main Arguments}
@@ -78,22 +79,29 @@ in lieu of recreating the object from scratch.
 
 
 The standardized parameter names in \code{modeltime} can be mapped to their original
-names in each engine:\tabular{ll}{
-   modeltime \tab forecast \cr
-   period \tab ts(frequency) \cr
-   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab order = c(p,d,q) \cr
-   seasonal_ar, seasonal_differences, seasonal_ma \tab seasonal = c(P,D,Q) \cr
+names in each engine:\tabular{lll}{
+   modeltime \tab forecast::auto.arima \tab forecast::Arima \cr
+   period \tab ts(frequency) \tab ts(frequency) \cr
+   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p, max.d, max.q \tab order = c(p,d,q) \cr
+   seasonal_ar, seasonal_differences, seasonal_ma \tab max.P, max.D, max.Q \tab seasonal = c(P,D,Q) \cr
 }
 
 
 Other options can be set using \code{set_engine()}.
 
-\strong{forecast}
+\strong{forecast::auto.arima (default engine)}
 
-The nonseasonal (order) and seasonal ARIMA terms are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{arima_reg()} parameters.
-Other options and argument can be set using \code{set_engine()}.\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, include.drift = FALSE, include.constant, 
-##     lambda = model$lambda, biasadj = FALSE, method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
+TODO
+
+\strong{forecast::Arima}
+
+\code{\link[forecast:Arima]{forecast::Arima()}} Function Parameters:\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
+##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, 
+##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
 }
+
+The nonseasonal ARIMA terms (\code{order}) and seasonal ARIMA terms (\code{seasonal}) are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{arima_reg()} parameters.
+Other options and argument can be set using \code{set_engine()}.
 
 Parameter Notes:
 \itemize{
@@ -183,7 +191,7 @@ model_spec <- arima_reg(
         seasonal_differences     = 0,
         seasonal_ma              = 1
     ) \%>\%
-    set_engine("forecast")
+    set_engine("forecast::Arima")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

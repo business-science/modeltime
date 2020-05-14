@@ -86,7 +86,7 @@ model_spec <- arima_reg(
         seasonal_differences     = 0,
         seasonal_ma              = 1
     ) \%>\%
-    set_engine("forecast")
+    set_engine("forecast::Arima")
 
 # Fit Spec
 model_fit <- model_spec \%>\%
