@@ -75,6 +75,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     ret <- list(
         model      = fit_arima,
         index      = tibble::tibble(!! idx_col := idx),
+        resid      = tibble::tibble(.resid = as.numeric(fit_arima$residuals)),
         xreg_terms = c(colnames(xreg_matrix))
     )
 

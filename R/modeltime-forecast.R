@@ -8,6 +8,7 @@
 #' @param new_data A `tibble` containing future information to forecast.
 #' @param h The forecast horizon (can be used instead of `new_data` for
 #'  time series with no exogenous regressors).
+#' @param conf_interval An estimated confidence interval based on the in-sample residuals
 #' @param actual_data Data that is combined with the output tibble and given an `.id = "actual"`
 #' @param ... Additional arguments passed to [future_frame()] for use with the `h` forecast horizon
 #'
@@ -35,17 +36,21 @@
 #' 1. Fitted Parsnip Model
 #' 2. Fitted Workflow
 #'
-#' __Interface 1: Fitted Parsnip Model (`model_fit` class)__
+#' _Interface 1: Fitted Parsnip Model (`model_fit` class)_
 #'
 #' - Currently, only the __formula format__ is supported (e.g. `model_fit <- model_spec %>% fit(y ~ date)`).
 #' - New data and actual data are processed according to the formula (e.g. `fit(log(y) ~ date)` will
 #' result in a log transformation applied to future data and new data)
 #'
-#' __Interface 2: Fitted Workflow (`workflow` with `$trained = TRUE`)__
+#' _Interface 2: Fitted Workflow (`workflow` with `$trained = TRUE`)_
 #'
 #' - Currently, only the __recipe format__ is supported. However, `tidymodels/workflows` Issue #34
 #' will correct issues with indicators, which prevents the __formula format__.
 #' - Transformations are applied according to the `recipe`. New data is forged with `hardhat::forge`.
+#'
+#' _Confidence Interval Estimation_
+#'
+#'
 #'
 #'
 #' @examples
@@ -97,22 +102,22 @@ NULL
 
 #' @export
 #' @rdname modeltime_forecast
-modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
     UseMethod("modeltime_forecast")
 }
 
 #' @export
-modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
     rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class 'workflow' that has been fitted (trained) or 'model_fit' (a fitted parsnip model). "))
 }
 
 #' @export
-modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
     rlang::abort("Model spec must be trained using the 'fit()' function.")
 }
 
 #' @export
-modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
 
     # Checks
     if (!object$trained) {
@@ -177,16 +182,40 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, actua
     }
 
     # FINALIZE ----
-    data_formatted %>%
+    ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.id, .index, .value) %>%
         dplyr::arrange(.index, .id) %>%
         dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
 
+    # ADD conf_interval ----
+    if (!is.null(conf_interval)) {
+
+        if (conf_interval >= 1 | conf_interval <= 0.5) {
+            rlang::abort("conf_interval must be between 0.5 and 0.95")
+        }
+
+        probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
+
+        residuals  <- object$fit$resid$.resid
+
+        quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
+        iq_range   <- quantile_x[[2]] - quantile_x[[1]]
+        limits     <- quantile_x + iq_range * c(-1, 1)
+
+        ret <- ret %>%
+            dplyr::mutate(
+                .conf_lo = ifelse(.id == "prediction", .value + limits[1], NA),
+                .conf_hi = ifelse(.id == "prediction", .value + limits[2], NA)
+            )
+    }
+
+    return(ret)
+
 }
 
 #' @export
-modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
 
     # MODEL OBJECT ----
 
@@ -263,11 +292,35 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, actu
     }
 
     # FINALIZE ----
-    data_formatted %>%
+    ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.id, .index, .value) %>%
         dplyr::arrange(.index, .id) %>%
         dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
+
+    # ADD conf_interval ----
+    if (!is.null(conf_interval)) {
+
+        if (conf_interval >= 1 | conf_interval <= 0.5) {
+            rlang::abort("conf_interval must be between 0.5 and 0.95")
+        }
+
+        probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
+
+        residuals  <- object$fit$resid$.resid
+
+        quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
+        iq_range   <- quantile_x[[2]] - quantile_x[[1]]
+        limits     <- quantile_x + iq_range * c(-1, 1)
+
+        ret <- ret %>%
+            dplyr::mutate(
+                .conf_lo = ifelse(.id == "prediction", .value + limits[1], NA),
+                .conf_hi = ifelse(.id == "prediction", .value + limits[2], NA)
+            )
+    }
+
+    return(ret)
 
 }
 

@@ -4,7 +4,14 @@
 \alias{modeltime_forecast}
 \title{Forecast future data}
 \usage{
-modeltime_forecast(object, new_data = NULL, h = NULL, actual_data = NULL, ...)
+modeltime_forecast(
+  object,
+  new_data = NULL,
+  h = NULL,
+  conf_interval = 0.95,
+  actual_data = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{A fitted model object that is either (1) a workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
@@ -14,6 +21,8 @@ modeltime_forecast(object, new_data = NULL, h = NULL, actual_data = NULL, ...)
 
 \item{h}{The forecast horizon (can be used instead of \code{new_data} for
 time series with no exogenous regressors).}
+
+\item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
 \item{actual_data}{Data that is combined with the output tibble and given an \code{.id = "actual"}}
 
@@ -48,19 +57,21 @@ There are 2 interfaces:
 \item Fitted Workflow
 }
 
-\strong{Interface 1: Fitted Parsnip Model (\code{model_fit} class)}
+\emph{Interface 1: Fitted Parsnip Model (\code{model_fit} class)}
 \itemize{
 \item Currently, only the \strong{formula format} is supported (e.g. \code{model_fit <- model_spec \%>\% fit(y ~ date)}).
 \item New data and actual data are processed according to the formula (e.g. \code{fit(log(y) ~ date)} will
 result in a log transformation applied to future data and new data)
 }
 
-\strong{Interface 2: Fitted Workflow (\code{workflow} with \verb{$trained = TRUE})}
+\emph{Interface 2: Fitted Workflow (\code{workflow} with \verb{$trained = TRUE})}
 \itemize{
 \item Currently, only the \strong{recipe format} is supported. However, \code{tidymodels/workflows} Issue #34
 will correct issues with indicators, which prevents the \strong{formula format}.
 \item Transformations are applied according to the \code{recipe}. New data is forged with \code{hardhat::forge}.
 }
+
+\emph{Confidence Interval Estimation}
 }
 \examples{
 library(dplyr)
