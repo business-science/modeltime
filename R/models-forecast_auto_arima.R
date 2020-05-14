@@ -53,7 +53,7 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
     xreg_df <- predictor %>%
         dplyr::select_if(~ ! timetk::is_date_class(.))
 
-    xreg_matrix <- prep_xreg_matrix_from_df(xreg_df)
+    xreg_matrix <- prep_xreg_matrix_from_df_fit(xreg_df)
 
     # FIT
 

@@ -52,7 +52,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     xreg_df <- predictor %>%
         dplyr::select_if(~ ! timetk::is_date_class(.))
 
-    xreg_matrix <- prep_xreg_matrix_from_df(xreg_df)
+    xreg_matrix <- prep_xreg_matrix_from_df_fit(xreg_df)
 
     # FIT
 
@@ -117,26 +117,7 @@ Arima_predict_impl <- function(object, new_data, ...) {
         dplyr::select_if(~ ! timetk::is_date_class(.))
 
     # Prep as matrix
-    xreg_matrix <- NULL
-    if (ncol(xreg_df) > 0) {
-
-        xreg_model_frame   <- hardhat::model_frame(~ ., xreg_df)
-        xreg_model_matrix  <- hardhat::model_matrix(xreg_model_frame$terms, xreg_model_frame$data)
-
-        xreg_matrix <- xreg_model_matrix %>%
-            as.matrix()
-
-        xreg_matrix <- xreg_matrix[,xreg_terms]
-
-        # print(xreg_matrix)
-
-        if (length(xreg_matrix) == 0) {
-            xreg_matrix <- NULL
-        } else if (ncol(xreg_matrix) == 0) {
-            xreg_matrix <- NULL
-        }
-
-    }
+    xreg_matrix <- prep_xreg_matrix_from_df_predict(xreg_df, xreg_terms)
 
     # PREDICTIONS
 
