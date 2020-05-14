@@ -19,7 +19,7 @@ arima_reg(
 \item{mode}{A single character string for the type of model.
 The only possible value for this model is "regression".}
 
-\item{period}{A seasonal frequency. If none is present, use 1.
+\item{period}{A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
@@ -57,7 +57,7 @@ following \emph{engines}:
 
 The main arguments (tuning parameters) for the model are:
 \itemize{
-\item \code{period}: The periodic nature of the seasonality. If none is present, use 1.
+\item \code{period}: The periodic nature of the seasonality. Uses "auto" by default.
 \item \code{non_seasonal_ar}: The order of the non-seasonal auto-regressive (AR) terms.
 \item \code{non_seasonal_differences}: The order of integration for non-seasonal differencing.
 \item \code{non_seasonal_ma}: The order of the non-seasonal moving average (MA) terms.
@@ -91,7 +91,29 @@ Other options can be set using \code{set_engine()}.
 
 \strong{forecast::auto.arima (default engine)}
 
-TODO
+\code{\link[forecast:auto.arima]{forecast::auto.arima()}} Function Parameters:\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
+##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
+##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
+##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
+##         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
+##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
+##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
+##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
+##     num.cores = 2, x = y, ...)
+}
+
+The \emph{MAXIMUM} nonseasonal ARIMA terms (\code{max.p}, \code{max.d}, \code{max.q}) and
+seasonal ARIMA terms (\code{max.P}, \code{max.D}, \code{max.Q}) are provided to
+\code{\link[forecast:auto.arima]{forecast::auto.arima()}} via \code{arima_reg()} parameters.
+Other options and argument can be set using \code{set_engine()}.
+
+Parameter Notes:
+\itemize{
+\item All values of nonseasonal pdq and seasonal PDQ are maximums.
+The \code{auto.arima} will select a value using these as an upper limit.
+\item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
+(so don't provide this manually). See Fit Details (below).
+}
 
 \strong{forecast::Arima}
 
@@ -107,7 +129,10 @@ Parameter Notes:
 \itemize{
 \item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
 (so don't provide this manually). See Fit Details (below).
-\item \code{method} - The default is set to "ML". This method is more robust at the expense of speed.
+\item \code{method} - The default is set to "ML" (Maximum Likelihood).
+This method is more robust at the expense of speed and possible
+selections may fail unit root inversion testing. Alternatively, you can add \code{method = "CSS-ML"} to
+evaluate Conditional Sum of Squares for starting values, then Maximium Likelihood.
 }
 }
 
@@ -181,6 +206,20 @@ m750
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
 
+# ---- AUTO ARIMA ----
+
+# Model Spec
+model_spec <- arima_reg() \%>\%
+    set_engine("forecast::auto.arima")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(log(value) ~ date, data = training(splits))
+model_fit
+
+
+# ---- STANDARD ARIMA ----
+
 # Model Spec
 model_spec <- arima_reg(
         period                   = 12,
@@ -196,6 +235,7 @@ model_spec <- arima_reg(
 # Fit Spec
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date, data = training(splits))
+model_fit
 
 }
 \seealso{

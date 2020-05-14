@@ -6,7 +6,7 @@
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
-#' @param period A seasonal frequency. If none is present, use 1.
+#' @param period A seasonal frequency. Uses "auto" by default.
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
@@ -33,7 +33,7 @@
 #'
 #' The main arguments (tuning parameters) for the model are:
 #'
-#'  - `period`: The periodic nature of the seasonality. If none is present, use 1.
+#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
 #'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
 #'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
 #'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
@@ -70,7 +70,20 @@
 #'
 #' __forecast::auto.arima (default engine)__
 #'
-#' TODO
+#' [forecast::auto.arima()] Function Parameters:
+#' ```{r echo = FALSE}
+#' str(forecast::auto.arima)
+#' ```
+#' The _MAXIMUM_ nonseasonal ARIMA terms (`max.p`, `max.d`, `max.q`) and
+#' seasonal ARIMA terms (`max.P`, `max.D`, `max.Q`) are provided to
+#' [forecast::auto.arima()] via `arima_reg()` parameters.
+#' Other options and argument can be set using `set_engine()`.
+#'
+#' Parameter Notes:
+#' - All values of nonseasonal pdq and seasonal PDQ are maximums.
+#'  The `auto.arima` will select a value using these as an upper limit.
+#' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
+#'  (so don't provide this manually). See Fit Details (below).
 #'
 #' __forecast::Arima__
 #'
@@ -78,13 +91,17 @@
 #' ```{r echo = FALSE}
 #' str(forecast::Arima)
 #' ```
+#'
 #' The nonseasonal ARIMA terms (`order`) and seasonal ARIMA terms (`seasonal`) are provided to [forecast::Arima()] via `arima_reg()` parameters.
 #' Other options and argument can be set using `set_engine()`.
 #'
 #' Parameter Notes:
 #' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
 #'  (so don't provide this manually). See Fit Details (below).
-#' - `method` - The default is set to "ML". This method is more robust at the expense of speed.
+#' - `method` - The default is set to "ML" (Maximum Likelihood).
+#'  This method is more robust at the expense of speed and possible
+#'  selections may fail unit root inversion testing. Alternatively, you can add `method = "CSS-ML"` to
+#'  evaluate Conditional Sum of Squares for starting values, then Maximium Likelihood.
 #'
 #'
 #' @section Fit Details:
@@ -154,6 +171,20 @@
 #' # Split Data 80/20
 #' splits <- initial_time_split(m750, prop = 0.8)
 #'
+#' # ---- AUTO ARIMA ----
+#'
+#' # Model Spec
+#' model_spec <- arima_reg() %>%
+#'     set_engine("forecast::auto.arima")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
+#'
+#'
+#' # ---- STANDARD ARIMA ----
+#'
 #' # Model Spec
 #' model_spec <- arima_reg(
 #'         period                   = 12,
@@ -169,6 +200,7 @@
 #' # Fit Spec
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
 #'
 #' @export
 arima_reg <- function(mode = "regression", period = NULL,
