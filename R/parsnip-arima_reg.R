@@ -259,8 +259,8 @@ update.arima_reg <- function(object, parameters = NULL,
 #' @importFrom parsnip translate
 translate.arima_reg <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
-        message("Used `engine = 'forecast::Arima'` for translation.")
-        engine <- "forecast"
+        message("Used `engine = 'forecast::auto.arima'` for translation.")
+        engine <- "forecast::auto.arima"
     }
     x <- parsnip::translate.default(x, engine, ...)
 
