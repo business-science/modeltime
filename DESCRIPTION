@@ -39,6 +39,7 @@ Suggests:
     rsample,
     yardstick,
     tidyverse,
+    lubridate,
     testthat,
     roxygen2
 Roxygen: list(markdown = TRUE)
