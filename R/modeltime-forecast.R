@@ -127,8 +127,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
     # WORKFLOW MOLD ----
 
     # Contains $predictors, $outcomes, $blueprint
-    mld <- object %>%
-        workflows::pull_workflow_mold()
+    mld <- object %>% workflows::pull_workflow_mold()
 
     if (!is.null(h)) {
         # Suppress date selection
@@ -139,6 +138,8 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         })
 
     }
+
+    print(new_data)
 
     new_data_forged <- hardhat::forge(new_data = new_data, blueprint = mld$blueprint, outcomes = FALSE)
 

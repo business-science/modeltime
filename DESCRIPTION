@@ -27,6 +27,8 @@ Imports:
     hardhat,
     rlang (>= 0.1.2),
     glue,
+    plotly,
+    ggplot2,
     tibble,
     tidyr,
     dplyr,

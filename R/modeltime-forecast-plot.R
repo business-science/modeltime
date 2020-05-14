@@ -5,6 +5,7 @@
 #'
 #' @inheritParams timetk::plot_time_series
 #' @param .data A `tibble` or `data.frame` with '.id', '.index', and .value' columns
+#' @param .include_conf_interval Logical. Whether or not to include the confidence interval as a ribbon.
 #' @param ... Additional arguments passed to [timetk::plot_time_series()].
 #'
 #' @return A static `ggplot2` plot or an interactive `plotly` plot containing a forecast
@@ -51,9 +52,10 @@
 #'
 #' @export
 plot_modeltime_forecast <- function(.data,
+                                    .include_conf_interval = TRUE,
                                     .title = "Forecast Plot", .x_lab = "", .y_lab = "",
                                     .color_lab = "Legend",
-                                    .interactive = TRUE,
+                                    .interactive = TRUE, .plotly_slider = FALSE,
                                     ...) {
 
     # Checks
@@ -61,19 +63,82 @@ plot_modeltime_forecast <- function(.data,
         rlang::abort("Expecting the following names to be in the data frame: .id, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
     }
 
-    timetk::plot_time_series(
-        .data         = .data,
-        .date_var     = .index,
-        .value        = .value,
-        .color_var    = .id,
+    if (.include_conf_interval) {
+        if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
+            rlang::abort("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. Try using '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.")
+        }
+    }
 
-        .smooth       = FALSE,
+    if (!.include_conf_interval) {
+        g <- timetk::plot_time_series(
+            .data         = .data,
+            .date_var     = .index,
+            .value        = .value,
+            .color_var    = .id,
 
-        .title        = .title,
-        .x_lab        = .x_lab,
-        .y_lab        = .y_lab,
-        .color_lab    = .color_lab,
-        .interactive  = .interactive,
-        ...
-    )
+            .smooth       = FALSE,
+
+            .title        = .title,
+            .x_lab        = .x_lab,
+            .y_lab        = .y_lab,
+            .color_lab    = .color_lab,
+            .interactive  = FALSE,
+            ...
+        )
+    } else {
+        g <- timetk::plot_time_series(
+            .data         = .data,
+            .date_var     = .index,
+            .value        = .value,
+            .color_var    = .id,
+
+            .smooth       = FALSE,
+
+            .title        = .title,
+            .x_lab        = .x_lab,
+            .y_lab        = .y_lab,
+            .color_lab    = .color_lab,
+            .interactive  = FALSE,
+            ...
+        )
+
+        # Add ribbon
+        g <- g +
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi), alpha = 0.2)
+
+        # Reorder Ribbon to 1st level
+        layers_start <- g$layers
+
+        g$layers[[1]] <- layers_start[[2]]
+        g$layers[[2]] <- layers_start[[1]]
+
+        if (.interactive) {
+            plotly::ggplotly(g)
+        } else {
+
+        }
+
+        ret <- g
+    }
+
+    # INTERACTIVE
+
+    if (.interactive) {
+
+        p <- plotly::ggplotly(g, dynamicTicks = TRUE)
+
+        if (.plotly_slider) {
+            p <- p %>%
+                plotly::layout(
+                    xaxis = list(
+                        rangeslider = list(type = "date")
+                    )
+                )
+        }
+
+        return(p)
+    } else {
+        return(g)
+    }
+
 }

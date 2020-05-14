@@ -6,16 +6,20 @@
 \usage{
 plot_modeltime_forecast(
   .data,
+  .include_conf_interval = TRUE,
   .title = "Forecast Plot",
   .x_lab = "",
   .y_lab = "",
   .color_lab = "Legend",
   .interactive = TRUE,
+  .plotly_slider = FALSE,
   ...
 )
 }
 \arguments{
 \item{.data}{A \code{tibble} or \code{data.frame} with '.id', '.index', and .value' columns}
+
+\item{.include_conf_interval}{Logical. Whether or not to include the confidence interval as a ribbon.}
 
 \item{.title}{Title for the plot}
 
@@ -26,6 +30,8 @@ plot_modeltime_forecast(
 \item{.color_lab}{Legend label if a \code{color_var} is used.}
 
 \item{.interactive}{Returns either a static (\code{ggplot2}) visualization or an interactive (\code{plotly}) visualization}
+
+\item{.plotly_slider}{If TRUE, returns a plotly date range slider.}
 
 \item{...}{Additional arguments passed to \code{\link[timetk:plot_time_series]{timetk::plot_time_series()}}.}
 }
