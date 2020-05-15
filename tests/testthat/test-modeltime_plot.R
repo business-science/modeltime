@@ -76,3 +76,51 @@ test_that("modeltime plot, Test Interactive plotly", {
     testthat::expect_s3_class(p, "plotly")
 
 })
+
+# WORKFLOW INTERFACE ----
+
+# Model Spec
+model_spec <- arima_reg(period = 12) %>%
+    set_engine("forecast::auto.arima")
+
+# Recipe spec
+recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+    step_log(value, skip = FALSE)
+
+# Workflow
+wflw <- workflow() %>%
+    add_recipe(recipe_spec) %>%
+    add_model(model_spec)
+
+wflw_fit <- wflw %>%
+    fit(training(splits))
+
+forecast_tbl <- wflw_fit %>%
+    modeltime_forecast(h = "3 years", actual_data = training(splits), conf_interval = 0.8)
+
+# * ggplot2 visualization ----
+g <- forecast_tbl %>%
+    mutate_at(vars(.value:.conf_hi), exp) %>%
+    plot_modeltime_forecast(.interactive = FALSE)
+
+# * plotly visualization ----
+p <- forecast_tbl %>%
+    mutate_at(vars(.value:.conf_hi), exp) %>%
+    plot_modeltime_forecast(.interactive = TRUE)
+
+
+test_that("modeltime plot - workflow, Test Static ggplot", {
+
+    # Structure
+    testthat::expect_s3_class(g, "ggplot")
+    testthat::expect_s3_class(g$layers[[1]]$geom, "GeomRibbon")
+
+
+})
+
+test_that("modeltime plot - workflow, Test Interactive plotly", {
+
+    # Structure
+    testthat::expect_s3_class(p, "plotly")
+
+})

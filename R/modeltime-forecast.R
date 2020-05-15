@@ -124,7 +124,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         rlang::abort("Workflow must be trained using the 'fit()' function.")
     }
 
-    # WORKFLOW MOLD ----
+    # WORKFLOW MOLD
 
     # Contains $predictors, $outcomes, $blueprint
     mld <- object %>% workflows::pull_workflow_mold()
@@ -157,6 +157,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
 
+    # FORGE NEW DATA
 
     # Issue - hardhat::forge defaults to outcomes = FALSE, which creates an error at predict.workflow()
 
@@ -170,7 +171,8 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
     fit <- object$fit$fit
 
-    # Make predictions
+    # PREDICT
+
     data_formatted <- fit %>%
         stats::predict(new_data = new_data) %>%
         dplyr::bind_cols(time_stamp_predictors_tbl) %>%
@@ -178,7 +180,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         dplyr::select(.id, dplyr::everything())
 
 
-    # COMBINE ACTUAL DATA ----
+    # COMBINE ACTUAL DATA
 
     if (!is.null(actual_data)) {
 
@@ -204,34 +206,16 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
     }
 
-    # FINALIZE ----
+    # FINALIZE
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.id, .index, .value) %>%
         dplyr::arrange(.index, .id) %>%
         dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
 
-    # ADD conf_interval ----
-    if (!is.null(conf_interval)) {
-
-        if (conf_interval >= 1 | conf_interval <= 0.5) {
-            rlang::abort("conf_interval must be between 0.5 and 0.95")
-        }
-
-        probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
-
-        residuals  <- object$fit$fit$fit$resid$.resid
-
-        quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
-        iq_range   <- quantile_x[[2]] - quantile_x[[1]]
-        limits     <- quantile_x + iq_range * c(-1, 1)
-
-        ret <- ret %>%
-            dplyr::mutate(
-                .conf_lo = ifelse(.id == "prediction", .value + limits[1], NA),
-                .conf_hi = ifelse(.id == "prediction", .value + limits[2], NA)
-            )
-    }
+    # ADD CONF INTERVALS
+    residuals <- object$fit$fit$fit$resid$.resid
+    ret       <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)
 
@@ -240,7 +224,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 #' @export
 modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
-    # MODEL OBJECT ----
+    # MODEL OBJECT
 
     if (!is.null(h)) {
         # Suppress date selection
@@ -265,7 +249,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         dplyr::mutate(.id = "prediction") %>%
         dplyr::select(.id, dplyr::everything())
 
-    # COMBINE ACTUAL DATA ----
+    # COMBINE ACTUAL DATA
 
     if (!is.null(actual_data)) {
 
@@ -314,31 +298,46 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
 
     }
 
-    # FINALIZE ----
+    # FINALIZE
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.id, .index, .value) %>%
         dplyr::arrange(.index, .id) %>%
         dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
 
-    # ADD conf_interval ----
-    if (!is.null(conf_interval)) {
+    # ADD CONF INTERVAL
+    residuals  <- object$fit$resid$.resid
+    ret        <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
-        # Reference: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
+    return(ret)
+
+}
+
+# CONFIDENCE INTERVAL ESTIMATION ----
+
+add_conf_interval <- function(data, residuals, conf_interval, bootstrap = FALSE) {
+
+    if (!is.null(conf_interval)) {
 
         if (conf_interval >= 1 | conf_interval <= 0.5) {
             rlang::abort("conf_interval must be between 0.5 and 0.95")
         }
 
-        probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
+        # Calculate limits
+        if (bootstrap) {
+            # Reference: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
 
-        residuals  <- object$fit$resid$.resid
 
-        quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
-        iq_range   <- quantile_x[[2]] - quantile_x[[1]]
-        limits     <- quantile_x + iq_range * c(-1, 1)
+        } else {
+            # Assume normal
+            probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
+            quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
+            iq_range   <- quantile_x[[2]] - quantile_x[[1]]
+            limits     <- quantile_x + iq_range * c(-1, 1)
 
-        ret <- ret %>%
+        }
+
+        ret <- data %>%
             dplyr::mutate(
                 .conf_lo = ifelse(.id == "prediction", .value + limits[1], NA),
                 .conf_hi = ifelse(.id == "prediction", .value + limits[2], NA)
