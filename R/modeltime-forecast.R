@@ -326,27 +326,57 @@ add_conf_interval <- function(data, residuals, conf_interval, bootstrap = FALSE)
         # Calculate limits
         if (bootstrap) {
             # Reference: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
-
-
+            # TODO
         } else {
             # Assume normal
-            probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
-            quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
-            iq_range   <- quantile_x[[2]] - quantile_x[[1]]
-            limits     <- quantile_x + iq_range * c(-1, 1)
-
+            limits_tbl <- normal_ci(residuals, conf_interval)
         }
 
         ret <- data %>%
             dplyr::mutate(
-                .conf_lo = ifelse(.id == "prediction", .value + limits[1], NA),
-                .conf_hi = ifelse(.id == "prediction", .value + limits[2], NA)
+                .conf_lo = ifelse(.id == "prediction", .value + limits_tbl$conf_lo, NA),
+                .conf_hi = ifelse(.id == "prediction", .value + limits_tbl$conf_hi, NA)
             )
     }
 
     return(ret)
 
 }
+
+normal_ci <- function(residuals, conf_interval = 0.8) {
+
+    probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
+    quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
+    iq_range   <- quantile_x[[2]] - quantile_x[[1]]
+    limits     <- quantile_x + iq_range * c(-1, 1)
+
+    ret <- tibble::tibble(
+        conf_lo = limits[1],
+        conf_hi = limits[2]
+    )
+
+    return(ret)
+}
+
+# bootstrap_ci <- function(residuals, conf_interval = 0.8, times = 500) {
+#
+#     data  <- tibble(.resid = residuals)
+#     probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
+#
+#     ret <- replicate(times, data, simplify = FALSE) %>%
+#         bind_rows(.id = ".id") %>%
+#         mutate(.id = as_factor(.id)) %>%
+#         group_by(.id) %>%
+#         sample_n(size = times, replace = TRUE) %>%
+#         ungroup() %>%
+#         summarize(
+#             conf_lo = quantile(.resid, prob = probs[1], na.rm = TRUE),
+#             conf_hi = quantile(.resid, prob = probs[2], na.rm = TRUE)
+#         )
+#
+#     return(ret)
+#
+# }
 
 
 # PARSNIP HELPERS ----
