@@ -117,6 +117,98 @@ modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, con
 }
 
 #' @export
+modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+
+    # MODEL OBJECT
+
+    if (!is.null(h)) {
+        # Suppress date selection
+        tryCatch({
+            suppressMessages(new_data <- timetk::future_frame(object$fit$data, .length_out = h, ...))
+        }, error = function(e) {
+            rlang::abort("No valid date or date-time column found in the model. 'h' requires a date column to extend into the future.")
+        })
+
+    }
+
+    nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data)[1]
+    time_stamp_predictors_tbl <- new_data %>%
+        dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
+        dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+
+    modeltime_forecast <- object %>%
+        stats::predict(new_data = new_data) %>%
+        dplyr::bind_cols(time_stamp_predictors_tbl)
+
+    data_formatted <- modeltime_forecast %>%
+        dplyr::mutate(.id = "prediction") %>%
+        dplyr::select(.id, dplyr::everything())
+
+    # COMBINE ACTUAL DATA
+
+    if (!is.null(actual_data)) {
+
+        # setup
+        nms_final     <- names(data_formatted)
+
+        if (length(object$preproc$y_var) > 0) {
+            fit_interface <-  "formula"
+        } else {
+            fit_interface <- "xy"
+        }
+
+        if (fit_interface == "formula") {
+            nm_target <- object$preproc$y_var
+
+            # Applies any preprocessing
+            actual_data <- prepare_data(object, actual_data) %>% tibble::as_tibble()
+
+            # Set ID & Index
+            actual_data <- actual_data %>%
+                dplyr::mutate(.id = "actual") %>%
+                dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors)) %>%
+                dplyr::rename(!! object$preproc$y_var := 1)
+
+            # Get the target variable symbol
+            target_sym <- rlang::sym(object$preproc$y_var)
+
+            data_formatted <- data_formatted %>%
+                dplyr::bind_rows(actual_data) %>%
+                dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred))
+
+        } else {
+            # XY Interface
+
+            rlang::abort("XY Interface not yet implemented for 'modeltime_forecast()'. Try using the Formula Interface with `fit.model_spec()`.")
+
+            # actual_data <- prepare_data(object, actual_data) %>%
+            #     tibble::as_tibble() %>%
+            #     dplyr::mutate(.id = "actual") %>%
+            #     dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+
+        }
+
+        data_formatted <- data_formatted %>%
+            dplyr::select(!!! rlang::syms(nms_final))
+
+    }
+
+    # FINALIZE
+    ret <- data_formatted %>%
+        dplyr::rename(.value = .pred) %>%
+        dplyr::select(.id, .index, .value) %>%
+        dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction"))) %>%
+        dplyr::arrange(.id, .index)
+
+    # ADD CONF INTERVAL
+    residuals  <- object$fit$data$.resid
+    ret        <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
+
+    return(ret)
+
+}
+
+#' @export
 modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
     # Checks
@@ -210,104 +302,12 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.id, .index, .value) %>%
-        dplyr::arrange(.index, .id) %>%
-        dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
+        dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction"))) %>%
+        dplyr::arrange(.id, .index)
 
     # ADD CONF INTERVALS
     residuals <- object$fit$fit$fit$data$.resid
     ret       <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
-
-    return(ret)
-
-}
-
-#' @export
-modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-
-    # MODEL OBJECT
-
-    if (!is.null(h)) {
-        # Suppress date selection
-        tryCatch({
-            suppressMessages(new_data <- timetk::future_frame(object$fit$data, .length_out = h, ...))
-        }, error = function(e) {
-            rlang::abort("No valid date or date-time column found in the model. 'h' requires a date column to extend into the future.")
-        })
-
-    }
-
-    nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data)[1]
-    time_stamp_predictors_tbl <- new_data %>%
-        dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
-        dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
-
-    modeltime_forecast <- object %>%
-        stats::predict(new_data = new_data) %>%
-        dplyr::bind_cols(time_stamp_predictors_tbl)
-
-    data_formatted <- modeltime_forecast %>%
-        dplyr::mutate(.id = "prediction") %>%
-        dplyr::select(.id, dplyr::everything())
-
-    # COMBINE ACTUAL DATA
-
-    if (!is.null(actual_data)) {
-
-        # setup
-        nms_final     <- names(data_formatted)
-
-        if (length(object$preproc$y_var) > 0) {
-            fit_interface <-  "formula"
-        } else {
-            fit_interface <- "xy"
-        }
-
-        if (fit_interface == "formula") {
-            nm_target <- object$preproc$y_var
-
-            # Applies any preprocessing
-            actual_data <- prepare_data(object, actual_data) %>% tibble::as_tibble()
-
-            # Set ID & Index
-            actual_data <- actual_data %>%
-                dplyr::mutate(.id = "actual") %>%
-                dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors)) %>%
-                dplyr::rename(!! object$preproc$y_var := 1)
-
-            # Get the target variable symbol
-            target_sym <- rlang::sym(object$preproc$y_var)
-
-            data_formatted <- data_formatted %>%
-                dplyr::bind_rows(actual_data) %>%
-                dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred))
-
-        } else {
-            # XY Interface
-
-            rlang::abort("XY Interface not yet implemented for 'modeltime_forecast()'. Try using the Formula Interface with `fit.model_spec()`.")
-
-            # actual_data <- prepare_data(object, actual_data) %>%
-            #     tibble::as_tibble() %>%
-            #     dplyr::mutate(.id = "actual") %>%
-            #     dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
-
-        }
-
-        data_formatted <- data_formatted %>%
-            dplyr::select(!!! rlang::syms(nms_final))
-
-    }
-
-    # FINALIZE
-    ret <- data_formatted %>%
-        dplyr::rename(.value = .pred) %>%
-        dplyr::select(.id, .index, .value) %>%
-        dplyr::arrange(.index, .id) %>%
-        dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
-
-    # ADD CONF INTERVAL
-    residuals  <- object$fit$data$.resid
-    ret        <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)
 
@@ -332,14 +332,14 @@ add_conf_interval <- function(data, residuals, conf_interval, bootstrap = FALSE)
             limits_tbl <- normal_ci(residuals, conf_interval)
         }
 
-        ret <- data %>%
+        data <- data %>%
             dplyr::mutate(
                 .conf_lo = ifelse(.id == "prediction", .value + limits_tbl$conf_lo, NA),
                 .conf_hi = ifelse(.id == "prediction", .value + limits_tbl$conf_hi, NA)
             )
     }
 
-    return(ret)
+    return(data)
 
 }
 
