@@ -43,13 +43,13 @@ test_that("arima_reg: forecast::Arima, (No xregs), Test Model Fit Object", {
 
     # $fit
 
-    testthat::expect_s3_class(model_fit$fit$model, "Arima")
+    testthat::expect_s3_class(model_fit$fit$model$model_1, "Arima")
 
-    testthat::expect_s3_class(model_fit$fit$index, "tbl_df")
+    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$index), "date")
+    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(model_fit$fit$xreg_terms))
+    testthat::expect_true(is.null(model_fit$fit$extras$xreg_terms))
 
     # $preproc
 
@@ -93,13 +93,13 @@ test_that("arima_reg: forecast::Arima, (XREGS), Test Model Fit Object", {
 
     # $fit
 
-    testthat::expect_s3_class(model_fit$fit$model, "Arima")
+    testthat::expect_s3_class(model_fit$fit$model$model_1, "Arima")
 
-    testthat::expect_s3_class(model_fit$fit$index, "tbl_df")
+    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$index), "date")
+    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(!is.null(model_fit$fit$xreg_terms))
+    testthat::expect_true(!is.null(model_fit$fit$extras$xreg_terms))
 
     # $preproc
 
@@ -166,13 +166,13 @@ test_that("arima_reg: forecast::Arima (workflow), Test Model Fit Object", {
 
     # $fit
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$model, "Arima")
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit$model$model_1, "Arima")
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$index, "tbl_df")
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(wflw_fit$fit$fit$fit$index), "date")
+    testthat::expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$xreg_terms))
+    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_terms))
 
     # $preproc
     mld <- wflw_fit %>% workflows::pull_workflow_mold()

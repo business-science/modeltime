@@ -214,7 +214,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
 
     # ADD CONF INTERVALS
-    residuals <- object$fit$fit$fit$resid$.resid
+    residuals <- object$fit$fit$fit$data$.resid
     ret       <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)
@@ -229,7 +229,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
     if (!is.null(h)) {
         # Suppress date selection
         tryCatch({
-            suppressMessages(new_data <- timetk::future_frame(object$fit$index, .length_out = h, ...))
+            suppressMessages(new_data <- timetk::future_frame(object$fit$data, .length_out = h, ...))
         }, error = function(e) {
             rlang::abort("No valid date or date-time column found in the model. 'h' requires a date column to extend into the future.")
         })
@@ -306,7 +306,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction")))
 
     # ADD CONF INTERVAL
-    residuals  <- object$fit$resid$.resid
+    residuals  <- object$fit$data$.resid
     ret        <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)

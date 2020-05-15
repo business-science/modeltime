@@ -73,10 +73,18 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
 
     # RETURN
     ret <- list(
-        model      = fit_arima,
-        index      = tibble::tibble(!! idx_col := idx),
-        resid      = tibble::tibble(.resid = as.numeric(fit_arima$residuals)),
-        xreg_terms = c(colnames(xreg_matrix))
+        model      = list(
+            model_1 = fit_arima
+        ),
+        data       = tibble::tibble(
+            !! idx_col  := idx,
+            .value      =  as.numeric(fit_arima$x),
+            .fitted     =  as.numeric(fit_arima$fitted),
+            .resid      =  as.numeric(fit_arima$residuals)
+        ),
+        extras = list(
+            xreg_terms = c(colnames(xreg_matrix))
+        )
     )
 
     structure(ret, class = "Arima_fit_impl")
@@ -85,7 +93,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
 
 #' @export
 print.Arima_fit_impl <- function(x, ...) {
-    print(x[1])
+    print(x$model$model_1)
     invisible(x)
 }
 
@@ -106,9 +114,9 @@ predict.Arima_fit_impl <- function(object, new_data, ...) {
 #' @export
 Arima_predict_impl <- function(object, new_data, ...) {
 
-    model       <- object$model
-    idx_train   <- object$index %>% timetk::tk_index()
-    xreg_terms  <- object$xreg_terms
+    model       <- object$model$model_1
+    idx_train   <- object$data %>% timetk::tk_index()
+    xreg_terms  <- object$extras$xreg_terms
     h_horizon   <- nrow(new_data)
 
     # XREG
@@ -123,9 +131,9 @@ Arima_predict_impl <- function(object, new_data, ...) {
     # PREDICTIONS
 
     if (!is.null(xreg_matrix)) {
-        preds_forecast <- forecast::forecast(object$model, h = h_horizon, xreg = xreg_matrix, ...)
+        preds_forecast <- forecast::forecast(model, h = h_horizon, xreg = xreg_matrix, ...)
     } else {
-        preds_forecast <- forecast::forecast(object$model, h = h_horizon, ...)
+        preds_forecast <- forecast::forecast(model, h = h_horizon, ...)
     }
 
     # Return

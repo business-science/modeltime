@@ -1,5 +1,5 @@
 library(testthat)
-library(dplyr)
+library(tidyverse)
 library(lubridate)
 library(parsnip)
 library(workflows)

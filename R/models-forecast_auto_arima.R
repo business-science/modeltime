@@ -83,10 +83,18 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
 
     # RETURN
     ret <- list(
-        model      = fit_arima,
-        index      = tibble::tibble(!! idx_col := idx),
-        resid      = tibble::tibble(.resid = as.numeric(fit_arima$residuals)),
-        xreg_terms = c(colnames(xreg_matrix))
+        model      = list(
+            model_1 = fit_arima
+        ),
+        data       = tibble::tibble(
+            !! idx_col  := idx,
+            .value      =  as.numeric(fit_arima$x),
+            .fitted     =  as.numeric(fit_arima$fitted),
+            .resid      =  as.numeric(fit_arima$residuals)
+        ),
+        extras = list(
+            xreg_terms = c(colnames(xreg_matrix))
+        )
     )
 
     structure(ret, class = "auto_arima_fit_impl")
@@ -95,7 +103,7 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
 
 #' @export
 print.auto_arima_fit_impl <- function(x, ...) {
-    print(x[1])
+    print(x$model$model_1)
     invisible(x)
 }
 
