@@ -102,22 +102,22 @@ NULL
 
 #' @export
 #' @rdname modeltime_forecast
-modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
+modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
     UseMethod("modeltime_forecast")
 }
 
 #' @export
-modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
+modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
     rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class 'workflow' that has been fitted (trained) or 'model_fit' (a fitted parsnip model). "))
 }
 
 #' @export
-modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
+modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
     rlang::abort("Model spec must be trained using the 'fit()' function.")
 }
 
 #' @export
-modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
+modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
     # Checks
     if (!object$trained) {
@@ -238,7 +238,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 }
 
 #' @export
-modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.95, actual_data = NULL, ...) {
+modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
     # MODEL OBJECT ----
 
