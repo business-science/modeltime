@@ -70,6 +70,7 @@ plot_modeltime_forecast <- function(.data,
     }
 
     if (!.include_conf_interval) {
+
         g <- timetk::plot_time_series(
             .data         = .data,
             .date_var     = .index,
@@ -112,13 +113,6 @@ plot_modeltime_forecast <- function(.data,
         g$layers[[1]] <- layers_start[[2]]
         g$layers[[2]] <- layers_start[[1]]
 
-        if (.interactive) {
-            plotly::ggplotly(g)
-        } else {
-
-        }
-
-        ret <- g
     }
 
     # INTERACTIVE

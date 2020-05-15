@@ -139,22 +139,44 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
     }
 
-    print(new_data)
+    # Issue - Forge processes all recipe steps at once, so need to have outcomes
+    # Reference: https://tidymodels.github.io/hardhat/articles/forge.html
 
-    new_data_forged <- hardhat::forge(new_data = new_data, blueprint = mld$blueprint, outcomes = FALSE)
+    # Prep for Forge (Assign dummy y_var if needed)
+    y_var <- names(mld$outcomes)
+    if (!any(y_var %in% names(new_data))) {
+        new_data[,y_var] <- 1000
+    }
+
+    # Apply forge, just to get predictors
+    new_data_forged <- hardhat::forge(new_data = new_data, blueprint = mld$blueprint, outcomes = TRUE)
 
     nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data_forged$predictors)[1]
     time_stamp_predictors_tbl <- new_data_forged$predictors %>%
         dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
         dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
-    modeltime_forecast <- object %>%
-        stats::predict(new_data = new_data_forged$predictors) %>%
-        dplyr::bind_cols(time_stamp_predictors_tbl)
 
-    data_formatted <- modeltime_forecast %>%
+
+    # Issue - hardhat::forge defaults to outcomes = FALSE, which creates an error at predict.workflow()
+
+    # modeltime_forecast <- object %>%
+    #     stats::predict(new_data = new_data) %>%
+    #     dplyr::bind_cols(time_stamp_predictors_tbl)
+
+    blueprint <- object$pre$mold$blueprint
+    forged    <- hardhat::forge(new_data, blueprint, outcomes = TRUE)
+    new_data  <- forged$predictors
+
+    fit <- object$fit$fit
+
+    # Make predictions
+    data_formatted <- fit %>%
+        stats::predict(new_data = new_data) %>%
+        dplyr::bind_cols(time_stamp_predictors_tbl) %>%
         dplyr::mutate(.id = "prediction") %>%
         dplyr::select(.id, dplyr::everything())
+
 
     # COMBINE ACTUAL DATA ----
 
@@ -198,7 +220,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
         probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
 
-        residuals  <- object$fit$resid$.resid
+        residuals  <- object$fit$fit$fit$resid$.resid
 
         quantile_x <- stats::quantile(residuals, prob = probs, na.rm = TRUE)
         iq_range   <- quantile_x[[2]] - quantile_x[[1]]

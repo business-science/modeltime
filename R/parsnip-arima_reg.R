@@ -18,6 +18,7 @@
 #' @param seasonal_ma The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.
 #'
 #'
+#'
 #' @details
 #' The data given to the function are not saved and are only used
 #'  to determine the _mode_ of the model. For `arima_reg()`, the
