@@ -39,6 +39,7 @@ Imports:
 Suggests:
     recipes,
     rsample,
+    tune,
     yardstick,
     tidyverse,
     lubridate,

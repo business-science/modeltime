@@ -1,11 +1,13 @@
 library(testthat)
-library(modeltime)
-
 library(dplyr)
+library(lubridate)
 library(parsnip)
+library(workflows)
 library(rsample)
+library(recipes)
+library(tune)
+library(yardstick)
 library(timetk)
 library(modeltime)
-library(lubridate)
 
 test_check("modeltime")

@@ -324,6 +324,8 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
     # ADD conf_interval ----
     if (!is.null(conf_interval)) {
 
+        # Reference: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
+
         if (conf_interval >= 1 | conf_interval <= 0.5) {
             rlang::abort("conf_interval must be between 0.5 and 0.95")
         }

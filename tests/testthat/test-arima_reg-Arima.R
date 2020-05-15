@@ -1,3 +1,7 @@
+# ---- STANDARD ARIMA ----
+context("TEST arima_reg: forecast::Arima")
+
+
 # SETUP ----
 
 # Data
@@ -5,12 +9,6 @@ m750 <- m4_monthly %>% filter(id == "M750")
 
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
-
-
-# ---- STANDARD ARIMA ----
-
-
-# * NO XREGS ----
 
 # Model Spec
 model_spec <- arima_reg(
@@ -24,6 +22,11 @@ model_spec <- arima_reg(
 ) %>%
     set_engine("forecast::Arima")
 
+
+# PARSNIP ----
+
+# * NO XREGS ----
+
 # Fit Spec
 model_fit <- model_spec %>%
     fit(log(value) ~ date, data = training(splits))
@@ -34,7 +37,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("arima_reg: Standard Arima (No xregs), Test Model Fit Object", {
+test_that("arima_reg: forecast::Arima, (No xregs), Test Model Fit Object", {
 
     testthat::expect_s3_class(model_fit$fit, "Arima_fit_impl")
 
@@ -54,7 +57,7 @@ test_that("arima_reg: Standard Arima (No xregs), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: Auto Arima (No xregs), Test Predictions", {
+test_that("arima_reg: forecast::Arima, (No xregs), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -74,18 +77,6 @@ test_that("arima_reg: Auto Arima (No xregs), Test Predictions", {
 
 # * XREGS ----
 
-# Model Spec
-model_spec <- arima_reg(
-    period                   = 12,
-    non_seasonal_ar          = 3,
-    non_seasonal_differences = 1,
-    non_seasonal_ma          = 3,
-    seasonal_ar              = 1,
-    seasonal_differences     = 0,
-    seasonal_ma              = 1
-) %>%
-    set_engine("forecast::Arima")
-
 # Fit Spec
 model_fit <- model_spec %>%
     fit(log(value) ~ date + month(date, label = TRUE), data = training(splits))
@@ -96,7 +87,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("arima_reg: Standard Arima (XREGS), Test Model Fit Object", {
+test_that("arima_reg: forecast::Arima, (XREGS), Test Model Fit Object", {
 
     testthat::expect_s3_class(model_fit$fit, "Arima_fit_impl")
 
@@ -116,7 +107,7 @@ test_that("arima_reg: Standard Arima (XREGS), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: Auto Arima (XREGS), Test Predictions", {
+test_that("arima_reg: forecast::Arima (XREGS), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -134,6 +125,80 @@ test_that("arima_reg: Auto Arima (XREGS), Test Predictions", {
 
 })
 
+
+# ---- WORKFLOWS ----
+
+# Model Spec
+model_spec <- arima_reg(
+    period                   = 12,
+    non_seasonal_ar          = 3,
+    non_seasonal_differences = 1,
+    non_seasonal_ma          = 3,
+    seasonal_ar              = 1,
+    seasonal_differences     = 0,
+    seasonal_ma              = 1
+) %>%
+    set_engine("forecast::Arima")
+
+# Recipe spec
+recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+    step_log(value, skip = FALSE)
+
+# Workflow
+wflw <- workflow() %>%
+    add_recipe(recipe_spec) %>%
+    add_model(model_spec)
+
+wflw_fit <- wflw %>%
+    fit(training(splits))
+
+# Forecast
+predictions_tbl <- wflw_fit %>%
+    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+    mutate_at(vars(.value:.conf_hi), exp)
+
+
+
+# TESTS
+test_that("arima_reg: forecast::Arima (workflow), Test Model Fit Object", {
+
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit, "Arima_fit_impl")
+
+    # $fit
+
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit$model, "Arima")
+
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit$index, "tbl_df")
+
+    testthat::expect_equal(names(wflw_fit$fit$fit$fit$index), "date")
+
+    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$xreg_terms))
+
+    # $preproc
+    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    testthat::expect_equal(names(mld$outcomes), "value")
+
+})
+
+test_that("arima_reg: forecast::Arima (workflow), Test Predictions", {
+
+    full_data <- bind_rows(training(splits), testing(splits))
+
+    # Structure
+    testthat::expect_identical(nrow(full_data), nrow(predictions_tbl))
+    testthat::expect_identical(full_data$date, predictions_tbl$.index)
+
+    # Out-of-Sample Accuracy Tests
+    predictions_tbl <- predictions_tbl %>% filter(.id == "prediction")
+    resid <- testing(splits)$value - predictions_tbl$.value
+
+    # - Max Error less than 1500
+    testthat::expect_lte(max(abs(resid)), 1500)
+
+    # - MAE less than 700
+    testthat::expect_lte(mean(abs(resid)), 700)
+
+})
 
 
 

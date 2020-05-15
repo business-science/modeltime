@@ -8,7 +8,7 @@ modeltime_forecast(
   object,
   new_data = NULL,
   h = NULL,
-  conf_interval = 0.95,
+  conf_interval = 0.8,
   actual_data = NULL,
   ...
 )
