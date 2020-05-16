@@ -1,6 +1,68 @@
-
+#' Calculate Accuracy Metrics
+#'
+#' This is a wrapper for `yardstick` that simplifies accuracy metric
+#' calculations from a fitted `workflow` (trained workflow) or `model_fit` (trained parsnip model).
+#'
+#' @param object A fitted model object that is either (1) a workflow that has been fit by [fit.workflow()] or
+#'  (2) a parsnip model that has been fit using [fit.model_spec()]
+#' @param new_data A `tibble` containing future information .
+#' @param ... Not currently used.
+#'
+#'
+#' @return A tibble with accuracy estimates.
+#'
+#' @details
+#'
+#' The following accuracy metrics are included by default:
+#'
+#' - MAE - Mean absolute error, [mae_vec()]
+#' - MAPE - Mean absolute percentage error, [mape_vec()]
+#' - MASE  - Mean absolute scaled errror, [mase_vec()]
+#' - SMAPE - Symmetric mean absolute percentage error, [smape_vec()]
+#' - RMSE  - Root mean squared error, [rmse_vec()]
+#' - RSQ   - R-squared, [rsq_vec()]
+#'
+#'
+#'
+#' @examples
+#' library(dplyr)
+#' library(parsnip)
+#' library(rsample)
+#' library(timetk)
+#' library(modeltime)
+#'
+#' # Data
+#' m750 <- m4_monthly %>% filter(id == "M750")
+#'
+#' # Split Data 80/20
+#' splits <- initial_time_split(m750, prop = 0.8)
+#'
+#' # Model Spec
+#' model_spec <- arima_reg(
+#'         period                   = 12,
+#'         non_seasonal_ar          = 3,
+#'         non_seasonal_differences = 1,
+#'         non_seasonal_ma          = 3,
+#'         seasonal_ar              = 1,
+#'         seasonal_differences     = 0,
+#'         seasonal_ma              = 1
+#'     ) %>%
+#'     set_engine("forecast::Arima")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#'
+#' # --- ACCURACY ---
+#'
+#' model_fit %>%
+#'     modeltime_accuracy(new_data = testing(splits))
+#'
+#' @name modeltime_accuracy
+NULL
 
 #' @export
+#' @rdname modeltime_accuracy
 modeltime_accuracy <- function(object, new_data = NULL, ...) {
     UseMethod("modeltime_accuracy")
 }
