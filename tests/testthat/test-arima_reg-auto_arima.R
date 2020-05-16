@@ -40,7 +40,7 @@ test_that("arima_reg: forecast::auto.arima (No xregs), Test Model Fit Object", {
 
     testthat::expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(model_fit$fit$extras$xreg_terms))
+    testthat::expect_true(is.null(model_fit$fit$extras$xreg_recipe))
 
     # $preproc
 
@@ -94,7 +94,7 @@ test_that("arima_reg: forecast::auto.arima (XREGS), Test Model Fit Object", {
 
     testthat::expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(!is.null(model_fit$fit$extras$xreg_terms))
+    testthat::expect_true(!is.null(model_fit$fit$extras$xreg_recipe))
 
     # $preproc
 
@@ -159,7 +159,7 @@ test_that("arima_reg: forecast::auto.arima (Workflow), Test Model Fit Object", {
 
     testthat::expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_terms))
+    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
 
     # $preproc
     mld <- wflw_fit %>% workflows::pull_workflow_mold()

@@ -35,6 +35,7 @@ Imports:
     dplyr,
     purrr,
     stringr,
+    janitor,
     magrittr,
     forecast
 Suggests:

@@ -21,61 +21,36 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
                                 max.p = 5, max.d = 2, max.q = 5,
                                 max.P = 2, max.D = 1, max.Q = 2, ...) {
 
-    # print(head(x))
-
-    # OUTCOME VEC
-
-    # Expect outcomes = vector
-    # Expect predictor = data.frame or NULL
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
     outcome    <- y
     predictor  <- x
 
-    # PERIOD
+    # INDEX & PERIOD
+    # Determine Period, Index Col, and Index
+    index_tbl <- parse_index_from_data(predictor)
+    period    <- parse_period_from_index(index_tbl, period)
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
 
-    # Determine Period
-    idx <- NULL
-    tryCatch({
-        # Try to get a period from a user-provided index
-        idx_col <- timetk::tk_get_timeseries_variables(predictor)[1]
-        idx     <- predictor %>% timetk::tk_index() # Will generate an error if no time series index
-        if (tolower(period) == "auto" | is.character(period)) {
-            period  <- timetk::tk_get_frequency(idx, period, message = TRUE)
-        }
-    }, error = function(e) {
-        rlang::abort("No date or date-time variable provided. Please supply a date or date-time variable as a predictor or set `period` to a numeric value.")
-
-    })
-
-
-    # XREG
-
-    # Drop outcome and any date features
-    xreg_df <- predictor %>%
-        dplyr::select_if(~ ! timetk::is_date_class(.))
-
-    xreg_matrix <- prep_xreg_matrix_from_df_fit(xreg_df)
+    # XREGS
+    # Clean names, get xreg recipe, process predictors
+    predictor   <- janitor::clean_names(predictor)
+    xreg_recipe <- prepare_xreg_recipe_from_predictors(predictor, prepare = TRUE)
+    xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
 
     # FIT
+    outcome <- stats::ts(outcome, frequency = period)
 
-    # Prep ts object
-    outcome_ts <- stats::ts(outcome, frequency = period)
-
-    # Fit
     if (!is.null(xreg_matrix)) {
-        if (ncol(xreg_matrix) > 0) {
-            xreg_matrix <- as.matrix(xreg_matrix)
-            fit_arima   <- forecast::auto.arima(outcome_ts,
-                                                max.p = max.p, max.d = max.d, max.q = max.q,
-                                                max.P = max.P, max.D = max.D, max.Q = max.Q,
-                                                xreg = xreg_matrix, ...)
-        } else {
-            fit_arima   <- forecast::auto.arima(outcome_ts,
-                                                max.p = max.p, max.d = max.d, max.q = max.q,
-                                                max.P = max.P, max.D = max.D, max.Q = max.Q,
-                                                ...)
-        }
+        xreg_matrix <- as.matrix(xreg_matrix)
+        fit_arima   <- forecast::auto.arima(outcome,
+                                            max.p = max.p, max.d = max.d, max.q = max.q,
+                                            max.P = max.P, max.D = max.D, max.Q = max.Q,
+                                            xreg = xreg_matrix, ...)
     } else {
-        fit_arima <- forecast::auto.arima(outcome_ts,
+        fit_arima <- forecast::auto.arima(outcome,
                                           max.p = max.p, max.d = max.d, max.q = max.q,
                                           max.P = max.P, max.D = max.D, max.Q = max.Q,
                                           ...)
@@ -93,7 +68,7 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
             .resid      =  as.numeric(fit_arima$residuals)
         ),
         extras = list(
-            xreg_terms = c(colnames(xreg_matrix))
+            xreg_recipe = xreg_recipe
         )
     )
 
