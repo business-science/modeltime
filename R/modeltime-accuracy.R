@@ -18,49 +18,77 @@ modeltime_accuracy.model_spec <- function(object, new_data = NULL, ...) {
 #' @export
 modeltime_accuracy.model_fit <- function(object, new_data = NULL, ...) {
 
-    model_fit <- object
+    data <- object$fit$data
 
-    data <- model_fit$fit$data
+    ret <- calc_accuracy(object, train_data = data, test_data = new_data, ...)
 
-    data_formatted <- data %>%
-        tibble::add_column(.type = "Training", .before = 1) %>%
-        dplyr::group_by(.type) %>%
-        dplyr::summarize(
-            MAE   = yardstick::mae_vec(.value, .fitted),
-            MAPE  = yardstick::mape_vec(.value, .fitted),
-            MASE  = yardstick::mase_vec(.value, .fitted),
-            SMAPE = yardstick::smape_vec(.value, .fitted),
-            RMSE  = yardstick::rmse_vec(.value, .fitted),
-            RSQ   = yardstick::rsq_vec(.value, .fitted)
-        ) %>%
-        dplyr::ungroup()
-
-    if (!is.null(new_data)) {
-        predictions_tbl <- modeltime_forecast(object, new_data = new_data, actual_data = new_data, conf_interval = NULL)
-
-        test_tbl <- predictions_tbl %>%
-            tidyr::pivot_wider(names_from = .id, values_from = .value) %>%
-            tibble::add_column(.type = "Test", .before = 1) %>%
-            dplyr::group_by(.type) %>%
-            dplyr::summarize(
-                MAE   = mae_vec(actual, prediction),
-                MAPE  = mape_vec(actual, prediction),
-                MASE  = mase_vec(actual, prediction),
-                SMAPE = smape_vec(actual, prediction),
-                RMSE  = rmse_vec(actual, prediction),
-                RSQ   = rsq_vec(actual, prediction)
-            ) %>%
-            dplyr::ungroup()
-
-        data_formatted <- dplyr::bind_rows(data_formatted, test_tbl)
-
-    }
-
-
-    return(data_formatted)
-
+    return(ret)
 
 }
 
+#' @export
+modeltime_accuracy.workflow <- function(object, new_data = NULL, ...) {
 
+    # Checks
+    if (!object$trained) {
+        rlang::abort("Workflow must be trained using the 'fit()' function.")
+    }
 
+    data <- object$fit$fit$fit$data
+
+    ret <- calc_accuracy(object, train_data = data, test_data = new_data, ...)
+
+    return(ret)
+
+}
+
+# UTILITIES ----
+
+calc_accuracy <- function(object, train_data, test_data = NULL, ...) {
+
+    model_fit <- object
+
+    metrics_tbl <- train_data %>%
+        tibble::add_column(.type = "Training", .before = 1) %>%
+        dplyr::group_by(.type) %>%
+        summarize_regr_metrics(.value, .fitted) %>%
+        dplyr::ungroup()
+
+    if (!is.null(test_data)) {
+
+        predictions_tbl <- object %>%
+            modeltime_forecast(
+                new_data      = test_data,
+                actual_data   = test_data,
+                conf_interval = NULL
+            )
+
+        test_metrics_tbl <- predictions_tbl %>%
+            tidyr::pivot_wider(names_from = .id, values_from = .value) %>%
+            tibble::add_column(.type = "Test", .before = 1) %>%
+            dplyr::group_by(.type) %>%
+            summarize_regr_metrics(actual, prediction) %>%
+            dplyr::ungroup()
+
+        metrics_tbl <- dplyr::bind_rows(metrics_tbl, test_metrics_tbl)
+
+    }
+
+    return(metrics_tbl)
+}
+
+summarize_regr_metrics <- function(data, truth, estimate) {
+
+    truth_expr    <- rlang::enquo(truth)
+    estimate_expr <- rlang::enquo(estimate)
+
+    data %>%
+        dplyr::summarize(
+            MAE   = yardstick::mae_vec(!! truth_expr, !! estimate_expr),
+            MAPE  = yardstick::mape_vec(!! truth_expr, !! estimate_expr),
+            MASE  = yardstick::mase_vec(!! truth_expr, !! estimate_expr),
+            SMAPE = yardstick::smape_vec(!! truth_expr, !! estimate_expr),
+            RMSE  = yardstick::rmse_vec(!! truth_expr, !! estimate_expr),
+            RSQ   = yardstick::rsq_vec(!! truth_expr, !! estimate_expr)
+        )
+}
