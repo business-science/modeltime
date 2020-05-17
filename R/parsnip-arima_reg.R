@@ -348,28 +348,33 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
     }
 
     # RETURN
-    ret <- list(
+    new_modeltime_bridge(
+        class = "Arima_fit_impl",
+
+        # Models
         models = list(
             model_1 = fit_arima
         ),
+
+        # Data
         data = tibble::tibble(
             !! idx_col  := idx,
             .value      =  as.numeric(fit_arima$x),
             .fitted     =  as.numeric(fit_arima$fitted),
             .resid      =  as.numeric(fit_arima$residuals)
         ),
+
+        # Preprocessing Recipe (prepped) - Used in predict method
         extras = list(
             xreg_recipe = xreg_recipe
         )
     )
 
-    structure(ret, class = "Arima_fit_impl")
-
 }
 
 #' @export
 print.Arima_fit_impl <- function(x, ...) {
-    print(x$model$model_1)
+    print(x$models$model_1)
     invisible(x)
 }
 
@@ -430,22 +435,27 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
     }
 
     # RETURN
-    ret <- list(
+    new_modeltime_bridge(
+        class = "auto_arima_fit_impl",
+
+        # Models
         models = list(
             model_1 = fit_arima
         ),
+
+        # Data
         data = tibble::tibble(
             !! idx_col  := idx,
             .value      =  as.numeric(fit_arima$x),
             .fitted     =  as.numeric(fit_arima$fitted),
             .resid      =  as.numeric(fit_arima$residuals)
         ),
+
+        # Preprocessing Recipe (prepped) - Used in predict method
         extras = list(
             xreg_recipe = xreg_recipe
         )
     )
-
-    structure(ret, class = "auto_arima_fit_impl")
 
 }
 
