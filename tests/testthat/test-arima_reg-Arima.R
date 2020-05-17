@@ -43,7 +43,7 @@ test_that("arima_reg: forecast::Arima, (No xregs), Test Model Fit Object", {
 
     # $fit
 
-    testthat::expect_s3_class(model_fit$fit$model$model_1, "Arima")
+    testthat::expect_s3_class(model_fit$fit$models$model_1, "Arima")
 
     testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
 
@@ -93,7 +93,7 @@ test_that("arima_reg: forecast::Arima, (XREGS), Test Model Fit Object", {
 
     # $fit
 
-    testthat::expect_s3_class(model_fit$fit$model$model_1, "Arima")
+    testthat::expect_s3_class(model_fit$fit$models$model_1, "Arima")
 
     testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
 
@@ -166,7 +166,7 @@ test_that("arima_reg: forecast::Arima (workflow), Test Model Fit Object", {
 
     # $fit
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$model$model_1, "Arima")
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "Arima")
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit$data, "tbl_df")
 
