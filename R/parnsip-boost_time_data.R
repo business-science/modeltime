@@ -6,21 +6,21 @@
 # nocov
 
 
-make_boost_time <- function() {
+make_arima_boost <- function() {
 
-    parsnip::set_new_model("boost_time")
-    parsnip::set_model_mode("boost_time", "regression")
+    parsnip::set_new_model("arima_boost")
+    parsnip::set_model_mode("arima_boost", "regression")
 
     # auto_arima_xgboost ----
 
     # * Model ----
-    parsnip::set_model_engine("boost_time", mode = "regression", eng = "auto_arima_xgboost")
-    parsnip::set_dependency("boost_time", "auto_arima_xgboost", "forecast")
-    parsnip::set_dependency("boost_time", "auto_arima_xgboost", "xgboost")
+    parsnip::set_model_engine("arima_boost", mode = "regression", eng = "auto_arima_xgboost")
+    parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "forecast")
+    parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "xgboost")
 
     # * Args ----
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "period",
         original     = "period",
@@ -29,7 +29,7 @@ make_boost_time <- function() {
     )
 
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "tree_depth",
         original     = "max_depth",
@@ -37,7 +37,7 @@ make_boost_time <- function() {
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "trees",
         original     = "nrounds",
@@ -45,7 +45,7 @@ make_boost_time <- function() {
         has_submodel = TRUE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "learn_rate",
         original     = "eta",
@@ -53,7 +53,7 @@ make_boost_time <- function() {
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "mtry",
         original     = "colsample_bytree",
@@ -61,7 +61,7 @@ make_boost_time <- function() {
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "min_n",
         original     = "min_child_weight",
@@ -69,7 +69,7 @@ make_boost_time <- function() {
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "loss_reduction",
         original     = "gamma",
@@ -77,7 +77,7 @@ make_boost_time <- function() {
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "sample_size",
         original     = "subsample",
@@ -85,7 +85,7 @@ make_boost_time <- function() {
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
-        model        = "boost_time",
+        model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "stop_iter",
         original     = "early_stop",
@@ -96,7 +96,7 @@ make_boost_time <- function() {
 
     # * Fit ----
     parsnip::set_fit(
-        model         = "boost_time",
+        model         = "arima_boost",
         eng           = "auto_arima_xgboost",
         mode          = "regression",
         value         = list(
@@ -109,7 +109,7 @@ make_boost_time <- function() {
 
     # * Predict ----
     parsnip::set_pred(
-        model         = "boost_time",
+        model         = "arima_boost",
         eng           = "auto_arima_xgboost",
         mode          = "regression",
         type          = "numeric",

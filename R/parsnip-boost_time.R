@@ -1,12 +1,11 @@
-#' General Interface for "Boosted" Time Series Regression Models
+#' General Interface for "Boosted" ARIMA Regression Models
 #'
-#' `boost_time()` is a way to generate a _specification_ of a time series model
-#'  that uses boosting to imporve modeling errors (residuals) on Exogenous Regressors.
-#'  It's designed to work with "automated" time series algorithms (e.g. `auto.arima`, `prophet`, `bsts`)
-#'  where little customization (tuning) is involved. The main algorithms are:
-#'  - ARIMA + XGBoost Errors (engine = `auto.arima`)
-#'  - (Coming Soon - `modeltime.prophet`) Prophet + XGBoost Errors
-#'  - (Coming Soon - `modeltime.bsts`) BSTS (Bayesian Structural Time Series) + XGBoost Errors
+#' `arima_boost()` is a way to generate a _specification_ of a time series model
+#'  that uses boosting to improve modeling errors (residuals) on Exogenous Regressors.
+#'  It works with both "automated" ARIMA (`auto.arima`) and standard ARIMA (`arima`).
+#'  The main algorithms are:
+#'  - Auto ARIMA + XGBoost Errors (engine = `auto_arima_xgboost`, default)
+#'  - ARIMA + XGBoost Errors (engine = `arima_xgboost`)
 #'
 #'
 #' @inheritParams parsnip::boost_tree
@@ -22,7 +21,7 @@
 #'
 #' @details
 #' The data given to the function are not saved and are only used
-#'  to determine the _mode_ of the model. For `boost_time()`, the
+#'  to determine the _mode_ of the model. For `arima_boost()`, the
 #'  mode will always be "regression".
 #'
 #' The model can be created using the `fit()` function using the
@@ -33,9 +32,8 @@
 #'
 #' __Main Arguments__
 #'
-#' The main arguments (tuning parameters) for the model are:
+#' The main arguments (tuning parameters) for the model XGBoost model are:
 #'
-#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
 #'  - `mtry`: The number of predictors that will be
 #'   randomly sampled at each split when creating the tree models.
 #'  - `trees`: The number of trees contained in the ensemble.
@@ -50,6 +48,9 @@
 #'  - `sample_size`: The amount of data exposed to the fitting routine.
 #'  - `stop_iter`: The number of iterations without improvement before
 #'   stopping.
+#'
+#' The ARIMA model can be specified using the following parameters:
+#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
 #'
 #' These arguments are converted to their specific names at the
 #'  time that the model is fit.
@@ -69,7 +70,7 @@
 #' Model 1: Auto ARIMA:
 #'
 #' ```{r echo = FALSE}
-#' # parsnip::convert_args("boost_time")
+#' # parsnip::convert_args("arima_boost")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::auto.arima",
 #'     "period", "ts(frequency)"
@@ -78,7 +79,7 @@
 #'
 #' Model 2: XGBoost:
 #' ```{r echo = FALSE}
-#' # parsnip::convert_args("boost_time")
+#' # parsnip::convert_args("arima_boost")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "xgboost::xgb.train",
 #'     "tree_depth", "max_depth",
@@ -158,7 +159,7 @@
 #'  2. `date` (time stamp),
 #'  3. `month.lbl` (labeled month as a ordered factor).
 #'
-#'  The `month.lbl` is an exogenous regressor that can be passed to the `boost_time()` using
+#'  The `month.lbl` is an exogenous regressor that can be passed to the `arima_boost()` using
 #'  `fit()`:
 #'
 #'  - `fit(y ~ date + month.lbl)` will pass `month.lbl` on as an exogenous regressor.
@@ -169,7 +170,7 @@
 #'
 #'
 #'
-#' @seealso [fit.boost_time()], [set_engine()]
+#' @seealso [fit.arima_boost()], [set_engine()]
 #'
 #' @examples
 #' library(tidyverse)
@@ -189,7 +190,7 @@
 #' # MODEL SPEC ----
 #'
 #' # Set engine and boosting parameters
-#' model_spec <- boost_time(period = "auto", learn_rate = 0.1) %>%
+#' model_spec <- arima_boost(period = "auto", learn_rate = 0.1) %>%
 #'     set_engine(engine = "auto_arima_xgboost")
 #'
 #' # FIT ----
@@ -221,7 +222,7 @@
 #'     plot_modeltime_forecast(.interactive = FALSE)
 #'
 #' @export
-boost_time <- function(mode = "regression", period = NULL,
+arima_boost <- function(mode = "regression", period = NULL,
                        mtry = NULL, trees = NULL, min_n = NULL,
                        tree_depth = NULL, learn_rate = NULL,
                        loss_reduction = NULL,
@@ -240,7 +241,7 @@ boost_time <- function(mode = "regression", period = NULL,
     )
 
     parsnip::new_model_spec(
-        "boost_time",
+        "arima_boost",
         args     = args,
         eng_args = NULL,
         mode     = mode,
@@ -251,7 +252,7 @@ boost_time <- function(mode = "regression", period = NULL,
 }
 
 #' @export
-print.boost_time <- function(x, ...) {
+print.arima_boost <- function(x, ...) {
     cat("Time Series Model w/ XGBoost Error Specification (", x$mode, ")\n\n", sep = "")
     parsnip::model_printer(x, ...)
 
@@ -265,7 +266,7 @@ print.boost_time <- function(x, ...) {
 
 #' @export
 #' @importFrom stats update
-update.boost_time <- function(object,
+update.arima_boost <- function(object,
                               parameters = NULL,
                               period = NULL,
                               mtry = NULL, trees = NULL, min_n = NULL,
@@ -305,7 +306,7 @@ update.boost_time <- function(object,
     }
 
     parsnip::new_model_spec(
-        "boost_time",
+        "arima_boost",
         args     = object$args,
         eng_args = object$eng_args,
         mode     = object$mode,
@@ -317,7 +318,7 @@ update.boost_time <- function(object,
 
 #' @export
 #' @importFrom parsnip translate
-translate.boost_time <- function(x, engine = x$engine, ...) {
+translate.arima_boost <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
         message("Used `engine = 'auto_arima_xgboost'` for translation.")
         engine <- "auto_arima_xgboost"

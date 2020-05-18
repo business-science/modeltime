@@ -3,12 +3,12 @@
 \name{fit.modeltime}
 \alias{fit.modeltime}
 \alias{fit.arima_reg}
-\alias{fit.boost_time}
+\alias{fit.arima_boost}
 \title{Fit a Model Specification to a Dataset}
 \usage{
 fit.arima_reg(object, formula, data, control = control_parsnip(), ...)
 
-fit.boost_time(object, formula, data, control = control_parsnip(), ...)
+fit.arima_boost(object, formula, data, control = control_parsnip(), ...)
 }
 \arguments{
 \item{object}{An object of class \code{model_spec} that has a chosen engine

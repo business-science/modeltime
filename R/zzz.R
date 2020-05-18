@@ -17,5 +17,5 @@ utils::globalVariables(
 .onLoad <- function(libname, pkgname) {
     # This defines arima_reg in the model database
     make_arima_reg()
-    make_boost_time()
+    make_arima_boost()
 }

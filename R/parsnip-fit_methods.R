@@ -67,7 +67,7 @@ fit.arima_reg <- function(object, formula, data, control = control_parsnip(), ..
 #' @export
 #' @rdname fit.modeltime
 #' @importFrom parsnip control_parsnip
-fit.boost_time <- function(object, formula, data, control = control_parsnip(), ...) {
+fit.arima_boost <- function(object, formula, data, control = control_parsnip(), ...) {
 
     # Needed to preserve date and date time attributes
     # - Note this approach will not expand factors into dummy variables.
