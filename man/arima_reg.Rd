@@ -49,8 +49,8 @@ mode will always be "regression".
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item "forecast::auto.arima" (default)
-\item "forecast::Arima"
+\item "auto.arima" (default)
+\item "Arima"
 }
 
 \strong{Main Arguments}
@@ -80,7 +80,7 @@ in lieu of recreating the object from scratch.
 
 The standardized parameter names in \code{modeltime} can be mapped to their original
 names in each engine:\tabular{lll}{
-   modeltime \tab forecast::auto.arima \tab forecast::Arima \cr
+   modeltime \tab auto.arima \tab Arima \cr
    period \tab ts(frequency) \tab ts(frequency) \cr
    non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p, max.d, max.q \tab order = c(p,d,q) \cr
    seasonal_ar, seasonal_differences, seasonal_ma \tab max.P, max.D, max.Q \tab seasonal = c(P,D,Q) \cr
@@ -89,13 +89,19 @@ names in each engine:\tabular{lll}{
 
 Other options can be set using \code{set_engine()}.
 
-\strong{forecast::auto.arima (default engine)}
+\strong{auto.arima (default engine)}
 
-\code{\link[forecast:auto.arima]{forecast::auto.arima()}} Function Parameters:\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, 
-##     start.P = 1, start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", "bic"), stepwise = TRUE, nmodels = 94, 
-##     trace = FALSE, approximation = (length(x) > 150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, test = c("kpss", 
-##         "adf", "pp"), test.args = list(), seasonal.test = c("seas", "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
-##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, num.cores = 2, x = y, ...)
+The engine uses \code{\link[forecast:auto.arima]{forecast::auto.arima()}}.
+
+Function Parameters:\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
+##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
+##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
+##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
+##         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
+##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
+##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
+##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
+##     num.cores = 2, x = y, ...)
 }
 
 The \emph{MAXIMUM} nonseasonal ARIMA terms (\code{max.p}, \code{max.d}, \code{max.q}) and
@@ -111,13 +117,17 @@ The \code{auto.arima} will select a value using these as an upper limit.
 (so don't provide this manually). See Fit Details (below).
 }
 
-\strong{forecast::Arima}
+\strong{Arima}
 
-\code{\link[forecast:Arima]{forecast::Arima()}} Function Parameters:\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, include.drift = FALSE, include.constant, 
-##     lambda = model$lambda, biasadj = FALSE, method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
+The engine uses \code{\link[forecast:Arima]{forecast::Arima()}}.
+
+Function Parameters:\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
+##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, 
+##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
 }
 
-The nonseasonal ARIMA terms (\code{order}) and seasonal ARIMA terms (\code{seasonal}) are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{arima_reg()} parameters.
+The nonseasonal ARIMA terms (\code{order}) and seasonal ARIMA terms (\code{seasonal})
+are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{arima_reg()} parameters.
 Other options and argument can be set using \code{set_engine()}.
 
 Parameter Notes:
@@ -205,7 +215,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- arima_reg() \%>\%
-    set_engine("forecast::auto.arima")
+    set_engine("auto.arima")
 
 # Fit Spec
 model_fit <- model_spec \%>\%
@@ -225,7 +235,7 @@ model_spec <- arima_reg(
         seasonal_differences     = 0,
         seasonal_ma              = 1
     ) \%>\%
-    set_engine("forecast::Arima")
+    set_engine("Arima")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

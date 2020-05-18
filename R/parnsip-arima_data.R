@@ -11,16 +11,16 @@ make_arima_reg <- function() {
     parsnip::set_new_model("arima_reg")
     parsnip::set_model_mode("arima_reg", "regression")
 
-    # forecast::Arima ----
+    # Arima ----
 
     # * Model ----
-    parsnip::set_model_engine("arima_reg", mode = "regression", eng = "forecast::Arima")
-    parsnip::set_dependency("arima_reg", "forecast::Arima", "forecast")
+    parsnip::set_model_engine("arima_reg", mode = "regression", eng = "Arima")
+    parsnip::set_dependency("arima_reg", "Arima", "forecast")
 
     # * Args ----
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "period",
         original     = "period",
         func         = list(pkg = "modeltime", fun = "period"),
@@ -29,7 +29,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "non_seasonal_ar",
         original     = "p",
         func         = list(pkg = "modeltime", fun = "non_seasonal_ar"),
@@ -38,7 +38,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "non_seasonal_differences",
         original     = "d",
         func         = list(pkg = "modeltime", fun = "non_seasonal_differences"),
@@ -47,7 +47,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "non_seasonal_ma",
         original     = "q",
         func         = list(pkg = "modeltime", fun = "non_seasonal_ma"),
@@ -56,7 +56,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "seasonal_ar",
         original     = "P",
         func         = list(pkg = "modeltime", fun = "seasonal_ar"),
@@ -65,7 +65,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "seasonal_differences",
         original     = "D",
         func         = list(pkg = "modeltime", fun = "seasonal_differences"),
@@ -74,7 +74,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::Arima",
+        eng          = "Arima",
         parsnip      = "seasonal_ma",
         original     = "Q",
         func         = list(pkg = "modeltime", fun = "seasonal_ma"),
@@ -84,7 +84,7 @@ make_arima_reg <- function() {
     # * Fit ----
     parsnip::set_fit(
         model         = "arima_reg",
-        eng           = "forecast::Arima",
+        eng           = "Arima",
         mode          = "regression",
         value         = list(
             interface = "data.frame",
@@ -97,7 +97,7 @@ make_arima_reg <- function() {
     # * Predict ----
     parsnip::set_pred(
         model         = "arima_reg",
-        eng           = "forecast::Arima",
+        eng           = "Arima",
         mode          = "regression",
         type          = "numeric",
         value         = list(
@@ -112,16 +112,16 @@ make_arima_reg <- function() {
         )
     )
 
-    # forecast::auto.arima ----
+    # auto.arima ----
 
     # * Model ----
-    parsnip::set_model_engine("arima_reg", mode = "regression", eng = "forecast::auto.arima")
-    parsnip::set_dependency("arima_reg", "forecast::auto.arima", "forecast")
+    parsnip::set_model_engine("arima_reg", mode = "regression", eng = "auto.arima")
+    parsnip::set_dependency("arima_reg", "auto.arima", "forecast")
 
     # * Args ----
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "period",
         original     = "period",
         func         = list(pkg = "modeltime", fun = "period"),
@@ -130,7 +130,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "non_seasonal_ar",
         original     = "max.p",
         func         = list(pkg = "modeltime", fun = "non_seasonal_ar"),
@@ -139,7 +139,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "non_seasonal_differences",
         original     = "max.d",
         func         = list(pkg = "modeltime", fun = "non_seasonal_differences"),
@@ -148,7 +148,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "non_seasonal_ma",
         original     = "max.q",
         func         = list(pkg = "modeltime", fun = "non_seasonal_ma"),
@@ -157,7 +157,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "seasonal_ar",
         original     = "max.P",
         func         = list(pkg = "modeltime", fun = "seasonal_ar"),
@@ -166,7 +166,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "seasonal_differences",
         original     = "max.D",
         func         = list(pkg = "modeltime", fun = "seasonal_differences"),
@@ -175,7 +175,7 @@ make_arima_reg <- function() {
 
     parsnip::set_model_arg(
         model        = "arima_reg",
-        eng          = "forecast::auto.arima",
+        eng          = "auto.arima",
         parsnip      = "seasonal_ma",
         original     = "max.Q",
         func         = list(pkg = "modeltime", fun = "seasonal_ma"),
@@ -185,7 +185,7 @@ make_arima_reg <- function() {
     # * Fit ----
     parsnip::set_fit(
         model         = "arima_reg",
-        eng           = "forecast::auto.arima",
+        eng           = "auto.arima",
         mode          = "regression",
         value         = list(
             interface = "data.frame",
@@ -198,7 +198,7 @@ make_arima_reg <- function() {
     # * Predict ----
     parsnip::set_pred(
         model         = "arima_reg",
-        eng           = "forecast::auto.arima",
+        eng           = "auto.arima",
         mode          = "regression",
         type          = "numeric",
         value         = list(

@@ -27,8 +27,8 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "forecast::auto.arima" (default)
-#'  - "forecast::Arima"
+#'  - "auto.arima" (default)
+#'  - "Arima"
 #'
 #' __Main Arguments__
 #'
@@ -60,7 +60,7 @@
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("arima_reg")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
+#'     ~ "modeltime", ~ "auto.arima", ~ "Arima",
 #'     "period", "ts(frequency)", "ts(frequency)",
 #'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
 #'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
@@ -69,9 +69,11 @@
 #'
 #' Other options can be set using `set_engine()`.
 #'
-#' __forecast::auto.arima (default engine)__
+#' __auto.arima (default engine)__
 #'
-#' [forecast::auto.arima()] Function Parameters:
+#' The engine uses [forecast::auto.arima()].
+#'
+#' Function Parameters:
 #' ```{r echo = FALSE}
 #' str(forecast::auto.arima)
 #' ```
@@ -86,14 +88,17 @@
 #' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
 #'  (so don't provide this manually). See Fit Details (below).
 #'
-#' __forecast::Arima__
+#' __Arima__
 #'
-#' [forecast::Arima()] Function Parameters:
+#' The engine uses [forecast::Arima()].
+#'
+#' Function Parameters:
 #' ```{r echo = FALSE}
 #' str(forecast::Arima)
 #' ```
 #'
-#' The nonseasonal ARIMA terms (`order`) and seasonal ARIMA terms (`seasonal`) are provided to [forecast::Arima()] via `arima_reg()` parameters.
+#' The nonseasonal ARIMA terms (`order`) and seasonal ARIMA terms (`seasonal`)
+#' are provided to [forecast::Arima()] via `arima_reg()` parameters.
 #' Other options and argument can be set using `set_engine()`.
 #'
 #' Parameter Notes:
@@ -176,7 +181,7 @@
 #'
 #' # Model Spec
 #' model_spec <- arima_reg() %>%
-#'     set_engine("forecast::auto.arima")
+#'     set_engine("auto.arima")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
@@ -196,7 +201,7 @@
 #'         seasonal_differences     = 0,
 #'         seasonal_ma              = 1
 #'     ) %>%
-#'     set_engine("forecast::Arima")
+#'     set_engine("Arima")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
@@ -292,8 +297,8 @@ update.arima_reg <- function(object, parameters = NULL,
 #' @importFrom parsnip translate
 translate.arima_reg <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
-        message("Used `engine = 'forecast::auto.arima'` for translation.")
-        engine <- "forecast::auto.arima"
+        message("Used `engine = 'auto.arima'` for translation.")
+        engine <- "auto.arima"
     }
     x <- parsnip::translate.default(x, engine, ...)
 

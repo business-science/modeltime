@@ -40,9 +40,7 @@ data = tibble(
 
 new_modeltime_bridge(
     class  = "lm_time_series_impl",
-    models = list(
-        model_1 = lm_model
-    ),
+    models = list(model_1 = lm_model),
     data   = data,
     extras = NULL
 )

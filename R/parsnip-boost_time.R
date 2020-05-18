@@ -16,6 +16,8 @@
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
+#' @param stop_iter The number of iterations without improvement before
+#'   stopping  (`xgboost` only).
 #'
 #'
 #' @details
@@ -169,51 +171,53 @@
 #' @seealso [fit.boost_time()], [set_engine()]
 #'
 #' @examples
-#' library(dplyr)
+#' library(tidyverse)
+#' library(lubridate)
 #' library(parsnip)
 #' library(rsample)
-#' library(lubridate)
 #' library(timetk)
 #' library(modeltime)
 #'
+#'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
-#' m750
 #'
 #' # Split Data 80/20
-#' splits <- initial_time_split(m750, prop = 0.8)
+#' splits <- initial_time_split(m750, prop = 0.9)
 #'
-#' # ---- AUTO ARIMA ----
+#' # MODEL SPEC ----
 #'
-#' # Model Spec
-#' model_spec <- boost_time() %>%
-#'     set_engine("auto.arima+xgboost")
+#' # Set engine and boosting parameters
+#' model_spec <- boost_time(period = "auto", learn_rate = 0.1) %>%
+#'     set_engine(engine = "auto.arima+xgboost")
 #'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
+#' # FIT ----
+#'
+#' # No Boost - No xregs beyond date
+#' model_fit_no_boost <- model_spec %>%
+#'     fit(value ~ date,
 #'         data = training(splits))
-#' model_fit
+#' model_fit_no_boost
 #'
+#' # Boosting - Happens by adding numeric date and month features
+#' model_fit_boosted <- model_spec %>%
+#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
+#' model_fit_boosted
 #'
-#' # ---- STANDARD ARIMA ----
+#' # ACCURACY ----
 #'
-#' # Model Spec
-#' model_spec <- boost_time(
-#'         period                   = 12,
-#'         non_seasonal_ar          = 3,
-#'         non_seasonal_differences = 1,
-#'         non_seasonal_ma          = 3,
-#'         seasonal_ar              = 1,
-#'         seasonal_differences     = 0,
-#'         seasonal_ma              = 1
-#'     ) %>%
-#'     set_engine("auto.arima+xgboost")
+#' model_fit_no_boost %>%
+#'     modeltime_accuracy(new_data = testing(splits))
 #'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE))
-#' model_fit
+#' model_fit_boosted %>%
+#'     modeltime_accuracy(new_data = testing(splits))
+#'
+#' # FORECAST ----
+#'
+#' model_fit_boosted %>%
+#'     modeltime_forecast(h = "3 years") %>%
+#'     plot_modeltime_forecast(.interactive = FALSE)
 #'
 #' @export
 boost_time <- function(mode = "regression", period = NULL,

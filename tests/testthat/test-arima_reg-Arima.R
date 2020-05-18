@@ -1,5 +1,5 @@
 # ---- STANDARD ARIMA ----
-context("TEST arima_reg: forecast::Arima")
+context("TEST arima_reg: Arima")
 
 
 # SETUP ----
@@ -20,7 +20,7 @@ model_spec <- arima_reg(
     seasonal_differences     = 0,
     seasonal_ma              = 1
 ) %>%
-    set_engine("forecast::Arima")
+    set_engine("Arima")
 
 
 # PARSNIP ----
@@ -37,7 +37,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("arima_reg: forecast::Arima, (No xregs), Test Model Fit Object", {
+test_that("arima_reg: Arima, (No xregs), Test Model Fit Object", {
 
     testthat::expect_s3_class(model_fit$fit, "Arima_fit_impl")
 
@@ -57,7 +57,7 @@ test_that("arima_reg: forecast::Arima, (No xregs), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: forecast::Arima, (No xregs), Test Predictions", {
+test_that("arima_reg: Arima, (No xregs), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -87,7 +87,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("arima_reg: forecast::Arima, (XREGS), Test Model Fit Object", {
+test_that("arima_reg: Arima, (XREGS), Test Model Fit Object", {
 
     testthat::expect_s3_class(model_fit$fit, "Arima_fit_impl")
 
@@ -107,7 +107,7 @@ test_that("arima_reg: forecast::Arima, (XREGS), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: forecast::Arima (XREGS), Test Predictions", {
+test_that("arima_reg: Arima (XREGS), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -138,7 +138,7 @@ model_spec <- arima_reg(
     seasonal_differences     = 0,
     seasonal_ma              = 1
 ) %>%
-    set_engine("forecast::Arima")
+    set_engine("Arima")
 
 # Recipe spec
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
@@ -160,7 +160,7 @@ predictions_tbl <- wflw_fit %>%
 
 
 # TESTS
-test_that("arima_reg: forecast::Arima (workflow), Test Model Fit Object", {
+test_that("arima_reg: Arima (workflow), Test Model Fit Object", {
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "Arima_fit_impl")
 
@@ -180,7 +180,7 @@ test_that("arima_reg: forecast::Arima (workflow), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: forecast::Arima (workflow), Test Predictions", {
+test_that("arima_reg: Arima (workflow), Test Predictions", {
 
     full_data <- bind_rows(training(splits), testing(splits))
 

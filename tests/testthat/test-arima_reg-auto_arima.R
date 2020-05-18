@@ -1,5 +1,5 @@
 # ---- AUTO ARIMA ----
-context("TEST arima_reg: forecast::auto.arima")
+context("TEST arima_reg: auto.arima")
 
 # SETUP ----
 
@@ -16,7 +16,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("forecast::auto.arima")
+    set_engine("auto.arima")
 
 # Fit Spec
 model_fit <- model_spec %>%
@@ -28,7 +28,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("arima_reg: forecast::auto.arima (No xregs), Test Model Fit Object", {
+test_that("arima_reg: auto.arima (No xregs), Test Model Fit Object", {
 
     testthat::expect_s3_class(model_fit$fit, "auto_arima_fit_impl")
 
@@ -48,7 +48,7 @@ test_that("arima_reg: forecast::auto.arima (No xregs), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: forecast::auto.arima (No xregs), Test Predictions", {
+test_that("arima_reg: auto.arima (No xregs), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -70,7 +70,7 @@ test_that("arima_reg: forecast::auto.arima (No xregs), Test Predictions", {
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("forecast::auto.arima")
+    set_engine("auto.arima")
 
 # Fit Spec
 model_fit <- model_spec %>%
@@ -82,7 +82,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("arima_reg: forecast::auto.arima (XREGS), Test Model Fit Object", {
+test_that("arima_reg: auto.arima (XREGS), Test Model Fit Object", {
 
     testthat::expect_s3_class(model_fit$fit, "auto_arima_fit_impl")
 
@@ -102,7 +102,7 @@ test_that("arima_reg: forecast::auto.arima (XREGS), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: forecast::auto.arima (XREGS), Test Predictions", {
+test_that("arima_reg: auto.arima (XREGS), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -125,7 +125,7 @@ test_that("arima_reg: forecast::auto.arima (XREGS), Test Predictions", {
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("forecast::auto.arima")
+    set_engine("auto.arima")
 
 # Recipe spec
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
@@ -147,7 +147,7 @@ predictions_tbl <- wflw_fit %>%
 
 
 # TESTS
-test_that("arima_reg: forecast::auto.arima (Workflow), Test Model Fit Object", {
+test_that("arima_reg: auto.arima (Workflow), Test Model Fit Object", {
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "auto_arima_fit_impl")
 
@@ -167,7 +167,7 @@ test_that("arima_reg: forecast::auto.arima (Workflow), Test Model Fit Object", {
 
 })
 
-test_that("arima_reg: forecast::auto.arima (Workflow), Test Predictions", {
+test_that("arima_reg: auto.arima (Workflow), Test Predictions", {
 
     full_data <- bind_rows(training(splits), testing(splits))
 
