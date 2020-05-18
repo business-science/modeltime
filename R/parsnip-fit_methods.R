@@ -49,13 +49,12 @@
 #'  The return value will also have a class related to the fitted model (e.g.
 #'  `"_glm"`) before the base class of `"model_fit"`.
 #'
-#' @name fit.arima_reg
-#' @export
+#' @name fit.modeltime
 NULL
 
 
 #' @export
-#' @rdname fit.arima_reg
+#' @rdname fit.modeltime
 #' @importFrom parsnip control_parsnip
 fit.arima_reg <- function(object, formula, data, control = control_parsnip(), ...) {
 
@@ -66,16 +65,12 @@ fit.arima_reg <- function(object, formula, data, control = control_parsnip(), ..
 }
 
 #' @export
-#' @rdname fit.arima_reg
+#' @rdname fit.modeltime
 #' @importFrom parsnip control_parsnip
-fit_xy.arima_reg <- function(object, x, y, control = control_parsnip(), ...) {
+fit.boost_time <- function(object, formula, data, control = control_parsnip(), ...) {
 
-    # # Needed to handle when x is NULL
-    # if (is.null(x)) {
-    #     # This feature is constant and will get dropped in Arima_fit_impl
-    #     x <- tibble::tibble(..indicator = rep(1, length(y)))
-    # }
-
-    parsnip::fit_xy.model_spec(object, x, y, control = control_parsnip(), ...)
+    # Needed to preserve date and date time attributes
+    # - Note this approach will not expand factors into dummy variables.
+    parsnip::fit.model_spec(object, formula, data, control = control_parsnip(), ..., indicators = FALSE)
 
 }

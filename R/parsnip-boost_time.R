@@ -1,3 +1,328 @@
+#' General Interface for "Boosted" Time Series Regression Models
+#'
+#' `boost_time()` is a way to generate a _specification_ of a time series model
+#'  that uses boosting to imporve modeling errors (residuals) on Exogenous Regressors.
+#'  It's designed to work with "automated" time series algorithms (e.g. `auto.arima`, `prophet`, `bsts`)
+#'  where little customization (tuning) is involved. The main algorithms are:
+#'  - ARIMA + XGBoost Errors (engine = `auto.arima+xgboost`)
+#'  - (Coming Soon - `modeltime.prophet`) Prophet + XGBoost Errors
+#'  - (Coming Soon - `modeltime.bsts`) BSTS (Bayesian Structural Time Series) + XGBoost Errors
+#'
+#'
+#' @inheritParams parsnip::boost_tree
+#' @param mode A single character string for the type of model.
+#'  The only possible value for this model is "regression".
+#' @param period A seasonal frequency. Uses "auto" by default.
+#'  A character phrase of "auto" or time-based phrase of "2 weeks"
+#'  can be used if a date or date-time variable is provided.
+#'  See Fit Details below.
+#'
+#'
+#' @details
+#' The data given to the function are not saved and are only used
+#'  to determine the _mode_ of the model. For `boost_time()`, the
+#'  mode will always be "regression".
+#'
+#' The model can be created using the `fit()` function using the
+#'  following _engines_:
+#'
+#'  - "auto.arima+xgboost" (default)
+#'
+#' __Main Arguments__
+#'
+#' The main arguments (tuning parameters) for the model are:
+#'
+#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
+#'  - `mtry`: The number of predictors that will be
+#'   randomly sampled at each split when creating the tree models.
+#'  - `trees`: The number of trees contained in the ensemble.
+#'  - `min_n`: The minimum number of data points in a node
+#'   that are required for the node to be split further.
+#'  - `tree_depth`: The maximum depth of the tree (i.e. number of
+#'  splits).
+#'  - `learn_rate`: The rate at which the boosting algorithm adapts
+#'   from iteration-to-iteration.
+#'  - `loss_reduction`: The reduction in the loss function required
+#'   to split further.
+#'  - `sample_size`: The amount of data exposed to the fitting routine.
+#'  - `stop_iter`: The number of iterations without improvement before
+#'   stopping.
+#'
+#' These arguments are converted to their specific names at the
+#'  time that the model is fit.
+#'
+#' Other options and argument can be
+#'  set using `set_engine()` (See Engine Details below).
+#'
+#' If parameters need to be modified, `update()` can be used
+#'  in lieu of recreating the object from scratch.
+#'
+#'
+#' @section Engine Details:
+#'
+#' The standardized parameter names in `modeltime` can be mapped to their original
+#' names in each engine:
+#'
+#' Model 1: Auto ARIMA:
+#'
+#' ```{r echo = FALSE}
+#' # parsnip::convert_args("boost_time")
+#' tibble::tribble(
+#'     ~ "modeltime", ~ "forecast::auto.arima",
+#'     "period", "ts(frequency)"
+#' ) %>% knitr::kable()
+#' ```
+#'
+#' Model 2: XGBoost:
+#' ```{r echo = FALSE}
+#' # parsnip::convert_args("boost_time")
+#' tibble::tribble(
+#'     ~ "modeltime", ~ "xgboost::xgb.train",
+#'     "tree_depth", "max_depth",
+#'     "trees", "nrounds",
+#'     "learn_rate", "eta",
+#'     "mtry", "colsample_bytree",
+#'     "min_n", "min_child_weight",
+#'     "loss_reduction", "gamma",
+#'     "sample_size", "subsample"
+#' ) %>% knitr::kable()
+#' ```
+#'
+#'
+#' Other options can be set using `set_engine()`.
+#'
+#' __auto.arima+xgboost (default engine)__
+#'
+#' Model 1: Auto ARIMA (`forecast::auto.arima`):
+#' ```{r echo = FALSE}
+#' str(forecast::auto.arima)
+#' ```
+#'
+#' Parameter Notes:
+#' - All values of nonseasonal pdq and seasonal PDQ are maximums.
+#'  The `auto.arima` will select a value using these as an upper limit.
+#' - `xreg` - This should not be used since XGBoost will be doing the regression
+#'
+#' Model 2: XGBoost (`xgboost::xgb.train`):
+#' ```{r echo = FALSE}
+#' str(xgboost::xgb.train)
+#' ```
+#'
+#' Parameter Notes:
+#' - XGBoost uses a `params = list()` to capture.
+#'  Parsnip / Modeltime automatically sends any args provided as `...` inside of `set_engine()` to
+#'  the `params = list(...)`.
+#'
+#'
+#'
+#' @section Fit Details:
+#'
+#' __Date and Date-Time Variable__
+#'
+#' It's a requirement to have a date or date-time variable as a predictor.
+#' The `fit()` interface accepts date and date-time features and handles them internally.
+#'
+#' - `fit(y ~ date)`
+#'
+#' _Period Specification_
+#'
+#' The period can be non-seasonal (`period = 1`) or seasonal (e.g. `period = 12` or `period = "12 months"`).
+#' There are 3 ways to specify:
+#'
+#' 1. `period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+#' 2. `period = 12`: A numeric frequency. For example, 12 is common for monthly data
+#' 3. `period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+#'
+#'
+#' __Univariate (No xregs, Exogenous Regressors):__
+#'
+#' For univariate analysis, you must include a date or date-time feature. Simply use:
+#'
+#'  - Formula Interface (recommended): `fit(y ~ date)` will ignore xreg's.
+#'  - XY Interface: `fit_xy(x = data[,"date"], y = data$y)` will ignore xreg's.
+#'
+#' __Multivariate (xregs, Exogenous Regressors)__
+#'
+#'  The `xreg` parameter is populated using the `fit()` or `fit_xy()` function:
+#'
+#'  - Only `factor`, `ordered factor`, and `numeric` data will be used as xregs.
+#'  - Date and Date-time variables are not used as xregs
+#'  - `character` data should be converted to factor.
+#'
+#'  _Xreg Example:_ Suppose you have 3 features:
+#'
+#'  1. `y` (target)
+#'  2. `date` (time stamp),
+#'  3. `month.lbl` (labeled month as a ordered factor).
+#'
+#'  The `month.lbl` is an exogenous regressor that can be passed to the `boost_time()` using
+#'  `fit()`:
+#'
+#'  - `fit(y ~ date + month.lbl)` will pass `month.lbl` on as an exogenous regressor.
+#'  - `fit_xy(data[,c("date", "month.lbl")], y = data$y)` will pass x, where x is a data frame containing `month.lbl`
+#'   and the `date` feature. Only `month.lbl` will be used as an exogenous regressor.
+#'
+#'  Note that date or date-time class values are excluded from `xreg`.
+#'
+#'
+#'
+#' @seealso [fit.boost_time()], [set_engine()]
+#'
+#' @examples
+#' library(dplyr)
+#' library(parsnip)
+#' library(rsample)
+#' library(lubridate)
+#' library(timetk)
+#' library(modeltime)
+#'
+#' # Data
+#' m750 <- m4_monthly %>% filter(id == "M750")
+#' m750
+#'
+#' # Split Data 80/20
+#' splits <- initial_time_split(m750, prop = 0.8)
+#'
+#' # ---- AUTO ARIMA ----
+#'
+#' # Model Spec
+#' model_spec <- boost_time() %>%
+#'     set_engine("auto.arima+xgboost")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
+#' model_fit
+#'
+#'
+#' # ---- STANDARD ARIMA ----
+#'
+#' # Model Spec
+#' model_spec <- boost_time(
+#'         period                   = 12,
+#'         non_seasonal_ar          = 3,
+#'         non_seasonal_differences = 1,
+#'         non_seasonal_ma          = 3,
+#'         seasonal_ar              = 1,
+#'         seasonal_differences     = 0,
+#'         seasonal_ma              = 1
+#'     ) %>%
+#'     set_engine("auto.arima+xgboost")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE))
+#' model_fit
+#'
+#' @export
+boost_time <- function(mode = "regression", period = NULL,
+                       mtry = NULL, trees = NULL, min_n = NULL,
+                       tree_depth = NULL, learn_rate = NULL,
+                       loss_reduction = NULL,
+                       sample_size = NULL,
+                       stop_iter = NULL) {
+
+    args <- list(
+        mtry            = rlang::enquo(mtry),
+        trees           = rlang::enquo(trees),
+        min_n           = rlang::enquo(min_n),
+        tree_depth      = rlang::enquo(tree_depth),
+        learn_rate      = rlang::enquo(learn_rate),
+        loss_reduction  = rlang::enquo(loss_reduction),
+        sample_size     = rlang::enquo(sample_size),
+        stop_iter       = rlang::enquo(stop_iter)
+    )
+
+    parsnip::new_model_spec(
+        "boost_time",
+        args     = args,
+        eng_args = NULL,
+        mode     = mode,
+        method   = NULL,
+        engine   = NULL
+    )
+
+}
+
+#' @export
+print.boost_time <- function(x, ...) {
+    cat("Time Series Model w/ XGBoost Error Specification (", x$mode, ")\n\n", sep = "")
+    parsnip::model_printer(x, ...)
+
+    if(!is.null(x$method$fit$args)) {
+        cat("Model fit template:\n")
+        print(parsnip::show_call(x))
+    }
+
+    invisible(x)
+}
+
+#' @export
+#' @importFrom stats update
+update.boost_time <- function(object,
+                              parameters = NULL,
+                              period = NULL,
+                              mtry = NULL, trees = NULL, min_n = NULL,
+                              tree_depth = NULL, learn_rate = NULL,
+                              loss_reduction = NULL,
+                              sample_size = NULL,
+                              stop_iter = NULL,
+                              fresh = FALSE, ...) {
+
+    parsnip::update_dot_check(...)
+
+    if (!is.null(parameters)) {
+        parameters <- parsnip::check_final_param(parameters)
+    }
+
+    args <- list(
+        mtry            = rlang::enquo(mtry),
+        trees           = rlang::enquo(trees),
+        min_n           = rlang::enquo(min_n),
+        tree_depth      = rlang::enquo(tree_depth),
+        learn_rate      = rlang::enquo(learn_rate),
+        loss_reduction  = rlang::enquo(loss_reduction),
+        sample_size     = rlang::enquo(sample_size),
+        stop_iter       = rlang::enquo(stop_iter)
+    )
+
+    args <- parsnip::update_main_parameters(args, parameters)
+
+    if (fresh) {
+        object$args <- args
+    } else {
+        null_args <- purrr::map_lgl(args, parsnip::null_value)
+        if (any(null_args))
+            args <- args[!null_args]
+        if (length(args) > 0)
+            object$args[names(args)] <- args
+    }
+
+    parsnip::new_model_spec(
+        "boost_time",
+        args     = object$args,
+        eng_args = object$eng_args,
+        mode     = object$mode,
+        method   = NULL,
+        engine   = object$engine
+    )
+}
+
+
+#' @export
+#' @importFrom parsnip translate
+translate.boost_time <- function(x, engine = x$engine, ...) {
+    if (is.null(engine)) {
+        message("Used `engine = 'auto.arima+xgboost'` for translation.")
+        engine <- "auto.arima+xgboost"
+    }
+    x <- parsnip::translate.default(x, engine, ...)
+
+    x
+}
+
+
 
 # FIT BRIDGE ----
 
