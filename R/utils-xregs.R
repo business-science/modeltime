@@ -12,7 +12,7 @@ prepare_xreg_recipe_from_predictors <- function(data, prepare = TRUE) {
 
     if (xregs) {
 
-        tryCatch({
+        recipe_spec <- tryCatch({
 
             # Create recipe for dummy variables
             recipe_spec <- recipes::recipe(~ ., data = data)
@@ -62,8 +62,9 @@ prepare_xreg_recipe_from_predictors <- function(data, prepare = TRUE) {
             }
 
         }, error = function(e) {
-            warning(call. = FALSE, "Failed to return valid external regressors. Processing without regressors.")
+            warning(call. = FALSE, "Failed to return valid external regressors. Proceeding without regressors.")
             recipe_spec <- NULL
+            return(recipe_spec)
         })
 
     } else {
@@ -79,17 +80,26 @@ juice_xreg_recipe <- function(xreg_recipe, format = c("tbl", "matrix")) {
     format <- format[1]
 
     if (!is.null(xreg_recipe)) {
-        xreg_juiced <- xreg_recipe %>% recipes::juice()
 
+        xreg_juiced <- tryCatch({
+            xreg_juiced <- xreg_recipe %>% recipes::juice()
+        }, error = function(e) {
+            warning(call. = FALSE, "Failed to process regressors. Proceeding without regressors.")
+            xreg_juiced <- NULL
+            return(xreg_juiced)
+        })
+
+    } else {
+        xreg_juiced <- NULL
+    }
+
+    if (!is.null(xreg_juiced)) {
         if (format == "tbl") {
             xreg_juiced <- tibble::as_tibble(xreg_juiced)
         }
         if (format == "matrix") {
             xreg_juiced <- as.matrix(xreg_juiced)
         }
-
-    } else {
-        xreg_juiced <- NULL
     }
 
     return(xreg_juiced)

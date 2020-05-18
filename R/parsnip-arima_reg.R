@@ -474,16 +474,12 @@ predict.auto_arima_fit_impl <- function(object, new_data, ...) {
     Arima_predict_impl(object, new_data, ...)
 }
 
-
-# PREDICT ----
-
-
 #' @export
 predict.Arima_fit_impl <- function(object, new_data, ...) {
     Arima_predict_impl(object, new_data, ...)
 }
 
-#' Low-Level ARIMA function for translating modeltime to forecast
+#' Bridge prediction function for ARIMA models
 #'
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::forcast.Arima()`

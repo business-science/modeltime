@@ -2,7 +2,7 @@
 % Please edit documentation in R/parsnip-arima_reg.R
 \name{Arima_predict_impl}
 \alias{Arima_predict_impl}
-\title{Low-Level ARIMA function for translating modeltime to forecast}
+\title{Bridge prediction function for ARIMA models}
 \usage{
 Arima_predict_impl(object, new_data, ...)
 }
@@ -14,5 +14,5 @@ Arima_predict_impl(object, new_data, ...)
 \item{...}{Additional arguments passed to \code{forecast::forcast.Arima()}}
 }
 \description{
-Low-Level ARIMA function for translating modeltime to forecast
+Bridge prediction function for ARIMA models
 }

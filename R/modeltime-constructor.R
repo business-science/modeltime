@@ -10,8 +10,6 @@
 #' @param extras An optional list that is typically used for transferring preprocessing recipes
 #'  to the predict method.
 #'
-#' @details
-#' TODO - Add vignette on extending modeltime
 #'
 #' @examples
 #' library(stats)

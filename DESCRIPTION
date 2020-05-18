@@ -37,7 +37,8 @@ Imports:
     stringr,
     janitor,
     magrittr,
-    forecast
+    forecast,
+    xgboost
 Suggests:
     recipes,
     rsample,
