@@ -67,7 +67,7 @@
 #' The standardized parameter names in `modeltime` can be mapped to their original
 #' names in each engine:
 #'
-#' Model 1: Auto ARIMA:
+#' Model 1: ARIMA:
 #'
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("arima_boost")
@@ -78,6 +78,7 @@
 #' ```
 #'
 #' Model 2: XGBoost:
+#'
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("arima_boost")
 #' tibble::tribble(
@@ -95,7 +96,7 @@
 #'
 #' Other options can be set using `set_engine()`.
 #'
-#' __auto.arima (default engine)__
+#' __auto_arima_xgboost (default engine)__
 #'
 #' Model 1: Auto ARIMA (`forecast::auto.arima`):
 #' ```{r echo = FALSE}
@@ -223,11 +224,11 @@
 #'
 #' @export
 arima_boost <- function(mode = "regression", period = NULL,
-                       mtry = NULL, trees = NULL, min_n = NULL,
-                       tree_depth = NULL, learn_rate = NULL,
-                       loss_reduction = NULL,
-                       sample_size = NULL,
-                       stop_iter = NULL) {
+                        mtry = NULL, trees = NULL, min_n = NULL,
+                        tree_depth = NULL, learn_rate = NULL,
+                        loss_reduction = NULL,
+                        sample_size = NULL,
+                        stop_iter = NULL) {
 
     args <- list(
         mtry            = rlang::enquo(mtry),
@@ -267,14 +268,14 @@ print.arima_boost <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.arima_boost <- function(object,
-                              parameters = NULL,
-                              period = NULL,
-                              mtry = NULL, trees = NULL, min_n = NULL,
-                              tree_depth = NULL, learn_rate = NULL,
-                              loss_reduction = NULL,
-                              sample_size = NULL,
-                              stop_iter = NULL,
-                              fresh = FALSE, ...) {
+                               parameters = NULL,
+                               period = NULL,
+                               mtry = NULL, trees = NULL, min_n = NULL,
+                               tree_depth = NULL, learn_rate = NULL,
+                               loss_reduction = NULL,
+                               sample_size = NULL,
+                               stop_iter = NULL,
+                               fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
 
