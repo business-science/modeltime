@@ -55,7 +55,7 @@ model_spec <- arima_reg(
         seasonal_differences     = 0,
         seasonal_ma              = 1
     ) \%>\%
-    set_engine("Arima")
+    set_engine("arima")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

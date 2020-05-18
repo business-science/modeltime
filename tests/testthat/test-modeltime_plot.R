@@ -9,7 +9,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("auto.arima")
+    set_engine("auto_arima")
 
 # PARSNIP INTERFACE ----
 
@@ -81,7 +81,7 @@ test_that("modeltime plot, Test Interactive plotly", {
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("auto.arima")
+    set_engine("auto_arima")
 
 # Recipe spec
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%

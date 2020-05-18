@@ -13,7 +13,15 @@
 #' @param ... Additional arguments passed to [future_frame()] for use with the `h` forecast horizon
 #'
 #'
-#' @return A tibble with predictions and time-stamp data.
+#' @return
+#' A tibble with predictions and time-stamp data. For ease of plotting and calculations,
+#'  the column names are transformed to:
+#'
+#' - `.id`: Values labeled either "prediction" or "actual"
+#' - `.index`: The timestamp index.
+#' - `.value`: The value being forecasted.
+#' - `.conf_lo`: The lower limit of the confidence interval.
+#' - `.conf_hi`: The upper limit of the confidence interval.
 #'
 #' @details
 #'
@@ -50,7 +58,10 @@
 #'
 #' _Confidence Interval Estimation_
 #'
-#'
+#' Confidence intervals are estimated based on the normal estimation of the training errors.
+#' The confidence interval can be adjusted with the `conf_interval` parameter. An
+#' 80% confidence interval estimates a normal (gaussian distribution) that assumes that
+#' 80% of the future data will fall within the upper and lower confidence limits.
 #'
 #'
 #' @examples
@@ -77,7 +88,7 @@
 #'         seasonal_differences     = 0,
 #'         seasonal_ma              = 1
 #'     ) %>%
-#'     set_engine("Arima")
+#'     set_engine("arima")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%

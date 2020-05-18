@@ -16,7 +16,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("auto.arima")
+    set_engine("auto_arima")
 
 # Fit Spec
 model_fit <- model_spec %>%
@@ -70,7 +70,7 @@ test_that("arima_reg: auto.arima (No xregs), Test Predictions", {
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("auto.arima")
+    set_engine("auto_arima")
 
 # Fit Spec
 model_fit <- model_spec %>%
@@ -125,7 +125,7 @@ test_that("arima_reg: auto.arima (XREGS), Test Predictions", {
 
 # Model Spec
 model_spec <- arima_reg(period = 12) %>%
-    set_engine("auto.arima")
+    set_engine("auto_arima")
 
 # Recipe spec
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%

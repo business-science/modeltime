@@ -29,7 +29,15 @@ time series with no exogenous regressors).}
 \item{...}{Additional arguments passed to \code{\link[=future_frame]{future_frame()}} for use with the \code{h} forecast horizon}
 }
 \value{
-A tibble with predictions and time-stamp data.
+A tibble with predictions and time-stamp data. For ease of plotting and calculations,
+the column names are transformed to:
+\itemize{
+\item \code{.id}: Values labeled either "prediction" or "actual"
+\item \code{.index}: The timestamp index.
+\item \code{.value}: The value being forecasted.
+\item \code{.conf_lo}: The lower limit of the confidence interval.
+\item \code{.conf_hi}: The upper limit of the confidence interval.
+}
 }
 \description{
 This is a wrapper for \code{predict()} that is simplifies forecasting
@@ -72,6 +80,11 @@ will correct issues with indicators, which prevents the \strong{formula format}.
 }
 
 \emph{Confidence Interval Estimation}
+
+Confidence intervals are estimated based on the normal estimation of the training errors.
+The confidence interval can be adjusted with the \code{conf_interval} parameter. An
+80\% confidence interval estimates a normal (gaussian distribution) that assumes that
+80\% of the future data will fall within the upper and lower confidence limits.
 }
 \examples{
 library(dplyr)
@@ -97,7 +110,7 @@ model_spec <- arima_reg(
         seasonal_differences     = 0,
         seasonal_ma              = 1
     ) \%>\%
-    set_engine("Arima")
+    set_engine("arima")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

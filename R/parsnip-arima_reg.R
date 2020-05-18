@@ -27,7 +27,7 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "auto.arima" (default) - Connects to [forecast::auto.arima()]
+#'  - "auto_arima" (default) - Connects to [forecast::auto.arima()]
 #'  - "Arima" - Connects to [forecast::Arima()]
 #'
 #' __Main Arguments__
@@ -60,7 +60,7 @@
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("arima_reg")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "auto.arima", ~ "Arima",
+#'     ~ "modeltime", ~ "auto_arima", ~ "Arima",
 #'     "period", "ts(frequency)", "ts(frequency)",
 #'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
 #'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
@@ -69,7 +69,7 @@
 #'
 #' Other options can be set using `set_engine()`.
 #'
-#' __auto.arima (default engine)__
+#' __auto_arima (default engine)__
 #'
 #' The engine uses [forecast::auto.arima()].
 #'
@@ -84,11 +84,11 @@
 #'
 #' Parameter Notes:
 #' - All values of nonseasonal pdq and seasonal PDQ are maximums.
-#'  The `auto.arima` will select a value using these as an upper limit.
+#'  The `forecast::auto.arima()` model will select a value using these as an upper limit.
 #' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
 #'  (so don't provide this manually). See Fit Details (below).
 #'
-#' __Arima__
+#' __arima__
 #'
 #' The engine uses [forecast::Arima()].
 #'
@@ -181,7 +181,7 @@
 #'
 #' # Model Spec
 #' model_spec <- arima_reg() %>%
-#'     set_engine("auto.arima")
+#'     set_engine("auto_arima")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
@@ -201,7 +201,7 @@
 #'         seasonal_differences     = 0,
 #'         seasonal_ma              = 1
 #'     ) %>%
-#'     set_engine("Arima")
+#'     set_engine("arima")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
@@ -297,8 +297,8 @@ update.arima_reg <- function(object, parameters = NULL,
 #' @importFrom parsnip translate
 translate.arima_reg <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
-        message("Used `engine = 'auto.arima'` for translation.")
-        engine <- "auto.arima"
+        message("Used `engine = 'auto_arima'` for translation.")
+        engine <- "auto_arima"
     }
     x <- parsnip::translate.default(x, engine, ...)
 

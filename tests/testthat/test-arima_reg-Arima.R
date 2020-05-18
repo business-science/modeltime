@@ -20,7 +20,7 @@ model_spec <- arima_reg(
     seasonal_differences     = 0,
     seasonal_ma              = 1
 ) %>%
-    set_engine("Arima")
+    set_engine("arima")
 
 
 # PARSNIP ----
@@ -138,7 +138,7 @@ model_spec <- arima_reg(
     seasonal_differences     = 0,
     seasonal_ma              = 1
 ) %>%
-    set_engine("Arima")
+    set_engine("arima")
 
 # Recipe spec
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
