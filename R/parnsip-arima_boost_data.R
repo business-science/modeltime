@@ -18,7 +18,7 @@ make_arima_boost <- function() {
     parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "forecast")
     parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "xgboost")
 
-    # * Args ----
+    # * XGBoost Args ----
     parsnip::set_model_arg(
         model        = "arima_boost",
         eng          = "auto_arima_xgboost",
@@ -90,6 +90,64 @@ make_arima_boost <- function() {
         parsnip      = "stop_iter",
         original     = "early_stop",
         func         = list(pkg = "dials", fun = "stop_iter"),
+        has_submodel = FALSE
+    )
+
+    # * Arima Args ----
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "period",
+        original     = "period",
+        func         = list(pkg = "modeltime", fun = "period"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "non_seasonal_ar",
+        original     = "max.p",
+        func         = list(pkg = "modeltime", fun = "non_seasonal_ar"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "non_seasonal_differences",
+        original     = "max.d",
+        func         = list(pkg = "modeltime", fun = "non_seasonal_differences"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "non_seasonal_ma",
+        original     = "max.q",
+        func         = list(pkg = "modeltime", fun = "non_seasonal_ma"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "seasonal_ar",
+        original     = "max.P",
+        func         = list(pkg = "modeltime", fun = "seasonal_ar"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "seasonal_differences",
+        original     = "max.D",
+        func         = list(pkg = "modeltime", fun = "seasonal_differences"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "arima_boost",
+        eng          = "auto_arima_xgboost",
+        parsnip      = "seasonal_ma",
+        original     = "max.Q",
+        func         = list(pkg = "modeltime", fun = "seasonal_ma"),
         has_submodel = FALSE
     )
 

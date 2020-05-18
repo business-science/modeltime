@@ -15,6 +15,12 @@
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
+#' @param non_seasonal_ar The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
+#' @param non_seasonal_differences The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.
+#' @param non_seasonal_ma The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.
+#' @param seasonal_ar The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.
+#' @param seasonal_differences The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.
+#' @param seasonal_ma The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.
 #' @param stop_iter The number of iterations without improvement before
 #'   stopping  (`xgboost` only).
 #'
@@ -29,10 +35,22 @@
 #'
 #'  - "auto_arima_xgboost" (default) - Connects to [forecast::auto.arima()] and
 #'   [xgboost::xgb.train]
+#'  - "arima_xgboost" - Connects to [forecast::Arima()] and
+#'   [xgboost::xgb.train]
 #'
 #' __Main Arguments__
 #'
-#' The main arguments (tuning parameters) for the model XGBoost model are:
+#' The main arguments (tuning parameters) for the __ARIMA model__ are:
+#'
+#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
+#'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
+#'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
+#'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
+#'  - `seasonal_ar`: The order of the seasonal auto-regressive (SAR) terms.
+#'  - `seasonal_differences`: The order of integration for seasonal differencing.
+#'  - `seasonal_ma`: The order of the seasonal moving average (SMA) terms.
+#'
+#' The main arguments (tuning parameters) for the model __XGBoost model__ are:
 #'
 #'  - `mtry`: The number of predictors that will be
 #'   randomly sampled at each split when creating the tree models.
@@ -49,8 +67,6 @@
 #'  - `stop_iter`: The number of iterations without improvement before
 #'   stopping.
 #'
-#' The ARIMA model can be specified using the following parameters:
-#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
 #'
 #' These arguments are converted to their specific names at the
 #'  time that the model is fit.
@@ -70,10 +86,12 @@
 #' Model 1: ARIMA:
 #'
 #' ```{r echo = FALSE}
-#' # parsnip::convert_args("arima_boost")
+#' # parsnip::convert_args("arima_reg")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "forecast::auto.arima",
-#'     "period", "ts(frequency)"
+#'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
+#'     "period", "ts(frequency)", "ts(frequency)",
+#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
+#'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -224,21 +242,34 @@
 #'
 #' @export
 arima_boost <- function(mode = "regression", period = NULL,
+                        non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
+                        seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                         mtry = NULL, trees = NULL, min_n = NULL,
                         tree_depth = NULL, learn_rate = NULL,
                         loss_reduction = NULL,
-                        sample_size = NULL,
-                        stop_iter = NULL) {
+                        sample_size = NULL, stop_iter = NULL
+                        ) {
 
     args <- list(
-        mtry            = rlang::enquo(mtry),
-        trees           = rlang::enquo(trees),
-        min_n           = rlang::enquo(min_n),
-        tree_depth      = rlang::enquo(tree_depth),
-        learn_rate      = rlang::enquo(learn_rate),
-        loss_reduction  = rlang::enquo(loss_reduction),
-        sample_size     = rlang::enquo(sample_size),
-        stop_iter       = rlang::enquo(stop_iter)
+
+        # ARIMA
+        period                    = rlang::enquo(period),
+        non_seasonal_ar           = rlang::enquo(non_seasonal_ar),
+        non_seasonal_differences  = rlang::enquo(non_seasonal_differences),
+        non_seasonal_ma           = rlang::enquo(non_seasonal_ma),
+        seasonal_ar               = rlang::enquo(seasonal_ar),
+        seasonal_differences      = rlang::enquo(seasonal_differences),
+        seasonal_ma               = rlang::enquo(seasonal_ma),
+
+        # XGBoost
+        mtry                      = rlang::enquo(mtry),
+        trees                     = rlang::enquo(trees),
+        min_n                     = rlang::enquo(min_n),
+        tree_depth                = rlang::enquo(tree_depth),
+        learn_rate                = rlang::enquo(learn_rate),
+        loss_reduction            = rlang::enquo(loss_reduction),
+        sample_size               = rlang::enquo(sample_size),
+        stop_iter                 = rlang::enquo(stop_iter)
     )
 
     parsnip::new_model_spec(
@@ -270,6 +301,8 @@ print.arima_boost <- function(x, ...) {
 update.arima_boost <- function(object,
                                parameters = NULL,
                                period = NULL,
+                               non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
+                               seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                                mtry = NULL, trees = NULL, min_n = NULL,
                                tree_depth = NULL, learn_rate = NULL,
                                loss_reduction = NULL,
@@ -284,14 +317,25 @@ update.arima_boost <- function(object,
     }
 
     args <- list(
-        mtry            = rlang::enquo(mtry),
-        trees           = rlang::enquo(trees),
-        min_n           = rlang::enquo(min_n),
-        tree_depth      = rlang::enquo(tree_depth),
-        learn_rate      = rlang::enquo(learn_rate),
-        loss_reduction  = rlang::enquo(loss_reduction),
-        sample_size     = rlang::enquo(sample_size),
-        stop_iter       = rlang::enquo(stop_iter)
+
+        # ARIMA
+        period                    = rlang::enquo(period),
+        non_seasonal_ar           = rlang::enquo(non_seasonal_ar),
+        non_seasonal_differences  = rlang::enquo(non_seasonal_differences),
+        non_seasonal_ma           = rlang::enquo(non_seasonal_ma),
+        seasonal_ar               = rlang::enquo(seasonal_ar),
+        seasonal_differences      = rlang::enquo(seasonal_differences),
+        seasonal_ma               = rlang::enquo(seasonal_ma),
+
+        # XGBoost
+        mtry                      = rlang::enquo(mtry),
+        trees                     = rlang::enquo(trees),
+        min_n                     = rlang::enquo(min_n),
+        tree_depth                = rlang::enquo(tree_depth),
+        learn_rate                = rlang::enquo(learn_rate),
+        loss_reduction            = rlang::enquo(loss_reduction),
+        sample_size               = rlang::enquo(sample_size),
+        stop_iter                 = rlang::enquo(stop_iter)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)

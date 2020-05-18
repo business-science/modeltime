@@ -7,6 +7,12 @@
 arima_boost(
   mode = "regression",
   period = NULL,
+  non_seasonal_ar = NULL,
+  non_seasonal_differences = NULL,
+  non_seasonal_ma = NULL,
+  seasonal_ar = NULL,
+  seasonal_differences = NULL,
+  seasonal_ma = NULL,
   mtry = NULL,
   trees = NULL,
   min_n = NULL,
@@ -25,6 +31,18 @@ The only possible value for this model is "regression".}
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
+
+\item{non_seasonal_ar}{The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.}
+
+\item{non_seasonal_differences}{The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.}
+
+\item{non_seasonal_ma}{The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.}
+
+\item{seasonal_ar}{The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.}
+
+\item{seasonal_differences}{The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.}
+
+\item{seasonal_ma}{The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.}
 
 \item{mtry}{A number for the number (or proportion) of predictors that will
 be randomly sampled at each split when creating the tree models (\code{xgboost}
@@ -72,11 +90,24 @@ following \emph{engines}:
 \itemize{
 \item "auto_arima_xgboost" (default) - Connects to \code{\link[forecast:auto.arima]{forecast::auto.arima()}} and
 \link[xgboost:xgb.train]{xgboost::xgb.train}
+\item "arima_xgboost" - Connects to \code{\link[forecast:Arima]{forecast::Arima()}} and
+\link[xgboost:xgb.train]{xgboost::xgb.train}
 }
 
 \strong{Main Arguments}
 
-The main arguments (tuning parameters) for the model XGBoost model are:
+The main arguments (tuning parameters) for the \strong{ARIMA model} are:
+\itemize{
+\item \code{period}: The periodic nature of the seasonality. Uses "auto" by default.
+\item \code{non_seasonal_ar}: The order of the non-seasonal auto-regressive (AR) terms.
+\item \code{non_seasonal_differences}: The order of integration for non-seasonal differencing.
+\item \code{non_seasonal_ma}: The order of the non-seasonal moving average (MA) terms.
+\item \code{seasonal_ar}: The order of the seasonal auto-regressive (SAR) terms.
+\item \code{seasonal_differences}: The order of integration for seasonal differencing.
+\item \code{seasonal_ma}: The order of the seasonal moving average (SMA) terms.
+}
+
+The main arguments (tuning parameters) for the model \strong{XGBoost model} are:
 \itemize{
 \item \code{mtry}: The number of predictors that will be
 randomly sampled at each split when creating the tree models.
@@ -94,11 +125,6 @@ to split further.
 stopping.
 }
 
-The ARIMA model can be specified using the following parameters:
-\itemize{
-\item \code{period}: The periodic nature of the seasonality. Uses "auto" by default.
-}
-
 These arguments are converted to their specific names at the
 time that the model is fit.
 
@@ -114,9 +140,11 @@ in lieu of recreating the object from scratch.
 The standardized parameter names in \code{modeltime} can be mapped to their original
 names in each engine:
 
-Model 1: ARIMA:\tabular{ll}{
-   modeltime \tab forecast::auto.arima \cr
-   period \tab ts(frequency) \cr
+Model 1: ARIMA:\tabular{lll}{
+   modeltime \tab forecast::auto.arima \tab forecast::Arima \cr
+   period \tab ts(frequency) \tab ts(frequency) \cr
+   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p, max.d, max.q \tab order = c(p,d,q) \cr
+   seasonal_ar, seasonal_differences, seasonal_ma \tab max.P, max.D, max.Q \tab seasonal = c(P,D,Q) \cr
 }
 
 
@@ -136,11 +164,15 @@ Other options can be set using \code{set_engine()}.
 
 \strong{auto_arima_xgboost (default engine)}
 
-Model 1: Auto ARIMA (\code{forecast::auto.arima}):\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, 
-##     start.P = 1, start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", "bic"), stepwise = TRUE, nmodels = 94, 
-##     trace = FALSE, approximation = (length(x) > 150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, test = c("kpss", 
-##         "adf", "pp"), test.args = list(), seasonal.test = c("seas", "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
-##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, num.cores = 2, x = y, ...)
+Model 1: Auto ARIMA (\code{forecast::auto.arima}):\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
+##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
+##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
+##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
+##         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
+##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
+##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
+##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
+##     num.cores = 2, x = y, ...)
 }
 
 Parameter Notes:
@@ -150,8 +182,10 @@ The \code{auto.arima} will select a value using these as an upper limit.
 \item \code{xreg} - This should not be used since XGBoost will be doing the regression
 }
 
-Model 2: XGBoost (\code{xgboost::xgb.train}):\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
-##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, callbacks = list(), ...)
+Model 2: XGBoost (\code{xgboost::xgb.train}):\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
+##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
+##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
+##     callbacks = list(), ...)
 }
 
 Parameter Notes:

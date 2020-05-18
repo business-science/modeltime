@@ -60,7 +60,7 @@
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("arima_reg")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "auto_arima", ~ "Arima",
+#'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
 #'     "period", "ts(frequency)", "ts(frequency)",
 #'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
 #'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
