@@ -58,7 +58,7 @@ that uses boosting to imporve modeling errors (residuals) on Exogenous Regressor
 It's designed to work with "automated" time series algorithms (e.g. \code{auto.arima}, \code{prophet}, \code{bsts})
 where little customization (tuning) is involved. The main algorithms are:
 \itemize{
-\item ARIMA + XGBoost Errors (engine = \code{auto.arima+xgboost})
+\item ARIMA + XGBoost Errors (engine = \code{auto.arima})
 \item (Coming Soon - \code{modeltime.prophet}) Prophet + XGBoost Errors
 \item (Coming Soon - \code{modeltime.bsts}) BSTS (Bayesian Structural Time Series) + XGBoost Errors
 }
@@ -71,7 +71,8 @@ mode will always be "regression".
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item "auto.arima+xgboost" (default)
+\item "auto_arima_xgboost" (default) - Connects to \code{\link[forecast:auto.arima]{forecast::auto.arima()}} and
+\link[xgboost:xgb.train]{xgboost::xgb.train}
 }
 
 \strong{Main Arguments}
@@ -129,7 +130,7 @@ Model 2: XGBoost:
 
 Other options can be set using \code{set_engine()}.
 
-\strong{auto.arima+xgboost (default engine)}
+\strong{auto.arima (default engine)}
 
 Model 1: Auto ARIMA (\code{forecast::auto.arima}):\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
 ##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
@@ -238,7 +239,7 @@ splits <- initial_time_split(m750, prop = 0.9)
 
 # Set engine and boosting parameters
 model_spec <- boost_time(period = "auto", learn_rate = 0.1) \%>\%
-    set_engine(engine = "auto.arima+xgboost")
+    set_engine(engine = "auto_arima_xgboost")
 
 # FIT ----
 

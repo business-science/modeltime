@@ -4,7 +4,7 @@
 #'  that uses boosting to imporve modeling errors (residuals) on Exogenous Regressors.
 #'  It's designed to work with "automated" time series algorithms (e.g. `auto.arima`, `prophet`, `bsts`)
 #'  where little customization (tuning) is involved. The main algorithms are:
-#'  - ARIMA + XGBoost Errors (engine = `auto.arima+xgboost`)
+#'  - ARIMA + XGBoost Errors (engine = `auto.arima`)
 #'  - (Coming Soon - `modeltime.prophet`) Prophet + XGBoost Errors
 #'  - (Coming Soon - `modeltime.bsts`) BSTS (Bayesian Structural Time Series) + XGBoost Errors
 #'
@@ -28,7 +28,8 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "auto.arima+xgboost" (default)
+#'  - "auto_arima_xgboost" (default) - Connects to [forecast::auto.arima()] and
+#'   [xgboost::xgb.train]
 #'
 #' __Main Arguments__
 #'
@@ -93,7 +94,7 @@
 #'
 #' Other options can be set using `set_engine()`.
 #'
-#' __auto.arima+xgboost (default engine)__
+#' __auto.arima (default engine)__
 #'
 #' Model 1: Auto ARIMA (`forecast::auto.arima`):
 #' ```{r echo = FALSE}
@@ -189,7 +190,7 @@
 #'
 #' # Set engine and boosting parameters
 #' model_spec <- boost_time(period = "auto", learn_rate = 0.1) %>%
-#'     set_engine(engine = "auto.arima+xgboost")
+#'     set_engine(engine = "auto_arima_xgboost")
 #'
 #' # FIT ----
 #'
@@ -318,8 +319,8 @@ update.boost_time <- function(object,
 #' @importFrom parsnip translate
 translate.boost_time <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
-        message("Used `engine = 'auto.arima+xgboost'` for translation.")
-        engine <- "auto.arima+xgboost"
+        message("Used `engine = 'auto_arima_xgboost'` for translation.")
+        engine <- "auto_arima_xgboost"
     }
     x <- parsnip::translate.default(x, engine, ...)
 

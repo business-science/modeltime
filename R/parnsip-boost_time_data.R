@@ -11,17 +11,17 @@ make_boost_time <- function() {
     parsnip::set_new_model("boost_time")
     parsnip::set_model_mode("boost_time", "regression")
 
-    # auto.arima+xgboost ----
+    # auto_arima_xgboost ----
 
     # * Model ----
-    parsnip::set_model_engine("boost_time", mode = "regression", eng = "auto.arima+xgboost")
-    parsnip::set_dependency("boost_time", "auto.arima+xgboost", "forecast")
-    parsnip::set_dependency("boost_time", "auto.arima+xgboost", "xgboost")
+    parsnip::set_model_engine("boost_time", mode = "regression", eng = "auto_arima_xgboost")
+    parsnip::set_dependency("boost_time", "auto_arima_xgboost", "forecast")
+    parsnip::set_dependency("boost_time", "auto_arima_xgboost", "xgboost")
 
     # * Args ----
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "period",
         original     = "period",
         func         = list(pkg = "modeltime", fun = "period"),
@@ -30,7 +30,7 @@ make_boost_time <- function() {
 
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "tree_depth",
         original     = "max_depth",
         func         = list(pkg = "dials", fun = "tree_depth"),
@@ -38,7 +38,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "trees",
         original     = "nrounds",
         func         = list(pkg = "dials", fun = "trees"),
@@ -46,7 +46,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "learn_rate",
         original     = "eta",
         func         = list(pkg = "dials", fun = "learn_rate"),
@@ -54,7 +54,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "mtry",
         original     = "colsample_bytree",
         func         = list(pkg = "dials", fun = "mtry"),
@@ -62,7 +62,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "min_n",
         original     = "min_child_weight",
         func         = list(pkg = "dials", fun = "min_n"),
@@ -70,7 +70,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "loss_reduction",
         original     = "gamma",
         func         = list(pkg = "dials", fun = "loss_reduction"),
@@ -78,7 +78,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "sample_size",
         original     = "subsample",
         func         = list(pkg = "dials", fun = "sample_size"),
@@ -86,7 +86,7 @@ make_boost_time <- function() {
     )
     parsnip::set_model_arg(
         model        = "boost_time",
-        eng          = "auto.arima+xgboost",
+        eng          = "auto_arima_xgboost",
         parsnip      = "stop_iter",
         original     = "early_stop",
         func         = list(pkg = "dials", fun = "stop_iter"),
@@ -97,7 +97,7 @@ make_boost_time <- function() {
     # * Fit ----
     parsnip::set_fit(
         model         = "boost_time",
-        eng           = "auto.arima+xgboost",
+        eng           = "auto_arima_xgboost",
         mode          = "regression",
         value         = list(
             interface = "data.frame",
@@ -110,7 +110,7 @@ make_boost_time <- function() {
     # * Predict ----
     parsnip::set_pred(
         model         = "boost_time",
-        eng           = "auto.arima+xgboost",
+        eng           = "auto_arima_xgboost",
         mode          = "regression",
         type          = "numeric",
         value         = list(

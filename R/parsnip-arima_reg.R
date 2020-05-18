@@ -27,8 +27,8 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "auto.arima" (default)
-#'  - "Arima"
+#'  - "auto.arima" (default) - Connects to [forecast::auto.arima()]
+#'  - "Arima" - Connects to [forecast::Arima()]
 #'
 #' __Main Arguments__
 #'
