@@ -1,5 +1,5 @@
 # ---- STANDARD ARIMA ----
-context("TEST arima_boost: Arima")
+context("TEST arima_boost: arima_xgboost")
 
 
 # SETUP ----
