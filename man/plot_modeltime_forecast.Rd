@@ -7,6 +7,8 @@
 plot_modeltime_forecast(
   .data,
   .include_conf_interval = TRUE,
+  .conf_interval_fill = "grey20",
+  .conf_interval_alpha = 0.2,
   .title = "Forecast Plot",
   .x_lab = "",
   .y_lab = "",
@@ -20,6 +22,10 @@ plot_modeltime_forecast(
 \item{.data}{A \code{tibble} or \code{data.frame} with '.id', '.index', and .value' columns}
 
 \item{.include_conf_interval}{Logical. Whether or not to include the confidence interval as a ribbon.}
+
+\item{.conf_interval_fill}{Fill color for the confidence interval}
+
+\item{.conf_interval_alpha}{Fill opacity for the confidence interval. Range (0, 1).}
 
 \item{.title}{Title for the plot}
 

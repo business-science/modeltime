@@ -6,6 +6,8 @@
 #' @inheritParams timetk::plot_time_series
 #' @param .data A `tibble` or `data.frame` with '.id', '.index', and .value' columns
 #' @param .include_conf_interval Logical. Whether or not to include the confidence interval as a ribbon.
+#' @param .conf_interval_fill Fill color for the confidence interval
+#' @param .conf_interval_alpha Fill opacity for the confidence interval. Range (0, 1).
 #' @param ... Additional arguments passed to [timetk::plot_time_series()].
 #'
 #' @return A static `ggplot2` plot or an interactive `plotly` plot containing a forecast
@@ -53,6 +55,8 @@
 #' @export
 plot_modeltime_forecast <- function(.data,
                                     .include_conf_interval = TRUE,
+                                    .conf_interval_fill = "grey20",
+                                    .conf_interval_alpha = 0.20,
                                     .title = "Forecast Plot", .x_lab = "", .y_lab = "",
                                     .color_lab = "Legend",
                                     .interactive = TRUE, .plotly_slider = FALSE,
@@ -105,7 +109,8 @@ plot_modeltime_forecast <- function(.data,
 
         # Add ribbon
         g <- g +
-            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi), alpha = 0.2)
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi),
+                                 fill = .conf_interval_fill, alpha = .conf_interval_alpha)
 
         # Reorder Ribbon to 1st level
         layers_start <- g$layers
