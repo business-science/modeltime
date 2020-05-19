@@ -375,7 +375,7 @@ translate.arima_boost <- function(x, engine = x$engine, ...) {
 
 
 
-# FIT BRIDGE ----
+# FIT BRIDGE - AUTO ARIMA ----
 
 #' Bridge ARIMA-XGBoost Modeling function
 #'
@@ -541,7 +541,157 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
 #' @export
 print.auto_arima_xgboost_fit_impl <- function(x, ...) {
     cat("---\n")
-    cat("Model 1: Auto ARIMA:\n\n")
+    cat("Model 1: Auto ARIMA\n\n")
+    print(x$models$model_1)
+    cat("\n---\n")
+    cat("Model 2: XGBoost ARIMA Errors\n\n")
+    print(x$models$model_2$call)
+    invisible(x)
+}
+
+
+# FIT BRIDGE - STANDARD ARIMA ----
+
+#' Bridge ARIMA-XGBoost Modeling function
+#'
+#' @inheritParams forecast::Arima
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param period A seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param p The order of the non-seasonal auto-regressive (AR) terms.
+#' @param d The order of integration for non-seasonal differencing.
+#' @param q The order of the non-seasonal moving average (MA) terms.
+#' @param P The order of the seasonal auto-regressive (SAR) terms.
+#' @param D The order of integration for seasonal differencing.
+#' @param Q The order of the seasonal moving average (SMA) terms.
+#' @param max_depth An integer for the maximum depth of the tree.
+#' @param nrounds An integer for the number of boosting iterations.
+#' @param eta A numeric value between zero and one to control the learning rate.
+#' @param colsample_bytree Subsampling proportion of columns.
+#' @param min_child_weight A numeric value for the minimum sum of instance
+#'  weights needed in a child to continue to split.
+#' @param gamma A number for the minimum loss reduction required to make a
+#'  further partition on a leaf node of the tree
+#' @param subsample Subsampling proportion of rows.
+#' @param validation A positive number. If on `[0, 1)` the value, `validation`
+#' is a random proportion of data in `x` and `y` that are used for performance
+#' assessment and potential early stopping. If 1 or greater, it is the _number_
+#' of training set samples use for these purposes.
+#' @param early_stop An integer or `NULL`. If not `NULL`, it is the number of
+#' training iterations without improvement before stopping. If `validation` is
+#' used, performance is base on the validation set; otherwise the training set
+#' is used.
+#' @param ... Other options to pass to `xgb.train`.
+#' @param ... Additional arguments passed to `xgboost::xgb.train`
+#'
+#'
+#' @export
+#' @importFrom stats frequency
+arima_xgboost_fit_impl <- function(x, y, period = "auto",
+                                   p = 0, d = 0, q = 0,
+                                   P = 0, D = 0, Q = 0,
+                                   include.mean = TRUE,
+                                   include.drift = FALSE,
+                                   include.constant,
+                                   lambda = model$lambda,
+                                   biasadj = FALSE,
+                                   method = c("CSS-ML", "ML", "CSS"),
+                                   model = NULL,
+
+                                   # xgboost params
+                                   max_depth = 6, nrounds = 15, eta  = 0.3,
+                                   colsample_bytree = 1, min_child_weight = 1,
+                                   gamma = 0, subsample = 1,
+                                   validation = 0, early_stop = NULL,
+                                   ...) {
+
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
+    outcome    <- y
+    predictor  <- x
+
+    # INDEX & PERIOD
+    # Determine Period, Index Col, and Index
+    index_tbl <- parse_index_from_data(predictor)
+    period    <- parse_period_from_index(index_tbl, period)
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
+
+    # XREGS
+    # Clean names, get xreg recipe, process predictors
+    predictor   <- janitor::clean_names(predictor)
+    xreg_recipe <- prepare_xreg_recipe_from_predictors(predictor, prepare = TRUE)
+    xreg_tbl    <- juice_xreg_recipe(xreg_recipe, format = "tbl")
+
+    # FIT
+    outcome <- stats::ts(outcome, frequency = period)
+
+    # auto.arima
+    fit_arima   <- forecast::Arima(outcome,
+                                   order = c(p, d, q),
+                                   seasonal = c(P, D, Q),
+                                   include.mean = include.mean,
+                                   include.drift = include.drift,
+                                   include.constant = include.constant,
+                                   lambda = model$lambda,
+                                   biasadj = biasadj,
+                                   method = method,
+                                   model = model
+    )
+
+    arima_residuals <- as.numeric(fit_arima$residuals)
+    arima_fitted    <- as.numeric(fit_arima$fitted)
+
+    # xgboost
+    if (!is.null(xreg_tbl)) {
+        fit_xgboost <- xgboost_impl(x = xreg_tbl, y = arima_residuals,
+                                    max_depth = max_depth, nrounds = nrounds, eta  = eta,
+                                    colsample_bytree = colsample_bytree,
+                                    min_child_weight = min_child_weight, gamma = gamma,
+                                    subsample = subsample, validation = validation,
+                                    early_stop = early_stop, ...)
+        xgboost_fitted    <- xgboost_predict(fit_xgboost, newdata = xreg_tbl)
+    } else {
+        fit_xgboost       <- NULL
+        xgboost_fitted    <- rep(0, length(arima_residuals))
+    }
+
+    # GET FITTED & RESIDUALS
+
+    # RETURN
+    new_modeltime_bridge(
+        class = "arima_xgboost_fit_impl",
+
+        # Models
+        models = list(
+            model_1 = fit_arima,
+            model_2 = fit_xgboost
+        ),
+
+        # Data
+        data = tibble::tibble(
+            !! idx_col  := idx,
+            .value      =  y
+        ) %>%
+            dplyr::mutate(
+                .fitted =  arima_fitted + xgboost_fitted,
+                .resid  = .value - .fitted
+            ),
+
+        # Preprocessing Recipe (prepped) - Used in predict method
+        extras = list(
+            xreg_recipe = xreg_recipe
+        )
+    )
+
+}
+
+#' @export
+print.arima_xgboost_fit_impl <- function(x, ...) {
+    cat("---\n")
+    cat("Model 1: Standard ARIMA:\n\n")
     print(x$models$model_1)
     cat("\n---\n")
     cat("Model 2: XGBoost ARIMA Errors:\n\n")
@@ -553,7 +703,12 @@ print.auto_arima_xgboost_fit_impl <- function(x, ...) {
 
 #' @export
 predict.auto_arima_xgboost_fit_impl <- function(object, new_data, ...) {
-    auto_arima_xgboost_predict_impl(object, new_data, ...)
+    arima_xgboost_predict_impl(object, new_data, ...)
+}
+
+#' @export
+predict.arima_xgboost_fit_impl <- function(object, new_data, ...) {
+    arima_xgboost_predict_impl(object, new_data, ...)
 }
 
 
@@ -564,7 +719,7 @@ predict.auto_arima_xgboost_fit_impl <- function(object, new_data, ...) {
 #' @param ... Additional arguments passed to `predict.xgb.Booster()`
 #'
 #' @export
-auto_arima_xgboost_predict_impl <- function(object, new_data, ...) {
+arima_xgboost_predict_impl <- function(object, new_data, ...) {
 
     # PREPARE INPUTS
     arima_model   <- object$models$model_1
