@@ -679,10 +679,10 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
 #' @export
 print.arima_xgboost_fit_impl <- function(x, ...) {
     cat("---\n")
-    cat("Model 1: Standard ARIMA:\n\n")
+    cat("Model 1: Standard ARIMA\n\n")
     print(x$models$model_1)
     cat("\n---\n")
-    cat("Model 2: XGBoost ARIMA Errors:\n\n")
+    cat("Model 2: XGBoost ARIMA Errors\n\n")
     print(x$models$model_2$call)
     invisible(x)
 }
