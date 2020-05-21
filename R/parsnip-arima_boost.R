@@ -454,8 +454,7 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
 
     # XREGS
     # Clean names, get xreg recipe, process predictors
-    predictor   <- janitor::clean_names(predictor)
-    xreg_recipe <- prepare_xreg_recipe_from_predictors(predictor, prepare = TRUE)
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     xreg_tbl    <- juice_xreg_recipe(xreg_recipe, format = "tbl")
 
     # FIT
@@ -609,8 +608,7 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
 
     # XREGS
     # Clean names, get xreg recipe, process predictors
-    predictor   <- janitor::clean_names(predictor)
-    xreg_recipe <- prepare_xreg_recipe_from_predictors(predictor, prepare = TRUE)
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     xreg_tbl    <- juice_xreg_recipe(xreg_recipe, format = "tbl")
 
     # FIT
@@ -717,7 +715,6 @@ arima_xgboost_predict_impl <- function(object, new_data, ...) {
     h_horizon     <- nrow(new_data)
 
     # XREG
-    new_data    <- janitor::clean_names(new_data)
     xreg_tbl    <- bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
 
     # PREDICTIONS

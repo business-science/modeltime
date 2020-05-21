@@ -339,8 +339,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
 
     # XREGS
     # Clean names, get xreg recipe, process predictors
-    predictor   <- janitor::clean_names(predictor)
-    xreg_recipe <- prepare_xreg_recipe_from_predictors(predictor, prepare = TRUE)
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
 
     # FIT
@@ -419,8 +418,7 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
 
     # XREGS
     # Clean names, get xreg recipe, process predictors
-    predictor   <- janitor::clean_names(predictor)
-    xreg_recipe <- prepare_xreg_recipe_from_predictors(predictor, prepare = TRUE)
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
 
     # FIT
@@ -499,7 +497,6 @@ Arima_predict_impl <- function(object, new_data, ...) {
     h_horizon   <- nrow(new_data)
 
     # XREG
-    new_data    <- janitor::clean_names(new_data)
     xreg_matrix <- bake_xreg_recipe(xreg_recipe, new_data, format = "matrix")
 
     # PREDICTIONS
