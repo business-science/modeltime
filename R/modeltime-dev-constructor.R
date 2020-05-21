@@ -42,13 +42,17 @@ new_modeltime_bridge <- function(class, models, data, extras = NULL) {
     if (missing(class)) rlang::abort("'class' must be a character vector. This is used to define a print method.")
     if (!is.character(class)) rlang::abort("'class' must be a character vector. This is used to define a print method.")
 
-    if (missing(models)) rlang::abort("'models' should be a list.")
-    if (!is.list(models)) rlang::abort("'models' should be a list.")
+    msg <- "'models' should be a list:\n1. The first model should named 'model_1'.\n2. Subsequent models should be named 'model_2' and so on."
+    if (missing(models)) rlang::abort(paste0("'models' is missing.\n\n", msg))
+    if (!is.list(models)) rlang::abort(paste0("'models' is not a list().\n\n", msg))
+    if (!all(stringr::str_detect(names(models), pattern = "^model_"))) rlang::abort(paste0("'model' has bad list names. Try naming 'model_1'.\n\n", msg))
 
-    if (missing(data)) rlang::abort("'data' should be a data frame (or tibble) containing 4 columns: (date column with name that matches input data), .value, .fitted, and .resid.")
-    if (!is.data.frame(data)) rlang::abort("'data' should be a data frame (or tibble) containing 4 columns: (date column with name that matches input data), .value, .fitted, and .resid.")
+    msg <- "'data' should be a data frame (or tibble) containing 4 columns:\n1. date column (with name that matches input data)\n2. .value (these are the original values your model predicts from)\n3. .fitted (these are your model's in-sample predictions)\n4. .resid (these are your errors)"
+    if (missing(data)) rlang::abort(paste0("'data' is missing.\n\n", msg))
+    if (!is.data.frame(data)) rlang::abort(paste0("'data' is not a data.frame\n\n", msg))
+    if (ncol(data) != 4) rlang::abort(paste0("'data' does not have 4 columns\n\n", msg))
     if (!all(c(".value", ".fitted", ".resid") %in% names(data))) {
-        rlang::abort("'data' should be a data frame (or tibble) containing 4 columns: (date column with name that matches input data), .value, .fitted, and .resid.")
+        rlang::abort(paste0("Column names don't contain: .value, .fitted, and .resid.\n\n", msg))
     }
 
     if (!is.null(extras)) {
