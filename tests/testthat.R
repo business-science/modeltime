@@ -9,5 +9,6 @@ library(tune)
 library(yardstick)
 library(timetk)
 library(modeltime)
+library(stats)
 
 test_check("modeltime")
