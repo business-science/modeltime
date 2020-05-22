@@ -495,40 +495,49 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
         xgboost_fitted    <- rep(0, length(arima_residuals))
     }
 
-    # GET FITTED & RESIDUALS
+    # RETURN A NEW MODELTIME BRIDGE
 
-    # RETURN
-    new_modeltime_bridge(
-        class = "auto_arima_xgboost_fit_impl",
+    # Class - Add a class for the model
+    class <- "auto_arima_xgboost_fit_impl"
 
-        # Models
-        models = list(
-            model_1 = fit_arima,
-            model_2 = fit_xgboost
-        ),
-
-        # Data
-        data = tibble::tibble(
-                !! idx_col  := idx,
-                .value      =  y
-            ) %>%
-            dplyr::mutate(
-                .fitted =  arima_fitted + xgboost_fitted,
-                .resid  = .value - .fitted
-            ),
-
-        # Preprocessing Recipe (prepped) - Used in predict method
-        extras = list(
-            xreg_recipe = xreg_recipe
-        )
+    # Models - Insert model_1 and model_2 into a list
+    models <- list(
+        model_1 = fit_arima,
+        model_2 = fit_xgboost
     )
 
+    # Data - Start with index tbl and add .value, .fitted, and .resid columns
+    data <- index_tbl %>%
+        dplyr::mutate(
+            .value  =  y,
+            .fitted =  arima_fitted + xgboost_fitted,
+            .resid  = .value - .fitted
+        )
+
+    # Extras - Pass on transformation recipe
+    extras <- list(
+        xreg_recipe = xreg_recipe
+    )
+
+    # Model Description - Gets printed to describe the high-level model structure
+    desc <- paste0(get_arima_desc_from_arima_object(fit_arima), " w/ XGBoost Errors")
+
+    # Create new model
+    new_modeltime_bridge(
+        class  = class,
+        models = models,
+        data   = data,
+        extras = extras,
+        desc   = desc
+    )
 }
 
 #' @export
 print.auto_arima_xgboost_fit_impl <- function(x, ...) {
+
+    if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
     cat("---\n")
-    cat("Model 1: Auto ARIMA\n\n")
+    cat("Model 1: Auto ARIMA\n")
     print(x$models$model_1)
     cat("\n---\n")
     cat("Model 2: XGBoost ARIMA Errors\n\n")
@@ -644,40 +653,50 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
         xgboost_fitted    <- rep(0, length(arima_residuals))
     }
 
-    # GET FITTED & RESIDUALS
+    # RETURN A NEW MODELTIME BRIDGE
 
-    # RETURN
-    new_modeltime_bridge(
-        class = "arima_xgboost_fit_impl",
+    # Class - Add a class for the model
+    class <- "arima_xgboost_fit_impl"
 
-        # Models
-        models = list(
-            model_1 = fit_arima,
-            model_2 = fit_xgboost
-        ),
+    # Models - Insert model_1 and model_2 into a list
+    models <- list(
+        model_1 = fit_arima,
+        model_2 = fit_xgboost
+    )
 
-        # Data
-        data = tibble::tibble(
-            !! idx_col  := idx,
-            .value      =  y
-        ) %>%
-            dplyr::mutate(
-                .fitted =  arima_fitted + xgboost_fitted,
-                .resid  = .value - .fitted
-            ),
-
-        # Preprocessing Recipe (prepped) - Used in predict method
-        extras = list(
-            xreg_recipe = xreg_recipe
+    # Data - Start with index tbl and add .value, .fitted, and .resid columns
+    data <- index_tbl %>%
+        dplyr::mutate(
+            .value  =  y,
+            .fitted =  arima_fitted + xgboost_fitted,
+            .resid  = .value - .fitted
         )
+
+    # Extras - Pass on transformation recipe
+    extras <- list(
+        xreg_recipe = xreg_recipe
+    )
+
+    # Model Description - Gets printed to describe the high-level model structure
+    desc <- paste0(get_arima_desc_from_arima_object(fit_arima), " w/ XGBoost Errors")
+
+    # Create new model
+    new_modeltime_bridge(
+        class  = class,
+        models = models,
+        data   = data,
+        extras = extras,
+        desc   = desc
     )
 
 }
 
 #' @export
 print.arima_xgboost_fit_impl <- function(x, ...) {
+
+    if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
     cat("---\n")
-    cat("Model 1: Standard ARIMA\n\n")
+    cat("Model 1: Standard ARIMA\n")
     print(x$models$model_1)
     cat("\n---\n")
     cat("Model 2: XGBoost ARIMA Errors\n\n")

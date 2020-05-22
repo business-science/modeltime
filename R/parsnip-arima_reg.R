@@ -371,7 +371,9 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
         # Preprocessing Recipe (prepped) - Used in predict method
         extras = list(
             xreg_recipe = xreg_recipe
-        )
+        ),
+
+        desc = get_arima_desc_from_arima_object(fit_arima)
     )
 
 }
@@ -457,7 +459,9 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
         # Preprocessing Recipe (prepped) - Used in predict method
         extras = list(
             xreg_recipe = xreg_recipe
-        )
+        ),
+
+        desc = get_arima_desc_from_arima_object(fit_arima)
     )
 
 }

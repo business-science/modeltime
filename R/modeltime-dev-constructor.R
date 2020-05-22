@@ -9,6 +9,7 @@
 #'  (date column with name that matches input data), .value, .fitted, and .resid.
 #' @param extras An optional list that is typically used for transferring preprocessing recipes
 #'  to the predict method.
+#' @param desc An optional model description to appear when printing your modeltime objects
 #'
 #'
 #' @examples
@@ -37,7 +38,7 @@
 #'
 #'
 #' @export
-new_modeltime_bridge <- function(class, models, data, extras = NULL) {
+new_modeltime_bridge <- function(class, models, data, extras = NULL, desc = NULL) {
 
     if (missing(class)) rlang::abort("'class' must be a character vector. This is used to define a print method.")
     if (!is.character(class)) rlang::abort("'class' must be a character vector. This is used to define a print method.")
@@ -55,15 +56,23 @@ new_modeltime_bridge <- function(class, models, data, extras = NULL) {
         rlang::abort(paste0("Column names don't contain: .value, .fitted, and .resid.\n\n", msg))
     }
 
+    msg <- "'extras' should be a list. It's often used for adding preprocessing recipes."
     if (!is.null(extras)) {
-        if (!is.list(extras)) rlang::abort("'extras' should be a list. It's often used for adding preprocessing recipes.")
+        if (!is.list(extras)) rlang::abort(msg)
+    }
+
+    msg <- "'desc' should be a single character value. It's often used for printing a description of your model using a print method."
+    if (!is.null(desc)) {
+        if (!is.character(desc)) rlang::abort(paste0("'desc' is not of class character.\n", msg))
+        if (length(desc) != 1) rlang::abort(paste0("'desc' length is not 1.\n", msg))
     }
 
     # CONSTRUCTOR
     ret <- list(
         models = models,
         data   = data,
-        extras = extras
+        extras = extras,
+        desc   = desc
     )
 
     class(ret) <- c(class, "modeltime_bridge")
@@ -74,6 +83,7 @@ new_modeltime_bridge <- function(class, models, data, extras = NULL) {
 
 #' @export
 print.modeltime_bridge <- function(x, ...) {
+    if (!is.null(x$desc)) cat(paste0(x$desc, "\n"))
     print(x$models)
     invisible(x)
 }

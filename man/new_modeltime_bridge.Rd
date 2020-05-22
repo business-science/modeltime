@@ -4,7 +4,7 @@
 \alias{new_modeltime_bridge}
 \title{Tools for creating modeltime models}
 \usage{
-new_modeltime_bridge(class, models, data, extras = NULL)
+new_modeltime_bridge(class, models, data, extras = NULL, desc = NULL)
 }
 \arguments{
 \item{class}{A class name that is used for creating custom printing messages}
@@ -16,6 +16,8 @@ new_modeltime_bridge(class, models, data, extras = NULL)
 
 \item{extras}{An optional list that is typically used for transferring preprocessing recipes
 to the predict method.}
+
+\item{desc}{An optional model description to appear when printing your modeltime objects}
 }
 \description{
 These functions are used to construct new \code{modeltime} bridge functions that

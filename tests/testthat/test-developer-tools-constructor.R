@@ -18,7 +18,8 @@ bridge <- new_modeltime_bridge(
     class  = "lm_time_series_impl",
     models = list(model_1 = lm_model),
     data   = data,
-    extras = NULL
+    extras = NULL,
+    desc   = NULL
 )
 
 # Tests ----
@@ -114,6 +115,28 @@ test_that("modeltime bridge: Bad Structures", {
             models = list("model_1" = lm_model),
             data   = data,
             extras = 1
+        )
+    })
+
+    # desc not a character
+    expect_error({
+        new_modeltime_bridge(
+            class  = "lm_time_series_impl",
+            models = list("model_1" = lm_model),
+            data   = data,
+            extras = NULL,
+            desc   = 1
+        )
+    })
+
+    # desc not length 1
+    expect_error({
+        new_modeltime_bridge(
+            class  = "lm_time_series_impl",
+            models = list("model_1" = lm_model),
+            data   = data,
+            extras = NULL,
+            desc   = c("a", "b")
         )
     })
 
