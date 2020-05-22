@@ -4,13 +4,21 @@
 \alias{modeltime_accuracy}
 \title{Calculate Accuracy Metrics}
 \usage{
-modeltime_accuracy(object, new_data = NULL, ...)
+modeltime_accuracy(
+  object,
+  new_data = NULL,
+  metric_set = default_forecast_accuracy_metric_set(),
+  ...
+)
 }
 \arguments{
 \item{object}{A fitted model object that is either (1) a workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
 (2) a parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}}
 
-\item{new_data}{A \code{tibble} containing future information .}
+\item{new_data}{A \code{tibble} containing future information (timestamps and actual values).}
+
+\item{metric_set}{A \code{\link[=metric_set]{metric_set()}} that is used to summarize one or more
+forecast accuracy (regression) metrics.}
 
 \item{...}{Not currently used.}
 }
@@ -22,7 +30,7 @@ This is a wrapper for \code{yardstick} that simplifies accuracy metric
 calculations from a fitted \code{workflow} (trained workflow) or \code{model_fit} (trained parsnip model).
 }
 \details{
-The following accuracy metrics are included by default:
+The following accuracy metrics are included by default via \code{\link[=default_forecast_accuracy_metric_set]{default_forecast_accuracy_metric_set()}}:
 \itemize{
 \item MAE - Mean absolute error, \code{\link[=mae_vec]{mae_vec()}}
 \item MAPE - Mean absolute percentage error, \code{\link[=mape_vec]{mape_vec()}}
@@ -36,6 +44,7 @@ The following accuracy metrics are included by default:
 library(dplyr)
 library(parsnip)
 library(rsample)
+library(yardstick)
 library(timetk)
 library(modeltime)
 
@@ -63,7 +72,15 @@ model_fit <- model_spec \%>\%
 
 # --- ACCURACY ---
 
+# Default accuracy metrics
 model_fit \%>\%
     modeltime_accuracy(new_data = testing(splits))
+
+# Supply new accuracy metrics
+model_fit \%>\%
+    modeltime_accuracy(
+        new_data   = testing(splits),
+        metric_set = metric_set(mae, rmse)
+    )
 
 }
