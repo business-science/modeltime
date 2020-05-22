@@ -122,6 +122,31 @@ modeltime_accuracy.workflow <- function(object, new_data = NULL,
 
 }
 
+#' @export
+modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
+                                            metric_set = default_forecast_accuracy_metric_set(), ...) {
+    data <- object
+
+    ret <- data %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(.nested.col = purrr::map(
+            .x         = .model,
+            .f         = function(obj) modeltime_accuracy(
+
+                object     = obj,
+                new_data   = new_data,
+                metric_set = metric_set,
+                ...
+
+            )
+        )) %>%
+        dplyr::select(-.model) %>%
+        tidyr::unnest(cols = .nested.col)
+    # ret <- data
+
+    return(ret)
+}
+
 # DEFAULT METRIC SET ----
 
 #' Forecast Accuracy Metrics Sets
