@@ -1,14 +1,19 @@
 library(testthat)
-library(tidyverse)
-library(lubridate)
+
+library(stats)
 library(parsnip)
 library(workflows)
 library(rsample)
 library(recipes)
 library(tune)
+library(dials)
 library(yardstick)
+
 library(timetk)
 library(modeltime)
-library(stats)
+
+library(tidyverse)
+library(lubridate)
+
 
 test_check("modeltime")
