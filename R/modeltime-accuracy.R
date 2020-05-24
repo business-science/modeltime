@@ -127,19 +127,29 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                                             metric_set = default_forecast_accuracy_metric_set(), ...) {
     data <- object
 
+    safe_modeltime_accuracy <- purrr::safely(modeltime_accuracy, otherwise = NA)
+
     ret <- data %>%
         dplyr::ungroup() %>%
         dplyr::mutate(.nested.col = purrr::map(
             .x         = .model,
-            .f         = function(obj) modeltime_accuracy(
-
-                object     = obj,
-                new_data   = new_data,
+            .f         = function(obj) safe_modeltime_accuracy(
+                obj,
+                new_data = new_data,
                 metric_set = metric_set,
                 ...
+            ) %>%
+                purrr::pluck("result")
+
+            # .f         = function(obj) modeltime_accuracy(
+            #
+            #     object     = obj,
+            #     new_data   = new_data,
+            #     metric_set = metric_set,
+            #     ...
 
             )
-        )) %>%
+        ) %>%
         dplyr::select(-.model) %>%
         tidyr::unnest(cols = .nested.col)
     # ret <- data
@@ -207,12 +217,30 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
 
     model_fit <- object
 
-    metrics_tbl <- train_data %>%
-        tibble::add_column(.type = "Training", .before = 1) %>%
-        dplyr::group_by(.type) %>%
-        summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
-        dplyr::ungroup()
 
+    # Training Metrics
+    # if (is.null(train_data)) {
+    #     metrics_tbl <- tibble::tibble(
+    #         .type = "Training"
+    #     )
+    # } else {
+    #     metrics_tbl <- train_data %>%
+    #         tibble::add_column(.type = "Training", .before = 1) %>%
+    #         dplyr::group_by(.type) %>%
+    #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
+    #         dplyr::ungroup()
+    # }
+    train_metrics_tbl <- tibble::tibble()
+    if (!is.null(train_data)) {
+        train_metrics_tbl <- train_data %>%
+            tibble::add_column(.type = "Training", .before = 1) %>%
+            dplyr::group_by(.type) %>%
+            summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
+            dplyr::ungroup()
+    }
+
+    # Testing Metrics
+    test_metrics_tbl <- tibble::tibble()
     if (!is.null(test_data)) {
 
         predictions_tbl <- object %>%
@@ -229,9 +257,9 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
             summarize_accuracy_metrics(actual, prediction, metric_set) %>%
             dplyr::ungroup()
 
-        metrics_tbl <- dplyr::bind_rows(metrics_tbl, test_metrics_tbl)
-
     }
+
+    metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
 
     return(metrics_tbl)
 }

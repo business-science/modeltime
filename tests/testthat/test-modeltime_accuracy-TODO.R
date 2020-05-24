@@ -1,4 +1,3 @@
-# FORECAST PLOTS -----
 context("TEST MODELTIME ACCURACY")
 
 # SETUP ----

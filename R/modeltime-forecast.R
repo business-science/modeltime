@@ -177,11 +177,32 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
             # Set ID & Index
             actual_data <- actual_data %>%
                 dplyr::mutate(.id = "actual") %>%
-                dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors)) %>%
-                dplyr::rename(!! object$preproc$y_var := 1)
+                dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+
+            # Common for Data.Frame Style
+            # If preproc, rename first variable the target name
+            pp_names <- names(object$preproc)
+            if (any(pp_names == "terms") | any(pp_names == "x_var")) {
+                actual_data <- actual_data %>%
+                    dplyr::rename(!! object$preproc$y_var := 1)
+            }
 
             # Get the target variable symbol
             target_sym <- rlang::sym(object$preproc$y_var)
+
+            # Problem with Formula Style (e.g. stats::lm() ):
+            # - Need to search model for formula LHS to know transformation
+            # - Use find_formula_lhs() to search first level for formula
+            if (object$spec$method$fit$interface == "formula") {
+
+                formula_lhs <- find_formula_lhs(object$fit)
+                if (!is.null(formula_lhs)) {
+                    actual_data <- actual_data %>%
+                        dplyr::mutate(!! target_sym := eval(formula_lhs))
+                } else {
+                    warning(call. = FALSE, paste0("Cannot determine if transformation is required on 'actual_data'"))
+                }
+            }
 
             data_formatted <- data_formatted %>%
                 dplyr::bind_rows(actual_data) %>%
@@ -486,3 +507,24 @@ will_make_matrix <- function(y) {
             is.atomic(x) & !is.factor(x), logical(1))
     all(can_convert)
 }
+
+find_formula_lhs <- function(object) {
+
+    check_formula_tbl <- object %>%
+        purrr::map_dfr(~is_formula(.)) %>%
+        tidyr::gather() %>%
+        dplyr::filter(value)
+
+    formula_found <- FALSE
+    if (nrow(check_formula_tbl) == 1) {
+        formula_found <- TRUE
+    }
+
+    lhs <- NULL
+    if (formula_found) {
+        lhs <- rlang::f_lhs(object[[check_formula_tbl$key]])
+    }
+
+    return(lhs)
+}
+
