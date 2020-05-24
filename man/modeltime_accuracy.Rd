@@ -8,6 +8,7 @@ modeltime_accuracy(
   object,
   new_data = NULL,
   metric_set = default_forecast_accuracy_metric_set(),
+  quiet = TRUE,
   ...
 )
 }
@@ -20,7 +21,9 @@ modeltime_accuracy(
 \item{metric_set}{A \code{\link[=metric_set]{metric_set()}} that is used to summarize one or more
 forecast accuracy (regression) metrics.}
 
-\item{...}{Not currently used.}
+\item{quiet}{Hide errors (\code{TRUE}, the default), or display them as they occur?}
+
+\item{...}{Additional arguments passed to \code{\link[=modeltime_forecast]{modeltime_forecast()}}.}
 }
 \value{
 A tibble with accuracy estimates.
@@ -32,12 +35,12 @@ calculations from a fitted \code{workflow} (trained workflow) or \code{model_fit
 \details{
 The following accuracy metrics are included by default via \code{\link[=default_forecast_accuracy_metric_set]{default_forecast_accuracy_metric_set()}}:
 \itemize{
-\item MAE - Mean absolute error, \code{\link[=mae_vec]{mae_vec()}}
-\item MAPE - Mean absolute percentage error, \code{\link[=mape_vec]{mape_vec()}}
-\item MASE  - Mean absolute scaled errror, \code{\link[=mase_vec]{mase_vec()}}
-\item SMAPE - Symmetric mean absolute percentage error, \code{\link[=smape_vec]{smape_vec()}}
-\item RMSE  - Root mean squared error, \code{\link[=rmse_vec]{rmse_vec()}}
-\item RSQ   - R-squared, \code{\link[=rsq_vec]{rsq_vec()}}
+\item MAE - Mean absolute error, \code{\link[=mae]{mae()}}
+\item MAPE - Mean absolute percentage error, \code{\link[=mape]{mape()}}
+\item MASE  - Mean absolute scaled error, \code{\link[=mase]{mase()}}
+\item SMAPE - Symmetric mean absolute percentage error, \code{\link[=smape]{smape()}}
+\item RMSE  - Root mean squared error, \code{\link[=rmse]{rmse()}}
+\item RSQ   - R-squared, \code{\link[=rsq]{rsq()}}
 }
 }
 \examples{

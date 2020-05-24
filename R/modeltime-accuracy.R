@@ -10,7 +10,8 @@
 #' @param new_data A `tibble` containing future information (timestamps and actual values).
 #' @param metric_set A [metric_set()] that is used to summarize one or more
 #'  forecast accuracy (regression) metrics.
-#' @param ... Not currently used.
+#' @param quiet Hide errors (`TRUE`, the default), or display them as they occur?
+#' @param ... Additional arguments passed to [modeltime_forecast()].
 #'
 #'
 #' @return A tibble with accuracy estimates.
@@ -19,12 +20,12 @@
 #'
 #' The following accuracy metrics are included by default via [default_forecast_accuracy_metric_set()]:
 #'
-#' - MAE - Mean absolute error, [mae_vec()]
-#' - MAPE - Mean absolute percentage error, [mape_vec()]
-#' - MASE  - Mean absolute scaled errror, [mase_vec()]
-#' - SMAPE - Symmetric mean absolute percentage error, [smape_vec()]
-#' - RMSE  - Root mean squared error, [rmse_vec()]
-#' - RSQ   - R-squared, [rsq_vec()]
+#' - MAE - Mean absolute error, [mae()]
+#' - MAPE - Mean absolute percentage error, [mape()]
+#' - MASE  - Mean absolute scaled error, [mase()]
+#' - SMAPE - Symmetric mean absolute percentage error, [smape()]
+#' - RMSE  - Root mean squared error, [rmse()]
+#' - RSQ   - R-squared, [rsq()]
 #'
 #'
 #'
@@ -77,29 +78,34 @@ NULL
 #' @export
 #' @rdname modeltime_accuracy
 modeltime_accuracy <- function(object, new_data = NULL,
-                               metric_set = default_forecast_accuracy_metric_set(), ...) {
+                               metric_set = default_forecast_accuracy_metric_set(),
+                               quiet = TRUE, ...) {
     UseMethod("modeltime_accuracy")
 }
 
 #' @export
 modeltime_accuracy.default <- function(object, new_data = NULL,
-                                       metric_set = default_forecast_accuracy_metric_set(), ...) {
+                                       metric_set = default_forecast_accuracy_metric_set(),
+                                       quiet = TRUE, ...) {
     rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class 'workflow' that has been fitted (trained) or 'model_fit' (a fitted parsnip model)."))
 }
 
 #' @export
 modeltime_accuracy.model_spec <- function(object, new_data = NULL,
-                                          metric_set = default_forecast_accuracy_metric_set(), ...) {
+                                          metric_set = default_forecast_accuracy_metric_set(),
+                                          quiet = TRUE, ...) {
     rlang::abort("Model spec must be trained using the 'fit()' function.")
 }
 
 #' @export
 modeltime_accuracy.model_fit <- function(object, new_data = NULL,
-                                         metric_set = default_forecast_accuracy_metric_set(), ...) {
+                                         metric_set = default_forecast_accuracy_metric_set(),
+                                         quiet = TRUE, ...) {
 
     data <- object$fit$data
 
-    ret <- calc_accuracy(object, train_data = data, test_data = new_data, metric_set = metric_set, ...)
+    ret <- calc_accuracy(object, train_data = data, test_data = new_data, metric_set = metric_set,
+                         quiet = quiet, ...)
 
     return(ret)
 
@@ -107,7 +113,8 @@ modeltime_accuracy.model_fit <- function(object, new_data = NULL,
 
 #' @export
 modeltime_accuracy.workflow <- function(object, new_data = NULL,
-                                        metric_set = default_forecast_accuracy_metric_set(), ...) {
+                                        metric_set = default_forecast_accuracy_metric_set(),
+                                        quiet = TRUE, ...) {
 
     # Checks
     if (!object$trained) {
@@ -124,23 +131,28 @@ modeltime_accuracy.workflow <- function(object, new_data = NULL,
 
 #' @export
 modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
-                                            metric_set = default_forecast_accuracy_metric_set(), ...) {
+                                            metric_set = default_forecast_accuracy_metric_set(),
+                                            quiet = TRUE, ...) {
     data <- object
 
-    safe_modeltime_accuracy <- purrr::safely(modeltime_accuracy, otherwise = NA)
+    safe_modeltime_accuracy <- purrr::safely(modeltime_accuracy, otherwise = NA, quiet = quiet)
 
     ret <- data %>%
         dplyr::ungroup() %>%
         dplyr::mutate(.nested.col = purrr::map(
             .x         = .model,
-            .f         = function(obj) safe_modeltime_accuracy(
+            .f         = function(obj) {
+                ret <- safe_modeltime_accuracy(
                     obj,
                     new_data = new_data,
                     metric_set = metric_set,
                     ...
-                ) %>%
-                    purrr::pluck("result")
-            )
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
         ) %>%
         dplyr::select(-.model) %>%
         tidyr::unnest(cols = .nested.col)
@@ -216,6 +228,8 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
 
 
     # Training Metrics
+    train_metrics_tbl <- tibble::tibble()
+
     # if (is.null(train_data)) {
     #     metrics_tbl <- tibble::tibble(
     #         .type = "Training"
@@ -227,7 +241,7 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
     #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
     #         dplyr::ungroup()
     # }
-    train_metrics_tbl <- tibble::tibble()
+
     # if (!is.null(train_data)) {
     #     train_metrics_tbl <- train_data %>%
     #         tibble::add_column(.type = "Training", .before = 1) %>%
@@ -244,7 +258,8 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
             modeltime_forecast(
                 new_data      = test_data,
                 actual_data   = test_data,
-                conf_interval = NULL
+                conf_interval = NULL,
+                ...
             )
 
         test_metrics_tbl <- predictions_tbl %>%
