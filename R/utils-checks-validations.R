@@ -1,6 +1,25 @@
 
 # CHECKS ----
 
+
+check_model_classes <- function(data, accept_classes = c("model_fit", "workflow")) {
+
+    # Class Check
+    ret_1 <- data %>%
+        dplyr::mutate(last_class = purrr::map_chr(.model, .f = function(obj) {
+            class(obj)[length(class(obj))]
+        })) %>%
+        dplyr::mutate(first_class = purrr::map_chr(.model, .f = function(obj) {
+            class(obj)[1]
+        })) %>%
+        dplyr::mutate(fail_check = purrr::map_lgl(.model, .f = function(obj) {
+            !inherits(obj, accept_classes)
+        }))
+
+    return(ret_1)
+
+}
+
 check_non_bad_class_data <- function(data, bad_classes = c("character")) {
 
     # Bad Class Check
@@ -50,6 +69,26 @@ check_unused_factor_levels <- function(data) {
 }
 
 # VALIDATIONS ----
+
+validate_model_classes <- function(data, accept_classes = c("model_fit", "workflow")) {
+
+    result_tbl <- check_model_classes(data, accept_classes) %>%
+        dplyr::filter(fail_check)
+
+    if (nrow(result_tbl) > 0) {
+        bad_models <- result_tbl$.model_id
+        bad_values <- glue::single_quote(result_tbl$first_class)
+        bad_msg    <- glue::glue("- Model {bad_models}: Is class {bad_values}")
+        bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
+
+        rlang::abort(glue::glue(
+            "All objects must be fitted workflow or parsnip models inheriting class 'workflow' or 'model_fit'. The following are not:",
+            "\n",
+            "{bad_msg}")
+        )
+    }
+
+}
 
 validate_non_bad_class_data <- function(data, bad_classes = c("character")) {
 

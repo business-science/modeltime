@@ -50,28 +50,32 @@
 #' @name modeltime_table
 modeltime_table <- function(...) {
 
-    # Checks
-    # - Make sure each model is class workflow or model_fit
-    # - Make sure y (outcome) is same for all models
-    #    - prevent models with transformations from being combined with non-transformations ???
-
     ret <- tibble::tibble(
         .model = list(...)
     ) %>%
-        tibble::rowid_to_column(var = ".model_id") %>%
+        tibble::rowid_to_column(var = ".model_id")
+
+    # CHECKS
+    validate_model_classes(ret)
+
+    ret <- ret %>%
         dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = function(x) {
 
             if (inherits(x, "model_fit")) {
                 desc <- x$fit$desc
                 if (is.null(desc)) {
                     desc <- toupper(x$spec$engine[1])
-                    # desc <- class(x$fit)[1]
+                    if (is.null(desc)) {
+                        desc <- class(x$fit)[1]
+                    }
                 }
             } else if (inherits(x, "workflow")) {
                 desc <- x$fit$fit$fit$desc
                 if (is.null(desc)) {
                     desc <- toupper(x$fit$fit$spec$engine[1])
-                    # desc <- class(x$fit$fit$fit)[1]
+                    if (is.null(desc)) {
+                        desc <- class(x$fit$fit$fit)[1]
+                    }
                 }
             } else {
                 rlang::abort("Object(s) must be fitted parsnip models or fitted workflows.")
@@ -91,5 +95,7 @@ print.mdl_time_tbl <- function(x, ...) {
     class(x) <- class(x)[!(class(x) %in% c("mdl_time_tbl"))]
     print(x, ...)
 }
+
+
 
 
