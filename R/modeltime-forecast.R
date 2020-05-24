@@ -348,6 +348,84 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
 }
 
+#' @export
+modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+
+    data <- object
+
+    safe_modeltime_forecast <- purrr::safely(modeltime_forecast, otherwise = NA, quiet = FALSE)
+
+    # Compute first model with actual data
+    ret_1 <- data %>%
+        dplyr::ungroup() %>%
+        dplyr::slice(1) %>%
+        dplyr::mutate(.nested.col = purrr::map(
+            .x         = .model,
+            .f         = function(obj) {
+
+                ret <- safe_modeltime_forecast(
+                    obj,
+                    new_data      = new_data,
+                    h             = h,
+                    conf_interval = NULL,
+                    actual_data   = actual_data,
+                    ...
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        ) %>%
+        dplyr::select(-.model) %>%
+        tidyr::unnest(cols = .nested.col)
+
+    if ("actual" %in% unique(ret_1$.id)) {
+        ret_1 <- ret_1 %>%
+            mutate(.model_desc = ifelse(.id == "actual", "ACTUAL", .model_desc)) %>%
+            mutate(.model_id = ifelse(.id == "actual", NA_integer_, .model_id))
+    }
+
+    # Compute subsequent models without actual data
+    ret_2 <- data %>%
+        dplyr::slice(2:dplyr::n()) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(.nested.col = purrr::map(
+            .x         = .model,
+            .f         = function(obj) {
+
+                ret <- safe_modeltime_forecast(
+                    obj,
+                    new_data      = new_data,
+                    h             = h,
+                    conf_interval = NULL,
+                    actual_data   = NULL,
+                    ...
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        ) %>%
+        dplyr::select(-.model) %>%
+        tidyr::unnest(cols = .nested.col)
+
+    if (".nested.col" %in% names(ret_1)) {
+        ret_1 <- ret_1 %>%
+            dplyr::select(-.nested.col)
+    }
+
+    if (".nested.col" %in% names(ret_2)) {
+        ret_2 <- ret_2 %>%
+            dplyr::select(-.nested.col)
+    }
+
+    ret <- dplyr::bind_rows(ret_1, ret_2)
+
+    return(ret)
+}
+
 # CONFIDENCE INTERVAL ESTIMATION ----
 
 add_conf_interval <- function(data, residuals, conf_interval, bootstrap = FALSE) {

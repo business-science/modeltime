@@ -22,7 +22,7 @@ model_fit_boosted <- arima_boost(
     seasonal_ma = 1,
     learn_rate = 0.01
 ) %>%
-    set_engine(engine = "auto_arima_xgboost") %>%
+    set_engine(engine = "arima_xgboost") %>%
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
@@ -76,7 +76,7 @@ model_fit_mars %>%
     modeltime_accuracy(new_data = testing(splits))
 
 # MARS workflow -----
-
+library(earth)
 model_spec <- mars(mode = "regression") %>%
     set_engine("earth")
 
@@ -90,6 +90,7 @@ wflw_fit_mars <- workflow() %>%
     fit(training(splits))
 
 wflw_fit_mars %>% modeltime_accuracy(testing(splits))
+
 
 # Compare ----
 model_table <- modeltime_table(
@@ -106,3 +107,17 @@ model_table
 
 model_table %>%
     modeltime_accuracy(new_data = testing(splits))
+
+model_forecast <- model_table %>%
+    modeltime_forecast(new_data = testing(splits),
+                       actual_data = bind_rows(training(splits), testing(splits)))
+
+# g <- model_forecast %>%
+#     mutate(.model_desc = ifelse(!is.na(.model_id), str_c(.model_id, "_", .model_desc), .model_desc)) %>%
+#     mutate(.model_desc = as_factor(.model_desc)) %>%
+#     ggplot(aes(.index, .value, color = .model_desc)) +
+#     geom_line() +
+#     tidyquant::scale_color_tq() +
+#     tidyquant::theme_tq()
+#
+# plotly::ggplotly(g)
