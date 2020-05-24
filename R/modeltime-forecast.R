@@ -171,24 +171,27 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         if (fit_interface == "formula") {
             nm_target <- object$preproc$y_var
 
-            # Applies any preprocessing
-            actual_data <- prepare_data(object, actual_data) %>% tibble::as_tibble()
+            # Get the index and target variable symbol
+            idx        <- actual_data %>% timetk::tk_index()
+            target_sym <- rlang::sym(object$preproc$y_var)
 
             # Set ID & Index
             actual_data <- actual_data %>%
                 dplyr::mutate(.id = "actual") %>%
-                dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+                dplyr::mutate(.index = idx)
 
-            # Common for Data.Frame Style
+            # Common for Data.Frame Style - Apply transformation to target variable if needed
             # If preproc, rename first variable the target name
             pp_names <- names(object$preproc)
             if (any(pp_names == "terms") | any(pp_names == "x_var")) {
-                actual_data <- actual_data %>%
-                    dplyr::rename(!! object$preproc$y_var := 1)
+                formula_lhs <- find_formula_lhs(object$preproc)
+                if (!is.null(formula_lhs)) {
+                    actual_data <- actual_data %>%
+                        dplyr::mutate(!! target_sym := eval(formula_lhs))
+                } else {
+                    warning(call. = FALSE, paste0("Cannot determine if transformation is required on 'actual_data'"))
+                }
             }
-
-            # Get the target variable symbol
-            target_sym <- rlang::sym(object$preproc$y_var)
 
             # Problem with Formula Style (e.g. stats::lm() ):
             # - Need to search model for formula LHS to know transformation
@@ -413,105 +416,10 @@ normal_ci <- function(residuals, conf_interval = 0.8) {
 
 # PARSNIP HELPERS ----
 
-prepare_data <- function(object, new_data) {
-    fit_interface <- object$spec$method$fit$interface
-
-    pp_names <- names(object$preproc)
-    if (any(pp_names == "terms") | any(pp_names == "x_var")) {
-        # Translation code
-        if (fit_interface == "formula") {
-            new_data <- convert_xy_to_form_new(object$preproc, new_data)
-        } else {
-            new_data <- convert_form_to_xy_new(object$preproc, new_data)$x
-        }
-    }
-    switch(
-        fit_interface,
-        none = new_data,
-        data.frame = as.data.frame(new_data),
-        matrix = as.matrix(new_data),
-        new_data
-    )
-}
-
-#' @importFrom stats na.pass
-convert_form_to_xy_new <- function(object, new_data, na.action = na.pass,
-                                   composition = "data.frame") {
-    if (!(composition %in% c("data.frame", "matrix")))
-        rlang::abort("`composition` should be either 'data.frame' or 'matrix'.")
-
-    mod_terms <- object$terms
-    # mod_terms <- delete.response(mod_terms)
-
-    # Calculate offset(s). These can show up in-line in the formula
-    # (in multiple places) and might also be as its own argument. If
-    # there is more than one offset, we add them together.
-
-    offset_cols <- attr(mod_terms, "offset")
-
-    # If offset was done at least once in-line
-    if (!is.null(offset_cols)) {
-        offset <- rep(0, nrow(new_data))
-        for (i in offset_cols)
-            offset <- offset +
-                rlang::eval_tidy(attr(mod_terms, "variables")[[i + 1]], new_data) # use na.action here and below?
-    } else offset <- NULL
-
-    if (!is.null(object$offset_expr)) {
-        if (is.null(offset))
-            offset <- rep(0, nrow(new_data))
-        offset <- offset + rlang::eval_tidy(object$offset_expr, new_data)
-    }
-
-    new_data <-
-        stats::model.frame(
-            mod_terms,
-            new_data,
-            na.action = na.action,
-            xlev = object$xlevels)
-
-    cl <- attr(mod_terms, "dataClasses")
-    if (!is.null(cl))
-        stats::.checkMFClasses(cl, new_data)
-
-    if(object$options$indicators) {
-        new_data <- stats::model.matrix(mod_terms, new_data, contrasts.arg = object$contrasts)
-    }
-
-    new_data <- new_data[, colnames(new_data) != "(Intercept)", drop = FALSE]
-
-    if (composition == "data.frame")
-        new_data <- as.data.frame(new_data)
-    else {
-        if (will_make_matrix(new_data))
-            new_data <- as.matrix(new_data)
-    }
-    list(x = new_data, offset = offset)
-}
-
-convert_xy_to_form_new <- function(object, new_data) {
-    new_data <- new_data[, c(object$x_var), drop = FALSE]
-    if (!is.data.frame(new_data))
-        new_data <- as.data.frame(new_data)
-    new_data
-}
-
-will_make_matrix <- function(y) {
-    if (is.matrix(y) | is.vector(y))
-        return(FALSE)
-    cls <- unique(unlist(lapply(y, class)))
-    if (length(cls) > 1)
-        return(FALSE)
-    can_convert <-
-        vapply(y, function(x)
-            is.atomic(x) & !is.factor(x), logical(1))
-    all(can_convert)
-}
-
 find_formula_lhs <- function(object) {
 
     check_formula_tbl <- object %>%
-        purrr::map_dfr(~is_formula(.)) %>%
+        purrr::map_dfr(~ rlang::is_formula(.)) %>%
         tidyr::gather() %>%
         dplyr::filter(value)
 

@@ -134,25 +134,22 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
         dplyr::mutate(.nested.col = purrr::map(
             .x         = .model,
             .f         = function(obj) safe_modeltime_accuracy(
-                obj,
-                new_data = new_data,
-                metric_set = metric_set,
-                ...
-            ) %>%
-                purrr::pluck("result")
-
-            # .f         = function(obj) modeltime_accuracy(
-            #
-            #     object     = obj,
-            #     new_data   = new_data,
-            #     metric_set = metric_set,
-            #     ...
-
+                    obj,
+                    new_data = new_data,
+                    metric_set = metric_set,
+                    ...
+                ) %>%
+                    purrr::pluck("result")
             )
         ) %>%
         dplyr::select(-.model) %>%
         tidyr::unnest(cols = .nested.col)
     # ret <- data
+
+    if (".nested.col" %in% names(ret)) {
+        ret <- ret %>%
+            dplyr::select(-.nested.col)
+    }
 
     return(ret)
 }

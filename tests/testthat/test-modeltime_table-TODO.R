@@ -37,10 +37,8 @@ wflw_fit_arima <- workflow() %>%
 
 # LM (Parsnip Model) ----
 
-model_spec <- linear_reg() %>%
-    set_engine("lm")
-
-model_fit_lm <- model_spec %>%
+model_fit_lm <- linear_reg() %>%
+    set_engine("lm") %>%
     fit(log(value) ~ as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
@@ -59,6 +57,18 @@ wflw_fit_lm <- workflow() %>%
     add_model(model_spec) %>%
     fit(training(splits))
 
+# MARS (Parsnip Model) ----
+
+model_fit_mars <- mars(mode = "regression") %>%
+    set_engine("earth") %>%
+    fit(log(value) ~ as.numeric(date),
+        data = training(splits))
+
+model_fit_mars %>%
+    predict(new_data = testing(splits))
+
+model_fit_mars %>%
+    modeltime_accuracy(new_data = testing(splits))
 
 # Compare ----
 model_table <- modeltime_table(
@@ -66,7 +76,8 @@ model_table <- modeltime_table(
     model_fit_boosted,
     wflw_fit_arima,
     model_fit_lm,
-    wflw_fit_lm
+    wflw_fit_lm,
+    model_fit_mars
 )
 
 model_table
