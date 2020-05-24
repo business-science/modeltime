@@ -14,8 +14,13 @@ model_fit_no_boost <- arima_reg() %>%
 
 # arima_boost ----
 model_fit_boosted <- arima_boost(
-    min_n = 2,
-    learn_rate = 0.015
+    non_seasonal_ar = 0,
+    non_seasonal_differences = 1,
+    non_seasonal_ma = 1,
+    seasonal_ar = 1,
+    seasonal_differences = 1,
+    seasonal_ma = 1,
+    learn_rate = 0.01
 ) %>%
     set_engine(engine = "auto_arima_xgboost") %>%
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
@@ -61,7 +66,7 @@ wflw_fit_lm <- workflow() %>%
 
 model_fit_mars <- mars(mode = "regression") %>%
     set_engine("earth") %>%
-    fit(log(value) ~ as.numeric(date),
+    fit(log(value) ~ as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
 model_fit_mars %>%
@@ -70,6 +75,22 @@ model_fit_mars %>%
 model_fit_mars %>%
     modeltime_accuracy(new_data = testing(splits))
 
+# MARS workflow -----
+
+model_spec <- mars(mode = "regression") %>%
+    set_engine("earth")
+
+recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+    step_date(date, features = "month") %>%
+    step_log(value)
+
+wflw_fit_mars <- workflow() %>%
+    add_recipe(recipe_spec) %>%
+    add_model(model_spec) %>%
+    fit(training(splits))
+
+wflw_fit_mars %>% modeltime_accuracy(testing(splits))
+
 # Compare ----
 model_table <- modeltime_table(
     model_fit_no_boost,
@@ -77,18 +98,11 @@ model_table <- modeltime_table(
     wflw_fit_arima,
     model_fit_lm,
     wflw_fit_lm,
-    model_fit_mars
+    model_fit_mars,
+    wflw_fit_mars
 )
 
 model_table
 
 model_table %>%
     modeltime_accuracy(new_data = testing(splits))
-
-model_fit_lm %>%
-    modeltime_accuracy()
-
-model_fit_lm %>%
-    modeltime_accuracy(new_data = testing(splits))
-
-model_fit_lm %>% modeltime_forecast(new_data = testing(splits), actual_data = testing(splits))

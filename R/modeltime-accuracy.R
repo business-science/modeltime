@@ -228,13 +228,13 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
     #         dplyr::ungroup()
     # }
     train_metrics_tbl <- tibble::tibble()
-    if (!is.null(train_data)) {
-        train_metrics_tbl <- train_data %>%
-            tibble::add_column(.type = "Training", .before = 1) %>%
-            dplyr::group_by(.type) %>%
-            summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
-            dplyr::ungroup()
-    }
+    # if (!is.null(train_data)) {
+    #     train_metrics_tbl <- train_data %>%
+    #         tibble::add_column(.type = "Training", .before = 1) %>%
+    #         dplyr::group_by(.type) %>%
+    #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
+    #         dplyr::ungroup()
+    # }
 
     # Testing Metrics
     test_metrics_tbl <- tibble::tibble()
