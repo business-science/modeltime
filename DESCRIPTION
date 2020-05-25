@@ -5,13 +5,10 @@ Authors@R:
     person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre"))
 Description: 
     Time series models for use with the 'parsnip' package. 
-    Models include ARIMA, ETS, Prophet, and additional time series models
+    Models include ARIMA, ETS, and additional time series models
     from the 'forecast' package. Refer to Forecasting Principles & Practice
     (Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 
     2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on April 20th, 2020.)
-    and Facebook Prophet Forecasting at Scale ()
-    Taylor SJ, Letham B. 2017. Forecasting at scale. PeerJ Preprints 5:e3190v2.
-    <doi:10.7287/peerj.preprints.3190v2>).
 URL: https://github.com/business-science/modeltime
 BugReports: https://github.com/business-science/modeltime/issues
 License: MIT + file LICENSE
@@ -35,6 +32,7 @@ Imports:
     dplyr,
     purrr,
     stringr,
+    forcats,
     janitor,
     magrittr,
     forecast,
@@ -46,6 +44,9 @@ Suggests:
     tidyverse,
     lubridate,
     testthat,
-    roxygen2
+    roxygen2,
+    kernlab,
+    earth,
+    tidyquant
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0

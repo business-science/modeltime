@@ -6,9 +6,10 @@
 \usage{
 plot_modeltime_forecast(
   .data,
-  .include_conf_interval = TRUE,
+  .include_conf_interval = FALSE,
   .conf_interval_fill = "grey20",
   .conf_interval_alpha = 0.2,
+  .include_legend = TRUE,
   .title = "Forecast Plot",
   .x_lab = "",
   .y_lab = "",
@@ -26,6 +27,9 @@ plot_modeltime_forecast(
 \item{.conf_interval_fill}{Fill color for the confidence interval}
 
 \item{.conf_interval_alpha}{Fill opacity for the confidence interval. Range (0, 1).}
+
+\item{.include_legend}{Logical. Whether or not to show the legend.
+Can save space with long model descriptions.}
 
 \item{.title}{Title for the plot}
 
@@ -84,6 +88,6 @@ model_fit <- model_spec \%>\%
 model_fit \%>\%
     modeltime_forecast(h = "3 years", actual_data = training(splits)) \%>\%
     mutate(.value = exp(.value)) \%>\%
-    plot_modeltime_forecast(.interactive = FALSE)
+    plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = FALSE)
 
 }

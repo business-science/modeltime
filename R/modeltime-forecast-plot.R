@@ -5,6 +5,8 @@
 #'
 #' @inheritParams timetk::plot_time_series
 #' @param .data A `tibble` that is the output of [modeltime_forecast()]
+#' @param .include_legend Logical. Whether or not to show the legend.
+#'  Can save space with long model descriptions.
 #' @param .include_conf_interval Logical. Whether or not to include the confidence interval as a ribbon.
 #' @param .conf_interval_fill Fill color for the confidence interval
 #' @param .conf_interval_alpha Fill opacity for the confidence interval. Range (0, 1).
@@ -50,13 +52,14 @@
 #' model_fit %>%
 #'     modeltime_forecast(h = "3 years", actual_data = training(splits)) %>%
 #'     mutate(.value = exp(.value)) %>%
-#'     plot_modeltime_forecast(.interactive = FALSE)
+#'     plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = FALSE)
 #'
 #' @export
 plot_modeltime_forecast <- function(.data,
-                                    .include_conf_interval = TRUE,
+                                    .include_conf_interval = FALSE,
                                     .conf_interval_fill = "grey20",
                                     .conf_interval_alpha = 0.20,
+                                    .include_legend = TRUE,
                                     .title = "Forecast Plot", .x_lab = "", .y_lab = "",
                                     .color_lab = "Legend",
                                     .interactive = TRUE, .plotly_slider = FALSE,
@@ -67,9 +70,83 @@ plot_modeltime_forecast <- function(.data,
         rlang::abort("Expecting the following names to be in the data frame: .key, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
     }
 
+    # PASS SINGLE / MULTI
+
+    # Output of a scalable modeltime_table() that has been forecasted
+    multi <- FALSE
+    if (all(c(".model_id", ".model_desc") %in% names(.data))) {
+        multi <- TRUE
+    }
+
+    if (multi) {
+        g <- plot_modeltime_forecast_multi(
+            .data                  = .data,
+            .include_conf_interval = .include_conf_interval,
+            .conf_interval_fill    = .conf_interval_fill,
+            .conf_interval_alpha   = .conf_interval_alpha,
+            .include_legend        = .include_legend,
+            .title                 = .title,
+            .x_lab                 = .x_lab,
+            .y_lab                 = .y_lab,
+            .color_lab             = .color_lab,
+            .interactive           = .interactive,
+            .plotly_slider         = .plotly_slider,
+            ...
+        )
+    } else {
+        g <- plot_modeltime_forecast_single(
+            .data                  = .data,
+            .include_conf_interval = .include_conf_interval,
+            .conf_interval_fill    = .conf_interval_fill,
+            .conf_interval_alpha   = .conf_interval_alpha,
+            .include_legend        = .include_legend,
+            .title                 = .title,
+            .x_lab                 = .x_lab,
+            .y_lab                 = .y_lab,
+            .color_lab             = .color_lab,
+            .interactive           = .interactive,
+            .plotly_slider         = .plotly_slider,
+            ...
+        )
+    }
+
+
+    # INTERACTIVE
+
+    if (.interactive) {
+
+        p <- plotly::ggplotly(g, dynamicTicks = TRUE)
+
+        if (.plotly_slider) {
+            p <- p %>%
+                plotly::layout(
+                    xaxis = list(
+                        rangeslider = list(type = "date")
+                    )
+                )
+        }
+
+        return(p)
+    } else {
+        return(g)
+    }
+
+}
+
+
+plot_modeltime_forecast_single <- function(.data,
+                                           .include_conf_interval = FALSE,
+                                           .conf_interval_fill = "grey20",
+                                           .conf_interval_alpha = 0.20,
+                                           .include_legend = TRUE,
+                                           .title = "Forecast Plot", .x_lab = "", .y_lab = "",
+                                           .color_lab = "Legend",
+                                           .interactive = TRUE, .plotly_slider = FALSE,
+                                           ...) {
+
     if (.include_conf_interval) {
         if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
-            rlang::abort("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. Try using '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.")
+            rlang::abort("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. \nTry using '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.")
         }
     }
 
@@ -120,24 +197,108 @@ plot_modeltime_forecast <- function(.data,
 
     }
 
-    # INTERACTIVE
-
-    if (.interactive) {
-
-        p <- plotly::ggplotly(g, dynamicTicks = TRUE)
-
-        if (.plotly_slider) {
-            p <- p %>%
-                plotly::layout(
-                    xaxis = list(
-                        rangeslider = list(type = "date")
-                    )
-                )
-        }
-
-        return(p)
-    } else {
-        return(g)
+    if (!.include_legend) {
+        g <- g +
+            ggplot2::theme(legend.position = "none")
     }
+
+    return(g)
+
+}
+
+
+plot_modeltime_forecast_multi <- function(.data,
+                                          .include_conf_interval = FALSE,
+                                          .conf_interval_fill = "grey20",
+                                          .conf_interval_alpha = 0.20,
+                                          .include_legend = TRUE,
+                                          .title = "Forecast Plot", .x_lab = "", .y_lab = "",
+                                          .color_lab = "Legend",
+                                          .interactive = TRUE, .plotly_slider = FALSE,
+                                          ...) {
+
+
+    # Data prep
+    data_prepared <- .data %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(.model_desc = ifelse(!is.na(.model_id), stringr::str_c(.model_id, "_", .model_desc), .model_desc)) %>%
+        dplyr::mutate(.model_desc = forcats::as_factor(.model_desc))
+
+    # Conf Interval Checks
+    if (.include_conf_interval) {
+
+        n_models <- data_prepared %>%
+            dplyr::filter(!is.na(.model_id)) %>%
+            dplyr::distinct(.model_id) %>%
+            dplyr::count() %>%
+            dplyr::pull()
+
+        if (n_models == 1) {
+            if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
+                rlang::abort("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. Try using '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.")
+            } else {
+                .include_conf_interval <- TRUE
+            }
+        } else {
+            warning("Not able to display confidence intervals for individual models on multi-model plots. Reverting to '.include_conf_interval = FALSE'.")
+            .include_conf_interval <- FALSE
+        }
+    }
+
+    # Process Multi-Model
+    if (!.include_conf_interval) {
+
+        g <- timetk::plot_time_series(
+            .data         = data_prepared,
+            .date_var     = .index,
+            .value        = .value,
+            .color_var    = .model_desc,
+
+            .smooth       = FALSE,
+
+            .title        = .title,
+            .x_lab        = .x_lab,
+            .y_lab        = .y_lab,
+            .color_lab    = .color_lab,
+            .interactive  = FALSE,
+            ...
+        )
+    } else {
+
+        g <- timetk::plot_time_series(
+            .data         = data_prepared,
+            .date_var     = .index,
+            .value        = .value,
+            .color_var    = .model_desc,
+
+            .smooth       = FALSE,
+
+            .title        = .title,
+            .x_lab        = .x_lab,
+            .y_lab        = .y_lab,
+            .color_lab    = .color_lab,
+            .interactive  = FALSE,
+            ...
+        )
+
+        # Add ribbon
+        g <- g +
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi),
+                                 fill = .conf_interval_fill, alpha = .conf_interval_alpha)
+
+        # Reorder Ribbon to 1st level
+        layers_start <- g$layers
+
+        g$layers[[1]] <- layers_start[[2]]
+        g$layers[[2]] <- layers_start[[1]]
+
+    }
+
+    if (!.include_legend) {
+        g <- g +
+            ggplot2::theme(legend.position = "none")
+    }
+
+    return(g)
 
 }
