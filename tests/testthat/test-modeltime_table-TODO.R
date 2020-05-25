@@ -91,6 +91,37 @@ wflw_fit_mars <- workflow() %>%
 wflw_fit_mars %>% modeltime_accuracy(testing(splits))
 
 
+# SVM (Parsnip Model) ----
+
+model_fit_svm <- svm_rbf(mode = "regression") %>%
+    set_engine("kernlab") %>%
+    fit(log(value) ~ as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
+
+model_fit_svm %>%
+    predict(new_data = testing(splits))
+
+model_fit_svm %>%
+    modeltime_accuracy(new_data = testing(splits))
+
+# SVM workflow -----
+model_spec <- svm_rbf(mode = "regression") %>%
+    set_engine("kernlab")
+
+recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+    step_date(date, features = "month") %>%
+    step_rm(date) %>%
+    step_dummy(all_nominal()) %>%
+    step_log(value)
+
+wflw_fit_svm <- workflow() %>%
+    add_recipe(recipe_spec) %>%
+    add_model(model_spec) %>%
+    fit(training(splits))
+
+wflw_fit_svm %>% modeltime_accuracy(testing(splits))
+
+
 # Compare ----
 model_table <- modeltime_table(
     model_fit_no_boost,
@@ -99,7 +130,9 @@ model_table <- modeltime_table(
     model_fit_lm,
     wflw_fit_lm,
     model_fit_mars,
-    wflw_fit_mars
+    wflw_fit_mars,
+    model_fit_svm,
+    wflw_fit_svm
 )
 
 model_table

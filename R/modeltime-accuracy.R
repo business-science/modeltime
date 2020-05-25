@@ -102,7 +102,11 @@ modeltime_accuracy.model_fit <- function(object, new_data = NULL,
                                          metric_set = default_forecast_accuracy_metric_set(),
                                          quiet = TRUE, ...) {
 
-    data <- object$fit$data
+    data <- tryCatch({
+        object$fit$data
+    }, error = function(e) {
+        NULL
+    })
 
     ret <- calc_accuracy(object, train_data = data, test_data = new_data, metric_set = metric_set,
                          quiet = quiet, ...)
@@ -121,7 +125,11 @@ modeltime_accuracy.workflow <- function(object, new_data = NULL,
         rlang::abort("Workflow must be trained using the 'fit()' function.")
     }
 
-    data <- object$fit$fit$fit$data
+    data <- tryCatch({
+        object$fit$fit$fit$data
+    }, error = function(e) {
+        NULL
+    })
 
     ret <- calc_accuracy(object, train_data = data, test_data = new_data, metric_set = metric_set, ...)
 

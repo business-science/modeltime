@@ -62,15 +62,27 @@ modeltime_table <- function(...) {
         dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = function(x) {
 
             if (inherits(x, "model_fit")) {
-                desc <- x$fit$desc
+                desc <- tryCatch({
+                    x$fit$desc
+                }, error = function(e) {
+                    NULL
+                })
+
                 if (is.null(desc)) {
                     desc <- toupper(x$spec$engine[1])
                     if (is.null(desc)) {
                         desc <- class(x$fit)[1]
                     }
                 }
+
             } else if (inherits(x, "workflow")) {
-                desc <- x$fit$fit$fit$desc
+
+                desc <- tryCatch({
+                    x$fit$fit$fit$desc
+                }, error = function(e) {
+                    NULL
+                })
+
                 if (is.null(desc)) {
                     desc <- toupper(x$fit$fit$spec$engine[1])
                     if (is.null(desc)) {

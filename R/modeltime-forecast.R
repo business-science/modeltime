@@ -236,8 +236,13 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         dplyr::arrange(.key, .index)
 
     # ADD CONF INTERVAL
-    residuals  <- object$fit$data$.resid
-    ret        <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
+    residuals <- tryCatch({
+        object$fit$data$.resid
+    }, error = function(e) {
+        NULL
+    })
+
+    ret <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)
 
@@ -279,9 +284,16 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
     new_data_forged <- hardhat::forge(new_data = new_data, blueprint = mld$blueprint, outcomes = TRUE)
 
     nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data_forged$predictors)[1]
-    time_stamp_predictors_tbl <- new_data_forged$predictors %>%
-        dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
-        dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+
+    if (!is.na(nms_time_stamp_predictors)) {
+        time_stamp_predictors_tbl <- new_data_forged$predictors %>%
+            dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
+            dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+    } else {
+        idx <- new_data %>% timetk::tk_index()
+        time_stamp_predictors_tbl <- new_data_forged$predictors %>%
+            dplyr::mutate(.index = idx)
+    }
 
 
     # FORGE NEW DATA
@@ -317,15 +329,15 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
         actual_data_forged <- hardhat::forge(new_data = actual_data, blueprint = mld$blueprint, outcomes = TRUE)
 
-        actual_data <- actual_data_forged$outcomes %>%
+        actual_data_prepped <- actual_data_forged$outcomes %>%
             dplyr::bind_cols(actual_data_forged$predictors) %>%
             dplyr::mutate(.key = "actual") %>%
-            dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
+            dplyr::mutate(.index = timetk::tk_index(actual_data))
 
-        target_sym <- rlang::sym(names(actual_data)[1])
+        target_sym <- rlang::sym(names(actual_data_prepped)[1])
 
         data_formatted <- data_formatted %>%
-            dplyr::bind_rows(actual_data) %>%
+            dplyr::bind_rows(actual_data_prepped) %>%
             dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred))
 
         data_formatted <- data_formatted %>%
@@ -340,9 +352,13 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
         dplyr::arrange(.key, .index)
 
-    # ADD CONF INTERVALS
-    residuals <- object$fit$fit$fit$data$.resid
-    ret       <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
+    # ADD CONF INTERVAL
+    residuals <- tryCatch({
+        object$fit$fit$fit$data$.resid
+    }, error = function(e) {
+        NULL
+    })
+    ret <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)
 
