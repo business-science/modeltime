@@ -19,7 +19,7 @@ plot_modeltime_forecast(
 )
 }
 \arguments{
-\item{.data}{A \code{tibble} or \code{data.frame} with '.id', '.index', and .value' columns}
+\item{.data}{A \code{tibble} that is the output of \code{\link[=modeltime_forecast]{modeltime_forecast()}}}
 
 \item{.include_conf_interval}{Logical. Whether or not to include the confidence interval as a ribbon.}
 

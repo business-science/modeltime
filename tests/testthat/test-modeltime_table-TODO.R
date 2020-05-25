@@ -76,7 +76,6 @@ model_fit_mars %>%
     modeltime_accuracy(new_data = testing(splits))
 
 # MARS workflow -----
-library(earth)
 model_spec <- mars(mode = "regression") %>%
     set_engine("earth")
 

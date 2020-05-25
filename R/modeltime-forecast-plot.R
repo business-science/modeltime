@@ -4,7 +4,7 @@
 #' (`ggplot2`) plot with the forecasted data.
 #'
 #' @inheritParams timetk::plot_time_series
-#' @param .data A `tibble` or `data.frame` with '.id', '.index', and .value' columns
+#' @param .data A `tibble` that is the output of [modeltime_forecast()]
 #' @param .include_conf_interval Logical. Whether or not to include the confidence interval as a ribbon.
 #' @param .conf_interval_fill Fill color for the confidence interval
 #' @param .conf_interval_alpha Fill opacity for the confidence interval. Range (0, 1).
@@ -63,8 +63,8 @@ plot_modeltime_forecast <- function(.data,
                                     ...) {
 
     # Checks
-    if (!all(c(".id", ".index", ".value") %in% names(.data))) {
-        rlang::abort("Expecting the following names to be in the data frame: .id, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
+    if (!all(c(".key", ".index", ".value") %in% names(.data))) {
+        rlang::abort("Expecting the following names to be in the data frame: .key, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
     }
 
     if (.include_conf_interval) {
@@ -79,7 +79,7 @@ plot_modeltime_forecast <- function(.data,
             .data         = .data,
             .date_var     = .index,
             .value        = .value,
-            .color_var    = .id,
+            .color_var    = .key,
 
             .smooth       = FALSE,
 
@@ -95,7 +95,7 @@ plot_modeltime_forecast <- function(.data,
             .data         = .data,
             .date_var     = .index,
             .value        = .value,
-            .color_var    = .id,
+            .color_var    = .key,
 
             .smooth       = FALSE,
 

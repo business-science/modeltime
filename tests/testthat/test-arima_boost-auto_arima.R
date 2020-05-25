@@ -252,7 +252,7 @@ test_that("arima_boost: Arima (workflow), Test Predictions", {
     testthat::expect_identical(full_data$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
-    predictions_tbl <- predictions_tbl %>% filter(.id == "prediction")
+    predictions_tbl <- predictions_tbl %>% filter(.key == "prediction")
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500

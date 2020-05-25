@@ -9,7 +9,7 @@
 #' @param h The forecast horizon (can be used instead of `new_data` for
 #'  time series with no exogenous regressors).
 #' @param conf_interval An estimated confidence interval based on the in-sample residuals
-#' @param actual_data Data that is combined with the output tibble and given an `.id = "actual"`
+#' @param actual_data Data that is combined with the output tibble and given an `.key = "actual"`
 #' @param ... Additional arguments passed to [future_frame()] for use with the `h` forecast horizon
 #'
 #'
@@ -17,7 +17,7 @@
 #' A tibble with predictions and time-stamp data. For ease of plotting and calculations,
 #'  the column names are transformed to:
 #'
-#' - `.id`: Values labeled either "prediction" or "actual"
+#' - `.key`: Values labeled either "prediction" or "actual"
 #' - `.index`: The timestamp index.
 #' - `.value`: The value being forecasted.
 #' - `.conf_lo`: The lower limit of the confidence interval.
@@ -152,8 +152,8 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         dplyr::bind_cols(time_stamp_predictors_tbl)
 
     data_formatted <- modeltime_forecast %>%
-        dplyr::mutate(.id = "prediction") %>%
-        dplyr::select(.id, dplyr::everything())
+        dplyr::mutate(.key = "prediction") %>%
+        dplyr::select(.key, dplyr::everything())
 
     # COMBINE ACTUAL DATA
 
@@ -177,7 +177,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
 
             # Set ID & Index
             actual_data <- actual_data %>%
-                dplyr::mutate(.id = "actual") %>%
+                dplyr::mutate(.key = "actual") %>%
                 dplyr::mutate(.index = idx)
 
             # Common for Data.Frame Style - Apply transformation to target variable if needed
@@ -218,7 +218,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
 
             # actual_data <- prepare_data(object, actual_data) %>%
             #     tibble::as_tibble() %>%
-            #     dplyr::mutate(.id = "actual") %>%
+            #     dplyr::mutate(.key = "actual") %>%
             #     dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
         }
@@ -231,9 +231,9 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
     # FINALIZE
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
-        dplyr::select(.id, .index, .value) %>%
-        dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction"))) %>%
-        dplyr::arrange(.id, .index)
+        dplyr::select(.key, .index, .value) %>%
+        dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
+        dplyr::arrange(.key, .index)
 
     # ADD CONF INTERVAL
     residuals  <- object$fit$data$.resid
@@ -303,8 +303,8 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
     data_formatted <- fit %>%
         stats::predict(new_data = new_data) %>%
         dplyr::bind_cols(time_stamp_predictors_tbl) %>%
-        dplyr::mutate(.id = "prediction") %>%
-        dplyr::select(.id, dplyr::everything())
+        dplyr::mutate(.key = "prediction") %>%
+        dplyr::select(.key, dplyr::everything())
 
 
     # COMBINE ACTUAL DATA
@@ -319,7 +319,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
 
         actual_data <- actual_data_forged$outcomes %>%
             dplyr::bind_cols(actual_data_forged$predictors) %>%
-            dplyr::mutate(.id = "actual") %>%
+            dplyr::mutate(.key = "actual") %>%
             dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
         target_sym <- rlang::sym(names(actual_data)[1])
@@ -336,9 +336,9 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
     # FINALIZE
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
-        dplyr::select(.id, .index, .value) %>%
-        dplyr::mutate(.id = factor(.id, levels = c("actual", "prediction"))) %>%
-        dplyr::arrange(.id, .index)
+        dplyr::select(.key, .index, .value) %>%
+        dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
+        dplyr::arrange(.key, .index)
 
     # ADD CONF INTERVALS
     residuals <- object$fit$fit$fit$data$.resid
@@ -380,10 +380,10 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
         dplyr::select(-.model) %>%
         tidyr::unnest(cols = .nested.col)
 
-    if ("actual" %in% unique(ret_1$.id)) {
+    if ("actual" %in% unique(ret_1$.key)) {
         ret_1 <- ret_1 %>%
-            mutate(.model_desc = ifelse(.id == "actual", "ACTUAL", .model_desc)) %>%
-            mutate(.model_id = ifelse(.id == "actual", NA_integer_, .model_id))
+            dplyr::mutate(.model_desc = ifelse(.key == "actual", "ACTUAL", .model_desc)) %>%
+            dplyr::mutate(.model_id = ifelse(.key == "actual", NA_integer_, .model_id))
     }
 
     # Compute subsequent models without actual data
@@ -447,8 +447,8 @@ add_conf_interval <- function(data, residuals, conf_interval, bootstrap = FALSE)
 
         data <- data %>%
             dplyr::mutate(
-                .conf_lo = ifelse(.id == "prediction", .value + limits_tbl$conf_lo, NA),
-                .conf_hi = ifelse(.id == "prediction", .value + limits_tbl$conf_hi, NA)
+                .conf_lo = ifelse(.key == "prediction", .value + limits_tbl$conf_lo, NA),
+                .conf_hi = ifelse(.key == "prediction", .value + limits_tbl$conf_hi, NA)
             )
     }
 
@@ -477,9 +477,9 @@ normal_ci <- function(residuals, conf_interval = 0.8) {
 #     probs <- 0.5 + c(-conf_interval/2, conf_interval/2)
 #
 #     ret <- replicate(times, data, simplify = FALSE) %>%
-#         bind_rows(.id = ".id") %>%
-#         mutate(.id = as_factor(.id)) %>%
-#         group_by(.id) %>%
+#         bind_rows(.key = ".key") %>%
+#         mutate(.key = as_factor(.key)) %>%
+#         group_by(.key) %>%
 #         sample_n(size = times, replace = TRUE) %>%
 #         ungroup() %>%
 #         summarize(

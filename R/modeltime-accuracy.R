@@ -263,7 +263,7 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
             )
 
         test_metrics_tbl <- predictions_tbl %>%
-            tidyr::pivot_wider(names_from = .id, values_from = .value) %>%
+            tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
             tibble::add_column(.type = "Test", .before = 1) %>%
             dplyr::group_by(.type) %>%
             summarize_accuracy_metrics(actual, prediction, metric_set) %>%

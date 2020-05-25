@@ -24,7 +24,7 @@ time series with no exogenous regressors).}
 
 \item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
-\item{actual_data}{Data that is combined with the output tibble and given an \code{.id = "actual"}}
+\item{actual_data}{Data that is combined with the output tibble and given an \code{.key = "actual"}}
 
 \item{...}{Additional arguments passed to \code{\link[=future_frame]{future_frame()}} for use with the \code{h} forecast horizon}
 }
@@ -32,7 +32,7 @@ time series with no exogenous regressors).}
 A tibble with predictions and time-stamp data. For ease of plotting and calculations,
 the column names are transformed to:
 \itemize{
-\item \code{.id}: Values labeled either "prediction" or "actual"
+\item \code{.key}: Values labeled either "prediction" or "actual"
 \item \code{.index}: The timestamp index.
 \item \code{.value}: The value being forecasted.
 \item \code{.conf_lo}: The lower limit of the confidence interval.
