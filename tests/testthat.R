@@ -12,6 +12,8 @@ library(yardstick)
 library(timetk)
 library(modeltime)
 
+library(progressr)
+
 library(tidyverse)
 library(lubridate)
 

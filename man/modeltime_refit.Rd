@@ -44,9 +44,46 @@ and preprocessing (formulas or recipes) used during the training process:
 }
 }
 \details{
-TODO
+\strong{Refit}
+
+The \code{modeltime_refit()} function is used to retrain:
+\enumerate{
+\item All \code{workflow} objects
+\item Any \code{model_fit} objects (Parsnip Models) created with \code{fit()}
+}
+
+\strong{Refit XY}
+
+The \code{modeltime_refit_xy()} function is used to retrain:
+\itemize{
+\item Any \code{model_fit} objects (Parsnip Models) created with \code{fit_xy()}
+}
 }
 \examples{
-# TODO
+library(tidyverse)
+library(lubridate)
+library(timetk)
+library(workflows)
+library(parsnip)
+library(recipes)
+library(rsample)
+
+# Data
+m750 <- m4_monthly \%>\% filter(id == "M750")
+
+# Split Data 80/20
+splits <- initial_time_split(m750, prop = 0.9)
+
+# --- Fit Model ---
+
+model_fit_train_data <- arima_reg() \%>\%
+    set_engine(engine = "auto_arima") \%>\%
+    fit(value ~ date, data = training(splits))
+
+# --- Refit Model ----
+
+model_fit_full_data <- model_fit_train_data \%>\%
+    modeltime_refit(data = m750)
+
 
 }

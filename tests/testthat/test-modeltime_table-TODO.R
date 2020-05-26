@@ -14,9 +14,24 @@ splits <- initial_time_split(m750, prop = 0.9)
 # MODELTIME MODELS ----
 
 # * Auto ARIMA (Parsnip) ----
-model_fit_no_boost <- arima_reg() %>%
-    set_engine(engine = "auto_arima") %>%
-    fit(log(value) ~ date, data = training(splits))
+
+test_that("Auto ARIMA (Parsnip)", {
+
+    model_fit_no_boost <- arima_reg() %>%
+        set_engine(engine = "auto_arima") %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    forecast_tbl <- model_fit_no_boost %>%
+        modeltime_forecast(h = "3 years")
+
+    expect_equal(nrow(forecast_tbl), 36)
+
+    modeltime_table(model_fit_no_boost) %>%
+        modeltime_forecast(h = "3 years")
+
+})
+
+
 
 # * Auto ARIMA (Workflow) -----
 model_spec <- arima_reg() %>%
@@ -55,7 +70,10 @@ model_fit_ets <- exp_smoothing() %>%
 
 # * ETS (Workflow) ----
 
-model_spec <- exp_smoothing(error = "multiplicative") %>%
+model_spec <- exp_smoothing(
+    error  = "multiplicative",
+    trend  = "additive",
+    season = "multiplicative") %>%
     set_engine("ets")
 
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
@@ -106,6 +124,9 @@ model_spec <- mars(mode = "regression") %>%
 
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
     step_date(date, features = "month") %>%
+    step_mutate(date_num = as.numeric(date)) %>%
+    step_normalize(date_num) %>%
+    step_rm(date) %>%
     step_log(value)
 
 wflw_fit_mars <- workflow() %>%
@@ -263,8 +284,6 @@ model_forecast <- model_table %>%
     modeltime_forecast(new_data = testing(splits),
                        actual_data = bind_rows(training(splits), testing(splits)))
 
-model_forecast %>%
-    plot_modeltime_forecast(.include_legend = TRUE, .interactive = TRUE)
 
 
 # REFITTING ----
@@ -287,3 +306,19 @@ model_fit_ets %>%
 
 model_fit_svm %>%
     modeltime_refit(m750)
+
+
+
+handlers("progress")
+with_progress({
+    model_table_refit <- model_table %>%
+        modeltime_refit(data = m750)
+})
+
+model_table_refit %>%
+    modeltime_forecast(
+        new_data    = future_frame(m750, date, "3 years"),
+        actual_data = m750
+    ) %>%
+    mutate(.value = exp(.value)) %>%
+    plot_modeltime_forecast()

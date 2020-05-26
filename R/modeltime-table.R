@@ -60,42 +60,7 @@ modeltime_table <- function(...) {
     validate_model_classes(ret)
 
     ret <- ret %>%
-        dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = function(x) {
-
-            if (inherits(x, "model_fit")) {
-                desc <- tryCatch({
-                    x$fit$desc
-                }, error = function(e) {
-                    NULL
-                })
-
-                if (is.null(desc)) {
-                    desc <- toupper(x$spec$engine[1])
-                    if (is.null(desc)) {
-                        desc <- class(x$fit)[1]
-                    }
-                }
-
-            } else if (inherits(x, "workflow")) {
-
-                desc <- tryCatch({
-                    x$fit$fit$fit$desc
-                }, error = function(e) {
-                    NULL
-                })
-
-                if (is.null(desc)) {
-                    desc <- toupper(x$fit$fit$spec$engine[1])
-                    if (is.null(desc)) {
-                        desc <- class(x$fit$fit$fit)[1]
-                    }
-                }
-            } else {
-                rlang::abort("Object(s) must be fitted parsnip models or fitted workflows.")
-            }
-            return(desc)
-
-        }))
+        dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
 
     class(ret) <- c("mdl_time_tbl", class(ret))
 
@@ -107,6 +72,47 @@ print.mdl_time_tbl <- function(x, ...) {
     cat("# Modeltime Table\n")
     class(x) <- class(x)[!(class(x) %in% c("mdl_time_tbl"))]
     print(x, ...)
+}
+
+# UTILITIES ----
+
+get_model_description <- function(x) {
+
+    if (inherits(x, "model_fit")) {
+        desc <- tryCatch({
+            x$fit$desc
+        }, error = function(e) {
+            NULL
+        })
+
+        if (is.null(desc)) {
+            desc <- toupper(x$spec$engine[1])
+            if (is.null(desc)) {
+                desc <- class(x$fit)[1]
+            }
+        }
+
+    } else if (inherits(x, "workflow")) {
+
+        desc <- tryCatch({
+            x$fit$fit$fit$desc
+        }, error = function(e) {
+            NULL
+        })
+
+        if (is.null(desc)) {
+            desc <- toupper(x$fit$fit$spec$engine[1])
+            if (is.null(desc)) {
+                desc <- class(x$fit$fit$fit)[1]
+            }
+        }
+
+    } else {
+        rlang::abort("Object(s) must be fitted parsnip models or fitted workflows.")
+    }
+
+    return(desc)
+
 }
 
 

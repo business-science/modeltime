@@ -371,6 +371,8 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 
     safe_modeltime_forecast <- purrr::safely(modeltime_forecast, otherwise = NA, quiet = FALSE)
 
+    n_models <- data$.model_id %>% unique() %>% length()
+
     # Compute first model with actual data
     ret_1 <- data %>%
         dplyr::ungroup() %>%
@@ -403,29 +405,33 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
     }
 
     # Compute subsequent models without actual data
-    ret_2 <- data %>%
-        dplyr::slice(2:dplyr::n()) %>%
-        dplyr::ungroup() %>%
-        dplyr::mutate(.nested.col = purrr::map(
-            .x         = .model,
-            .f         = function(obj) {
+    ret_2 <- tibble::tibble()
 
-                ret <- safe_modeltime_forecast(
-                    obj,
-                    new_data      = new_data,
-                    h             = h,
-                    conf_interval = NULL,
-                    actual_data   = NULL,
-                    ...
-                )
+    if (n_models > 1) {
+        ret_2 <- data %>%
+            dplyr::slice(2:dplyr::n()) %>%
+            dplyr::ungroup() %>%
+            dplyr::mutate(.nested.col = purrr::map(
+                .x         = .model,
+                .f         = function(obj) {
 
-                ret <- ret %>% purrr::pluck("result")
+                    ret <- safe_modeltime_forecast(
+                        obj,
+                        new_data      = new_data,
+                        h             = h,
+                        conf_interval = NULL,
+                        actual_data   = NULL,
+                        ...
+                    )
 
-                return(ret)
-            })
-        ) %>%
-        dplyr::select(-.model) %>%
-        tidyr::unnest(cols = .nested.col)
+                    ret <- ret %>% purrr::pluck("result")
+
+                    return(ret)
+                })
+            ) %>%
+            dplyr::select(-.model) %>%
+            tidyr::unnest(cols = .nested.col)
+    }
 
     if (".nested.col" %in% names(ret_1)) {
         ret_1 <- ret_1 %>%

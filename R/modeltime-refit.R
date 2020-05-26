@@ -25,12 +25,48 @@
 #'  with one or more models that have been retrained is returned.
 #'
 #' @details
-#' TODO
+#'
+#' __Refit__
+#'
+#' The `modeltime_refit()` function is used to retrain:
+#'
+#' 1. All `workflow` objects
+#' 2. Any `model_fit` objects (Parsnip Models) created with `fit()`
+#'
+#' __Refit XY__
+#'
+#' The `modeltime_refit_xy()` function is used to retrain:
+#'
+#' - Any `model_fit` objects (Parsnip Models) created with `fit_xy()`
 #'
 #'
 #'
 #' @examples
-#' # TODO
+#' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
+#' library(workflows)
+#' library(parsnip)
+#' library(recipes)
+#' library(rsample)
+#'
+#' # Data
+#' m750 <- m4_monthly %>% filter(id == "M750")
+#'
+#' # Split Data 80/20
+#' splits <- initial_time_split(m750, prop = 0.9)
+#'
+#' # --- Fit Model ---
+#'
+#' model_fit_train_data <- arima_reg() %>%
+#'     set_engine(engine = "auto_arima") %>%
+#'     fit(value ~ date, data = training(splits))
+#'
+#' # --- Refit Model ----
+#'
+#' model_fit_full_data <- model_fit_train_data %>%
+#'     modeltime_refit(data = m750)
+#'
 #'
 #' @name modeltime_refit
 #' @importFrom parsnip fit fit_xy
@@ -46,6 +82,56 @@ modeltime_refit <- function(object, data, control = NULL, ...) {
 #' @rdname modeltime_refit
 modeltime_refit_xy <- function(object, x, y, control = NULL, ...) {
     UseMethod("modeltime_refit_xy", object)
+}
+
+# MODELTIME ----
+
+#' @export
+modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
+
+    new_data <- data
+    data     <- object # object is a Modeltime Table
+
+    safe_modeltime_refit <- purrr::safely(modeltime_refit, otherwise = NA, quiet = FALSE)
+
+
+    # Implement progressr for progress reporting
+    p <- progressr::progressor(steps = nrow(data))
+
+    ret <- data %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(.model = purrr::map2(
+            .x         = .model,
+            .y         = .model_id,
+            .f         = function(obj, id) {
+
+                p(stringr::str_glue("Model ID = {id} / {max(data$.model_id)}"))
+
+                ret <- safe_modeltime_refit(
+                    obj,
+                    data    = new_data,
+                    control = control,
+                    ...
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        ) %>%
+        dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
+
+
+
+
+
+    return(ret)
+
+}
+
+#' @export
+modeltime_refit_xy.mdl_time_tbl <- function(object, x, y, ..., control = NULL) {
+    rlang::abort("Only models and workflows trained using `fit()` are supported at this time.")
 }
 
 # REFIT ----
