@@ -57,6 +57,9 @@
 #' - `season()` = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"
 #' - `damping()` - "auto", "damped", "none" are converted to NULL, TRUE, FALSE
 #'
+#' By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
+#' _in-sample data_ following the underlying `forecast::ets()` automation routine.
+#'
 #' Other options and argument can be set using `set_engine()`.
 #'
 #' Parameter Notes:

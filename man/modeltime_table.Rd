@@ -46,12 +46,13 @@ model_fit_boosted <- arima_boost(
         data = training(splits))
 
 # ---- COMPARE ----
+
 models_tbl <- modeltime_table(
     model_fit_no_boost,
     model_fit_boosted
 )
 
 models_tbl \%>\%
-    modeltime::modeltime_accuracy(new_data = testing(splits))
+    modeltime_accuracy(new_data = testing(splits))
 
 }

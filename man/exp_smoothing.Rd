@@ -82,6 +82,9 @@ The main arguments are \code{model} and \code{damped} are defined using:
 \item \code{damping()} - "auto", "damped", "none" are converted to NULL, TRUE, FALSE
 }
 
+By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
+\emph{in-sample data} following the underlying \code{forecast::ets()} automation routine.
+
 Other options and argument can be set using \code{set_engine()}.
 
 Parameter Notes:

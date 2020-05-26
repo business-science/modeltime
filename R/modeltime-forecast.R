@@ -508,25 +508,4 @@ normal_ci <- function(residuals, conf_interval = 0.8) {
 # }
 
 
-# PARSNIP HELPERS ----
-
-find_formula_lhs <- function(object) {
-
-    check_formula_tbl <- object %>%
-        purrr::map_dfr(~ rlang::is_formula(.)) %>%
-        tidyr::gather() %>%
-        dplyr::filter(value)
-
-    formula_found <- FALSE
-    if (nrow(check_formula_tbl) == 1) {
-        formula_found <- TRUE
-    }
-
-    lhs <- NULL
-    if (formula_found) {
-        lhs <- rlang::f_lhs(object[[check_formula_tbl$key]])
-    }
-
-    return(lhs)
-}
 
