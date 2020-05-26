@@ -119,12 +119,13 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval 
 
 #' @export
 modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class 'workflow' that has been fitted (trained) or 'model_fit' (a fitted parsnip model). "))
+    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'."))
+
 }
 
 #' @export
 modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    rlang::abort("Model spec must be trained using the 'fit()' function.")
+    rlang::abort("The parnsip 'model_spec' must be trained using the 'fit()' function.")
 }
 
 #' @export

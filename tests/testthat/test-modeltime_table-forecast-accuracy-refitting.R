@@ -15,25 +15,54 @@ splits <- initial_time_split(m750, prop = 0.9)
 
 # * Auto ARIMA (Parsnip) ----
 
+model_fit_no_boost <- arima_reg() %>%
+    set_engine(engine = "auto_arima") %>%
+    fit(log(value) ~ date, data = training(splits))
+
 test_that("Auto ARIMA (Parsnip)", {
 
-    model_fit_no_boost <- arima_reg() %>%
-        set_engine(engine = "auto_arima") %>%
-        fit(log(value) ~ date, data = training(splits))
-
+    # ** Forecast - Parsnip ----
     forecast_tbl <- model_fit_no_boost %>%
         modeltime_forecast(h = "3 years")
 
     expect_equal(nrow(forecast_tbl), 36)
 
-    modeltime_table(model_fit_no_boost) %>%
+    # ** Forecast - Modeltime Table ----
+    forecast_tbl <- modeltime_table(model_fit_no_boost) %>%
         modeltime_forecast(h = "3 years")
 
+    expect_equal(nrow(forecast_tbl), 36)
+
+    # ** Accuracy - Parsnip ----
+    accuracy_tbl <- model_fit_no_boost %>%
+        modeltime_accuracy(
+            new_data   = testing(splits),
+            metric_set = metric_set(rsq, mae)
+        )
+
+    expect_equal(ncol(accuracy_tbl), 3)
+
+    # ** Accuracy - Modeltime ----
+    accuracy_tbl <- modeltime_table(model_fit_no_boost) %>%
+        modeltime_accuracy(
+            new_data   = testing(splits),
+            metric_set = metric_set(rsq, mae)
+        )
+
+    expect_equal(ncol(accuracy_tbl), 5)
+
+    # ** Refit ----
+    future_forecast_tbl <- model_fit_no_boost %>%
+        modeltime_refit(data = m750) %>%
+        modeltime_forecast(h = "3 years")
+
+    expect_equal(future_forecast_tbl$.index[1], ymd("2015-07-01"))
 })
 
 
 
 # * Auto ARIMA (Workflow) -----
+
 model_spec <- arima_reg() %>%
     set_engine("auto_arima")
 
@@ -46,8 +75,51 @@ wflw_fit_arima <- workflow() %>%
     add_model(model_spec) %>%
     fit(training(splits))
 
+test_that("Auto ARIMA (Workflow)", {
+
+    # ** Forecast - Workflow ----
+    forecast_tbl <- wflw_fit_arima %>%
+        modeltime_forecast(h = "3 years")
+
+    expect_equal(nrow(forecast_tbl), 36)
+
+    # ** Forecast - Modeltime Table ----
+    forecast_tbl <- modeltime_table(wflw_fit_arima) %>%
+        modeltime_forecast(h = "3 years")
+
+    expect_equal(nrow(forecast_tbl), 36)
+
+    # ** Accuracy - Parsnip ----
+    accuracy_tbl <- wflw_fit_arima %>%
+        modeltime_accuracy(
+            new_data   = testing(splits),
+            metric_set = metric_set(rsq, mae)
+        )
+
+    expect_equal(ncol(accuracy_tbl), 3)
+
+    # ** Accuracy - Modeltime ----
+    accuracy_tbl <- modeltime_table(wflw_fit_arima) %>%
+        modeltime_accuracy(
+            new_data   = testing(splits),
+            metric_set = metric_set(rsq, mae)
+        )
+
+    expect_equal(ncol(accuracy_tbl), 5)
+
+    # ** Refit ----
+    future_forecast_tbl <- wflw_fit_arima %>%
+        modeltime_refit(data = m750) %>%
+        modeltime_forecast(h = "3 years")
+
+    expect_equal(future_forecast_tbl$.index[1], ymd("2015-07-01"))
+})
+
+
+# MORE MODELTIME MODELS -----
 
 # * ARIMA Boosted (Parsnip) ----
+
 model_fit_boosted <- arima_boost(
     non_seasonal_ar = 0,
     non_seasonal_differences = 1,
@@ -60,12 +132,25 @@ model_fit_boosted <- arima_boost(
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
+test_that("ARIMA Boosted (Parsnip)", {
+
+    expect_s3_class(model_fit_boosted, "_arima_xgboost_fit_impl")
+
+})
+
+
 # * ETS (Parsnip) ----
 
 model_fit_ets <- exp_smoothing() %>%
     set_engine("ets") %>%
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
+
+test_that("ETS (Parsnip)", {
+
+    expect_s3_class(model_fit_ets, "_ets_fit_impl")
+
+})
 
 
 # * ETS (Workflow) ----
@@ -84,9 +169,17 @@ wflw_fit_ets <- workflow() %>%
     add_model(model_spec) %>%
     fit(training(splits))
 
+test_that("ETS (Workflow)", {
+
+    expect_s3_class(wflw_fit_ets, "workflow")
+
+})
+
 
 
 # PARSNIP MODELS ----
+# - Shouldn't need tests for these, just using to to create checkpoints
+# - Using these in the scale tests
 
 # * LM (Parsnip Model) ----
 
@@ -110,6 +203,8 @@ wflw_fit_lm <- workflow() %>%
     add_model(model_spec) %>%
     fit(training(splits))
 
+
+
 # * MARS (Parsnip Model) ----
 
 model_fit_mars <- mars(mode = "regression") %>%
@@ -118,7 +213,10 @@ model_fit_mars <- mars(mode = "regression") %>%
         data = training(splits))
 
 
-# * MARS workflow -----
+
+
+# * MARS (Workflow) -----
+
 model_spec <- mars(mode = "regression") %>%
     set_engine("earth")
 
@@ -135,6 +233,8 @@ wflw_fit_mars <- workflow() %>%
     fit(training(splits))
 
 
+
+
 # * SVM (Parsnip Model) ----
 
 model_fit_svm <- svm_rbf(mode = "regression") %>%
@@ -143,7 +243,10 @@ model_fit_svm <- svm_rbf(mode = "regression") %>%
         data = training(splits))
 
 
+
+
 # * SVM (Workflow) -----
+
 model_spec <- svm_rbf(mode = "regression") %>%
     set_engine("kernlab")
 
@@ -160,7 +263,10 @@ wflw_fit_svm <- workflow() %>%
     fit(training(splits))
 
 
+
+
 # * GLMNET (parsnip) ----
+# - Not using GLMnet because of requirement for R3.6+
 
 # # Error if penalty value is not included
 # model_fit_glmnet <- linear_reg(
@@ -200,8 +306,7 @@ model_fit_randomForest <- rand_forest(mode = "regression") %>%
     fit(log(value) ~ as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
-model_fit_randomForest %>%
-    modeltime_accuracy(new_data = testing(splits))
+
 
 
 # * randomForest (workflow) ----
@@ -221,17 +326,21 @@ wflw_fit_randomForest <- workflow() %>%
     add_model(model_spec) %>%
     fit(training(splits))
 
+
+
 # * XGBoost (parsnip) ----
 
 model_fit_xgboost <- boost_tree(mode = "regression") %>%
-    set_engine("xgboost") %>%
+    set_engine("xgboost", objective = "reg:squarederror") %>%
     fit(log(value) ~ as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
+
+
 
 # * XGBoost (workflow) ----
 
 model_spec <- boost_tree() %>%
-    set_engine("xgboost")
+    set_engine("xgboost", objective = "reg:squarederror")
 
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
     step_date(date, features = "month") %>%
@@ -246,7 +355,10 @@ wflw_fit_xgboost <- workflow() %>%
     fit(training(splits))
 
 
+
+
 # MODELTIME TABLE ----
+
 model_table <- modeltime_table(
     # Modeltime
     model_fit_no_boost,
@@ -270,44 +382,66 @@ model_table <- modeltime_table(
     wflw_fit_xgboost
 )
 
-model_table
+test_that("modeltime_table", {
 
-# ACCURACY ----
+    expect_error({
+        modeltime_table("a")
+    })
 
-model_table %>%
-    modeltime_accuracy(new_data = testing(splits))
+    expect_s3_class(model_table, "mdl_time_tbl")
+
+    expect_equal(ncol(model_table), 3)
+
+})
+
+
+
+# MODELTIME ACCURACY ----
+
+test_that("modeltime_accuracy", {
+
+    expect_error(modeltime_accuracy(1))
+
+    accuracy_tbl <- model_table %>%
+        modeltime_accuracy(new_data = testing(splits))
+
+    # Structure
+    expect_s3_class(accuracy_tbl, "tbl_df")
+
+    # No missing values
+    expect_true(all(!is.na(accuracy_tbl$mae)))
+
+})
+
+
 
 
 # FORECAST ----
 
-model_forecast <- model_table %>%
-    modeltime_forecast(new_data = testing(splits),
-                       actual_data = bind_rows(training(splits), testing(splits)))
+test_that("modeltime_forecast", {
+
+    expect_error(modeltime_forecast(1))
+
+    forecast_tbl <- model_table %>%
+        modeltime_forecast(
+            new_data    = testing(splits),
+            actual_data = bind_rows(training(splits), testing(splits))
+        )
+
+    # Structure
+    expect_s3_class(forecast_tbl, "tbl_df")
+
+    # Correct number of forecasts produced
+    expect_equal(
+        nrow(forecast_tbl),
+        nrow(model_table) * nrow(testing(splits)) + nrow(bind_rows(training(splits), testing(splits)))
+    )
+
+})
 
 
 
 # REFITTING ----
-
-wflw_fit_arima %>%
-    modeltime_refit(m750) %>%
-    modeltime_forecast(h = "3 years")
-
-wflw_fit_lm %>%
-    modeltime_refit(m750)
-
-model_fit_lm %>%
-    modeltime_refit(m750)
-
-model_fit_mars %>%
-    modeltime_refit(m750)
-
-model_fit_ets %>%
-    modeltime_refit(m750)
-
-model_fit_svm %>%
-    modeltime_refit(m750)
-
-
 
 handlers("progress")
 with_progress({
@@ -315,10 +449,25 @@ with_progress({
         modeltime_refit(data = m750)
 })
 
-model_table_refit %>%
-    modeltime_forecast(
-        new_data    = future_frame(m750, date, "3 years"),
-        actual_data = m750
-    ) %>%
-    mutate(.value = exp(.value)) %>%
-    plot_modeltime_forecast()
+test_that("modeltime_refit", {
+
+    forecast_tbl <- model_table_refit %>%
+        modeltime_forecast(
+            new_data    = future_frame(m750, date, "3 years"),
+            actual_data = m750
+        )
+
+    # Refit Structure
+    expect_s3_class(model_table_refit, "mdl_time_tbl")
+
+    # Forecast Structure
+    expect_s3_class(forecast_tbl, "tbl_df")
+
+    actual_tbl <- forecast_tbl %>% filter(.model_desc == "ACTUAL")
+    future_predictions_tbl <- forecast_tbl %>% filter(.model_desc != "ACTUAL")
+
+    expect_true(all(tail(actual_tbl$.index, 1) < future_predictions_tbl$.index))
+})
+
+
+

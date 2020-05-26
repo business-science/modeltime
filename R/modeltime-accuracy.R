@@ -87,7 +87,7 @@ modeltime_accuracy <- function(object, new_data = NULL,
 modeltime_accuracy.default <- function(object, new_data = NULL,
                                        metric_set = default_forecast_accuracy_metric_set(),
                                        quiet = TRUE, ...) {
-    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class 'workflow' that has been fitted (trained) or 'model_fit' (a fitted parsnip model)."))
+    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'."))
 }
 
 #' @export

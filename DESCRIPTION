@@ -48,6 +48,7 @@ Suggests:
     roxygen2,
     kernlab,
     earth,
+    randomForest,
     tidyquant
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0

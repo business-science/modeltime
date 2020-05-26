@@ -215,7 +215,8 @@ modeltime_refit.model_fit <- function(object, data, control = NULL, ...) {
 
 #' @export
 modeltime_refit.default <- function(object, data, control = NULL, ...) {
-    rlang::abort(paste0("No method for class '", class(object)[1], "'."))
+    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'."))
+
 }
 
 # REFIT XY ----

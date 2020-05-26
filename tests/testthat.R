@@ -1,5 +1,10 @@
 library(testthat)
 
+library(xgboost)
+library(randomForest)
+library(kernlab)
+library(earth)
+
 library(stats)
 library(parsnip)
 library(workflows)
