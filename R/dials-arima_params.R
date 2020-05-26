@@ -6,7 +6,6 @@
 #' @details
 #' The main parameters for ARIMA models are:
 #'
-#'  - `period`: The periodic nature of the seasonality. Set 1 for non-seasonal.
 #'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
 #'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
 #'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
@@ -24,19 +23,6 @@
 #'
 #' @name arima_params
 
-
-#' @export
-#' @rdname arima_params
-period <- function(range = c(1L, 12L), trans = NULL) {
-    dials::new_quant_param(
-        type = "integer",
-        range = range,
-        inclusive = c(TRUE, TRUE),
-        trans = trans,
-        label = c(period = "Period (Seasonal Frequency)"),
-        finalize = NULL
-    )
-}
 
 #' @export
 #' @rdname arima_params

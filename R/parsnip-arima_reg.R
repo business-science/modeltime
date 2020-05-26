@@ -489,7 +489,7 @@ predict.Arima_fit_impl <- function(object, new_data, ...) {
 #' Bridge prediction function for ARIMA models
 #'
 #' @inheritParams parsnip::predict.model_fit
-#' @param ... Additional arguments passed to `forecast::forcast.Arima()`
+#' @param ... Additional arguments passed to `forecast::Arima()`
 #'
 #' @export
 Arima_predict_impl <- function(object, new_data, ...) {

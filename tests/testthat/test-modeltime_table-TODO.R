@@ -191,6 +191,7 @@ wflw_fit_randomForest <- workflow() %>%
 
 wflw_fit_randomForest %>% modeltime_accuracy(testing(splits))
 
+
 # Compare ----
 model_table <- modeltime_table(
     model_fit_no_boost,
@@ -218,6 +219,4 @@ model_forecast <- model_table %>%
                        actual_data = bind_rows(training(splits), testing(splits)))
 
 model_forecast %>%
-    group_by(.model_id, .model_desc) %>%
-    mutate(.value = exp(.value)) %>%
-    plot_modeltime_forecast(.include_legend = TRUE, .interactive = FALSE)
+    plot_modeltime_forecast(.include_legend = TRUE, .interactive = TRUE)
