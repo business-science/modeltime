@@ -221,7 +221,7 @@ model_spec <- mars(mode = "regression") %>%
     set_engine("earth")
 
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_date(date, features = "month") %>%
+    step_date(date, features = "month", ordinal = FALSE) %>%
     step_mutate(date_num = as.numeric(date)) %>%
     step_normalize(date_num) %>%
     step_rm(date) %>%

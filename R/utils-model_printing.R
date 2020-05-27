@@ -1,7 +1,140 @@
 
-# ARIMA ----
+# GENERAL MODEL PRINTING -----
+
+
+#' Get model descriptions for parsnip, workflows & modeltime objects
+#'
+#'
+#' @param object Parsnip or workflow objects
+#' @param upper_case Whether to return upper or lower case model descriptions
+#' @param indicate_training Whether or not to indicate if the model has been trained
+#'
+#' @examples
+#' library(dplyr)
+#' library(timetk)
+#' library(parsnip)
+#' library(modeltime)
+#'
+#' # Model Specification ----
+#'
+#' arima_spec <- arima_reg() %>%
+#'     set_engine("auto_arima")
+#'
+#' get_model_description(arima_spec, indicate_training = TRUE)
+#'
+#' # Fitted Model ----
+#'
+#' m750 <- m4_monthly %>% filter(id == "M750")
+#'
+#' arima_fit <- arima_spec %>%
+#'     fit(value ~ date, data = m750)
+#'
+#' get_model_description(arima_fit, indicate_training = TRUE)
+#'
+#'
+#' @export
+get_model_description <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+    UseMethod("get_model_description", object)
+}
+
+#' @export
+get_model_description.model_fit <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+
+    x <- object
+
+    desc <- tryCatch({
+        x$fit$desc
+    }, error = function(e) {
+        NULL
+    })
+
+    if (is.null(desc)) {
+        desc <- x$spec$engine[1]
+        if (is.null(desc)) {
+            desc <- class(x$fit)[1]
+        }
+    }
+
+    if (upper_case) {
+        desc <- toupper(desc)
+    } else {
+        desc <- tolower(desc)
+    }
+
+    if (indicate_training) {
+        desc <- stringr::str_c(desc, " (Trained)")
+    }
+
+    return(desc)
+}
+
+#' @export
+get_model_description.model_spec <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+
+    spec <- object
+
+    desc <- spec$engine[1]
+    if (is.null(desc)) {
+        desc <- class(spec)[1]
+    }
+
+    if (upper_case) {
+        desc <- toupper(desc)
+    } else {
+        desc <- tolower(desc)
+    }
+
+    if (indicate_training) {
+        desc <- stringr::str_c(desc, " (Not Trained)")
+    }
+
+    return(desc)
+}
+
+#' @export
+get_model_description.workflow <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+
+    x <- object
+
+    desc <- tryCatch({
+        x$fit$fit$fit$desc
+    }, error = function(e) {
+        NULL
+    })
+
+    if (is.null(desc)) {
+        desc <- x$fit$fit$spec$engine[1]
+        if (is.null(desc)) {
+            desc <- class(x$fit$fit$fit)[1]
+        }
+    }
+
+    if (upper_case) {
+        desc <- toupper(desc)
+    } else {
+        desc <- tolower(desc)
+    }
+
+    if (indicate_training) {
+
+        if (x$trained) {
+            desc <- stringr::str_c(desc, " (Trained)")
+        } else {
+            desc <- stringr::str_c(desc, " (Not Trained)")
+        }
+
+    }
+
+    return(desc)
+}
+
+
+
+
+
+# ARIMA Model Printing----
 # Source: forecast:::arima.string
-get_arima_desc_from_arima_object <- function(object, padding=FALSE) {
+get_arima_description <- function(object, padding=FALSE) {
 
     order <- object$arma[c(1, 6, 2, 3, 7, 4, 5)]
     m <- order[7]

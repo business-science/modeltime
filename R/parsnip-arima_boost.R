@@ -520,7 +520,7 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
     )
 
     # Model Description - Gets printed to describe the high-level model structure
-    desc <- paste0(get_arima_desc_from_arima_object(fit_arima),
+    desc <- paste0(get_arima_description(fit_arima),
                    ifelse(is.null(fit_xgboost), "", " w/ XGBoost Errors"))
 
     # Create new model
@@ -679,7 +679,7 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
     )
 
     # Model Description - Gets printed to describe the high-level model structure
-    desc <- paste0(get_arima_desc_from_arima_object(fit_arima),
+    desc <- paste0(get_arima_description(fit_arima),
                    ifelse(is.null(fit_xgboost), "", " w/ XGBoost Errors"))
 
     # Create new model

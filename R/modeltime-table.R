@@ -57,7 +57,7 @@ modeltime_table <- function(...) {
         tibble::rowid_to_column(var = ".model_id")
 
     # CHECKS
-    validate_model_classes(ret)
+    validate_model_classes(ret, accept_classes = c("model_fit", "workflow"))
 
     ret <- ret %>%
         dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
@@ -74,46 +74,6 @@ print.mdl_time_tbl <- function(x, ...) {
     print(x, ...)
 }
 
-# UTILITIES ----
-
-get_model_description <- function(x) {
-
-    if (inherits(x, "model_fit")) {
-        desc <- tryCatch({
-            x$fit$desc
-        }, error = function(e) {
-            NULL
-        })
-
-        if (is.null(desc)) {
-            desc <- toupper(x$spec$engine[1])
-            if (is.null(desc)) {
-                desc <- class(x$fit)[1]
-            }
-        }
-
-    } else if (inherits(x, "workflow")) {
-
-        desc <- tryCatch({
-            x$fit$fit$fit$desc
-        }, error = function(e) {
-            NULL
-        })
-
-        if (is.null(desc)) {
-            desc <- toupper(x$fit$fit$spec$engine[1])
-            if (is.null(desc)) {
-                desc <- class(x$fit$fit$fit)[1]
-            }
-        }
-
-    } else {
-        rlang::abort("Object(s) must be fitted parsnip models or fitted workflows.")
-    }
-
-    return(desc)
-
-}
 
 
 

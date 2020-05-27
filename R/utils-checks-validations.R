@@ -157,4 +157,8 @@ glue_quote_collapse <- function(x) {
     glue::glue_collapse(glue::single_quote(x), sep = ", ")
 }
 
+glubort <- function(..., .sep = "", .envir = parent.frame()) {
+    rlang::abort(glue::glue(..., .sep = .sep, .envir = .envir))
+}
+
 

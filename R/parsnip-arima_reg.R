@@ -373,7 +373,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
             xreg_recipe = xreg_recipe
         ),
 
-        desc = get_arima_desc_from_arima_object(fit_arima)
+        desc = get_arima_description(fit_arima)
     )
 
 }
@@ -461,7 +461,7 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
             xreg_recipe = xreg_recipe
         ),
 
-        desc = get_arima_desc_from_arima_object(fit_arima)
+        desc = get_arima_description(fit_arima)
     )
 
 }

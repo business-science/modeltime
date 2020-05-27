@@ -39,3 +39,5 @@ find_formula_lhs <- function(object) {
 
     return(lhs)
 }
+
+
