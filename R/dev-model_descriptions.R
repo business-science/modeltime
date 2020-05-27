@@ -77,7 +77,10 @@ get_model_description.model_spec <- function(object, indicate_training = FALSE, 
 
     spec <- object
 
+    # Try to get engine
     desc <- spec$engine[1]
+
+    # Get class of spec
     if (is.null(desc)) {
         desc <- class(spec)[1]
     }
@@ -100,16 +103,33 @@ get_model_description.workflow <- function(object, indicate_training = FALSE, up
 
     x <- object
 
+    # Fitted Modeltime - Try to grab model description
     desc <- tryCatch({
         x$fit$fit$fit$desc
     }, error = function(e) {
         NULL
     })
 
+    # Fitted Workflow - Try to grab engine from spec
     if (is.null(desc)) {
-        desc <- x$fit$fit$spec$engine[1]
-        if (is.null(desc)) {
+        desc <- tryCatch({
+            x$fit$fit$spec$engine[1]
+        }, error = function(e) {
+            NULL
+        })
+    }
+
+    # Fitted Workflow - Try to grab class from model
+    if (is.null(desc)) {
+        if (!is.null(x$fit$fit$fit)) {
             desc <- class(x$fit$fit$fit)[1]
+        }
+    }
+
+    # Un-Fitted Workflow - Try to grab class from model engine
+    if (is.null(desc)) {
+        if (!is.null(x$fit$actions$model$spec)) {
+            desc <- class(x$fit$actions$model$spec)[1]
         }
     }
 

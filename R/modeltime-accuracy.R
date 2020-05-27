@@ -189,7 +189,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' forecast accuracy metrics using [modeltime_accuracy()]:
 #' - MAE   - Mean absolute error, [mae()]
 #' - MAPE  - Mean absolute percentage error, [mape()]
-#' - MASE  - Mean absolute scaled errror, [mase()]
+#' - MASE  - Mean absolute scaled error, [mase()]
 #' - SMAPE - Symmetric mean absolute percentage error, [smape()]
 #' - RMSE  - Root mean squared error, [rmse()]
 #' - RSQ   - R-squared, [rsq()]
@@ -270,12 +270,25 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
                 ...
             )
 
-        test_metrics_tbl <- predictions_tbl %>%
+
+        test_metrics_prepped_tbl <- predictions_tbl %>%
             tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
+            tidyr::drop_na() %>%
             tibble::add_column(.type = "Test", .before = 1) %>%
-            dplyr::group_by(.type) %>%
+            dplyr::group_by(.type)
+
+        # test_metrics_residuals_tbl <- test_metrics_prepped_tbl %>%
+        #     dplyr::summarize(residuals = list(actual - prediction)) %>%
+        #     dplyr::ungroup()
+
+        test_metrics_tbl <- test_metrics_prepped_tbl %>%
             summarize_accuracy_metrics(actual, prediction, metric_set) %>%
             dplyr::ungroup()
+
+        # test_metrics_tbl <- dplyr::left_join(
+        #     test_metrics_residuals_tbl,
+        #     test_metrics_accuracy_tbl,
+        #     by = ".type")
 
     }
 

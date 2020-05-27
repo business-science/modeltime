@@ -40,7 +40,17 @@ test_that("Auto ARIMA (Parsnip)", {
             metric_set = metric_set(rsq, mae)
         )
 
-    expect_equal(ncol(accuracy_tbl), 3)
+    expect_equal(nrow(accuracy_tbl), 1)
+
+    # ** Calibrate - Parsnip ----
+    calibrated_tbl <- model_fit_no_boost %>%
+        modeltime_calibrate(
+            new_data   = testing(splits)
+        )
+
+    expect_equal(nrow(calibrated_tbl), 1)
+
+    expect_s3_class(calibrated_tbl, "mdl_time_tbl")
 
     # ** Accuracy - Modeltime ----
     accuracy_tbl <- modeltime_table(model_fit_no_boost) %>%
@@ -49,10 +59,20 @@ test_that("Auto ARIMA (Parsnip)", {
             metric_set = metric_set(rsq, mae)
         )
 
-    expect_equal(ncol(accuracy_tbl), 5)
+    expect_equal(nrow(accuracy_tbl), 1)
+
+    # ** Calibrate - Modeltime ----
+    calibrated_tbl <- modeltime_table(model_fit_no_boost) %>%
+        modeltime_calibrate(
+            new_data   = testing(splits)
+        )
+
+    expect_equal(nrow(calibrated_tbl), 1)
+
+    expect_s3_class(calibrated_tbl, "mdl_time_tbl")
 
     # ** Refit ----
-    future_forecast_tbl <- model_fit_no_boost %>%
+    future_forecast_tbl <- calibrated_tbl %>%
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
 
@@ -96,7 +116,7 @@ test_that("Auto ARIMA (Workflow)", {
             metric_set = metric_set(rsq, mae)
         )
 
-    expect_equal(ncol(accuracy_tbl), 3)
+    expect_equal(nrow(accuracy_tbl), 1)
 
     # ** Accuracy - Modeltime ----
     accuracy_tbl <- modeltime_table(wflw_fit_arima) %>%
@@ -105,7 +125,7 @@ test_that("Auto ARIMA (Workflow)", {
             metric_set = metric_set(rsq, mae)
         )
 
-    expect_equal(ncol(accuracy_tbl), 5)
+    expect_equal(nrow(accuracy_tbl), 1)
 
     # ** Refit ----
     future_forecast_tbl <- wflw_fit_arima %>%

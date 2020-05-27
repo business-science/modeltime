@@ -17,7 +17,7 @@ forecast accuracy metrics using \code{\link[=modeltime_accuracy]{modeltime_accur
 \itemize{
 \item MAE   - Mean absolute error, \code{\link[=mae]{mae()}}
 \item MAPE  - Mean absolute percentage error, \code{\link[=mape]{mape()}}
-\item MASE  - Mean absolute scaled errror, \code{\link[=mase]{mase()}}
+\item MASE  - Mean absolute scaled error, \code{\link[=mase]{mase()}}
 \item SMAPE - Symmetric mean absolute percentage error, \code{\link[=smape]{smape()}}
 \item RMSE  - Root mean squared error, \code{\link[=rmse]{rmse()}}
 \item RSQ   - R-squared, \code{\link[=rsq]{rsq()}}
