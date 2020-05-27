@@ -1,6 +1,5 @@
 
-# GENERAL MODEL PRINTING -----
-
+# GENERAL MODEL DESCRIPTIONS -----
 
 #' Get model descriptions for parsnip, workflows & modeltime objects
 #'
@@ -35,6 +34,11 @@
 #' @export
 get_model_description <- function(object, indicate_training = FALSE, upper_case = TRUE) {
     UseMethod("get_model_description", object)
+}
+
+#' @export
+get_model_description.default <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+    glubort("No method for class '{class(object)[1]}'. Expecting an object of class 'workflow', 'model_spec', or 'model_fit'.")
 }
 
 #' @export
@@ -132,9 +136,36 @@ get_model_description.workflow <- function(object, indicate_training = FALSE, up
 
 
 
-# ARIMA Model Printing----
-# Source: forecast:::arima.string
-get_arima_description <- function(object, padding=FALSE) {
+# ARIMA Model Descriptions ----
+
+#' Get model descriptions for Arima objects
+#'
+#' @param object Objects of class `Arima`
+#' @param padding Whether or not to include padding
+#'
+#' @source
+#' - Forecast R Package, `forecast:::arima.string()`
+#'
+#' @examples
+#' library(forecast)
+#'
+#' arima_fit <- forecast::Arima(1:10)
+#'
+#' get_arima_description(arima_fit)
+#'
+#'
+#' @export
+get_arima_description <- function(object, padding = FALSE) {
+    UseMethod("get_arima_description", object)
+}
+
+#' @export
+get_arima_description.default <- function(object, padding = FALSE) {
+    glubort("No method for class '{class(object)[1]}'. Expecting an object of class 'Arima'.")
+}
+
+#' @export
+get_arima_description.Arima <- function(object, padding = FALSE) {
 
     order <- object$arma[c(1, 6, 2, 3, 7, 4, 5)]
     m <- order[7]
