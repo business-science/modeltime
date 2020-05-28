@@ -1,7 +1,6 @@
 
 # CHECKS ----
 
-
 check_model_classes <- function(data, accept_classes = c("model_fit", "workflow")) {
 
     # Class Check
@@ -14,6 +13,18 @@ check_model_classes <- function(data, accept_classes = c("model_fit", "workflow"
         })) %>%
         dplyr::mutate(fail_check = purrr::map_lgl(.model, .f = function(obj) {
             !inherits(obj, accept_classes)
+        }))
+
+    return(ret_1)
+
+}
+
+check_models_are_trained <- function(data) {
+
+    # Class Check
+    ret_1 <- data %>%
+        dplyr::mutate(fail_check = purrr::map_lgl(.model, .f = function(obj) {
+            !is_trained(obj)
         }))
 
     return(ret_1)
@@ -70,6 +81,7 @@ check_unused_factor_levels <- function(data) {
 
 # VALIDATIONS ----
 
+
 validate_model_classes <- function(data, accept_classes = c("model_fit", "workflow")) {
 
     result_tbl <- check_model_classes(data, accept_classes) %>%
@@ -85,6 +97,26 @@ validate_model_classes <- function(data, accept_classes = c("model_fit", "workfl
             "All objects must be fitted workflow or parsnip models inheriting class 'workflow' or 'model_fit'. The following are not:",
             "\n",
             "{bad_msg}")
+        )
+    }
+
+}
+
+
+validate_models_are_trained <- function(data) {
+
+    result_tbl <- check_models_are_trained(data) %>%
+        dplyr::filter(fail_check)
+
+    if (nrow(result_tbl) > 0) {
+        bad_models <- result_tbl$.model_id
+        bad_msg    <- glue::glue("- Model {bad_models}: Is not trained. Try using `fit()` to train the model.")
+        bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
+
+        glubort(
+            "All objects must be fitted workflow or parsnip models. The following are not:",
+            "\n",
+            "{bad_msg}"
         )
     }
 
@@ -152,6 +184,21 @@ validate_unused_factor_levels <- function(data) {
 }
 
 # HELPERS ----
+
+is_trained <- function(x) {
+
+    trained <- FALSE
+
+    if (inherits(x, "model_fit")) {
+        trained <- TRUE
+    }
+
+    if (inherits(x, "workflow")) {
+        trained <- x$trained
+    }
+
+    return(trained)
+}
 
 glue_quote_collapse <- function(x) {
     glue::glue_collapse(glue::single_quote(x), sep = ", ")

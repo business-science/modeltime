@@ -6,6 +6,13 @@
 #'
 #' @param ... Fitted model or workflow objects
 #'
+#' @details
+#'
+#' This function:
+#'
+#' 1. Creates a table of models
+#' 2. Validates that all objects are models (parsnip or workflows objects) and all models have been fitted
+#'
 #' @examples
 #' library(tidyverse)
 #' library(lubridate)
@@ -58,7 +65,9 @@ modeltime_table <- function(...) {
 
     # CHECKS
     validate_model_classes(ret, accept_classes = c("model_fit", "workflow"))
+    validate_models_are_trained(ret)
 
+    # CREATE MODELTIME OBJECT
     ret <- ret %>%
         dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
 
