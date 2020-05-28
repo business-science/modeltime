@@ -119,7 +119,7 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval 
 
 #' @export
 modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'."))
+    glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'.")
 
 }
 
@@ -138,7 +138,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         tryCatch({
             suppressMessages(new_data <- timetk::future_frame(object$fit$data, .length_out = h, ...))
         }, error = function(e) {
-            rlang::abort("No valid date or date-time column found in the model. 'h' requires a date column to extend into the future.")
+            rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
         })
 
     }
@@ -215,7 +215,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         } else {
             # XY Interface
 
-            rlang::abort("XY Interface not yet implemented for 'modeltime_forecast()'. Try using the Formula Interface with `fit.model_spec()`.")
+            rlang::abort("XY Interface not yet implemented for 'modeltime_forecast()'. Try using the Formula Interface with `fit()` or a `workflow()`.")
 
             # actual_data <- prepare_data(object, actual_data) %>%
             #     tibble::as_tibble() %>%
@@ -235,15 +235,6 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
         dplyr::select(.key, .index, .value) %>%
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
         dplyr::arrange(.key, .index)
-
-    # ADD CONF INTERVAL
-    residuals <- tryCatch({
-        object$fit$data$.resid
-    }, error = function(e) {
-        NULL
-    })
-
-    ret <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
 
     return(ret)
 
@@ -267,7 +258,7 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         tryCatch({
             suppressMessages(new_data <- timetk::future_frame(mld$predictors, .length_out = h, ...))
         }, error = function(e) {
-            rlang::abort("No valid date or date-time column found in the workflow. 'h' requires a date column to extend into the future.")
+            rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
         })
 
     }
@@ -353,14 +344,6 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
         dplyr::arrange(.key, .index)
 
-    # ADD CONF INTERVAL
-    residuals <- tryCatch({
-        object$fit$fit$fit$data$.resid
-    }, error = function(e) {
-        NULL
-    })
-    ret <- add_conf_interval(ret, residuals, conf_interval, bootstrap = FALSE)
-
     return(ret)
 
 }
@@ -373,6 +356,21 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
     safe_modeltime_forecast <- purrr::safely(modeltime_forecast, otherwise = NA, quiet = FALSE)
 
     n_models <- data$.model_id %>% unique() %>% length()
+
+    # HANDLE RESIDUALS
+    has_residuals <- FALSE
+    if (all(c(".type", ".residuals") %in% names(data))) {
+        has_residuals <- TRUE
+
+        data_residuals <- data %>%
+            dplyr::select(.model_id, .residuals)
+
+        data <- data %>%
+            dplyr::select(-.type, -.residuals)
+
+    }
+
+    # CREATE FORECAST
 
     # Compute first model with actual data
     ret_1 <- data %>%
@@ -446,8 +444,110 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 
     ret <- dplyr::bind_rows(ret_1, ret_2)
 
+    # ADD CONF INTERVALS
+    if (!is.null(conf_interval)) {
+        if (!has_residuals) {
+            rlang::warn("Confidence interval estimation cannot be performed. Try using 'modeltime_calibrate()' to add residuals before performing 'modeltime_forecast()'.")
+        } else {
+
+            # safe_hdi_mean_shifted <- purrr::safely(
+            #     hdi_mean_shifted,
+            #     otherwise = tibble::tibble(
+            #         .conf_lo = NA,
+            #         .conf_hi = NA
+            #     ),
+            #     quiet = TRUE)
+
+            safe_normal_ci_mean_shifted <- purrr::safely(
+                normal_ci_mean_shifted,
+                otherwise = tibble::tibble(
+                    .conf_lo = NA,
+                    .conf_hi = NA
+                ),
+                quiet = TRUE)
+
+            ret <- ret %>%
+                dplyr::group_by(.model_id) %>%
+                tidyr::nest() %>%
+                dplyr::left_join(data_residuals, by = ".model_id") %>%
+                dplyr::mutate(.ci = purrr::map(.residuals, .f = function(x) {
+                    res <- safe_normal_ci_mean_shifted(x, conf_interval = conf_interval)
+                    res %>% purrr::pluck("result")
+                })
+                ) %>%
+                dplyr::select(-.residuals) %>%
+                tidyr::unnest(cols = c(.ci)) %>%
+                tidyr::unnest(cols = c(data)) %>%
+                dplyr::ungroup() %>%
+                dplyr::mutate(
+                    .conf_lo = .value + .conf_lo,
+                    .conf_hi = .value + .conf_hi
+                )
+        }
+    }
+
     return(ret)
 }
 
 
+# UTILITIES ----
+
+# Normal Conf Interval
+normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {
+
+    probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
+    quantile_x <- stats::quantile(x, prob = probs, na.rm = TRUE)
+    iq_range   <- quantile_x[[2]] - quantile_x[[1]]
+    limits     <- quantile_x + iq_range * c(-1, 1)
+
+    ci_lo_vec  <- limits[1]
+    ci_hi_vec  <- limits[2]
+
+    # Apply mean shift
+    suppressWarnings({
+        mu <- mean(x, na.rm = T)
+    })
+
+    ci_lo_vec_shifted <- min(ci_lo_vec, ci_lo_vec - mu)
+    ci_hi_vec_shifted <- max(ci_hi_vec, ci_hi_vec - mu)
+
+    # Tibble
+    ret <- tibble::tibble(
+        .conf_lo = ci_lo_vec_shifted,
+        .conf_hi = ci_hi_vec_shifted
+    )
+
+    return(ret)
+}
+
+# High Density Estimate
+# hdi_mean_shifted <- function (x, conf_interval = 0.89) {
+#
+#     # Calculate HDI (High Density Interval)
+#     # - https://easystats.github.io/bayestestR/articles/credible_interval.html
+#     hdi_ci_estimates_df <- bayestestR::hdi(
+#         x = x,
+#         ci = conf_interval,
+#         verbose = FALSE
+#     )
+#
+#     ci_lo_vec = hdi_ci_estimates_df$CI_low
+#     ci_hi_vec = hdi_ci_estimates_df$CI_high
+#
+#     # Apply mean shift
+#     mu <- mean(x, na.rm = T)
+#
+#     ci_lo_vec_shifted <- min(ci_lo_vec, ci_lo_vec - mu)
+#     ci_hi_vec_shifted <- max(ci_hi_vec, ci_hi_vec - mu)
+#
+#     # Tibble
+#     ret <- tibble::tibble(
+#         .conf_lo = ci_lo_vec_shifted,
+#         .conf_hi = ci_hi_vec_shifted
+#     )
+#
+#     return(ret)
+#
+#
+# }
 

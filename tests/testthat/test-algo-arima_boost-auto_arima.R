@@ -197,7 +197,7 @@ wflw_fit <- wflw %>%
 # Forecast
 predictions_tbl <- wflw_fit %>%
     modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value:.conf_hi), exp)
+    mutate_at(vars(.value), exp)
 
 
 

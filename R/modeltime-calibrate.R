@@ -81,16 +81,19 @@ modeltime_calibrate.model_spec <- function(object, new_data = NULL,
 modeltime_calibrate.model_fit <- function(object, new_data = NULL,
                                           quiet = TRUE, ...) {
 
-    ret <- calc_residuals(object, test_data = new_data, quiet = quiet, ...)
+    ret <- modeltime_table(object) %>%
+        modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
 
-    # Convert to mdl_time_tbl
-    ret <- ret %>%
-        tibble::rowid_to_column(var = ".model_id") %>%
-        dplyr::mutate(.model = list(object)) %>%
-        dplyr::mutate(.model_desc = get_model_description(object)) %>%
-        dplyr::select(.model_id, .model, .model_desc, dplyr::everything())
+    # ret <- calc_residuals(object, test_data = new_data, quiet = quiet, ...)
 
-    class(ret) <- c("mdl_time_tbl", class(ret))
+    # # Convert to mdl_time_tbl
+    # ret <- ret %>%
+    #     tibble::rowid_to_column(var = ".model_id") %>%
+    #     dplyr::mutate(.model = list(object)) %>%
+    #     dplyr::mutate(.model_desc = get_model_description(object)) %>%
+    #     dplyr::select(.model_id, .model, .model_desc, dplyr::everything())
+    #
+    # class(ret) <- c("mdl_time_tbl", class(ret))
 
     return(ret)
 
@@ -105,16 +108,19 @@ modeltime_calibrate.workflow <- function(object, new_data = NULL,
         rlang::abort("Workflow must be trained using the 'fit()' function.")
     }
 
-    ret <- calc_residuals(object, test_data = new_data, ...)
+    ret <- modeltime_table(object) %>%
+        modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
 
-    # Convert to mdl_time_tbl
-    ret <- ret %>%
-        tibble::rowid_to_column(var = ".model_id") %>%
-        dplyr::mutate(.model = list(object)) %>%
-        dplyr::mutate(.model_desc = get_model_description(object)) %>%
-        dplyr::select(.model_id, .model, .model_desc, dplyr::everything())
-
-    class(ret) <- c("mdl_time_tbl", class(ret))
+    # ret <- calc_residuals(object, test_data = new_data, ...)
+    #
+    # # Convert to mdl_time_tbl
+    # ret <- ret %>%
+    #     tibble::rowid_to_column(var = ".model_id") %>%
+    #     dplyr::mutate(.model = list(object)) %>%
+    #     dplyr::mutate(.model_desc = get_model_description(object)) %>%
+    #     dplyr::select(.model_id, .model, .model_desc, dplyr::everything())
+    #
+    # class(ret) <- c("mdl_time_tbl", class(ret))
 
     return(ret)
 

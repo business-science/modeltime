@@ -6,7 +6,7 @@
 \usage{
 plot_modeltime_forecast(
   .data,
-  .include_conf_interval = FALSE,
+  .include_conf_interval = TRUE,
   .conf_interval_fill = "grey20",
   .conf_interval_alpha = 0.2,
   .include_legend = TRUE,

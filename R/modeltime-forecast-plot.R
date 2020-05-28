@@ -56,7 +56,7 @@
 #'
 #' @export
 plot_modeltime_forecast <- function(.data,
-                                    .include_conf_interval = FALSE,
+                                    .include_conf_interval = TRUE,
                                     .conf_interval_fill = "grey20",
                                     .conf_interval_alpha = 0.20,
                                     .include_legend = TRUE,
@@ -68,6 +68,13 @@ plot_modeltime_forecast <- function(.data,
     # Checks
     if (!all(c(".key", ".index", ".value") %in% names(.data))) {
         rlang::abort("Expecting the following names to be in the data frame: .key, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
+    }
+
+    if (.include_conf_interval) {
+        if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
+            .include_conf_interval <- FALSE
+            rlang::warn("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. \nProceeding with '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.\nAlternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.")
+        }
     }
 
     # PASS SINGLE / MULTI
@@ -135,7 +142,7 @@ plot_modeltime_forecast <- function(.data,
 
 
 plot_modeltime_forecast_single <- function(.data,
-                                           .include_conf_interval = FALSE,
+                                           .include_conf_interval = TRUE,
                                            .conf_interval_fill = "grey20",
                                            .conf_interval_alpha = 0.20,
                                            .include_legend = TRUE,
@@ -144,50 +151,33 @@ plot_modeltime_forecast_single <- function(.data,
                                            .interactive = TRUE, .plotly_slider = FALSE,
                                            ...) {
 
+
+
+    g <- timetk::plot_time_series(
+        .data         = .data,
+        .date_var     = .index,
+        .value        = .value,
+        .color_var    = .key,
+
+        .smooth       = FALSE,
+
+        .title        = .title,
+        .x_lab        = .x_lab,
+        .y_lab        = .y_lab,
+        .color_lab    = .color_lab,
+        .interactive  = FALSE,
+        ...
+    )
+
     if (.include_conf_interval) {
-        if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
-            rlang::abort("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. \nTry using '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.")
-        }
-    }
-
-    if (!.include_conf_interval) {
-
-        g <- timetk::plot_time_series(
-            .data         = .data,
-            .date_var     = .index,
-            .value        = .value,
-            .color_var    = .key,
-
-            .smooth       = FALSE,
-
-            .title        = .title,
-            .x_lab        = .x_lab,
-            .y_lab        = .y_lab,
-            .color_lab    = .color_lab,
-            .interactive  = FALSE,
-            ...
-        )
-    } else {
-        g <- timetk::plot_time_series(
-            .data         = .data,
-            .date_var     = .index,
-            .value        = .value,
-            .color_var    = .key,
-
-            .smooth       = FALSE,
-
-            .title        = .title,
-            .x_lab        = .x_lab,
-            .y_lab        = .y_lab,
-            .color_lab    = .color_lab,
-            .interactive  = FALSE,
-            ...
-        )
 
         # Add ribbon
         g <- g +
-            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi),
-                                 fill = .conf_interval_fill, alpha = .conf_interval_alpha)
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi, color = .key),
+                                 fill = .conf_interval_fill,
+                                 alpha = .conf_interval_alpha,
+                                 # color = .conf_interval_fill,
+                                 linetype = 0)
 
         # Reorder Ribbon to 1st level
         layers_start <- g$layers
@@ -208,7 +198,7 @@ plot_modeltime_forecast_single <- function(.data,
 
 
 plot_modeltime_forecast_multi <- function(.data,
-                                          .include_conf_interval = FALSE,
+                                          .include_conf_interval = TRUE,
                                           .conf_interval_fill = "grey20",
                                           .conf_interval_alpha = 0.20,
                                           .include_legend = TRUE,
@@ -220,71 +210,38 @@ plot_modeltime_forecast_multi <- function(.data,
 
     # Data prep
     data_prepared <- .data %>%
-        dplyr::ungroup() %>%
+        # dplyr::ungroup() %>%
         dplyr::mutate(.model_desc = ifelse(!is.na(.model_id), stringr::str_c(.model_id, "_", .model_desc), .model_desc)) %>%
+        dplyr::mutate(.model_desc = ifelse(is.na(.value), stringr::str_c("(ERROR) ", .model_desc), .model_desc)) %>%
         dplyr::mutate(.model_desc = forcats::as_factor(.model_desc))
 
-    # Conf Interval Checks
+
+    g <- timetk::plot_time_series(
+        .data         = data_prepared,
+        .date_var     = .index,
+        .value        = .value,
+        .color_var    = .model_desc,
+
+        .smooth       = FALSE,
+
+        .title        = .title,
+        .x_lab        = .x_lab,
+        .y_lab        = .y_lab,
+        .color_lab    = .color_lab,
+        .interactive  = FALSE,
+        ...
+    )
+
+    # Add ribbon
     if (.include_conf_interval) {
-
-        n_models <- data_prepared %>%
-            dplyr::filter(!is.na(.model_id)) %>%
-            dplyr::distinct(.model_id) %>%
-            dplyr::count() %>%
-            dplyr::pull()
-
-        if (n_models == 1) {
-            if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
-                rlang::abort("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. Try using '.include_conf_interval = FALSE' to visualize the forecast without confidence intervals.")
-            } else {
-                .include_conf_interval <- TRUE
-            }
-        } else {
-            warning("Not able to display confidence intervals for individual models on multi-model plots. Reverting to '.include_conf_interval = FALSE'.")
-            .include_conf_interval <- FALSE
-        }
-    }
-
-    # Process Multi-Model
-    if (!.include_conf_interval) {
-
-        g <- timetk::plot_time_series(
-            .data         = data_prepared,
-            .date_var     = .index,
-            .value        = .value,
-            .color_var    = .model_desc,
-
-            .smooth       = FALSE,
-
-            .title        = .title,
-            .x_lab        = .x_lab,
-            .y_lab        = .y_lab,
-            .color_lab    = .color_lab,
-            .interactive  = FALSE,
-            ...
-        )
-    } else {
-
-        g <- timetk::plot_time_series(
-            .data         = data_prepared,
-            .date_var     = .index,
-            .value        = .value,
-            .color_var    = .model_desc,
-
-            .smooth       = FALSE,
-
-            .title        = .title,
-            .x_lab        = .x_lab,
-            .y_lab        = .y_lab,
-            .color_lab    = .color_lab,
-            .interactive  = FALSE,
-            ...
-        )
 
         # Add ribbon
         g <- g +
-            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi),
-                                 fill = .conf_interval_fill, alpha = .conf_interval_alpha)
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi, color = .model_desc),
+                                 fill = .conf_interval_fill,
+                                 alpha = .conf_interval_alpha,
+                                 # color = .conf_interval_fill,
+                                 linetype = 0)
 
         # Reorder Ribbon to 1st level
         layers_start <- g$layers

@@ -4,5 +4,6 @@ utils::globalVariables(
       "key", "..indicator", "bad_class", ".key", ".index", ".pred", ".value",
       ".conf_hi", ".conf_lo", ".fitted", ".type", "actual", "prediction",
       ".estimate", ".estimator", ".metric", ".model", ".nested.col",
-      "value", ".model_desc", ".model_id")
+      "value", ".model_desc", ".model_id",
+      ".residuals", ".ci")
 )

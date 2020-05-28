@@ -18,6 +18,7 @@ model_fit <- model_spec %>%
 
 # * Forecast ----
 forecast_tbl <- model_fit %>%
+    modeltime_calibrate(new_data = testing(splits)) %>%
     modeltime_forecast(h = "3 years", actual_data = training(splits), conf_interval = 0.8)
 
 # VISUALIZATIONS WITH CONF INTERVALS ----
@@ -96,6 +97,7 @@ wflw_fit <- wflw %>%
     fit(training(splits))
 
 forecast_tbl <- wflw_fit %>%
+    modeltime_calibrate(testing(splits)) %>%
     modeltime_forecast(h = "3 years", actual_data = training(splits), conf_interval = 0.8)
 
 # * ggplot2 visualization ----
