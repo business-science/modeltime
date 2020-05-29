@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre"))
 Description: 
-    Time series models for use with the 'parsnip' package. 
+    Time series models and forecasting framework for use with the 'parsnip' package. 
     Models include ARIMA, ETS, and additional time series models
     from the 'forecast' package. Refer to Forecasting Principles & Practice
     (Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 

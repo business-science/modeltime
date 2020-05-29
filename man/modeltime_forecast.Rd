@@ -23,7 +23,7 @@ time series with no exogenous regressors). Always extends the calibration data.}
 
 \item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
-\item{actual_data}{Data that is combined with the output tibble and given an \code{.key = "actual"}}
+\item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
 \item{...}{Additional arguments passed to \code{\link[=future_frame]{future_frame()}} for use with the \code{h} forecast horizon}
 }
@@ -43,6 +43,12 @@ Additional descriptive columns are included:
 \item \code{.model_id}: Model ID from the Modeltime Table
 \item \code{.model_desc}: Model Description from the Modeltime Table
 }
+
+Unnecessary columns are \emph{dropped} to save space:
+\itemize{
+\item \code{.model}
+\item \code{.calibration_data}
+}
 }
 \description{
 The goal of \code{modeltime_forecast()} is to simplify the process of
@@ -58,10 +64,19 @@ for visualization with \code{\link[=plot_modeltime_forecast]{plot_modeltime_fore
 When forecasting without external regressors, meaning that features are dependent on the
 date feature alone, you can specify future data using:
 \enumerate{
-\item \verb{h = "3 years" or "36 months" or 36}: This is dependent on the \code{.calibration_data}.
-All forecasts are extended after the calibration data.
-\item \code{new_data}: A future tibble with date column extending the trained dates.
-See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
+\item \code{new_data}: A future tibble with date column extending the trained dates and
+exogonous regressors (xregs) if used.
+\itemize{
+\item Evaluating Models: See \code{\link[rsample:testing]{rsample::testing()}} for getting test data sets
+\item Forecasting Future Data: See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
+}
+\item \code{h}: This is dependent on the \code{.calibration_data}.
+\itemize{
+\item All forecasts are extended after the calibration data, which is
+desirable \emph{after refitting} with \code{\link[=modeltime_refit]{modeltime_refit()}}.
+\item This method cannot be used if non-time-based exogonous regresssors
+are used in the models.
+}
 }
 
 \strong{Actual Data}
@@ -69,7 +84,7 @@ See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
 This is reference data that contains the true values of the time-stamp data.
 It helps in visualizing the performance of the forecast vs the actual data.
 
-\emph{Confidence Interval Estimation}
+\strong{Confidence Interval Estimation}
 
 Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
 

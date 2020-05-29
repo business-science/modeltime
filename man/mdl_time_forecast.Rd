@@ -23,7 +23,7 @@ time series with no exogenous regressors). Always extends the calibration data.}
 
 \item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
-\item{actual_data}{Data that is combined with the output tibble and given an \code{.key = "actual"}}
+\item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
 \item{...}{Additional arguments passed to \code{\link[=future_frame]{future_frame()}} for use with the \code{h} forecast horizon}
 }

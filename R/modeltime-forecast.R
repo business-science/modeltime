@@ -8,7 +8,7 @@
 #' @param h The forecast horizon (can be used instead of `new_data` for
 #'  time series with no exogenous regressors). Always extends the calibration data.
 #' @param conf_interval An estimated confidence interval based on the in-sample residuals
-#' @param actual_data Data that is combined with the output tibble and given an `.key = "actual"`
+#' @param actual_data Reference data that is combined with the output tibble and given a `.key = "actual"`
 #' @param ... Additional arguments passed to [future_frame()] for use with the `h` forecast horizon
 #'
 #'
@@ -26,6 +26,10 @@
 #' - `.model_id`: Model ID from the Modeltime Table
 #' - `.model_desc`: Model Description from the Modeltime Table
 #'
+#' Unnecessary columns are _dropped_ to save space:
+#' - `.model`
+#' - `.calibration_data`
+#'
 #' @details
 #'
 #' The key parameters are (controlled by `new_data` or `h`) and
@@ -37,18 +41,24 @@
 #' When forecasting without external regressors, meaning that features are dependent on the
 #' date feature alone, you can specify future data using:
 #'
-#' 1. `h = "3 years" or "36 months" or 36`: This is dependent on the `.calibration_data`.
-#'  All forecasts are extended after the calibration data.
+#' 1. `new_data`: A future tibble with date column extending the trained dates and
+#'  exogonous regressors (xregs) if used.
+#'    - Evaluating Models: See [rsample::testing()] for getting test data sets
+#'    - Forecasting Future Data: See [future_frame()] for creating future tibbles.
 #'
-#' 2. `new_data`: A future tibble with date column extending the trained dates.
-#'  See [future_frame()] for creating future tibbles.
+#'
+#' 2. `h`: This is dependent on the `.calibration_data`.
+#'    - All forecasts are extended after the calibration data, which is
+#'     desirable _after refitting_ with [modeltime_refit()].
+#'    - This method cannot be used if non-time-based exogonous regresssors
+#'     are used in the models.
 #'
 #' __Actual Data__
 #'
 #' This is reference data that contains the true values of the time-stamp data.
 #' It helps in visualizing the performance of the forecast vs the actual data.
 #'
-#' _Confidence Interval Estimation_
+#' __Confidence Interval Estimation__
 #'
 #' Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
 #'
