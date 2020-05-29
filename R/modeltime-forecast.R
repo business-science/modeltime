@@ -145,21 +145,17 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 
     data <- object
 
-    safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
-
     n_models <- data$.model_id %>% unique() %>% length()
 
-    # HANDLE RESIDUALS
-    has_residuals <- FALSE
+    # HANDLE CALIBRATION DATA
+    has_ci <- FALSE
     if (all(c(".type", ".calibration_data") %in% names(data))) {
-        has_residuals <- TRUE
-
-        data_residuals <- data %>%
+        has_ci <- TRUE
+        data_calibration <- data %>%
             dplyr::select(.model_id, .calibration_data)
-
-        data <- data %>%
-            dplyr::select(-.type, -.calibration_data)
-
+    }
+    if (!has_ci) {
+        glubort("Expecting columns '.type' and '.calibration_data'. Try running 'modeltime_calibrate()' before using 'modeltime_forecast()'.")
     }
 
     # CREATE FORECAST
@@ -168,26 +164,11 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
     ret_1 <- data %>%
         dplyr::ungroup() %>%
         dplyr::slice(1) %>%
-        dplyr::mutate(.nested.col = purrr::map(
-            .x         = .model,
-            .f         = function(obj) {
-
-                ret <- safe_modeltime_forecast(
-                    obj,
-                    new_data      = new_data,
-                    h             = h,
-                    conf_interval = NULL,
-                    actual_data   = actual_data,
-                    ...
-                )
-
-                ret <- ret %>% purrr::pluck("result")
-
-                return(ret)
-            })
-        ) %>%
-        dplyr::select(-.model) %>%
-        tidyr::unnest(cols = .nested.col)
+        safe_modeltime_forecast_map(
+            new_data    = new_data,
+            h           = h,
+            actual_data = actual_data
+        )
 
     if ("actual" %in% unique(ret_1$.key)) {
         ret_1 <- ret_1 %>%
@@ -200,30 +181,16 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 
     if (n_models > 1) {
         ret_2 <- data %>%
-            dplyr::slice(2:dplyr::n()) %>%
             dplyr::ungroup() %>%
-            dplyr::mutate(.nested.col = purrr::map(
-                .x         = .model,
-                .f         = function(obj) {
-
-                    ret <- safe_modeltime_forecast(
-                        obj,
-                        new_data      = new_data,
-                        h             = h,
-                        conf_interval = NULL,
-                        actual_data   = NULL,
-                        ...
-                    )
-
-                    ret <- ret %>% purrr::pluck("result")
-
-                    return(ret)
-                })
-            ) %>%
-            dplyr::select(-.model) %>%
-            tidyr::unnest(cols = .nested.col)
+            dplyr::slice(2:dplyr::n()) %>%
+            safe_modeltime_forecast_map(
+                new_data    = new_data,
+                h           = h,
+                actual_data = NULL # Don't pass actual_data
+            )
     }
 
+    # If errors occur, .nested.col remains - needs removed
     if (".nested.col" %in% names(ret_1)) {
         ret_1 <- ret_1 %>%
             dplyr::select(-.nested.col)
@@ -238,44 +205,15 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 
     # ADD CONF INTERVALS
     if (!is.null(conf_interval)) {
-        if (!has_residuals) {
-            rlang::warn("Confidence interval estimation cannot be performed. Try using 'modeltime_calibrate()' to add residuals before performing 'modeltime_forecast()'.")
-        } else {
-
-            safe_normal_ci_mean_shifted <- purrr::safely(
-                normal_ci_mean_shifted,
-                otherwise = tibble::tibble(
-                    .conf_lo = NA,
-                    .conf_hi = NA
-                ),
-                quiet = TRUE)
-
-            ret <- ret %>%
-                dplyr::group_by(.model_id) %>%
-                tidyr::nest() %>%
-                dplyr::left_join(data_residuals, by = ".model_id") %>%
-                dplyr::mutate(.ci = purrr::map(.calibration_data, .f = function(.data) {
-                    x   <- .data$.residuals
-                    res <- safe_normal_ci_mean_shifted(x, conf_interval = conf_interval)
-                    res %>% purrr::pluck("result")
-                })
-                ) %>%
-                dplyr::select(-.calibration_data) %>%
-                tidyr::unnest(cols = c(.ci)) %>%
-                tidyr::unnest(cols = c(data)) %>%
-                dplyr::ungroup() %>%
-                dplyr::mutate(
-                    .conf_lo = .value + .conf_lo,
-                    .conf_hi = .value + .conf_hi
-                )
-        }
+        ret <- ret %>%
+            safe_conf_interval_map(data_calibration, conf_interval = conf_interval)
     }
 
     return(ret)
 }
 
 
-# UTILITIES ----
+# FORECAST UTILITIES ----
 
 #' Modeltime Forecast Helpers
 #'
@@ -283,25 +221,26 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 #' These functions are not intended for user use.
 #'
 #' @inheritParams modeltime_forecast
+#' @param calibration_data Data that has been calibrated from a testing set
 #'
 #' @return A tibble with forecast features
 #'
 #' @keywords internal
 #'
 #' @export
-mdl_time_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    UseMethod("mdl_time_forecast")
+mdl_time_forecast <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+    UseMethod("mdl_time_forecast", object)
 }
 
 #' @export
-mdl_time_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
 
     # MODEL OBJECT
 
     if (!is.null(h)) {
         # Suppress date selection
         tryCatch({
-            suppressMessages(new_data <- timetk::future_frame(object$fit$data, .length_out = h, ...))
+            suppressMessages(new_data <- timetk::future_frame(calibration_data, .length_out = h, ...))
         }, error = function(e) {
             rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
         })
@@ -406,7 +345,7 @@ mdl_time_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_
 }
 
 #' @export
-mdl_time_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
 
     # Checks
     if (!object$trained) {
@@ -421,7 +360,7 @@ mdl_time_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_i
     if (!is.null(h)) {
         # Suppress date selection
         tryCatch({
-            suppressMessages(new_data <- timetk::future_frame(mld$predictors, .length_out = h, ...))
+            suppressMessages(new_data <- timetk::future_frame(calibration_data, .length_out = h, ...))
         }, error = function(e) {
             rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
         })
@@ -513,6 +452,70 @@ mdl_time_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_i
 
 }
 
+
+# SAFE FORECAST MAPPERS ----
+
+safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+
+    safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
+
+    data %>%
+        dplyr::mutate(.nested.col = purrr::map2(
+            .x         = .model,
+            .y         = .calibration_data,
+            .f         = function(obj, cal) {
+
+                ret <- safe_modeltime_forecast(
+                    obj, cal,
+                    new_data      = new_data,
+                    h             = h,
+                    actual_data   = actual_data,
+                    ...
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        ) %>%
+        # Drop unnecessary columns
+        dplyr::select(-.model, -.type, -.calibration_data) %>%
+        tidyr::unnest(cols = .nested.col)
+}
+
+
+# SAFE CONF INTERVAL MAPPERS ----
+
+safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
+
+    safe_normal_ci_mean_shifted <- purrr::safely(
+        normal_ci_mean_shifted,
+        otherwise = tibble::tibble(
+            .conf_lo = NA,
+            .conf_hi = NA
+        ),
+        quiet = FALSE)
+
+    data %>%
+        dplyr::group_by(.model_id) %>%
+        tidyr::nest() %>%
+        dplyr::left_join(data_calibration, by = ".model_id") %>%
+        dplyr::mutate(.ci = purrr::map(.calibration_data, .f = function(.data) {
+            x   <- .data$.residuals
+            res <- safe_normal_ci_mean_shifted(x, conf_interval = conf_interval)
+            res %>% purrr::pluck("result")
+        })
+        ) %>%
+        dplyr::select(-.calibration_data) %>%
+        tidyr::unnest(cols = c(.ci)) %>%
+        tidyr::unnest(cols = c(data)) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(
+            .conf_lo = .value + .conf_lo,
+            .conf_hi = .value + .conf_hi
+        )
+}
+
 # Normal Conf Interval
 normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {
 
@@ -571,4 +574,3 @@ normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {
 #
 #
 # }
-

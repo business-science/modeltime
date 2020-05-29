@@ -205,13 +205,14 @@ calc_residuals <- function(object, test_data = NULL, ...) {
             tibble::add_column(.type = "Test", .before = 1) %>%
             dplyr::group_by(.type)
 
+        idx_var_text <- timetk::tk_get_timeseries_variables(test_data)[1]
         test_metrics_tbl <- test_metrics_prepped_tbl %>%
             dplyr::summarize(.calibration_data = list(
                     tibble::tibble(
-                        .idx        = test_data %>% timetk::tk_index(),
-                        .actual     = actual,
-                        .prediction = prediction,
-                        .residuals  = actual - prediction
+                        !!idx_var_text   := test_data %>% timetk::tk_index(),
+                        .actual           = actual,
+                        .prediction       = prediction,
+                        .residuals        = actual - prediction
                     )
                 )
             ) %>%

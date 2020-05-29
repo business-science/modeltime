@@ -6,9 +6,9 @@
 \usage{
 mdl_time_forecast(
   object,
+  calibration_data,
   new_data = NULL,
   h = NULL,
-  conf_interval = 0.8,
   actual_data = NULL,
   ...
 )
@@ -16,12 +16,12 @@ mdl_time_forecast(
 \arguments{
 \item{object}{A Modeltime Table that has been calibrated with \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}}
 
+\item{calibration_data}{Data that has been calibrated from a testing set}
+
 \item{new_data}{A \code{tibble} containing future information to forecast.}
 
 \item{h}{The forecast horizon (can be used instead of \code{new_data} for
 time series with no exogenous regressors). Always extends the calibration data.}
-
-\item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
 \item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
