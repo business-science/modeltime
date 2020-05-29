@@ -4,7 +4,7 @@
 #' `modeltime`, `parsnip`, `workflows`, and regression modeling extensions
 #' in the `tidymodels` ecosystem.
 #'
-#' @param ... Fitted model or workflow objects
+#' @param ... Fitted `parsnip` model or `workflow` objects
 #'
 #' @details
 #'
@@ -50,16 +50,19 @@
 #'     model_fit_boosted
 #' )
 #'
+#' # ---- CALIBRATE ----
+#'
+#' calibration_tbl <- models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits))
+#'
 #' # ---- ACCURACY ----
 #'
-#' models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#' calibration_tbl %>%
 #'     modeltime_accuracy()
 #'
 #' # ---- FORECAST ----
 #'
-#' models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#' calibration_tbl %>%
 #'     modeltime_forecast(
 #'         new_data    = testing(splits),
 #'         actual_data = m750

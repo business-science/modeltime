@@ -1,43 +1,41 @@
 #' Refit one or more trained models to new data
 #'
-#' This is a wrapper for `fit()` and `fit_xy()` that takes a
-#' trained parsnip model or workflow and retrains on _new data_ using the parameters
-#' and preprocessing (formulas or recipes) used during the training process:
-#' - Automated models (e.g. "auto arima") will have parameters recalculated.
-#' - Non-automated models (e.g. "arima") will have parameters preserved.
-#' - All preprocessing steps will be reused on the data
+#' This is a wrapper for `fit()` that takes a
+#' Modeltime Table and retrains each model on _new data_ re-using the parameters
+#' and preprocessing steps used during the training process.
 #'
-#' @param object A fitted model object that is either (1) a workflow that has been fit by [fit.workflow()] or
-#'  (2) a parsnip model that has been fit using [fit.model_spec()]
-#' @param data A `tibble`
+#' @param object A Modeltime Table
+#' @param data A `tibble` that contains data to retrain the model(s) using.
 #' @param control Either [control_parsnip()] or [control_workflow()] depending on the object.
 #'  If NULL, created automatically.
 #' @param ... Additional arguments passed to [fit()].
-#' @param x A matrix or data frame of predictors.
-#' @param y A vector, matrix or data frame of outcome data.
 #'
 #'
 #' @return
-#' Depending on the object provided, either:
-#' - Single Parsnip Model: A fitted parsnip model (`model_fit`) is returned.
-#' - Single Workflow: A trained `workflow` is returned.
-#' - A Modeltime Table containing one or more trained models: A trained `mdl_time_tbl` table
-#'  with one or more models that have been retrained is returned.
+#' A Modeltime Table containing one or more re-trained models.
 #'
 #' @details
 #'
+#' Refitting is an important step prior to forecasting time series models.
+#' The `modeltime_refit()` function makes it easy to recycle models,
+#' retraining on new data.
+#'
+#' __Recycling Parameters__
+#'
+#' Parameters are recycled during retraining using the following criteria:
+#'
+#' - __Automated models__ (e.g. "auto arima") will have parameters recalculated.
+#' - __Non-automated models__ (e.g. "arima") will have parameters preserved.
+#' - All preprocessing steps will be reused on the data
+#'
 #' __Refit__
 #'
-#' The `modeltime_refit()` function is used to retrain:
-#'
-#' 1. All `workflow` objects
-#' 2. Any `model_fit` objects (Parsnip Models) created with `fit()`
+#' The `modeltime_refit()` function is used to retrain models trained with `fit()`.
 #'
 #' __Refit XY__
 #'
-#' The `modeltime_refit_xy()` function is used to retrain:
+#' The XY format is not supported at this time.
 #'
-#' - Any `model_fit` objects (Parsnip Models) created with `fit_xy()`
 #'
 #'
 #'
@@ -45,9 +43,7 @@
 #' library(tidyverse)
 #' library(lubridate)
 #' library(timetk)
-#' library(workflows)
 #' library(parsnip)
-#' library(recipes)
 #' library(rsample)
 #'
 #' # Data
@@ -56,16 +52,52 @@
 #' # Split Data 80/20
 #' splits <- initial_time_split(m750, prop = 0.9)
 #'
-#' # --- Fit Model ---
+#' # --- MODELS ---
 #'
-#' model_fit_train_data <- arima_reg() %>%
+#' # Model 1: auto_arima ----
+#' model_fit_no_boost <- arima_reg() %>%
 #'     set_engine(engine = "auto_arima") %>%
 #'     fit(value ~ date, data = training(splits))
 #'
-#' # --- Refit Model ----
+#' # Model 2: arima_boost ----
+#' model_fit_boosted <- arima_boost(
+#'     min_n = 2,
+#'     learn_rate = 0.015
+#' ) %>%
+#'     set_engine(engine = "auto_arima_xgboost") %>%
+#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
 #'
-#' model_fit_full_data <- model_fit_train_data %>%
-#'     modeltime_refit(data = m750)
+#' # ---- MODELTIME TABLE ----
+#'
+#' models_tbl <- modeltime_table(
+#'     model_fit_no_boost,
+#'     model_fit_boosted
+#' )
+#'
+#' # ---- CALIBRATE ----
+#'
+#' calibration_tbl <- models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits))
+#'
+#' # ---- ACCURACY ----
+#'
+#' calibration_tbl %>%
+#'     modeltime_accuracy()
+#'
+#' # ---- FORECAST ----
+#'
+#' calibration_tbl %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
+#'     )
+#'
+#' # ---- REFIT ----
+#' # - Refit on full data set
+#'
+#' refit_tbl <- calibration_tbl %>%
+#'     modeltime_refit(m750)
 #'
 #'
 #' @name modeltime_refit
@@ -78,11 +110,11 @@ modeltime_refit <- function(object, data, control = NULL, ...) {
     UseMethod("modeltime_refit", object)
 }
 
-#' @export
-#' @rdname modeltime_refit
-modeltime_refit_xy <- function(object, x, y, control = NULL, ...) {
-    UseMethod("modeltime_refit_xy", object)
-}
+# #' @export
+# #' @rdname modeltime_refit
+# modeltime_refit_xy <- function(object, x, y, control = NULL, ...) {
+#     UseMethod("modeltime_refit_xy", object)
+# }
 
 # MODELTIME ----
 
@@ -92,7 +124,7 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
     new_data <- data
     data     <- object # object is a Modeltime Table
 
-    safe_modeltime_refit <- purrr::safely(modeltime_refit, otherwise = NA, quiet = FALSE)
+    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NA, quiet = FALSE)
 
 
     # Implement progressr for progress reporting
@@ -122,22 +154,41 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
         dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
 
 
-
-
-
     return(ret)
 
 }
 
-#' @export
-modeltime_refit_xy.mdl_time_tbl <- function(object, x, y, ..., control = NULL) {
-    rlang::abort("Only models and workflows trained using `fit()` are supported at this time.")
-}
+# #' @export
+# modeltime_refit_xy.mdl_time_tbl <- function(object, x, y, ..., control = NULL) {
+#     rlang::abort("Only models and workflows trained using `fit()` are supported at this time.")
+# }
+
 
 # REFIT ----
 
+#' Modeltime Refit Helpers
+#'
+#' Used for low-level refitting of modeltime, parnsip and workflow models
+#' These functions are not intended for user use.
+#'
+#' @inheritParams modeltime_refit
+#'
+#' @return A tibble with forecast features
+#'
+#' @keywords internal
+#'
 #' @export
-modeltime_refit.workflow <- function(object, data, ..., control = NULL) {
+mdl_time_refit <- function(object, data, ..., control = NULL) {
+    UseMethod("mdl_time_refit", object)
+}
+
+#' @export
+mdl_time_refit.default <- function(object, data, control = NULL, ...) {
+    glubort("No method for an object of class: {class(object)[1]}. .")
+}
+
+#' @export
+mdl_time_refit.workflow <- function(object, data, ..., control = NULL) {
 
     if (is.null(control)) {
         control <- workflows::control_workflow(control_parsnip = NULL)
@@ -165,7 +216,7 @@ modeltime_refit.workflow <- function(object, data, ..., control = NULL) {
 }
 
 #' @export
-modeltime_refit.model_fit <- function(object, data, control = NULL, ...) {
+mdl_time_refit.model_fit <- function(object, data, control = NULL, ...) {
 
     if (is.null(control)) {
         control <- parsnip::control_parsnip()
@@ -213,36 +264,32 @@ modeltime_refit.model_fit <- function(object, data, control = NULL, ...) {
 
 }
 
-#' @export
-modeltime_refit.default <- function(object, data, control = NULL, ...) {
-    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'."))
 
-}
 
-# REFIT XY ----
-
-#' @export
-modeltime_refit_xy.workflow <- function(object, x, y, control = NULL, ...) {
-    rlang::abort("Using 'modeltime_refit_xy()' on a workflow object is not allowed. Try using 'modeltime_refit()'.")
-}
-
-#' @export
-modeltime_refit_xy.model_fit <- function(object, x, y, control = NULL, ...) {
-
-    if (is.null(control)) {
-        control <- parsnip::control_parsnip()
-    }
-
-    model_spec <- object$spec
-
-    ret <- model_spec %>%
-        fit_xy(x = x, y = y, control = control, ...)
-
-    return(ret)
-
-}
-
-#' @export
-modeltime_refit_xy.default <- function(object, x, y, control = NULL, ...) {
-    rlang::abort(paste0("No method for class '", class(object)[1], "'."))
-}
+#' # REFIT XY ----
+#'
+#' #' @export
+#' mdl_time_refit_xy.workflow <- function(object, x, y, control = NULL, ...) {
+#'     rlang::abort("Using 'mdl_time_refit_xy()' on a workflow object is not allowed. Try using 'modeltime_refit()'.")
+#' }
+#'
+#' #' @export
+#' mdl_time_refit_xy.model_fit <- function(object, x, y, control = NULL, ...) {
+#'
+#'     if (is.null(control)) {
+#'         control <- parsnip::control_parsnip()
+#'     }
+#'
+#'     model_spec <- object$spec
+#'
+#'     ret <- model_spec %>%
+#'         fit_xy(x = x, y = y, control = control, ...)
+#'
+#'     return(ret)
+#'
+#' }
+#'
+#' #' @export
+#' mdl_time_refit_xy.default <- function(object, x, y, control = NULL, ...) {
+#'     rlang::abort(paste0("No method for class '", class(object)[1], "'."))
+#' }

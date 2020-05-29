@@ -9,9 +9,9 @@ modeltime_calibrate(object, new_data = NULL, quiet = TRUE, ...)
 \arguments{
 \item{object}{A fitted model object that is either:
 \enumerate{
+\item A modeltime table that has been created using \code{\link[=modeltime_table]{modeltime_table()}}
 \item A workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
 \item A parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}
-\item A modeltime table that has been created using \code{\link[=modeltime_table]{modeltime_table()}}
 }}
 
 \item{new_data}{A test data set \code{tibble} containing future information (timestamps and actual values).}
@@ -21,10 +21,11 @@ modeltime_calibrate(object, new_data = NULL, quiet = TRUE, ...)
 \item{...}{Additional arguments passed to \code{\link[=modeltime_forecast]{modeltime_forecast()}}.}
 }
 \value{
-A \code{mdl_time_tbl} with \code{.calibration_data} added
+A Modeltime Table (\code{mdl_time_tbl}) with nested \code{.calibration_data} added
 }
 \description{
-Preparation for forecasting
+Calibration sets the stage for accuracy and forecast confidence
+by computing predictions and residuals from out of sample data.
 }
 \details{
 The results of calibration are used for:
@@ -42,7 +43,7 @@ The calibration steps include:
 }
 \itemize{
 \item \code{.type}: Indicates the sample type. Only "Test" is currently available.
-\item \code{.calibration_data}: Contains a tibble with Actual Values, Predictions and Residuals
+\item \code{.calibration_data}: Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
 calculated from \code{new_data} (Test Data)
 }
 }
@@ -82,16 +83,19 @@ models_tbl <- modeltime_table(
     model_fit_boosted
 )
 
+# ---- CALIBRATE ----
+
+calibration_tbl <- models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits))
+
 # ---- ACCURACY ----
 
-models_tbl \%>\%
-    modeltime_calibrate(new_data = testing(splits)) \%>\%
+calibration_tbl \%>\%
     modeltime_accuracy()
 
 # ---- FORECAST ----
 
-models_tbl \%>\%
-    modeltime_calibrate(new_data = testing(splits)) \%>\%
+calibration_tbl \%>\%
     modeltime_forecast(
         new_data    = testing(splits),
         actual_data = m750

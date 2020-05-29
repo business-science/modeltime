@@ -1,13 +1,12 @@
 #' Forecast future data
 #'
-#' This is a wrapper for `predict()` that is simplifies forecasting
-#' future data from a fitted `workflow` (trained workflow) or `model_fit` (trained parsnip model).
+#' The goal of `modeltime_forecast()` is to simplify the process of
+#' forecasting future data.
 #'
-#' @param object A fitted model object that is either (1) a workflow that has been fit by [fit.workflow()] or
-#'  (2) a parsnip model that has been fit using [fit.model_spec()]
+#' @param object A Modeltime Table that has been calibrated with [modeltime_calibrate()]
 #' @param new_data A `tibble` containing future information to forecast.
 #' @param h The forecast horizon (can be used instead of `new_data` for
-#'  time series with no exogenous regressors).
+#'  time series with no exogenous regressors). Always extends the calibration data.
 #' @param conf_interval An estimated confidence interval based on the in-sample residuals
 #' @param actual_data Data that is combined with the output tibble and given an `.key = "actual"`
 #' @param ... Additional arguments passed to [future_frame()] for use with the `h` forecast horizon
@@ -23,48 +22,43 @@
 #' - `.conf_lo`: The lower limit of the confidence interval.
 #' - `.conf_hi`: The upper limit of the confidence interval.
 #'
+#' Additional descriptive columns are included:
+#' - `.model_id`: Model ID from the Modeltime Table
+#' - `.model_desc`: Model Description from the Modeltime Table
+#'
 #' @details
 #'
-#' The goal of `modeltime_forecast()` is to simplify the process of
-#' forecasting future data (controlled by `new_data` or `h`) and
-#' combining with existing data (controlled by `actual_data`).
+#' The key parameters are (controlled by `new_data` or `h`) and
+#' combining with existing data (controlled by `actual_data`) in preparation
+#' for visualization with [plot_modeltime_forecast()].
 #'
-#' __Specifying Future Data__
+#' __Specifying New Data or Horizon (h)__
 #'
 #' When forecasting without external regressors, meaning that features are dependent on the
 #' date feature alone, you can specify future data using:
 #'
-#' 1. `h = "3 years" or "36 months" or 36`:
-#' 2. `new_data = tibble with date column extending the trained dates`
+#' 1. `h = "3 years" or "36 months" or 36`: This is dependent on the `.calibration_data`.
+#'  All forecasts are extended after the calibration data.
 #'
-#' __Interfaces__
+#' 2. `new_data`: A future tibble with date column extending the trained dates.
+#'  See [future_frame()] for creating future tibbles.
 #'
-#' There are 2 interfaces:
+#' __Actual Data__
 #'
-#' 1. Fitted Parsnip Model
-#' 2. Fitted Workflow
-#'
-#' _Interface 1: Fitted Parsnip Model (`model_fit` class)_
-#'
-#' - Currently, only the __formula format__ is supported (e.g. `model_fit <- model_spec %>% fit(y ~ date)`).
-#' - New data and actual data are processed according to the formula (e.g. `fit(log(y) ~ date)` will
-#' result in a log transformation applied to future data and new data)
-#'
-#' _Interface 2: Fitted Workflow (`workflow` with `$trained = TRUE`)_
-#'
-#' - Currently, only the __recipe format__ is supported. However, `tidymodels/workflows` Issue #34
-#' will correct issues with indicators, which prevents the __formula format__.
-#' - Transformations are applied according to the `recipe`. New data is forged with `hardhat::forge`.
+#' This is reference data that contains the true values of the time-stamp data.
+#' It helps in visualizing the performance of the forecast vs the actual data.
 #'
 #' _Confidence Interval Estimation_
 #'
 #' Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
+#'
 #' The confidence interval can be adjusted with the `conf_interval` parameter. An
 #' 80% confidence interval estimates a normal (gaussian distribution) that assumes that
 #' 80% of the future data will fall within the upper and lower confidence limits.
 #'
-#' The confidence interval is mean adjusted, meaning that if the mean of the residuals
-#' is non-zero, the confidence interval is adjusted to widen the interval.
+#' The confidence interval is _mean-adjusted_, meaning that if the mean of the residuals
+#' is non-zero, the confidence interval is adjusted to widen the interval to capture
+#' the difference in means.
 #'
 #'
 #' @examples
@@ -103,16 +97,19 @@
 #'     model_fit_boosted
 #' )
 #'
+#' # ---- CALIBRATE ----
+#'
+#' calibration_tbl <- models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits))
+#'
 #' # ---- ACCURACY ----
 #'
-#' models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#' calibration_tbl %>%
 #'     modeltime_accuracy()
 #'
 #' # ---- FORECAST ----
 #'
-#' models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#' calibration_tbl %>%
 #'     modeltime_forecast(
 #'         new_data    = testing(splits),
 #'         actual_data = m750
@@ -129,7 +126,7 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval 
 
 #' @export
 modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'."))
+    glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
 
 }
 
@@ -270,7 +267,10 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
 
 # UTILITIES ----
 
-#' Used for low-level forecasting of modeltime, parnsip and workflow models
+#' Modeltime Forecast Helpers
+#'
+#' Used for low-level forecasting of modeltime, parnsip and workflow models.
+#' These functions are not intended for user use.
 #'
 #' @inheritParams modeltime_forecast
 #'

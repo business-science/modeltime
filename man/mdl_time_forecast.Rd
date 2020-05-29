@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-forecast.R
 \name{mdl_time_forecast}
 \alias{mdl_time_forecast}
-\title{Used for low-level forecasting of modeltime, parnsip and workflow models}
+\title{Modeltime Forecast Helpers}
 \usage{
 mdl_time_forecast(
   object,
@@ -14,13 +14,12 @@ mdl_time_forecast(
 )
 }
 \arguments{
-\item{object}{A fitted model object that is either (1) a workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
-(2) a parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}}
+\item{object}{A Modeltime Table that has been calibrated with \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}}
 
 \item{new_data}{A \code{tibble} containing future information to forecast.}
 
 \item{h}{The forecast horizon (can be used instead of \code{new_data} for
-time series with no exogenous regressors).}
+time series with no exogenous regressors). Always extends the calibration data.}
 
 \item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
@@ -32,6 +31,7 @@ time series with no exogenous regressors).}
 A tibble with forecast features
 }
 \description{
-Used for low-level forecasting of modeltime, parnsip and workflow models
+Used for low-level forecasting of modeltime, parnsip and workflow models.
+These functions are not intended for user use.
 }
 \keyword{internal}

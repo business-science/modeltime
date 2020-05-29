@@ -1,17 +1,18 @@
 #' Preparation for forecasting
 #'
-#'
+#' Calibration sets the stage for accuracy and forecast confidence
+#' by computing predictions and residuals from out of sample data.
 #'
 #' @param object A fitted model object that is either:
-#' 1. A workflow that has been fit by [fit.workflow()] or
-#' 2. A parsnip model that has been fit using [fit.model_spec()]
-#' 3. A modeltime table that has been created using [modeltime_table()]
+#' 1. A modeltime table that has been created using [modeltime_table()]
+#' 2. A workflow that has been fit by [fit.workflow()] or
+#' 3. A parsnip model that has been fit using [fit.model_spec()]
 #' @param new_data A test data set `tibble` containing future information (timestamps and actual values).
 #' @param quiet Hide errors (`TRUE`, the default), or display them as they occur?
 #' @param ... Additional arguments passed to [modeltime_forecast()].
 #'
 #'
-#' @return A `mdl_time_tbl` with `.calibration_data` added
+#' @return A Modeltime Table (`mdl_time_tbl`) with nested `.calibration_data` added
 #'
 #' @details
 #'
@@ -26,7 +27,7 @@
 #' 1. If not a Modeltime Table, objects are converted to Modeltime Tables internally
 #' 2. Two Columns are added:
 #'   - `.type`: Indicates the sample type. Only "Test" is currently available.
-#'   - `.calibration_data`: Contains a tibble with Actual Values, Predictions and Residuals
+#'   - `.calibration_data`: Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
 #'    calculated from `new_data` (Test Data)
 #'
 #'
@@ -66,16 +67,19 @@
 #'     model_fit_boosted
 #' )
 #'
+#' # ---- CALIBRATE ----
+#'
+#' calibration_tbl <- models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits))
+#'
 #' # ---- ACCURACY ----
 #'
-#' models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#' calibration_tbl %>%
 #'     modeltime_accuracy()
 #'
 #' # ---- FORECAST ----
 #'
-#' models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#' calibration_tbl %>%
 #'     modeltime_forecast(
 #'         new_data    = testing(splits),
 #'         actual_data = m750
@@ -204,6 +208,7 @@ calc_residuals <- function(object, test_data = NULL, ...) {
         test_metrics_tbl <- test_metrics_prepped_tbl %>%
             dplyr::summarize(.calibration_data = list(
                     tibble::tibble(
+                        .idx        = test_data %>% timetk::tk_index(),
                         .actual     = actual,
                         .prediction = prediction,
                         .residuals  = actual - prediction

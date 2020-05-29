@@ -2,70 +2,55 @@
 % Please edit documentation in R/modeltime-refit.R
 \name{modeltime_refit}
 \alias{modeltime_refit}
-\alias{modeltime_refit_xy}
 \title{Refit one or more trained models to new data}
 \usage{
 modeltime_refit(object, data, control = NULL, ...)
-
-modeltime_refit_xy(object, x, y, control = NULL, ...)
 }
 \arguments{
-\item{object}{A fitted model object that is either (1) a workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
-(2) a parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}}
+\item{object}{A Modeltime Table}
 
-\item{data}{A \code{tibble}}
+\item{data}{A \code{tibble} that contains data to retrain the model(s) using.}
 
 \item{control}{Either \code{\link[=control_parsnip]{control_parsnip()}} or \code{\link[=control_workflow]{control_workflow()}} depending on the object.
 If NULL, created automatically.}
 
 \item{...}{Additional arguments passed to \code{\link[=fit]{fit()}}.}
-
-\item{x}{A matrix or data frame of predictors.}
-
-\item{y}{A vector, matrix or data frame of outcome data.}
 }
 \value{
-Depending on the object provided, either:
-\itemize{
-\item Single Parsnip Model: A fitted parsnip model (\code{model_fit}) is returned.
-\item Single Workflow: A trained \code{workflow} is returned.
-\item A Modeltime Table containing one or more trained models: A trained \code{mdl_time_tbl} table
-with one or more models that have been retrained is returned.
-}
+A Modeltime Table containing one or more re-trained models.
 }
 \description{
-This is a wrapper for \code{fit()} and \code{fit_xy()} that takes a
-trained parsnip model or workflow and retrains on \emph{new data} using the parameters
-and preprocessing (formulas or recipes) used during the training process:
-\itemize{
-\item Automated models (e.g. "auto arima") will have parameters recalculated.
-\item Non-automated models (e.g. "arima") will have parameters preserved.
-\item All preprocessing steps will be reused on the data
-}
+This is a wrapper for \code{fit()} that takes a
+Modeltime Table and retrains each model on \emph{new data} re-using the parameters
+and preprocessing steps used during the training process.
 }
 \details{
+Refitting is an important step prior to forecasting time series models.
+The \code{modeltime_refit()} function makes it easy to recycle models,
+retraining on new data.
+
+\strong{Recycling Parameters}
+
+Parameters are recycled during retraining using the following criteria:
+\itemize{
+\item \strong{Automated models} (e.g. "auto arima") will have parameters recalculated.
+\item \strong{Non-automated models} (e.g. "arima") will have parameters preserved.
+\item All preprocessing steps will be reused on the data
+}
+
 \strong{Refit}
 
-The \code{modeltime_refit()} function is used to retrain:
-\enumerate{
-\item All \code{workflow} objects
-\item Any \code{model_fit} objects (Parsnip Models) created with \code{fit()}
-}
+The \code{modeltime_refit()} function is used to retrain models trained with \code{fit()}.
 
 \strong{Refit XY}
 
-The \code{modeltime_refit_xy()} function is used to retrain:
-\itemize{
-\item Any \code{model_fit} objects (Parsnip Models) created with \code{fit_xy()}
-}
+The XY format is not supported at this time.
 }
 \examples{
 library(tidyverse)
 library(lubridate)
 library(timetk)
-library(workflows)
 library(parsnip)
-library(recipes)
 library(rsample)
 
 # Data
@@ -74,16 +59,52 @@ m750 <- m4_monthly \%>\% filter(id == "M750")
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.9)
 
-# --- Fit Model ---
+# --- MODELS ---
 
-model_fit_train_data <- arima_reg() \%>\%
+# Model 1: auto_arima ----
+model_fit_no_boost <- arima_reg() \%>\%
     set_engine(engine = "auto_arima") \%>\%
     fit(value ~ date, data = training(splits))
 
-# --- Refit Model ----
+# Model 2: arima_boost ----
+model_fit_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) \%>\%
+    set_engine(engine = "auto_arima_xgboost") \%>\%
+    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
 
-model_fit_full_data <- model_fit_train_data \%>\%
-    modeltime_refit(data = m750)
+# ---- MODELTIME TABLE ----
+
+models_tbl <- modeltime_table(
+    model_fit_no_boost,
+    model_fit_boosted
+)
+
+# ---- CALIBRATE ----
+
+calibration_tbl <- models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits))
+
+# ---- ACCURACY ----
+
+calibration_tbl \%>\%
+    modeltime_accuracy()
+
+# ---- FORECAST ----
+
+calibration_tbl \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
+    )
+
+# ---- REFIT ----
+# - Refit on full data set
+
+refit_tbl <- calibration_tbl \%>\%
+    modeltime_refit(m750)
 
 
 }

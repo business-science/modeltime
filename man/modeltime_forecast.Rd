@@ -14,13 +14,12 @@ modeltime_forecast(
 )
 }
 \arguments{
-\item{object}{A fitted model object that is either (1) a workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
-(2) a parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}}
+\item{object}{A Modeltime Table that has been calibrated with \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}}
 
 \item{new_data}{A \code{tibble} containing future information to forecast.}
 
 \item{h}{The forecast horizon (can be used instead of \code{new_data} for
-time series with no exogenous regressors).}
+time series with no exogenous regressors). Always extends the calibration data.}
 
 \item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
 
@@ -38,56 +37,49 @@ the column names are transformed to:
 \item \code{.conf_lo}: The lower limit of the confidence interval.
 \item \code{.conf_hi}: The upper limit of the confidence interval.
 }
+
+Additional descriptive columns are included:
+\itemize{
+\item \code{.model_id}: Model ID from the Modeltime Table
+\item \code{.model_desc}: Model Description from the Modeltime Table
+}
 }
 \description{
-This is a wrapper for \code{predict()} that is simplifies forecasting
-future data from a fitted \code{workflow} (trained workflow) or \code{model_fit} (trained parsnip model).
+The goal of \code{modeltime_forecast()} is to simplify the process of
+forecasting future data.
 }
 \details{
-The goal of \code{modeltime_forecast()} is to simplify the process of
-forecasting future data (controlled by \code{new_data} or \code{h}) and
-combining with existing data (controlled by \code{actual_data}).
+The key parameters are (controlled by \code{new_data} or \code{h}) and
+combining with existing data (controlled by \code{actual_data}) in preparation
+for visualization with \code{\link[=plot_modeltime_forecast]{plot_modeltime_forecast()}}.
 
-\strong{Specifying Future Data}
+\strong{Specifying New Data or Horizon (h)}
 
 When forecasting without external regressors, meaning that features are dependent on the
 date feature alone, you can specify future data using:
 \enumerate{
-\item \verb{h = "3 years" or "36 months" or 36}:
-\item \verb{new_data = tibble with date column extending the trained dates}
+\item \verb{h = "3 years" or "36 months" or 36}: This is dependent on the \code{.calibration_data}.
+All forecasts are extended after the calibration data.
+\item \code{new_data}: A future tibble with date column extending the trained dates.
+See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
 }
 
-\strong{Interfaces}
+\strong{Actual Data}
 
-There are 2 interfaces:
-\enumerate{
-\item Fitted Parsnip Model
-\item Fitted Workflow
-}
-
-\emph{Interface 1: Fitted Parsnip Model (\code{model_fit} class)}
-\itemize{
-\item Currently, only the \strong{formula format} is supported (e.g. \code{model_fit <- model_spec \%>\% fit(y ~ date)}).
-\item New data and actual data are processed according to the formula (e.g. \code{fit(log(y) ~ date)} will
-result in a log transformation applied to future data and new data)
-}
-
-\emph{Interface 2: Fitted Workflow (\code{workflow} with \verb{$trained = TRUE})}
-\itemize{
-\item Currently, only the \strong{recipe format} is supported. However, \code{tidymodels/workflows} Issue #34
-will correct issues with indicators, which prevents the \strong{formula format}.
-\item Transformations are applied according to the \code{recipe}. New data is forged with \code{hardhat::forge}.
-}
+This is reference data that contains the true values of the time-stamp data.
+It helps in visualizing the performance of the forecast vs the actual data.
 
 \emph{Confidence Interval Estimation}
 
 Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
+
 The confidence interval can be adjusted with the \code{conf_interval} parameter. An
 80\% confidence interval estimates a normal (gaussian distribution) that assumes that
 80\% of the future data will fall within the upper and lower confidence limits.
 
-The confidence interval is mean adjusted, meaning that if the mean of the residuals
-is non-zero, the confidence interval is adjusted to widen the interval.
+The confidence interval is \emph{mean-adjusted}, meaning that if the mean of the residuals
+is non-zero, the confidence interval is adjusted to widen the interval to capture
+the difference in means.
 }
 \examples{
 library(tidyverse)
@@ -125,16 +117,19 @@ models_tbl <- modeltime_table(
     model_fit_boosted
 )
 
+# ---- CALIBRATE ----
+
+calibration_tbl <- models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits))
+
 # ---- ACCURACY ----
 
-models_tbl \%>\%
-    modeltime_calibrate(new_data = testing(splits)) \%>\%
+calibration_tbl \%>\%
     modeltime_accuracy()
 
 # ---- FORECAST ----
 
-models_tbl \%>\%
-    modeltime_calibrate(new_data = testing(splits)) \%>\%
+calibration_tbl \%>\%
     modeltime_forecast(
         new_data    = testing(splits),
         actual_data = m750
