@@ -21,7 +21,14 @@ Forecasting with `tidymodels` made easy! This short tutorial shows how you can u
 - Modeltime models like `arima_reg()`, `arima_boost()`, and `exp_smoothing()`
 - Parsnip models like `linear_reg()`, `mars()`, `svm_rbf()`, and more
 
-To perform classical time series analysis and machine learning ___together!___ Just follow the `modeltime` workflow, which are detailed in 6 convenient steps:
+To perform classical time series analysis and machine learning ___together!___ 
+
+```{r, echo=F,  out.width="60%", fig.align='center'}
+knitr::include_graphics("forecast_plot.jpg")
+```
+
+
+Just follow the `modeltime` workflow, which are detailed in 6 convenient steps:
 
 1. Collect data and split into training and test sets
 2. Create & Fit Multiple Models
@@ -31,9 +38,9 @@ To perform classical time series analysis and machine learning ___together!___ J
 6. Refit to Full Dataset & Forecast Forward
 
 
-## ARIMA Example
+## Time Series Forecasting Example
 
-Load libraries.
+Load libraries to complete this short tutorial.
 
 ```{r}
 library(modeltime)
@@ -43,6 +50,7 @@ library(timetk)
 library(parsnip)
 library(rsample)
 
+# This toggles plots from plotly (interactive) to ggplot (static)
 interactive <- TRUE
 ```
 
@@ -258,9 +266,10 @@ refit_tbl %>%
     plot_modeltime_forecast(.interactive = interactive)
 ```
 
-What happened? 
+## Refitting - What happened? 
 
-- The models have all changed! (Yes - this is the point of refitting)
+__The models have all changed!__ (Yes - this is the point of refitting)
+
 - The __LM__ model looks much better now because the linear trend line has now been fit to new data that follows the longer term trend. 
 - The __EARTH__ model has a trend that is more representative of the near-term trend.
 - The __ETS__ model has changed from (M,A,A) to (A,A,A)
@@ -271,7 +280,7 @@ __This is the (potential) benefit of refitting.__
 More often than not refitting is a good idea. Refitting:
 
 - Retrieves your model and preprocessing steps
-- Applies them to the new data
+- Refits the model to the new data
 - Recalculates any automations. This includes:
     - Recalculating the long-term trend for Linear Model
     - Recalculating the changepoints for the Earth Model

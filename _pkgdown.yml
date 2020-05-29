@@ -1,0 +1,65 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-76139189-2
+
+navbar:
+  title: "modeltime"
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Getting Started"
+      href: articles/getting-started-with-modeltime.html
+    - text: "Key Functions"
+      href: reference/index.html
+    - text: "Articles"
+      href: articles/index.html
+      menu:
+        - text: 'Getting Started with Modeltime'
+          href: articles/getting-started-with-modeltime.html
+    - text: "News"
+      href: news/index.html
+
+  right:
+    - icon: fa-github
+      href: https://github.com/business-science/modeltime
+
+reference:
+- title: Modeltime Workflow
+  desc: The main workflow functions for scalable time series modeling.
+  contents:
+  - modeltime_table
+  - modeltime_calibrate
+  - modeltime_forecast
+  - starts_with("modeltime_")
+  - starts_with("plot_modeltime")
+  - default_forecast_accuracy_metric_set
+- title: Algorithms
+  desc: The `parsnip`-adjacent algorithms that implement time series models.
+  contents:
+  - arima_reg
+  - arima_boost
+  - exp_smoothing
+- title: Parameters
+  desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
+  contents:
+  - period
+  - starts_with("non_seasonal")
+  - error
+- title: Developer Tools
+  desc: Tools for extending `modeltime`.
+  contents:
+  - new_modeltime_bridge
+  - create_xreg_recipe
+  - juice_xreg_recipe
+  - parse_index_from_data
+  - get_model_description
+  - get_arima_description
+
+repo:
+  url:
+    home: https://github.com/business-science/modeltime
+    source: https://github.com/business-science/modeltime/blob/master/
+    issue: https://github.com/business-science/modeltime/issues/

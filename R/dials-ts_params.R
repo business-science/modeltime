@@ -14,11 +14,11 @@
 #' period()
 #'
 #'
-#' @name arima_params
+#' @name time_series_params
 
 
 #' @export
-#' @rdname arima_params
+#' @rdname time_series_params
 period <- function(range = c(1L, 12L), trans = NULL) {
     dials::new_quant_param(
         type = "integer",
