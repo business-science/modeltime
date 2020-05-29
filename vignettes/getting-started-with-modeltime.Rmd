@@ -1,0 +1,312 @@
+---
+title: "Getting Started with Modeltime"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting-started-with-modeltime}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+Forecasting with `tidymodels` made easy! This short tutorial shows how you can use:
+
+- Modeltime models like `arima_reg()`, `arima_boost()`, and `exp_smoothing()`
+- Parsnip models like `linear_reg()`, `mars()`, `svm_rbf()`, and more
+
+To perform classical time series analysis and machine learning ___together!___ Just follow the `modeltime` workflow, which are detailed in 6 convenient steps:
+
+1. Collect data and split into training and test sets
+2. Create & Fit Multiple Models
+3. Add fitted models to a Model Table
+4. Calibrate the model to a training set.
+5. Testing Set Evaluation
+6. Refit to Full Dataset & Forecast Forward
+
+
+## ARIMA Example
+
+Load libraries.
+
+```{r}
+library(modeltime)
+library(tidyverse)
+library(lubridate)
+library(timetk)
+library(parsnip)
+library(rsample)
+
+interactive <- TRUE
+```
+
+### Step 1 - Collect data and split into training and test sets. 
+
+```{r}
+# Data
+m750 <- m4_monthly %>% filter(id == "M750")
+```
+
+We can visualize the dataset. 
+
+```{r, out.width='100%'}
+m750 %>%
+  plot_time_series(date, value, .interactive = interactive)
+```
+
+
+Let's split the data into training and test sets using `initial_time_split()`
+
+```{r}
+# Split Data 80/20
+splits <- initial_time_split(m750, prop = 0.9)
+```
+
+
+### Step 2 - Create & Fit Multiple Models
+
+We can easily create dozens of forecasting models by combining `modeltime` and `parsnip`. We can also use the `workflows` interface for adding preprocessing! Your forecasting possibilities are endless. Let's get a few basic models developed:
+
+- ARIMA
+- Exponential Smoothing
+- Linear Regression
+- MARS (Multivariate Adaptive Regression Splines)
+
+
+__Important note: Handling Date Features__
+
+_Modeltime models_ (e.g. `arima_reg()`) are created with a date or date time feature in the model. You will see that most models include a formula like `fit(value ~ date, data)`. 
+
+_Parsnip models_ (e.g. `linear_reg()`) typically should not have date features, but may contain derivatives of dates (e.g. month, year, etc). You will often see formulas like `fit(value ~ as.numeric(date) + month(date), data)`.
+
+#### ARIMA (Modeltime)
+
+Fit ARIMA models to a training set. We have included some classic time series models and some new boosted versions:
+
+- __Auto ARIMA__ (see `arima_reg()`)
+- __Auto ARIMA + XGBoost__ - XGBoosted ARIMA Errors! (see `arima_boost()`)
+
+__Auto ARIMA__
+
+First, we create a basic univariate ARIMA model using "Auto Arima" using `arima_reg()`
+
+```{r}
+# Model 1: auto_arima ----
+model_fit_no_boost <- arima_reg() %>%
+    set_engine(engine = "auto_arima") %>%
+    fit(value ~ date, data = training(splits))
+```
+
+__Boosted Auto ARIMA__
+
+Next, we create a boosted ARIMA using `arima_boost()`. Boosting uses XGBoost to model the ARIMA errors. Note that model formula contains both a date feature and derivatives of date
+ - ARIMA uses the date
+ - XGBoost uses the derivatives of date as regressors
+
+```{r}
+# Model 2: arima_boost ----
+
+model_fit_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) %>%
+    set_engine(engine = "auto_arima_xgboost") %>%
+    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
+```
+
+
+#### Exponential Smoothing (Modeltime)
+
+Next, create an Error-Trend-Season (ETS) model using an Exponential Smoothing State Space model. This is accomplished with `exp_smoothing()`.
+
+```{r}
+# Model 3: ets ----
+model_fit_ets <- exp_smoothing() %>%
+    set_engine(engine = "ets") %>%
+    fit(value ~ date, data = training(splits))
+```
+
+#### Linear Regression (Parsnip)
+
+We can model time series linear regression (TSLM) using the `linear_reg()` algorithm from `parsnip`. The following derivatives of date are used:
+
+- _Trend:_ Modeled using `as.numeric(date)`
+- _Seasonal:_ Modeled using `month(date)`
+
+Normally I'd use a preprocessing workflow for the month features using a function like `step_time_series_signature()` from `timetk` to help reduce the complexity of the parsnip formula interface. 
+
+```{r}
+# Model 4: lm ----
+model_fit_lm <- linear_reg() %>%
+    set_engine("lm") %>%
+    fit(value ~ as.numeric(date) + factor(month(date, label = TRUE), ordered = FALSE),
+        data = training(splits))
+```
+
+#### MARS (Parsnip)
+
+We can model a Multivariate Adaptive Regression Spline model using `mars()`. The process is the same as the Linear Regression model. 
+
+```{r}
+# Model 4: earth ----
+model_fit_mars <- mars(mode = "regression") %>%
+    set_engine("earth") %>%
+    fit(value ~ as.numeric(date) + factor(month(date, label = TRUE), ordered = FALSE),
+        data = training(splits))
+```
+
+OK, with these 5 models, we'll show how easy it is to forecast. 
+
+### Step 3 - Add fitted models to a Model Table. 
+
+The next step is to add each of the models to a Modeltime Table using `modeltime_table()`. This step does some basic checking to make sure each of the models are fitted and that organizes into a scalable structure called a ___"Modeltime Table"___ that is used as part of our _forecasting workflow._
+
+We have 5 models to add. A couple of notes before moving on:
+
+- Note that some of the models have _tunable parameters_. 
+- It's expected that tuning and parameter selection is performed prior to incorporating into a Modeltime Table. 
+- If you try to add an unfitted model, the `modeltime_table()` will complain (throw an informative error) saying you need to `fit()` the model. 
+
+```{r, paged.print = FALSE}
+models_tbl <- modeltime_table(
+    model_fit_no_boost,
+    model_fit_boosted,
+    model_fit_ets,
+    model_fit_lm,
+    model_fit_mars
+)
+
+models_tbl
+```
+
+### Step 4 - Calibrate the model to a training set. 
+
+Calibrating adds a new column, `.calibration_data`, with the test predictions and residuals inside. A few notes on Calibration:
+
+- Calibration is how confidence intervals and accuracy metrics are determined 
+- ___Calibration Data___ is simply forecasting predictions and residuals that are calculated from out-of-sample data.
+- After calibrating, the calibration data follows the data through the forecasting workflow. 
+
+```{r, paged.print = FALSE}
+calibration_tbl <- models_tbl %>%
+    modeltime_calibrate(new_data = testing(splits))
+
+calibration_tbl
+```
+
+### Step 5 - Testing Set Evaluation
+
+There are 2 critical parts to an evaluation.
+
+- Visualizing the Forecast vs Test Data Set
+- Evaluating the Test (Out of Sample) Accuracy
+
+#### 5A - Visualizing the Forecast Test
+
+Visualizing the Test Error is easy to do using the interactive plotly visualization. A few points:
+
+- __Model 3: ETS(M,A,A)__ is performing the best. The 80% confidence interval is the most narrow of the bunch, indicating the hold out set is modeled well. 
+- __Models 1&2: ARIMA & ARIMA Boost__ are performing well. Both models have "auto" components because we used Auto ARIMA. The XGBoost component has parameters that were specified. We can possibly get better accuracy by tuning, but because the ARIMA component is working well on this data, additional improvement may be low. 
+- __LM__ is over-shooting the local trend. This is because the trend component is a simple linear line, which doesn't account for the change points. 
+- __EARTH__ is overfitting the local trend. This is because we did not tune the number of change points, so the algorithm is auto-calculating the change points. 
+
+```{r, out.width='100%'}
+calibration_tbl %>%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
+    ) %>%
+    plot_modeltime_forecast(.interactive = interactive)
+```
+
+#### 5B Accuracy Metrics
+
+We can use `modeltime_accuracy()` to collect common accuracy metrics. The default reports the following metrics using `yardstick` functions:
+
+- __MAE__ - Mean absolute error, `mae()`
+- __MAPE__ - Mean absolute percentage error, `mape()`
+- __MASE__ - Mean absolute scaled error, `mase()`
+- __SMAPE__ - Symmetric mean absolute percentage error, `smape()`
+- __RMSE__ - Root mean squared error, `rmse()`
+- __RSQ__ - R-squared, `rsq()`
+
+These of course can be customized following the rules for creating new yardstick metrics, but the defaults are very useful. 
+
+```{r, out.width='100%'}
+calibration_tbl %>%
+    modeltime_accuracy()
+```
+
+
+### Step 6 - Refit to Full Dataset & Forecast Forward
+
+The final step is to refit the models to the full dataset using `modeltime_refit()` and forecast them forward. 
+
+```{r, out.width='100%'}
+refit_tbl <- calibration_tbl %>%
+    modeltime_refit(data = m750)
+
+refit_tbl %>%
+    modeltime_forecast(h = "3 years", actual_data = m750) %>%
+    plot_modeltime_forecast(.interactive = interactive)
+```
+
+What happened? 
+
+- The models have all changed! (Yes - this is the point of refitting)
+- The __LM__ model looks much better now because the linear trend line has now been fit to new data that follows the longer term trend. 
+- The __EARTH__ model has a trend that is more representative of the near-term trend.
+- The __ETS__ model has changed from (M,A,A) to (A,A,A)
+- The __ARIMA__ model have been updated and better capture the upswing. 
+
+__This is the (potential) benefit of refitting.__ 
+
+More often than not refitting is a good idea. Refitting:
+
+- Retrieves your model and preprocessing steps
+- Applies them to the new data
+- Recalculates any automations. This includes:
+    - Recalculating the long-term trend for Linear Model
+    - Recalculating the changepoints for the Earth Model
+    - Recalculating the ARIMA and ETS parameters
+- Preserves any parameter selections. This includes:
+    - XGBoost Parameters in the Boosted ARIMA `min_n = 2`, `learn_rate = 0.015`.
+    - Any other defaults that are not automatic calculations are used.
+
+
+
+# Learning More
+
+There's a lot more to learn... 
+
+- Hyper parameter tuning
+- Better modeling approaches
+- Feature engineering strategies
+- And much more!
+
+I teach `modeltime` in my __Time Series Analysis & Forecasting Course__. If interested in learning Pro-Forecasting Strategies then [join my waitlist](https://mailchi.mp/business-science/time-series-forecasting-course-coming-soon). The course is coming soon. 
+
+```{r, echo=FALSE}
+knitr::include_graphics("time_series_course.jpg")
+```
+
+You will learn:
+
+- Time Series Preprocessing, Noise Reduction, & Anomaly Detection
+- Feature engineering using lagged variables & external regressors
+- Hyperparameter Tuning
+- Time series cross-validation
+- Ensembling Multiple Machine Learning & Univariate Modeling Techniques (Competition Winner)
+- NEW - Deep Learning with RNNs (Competition Winner)
+- and more.
+
+<p class="text-center" style="font-size:30px;">
+<a href="https://mailchi.mp/business-science/time-series-forecasting-course-coming-soon">Signup for the Time Series Course waitlist</a>
+</p>
