@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-calibrate.R
 \name{modeltime_calibrate}
 \alias{modeltime_calibrate}
-\title{Preparation for confidence interval estimation during forecasting}
+\title{Preparation for forecasting}
 \usage{
 modeltime_calibrate(object, new_data = NULL, quiet = TRUE, ...)
 }
@@ -21,52 +21,81 @@ modeltime_calibrate(object, new_data = NULL, quiet = TRUE, ...)
 \item{...}{Additional arguments passed to \code{\link[=modeltime_forecast]{modeltime_forecast()}}.}
 }
 \value{
-A \code{mdl_time_tbl} with test residuals added.
+A \code{mdl_time_tbl} with \code{.calibration_data} added
 }
 \description{
-Preparation for confidence interval estimation during forecasting
+Preparation for forecasting
 }
 \details{
-The pre-forecasting steps include:
+The results of calibration are used for:
+\itemize{
+\item \strong{Forecast Confidence Interval Estimation}: The out of sample residual data is used to calculate the
+confidence interval. Refer to \code{\link[=modeltime_forecast]{modeltime_forecast()}}.
+\item \strong{Accuracy Calculations:} The out of sample actual and prediction values are used to calculate
+performance metrics. Refer to \code{\link[=modeltime_accuracy]{modeltime_accuracy()}}
+}
+
+The calibration steps include:
 \enumerate{
-\item Objects are converted to modeltime tables internally
-\item Out of sample residuals are calculated from \code{new_data}
+\item If not a Modeltime Table, objects are converted to Modeltime Tables internally
+\item Two Columns are added:
+}
+\itemize{
+\item \code{.type}: Indicates the sample type. Only "Test" is currently available.
+\item \code{.calibration_data}: Contains a tibble with Actual Values, Predictions and Residuals
+calculated from \code{new_data} (Test Data)
 }
 }
 \examples{
-library(dplyr)
+library(tidyverse)
+library(lubridate)
+library(timetk)
 library(parsnip)
 library(rsample)
-library(timetk)
-library(modeltime)
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")
 
 # Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- initial_time_split(m750, prop = 0.9)
 
-# Model Spec
-model_spec <- arima_reg(
-        period                   = 12,
-        non_seasonal_ar          = 3,
-        non_seasonal_differences = 1,
-        non_seasonal_ma          = 3,
-        seasonal_ar              = 1,
-        seasonal_differences     = 0,
-        seasonal_ma              = 1
-    ) \%>\%
-    set_engine("arima")
+# --- MODELS ---
 
-# Fit Spec
-model_fit <- model_spec \%>\%
-    fit(log(value) ~ date, data = training(splits))
+# Model 1: auto_arima ----
+model_fit_no_boost <- arima_reg() \%>\%
+    set_engine(engine = "auto_arima") \%>\%
+    fit(value ~ date, data = training(splits))
 
-# --- Calibration ---
+# Model 2: arima_boost ----
+model_fit_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) \%>\%
+    set_engine(engine = "auto_arima_xgboost") \%>\%
+    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
 
-# Converts to Modeltime Table and adds out of sample residuals
-model_fit \%>\%
-    modeltime_calibrate(new_data = testing(splits))
+# ---- MODELTIME TABLE ----
+
+models_tbl <- modeltime_table(
+    model_fit_no_boost,
+    model_fit_boosted
+)
+
+# ---- ACCURACY ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_accuracy()
+
+# ---- FORECAST ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
+    )
 
 
 }

@@ -1,4 +1,5 @@
-#' Preparation for confidence interval estimation during forecasting
+#' Preparation for forecasting
+#'
 #'
 #'
 #' @param object A fitted model object that is either:
@@ -10,49 +11,75 @@
 #' @param ... Additional arguments passed to [modeltime_forecast()].
 #'
 #'
-#' @return A `mdl_time_tbl` with test residuals added.
+#' @return A `mdl_time_tbl` with `.calibration_data` added
 #'
 #' @details
 #'
-#' The pre-forecasting steps include:
+#' The results of calibration are used for:
+#' - __Forecast Confidence Interval Estimation__: The out of sample residual data is used to calculate the
+#'   confidence interval. Refer to [modeltime_forecast()].
+#' - __Accuracy Calculations:__ The out of sample actual and prediction values are used to calculate
+#'   performance metrics. Refer to [modeltime_accuracy()]
 #'
-#' 1. Objects are converted to modeltime tables internally
-#' 2. Out of sample residuals are calculated from `new_data`
+#' The calibration steps include:
+#'
+#' 1. If not a Modeltime Table, objects are converted to Modeltime Tables internally
+#' 2. Two Columns are added:
+#'   - `.type`: Indicates the sample type. Only "Test" is currently available.
+#'   - `.calibration_data`: Contains a tibble with Actual Values, Predictions and Residuals
+#'    calculated from `new_data` (Test Data)
+#'
 #'
 #' @examples
-#' library(dplyr)
+#' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
 #' library(parsnip)
 #' library(rsample)
-#' library(timetk)
-#' library(modeltime)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
 #'
 #' # Split Data 80/20
-#' splits <- initial_time_split(m750, prop = 0.8)
+#' splits <- initial_time_split(m750, prop = 0.9)
 #'
-#' # Model Spec
-#' model_spec <- arima_reg(
-#'         period                   = 12,
-#'         non_seasonal_ar          = 3,
-#'         non_seasonal_differences = 1,
-#'         non_seasonal_ma          = 3,
-#'         seasonal_ar              = 1,
-#'         seasonal_differences     = 0,
-#'         seasonal_ma              = 1
-#'     ) %>%
-#'     set_engine("arima")
+#' # --- MODELS ---
 #'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date, data = training(splits))
+#' # Model 1: auto_arima ----
+#' model_fit_no_boost <- arima_reg() %>%
+#'     set_engine(engine = "auto_arima") %>%
+#'     fit(value ~ date, data = training(splits))
 #'
-#' # --- Calibration ---
+#' # Model 2: arima_boost ----
+#' model_fit_boosted <- arima_boost(
+#'     min_n = 2,
+#'     learn_rate = 0.015
+#' ) %>%
+#'     set_engine(engine = "auto_arima_xgboost") %>%
+#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
 #'
-#' # Converts to Modeltime Table and adds out of sample residuals
-#' model_fit %>%
-#'     modeltime_calibrate(new_data = testing(splits))
+#' # ---- MODELTIME TABLE ----
+#'
+#' models_tbl <- modeltime_table(
+#'     model_fit_no_boost,
+#'     model_fit_boosted
+#' )
+#'
+#' # ---- ACCURACY ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_accuracy()
+#'
+#' # ---- FORECAST ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
+#'     )
 #'
 #'
 #' @name modeltime_calibrate
@@ -84,16 +111,7 @@ modeltime_calibrate.model_fit <- function(object, new_data = NULL,
     ret <- modeltime_table(object) %>%
         modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
 
-    # ret <- calc_residuals(object, test_data = new_data, quiet = quiet, ...)
-
-    # # Convert to mdl_time_tbl
-    # ret <- ret %>%
-    #     tibble::rowid_to_column(var = ".model_id") %>%
-    #     dplyr::mutate(.model = list(object)) %>%
-    #     dplyr::mutate(.model_desc = get_model_description(object)) %>%
-    #     dplyr::select(.model_id, .model, .model_desc, dplyr::everything())
-    #
-    # class(ret) <- c("mdl_time_tbl", class(ret))
+    message("Converting to Modeltime Table.")
 
     return(ret)
 
@@ -111,16 +129,7 @@ modeltime_calibrate.workflow <- function(object, new_data = NULL,
     ret <- modeltime_table(object) %>%
         modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
 
-    # ret <- calc_residuals(object, test_data = new_data, ...)
-    #
-    # # Convert to mdl_time_tbl
-    # ret <- ret %>%
-    #     tibble::rowid_to_column(var = ".model_id") %>%
-    #     dplyr::mutate(.model = list(object)) %>%
-    #     dplyr::mutate(.model_desc = get_model_description(object)) %>%
-    #     dplyr::select(.model_id, .model, .model_desc, dplyr::everything())
-    #
-    # class(ret) <- c("mdl_time_tbl", class(ret))
+    message("Converting to Modeltime Table.")
 
     return(ret)
 
@@ -179,7 +188,7 @@ calc_residuals <- function(object, test_data = NULL, ...) {
     if (!is.null(test_data)) {
 
         predictions_tbl <- object %>%
-            modeltime_forecast(
+            mdl_time_forecast(
                 new_data      = test_data,
                 actual_data   = test_data,
                 conf_interval = NULL,
@@ -193,7 +202,14 @@ calc_residuals <- function(object, test_data = NULL, ...) {
             dplyr::group_by(.type)
 
         test_metrics_tbl <- test_metrics_prepped_tbl %>%
-            dplyr::summarize(.residuals = list(actual - prediction)) %>%
+            dplyr::summarize(.calibration_data = list(
+                    tibble::tibble(
+                        .actual     = actual,
+                        .prediction = prediction,
+                        .residuals  = actual - prediction
+                    )
+                )
+            ) %>%
             dplyr::ungroup()
 
     }

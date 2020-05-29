@@ -29,7 +29,7 @@ forecast accuracy (regression) metrics.}
 A tibble with accuracy estimates.
 }
 \description{
-This is a wrapper for \code{yardstick} that simplifies accuracy metric
+This is a wrapper for \code{yardstick} that simplifies time series regression accuracy metric
 calculations from a fitted \code{workflow} (trained workflow) or \code{model_fit} (trained parsnip model).
 }
 \details{
@@ -44,46 +44,56 @@ The following accuracy metrics are included by default via \code{\link[=default_
 }
 }
 \examples{
-library(dplyr)
+library(tidyverse)
+library(lubridate)
+library(timetk)
 library(parsnip)
 library(rsample)
-library(yardstick)
-library(timetk)
-library(modeltime)
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")
 
 # Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- initial_time_split(m750, prop = 0.9)
 
-# Model Spec
-model_spec <- arima_reg(
-        period                   = 12,
-        non_seasonal_ar          = 3,
-        non_seasonal_differences = 1,
-        non_seasonal_ma          = 3,
-        seasonal_ar              = 1,
-        seasonal_differences     = 0,
-        seasonal_ma              = 1
-    ) \%>\%
-    set_engine("arima")
+# --- MODELS ---
 
-# Fit Spec
-model_fit <- model_spec \%>\%
-    fit(log(value) ~ date, data = training(splits))
+# Model 1: auto_arima ----
+model_fit_no_boost <- arima_reg() \%>\%
+    set_engine(engine = "auto_arima") \%>\%
+    fit(value ~ date, data = training(splits))
 
-# --- ACCURACY ---
+# Model 2: arima_boost ----
+model_fit_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) \%>\%
+    set_engine(engine = "auto_arima_xgboost") \%>\%
+    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
 
-# Default accuracy metrics
-model_fit \%>\%
-    modeltime_accuracy(new_data = testing(splits))
+# ---- MODELTIME TABLE ----
 
-# Supply new accuracy metrics
-model_fit \%>\%
+models_tbl <- modeltime_table(
+    model_fit_no_boost,
+    model_fit_boosted
+)
+
+# ---- ACCURACY ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
     modeltime_accuracy(
-        new_data   = testing(splits),
-        metric_set = metric_set(mae, rmse)
+        metric_set = metric_set(mae, rmse, rsq)
+    )
+
+# ---- FORECAST ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
     )
 
 }

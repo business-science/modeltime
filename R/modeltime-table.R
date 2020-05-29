@@ -11,15 +11,14 @@
 #' This function:
 #'
 #' 1. Creates a table of models
-#' 2. Validates that all objects are models (parsnip or workflows objects) and all models have been fitted
+#' 2. Validates that all objects are models (parsnip or workflows objects) and
+#'  all models have been fitted (trained)
 #'
 #' @examples
 #' library(tidyverse)
 #' library(lubridate)
 #' library(timetk)
-#' library(workflows)
 #' library(parsnip)
-#' library(recipes)
 #' library(rsample)
 #'
 #' # Data
@@ -44,15 +43,27 @@
 #'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
 #'         data = training(splits))
 #'
-#' # ---- COMPARE ----
+#' # ---- MODELTIME TABLE ----
 #'
 #' models_tbl <- modeltime_table(
 #'     model_fit_no_boost,
 #'     model_fit_boosted
 #' )
 #'
+#' # ---- ACCURACY ----
+#'
 #' models_tbl %>%
-#'     modeltime_accuracy(new_data = testing(splits))
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_accuracy()
+#'
+#' # ---- FORECAST ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
+#'     )
 #'
 #' @export
 #' @name modeltime_table

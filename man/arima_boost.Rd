@@ -274,20 +274,14 @@ model_spec <- arima_boost(period = "auto", learn_rate = 0.1) \%>\%
     set_engine(engine = "auto_arima_xgboost")
 
 # FIT ----
+
 # Boosting - Happens by adding numeric date and month features
 model_fit_boosted <- model_spec \%>\%
     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
+
 model_fit_boosted
 
-# ACCURACY ----
-model_fit_boosted \%>\%
-    modeltime_accuracy(new_data = testing(splits))
-
-# FORECAST ----
-model_fit_boosted \%>\%
-    modeltime_forecast(h = "3 years") \%>\%
-    plot_modeltime_forecast(.interactive = FALSE)
 
 }
 \seealso{

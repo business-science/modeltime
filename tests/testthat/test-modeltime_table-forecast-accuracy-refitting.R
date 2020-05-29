@@ -21,57 +21,45 @@ model_fit_no_boost <- arima_reg() %>%
 
 test_that("Auto ARIMA (Parsnip)", {
 
-    # ** Forecast - Parsnip ----
-    forecast_tbl <- model_fit_no_boost %>%
-        modeltime_forecast(h = "3 years")
 
-    expect_equal(nrow(forecast_tbl), 36)
+    # ** Model Table ----
+    model_table <- modeltime_table(model_fit_no_boost)
 
-    # ** Forecast - Modeltime Table ----
-    forecast_tbl <- modeltime_table(model_fit_no_boost) %>%
-        modeltime_forecast(h = "3 years")
+    expect_s3_class(model_table, "mdl_time_tbl")
 
-    expect_equal(nrow(forecast_tbl), 36)
+    expect_true(all(c(".model_id", ".model", ".model_desc") %in% names(model_table)))
 
-    # ** Accuracy - Parsnip ----
-    accuracy_tbl <- model_fit_no_boost %>%
-        modeltime_accuracy(
-            new_data   = testing(splits),
-            metric_set = metric_set(rsq, mae)
-        )
+    # ** Calibrate ----
 
-    expect_equal(nrow(accuracy_tbl), 1)
-
-    # ** Calibrate - Parsnip ----
-    calibrated_tbl <- model_fit_no_boost %>%
-        modeltime_calibrate(
-            new_data   = testing(splits)
-        )
-
-    expect_equal(nrow(calibrated_tbl), 1)
+    calibrated_tbl <- model_table %>%
+        modeltime_calibrate(testing(splits))
 
     expect_s3_class(calibrated_tbl, "mdl_time_tbl")
 
-    # ** Accuracy - Modeltime ----
-    accuracy_tbl <- modeltime_table(model_fit_no_boost) %>%
-        modeltime_accuracy(
-            new_data   = testing(splits),
-            metric_set = metric_set(rsq, mae)
-        )
+    expect_equal(nrow(calibrated_tbl), 1)
+
+    expect_true(".calibration_data" %in% names(calibrated_tbl))
+
+    # ** Forecast ----
+    forecast_tbl <- calibrated_tbl %>%
+        modeltime_forecast(testing(splits))
+
+    expect_equal(nrow(forecast_tbl), nrow(testing(splits)))
+
+    # ** Accuracy ----
+    accuracy_tbl <- calibrated_tbl %>%
+        modeltime_accuracy(metric_set = metric_set(rsq, mae))
 
     expect_equal(nrow(accuracy_tbl), 1)
 
-    # ** Calibrate - Modeltime ----
-    calibrated_tbl <- modeltime_table(model_fit_no_boost) %>%
-        modeltime_calibrate(
-            new_data   = testing(splits)
-        )
+    expect_true(all(c("rsq", "mae") %in% names(accuracy_tbl)))
 
-    expect_equal(nrow(calibrated_tbl), 1)
+    expect_false(any(c("mape", "mase", "smape", "rmse") %in% names(accuracy_tbl)))
 
-    expect_s3_class(calibrated_tbl, "mdl_time_tbl")
+
 
     # ** Refit ----
+    # TODO
     future_forecast_tbl <- calibrated_tbl %>%
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
@@ -83,52 +71,59 @@ test_that("Auto ARIMA (Parsnip)", {
 
 # * Auto ARIMA (Workflow) -----
 
-model_spec <- arima_reg() %>%
-    set_engine("auto_arima")
-
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_date(date, features = "month") %>%
-    step_log(value)
-
 wflw_fit_arima <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec) %>%
+    add_model(
+        spec = arima_reg() %>%
+            set_engine("auto_arima")
+    ) %>%
+    add_recipe(
+        recipe = recipe(value ~ date, data = training(splits)) %>%
+            step_date(date, features = "month") %>%
+            step_log(value)
+    ) %>%
     fit(training(splits))
 
 test_that("Auto ARIMA (Workflow)", {
 
-    # ** Forecast - Workflow ----
-    forecast_tbl <- wflw_fit_arima %>%
-        modeltime_forecast(h = "3 years")
+    # ** Model Table ----
+    model_table <- modeltime_table(wflw_fit_arima)
 
-    expect_equal(nrow(forecast_tbl), 36)
+    expect_s3_class(model_table, "mdl_time_tbl")
 
-    # ** Forecast - Modeltime Table ----
-    forecast_tbl <- modeltime_table(wflw_fit_arima) %>%
-        modeltime_forecast(h = "3 years")
+    expect_true(all(c(".model_id", ".model", ".model_desc") %in% names(model_table)))
 
-    expect_equal(nrow(forecast_tbl), 36)
+    # ** Calibrate ----
 
-    # ** Accuracy - Parsnip ----
-    accuracy_tbl <- wflw_fit_arima %>%
-        modeltime_accuracy(
-            new_data   = testing(splits),
-            metric_set = metric_set(rsq, mae)
-        )
+    calibrated_tbl <- model_table %>%
+        modeltime_calibrate(testing(splits))
+
+    expect_s3_class(calibrated_tbl, "mdl_time_tbl")
+
+    expect_equal(nrow(calibrated_tbl), 1)
+
+    expect_true(".calibration_data" %in% names(calibrated_tbl))
+
+    # ** Forecast ----
+    forecast_tbl <- calibrated_tbl %>%
+        modeltime_forecast(testing(splits))
+
+    expect_equal(nrow(forecast_tbl), nrow(testing(splits)))
+
+    # ** Accuracy ----
+    accuracy_tbl <- calibrated_tbl %>%
+        modeltime_accuracy(metric_set = metric_set(rsq, mae))
 
     expect_equal(nrow(accuracy_tbl), 1)
 
-    # ** Accuracy - Modeltime ----
-    accuracy_tbl <- modeltime_table(wflw_fit_arima) %>%
-        modeltime_accuracy(
-            new_data   = testing(splits),
-            metric_set = metric_set(rsq, mae)
-        )
+    expect_true(all(c("rsq", "mae") %in% names(accuracy_tbl)))
 
-    expect_equal(nrow(accuracy_tbl), 1)
+    expect_false(any(c("mape", "mase", "smape", "rmse") %in% names(accuracy_tbl)))
+
+
 
     # ** Refit ----
-    future_forecast_tbl <- wflw_fit_arima %>%
+    # TODO
+    future_forecast_tbl <- calibrated_tbl %>%
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
 
@@ -137,6 +132,7 @@ test_that("Auto ARIMA (Workflow)", {
 
 
 # MORE MODELTIME MODELS -----
+# - Use these to do a mega test below
 
 # * ARIMA Boosted (Parsnip) ----
 
@@ -167,9 +163,7 @@ model_fit_ets <- exp_smoothing() %>%
         data = training(splits))
 
 test_that("ETS (Parsnip)", {
-
     expect_s3_class(model_fit_ets, "_ets_fit_impl")
-
 })
 
 
@@ -423,7 +417,8 @@ test_that("modeltime_accuracy", {
     expect_error(modeltime_accuracy(1))
 
     accuracy_tbl <- model_table %>%
-        modeltime_accuracy(new_data = testing(splits))
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_accuracy()
 
     # Structure
     expect_s3_class(accuracy_tbl, "tbl_df")
@@ -443,6 +438,7 @@ test_that("modeltime_forecast", {
     expect_error(modeltime_forecast(1))
 
     forecast_tbl <- model_table %>%
+        modeltime_calibrate(testing(splits)) %>%
         modeltime_forecast(
             new_data    = testing(splits),
             actual_data = bind_rows(training(splits), testing(splits))
@@ -463,22 +459,26 @@ test_that("modeltime_forecast", {
 
 # REFITTING ----
 
-handlers("progress")
-with_progress({
-    model_table_refit <- model_table %>%
-        modeltime_refit(data = m750)
-})
+
 
 test_that("modeltime_refit", {
 
-    forecast_tbl <- model_table_refit %>%
-        modeltime_forecast(
-            new_data    = future_frame(m750, date, "3 years"),
-            actual_data = m750
-        )
+    handlers("progress")
+    with_progress({
+        model_table_refit <- model_table %>%
+            modeltime_calibrate(testing(splits)) %>%
+            modeltime_refit(data = m750)
+    })
 
     # Refit Structure
     expect_s3_class(model_table_refit, "mdl_time_tbl")
+
+    # Forecast
+    forecast_tbl <- model_table_refit %>%
+        modeltime_forecast(
+            new_data    = future_frame(m750, .length_out = "3 years"),
+            actual_data = m750
+        )
 
     # Forecast Structure
     expect_s3_class(forecast_tbl, "tbl_df")

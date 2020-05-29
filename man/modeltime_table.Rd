@@ -14,13 +14,19 @@ Designed to perform forecasts at scale using models created with
 \code{modeltime}, \code{parsnip}, \code{workflows}, and regression modeling extensions
 in the \code{tidymodels} ecosystem.
 }
+\details{
+This function:
+\enumerate{
+\item Creates a table of models
+\item Validates that all objects are models (parsnip or workflows objects) and
+all models have been fitted (trained)
+}
+}
 \examples{
 library(tidyverse)
 library(lubridate)
 library(timetk)
-library(workflows)
 library(parsnip)
-library(recipes)
 library(rsample)
 
 # Data
@@ -45,14 +51,26 @@ model_fit_boosted <- arima_boost(
     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
-# ---- COMPARE ----
+# ---- MODELTIME TABLE ----
 
 models_tbl <- modeltime_table(
     model_fit_no_boost,
     model_fit_boosted
 )
 
+# ---- ACCURACY ----
+
 models_tbl \%>\%
-    modeltime_accuracy(new_data = testing(splits))
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_accuracy()
+
+# ---- FORECAST ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
+    )
 
 }

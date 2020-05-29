@@ -58,55 +58,65 @@
 #'
 #' _Confidence Interval Estimation_
 #'
-#' Confidence intervals are estimated based on the normal estimation of the training errors.
+#' Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
 #' The confidence interval can be adjusted with the `conf_interval` parameter. An
 #' 80% confidence interval estimates a normal (gaussian distribution) that assumes that
 #' 80% of the future data will fall within the upper and lower confidence limits.
 #'
+#' The confidence interval is mean adjusted, meaning that if the mean of the residuals
+#' is non-zero, the confidence interval is adjusted to widen the interval.
+#'
 #'
 #' @examples
-#' library(dplyr)
+#' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
 #' library(parsnip)
 #' library(rsample)
-#' library(timetk)
-#' library(modeltime)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
-#' m750
 #'
 #' # Split Data 80/20
-#' splits <- initial_time_split(m750, prop = 0.8)
+#' splits <- initial_time_split(m750, prop = 0.9)
 #'
-#' # Model Spec
-#' model_spec <- arima_reg(
-#'         period                   = 12,
-#'         non_seasonal_ar          = 3,
-#'         non_seasonal_differences = 1,
-#'         non_seasonal_ma          = 3,
-#'         seasonal_ar              = 1,
-#'         seasonal_differences     = 0,
-#'         seasonal_ma              = 1
-#'     ) %>%
-#'     set_engine("arima")
+#' # --- MODELS ---
 #'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date, data = training(splits))
+#' # Model 1: auto_arima ----
+#' model_fit_no_boost <- arima_reg() %>%
+#'     set_engine(engine = "auto_arima") %>%
+#'     fit(value ~ date, data = training(splits))
 #'
-#' # --- PRODUCE FORECAST ---
+#' # Model 2: arima_boost ----
+#' model_fit_boosted <- arima_boost(
+#'     min_n = 2,
+#'     learn_rate = 0.015
+#' ) %>%
+#'     set_engine(engine = "auto_arima_xgboost") %>%
+#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
 #'
-#' # Using new_data
-#' model_fit %>%
-#'     modeltime_forecast(new_data = testing(splits))
+#' # ---- MODELTIME TABLE ----
 #'
-#' # Using horizon, h
-#' model_fit %>%
-#'     modeltime_forecast(h = "3 years")
+#' models_tbl <- modeltime_table(
+#'     model_fit_no_boost,
+#'     model_fit_boosted
+#' )
 #'
-#' # Combining forecast with actual values
-#' model_fit %>%
-#'     modeltime_forecast(h = "3 years", actual_data = training(splits))
+#' # ---- ACCURACY ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_accuracy()
+#'
+#' # ---- FORECAST ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
+#'     )
 #'
 #' @name modeltime_forecast
 NULL
@@ -119,17 +129,162 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval 
 
 #' @export
 modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'.")
+    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'."))
 
 }
 
 #' @export
-modeltime_forecast.model_spec <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-    rlang::abort("The parnsip 'model_spec' must be trained using the 'fit()' function.")
+modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+
+    data <- object
+
+    safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
+
+    n_models <- data$.model_id %>% unique() %>% length()
+
+    # HANDLE RESIDUALS
+    has_residuals <- FALSE
+    if (all(c(".type", ".calibration_data") %in% names(data))) {
+        has_residuals <- TRUE
+
+        data_residuals <- data %>%
+            dplyr::select(.model_id, .calibration_data)
+
+        data <- data %>%
+            dplyr::select(-.type, -.calibration_data)
+
+    }
+
+    # CREATE FORECAST
+
+    # Compute first model with actual data
+    ret_1 <- data %>%
+        dplyr::ungroup() %>%
+        dplyr::slice(1) %>%
+        dplyr::mutate(.nested.col = purrr::map(
+            .x         = .model,
+            .f         = function(obj) {
+
+                ret <- safe_modeltime_forecast(
+                    obj,
+                    new_data      = new_data,
+                    h             = h,
+                    conf_interval = NULL,
+                    actual_data   = actual_data,
+                    ...
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        ) %>%
+        dplyr::select(-.model) %>%
+        tidyr::unnest(cols = .nested.col)
+
+    if ("actual" %in% unique(ret_1$.key)) {
+        ret_1 <- ret_1 %>%
+            dplyr::mutate(.model_desc = ifelse(.key == "actual", "ACTUAL", .model_desc)) %>%
+            dplyr::mutate(.model_id = ifelse(.key == "actual", NA_integer_, .model_id))
+    }
+
+    # Compute subsequent models without actual data
+    ret_2 <- tibble::tibble()
+
+    if (n_models > 1) {
+        ret_2 <- data %>%
+            dplyr::slice(2:dplyr::n()) %>%
+            dplyr::ungroup() %>%
+            dplyr::mutate(.nested.col = purrr::map(
+                .x         = .model,
+                .f         = function(obj) {
+
+                    ret <- safe_modeltime_forecast(
+                        obj,
+                        new_data      = new_data,
+                        h             = h,
+                        conf_interval = NULL,
+                        actual_data   = NULL,
+                        ...
+                    )
+
+                    ret <- ret %>% purrr::pluck("result")
+
+                    return(ret)
+                })
+            ) %>%
+            dplyr::select(-.model) %>%
+            tidyr::unnest(cols = .nested.col)
+    }
+
+    if (".nested.col" %in% names(ret_1)) {
+        ret_1 <- ret_1 %>%
+            dplyr::select(-.nested.col)
+    }
+
+    if (".nested.col" %in% names(ret_2)) {
+        ret_2 <- ret_2 %>%
+            dplyr::select(-.nested.col)
+    }
+
+    ret <- dplyr::bind_rows(ret_1, ret_2)
+
+    # ADD CONF INTERVALS
+    if (!is.null(conf_interval)) {
+        if (!has_residuals) {
+            rlang::warn("Confidence interval estimation cannot be performed. Try using 'modeltime_calibrate()' to add residuals before performing 'modeltime_forecast()'.")
+        } else {
+
+            safe_normal_ci_mean_shifted <- purrr::safely(
+                normal_ci_mean_shifted,
+                otherwise = tibble::tibble(
+                    .conf_lo = NA,
+                    .conf_hi = NA
+                ),
+                quiet = TRUE)
+
+            ret <- ret %>%
+                dplyr::group_by(.model_id) %>%
+                tidyr::nest() %>%
+                dplyr::left_join(data_residuals, by = ".model_id") %>%
+                dplyr::mutate(.ci = purrr::map(.calibration_data, .f = function(.data) {
+                    x   <- .data$.residuals
+                    res <- safe_normal_ci_mean_shifted(x, conf_interval = conf_interval)
+                    res %>% purrr::pluck("result")
+                })
+                ) %>%
+                dplyr::select(-.calibration_data) %>%
+                tidyr::unnest(cols = c(.ci)) %>%
+                tidyr::unnest(cols = c(data)) %>%
+                dplyr::ungroup() %>%
+                dplyr::mutate(
+                    .conf_lo = .value + .conf_lo,
+                    .conf_hi = .value + .conf_hi
+                )
+        }
+    }
+
+    return(ret)
+}
+
+
+# UTILITIES ----
+
+#' Used for low-level forecasting of modeltime, parnsip and workflow models
+#'
+#' @inheritParams modeltime_forecast
+#'
+#' @return A tibble with forecast features
+#'
+#' @keywords internal
+#'
+#' @export
+mdl_time_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+    UseMethod("mdl_time_forecast")
 }
 
 #' @export
-modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+mdl_time_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
     # MODEL OBJECT
 
@@ -241,7 +396,7 @@ modeltime_forecast.model_fit <- function(object, new_data = NULL, h = NULL, conf
 }
 
 #' @export
-modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+mdl_time_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
     # Checks
     if (!object$trained) {
@@ -347,150 +502,6 @@ modeltime_forecast.workflow <- function(object, new_data = NULL, h = NULL, conf_
     return(ret)
 
 }
-
-#' @export
-modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
-
-    data <- object
-
-    safe_modeltime_forecast <- purrr::safely(modeltime_forecast, otherwise = NA, quiet = FALSE)
-
-    n_models <- data$.model_id %>% unique() %>% length()
-
-    # HANDLE RESIDUALS
-    has_residuals <- FALSE
-    if (all(c(".type", ".residuals") %in% names(data))) {
-        has_residuals <- TRUE
-
-        data_residuals <- data %>%
-            dplyr::select(.model_id, .residuals)
-
-        data <- data %>%
-            dplyr::select(-.type, -.residuals)
-
-    }
-
-    # CREATE FORECAST
-
-    # Compute first model with actual data
-    ret_1 <- data %>%
-        dplyr::ungroup() %>%
-        dplyr::slice(1) %>%
-        dplyr::mutate(.nested.col = purrr::map(
-            .x         = .model,
-            .f         = function(obj) {
-
-                ret <- safe_modeltime_forecast(
-                    obj,
-                    new_data      = new_data,
-                    h             = h,
-                    conf_interval = NULL,
-                    actual_data   = actual_data,
-                    ...
-                )
-
-                ret <- ret %>% purrr::pluck("result")
-
-                return(ret)
-            })
-        ) %>%
-        dplyr::select(-.model) %>%
-        tidyr::unnest(cols = .nested.col)
-
-    if ("actual" %in% unique(ret_1$.key)) {
-        ret_1 <- ret_1 %>%
-            dplyr::mutate(.model_desc = ifelse(.key == "actual", "ACTUAL", .model_desc)) %>%
-            dplyr::mutate(.model_id = ifelse(.key == "actual", NA_integer_, .model_id))
-    }
-
-    # Compute subsequent models without actual data
-    ret_2 <- tibble::tibble()
-
-    if (n_models > 1) {
-        ret_2 <- data %>%
-            dplyr::slice(2:dplyr::n()) %>%
-            dplyr::ungroup() %>%
-            dplyr::mutate(.nested.col = purrr::map(
-                .x         = .model,
-                .f         = function(obj) {
-
-                    ret <- safe_modeltime_forecast(
-                        obj,
-                        new_data      = new_data,
-                        h             = h,
-                        conf_interval = NULL,
-                        actual_data   = NULL,
-                        ...
-                    )
-
-                    ret <- ret %>% purrr::pluck("result")
-
-                    return(ret)
-                })
-            ) %>%
-            dplyr::select(-.model) %>%
-            tidyr::unnest(cols = .nested.col)
-    }
-
-    if (".nested.col" %in% names(ret_1)) {
-        ret_1 <- ret_1 %>%
-            dplyr::select(-.nested.col)
-    }
-
-    if (".nested.col" %in% names(ret_2)) {
-        ret_2 <- ret_2 %>%
-            dplyr::select(-.nested.col)
-    }
-
-    ret <- dplyr::bind_rows(ret_1, ret_2)
-
-    # ADD CONF INTERVALS
-    if (!is.null(conf_interval)) {
-        if (!has_residuals) {
-            rlang::warn("Confidence interval estimation cannot be performed. Try using 'modeltime_calibrate()' to add residuals before performing 'modeltime_forecast()'.")
-        } else {
-
-            # safe_hdi_mean_shifted <- purrr::safely(
-            #     hdi_mean_shifted,
-            #     otherwise = tibble::tibble(
-            #         .conf_lo = NA,
-            #         .conf_hi = NA
-            #     ),
-            #     quiet = TRUE)
-
-            safe_normal_ci_mean_shifted <- purrr::safely(
-                normal_ci_mean_shifted,
-                otherwise = tibble::tibble(
-                    .conf_lo = NA,
-                    .conf_hi = NA
-                ),
-                quiet = TRUE)
-
-            ret <- ret %>%
-                dplyr::group_by(.model_id) %>%
-                tidyr::nest() %>%
-                dplyr::left_join(data_residuals, by = ".model_id") %>%
-                dplyr::mutate(.ci = purrr::map(.residuals, .f = function(x) {
-                    res <- safe_normal_ci_mean_shifted(x, conf_interval = conf_interval)
-                    res %>% purrr::pluck("result")
-                })
-                ) %>%
-                dplyr::select(-.residuals) %>%
-                tidyr::unnest(cols = c(.ci)) %>%
-                tidyr::unnest(cols = c(data)) %>%
-                dplyr::ungroup() %>%
-                dplyr::mutate(
-                    .conf_lo = .value + .conf_lo,
-                    .conf_hi = .value + .conf_hi
-                )
-        }
-    }
-
-    return(ret)
-}
-
-
-# UTILITIES ----
 
 # Normal Conf Interval
 normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {

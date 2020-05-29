@@ -81,53 +81,63 @@ will correct issues with indicators, which prevents the \strong{formula format}.
 
 \emph{Confidence Interval Estimation}
 
-Confidence intervals are estimated based on the normal estimation of the training errors.
+Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
 The confidence interval can be adjusted with the \code{conf_interval} parameter. An
 80\% confidence interval estimates a normal (gaussian distribution) that assumes that
 80\% of the future data will fall within the upper and lower confidence limits.
+
+The confidence interval is mean adjusted, meaning that if the mean of the residuals
+is non-zero, the confidence interval is adjusted to widen the interval.
 }
 \examples{
-library(dplyr)
+library(tidyverse)
+library(lubridate)
+library(timetk)
 library(parsnip)
 library(rsample)
-library(timetk)
-library(modeltime)
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")
-m750
 
 # Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- initial_time_split(m750, prop = 0.9)
 
-# Model Spec
-model_spec <- arima_reg(
-        period                   = 12,
-        non_seasonal_ar          = 3,
-        non_seasonal_differences = 1,
-        non_seasonal_ma          = 3,
-        seasonal_ar              = 1,
-        seasonal_differences     = 0,
-        seasonal_ma              = 1
-    ) \%>\%
-    set_engine("arima")
+# --- MODELS ---
 
-# Fit Spec
-model_fit <- model_spec \%>\%
-    fit(log(value) ~ date, data = training(splits))
+# Model 1: auto_arima ----
+model_fit_no_boost <- arima_reg() \%>\%
+    set_engine(engine = "auto_arima") \%>\%
+    fit(value ~ date, data = training(splits))
 
-# --- PRODUCE FORECAST ---
+# Model 2: arima_boost ----
+model_fit_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) \%>\%
+    set_engine(engine = "auto_arima_xgboost") \%>\%
+    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
 
-# Using new_data
-model_fit \%>\%
-    modeltime_forecast(new_data = testing(splits))
+# ---- MODELTIME TABLE ----
 
-# Using horizon, h
-model_fit \%>\%
-    modeltime_forecast(h = "3 years")
+models_tbl <- modeltime_table(
+    model_fit_no_boost,
+    model_fit_boosted
+)
 
-# Combining forecast with actual values
-model_fit \%>\%
-    modeltime_forecast(h = "3 years", actual_data = training(splits))
+# ---- ACCURACY ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_accuracy()
+
+# ---- FORECAST ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
+    )
 
 }

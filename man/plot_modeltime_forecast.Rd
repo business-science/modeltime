@@ -53,41 +53,49 @@ This is a wrapper for \code{\link[=plot_time_series]{plot_time_series()}} that g
 (\code{ggplot2}) plot with the forecasted data.
 }
 \examples{
-library(dplyr)
+library(tidyverse)
+library(lubridate)
+library(timetk)
 library(parsnip)
 library(rsample)
-library(timetk)
-library(modeltime)
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")
-m750
 
 # Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- initial_time_split(m750, prop = 0.9)
 
-# Model Spec
-model_spec <- arima_reg(
-        period                   = 12,
-        non_seasonal_ar          = 3,
-        non_seasonal_differences = 1,
-        non_seasonal_ma          = 3,
-        seasonal_ar              = 1,
-        seasonal_differences     = 0,
-        seasonal_ma              = 1
+# --- MODELS ---
+
+# Model 1: auto_arima ----
+model_fit_no_boost <- arima_reg() \%>\%
+    set_engine(engine = "auto_arima") \%>\%
+    fit(value ~ date, data = training(splits))
+
+# Model 2: arima_boost ----
+model_fit_boosted <- arima_boost(
+    min_n = 2,
+    learn_rate = 0.015
+) \%>\%
+    set_engine(engine = "auto_arima_xgboost") \%>\%
+    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
+
+# ---- MODELTIME TABLE ----
+
+models_tbl <- modeltime_table(
+    model_fit_no_boost,
+    model_fit_boosted
+)
+
+# ---- FORECAST ----
+
+models_tbl \%>\%
+    modeltime_calibrate(new_data = testing(splits)) \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
     ) \%>\%
-    set_engine("arima")
-
-# Fit Spec
-model_fit <- model_spec \%>\%
-    fit(log(value) ~ date, data = training(splits))
-
-# --- VISUALIZE FORECAST ---
-
-# Combining forecast with actual values
-model_fit \%>\%
-    modeltime_forecast(h = "3 years", actual_data = training(splits)) \%>\%
-    mutate(.value = exp(.value)) \%>\%
-    plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = FALSE)
+    plot_modeltime_forecast(.interactive = FALSE)
 
 }

@@ -2,7 +2,7 @@
 
 #' Calculate Accuracy Metrics
 #'
-#' This is a wrapper for `yardstick` that simplifies accuracy metric
+#' This is a wrapper for `yardstick` that simplifies time series regression accuracy metric
 #' calculations from a fitted `workflow` (trained workflow) or `model_fit` (trained parsnip model).
 #'
 #' @param object A fitted model object that is either (1) a workflow that has been fit by [fit.workflow()] or
@@ -30,46 +30,56 @@
 #'
 #'
 #' @examples
-#' library(dplyr)
+#' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
 #' library(parsnip)
 #' library(rsample)
-#' library(yardstick)
-#' library(timetk)
-#' library(modeltime)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
 #'
 #' # Split Data 80/20
-#' splits <- initial_time_split(m750, prop = 0.8)
+#' splits <- initial_time_split(m750, prop = 0.9)
 #'
-#' # Model Spec
-#' model_spec <- arima_reg(
-#'         period                   = 12,
-#'         non_seasonal_ar          = 3,
-#'         non_seasonal_differences = 1,
-#'         non_seasonal_ma          = 3,
-#'         seasonal_ar              = 1,
-#'         seasonal_differences     = 0,
-#'         seasonal_ma              = 1
-#'     ) %>%
-#'     set_engine("arima")
+#' # --- MODELS ---
 #'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date, data = training(splits))
+#' # Model 1: auto_arima ----
+#' model_fit_no_boost <- arima_reg() %>%
+#'     set_engine(engine = "auto_arima") %>%
+#'     fit(value ~ date, data = training(splits))
 #'
-#' # --- ACCURACY ---
+#' # Model 2: arima_boost ----
+#' model_fit_boosted <- arima_boost(
+#'     min_n = 2,
+#'     learn_rate = 0.015
+#' ) %>%
+#'     set_engine(engine = "auto_arima_xgboost") %>%
+#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
 #'
-#' # Default accuracy metrics
-#' model_fit %>%
-#'     modeltime_accuracy(new_data = testing(splits))
+#' # ---- MODELTIME TABLE ----
 #'
-#' # Supply new accuracy metrics
-#' model_fit %>%
+#' models_tbl <- modeltime_table(
+#'     model_fit_no_boost,
+#'     model_fit_boosted
+#' )
+#'
+#' # ---- ACCURACY ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
 #'     modeltime_accuracy(
-#'         new_data   = testing(splits),
-#'         metric_set = metric_set(mae, rmse)
+#'         metric_set = metric_set(mae, rmse, rsq)
+#'     )
+#'
+#' # ---- FORECAST ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
 #'     )
 #'
 #' @name modeltime_accuracy
@@ -87,55 +97,9 @@ modeltime_accuracy <- function(object, new_data = NULL,
 modeltime_accuracy.default <- function(object, new_data = NULL,
                                        metric_set = default_forecast_accuracy_metric_set(),
                                        quiet = TRUE, ...) {
-    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'."))
+    rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'."))
 }
 
-#' @export
-modeltime_accuracy.model_spec <- function(object, new_data = NULL,
-                                          metric_set = default_forecast_accuracy_metric_set(),
-                                          quiet = TRUE, ...) {
-    rlang::abort("Model spec must be trained using the 'fit()' function.")
-}
-
-#' @export
-modeltime_accuracy.model_fit <- function(object, new_data = NULL,
-                                         metric_set = default_forecast_accuracy_metric_set(),
-                                         quiet = TRUE, ...) {
-
-    data <- tryCatch({
-        object$fit$data
-    }, error = function(e) {
-        NULL
-    })
-
-    ret <- calc_accuracy(object, train_data = data, test_data = new_data, metric_set = metric_set,
-                         quiet = quiet, ...)
-
-    return(ret)
-
-}
-
-#' @export
-modeltime_accuracy.workflow <- function(object, new_data = NULL,
-                                        metric_set = default_forecast_accuracy_metric_set(),
-                                        quiet = TRUE, ...) {
-
-    # Checks
-    if (!object$trained) {
-        rlang::abort("Workflow must be trained using the 'fit()' function.")
-    }
-
-    data <- tryCatch({
-        object$fit$fit$fit$data
-    }, error = function(e) {
-        NULL
-    })
-
-    ret <- calc_accuracy(object, train_data = data, test_data = new_data, metric_set = metric_set, ...)
-
-    return(ret)
-
-}
 
 #' @export
 modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
@@ -143,16 +107,15 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                                             quiet = TRUE, ...) {
     data <- object
 
-    safe_modeltime_accuracy <- purrr::safely(modeltime_accuracy, otherwise = NA, quiet = quiet)
+    safe_calc_accuracy <- purrr::safely(calc_accuracy_2, otherwise = NA, quiet = quiet)
 
     ret <- data %>%
         dplyr::ungroup() %>%
         dplyr::mutate(.nested.col = purrr::map(
-            .x         = .model,
-            .f         = function(obj) {
-                ret <- safe_modeltime_accuracy(
-                    obj,
-                    new_data = new_data,
+            .x         = .calibration_data,
+            .f         = function(.data) {
+                ret <- safe_calc_accuracy(
+                    test_data  = .data,
                     metric_set = metric_set,
                     ...
                 )
@@ -162,7 +125,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                 return(ret)
             })
         ) %>%
-        dplyr::select(-.model) %>%
+        dplyr::select(-.model, -.calibration_data) %>%
         tidyr::unnest(cols = .nested.col)
     # ret <- data
 
@@ -230,10 +193,7 @@ default_forecast_accuracy_metric_set <- function() {
 
 # UTILITIES ----
 
-calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...) {
-
-    model_fit <- object
-
+calc_accuracy_2 <- function(train_data, test_data = NULL, metric_set, ...) {
 
     # Training Metrics
     train_metrics_tbl <- tibble::tibble()
@@ -262,33 +222,9 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
     test_metrics_tbl <- tibble::tibble()
     if (!is.null(test_data)) {
 
-        predictions_tbl <- object %>%
-            modeltime_forecast(
-                new_data      = test_data,
-                actual_data   = test_data,
-                conf_interval = NULL,
-                ...
-            )
-
-
-        test_metrics_prepped_tbl <- predictions_tbl %>%
-            tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
-            tidyr::drop_na() %>%
-            tibble::add_column(.type = "Test", .before = 1) %>%
-            dplyr::group_by(.type)
-
-        # test_metrics_residuals_tbl <- test_metrics_prepped_tbl %>%
-        #     dplyr::summarize(residuals = list(actual - prediction)) %>%
-        #     dplyr::ungroup()
-
-        test_metrics_tbl <- test_metrics_prepped_tbl %>%
-            summarize_accuracy_metrics(actual, prediction, metric_set) %>%
+        test_metrics_tbl <- test_data %>%
+            summarize_accuracy_metrics(.actual, .prediction, metric_set) %>%
             dplyr::ungroup()
-
-        # test_metrics_tbl <- dplyr::left_join(
-        #     test_metrics_residuals_tbl,
-        #     test_metrics_accuracy_tbl,
-        #     by = ".type")
 
     }
 
@@ -296,6 +232,73 @@ calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...)
 
     return(metrics_tbl)
 }
+
+# calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...) {
+#
+#     model_fit <- object
+#
+#
+#     # Training Metrics
+#     train_metrics_tbl <- tibble::tibble()
+#
+#     # if (is.null(train_data)) {
+#     #     metrics_tbl <- tibble::tibble(
+#     #         .type = "Training"
+#     #     )
+#     # } else {
+#     #     metrics_tbl <- train_data %>%
+#     #         tibble::add_column(.type = "Training", .before = 1) %>%
+#     #         dplyr::group_by(.type) %>%
+#     #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
+#     #         dplyr::ungroup()
+#     # }
+#
+#     # if (!is.null(train_data)) {
+#     #     train_metrics_tbl <- train_data %>%
+#     #         tibble::add_column(.type = "Training", .before = 1) %>%
+#     #         dplyr::group_by(.type) %>%
+#     #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
+#     #         dplyr::ungroup()
+#     # }
+#
+#     # Testing Metrics
+#     test_metrics_tbl <- tibble::tibble()
+#     if (!is.null(test_data)) {
+#
+#         predictions_tbl <- object %>%
+#             modeltime_forecast(
+#                 new_data      = test_data,
+#                 actual_data   = test_data,
+#                 conf_interval = NULL,
+#                 ...
+#             )
+#
+#
+#         test_metrics_prepped_tbl <- predictions_tbl %>%
+#             tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
+#             tidyr::drop_na() %>%
+#             tibble::add_column(.type = "Test", .before = 1) %>%
+#             dplyr::group_by(.type)
+#
+#         # test_metrics_residuals_tbl <- test_metrics_prepped_tbl %>%
+#         #     dplyr::summarize(residuals = list(actual - prediction)) %>%
+#         #     dplyr::ungroup()
+#
+#         test_metrics_tbl <- test_metrics_prepped_tbl %>%
+#             summarize_accuracy_metrics(actual, prediction, metric_set) %>%
+#             dplyr::ungroup()
+#
+#         # test_metrics_tbl <- dplyr::left_join(
+#         #     test_metrics_residuals_tbl,
+#         #     test_metrics_accuracy_tbl,
+#         #     by = ".type")
+#
+#     }
+#
+#     metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
+#
+#     return(metrics_tbl)
+# }
 
 summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 

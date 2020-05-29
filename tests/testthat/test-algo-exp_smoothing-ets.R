@@ -25,6 +25,7 @@ model_fit <- model_spec %>%
 
 # Predictions
 predictions_tbl <- model_fit %>%
+    modeltime_calibrate(testing(splits)) %>%
     modeltime_forecast(new_data = testing(splits))
 
 
@@ -92,6 +93,7 @@ wflw_fit <- wflw %>%
 
 # Forecast
 predictions_tbl <- wflw_fit %>%
+    modeltime_calibrate(testing(splits)) %>%
     modeltime_forecast(new_data = testing(splits),
                        actual_data = training(splits)) %>%
     mutate_at(vars(.value), exp)

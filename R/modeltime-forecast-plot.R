@@ -17,42 +17,50 @@
 #'
 #'
 #' @examples
-#' library(dplyr)
+#' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
 #' library(parsnip)
 #' library(rsample)
-#' library(timetk)
-#' library(modeltime)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
-#' m750
 #'
 #' # Split Data 80/20
-#' splits <- initial_time_split(m750, prop = 0.8)
+#' splits <- initial_time_split(m750, prop = 0.9)
 #'
-#' # Model Spec
-#' model_spec <- arima_reg(
-#'         period                   = 12,
-#'         non_seasonal_ar          = 3,
-#'         non_seasonal_differences = 1,
-#'         non_seasonal_ma          = 3,
-#'         seasonal_ar              = 1,
-#'         seasonal_differences     = 0,
-#'         seasonal_ma              = 1
+#' # --- MODELS ---
+#'
+#' # Model 1: auto_arima ----
+#' model_fit_no_boost <- arima_reg() %>%
+#'     set_engine(engine = "auto_arima") %>%
+#'     fit(value ~ date, data = training(splits))
+#'
+#' # Model 2: arima_boost ----
+#' model_fit_boosted <- arima_boost(
+#'     min_n = 2,
+#'     learn_rate = 0.015
+#' ) %>%
+#'     set_engine(engine = "auto_arima_xgboost") %>%
+#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
+#'
+#' # ---- MODELTIME TABLE ----
+#'
+#' models_tbl <- modeltime_table(
+#'     model_fit_no_boost,
+#'     model_fit_boosted
+#' )
+#'
+#' # ---- FORECAST ----
+#'
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = testing(splits)) %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
 #'     ) %>%
-#'     set_engine("arima")
-#'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date, data = training(splits))
-#'
-#' # --- VISUALIZE FORECAST ---
-#'
-#' # Combining forecast with actual values
-#' model_fit %>%
-#'     modeltime_forecast(h = "3 years", actual_data = training(splits)) %>%
-#'     mutate(.value = exp(.value)) %>%
-#'     plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = FALSE)
+#'     plot_modeltime_forecast(.interactive = FALSE)
 #'
 #' @export
 plot_modeltime_forecast <- function(.data,
@@ -66,7 +74,11 @@ plot_modeltime_forecast <- function(.data,
                                     ...) {
 
     # Checks
-    if (!all(c(".key", ".index", ".value") %in% names(.data))) {
+    if (!inherits(.data, "data.frame")) {
+        glubort("No method for {class(.data)[1]}. Expecting the output of 'modeltime_forecast()'.")
+    }
+
+    if (!all(c(".model_id", ".model_desc", ".key", ".index", ".value") %in% names(.data))) {
         rlang::abort("Expecting the following names to be in the data frame: .key, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
     }
 
@@ -77,45 +89,21 @@ plot_modeltime_forecast <- function(.data,
         }
     }
 
-    # PASS SINGLE / MULTI
 
-    # Output of a scalable modeltime_table() that has been forecasted
-    multi <- FALSE
-    if (all(c(".model_id", ".model_desc") %in% names(.data))) {
-        multi <- TRUE
-    }
-
-    if (multi) {
-        g <- plot_modeltime_forecast_multi(
-            .data                  = .data,
-            .include_conf_interval = .include_conf_interval,
-            .conf_interval_fill    = .conf_interval_fill,
-            .conf_interval_alpha   = .conf_interval_alpha,
-            .include_legend        = .include_legend,
-            .title                 = .title,
-            .x_lab                 = .x_lab,
-            .y_lab                 = .y_lab,
-            .color_lab             = .color_lab,
-            .interactive           = .interactive,
-            .plotly_slider         = .plotly_slider,
-            ...
-        )
-    } else {
-        g <- plot_modeltime_forecast_single(
-            .data                  = .data,
-            .include_conf_interval = .include_conf_interval,
-            .conf_interval_fill    = .conf_interval_fill,
-            .conf_interval_alpha   = .conf_interval_alpha,
-            .include_legend        = .include_legend,
-            .title                 = .title,
-            .x_lab                 = .x_lab,
-            .y_lab                 = .y_lab,
-            .color_lab             = .color_lab,
-            .interactive           = .interactive,
-            .plotly_slider         = .plotly_slider,
-            ...
-        )
-    }
+    g <- plot_modeltime_forecast_multi(
+        .data                  = .data,
+        .include_conf_interval = .include_conf_interval,
+        .conf_interval_fill    = .conf_interval_fill,
+        .conf_interval_alpha   = .conf_interval_alpha,
+        .include_legend        = .include_legend,
+        .title                 = .title,
+        .x_lab                 = .x_lab,
+        .y_lab                 = .y_lab,
+        .color_lab             = .color_lab,
+        .interactive           = .interactive,
+        .plotly_slider         = .plotly_slider,
+        ...
+    )
 
 
     # INTERACTIVE
@@ -140,61 +128,6 @@ plot_modeltime_forecast <- function(.data,
 
 }
 
-
-plot_modeltime_forecast_single <- function(.data,
-                                           .include_conf_interval = TRUE,
-                                           .conf_interval_fill = "grey20",
-                                           .conf_interval_alpha = 0.20,
-                                           .include_legend = TRUE,
-                                           .title = "Forecast Plot", .x_lab = "", .y_lab = "",
-                                           .color_lab = "Legend",
-                                           .interactive = TRUE, .plotly_slider = FALSE,
-                                           ...) {
-
-
-
-    g <- timetk::plot_time_series(
-        .data         = .data,
-        .date_var     = .index,
-        .value        = .value,
-        .color_var    = .key,
-
-        .smooth       = FALSE,
-
-        .title        = .title,
-        .x_lab        = .x_lab,
-        .y_lab        = .y_lab,
-        .color_lab    = .color_lab,
-        .interactive  = FALSE,
-        ...
-    )
-
-    if (.include_conf_interval) {
-
-        # Add ribbon
-        g <- g +
-            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi, color = .key),
-                                 fill = .conf_interval_fill,
-                                 alpha = .conf_interval_alpha,
-                                 # color = .conf_interval_fill,
-                                 linetype = 0)
-
-        # Reorder Ribbon to 1st level
-        layers_start <- g$layers
-
-        g$layers[[1]] <- layers_start[[2]]
-        g$layers[[2]] <- layers_start[[1]]
-
-    }
-
-    if (!.include_legend) {
-        g <- g +
-            ggplot2::theme(legend.position = "none")
-    }
-
-    return(g)
-
-}
 
 
 plot_modeltime_forecast_multi <- function(.data,

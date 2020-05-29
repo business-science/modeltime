@@ -114,7 +114,34 @@
 #' # Split Data 80/20
 #' splits <- initial_time_split(m750, prop = 0.8)
 #'
-#' # TODO
+#' # ---- AUTO ETS ----
+#'
+#' # Model Spec - The default parameters are all set
+#' # to "auto" if none are provided
+#' model_spec <- exp_smoothing() %>%
+#'     set_engine("ets")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
+#'
+#'
+#' # ---- STANDARD ETS ----
+#'
+#' # Model Spec
+#' model_spec <- exp_smoothing(
+#'         period  = 12,
+#'         error   = "multiplicative",
+#'         trend   = "additive",
+#'         season  = "multiplicative"
+#'     ) %>%
+#'     set_engine("ets")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
 #'
 #' @export
 exp_smoothing <- function(mode = "regression", period = NULL,
