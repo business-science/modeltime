@@ -7,11 +7,11 @@ lm_model <- lm(value ~ as.numeric(date) + hour(date) + wday(date, label = TRUE),
                data = taylor_30_min)
 
 data = tibble(
-    date    = taylor_30_min$date, # Important - The column name must match the modeled data
+    date        = taylor_30_min$date, # Important - The column name must match the modeled data
     # These are standardized names: .value, .fitted, .resid
-    .value  = taylor_30_min$value,
-    .fitted = lm_model$fitted.values %>% as.numeric(),
-    .resid  = lm_model$residuals %>% as.numeric()
+    .actual     = taylor_30_min$value,
+    .fitted     = lm_model$fitted.values %>% as.numeric(),
+    .residuals  = lm_model$residuals %>% as.numeric()
 )
 
 bridge <- new_modeltime_bridge(

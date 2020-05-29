@@ -12,7 +12,7 @@ new_modeltime_bridge(class, models, data, extras = NULL, desc = NULL)
 \item{models}{A list containing one or more models}
 
 \item{data}{A data frame (or tibble) containing 4 columns:
-(date column with name that matches input data), .value, .fitted, and .resid.}
+(date column with name that matches input data), .actual, .fitted, and .residuals.}
 
 \item{extras}{An optional list that is typically used for transferring preprocessing recipes
 to the predict method.}
@@ -33,11 +33,11 @@ lm_model <- lm(value ~ as.numeric(date) + hour(date) + wday(date, label = TRUE),
                data = taylor_30_min)
 
 data = tibble(
-    date    = taylor_30_min$date, # Important - The column name must match the modeled data
-    # These are standardized names: .value, .fitted, .resid
-    .value  = taylor_30_min$value,
-    .fitted = lm_model$fitted.values \%>\% as.numeric(),
-    .resid  = lm_model$residuals \%>\% as.numeric()
+    date        = taylor_30_min$date, # Important - The column name must match the modeled data
+    # These are standardized names: .actual, .fitted, .residuals
+    .actual     = taylor_30_min$value,
+    .fitted     = lm_model$fitted.values \%>\% as.numeric(),
+    .residuals  = lm_model$residuals \%>\% as.numeric()
 )
 
 new_modeltime_bridge(

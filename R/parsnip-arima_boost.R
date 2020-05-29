@@ -500,12 +500,12 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
         model_2 = fit_xgboost
     )
 
-    # Data - Start with index tbl and add .value, .fitted, and .resid columns
+    # Data - Start with index tbl and add .actual, .fitted, and .residuals columns
     data <- index_tbl %>%
         dplyr::mutate(
-            .value  =  y,
-            .fitted =  arima_fitted + xgboost_fitted,
-            .resid  = .value - .fitted
+            .actual    =  y,
+            .fitted    =  arima_fitted + xgboost_fitted,
+            .residuals = .actual - .fitted
         )
 
     # Extras - Pass on transformation recipe
@@ -659,12 +659,12 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
         model_2 = fit_xgboost
     )
 
-    # Data - Start with index tbl and add .value, .fitted, and .resid columns
+    # Data - Start with index tbl and add .actual, .fitted, and .residuals columns
     data <- index_tbl %>%
         dplyr::mutate(
-            .value  =  y,
-            .fitted =  arima_fitted + xgboost_fitted,
-            .resid  = .value - .fitted
+            .actual    =  y,
+            .fitted    =  arima_fitted + xgboost_fitted,
+            .residuals = .actual - .fitted
         )
 
     # Extras - Pass on transformation recipe

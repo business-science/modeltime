@@ -360,12 +360,12 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
             model_1 = fit_arima
         ),
 
-        # Data
+        # Data - Date column (matches original), .actual, .fitted, and .residuals columns
         data = tibble::tibble(
             !! idx_col  := idx,
-            .value      =  as.numeric(fit_arima$x),
-            .fitted     =  as.numeric(fit_arima$fitted),
-            .resid      =  as.numeric(fit_arima$residuals)
+            .actual      =  as.numeric(fit_arima$x),
+            .fitted      =  as.numeric(fit_arima$fitted),
+            .residuals   =  as.numeric(fit_arima$residuals)
         ),
 
         # Preprocessing Recipe (prepped) - Used in predict method
@@ -373,6 +373,7 @@ Arima_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D 
             xreg_recipe = xreg_recipe
         ),
 
+        # Description - Convert arima model parameters to short description
         desc = get_arima_description(fit_arima)
     )
 
@@ -448,12 +449,12 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
             model_1 = fit_arima
         ),
 
-        # Data
+        # Data - Date column (matches original), .actual, .fitted, and .residuals columns
         data = tibble::tibble(
             !! idx_col  := idx,
-            .value      =  as.numeric(fit_arima$x),
-            .fitted     =  as.numeric(fit_arima$fitted),
-            .resid      =  as.numeric(fit_arima$residuals)
+            .actual      =  as.numeric(fit_arima$x),
+            .fitted      =  as.numeric(fit_arima$fitted),
+            .residuals   =  as.numeric(fit_arima$residuals)
         ),
 
         # Preprocessing Recipe (prepped) - Used in predict method
@@ -461,6 +462,7 @@ auto_arima_fit_impl <- function(x, y, period = "auto",
             xreg_recipe = xreg_recipe
         ),
 
+        # Description - Converts arima model arguments to short description
         desc = get_arima_description(fit_arima)
     )
 

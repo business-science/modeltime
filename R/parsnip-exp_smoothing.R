@@ -323,17 +323,18 @@ ets_fit_impl <- function(x, y, period = "auto",
             model_1 = fit_ets
         ),
 
-        # Data
+        # Data - Date column (matches original), .actual, .fitted, and .residuals columns
         data = tibble::tibble(
             !! idx_col  := idx,
-            .value      =  as.numeric(fit_ets$x),
-            .fitted     =  as.numeric(fit_ets$fitted),
-            .resid      =  as.numeric(fit_ets$residuals)
+            .actual      =  as.numeric(fit_ets$x),
+            .fitted      =  as.numeric(fit_ets$fitted),
+            .residuals   =  as.numeric(fit_ets$residuals)
         ),
 
         # Preprocessing Recipe (prepped) - Used in predict method
         extras = NULL,
 
+        # Description
         desc = fit_ets$method[1]
     )
 
