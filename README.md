@@ -26,8 +26,10 @@ Modeltime has a few key features and benefits:
 
 ## Tutorials
 
-  - Getting Started - A walkthrough of the 6-Step Process for using
-    `modeltime` to forecast
+  - [**Getting Started with
+    Modeltime**](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html):
+    A walkthrough of the 6-Step Process for using `modeltime` to
+    forecast
 
 ## Installation
 
