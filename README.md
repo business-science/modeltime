@@ -10,19 +10,31 @@
 A scalable time series forecasting toolset that **combines classical
 algorithms and machine learning into 1 framework.**
 
-<img src="vignettes/forecast_plot.jpg" width="70%" style="display: block; margin: auto;" />
+<img src="vignettes/forecast_plot.jpg" width="100%" style="display: block; margin: auto;" />
 
 ## Features & Benefits
 
-Modeltime has a few key features and benefits:
+#### Modeltime unlocks time series models and machine learning in 1 framework
 
-1.  **Interactive Plotting by default** - Modeling algorithms have
-    strengths and weaknesses that come to light when visualized
-    interactively.
-2.  **Use Classical Algorithms and Machine Learning Algorithms
-    together** - No need to switch back and forth between various
-    frameworks. `modeltime` unlocks machine learning & classical time
-    series analysis.
+No need to switch back and forth between various frameworks. `modeltime`
+unlocks machine learning & classical time series analysis.
+
+  - `forecast`: Use ARIMA, ETS, and more models coming.
+  - `prophet`: Use Facebook’s prophet() algorithm
+  - `tidymodels`: Use any `parsnip` model: `rand_forest()`, Boosted
+    `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast
+
+#### A streamlined workflow for forecasting
+
+Modeltime incorporates a [simple workflow (see Getting Started with
+Modeltime)](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html)
+for using best practices to forecast.
+
+#### Interactive plotting by default
+
+All plots incorporate both `plotly` (interactive) and `ggplot2` (static)
+visualizations. This means you can quickly add forecasts to `shiny`
+apps, `rmarkdown` documents, and more.
 
 ## Tutorials
 

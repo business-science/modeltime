@@ -102,17 +102,33 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p>A scalable time series forecasting toolset that <strong>combines classical algorithms and machine learning into 1 framework.</strong></p>
-<p><img src="articles/forecast_plot.jpg" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="articles/forecast_plot.jpg" width="100%" style="display: block; margin: auto;"></p>
 <div id="features--benefits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features--benefits" class="anchor"></a>Features &amp; Benefits</h2>
-<p>Modeltime has a few key features and benefits:</p>
-<ol>
+<div id="modeltime-unlocks-time-series-models-and-machine-learning-in-1-framework" class="section level4">
+<h4 class="hasAnchor">
+<a href="#modeltime-unlocks-time-series-models-and-machine-learning-in-1-framework" class="anchor"></a>Modeltime unlocks time series models and machine learning in 1 framework</h4>
+<p>No need to switch back and forth between various frameworks. <code>modeltime</code> unlocks machine learning &amp; classical time series analysis.</p>
+<ul>
 <li>
-<strong>Interactive Plotting by default</strong> - Modeling algorithms have strengths and weaknesses that come to light when visualized interactively.</li>
+<code>forecast</code>: Use ARIMA, ETS, and more models coming.</li>
 <li>
-<strong>Use Classical Algorithms and Machine Learning Algorithms together</strong> - No need to switch back and forth between various frameworks. <code>modeltime</code> unlocks machine learning &amp; classical time series analysis.</li>
-</ol>
+<code>prophet</code>: Use Facebook’s prophet() algorithm</li>
+<li>
+<code>tidymodels</code>: Use any <code>parsnip</code> model: <code>rand_forest()</code>, Boosted <code>boost_tree()</code>, <code>linear_reg()</code>, <code>mars()</code>, <code>svm_rbf()</code> to forecast</li>
+</ul>
+</div>
+<div id="a-streamlined-workflow-for-forecasting" class="section level4">
+<h4 class="hasAnchor">
+<a href="#a-streamlined-workflow-for-forecasting" class="anchor"></a>A streamlined workflow for forecasting</h4>
+<p>Modeltime incorporates a <a href="https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html">simple workflow (see Getting Started with Modeltime)</a> for using best practices to forecast.</p>
+</div>
+<div id="interactive-plotting-by-default" class="section level4">
+<h4 class="hasAnchor">
+<a href="#interactive-plotting-by-default" class="anchor"></a>Interactive plotting by default</h4>
+<p>All plots incorporate both <code>plotly</code> (interactive) and <code>ggplot2</code> (static) visualizations. This means you can quickly add forecasts to <code>shiny</code> apps, <code>rmarkdown</code> documents, and more.</p>
+</div>
 </div>
 <div id="tutorials" class="section level2">
 <h2 class="hasAnchor">

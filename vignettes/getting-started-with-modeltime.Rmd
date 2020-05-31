@@ -2,7 +2,7 @@
 title: "Getting Started with Modeltime"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{getting-started-with-modeltime}
+  %\VignetteIndexEntry{Getting Started with Modeltime}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,9 +21,9 @@ Forecasting with `tidymodels` made easy! This short tutorial shows how you can u
 - Modeltime models like `arima_reg()`, `arima_boost()`, and `exp_smoothing()`
 - Parsnip models like `linear_reg()`, `mars()`, `svm_rbf()`, and more
 
-To perform classical time series analysis and machine learning ___together!___ 
+To perform classical time series analysis and machine learning ___in one framework!___ 
 
-```{r, echo=F,  out.width="60%", fig.align='center'}
+```{r, echo=F,  out.width="100%", fig.align='center'}
 knitr::include_graphics("forecast_plot.jpg")
 ```
 

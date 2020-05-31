@@ -17,7 +17,7 @@ LazyData: true
 Depends:
     R (>= 3.3.0)
 Imports:
-    timetk (>= 1.0.0),
+    timetk (>= 2.0.0),
     parsnip (>= 0.1.0),
     dials,
     yardstick,
