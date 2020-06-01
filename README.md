@@ -43,6 +43,9 @@ apps, `rmarkdown` documents, and more.
     A walkthrough of the 6-Step Process for using `modeltime` to
     forecast
 
+  - [**Modeltime
+    Documentation**](https://business-science.github.io/modeltime/)
+
 ## Installation
 
 Install the development version from with:

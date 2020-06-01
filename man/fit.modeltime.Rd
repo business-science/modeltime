@@ -5,6 +5,7 @@
 \alias{fit.arima_reg}
 \alias{fit.arima_boost}
 \alias{fit.exp_smoothing}
+\alias{fit.prophet_reg}
 \title{Fit a Model Specification to a Dataset}
 \usage{
 \method{fit}{arima_reg}(object, formula, data, control = control_parsnip(), ...)
@@ -12,6 +13,8 @@
 \method{fit}{arima_boost}(object, formula, data, control = control_parsnip(), ...)
 
 \method{fit}{exp_smoothing}(object, formula, data, control = control_parsnip(), ...)
+
+\method{fit}{prophet_reg}(object, formula, data, control = control_parsnip(), ...)
 }
 \arguments{
 \item{object}{An object of class \code{model_spec} that has a chosen engine

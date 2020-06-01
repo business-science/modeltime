@@ -85,3 +85,14 @@ fit.exp_smoothing <- function(object, formula, data, control = control_parsnip()
     parsnip::fit.model_spec(object, formula, data, control = control_parsnip(), ..., indicators = FALSE)
 
 }
+
+#' @export
+#' @rdname fit.modeltime
+#' @importFrom parsnip control_parsnip
+fit.prophet_reg <- function(object, formula, data, control = control_parsnip(), ...) {
+
+    # Needed to preserve date and date time attributes
+    # - Note this approach will not expand factors into dummy variables.
+    parsnip::fit.model_spec(object, formula, data, control = control_parsnip(), ..., indicators = FALSE)
+
+}

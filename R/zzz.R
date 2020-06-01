@@ -6,8 +6,9 @@
 # been loaded.
 
 .onLoad <- function(libname, pkgname) {
-    # This defines arima_reg in the model database
+    # This defines the model database
     make_arima_reg()
     make_arima_boost()
     make_exp_smoothing()
+    make_prophet_reg()
 }

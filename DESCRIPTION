@@ -33,11 +33,13 @@ Imports:
     purrr,
     stringr,
     forcats,
+    scales,
     janitor,
     progressr,
     magrittr,
     forecast,
-    xgboost
+    xgboost,
+    prophet
 Suggests:
     recipes,
     rsample,

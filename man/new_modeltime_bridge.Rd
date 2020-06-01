@@ -2,7 +2,7 @@
 % Please edit documentation in R/dev-constructor.R
 \name{new_modeltime_bridge}
 \alias{new_modeltime_bridge}
-\title{Tools for creating modeltime models}
+\title{Constructor for creating modeltime models}
 \usage{
 new_modeltime_bridge(class, models, data, extras = NULL, desc = NULL)
 }

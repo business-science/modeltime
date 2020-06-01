@@ -54,6 +54,7 @@ All plots incorporate both `plotly` (interactive) and `ggplot2` (static) visuali
 
 - [__Getting Started with Modeltime__](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html): A walkthrough of the 6-Step Process for using `modeltime` to forecast
 
+- [__Modeltime Documentation__](https://business-science.github.io/modeltime/)
 
 
 

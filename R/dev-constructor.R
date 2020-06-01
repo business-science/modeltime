@@ -1,4 +1,4 @@
-#' Tools for creating modeltime models
+#' Constructor for creating modeltime models
 #'
 #' These functions are used to construct new `modeltime` bridge functions that
 #' connect the `tidymodels` infrastructure to time-series models containing date or date-time features.
