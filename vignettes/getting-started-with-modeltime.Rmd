@@ -194,7 +194,7 @@ models_tbl <- modeltime_table(
 models_tbl
 ```
 
-### Step 4 - Calibrate the model to a training set. 
+### Step 4 - Calibrate the model to a testing set. 
 
 Calibrating adds a new column, `.calibration_data`, with the test predictions and residuals inside. A few notes on Calibration:
 
