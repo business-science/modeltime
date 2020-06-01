@@ -1,0 +1,484 @@
+---
+title: "Extending Modeltime (Developer Tools)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extending Modeltime}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  # out.width = '80%',
+  fig.width = 5,
+  fig.height = 4,
+  fig.align='center'
+)
+```
+
+
+
+
+## Introduction
+
+The `modeltime` package was with extensibility in mind. It's impossible to incorporate the entire [R time series ecosystem](https://cran.r-project.org/web/views/TimeSeries.html) into a single package. More than likely your going to need something that hasn't been included yet. And, if you're a developer, ___I challenge you___ to extend `modeltime` to suit your needs. I've spent a lot of time thinking about:
+
+- A [systematic workflow](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) that can be used for time series analysis
+- A way to integrate time series into a [best-in-class modeling framework](https://www.tidymodels.org/) (i.e. `tidymodels`)
+
+And, I want you to leverage what has been built so you don't have to recreate the wheel. 
+
+### Before we get started, where are we coming from?
+
+Beyond being an amazing ecosystem for ___Machine Learning analysis in R___, `tidymodels` is a ___developer-friendly infrastructure___ that enables `parsnip`-adjacent packages like `modeltime`. The ecosystem provides basic building blocks for extending machine learning models, tuning parameters, performance metrics, and preprocessing (feature engineering) tools. Before you start building, I highly recommend reviewing these resources:
+
+- __Parsnip Models (Algorithms)__: [How to build a parsnip model](https://www.tidymodels.org/learn/develop/models/)
+- __Dials Parameters (Tuning)__: [How to create a tuning parameter function](https://www.tidymodels.org/learn/develop/parameters/)
+- __Yardstick Metrics (Performance)__: [Custom performance metrics](https://www.tidymodels.org/learn/develop/metrics/)
+- __Recipes Step Functions (preprocessing)__: [Create your own recipe step function](https://www.tidymodels.org/learn/develop/recipes/)
+
+The most important is the first resource - _"How to build a parsnip model"_. 
+
+### Where we are going!
+
+What we're going to do momentarily is modify the "How to build a parsnip model" article. Your learning _"How to build a modeltime model"_. There are a few key nuances:
+
+1. Managing Date and Date-time Features
+2. Processing Regressors and Dates separately
+
+## Example <br><small>Integrating Multiple Seasonal Decomposition</small>
+
+The `forecast` package includes the `stlm()` function for creating models using [time series decomposition](https://otexts.com/fpp2/complexseasonality.html). It's a great approach based on the concept that you can decompose complex seasonality into multiple components:
+
+- Trend
+- One or Multiple Seasonalities
+- Remainder
+
+We can then forecast the components using models like: `auto.arima()` and `ets()`.
+
+
+
+
+### Libraries
+
+To use the code in this tutorial, you'll need to have the following packages installed. 
+
+```{r setup}
+library(parsnip)
+library(modeltime)
+library(forecast)
+library(rsample)
+library(tidyverse)
+library(timetk)
+library(rlang)
+```
+
+### Data
+
+We'll use `taylor_30_min` data from the `timetk` package, which is electricity demand data at a 30-minute interval. 
+
+```{r}
+taylor_30_min %>%
+  plot_time_series(date, value, .interactive = FALSE)
+```
+
+### STLM Model - A quick overview
+
+We need to use 2 functions to create the model:
+
+- `msts()` - Tracks the multiple-seasonality as an object
+- `stlm()` - Creates a model from the `msts` object. 
+
+Note that we use seasonal periods (`24*2 = 48`) for daily seasonality because this series has been aggregated at a 30-minute interval. The second seasonality is at 7-days, so we just use `24*2*7`. 
+
+```{r}
+stlm_model <- taylor_30_min %>%
+  pull(value) %>%
+  msts(seasonal.periods = c(24*2, 24*2*7)) %>%
+  stlm()
+
+stlm_model$stl %>% autoplot()
+```
+
+The `forecast()` function is used to generate predictions, much like the `predict()` function. 
+
+```{r}
+stlm_model %>%
+  forecast(h = 24*2*7) %>%
+  autoplot()
+```
+
+Looks like it's doing a pretty decent job of forecasting the Taylor 30-Min Data. 
+
+## How to build a modeltime model
+
+The first step we need to do is to think about the function. We can create:
+
+- `msts()`: Creates a multiple time series object. Key arguments: `seasonal.periods`.
+- `stlm()`: Creates the Multiple STL Model. Key arguments:
+    - `method`: Either `ets` or `arima` (actually uses `auto.arima`)
+    - We'll handle this by creating a specific engine called "stlm_ets" for the `ets` version. 
+    
+We could add others, but let's keep it simple for now. 
+
+## The General Process
+
+We follow a very similar process to [_"How to build a parsnip model"_](https://www.tidymodels.org/learn/develop/models/#the-general-process) with a few additional aspects:
+
+1. We create a __"Modeltime Bridge"__ function to bridge between `parsnip` api functions and `forecast` time series.
+2. We handle feature preprocessing internally to the model bridge to avoid the issue of losing __dates and date-time information.__
+
+### Step 1: Register the Model, Modes, and Arguments
+
+Let's add a new model called `decomposition_reg()` for Regression by Decomposition. Because Time Series analysis is generally regression, we'll just register the regression mode. 
+
+```{r}
+set_new_model("decomposition_reg")
+set_model_mode(model = "decomposition_reg", mode = "regression")
+set_model_engine(model = "decomposition_reg", mode = "regression", eng = "stlm_ets")
+
+# Here we set the dependency to forecast, though we can also use
+# your package if you import the lower level package
+set_dependency(model = "decomposition_reg", eng = "stlm_ets", pkg = "forecast")
+```
+
+We can use `show_model_info()` to see what's been added to the registered model.
+
+```{r}
+show_model_info("decomposition_reg")
+```
+
+We need to add model arguments as well. We'll use `set_model_args()` to add the appropriate model arguments. 
+
+```{r}
+# 1st Frequency (period_seasonal_1 is a non-jargony term)
+set_model_arg(
+  model        = "decomposition_reg", 
+  eng          = "stlm_ets", 
+  parsnip      = "period_seasonal_1", 
+  original     = "period_seasonal_1", 
+  func         = list(pkg = "foo", fun = "bar"),
+  has_submodel = FALSE
+)
+
+# 2nd Frequency (period_seasonal_2 is a non-jargony term)
+set_model_arg(
+  model        = "decomposition_reg", 
+  eng          = "stlm_ets", 
+  parsnip      = "period_seasonal_2", 
+  original     = "period_seasonal_2", 
+  func         = list(pkg = "foo", fun = "bar"),
+  has_submodel = FALSE
+)
+
+```
+
+__Important note__: We are going to map these "modeltime" arguments to a lower-level bridge function, so we don't need `original = seasonal.periods`. In fact, we can't do this because you need to have a one-to-one relationship between your parsnip/modeltime model arguments and the lower-level modeling function.  
+
+### Step 2: Create the model function
+
+We'll create a `decomposition_reg()` function that will be our core `parsnip` function. 
+
+```{r}
+decomposition_reg <- function(mode = "regression", 
+                              period_seasonal_1 = NULL, 
+                              period_seasonal_2 = NULL) {
+
+    args <- list(
+        period_seasonal_1 = rlang::enquo(period_seasonal_1),
+        period_seasonal_2 = rlang::enquo(period_seasonal_2)
+    )
+
+    parsnip::new_model_spec(
+        "decomposition_reg",
+        args     = args,
+        eng_args = NULL,
+        mode     = mode,
+        method   = NULL,
+        engine   = NULL
+    )
+
+}
+```
+
+
+### Step 3: Add a Fit Bridge & Module
+
+For Time Series models, we need to do extra work to get them to fit the `parsnip` mold. The easiest way is to create a __"Bridge" function__ that helps process the data and connect the arguments with the underlying time series package. 
+
+#### Step 3A: Create the Fit Bridge
+
+__Time Series Developer Tools__ come included with `modeltime`:
+
+- __Bridge Constructor__: `new_modeltime_bridge()`, A constructor for creating `modeltime` bridges that provide the connection between time series models and the `parsnip` infrastructure. 
+- __Xreg Preprocessing Tools__: `create_xreg_recipe()`, `juice_xreg_recipe()`, and `bake_xreg_recipe()`
+- __Date and Date-Time Parsing Tools__: `parse_index_from_data()`, `parse_period_from_index()`
+
+Here's a sample bridge function. It:
+
+1. Handles the data inputs, `x` (data.frame of predictors) and `y` (vector, target)
+2. Handles the timestamp data (index) - This column is parsed from `x`
+3. Handles the Predictors - formatting as necessary. The `ets()` model is univariate, so no predictors are necessary to be transformed.  
+4. Handles Fitting the model
+5. Creates a new model bridge using the constructor, `new_modeltime_bridge()`
+
+```{r}
+stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seasonal_2 = NULL, ...) {
+  
+  outcome    <- y # Comes in as a vector
+  predictors <- x # Comes in as a data.frame (dates and possible xregs)
+  
+  # 1. Create outcome msts object by mapping `period_seasonal` args to msts()
+  if (is.null(period_seasonal_1) || period_seasonal_1 <= 1) {
+    stop("'period_seasonal_1' must be greater than 1 to assess seasonality")
+  } else if (is.null(period_seasonal_2) || period_seasonal_2 <= 1) {
+    seasonal.periods <- period_seasonal_1
+  } else {
+    seasonal.periods <- c(period_seasonal_1, period_seasonal_2)
+  }
+  outcome_msts <- forecast::msts(outcome, seasonal.periods = seasonal.periods)
+  
+  # 2. Predictors - Handle Dates 
+  index_tbl <- parse_index_from_data(predictors)
+  idx_col   <- names(index_tbl)
+  idx       <- timetk::tk_index(index_tbl)
+  
+  # 3. Predictors - Handle Xregs
+  # NOT REQUIRED - ETS is univariate
+  # REQUIRED FOR ARIMA - ARIMA can accept XRegs
+  # xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
+  # xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
+  
+  # 4. Fitting
+  model_1 <- forecast::stlm(y = outcome_msts, method = "ets", ...)
+  
+  # 5. New Modeltime Bridge
+  new_modeltime_bridge(
+    class  = "stlm_ets_fit_impl",
+    models = list(model_1 = model_1),
+    data   = tibble::tibble(
+      idx_col   := idx,
+      .actual    = y,
+      .fitted    = model_1$fitted,
+      .residuals = model_1$residuals
+    ),
+    extras = list(NULL), # Can add xreg preprocessors here
+    desc   = stringr::str_c("STLM Model: ", model_1$model$method)
+  )
+  
+}
+```
+
+We'll make a quick print method so we don't get crazy output. 
+
+```{r}
+print.stlm_ets_fit_impl <- function(x, ...) {
+  
+  model <- x$models$model_1$model
+  
+  cat(x$desc)
+  cat("\n")
+  print(model$call)
+  cat("\n")
+  print(
+    tibble(
+      aic    = model$aic,
+      bic    = model$bic,
+      aicc   = model$aicc,
+      loglik = model$loglik,
+      mse    = model$mse  
+    )
+  )
+  invisible(x)
+}
+```
+
+
+Let's make sure our bridge works. 
+
+```{r, paged.print = FALSE}
+stlm_test <- stlm_ets_fit_impl(
+  x = taylor_30_min[,"date"],
+  y = taylor_30_min %>% pull(value),
+  period_seasonal_1 = 24*2,
+  period_seasonal_2 = 24*2*7
+)
+
+stlm_test
+```
+
+The bridge looks good. 
+
+#### Step 3B: Create a Fit Module
+
+Next, let's hook up our `parsnip` fit module to the newly created bridge fit function. 
+
+```{r}
+set_fit(
+  model  = "decomposition_reg",
+  eng    = "stlm_ets",
+  mode   = "regression",
+  value  = list(
+    interface = "data.frame",
+    protect   = c("x", "y"),
+    func      = c(fun = "stlm_ets_fit_impl"),
+    defaults  = list()
+  )
+)
+
+show_model_info("decomposition_reg")
+```
+
+### Step 4: Add a Prediction Bridge & Module
+
+Next, we have an additional step to bridge the prediction. We create a predict method that handles the `new_data`, treating the number of rows as the forecasting horizon. 
+
+#### Step 4A: Create a Prediction Bridge
+
+```{r}
+predict.stlm_ets_fit_impl <- function(object, new_data, ...) {
+
+    # PREPARE INPUTS
+    model       <- object$models$model_1
+    h_horizon   <- nrow(new_data)
+
+    # XREG
+    # NOT REQUIRED FOR ETS. 
+    # xreg_recipe <- object$extras$xreg_recipe 
+    # xreg_matrix <- bake_xreg_recipe(xreg_recipe, new_data, format = "matrix")
+
+    # PREDICTIONS
+    preds_forecast <- forecast::forecast(model, h = h_horizon)
+    
+    # Return predictions as numeric vector
+    preds <- as.numeric(preds_forecast$mean)
+
+    return(preds)
+
+}
+```
+
+Let's test the `predict()` method out. To help, I'll leverage `future_frame()` to predict the next 3-hours worth of forecast points. 
+
+```{r}
+stlm_test %>%
+  predict(new_data = taylor_30_min %>% future_frame(.length_out = "1 week")) %>% 
+  plot()
+```
+
+Excellent. We have predictions!
+
+#### Step 4B: Add Modules for Prediction
+
+We're now ready to register the prediction function we've created. 
+
+```{r, paged.print = FALSE}
+set_pred(
+    model         = "decomposition_reg",
+    eng           = "stlm_ets",
+    mode          = "regression",
+    type          = "numeric",
+    value         = list(
+        pre       = NULL,
+        post      = NULL,
+        func      = c(fun = "predict"),
+        args      =
+            list(
+                object   = rlang::expr(object$fit),
+                new_data = rlang::expr(new_data)
+            )
+    )
+)
+
+show_model_info("decomposition_reg")
+```
+
+### Step 5: Fit Indicators
+
+We need to modify how parnsip handles features because date and date-time information cannot be processed by `model.frame()` (default behavior). This step will simplify once parsnip is updated. 
+
+__Current Method (Not Desirable)__: We have to modify the `fit()` method to set `indicators = FALSE`, which is necessary to prevent dates from being converted to numeric features. 
+
+```{r}
+fit.decomposition_reg <- function(object, formula, data, control = control_parsnip(), ...) {
+
+    # Needed to preserve date and date time attributes
+    # - Note this approach will change once is implemented:
+    #   https://github.com/tidymodels/parsnip/pull/319.
+    parsnip::fit.model_spec(object, formula, data, control = control_parsnip(), ..., indicators = FALSE)
+
+}
+```
+
+
+__New Method (Best Approach)__: Coming soon to `parsnip (>0.1.1)`. 
+
+```{r, eval = F}
+# Don't do this until parsnip (>0.1.1) is released
+# set_encoding(
+#   model   = "decomposition_reg",
+#   eng     = "stlm_ets",
+#   mode    = "regression",
+#   options = list(predictor_indicators = FALSE)
+# )
+```
+
+
+## Does it work???
+
+The moment of truth is upon us! Let's test this new `modeltime` function out. 
+
+
+
+### Make the Fitted STL Decomposition Model
+
+We'll split the data into training and test sets. Then create a model on the training set. 
+
+```{r, paged.print = FALSE}
+splits <- initial_time_split(taylor_30_min, prop = 0.9)
+
+model_fit <- decomposition_reg(
+  period_seasonal_1 = 24*2, 
+  period_seasonal_2 = 24*2*7) %>%
+  set_engine("stlm_ets") %>%
+  fit(value ~ date, data = training(splits))
+
+model_fit
+```
+
+
+
+### Make a Calibrated Modeltime Table
+
+Next, let's calibrate the fitted model. 
+
+```{r, paged.print = FALSE}
+calibration_tbl <- model_fit %>%
+  modeltime_calibrate(new_data = testing(splits))
+
+calibration_tbl
+```
+
+### Refit on the Full Dataset
+
+We'll refit on the full dataset and forecast forward 1 week. 
+
+```{r}
+calibration_tbl %>%
+  modeltime_refit(data = taylor_30_min) %>%
+  modeltime_forecast(h = "1 week", actual_data = taylor_30_min) %>%
+  plot_modeltime_forecast(.interactive = FALSE)
+```
+
+
+And now you've just created a new model. Just wrap it up in a package and you've extended `parsnip` and `modeltime`. Congrats!
+
+## Further Resources
+
+I'd recommend looking at the code for `parsnip-arima_reg.R` and `parsnip-arima_reg_data.R` to see how this process is implemented inside a package. 
+
+

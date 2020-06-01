@@ -17,8 +17,13 @@ navbar:
     - text: "Articles"
       href: articles/index.html
       menu:
+        - text: 'Forecasting'
         - text: 'Getting Started with Modeltime'
           href: articles/getting-started-with-modeltime.html
+        - text: "---"
+        - text: 'Developers'
+        - text: 'Extending Modeltime (Developer Tools)'
+          href: articles/extending-modeltime.html
     - text: "News"
       href: news/index.html
 
