@@ -42,12 +42,14 @@ reference:
   - arima_reg
   - arima_boost
   - exp_smoothing
+  - prophet_reg
 - title: Parameters
   desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
   contents:
   - period
   - starts_with("non_seasonal")
   - error
+  - num_changepoints
 - title: Developer Tools
   desc: Tools for extending `modeltime`.
   contents:

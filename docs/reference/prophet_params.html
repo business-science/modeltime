@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Constructor for creating modeltime models — new_modeltime_bridge • modeltime</title>
+<title>Tuning Parameters for Prophet Models — prophet_params • modeltime</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Constructor for creating modeltime models — new_modeltime_bridge" />
-<meta property="og:description" content="These functions are used to construct new modeltime bridge functions that
-connect the tidymodels infrastructure to time-series models containing date or date-time features." />
+<meta property="og:title" content="Tuning Parameters for Prophet Models — prophet_params" />
+<meta property="og:description" content="Tuning Parameters for Prophet Models" />
 
 
 
@@ -137,88 +136,78 @@ connect the tidymodels infrastructure to time-series models containing date or d
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Constructor for creating modeltime models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dev-constructor.R'><code>R/dev-constructor.R</code></a></small>
-    <div class="hidden name"><code>new_modeltime_bridge.Rd</code></div>
+    <h1>Tuning Parameters for Prophet Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dials-prophet_params.R'><code>R/dials-prophet_params.R</code></a></small>
+    <div class="hidden name"><code>prophet_params.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These functions are used to construct new <code>modeltime</code> bridge functions that
-connect the <code>tidymodels</code> infrastructure to time-series models containing date or date-time features.</p>
+    <p>Tuning Parameters for Prophet Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_modeltime_bridge</span>(<span class='no'>class</span>, <span class='no'>models</span>, <span class='no'>data</span>, <span class='kw'>extras</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>growth</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"linear"</span>, <span class='st'>"logistic"</span>))
+
+<span class='fu'>num_changepoints</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>50L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>prior_scale_changepoints</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fu'>log10_trans</span>())
+
+<span class='fu'>prior_scale_seasonality</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fu'>log10_trans</span>())
+
+<span class='fu'>prior_scale_holidays</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fu'>log10_trans</span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>class</th>
-      <td><p>A class name that is used for creating custom printing messages</p></td>
+      <th>values</th>
+      <td><p>A character string of possible values.</p></td>
     </tr>
     <tr>
-      <th>models</th>
-      <td><p>A list containing one or more models</p></td>
+      <th>range</th>
+      <td><p>A two-element vector holding the <em>defaults</em> for the smallest and
+largest possible values, respectively.</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>A data frame (or tibble) containing 4 columns:
-(date column with name that matches input data), .actual, .fitted, and .residuals.</p></td>
-    </tr>
-    <tr>
-      <th>extras</th>
-      <td><p>An optional list that is typically used for transferring preprocessing recipes
-to the predict method.</p></td>
-    </tr>
-    <tr>
-      <th>desc</th>
-      <td><p>An optional model description to appear when printing your modeltime objects</p></td>
+      <th>trans</th>
+      <td><p>A <code>trans</code> object from the <code>scales</code> package, such as
+<code><a href='https://scales.r-lib.org//reference/log_trans.html'>scales::log10_trans()</a></code> or <code><a href='https://scales.r-lib.org//reference/reciprocal_trans.html'>scales::reciprocal_trans()</a></code>. If not provided,
+the default is used which matches the units used in <code>range</code>. If no
+transformation, <code>NULL</code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The main parameters for Prophet models are:</p><ul>
+<li><p><code>growth</code>: The form of the trend: "linear", or "logistic".</p></li>
+<li><p><code>num_changepoints</code>: The number of trend changepoints allowed in modeling the trend</p></li>
+<li><p><code>season</code>:</p><ul>
+<li><p>The form of the seasonal term: "additive" or "multiplicative".</p></li>
+<li><p>See <code><a href='exp_smoothing_params.html'>season()</a></code>.</p></li>
+</ul></li>
+<li><p>"Prior Scale": Controls flexibility of</p><ul>
+<li><p><em>Changepoints:</em> <code>prior_scale_changepoints</code></p></li>
+<li><p><em>Seasonality:</em> <code>prior_scale_seasonality</code></p></li>
+<li><p><em>Holidays:</em> <code>prior_scale_holidays</code></p></li>
+<li><p>The <code>log10_trans()</code> converts priors to a scale from 0.001 to 100,
+which effectively weights lower values more heavily than larger values.</p></li>
+</ul></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stats</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
-
-<span class='no'>lm_model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>value</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/hour.html'>hour</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/day.html'>wday</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-               <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>taylor_30_min</span>)
-
-<span class='no'>data</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(
-    <span class='kw'>date</span>        <span class='kw'>=</span> <span class='no'>taylor_30_min</span>$<span class='no'>date</span>, <span class='co'># Important - The column name must match the modeled data</span>
-    <span class='co'># These are standardized names: .actual, .fitted, .residuals</span>
-    <span class='kw'>.actual</span>     <span class='kw'>=</span> <span class='no'>taylor_30_min</span>$<span class='no'>value</span>,
-    <span class='kw'>.fitted</span>     <span class='kw'>=</span> <span class='no'>lm_model</span>$<span class='no'>fitted.values</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(),
-    <span class='kw'>.residuals</span>  <span class='kw'>=</span> <span class='no'>lm_model</span>$<span class='no'>residuals</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>()
-)
-
-<span class='fu'>new_modeltime_bridge</span>(
-    <span class='kw'>class</span>  <span class='kw'>=</span> <span class='st'>"lm_time_series_impl"</span>,
-    <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>model_1</span> <span class='kw'>=</span> <span class='no'>lm_model</span>),
-    <span class='kw'>data</span>   <span class='kw'>=</span> <span class='no'>data</span>,
-    <span class='kw'>extras</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</div><div class='output co'>#&gt; $model_1
-#&gt; 
-#&gt; Call:
-#&gt; lm(formula = value ~ as.numeric(date) + hour(date) + wday(date, 
-#&gt;     label = TRUE), data = taylor_30_min)
-#&gt; 
-#&gt; Coefficients:
-#&gt;                (Intercept)            as.numeric(date)  
-#&gt;                  1.489e+05                  -1.284e-04  
-#&gt;                 hour(date)  wday(date, label = TRUE).L  
-#&gt;                  3.919e+02                   6.665e+02  
-#&gt; wday(date, label = TRUE).Q  wday(date, label = TRUE).C  
-#&gt;                 -5.952e+03                   5.479e+02  
-#&gt; wday(date, label = TRUE)^4  wday(date, label = TRUE)^5  
-#&gt;                 -1.955e+03                   2.482e+02  
-#&gt; wday(date, label = TRUE)^6  
-#&gt;                 -8.755e+01  
-#&gt; 
-#&gt; </div><div class='input'>
-
+    <pre class="examples"><div class='input'>
+<span class='fu'>growth</span>()</div><div class='output co'>#&gt; Growth Trend  (qualitative)
+#&gt; 2 possible value include:
+#&gt; 'linear' and 'logistic' </div><div class='input'>
+<span class='fu'>num_changepoints</span>()</div><div class='output co'>#&gt; Number of Trend Changepoints  (quantitative)
+#&gt; Range: [0, 50]</div><div class='input'>
+<span class='fu'><a href='exp_smoothing_params.html'>season</a></span>()</div><div class='output co'>#&gt; Season Term  (qualitative)
+#&gt; 3 possible value include:
+#&gt; 'additive', 'multiplicative' and 'none' </div><div class='input'>
+<span class='fu'>prior_scale_changepoints</span>()</div><div class='output co'>#&gt; Prior Scale Changepoints  (quantitative)
+#&gt; Transformer:  log-10 
+#&gt; Range (transformed scale): [-3, 2]</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

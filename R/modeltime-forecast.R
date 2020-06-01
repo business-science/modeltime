@@ -131,6 +131,10 @@ NULL
 #' @export
 #' @rdname modeltime_forecast
 modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+
+    if (is.null(new_data) && is.null(h)) {
+        rlang::abort("Either 'new_data' or 'h' must be supplied. Try adding some 'new_data' to forecast.")
+    }
     UseMethod("modeltime_forecast")
 }
 
@@ -469,8 +473,9 @@ safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_
                     obj, cal,
                     new_data      = new_data,
                     h             = h,
-                    actual_data   = actual_data,
-                    ...
+                    actual_data   = actual_data
+                    # ,
+                    # ...
                 )
 
                 ret <- ret %>% purrr::pluck("result")

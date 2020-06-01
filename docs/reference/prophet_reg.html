@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General Interface for Exponential Smoothing State Space Models — exp_smoothing • modeltime</title>
+<title>General Interface for PROPHET Time Series Models — prophet_reg • modeltime</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="General Interface for Exponential Smoothing State Space Models — exp_smoothing" />
-<meta property="og:description" content="exp_smoothing() is a way to generate a specification of an Exponential Smoothing model
+<meta property="og:title" content="General Interface for PROPHET Time Series Models — prophet_reg" />
+<meta property="og:description" content="prophet_reg() is a way to generate a specification of a PROPHET model
 before fitting and allows the model to be created using
-different packages. Currently the only package is forecast." />
+different packages. Currently the only package is prophet." />
 
 
 
@@ -138,24 +138,25 @@ different packages. Currently the only package is forecast." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General Interface for Exponential Smoothing State Space Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-exp_smoothing.R'><code>R/parsnip-exp_smoothing.R</code></a></small>
-    <div class="hidden name"><code>exp_smoothing.Rd</code></div>
+    <h1>General Interface for PROPHET Time Series Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-prophet_reg.R'><code>R/parsnip-prophet_reg.R</code></a></small>
+    <div class="hidden name"><code>prophet_reg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>exp_smoothing()</code> is a way to generate a <em>specification</em> of an Exponential Smoothing model
+    <p><code>prophet_reg()</code> is a way to generate a <em>specification</em> of a PROPHET model
 before fitting and allows the model to be created using
-different packages. Currently the only package is <code>forecast</code>.</p>
+different packages. Currently the only package is <code>prophet</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>exp_smoothing</span>(
+    <pre class="usage"><span class='fu'>prophet_reg</span>(
   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"regression"</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>trend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>growth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>num_changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>season</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>damping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>prior_scale_changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>prior_scale_seasonality</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>prior_scale_holidays</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -167,41 +168,67 @@ different packages. Currently the only package is <code>forecast</code>.</p>
 The only possible value for this model is "regression".</p></td>
     </tr>
     <tr>
-      <th>period</th>
-      <td><p>A seasonal frequency. Uses "auto" by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.</p></td>
+      <th>growth</th>
+      <td><p>String 'linear' or 'logistic' to specify a linear or logistic trend.</p></td>
     </tr>
     <tr>
-      <th>error</th>
-      <td><p>The form of the error term: "auto", "additive", or "multiplicative".
-If the error is multiplicative, the data must be non-negative.</p></td>
-    </tr>
-    <tr>
-      <th>trend</th>
-      <td><p>The form of the trend term: "auto", "additive", "multiplicative" or "none".</p></td>
+      <th>num_changepoints</th>
+      <td><p>Number of potential changepoints to include for modeling trend.</p></td>
     </tr>
     <tr>
       <th>season</th>
-      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..</p></td>
+      <td><p>'additive' (default) or 'multiplicative'.</p></td>
     </tr>
     <tr>
-      <th>damping</th>
-      <td><p>Apply damping to a trend: "auto", "damped", or "none".</p></td>
+      <th>prior_scale_changepoints</th>
+      <td><p>Parameter modulating the flexibility of the
+automatic changepoint selection. Large values will allow many changepoints,
+small values will allow few changepoints.</p></td>
+    </tr>
+    <tr>
+      <th>prior_scale_seasonality</th>
+      <td><p>Parameter modulating the strength of the
+seasonality model. Larger values allow the model to fit larger seasonal
+fluctuations, smaller values dampen the seasonality.</p></td>
+    </tr>
+    <tr>
+      <th>prior_scale_holidays</th>
+      <td><p>Parameter modulating the strength of the holiday components model,
+unless overridden in the holidays input.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The data given to the function are not saved and are only used
-to determine the <em>mode</em> of the model. For <code>exp_smoothing()</code>, the
+to determine the <em>mode</em> of the model. For <code>prophet_reg()</code>, the
 mode will always be "regression".</p>
 <p>The model can be created using the <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
-<li><p>"ets" (default) - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/ets.html'>forecast::ets()</a></code></p></li>
+<li><p>"prophet" (default) - Connects to <code><a href='https://rdrr.io/pkg/prophet/man/prophet.html'>prophet::prophet()</a></code></p></li>
 </ul>
 
+<p><strong>Main Arguments</strong></p>
+<p>The main arguments (tuning parameters) for the model are:</p><ul>
+<li><p><code>growth</code>: String 'linear' or 'logistic' to specify a linear or logistic trend.</p></li>
+<li><p><code>num_changepoints</code>: Number of potential changepoints to include for modeling trend.</p></li>
+<li><p><code>season</code>: 'additive' (default) or 'multiplicative'.</p></li>
+<li><p><code>prior_scale_changepoints</code>: Parameter modulating the flexibility of the
+automatic changepoint selection. Large values will allow many changepoints,
+small values will allow few changepoints.</p></li>
+<li><p><code>prior_scale_seasonality</code>: Parameter modulating the strength of the
+seasonality model. Larger values allow the model to fit larger seasonal
+fluctuations, smaller values dampen the seasonality.</p></li>
+<li><p><code>prior_scale_holidays</code>: Parameter modulating the strength of the holiday components model,
+unless overridden in the holidays input.</p></li>
+</ul>
+
+<p>These arguments are converted to their specific names at the
+time that the model is fit.</p>
+<p>Other options and argument can be
+set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code> (See Engine Details below).</p>
+<p>If parameters need to be modified, <code><a href='https://rdrr.io/r/stats/update.html'>update()</a></code> can be used
+in lieu of recreating the object from scratch.</p>
     <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
 
     
@@ -209,39 +236,41 @@ following <em>engines</em>:</p><ul>
 
 <p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
 names in each engine:</p><table class='table'>
-<tr><td>modeltime</td><td>forecast::ets</td></tr>
-<tr><td>period()</td><td>ts(frequency)</td></tr>
-<tr><td>error(), trend(), season()</td><td>model</td></tr>
-<tr><td>damping()</td><td>damped</td></tr>
+<tr><td>modeltime</td><td>prophet</td></tr>
+<tr><td>growth</td><td>growth</td></tr>
+<tr><td>num_changepoints</td><td>n.changepoints</td></tr>
+<tr><td>season</td><td>seasonality.mode</td></tr>
+<tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale</td></tr>
+<tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale</td></tr>
+<tr><td>prior_scale_holidays</td><td>holidays.prior.scale</td></tr>
 </table>
 
 
 
 <p>Other options can be set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code>.</p>
-<p><strong>ets (default engine)</strong></p>
-<p>The engine uses <code><a href='https://rdrr.io/pkg/forecast/man/ets.html'>forecast::ets()</a></code>.</p>
-<p>Function Parameters:</p><pre>## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, 
-##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, 
-##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", 
-##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", 
-##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, 
-##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", 
-##         "na.fail"), ...)
+<p><strong>prophet</strong></p>
+<p>The engine uses <code><a href='https://rdrr.io/pkg/prophet/man/prophet.html'>prophet::prophet()</a></code>.</p>
+<p>Function Parameters:</p><pre>## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, 
+##     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", 
+##     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", 
+##     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, 
+##     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, 
+##     fit = TRUE, ...)
 </pre>
 
-<p>The main arguments are <code>model</code> and <code>damped</code> are defined using:</p><ul>
-<li><p><code><a href='exp_smoothing_params.html'>error()</a></code> = "auto", "additive", and "multiplicative" are converted to  "Z", "A", and "M"</p></li>
-<li><p><code><a href='exp_smoothing_params.html'>trend()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
-<li><p><code><a href='exp_smoothing_params.html'>season()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
-<li><p><code><a href='exp_smoothing_params.html'>damping()</a></code> - "auto", "damped", "none" are converted to NULL, TRUE, FALSE</p></li>
+<p>Parameter Notes:</p><ul>
+<li><p><code>df</code>: This is supplied via the parsnip / modeltime <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> interface
+(so don't provide this manually). See Fit Details (below).</p></li>
+<li><p><code>holidays</code>: A data.frame of holidays can be supplied via <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code></p></li>
+<li><p><code>uncertainty.samples</code>: The default is set to 0 because the prophet
+uncertainty intervals are not used as part of the Modeltime Workflow.
+You can override this setting if you plan to use prophet's uncertainty tools.</p></li>
 </ul>
 
-<p>By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
-<em>in-sample data</em> following the underlying <code><a href='https://rdrr.io/pkg/forecast/man/ets.html'>forecast::ets()</a></code> automation routine.</p>
-<p>Other options and argument can be set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code>.</p>
-<p>Parameter Notes:</p><ul>
-<li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
-models will be fit.</p></li>
+<p>Limitations:</p><ul>
+<li><p><code><a href='https://rdrr.io/pkg/prophet/man/add_seasonality.html'>prophet::add_seasonality()</a></code> is not currently implemented. It's used to
+specify non-standard seasonalities using fourier series. An alternative is to use
+<code><a href='https://rdrr.io/pkg/timetk/man/step_fourier.html'>step_fourier()</a></code> and supply custom seasonalities as Extra Regressors.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="fit-details"><a class="anchor" href="#fit-details"></a>Fit Details</h2>
@@ -255,25 +284,36 @@ The <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></co
 <li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
-<p><em>Period Specification</em></p>
-<p>The period can be non-seasonal (<code>period = 1</code>) or seasonal (e.g. <code>period = 12</code> or <code>period = "12 months"</code>).
-There are 3 ways to specify:</p><ol>
-<li><p><code>period = "auto"</code>: A period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
-<li><p><code>period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
-<li><p><code>period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
-</ol>
-
-<p><strong>Univariate:</strong></p>
+<p><strong>Univariate (No Extra Regressors):</strong></p>
 <p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
 <li><p>Formula Interface (recommended): <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
 <li><p>XY Interface: <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
-<p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
-<p>This model is not set up for use with exogenous regressors.</p>
+<p><strong>Multivariate (Extra Regressors)</strong></p>
+<p>Extra Regressors parameter is populated using the <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> or <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit_xy()</a></code> function:</p><ul>
+<li><p>Only <code>factor</code>, <code>ordered factor</code>, and <code>numeric</code> data will be used as xregs.</p></li>
+<li><p>Date and Date-time variables are not used as xregs</p></li>
+<li><p><code>character</code> data should be converted to factor.</p></li>
+</ul>
+
+<p><em>Xreg Example:</em> Suppose you have 3 features:</p><ol>
+<li><p><code>y</code> (target)</p></li>
+<li><p><code>date</code> (time stamp),</p></li>
+<li><p><code>month.lbl</code> (labeled month as a ordered factor).</p></li>
+</ol>
+
+<p>The <code>month.lbl</code> is an exogenous regressor that can be passed to the <code><a href='arima_reg.html'>arima_reg()</a></code> using
+<code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code>:</p><ul>
+<li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
+and the <code>date</code> feature. Only <code>month.lbl</code> will be used as an exogenous regressor.</p></li>
+</ul>
+
+<p>Note that date or date-time class values are excluded from <code>xreg</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.exp_smoothing()</a></code>, <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.prophet_reg()</a></code>, <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
@@ -301,76 +341,24 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># Split Data 80/20</span>
 <span class='no'>splits</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span>(<span class='no'>m750</span>, <span class='kw'>prop</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
-<span class='co'># ---- AUTO ETS ----</span>
-
-<span class='co'># Model Spec - The default parameters are all set</span>
-<span class='co'># to "auto" if none are provided</span>
-<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>exp_smoothing</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='st'>"ets"</span>)
-
-<span class='co'># Fit Spec</span>
-<span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
-#&gt; 
-#&gt; Fit time:  664ms 
-#&gt; ETS(A,A,A) 
-#&gt; 
-#&gt; Call:
-#&gt;  forecast::ets(y = outcome, model = model_ets, damped = damping_ets) 
-#&gt; 
-#&gt;   Smoothing parameters:
-#&gt;     alpha = 0.5893 
-#&gt;     beta  = 1e-04 
-#&gt;     gamma = 0.1771 
-#&gt; 
-#&gt;   Initial states:
-#&gt;     l = 8.7377 
-#&gt;     b = 0.002 
-#&gt;     s = 0.029 0.0259 0.0144 -0.0272 -0.1369 -0.0764
-#&gt;            0.0209 0.0358 0.036 0.035 0.0274 0.016
-#&gt; 
-#&gt;   sigma:  0.0186
-#&gt; 
-#&gt;       AIC      AICc       BIC 
-#&gt; -584.7384 -582.0304 -525.2865 </div><div class='input'>
-
-<span class='co'># ---- STANDARD ETS ----</span>
+<span class='co'># ---- PROPHET ----</span>
 
 <span class='co'># Model Spec</span>
-<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>exp_smoothing</span>(
-        <span class='kw'>period</span>  <span class='kw'>=</span> <span class='fl'>12</span>,
-        <span class='kw'>error</span>   <span class='kw'>=</span> <span class='st'>"multiplicative"</span>,
-        <span class='kw'>trend</span>   <span class='kw'>=</span> <span class='st'>"additive"</span>,
-        <span class='kw'>season</span>  <span class='kw'>=</span> <span class='st'>"multiplicative"</span>
-    ) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='st'>"ets"</span>)
+<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>prophet_reg</span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='st'>"prophet"</span>)
 
 <span class='co'># Fit Spec</span>
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
+    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span></div><div class='output co'>#&gt; <span class='message'>Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  183ms 
-#&gt; ETS(M,Ad,M) 
-#&gt; 
-#&gt; Call:
-#&gt;  forecast::ets(y = outcome, model = model_ets, damped = damping_ets) 
-#&gt; 
-#&gt;   Smoothing parameters:
-#&gt;     alpha = 0.5889 
-#&gt;     beta  = 0.0065 
-#&gt;     gamma = 0.203 
-#&gt;     phi   = 0.98 
-#&gt; 
-#&gt;   Initial states:
-#&gt;     l = 8.7353 
-#&gt;     b = 0.0054 
-#&gt;     s = 1.0027 1.0025 1.0012 0.9972 0.9839 0.9921
-#&gt;            1.0024 1.0041 1.0045 1.0039 1.0033 1.0022
-#&gt; 
-#&gt;   sigma:  0.0021
-#&gt; 
-#&gt;       AIC      AICc       BIC 
-#&gt; -576.9488 -573.9088 -513.9998 </div><div class='input'>
+#&gt; Fit time:  574ms 
+#&gt; PROPHET Model
+#&gt; - growth: 'linear'
+#&gt; - n.changepoints: 25
+#&gt; - seasonality.mode: 'additive'
+#&gt; - extra_regressors: 0</div><div class='input'>
+
+
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

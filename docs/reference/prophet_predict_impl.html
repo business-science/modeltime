@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Constructor for creating modeltime models — new_modeltime_bridge • modeltime</title>
+<title>Bridge prediction function for PROPHET models — prophet_predict_impl • modeltime</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Constructor for creating modeltime models — new_modeltime_bridge" />
-<meta property="og:description" content="These functions are used to construct new modeltime bridge functions that
-connect the tidymodels infrastructure to time-series models containing date or date-time features." />
+<meta property="og:title" content="Bridge prediction function for PROPHET models — prophet_predict_impl" />
+<meta property="og:description" content="Bridge prediction function for PROPHET models" />
 
 
 
@@ -137,89 +136,35 @@ connect the tidymodels infrastructure to time-series models containing date or d
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Constructor for creating modeltime models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dev-constructor.R'><code>R/dev-constructor.R</code></a></small>
-    <div class="hidden name"><code>new_modeltime_bridge.Rd</code></div>
+    <h1>Bridge prediction function for PROPHET models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-prophet_reg.R'><code>R/parsnip-prophet_reg.R</code></a></small>
+    <div class="hidden name"><code>prophet_predict_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These functions are used to construct new <code>modeltime</code> bridge functions that
-connect the <code>tidymodels</code> infrastructure to time-series models containing date or date-time features.</p>
+    <p>Bridge prediction function for PROPHET models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_modeltime_bridge</span>(<span class='no'>class</span>, <span class='no'>models</span>, <span class='no'>data</span>, <span class='kw'>extras</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>desc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>prophet_predict_impl</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>class</th>
-      <td><p>A class name that is used for creating custom printing messages</p></td>
+      <th>object</th>
+      <td><p>An object of class <code>model_fit</code></p></td>
     </tr>
     <tr>
-      <th>models</th>
-      <td><p>A list containing one or more models</p></td>
+      <th>new_data</th>
+      <td><p>A rectangular data object, such as a data frame.</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>A data frame (or tibble) containing 4 columns:
-(date column with name that matches input data), .actual, .fitted, and .residuals.</p></td>
-    </tr>
-    <tr>
-      <th>extras</th>
-      <td><p>An optional list that is typically used for transferring preprocessing recipes
-to the predict method.</p></td>
-    </tr>
-    <tr>
-      <th>desc</th>
-      <td><p>An optional model description to appear when printing your modeltime objects</p></td>
+      <th>...</th>
+      <td><p>Additional arguments passed to <code>prophet::predict()</code></p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stats</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
-
-<span class='no'>lm_model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>value</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/hour.html'>hour</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/day.html'>wday</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-               <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>taylor_30_min</span>)
-
-<span class='no'>data</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(
-    <span class='kw'>date</span>        <span class='kw'>=</span> <span class='no'>taylor_30_min</span>$<span class='no'>date</span>, <span class='co'># Important - The column name must match the modeled data</span>
-    <span class='co'># These are standardized names: .actual, .fitted, .residuals</span>
-    <span class='kw'>.actual</span>     <span class='kw'>=</span> <span class='no'>taylor_30_min</span>$<span class='no'>value</span>,
-    <span class='kw'>.fitted</span>     <span class='kw'>=</span> <span class='no'>lm_model</span>$<span class='no'>fitted.values</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(),
-    <span class='kw'>.residuals</span>  <span class='kw'>=</span> <span class='no'>lm_model</span>$<span class='no'>residuals</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>()
-)
-
-<span class='fu'>new_modeltime_bridge</span>(
-    <span class='kw'>class</span>  <span class='kw'>=</span> <span class='st'>"lm_time_series_impl"</span>,
-    <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>model_1</span> <span class='kw'>=</span> <span class='no'>lm_model</span>),
-    <span class='kw'>data</span>   <span class='kw'>=</span> <span class='no'>data</span>,
-    <span class='kw'>extras</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</div><div class='output co'>#&gt; $model_1
-#&gt; 
-#&gt; Call:
-#&gt; lm(formula = value ~ as.numeric(date) + hour(date) + wday(date, 
-#&gt;     label = TRUE), data = taylor_30_min)
-#&gt; 
-#&gt; Coefficients:
-#&gt;                (Intercept)            as.numeric(date)  
-#&gt;                  1.489e+05                  -1.284e-04  
-#&gt;                 hour(date)  wday(date, label = TRUE).L  
-#&gt;                  3.919e+02                   6.665e+02  
-#&gt; wday(date, label = TRUE).Q  wday(date, label = TRUE).C  
-#&gt;                 -5.952e+03                   5.479e+02  
-#&gt; wday(date, label = TRUE)^4  wday(date, label = TRUE)^5  
-#&gt;                 -1.955e+03                   2.482e+02  
-#&gt; wday(date, label = TRUE)^6  
-#&gt;                 -8.755e+01  
-#&gt; 
-#&gt; </div><div class='input'>
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
