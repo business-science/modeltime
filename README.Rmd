@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-A scalable time series forecasting toolset that __combines classical algorithms and machine learning into 1 framework.__
+The time series forecasting package for the `tidymodels` ecosystem. 
 
 ```{r, echo=F, out.width='100%', fig.align='center'}
 knitr::include_graphics("vignettes/forecast_plot.jpg")
@@ -37,7 +37,7 @@ knitr::include_graphics("vignettes/forecast_plot.jpg")
 No need to switch back and forth between various frameworks. `modeltime` unlocks machine learning & classical time series analysis.
 
   - `forecast`: Use ARIMA, ETS, and more models coming. 
-  - `prophet`: Use Facebook's prophet() algorithm
+  - `prophet`: Use Facebook's `prophet()` algorithm
   - `tidymodels`: Use any `parsnip` model: `rand_forest()`, Boosted `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast 
 
 #### A streamlined workflow for forecasting

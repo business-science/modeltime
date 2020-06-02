@@ -12,12 +12,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="The tidymodels extension for time series modeling">
-<meta property="og:description" content="
-    Time series models and forecasting framework for use with the use with the tidymodels ecosystem. 
+<meta property="og:description" content='
+    The time series forecasting framework for use with the use with the tidymodels ecosystem. 
     Models include ARIMA, ETS, and additional time series models
-    from the forecast package. Refer to Forecasting Principles &amp; Practice
+    from the forecast and prophet packages. Refer to Forecasting Principles &amp; Practice
     (Hyndman, R.J., &amp; Athanasopoulos, G. (2018) Forecasting: principles and practice, 
-    2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on April 20th, 2020.)">
+    2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on April 20th, 2020).
+    Refer to "Prophet: forecasting at scale" (https://research.fb.com/blog/2017/02/prophet-forecasting-at-scale/.
+    Accessed on June 2nd, 2020).'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -57,12 +59,9 @@
 <li>
   <a href="articles/getting-started-with-modeltime.html">Getting Started</a>
 </li>
-<li>
-  <a href="reference/index.html">Key Functions</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Documentation
      
     <span class="caret"></span>
   </a>
@@ -71,12 +70,18 @@
     <li>
       <a href="articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
+    <li>
+      <a href="articles/modeltime-model-list.html">Model List</a>
+    </li>
     <li class="divider">
     <li class="dropdown-header">Developers</li>
     <li>
       <a href="articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="reference/index.html">Key Functions</a>
 </li>
 <li>
   <a href="news/index.html">News</a>
@@ -107,7 +112,7 @@
 <a href="#modeltime" class="anchor"></a>modeltime</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>A scalable time series forecasting toolset that <strong>combines classical algorithms and machine learning into 1 framework.</strong></p>
+<p>The time series forecasting package for the <code>tidymodels</code> ecosystem.</p>
 <p><img src="articles/forecast_plot.jpg" width="100%" style="display: block; margin: auto;"></p>
 <div id="features--benefits" class="section level2">
 <h2 class="hasAnchor">
@@ -120,7 +125,7 @@
 <li>
 <code>forecast</code>: Use ARIMA, ETS, and more models coming.</li>
 <li>
-<code>prophet</code>: Use Facebook’s prophet() algorithm</li>
+<code>prophet</code>: Use Facebook’s <code>prophet()</code> algorithm</li>
 <li>
 <code>tidymodels</code>: Use any <code>parsnip</code> model: <code>rand_forest()</code>, Boosted <code>boost_tree()</code>, <code>linear_reg()</code>, <code>mars()</code>, <code>svm_rbf()</code> to forecast</li>
 </ul>

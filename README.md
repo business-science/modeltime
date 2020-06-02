@@ -7,8 +7,7 @@
 
 <!-- badges: end -->
 
-A scalable time series forecasting toolset that **combines classical
-algorithms and machine learning into 1 framework.**
+The time series forecasting package for the `tidymodels` ecosystem.
 
 <img src="vignettes/forecast_plot.jpg" width="100%" style="display: block; margin: auto;" />
 
@@ -20,7 +19,7 @@ No need to switch back and forth between various frameworks. `modeltime`
 unlocks machine learning & classical time series analysis.
 
   - `forecast`: Use ARIMA, ETS, and more models coming.
-  - `prophet`: Use Facebook’s prophet() algorithm
+  - `prophet`: Use Facebook’s `prophet()` algorithm
   - `tidymodels`: Use any `parsnip` model: `rand_forest()`, Boosted
     `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast
 

@@ -12,18 +12,20 @@ navbar:
       href: index.html
     - text: "Getting Started"
       href: articles/getting-started-with-modeltime.html
-    - text: "Key Functions"
-      href: reference/index.html
-    - text: "Articles"
+    - text: "Documentation"
       href: articles/index.html
       menu:
         - text: 'Forecasting'
         - text: 'Getting Started with Modeltime'
           href: articles/getting-started-with-modeltime.html
+        - text: 'Model List'
+          href: articles/modeltime-model-list.html
         - text: "---"
         - text: 'Developers'
         - text: 'Extending Modeltime (Developer Tools)'
           href: articles/extending-modeltime.html
+    - text: "Key Functions"
+      href: reference/index.html
     - text: "News"
       href: news/index.html
 

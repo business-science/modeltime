@@ -4,11 +4,13 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre"))
 Description: 
-    Time series models and forecasting framework for use with the use with the 'tidymodels' ecosystem. 
+    The time series forecasting framework for use with the use with the 'tidymodels' ecosystem. 
     Models include ARIMA, ETS, and additional time series models
-    from the 'forecast' package. Refer to Forecasting Principles & Practice
+    from the 'forecast' and 'prophet' packages. Refer to Forecasting Principles & Practice
     (Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 
-    2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on April 20th, 2020.)
+    2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on April 20th, 2020).
+    Refer to "Prophet: forecasting at scale" (https://research.fb.com/blog/2017/02/prophet-forecasting-at-scale/.
+    Accessed on June 2nd, 2020).
 URL: https://github.com/business-science/modeltime
 BugReports: https://github.com/business-science/modeltime/issues
 License: MIT + file LICENSE
@@ -52,6 +54,7 @@ Suggests:
     earth,
     randomForest,
     tidyquant,
+    reactable,
     knitr,
     rmarkdown
 Roxygen: list(markdown = TRUE)

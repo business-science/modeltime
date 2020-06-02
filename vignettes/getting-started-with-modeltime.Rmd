@@ -49,6 +49,7 @@ library(lubridate)
 library(timetk)
 library(parsnip)
 library(rsample)
+library(reactable)
 
 # This toggles plots from plotly (interactive) to ggplot (static)
 interactive <- TRUE
@@ -93,44 +94,39 @@ _Modeltime models_ (e.g. `arima_reg()`) are created with a date or date time fea
 
 _Parsnip models_ (e.g. `linear_reg()`) typically should not have date features, but may contain derivatives of dates (e.g. month, year, etc). You will often see formulas like `fit(value ~ as.numeric(date) + month(date), data)`.
 
-#### ARIMA (Modeltime)
-
-Fit ARIMA models to a training set. We have included some classic time series models and some new boosted versions:
-
-- __Auto ARIMA__ (see `arima_reg()`)
-- __Auto ARIMA + XGBoost__ - XGBoosted ARIMA Errors! (see `arima_boost()`)
-
-__Auto ARIMA__
+#### Model 1: Auto ARIMA (Modeltime)
 
 First, we create a basic univariate ARIMA model using "Auto Arima" using `arima_reg()`
 
 ```{r}
 # Model 1: auto_arima ----
-model_fit_no_boost <- arima_reg() %>%
+model_fit_arima_no_boost <- arima_reg() %>%
     set_engine(engine = "auto_arima") %>%
     fit(value ~ date, data = training(splits))
 ```
 
-__Boosted Auto ARIMA__
+#### Model 2: Boosted Auto ARIMA (Modeltime)
 
 Next, we create a boosted ARIMA using `arima_boost()`. Boosting uses XGBoost to model the ARIMA errors. Note that model formula contains both a date feature and derivatives of date
  - ARIMA uses the date
  - XGBoost uses the derivatives of date as regressors
+ 
+Normally I'd use a preprocessing workflow for the month features using a function like `step_time_series_signature()` from `timetk` to help reduce the complexity of the parsnip formula interface. 
 
 ```{r}
 # Model 2: arima_boost ----
 
-model_fit_boosted <- arima_boost(
+model_fit_arima_boosted <- arima_boost(
     min_n = 2,
     learn_rate = 0.015
 ) %>%
     set_engine(engine = "auto_arima_xgboost") %>%
-    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+    fit(value ~ date + as.numeric(date) + factor(month(date, label = TRUE), ordered = F),
         data = training(splits))
 ```
 
 
-#### Exponential Smoothing (Modeltime)
+#### Model 3: Exponential Smoothing (Modeltime)
 
 Next, create an Error-Trend-Season (ETS) model using an Exponential Smoothing State Space model. This is accomplished with `exp_smoothing()`.
 
@@ -141,42 +137,51 @@ model_fit_ets <- exp_smoothing() %>%
     fit(value ~ date, data = training(splits))
 ```
 
-#### Linear Regression (Parsnip)
+#### Model 4: Prophet (Modeltime)
+
+We'll create a `prophet` model using `prophet_reg()`.
+
+```{r}
+# Model 4: prophet ----
+model_fit_prophet <- prophet_reg() %>%
+    set_engine(engine = "prophet") %>%
+    fit(value ~ date, data = training(splits))
+```
+
+#### Model 5: Linear Regression (Parsnip)
 
 We can model time series linear regression (TSLM) using the `linear_reg()` algorithm from `parsnip`. The following derivatives of date are used:
 
 - _Trend:_ Modeled using `as.numeric(date)`
 - _Seasonal:_ Modeled using `month(date)`
 
-Normally I'd use a preprocessing workflow for the month features using a function like `step_time_series_signature()` from `timetk` to help reduce the complexity of the parsnip formula interface. 
-
 ```{r}
-# Model 4: lm ----
+# Model 5: lm ----
 model_fit_lm <- linear_reg() %>%
     set_engine("lm") %>%
     fit(value ~ as.numeric(date) + factor(month(date, label = TRUE), ordered = FALSE),
         data = training(splits))
 ```
 
-#### MARS (Parsnip)
+#### Model 6: MARS (Parsnip)
 
 We can model a Multivariate Adaptive Regression Spline model using `mars()`. The process is the same as the Linear Regression model. 
 
 ```{r}
-# Model 4: earth ----
+# Model 6: earth ----
 model_fit_mars <- mars(mode = "regression") %>%
     set_engine("earth") %>%
     fit(value ~ as.numeric(date) + factor(month(date, label = TRUE), ordered = FALSE),
         data = training(splits))
 ```
 
-OK, with these 5 models, we'll show how easy it is to forecast. 
+OK, with these 6 models, we'll show how easy it is to forecast. 
 
 ### Step 3 - Add fitted models to a Model Table. 
 
 The next step is to add each of the models to a Modeltime Table using `modeltime_table()`. This step does some basic checking to make sure each of the models are fitted and that organizes into a scalable structure called a ___"Modeltime Table"___ that is used as part of our _forecasting workflow._
 
-We have 5 models to add. A couple of notes before moving on:
+We have 6 models to add. A couple of notes before moving on:
 
 - Note that some of the models have _tunable parameters_. 
 - It's expected that tuning and parameter selection is performed prior to incorporating into a Modeltime Table. 
@@ -184,9 +189,10 @@ We have 5 models to add. A couple of notes before moving on:
 
 ```{r, paged.print = FALSE}
 models_tbl <- modeltime_table(
-    model_fit_no_boost,
-    model_fit_boosted,
+    model_fit_arima_no_boost,
+    model_fit_arima_boosted,
     model_fit_ets,
+    model_fit_prophet,
     model_fit_lm,
     model_fit_mars
 )
@@ -218,12 +224,7 @@ There are 2 critical parts to an evaluation.
 
 #### 5A - Visualizing the Forecast Test
 
-Visualizing the Test Error is easy to do using the interactive plotly visualization. A few points:
-
-- __Model 3: ETS(M,A,A)__ is performing the best. The 80% confidence interval is the most narrow of the bunch, indicating the hold out set is modeled well. 
-- __Models 1&2: ARIMA & ARIMA Boost__ are performing well. Both models have "auto" components because we used Auto ARIMA. The XGBoost component has parameters that were specified. We can possibly get better accuracy by tuning, but because the ARIMA component is working well on this data, additional improvement may be low. 
-- __LM__ is over-shooting the local trend. This is because the trend component is a simple linear line, which doesn't account for the change points. 
-- __EARTH__ is overfitting the local trend. This is because we did not tune the number of change points, so the algorithm is auto-calculating the change points. 
+Visualizing the Test Error is easy to do using the __interactive plotly visualization (just toggle the visibility of the models using the Legend).__ 
 
 ```{r, out.width='100%'}
 calibration_tbl %>%
@@ -233,6 +234,14 @@ calibration_tbl %>%
     ) %>%
     plot_modeltime_forecast(.interactive = interactive)
 ```
+
+From visualizing the test set forecast:
+
+- __Models 1&2: ARIMA & ARIMA Boost__ are performing well. Both models have "auto" components because we used Auto ARIMA. The XGBoost component has parameters that were specified. We can possibly get better accuracy by tuning, but because the ARIMA component is working well on this data, additional improvement may be low. 
+- __Model 3: ETS(M,A,A)__ is performing the best. The 80% confidence interval is the most narrow of the bunch, indicating the hold out set is modeled well. 
+- __Model 4: PROPHET__ is comparable to the ARIMA models, but has a slightly wider test error confidence interval. 
+- __Model 5: LM__ is over-shooting the local trend. This is because the trend component is a simple linear line, which doesn't account for the change points. 
+- __Model 6: EARTH__ is overfitting the local trend. This is because we did not tune the number of change points, so the algorithm is auto-calculating the change points. 
 
 #### 5B Accuracy Metrics
 
@@ -249,9 +258,15 @@ These of course can be customized following the rules for creating new yardstick
 
 ```{r, out.width='100%'}
 calibration_tbl %>%
-    modeltime_accuracy()
+    modeltime_accuracy() %>%
+    mutate(across(mae:rsq, .fns = ~ round(., 2))) %>%
+    reactable(compact = TRUE, showSortable = TRUE, searchable = TRUE)
 ```
 
+From the accuracy metrics:
+
+- __Model 3: ETS is clearly the winner here with MAE of 77__
+- __Model 6: MARS__ is over-fitting the local trend. This comes out in the R-Squared of 0.55. 
 
 ### Step 6 - Refit to Full Dataset & Forecast Forward
 
@@ -272,7 +287,8 @@ __The models have all changed!__ (Yes - this is the point of refitting)
 
 - The __LM__ model looks much better now because the linear trend line has now been fit to new data that follows the longer term trend. 
 - The __EARTH__ model has a trend that is more representative of the near-term trend.
-- The __ETS__ model has changed from (M,A,A) to (A,A,A)
+- The __PROPHET__ model has a trend that is very similar to the EARTH model (this is because both modeling algorithms use changepoints to model trend, and prophet's auto algorithm seems to be doing a better job at adapting).
+- The __ETS__ model has changed from (M,A,A) to (A,A,A).
 - The __ARIMA__ model have been updated and better capture the upswing. 
 
 __This is the (potential) benefit of refitting.__ 
@@ -291,7 +307,7 @@ More often than not refitting is a good idea. Refitting:
 
 
 
-# Learning More
+## Learning More
 
 There's a lot more to learn... 
 
