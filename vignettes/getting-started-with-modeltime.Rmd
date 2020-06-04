@@ -16,27 +16,37 @@ knitr::opts_chunk$set(
 )
 ```
 
-Forecasting with `tidymodels` made easy! This short tutorial shows how you can use:
 
-- Modeltime models like `arima_reg()`, `arima_boost()`, and `exp_smoothing()`
-- Parsnip models like `linear_reg()`, `mars()`, `svm_rbf()`, and more
-
-To perform classical time series analysis and machine learning ___in one framework!___ 
 
 ```{r, echo=F,  out.width="100%", fig.align='center'}
 knitr::include_graphics("forecast_plot.jpg")
 ```
 
+Forecasting with `tidymodels` made easy! This short tutorial shows how you can use:
 
-Just follow the `modeltime` workflow, which are detailed in 6 convenient steps:
+- __Modeltime models__ like `arima_reg()`, `arima_boost()`, `exp_smoothing()`, and `prophet_reg()`
+- __Parsnip models__ like `linear_reg()`, `mars()`, `svm_rbf()`, and more
+
+To perform classical time series analysis and machine learning ___in one framework!___ 
+
+## The Modeltime Workflow
+
+Here's the general process and where the functions fit. 
+
+```{r, echo=F,  out.width="100%", fig.align='center'}
+knitr::include_graphics("modeltime_workflow.jpg")
+```
+
+Just follow the `modeltime` workflow, which is detailed in 6 convenient steps:
 
 1. Collect data and split into training and test sets
 2. Create & Fit Multiple Models
-3. Add fitted models to a Model Table
-4. Calibrate the model to a training set.
-5. Testing Set Evaluation
-6. Refit to Full Dataset & Forecast Forward
+3. Add fitted models to a __Model Table__
+4. __Calibrate__ the models to a testing set.
+5. Perform Testing Set _Forecast_ & _Accuracy_ Evaluation
+6. __Refit__ the models to Full Dataset & _Forecast_ Forward
 
+Let's go through a guided tour to kick the tires on `modeltime`. 
 
 ## Time Series Forecasting Example
 
@@ -215,7 +225,7 @@ calibration_tbl <- models_tbl %>%
 calibration_tbl
 ```
 
-### Step 5 - Testing Set Evaluation
+### Step 5 - Testing Set Forecast & Accuracy Evaluation
 
 There are 2 critical parts to an evaluation.
 
@@ -273,7 +283,7 @@ From the accuracy metrics:
 
 The final step is to refit the models to the full dataset using `modeltime_refit()` and forecast them forward. 
 
-```{r, out.width='100%'}
+```{r, out.width='100%', paged.print = F, message=F}
 refit_tbl <- calibration_tbl %>%
     modeltime_refit(data = m750)
 

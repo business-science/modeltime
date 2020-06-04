@@ -18,8 +18,11 @@ knitr::opts_chunk$set(
 
 # modeltime
 
-<!-- badges: start -->
-<!-- badges: end -->
+[![Travis build status](https://travis-ci.org/business-science/modeltime.svg?branch=master)](https://travis-ci.org/business-science/modeltime)
+[![codecov](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://codecov.io/gh/business-science/modeltime)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeltime)](https://cran.r-project.org/package=modeltime)
+![](http://cranlogs.r-pkg.org/badges/modeltime?color=brightgreen)
+![](http://cranlogs.r-pkg.org/badges/grand-total/modeltime?color=brightgreen)
 
 The time series forecasting package for the `tidymodels` ecosystem. 
 
@@ -36,13 +39,21 @@ knitr::include_graphics("vignettes/forecast_plot.jpg")
 
 No need to switch back and forth between various frameworks. `modeltime` unlocks machine learning & classical time series analysis.
 
-  - `forecast`: Use ARIMA, ETS, and more models coming. 
-  - `prophet`: Use Facebook's `prophet()` algorithm
-  - `tidymodels`: Use any `parsnip` model: `rand_forest()`, Boosted `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast 
+  - __forecast__: Use ARIMA, ETS, and more models coming. 
+  - __prophet__: Use Facebook's `prophet()` algorithm
+  - __tidymodels__: Use any `parsnip` model: `rand_forest()`, Boosted `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast 
 
 #### A streamlined workflow for forecasting
 
 Modeltime incorporates a [simple workflow (see Getting Started with Modeltime)](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) for using best practices to forecast.
+
+<hr>
+
+```{r, echo=F, out.width='100%', fig.align='center', fig.cap="A streamlined workflow for forecasting"}
+knitr::include_graphics("vignettes/modeltime_workflow.jpg")
+```
+
+<hr>
 
 #### Interactive plotting by default
 
@@ -54,7 +65,7 @@ All plots incorporate both `plotly` (interactive) and `ggplot2` (static) visuali
 
 - [__Getting Started with Modeltime__](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html): A walkthrough of the 6-Step Process for using `modeltime` to forecast
 
-- [__Modeltime Documentation__](https://business-science.github.io/modeltime/)
+- [__Modeltime Documentation__](https://business-science.github.io/modeltime/): Learn how to __use__ `modeltime`, __find__ _Modeltime Models_, and __extend__ `modeltime` so you can use new algorithms inside the _Modeltime Workflow_. 
 
 
 
