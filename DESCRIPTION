@@ -28,6 +28,8 @@ Imports:
     rlang (>= 0.1.2),
     glue,
     plotly,
+    reactable,
+    gt,
     ggplot2,
     tibble,
     tidyr,
@@ -54,7 +56,6 @@ Suggests:
     earth,
     randomForest,
     tidyquant,
-    reactable,
     knitr,
     rmarkdown
 Roxygen: list(markdown = TRUE)

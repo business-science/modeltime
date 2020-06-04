@@ -256,11 +256,12 @@ We can use `modeltime_accuracy()` to collect common accuracy metrics. The defaul
 
 These of course can be customized following the rules for creating new yardstick metrics, but the defaults are very useful. 
 
+To make table-creation a bit easier, I've included `table_modeltime_accuracy()` for outputing results in either interactive (`reactable`) or static (`gt`) tables. 
+
 ```{r, out.width='100%'}
 calibration_tbl %>%
     modeltime_accuracy() %>%
-    mutate(across(mae:rsq, .fns = ~ round(., 2))) %>%
-    reactable(compact = TRUE, showSortable = TRUE, searchable = TRUE)
+    table_modeltime_accuracy()
 ```
 
 From the accuracy metrics:

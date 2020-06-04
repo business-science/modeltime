@@ -40,8 +40,10 @@ reference:
   - modeltime_table
   - modeltime_calibrate
   - modeltime_forecast
-  - starts_with("modeltime_")
+  - modeltime_accuracy
+  - modeltime_refit
   - starts_with("plot_modeltime")
+  - starts_with("table_modeltime")
   - default_forecast_accuracy_metric_set
 - title: Algorithms
   desc: The `parsnip`-adjacent algorithms that implement time series models.
