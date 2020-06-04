@@ -132,9 +132,18 @@ NULL
 #' @rdname modeltime_forecast
 modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
 
-    if (is.null(new_data) && is.null(h)) {
-        rlang::abort("Either 'new_data' or 'h' must be supplied. Try adding some 'new_data' to forecast.")
+    # Checks
+
+    # Check calibration data
+    if (!all(c(".type", ".calibration_data") %in% names(object))) {
+        glubort("Expecting columns '.type' and '.calibration_data'. Try running 'modeltime_calibrate()' before using 'modeltime_forecast()'.")
     }
+
+    # Check New Data
+    if (is.null(new_data) && is.null(h)) {
+        message("'new_data' is missing. Using '.calibration_data' to forecast.")
+    }
+
     UseMethod("modeltime_forecast")
 }
 
@@ -152,15 +161,8 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, c
     n_models <- data$.model_id %>% unique() %>% length()
 
     # HANDLE CALIBRATION DATA
-    has_ci <- FALSE
-    if (all(c(".type", ".calibration_data") %in% names(data))) {
-        has_ci <- TRUE
-        data_calibration <- data %>%
-            dplyr::select(.model_id, .calibration_data)
-    }
-    if (!has_ci) {
-        glubort("Expecting columns '.type' and '.calibration_data'. Try running 'modeltime_calibrate()' before using 'modeltime_forecast()'.")
-    }
+    data_calibration <- data %>%
+        dplyr::select(.model_id, .calibration_data)
 
     # CREATE FORECAST
 
@@ -241,6 +243,12 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 
     # MODEL OBJECT
 
+    # If no 'new_data', forecast 'calibration_data'
+    if (is.null(new_data) && is.null(h)) {
+        new_data <- calibration_data
+    }
+
+    # Convert 'h' to 'new_data'
     if (!is.null(h)) {
         # Suppress date selection
         tryCatch({
@@ -361,6 +369,14 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     # Contains $predictors, $outcomes, $blueprint
     mld <- object %>% workflows::pull_workflow_mold()
 
+    # NEW DATA
+
+    # If no 'new_data' and no 'h', forecast 'calibration_data'
+    if (is.null(new_data) && is.null(h)) {
+        new_data <- calibration_data
+    }
+
+    # Convert 'h' to 'new_data'
     if (!is.null(h)) {
         # Suppress date selection
         tryCatch({

@@ -41,6 +41,12 @@ test_that("Auto ARIMA (Parsnip)", {
     expect_true(".calibration_data" %in% names(calibrated_tbl))
 
     # ** Forecast ----
+    expect_message({
+        # Using calibration data
+        calibrated_tbl %>%
+            modeltime_forecast()
+    })
+
     forecast_tbl <- calibrated_tbl %>%
         modeltime_forecast(testing(splits))
 
