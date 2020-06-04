@@ -458,6 +458,7 @@ Next, let's calibrate the fitted model.
 
 ```{r, paged.print = FALSE}
 calibration_tbl <- model_fit %>%
+  modeltime_table() %>%
   modeltime_calibrate(new_data = testing(splits))
 
 calibration_tbl

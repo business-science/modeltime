@@ -568,7 +568,7 @@
 <span class="no">model_fit</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  191ms </span>
+<span class="co">#&gt; Fit time:  188ms </span>
 <span class="co">#&gt; STLM Model: ETS(M,N,N)</span>
 <span class="co">#&gt; ets(y = x, model = etsmodel, allow.multiplicative.trend = allow.multiplicative.trend)</span>
 <span class="co">#&gt; </span>
@@ -582,6 +582,7 @@
 <a href="#make-a-calibrated-modeltime-table" class="anchor"></a>Make a Calibrated Modeltime Table</h3>
 <p>Next, let’s calibrate the fitted model.</p>
 <div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">calibration_tbl</span> <span class="kw">&lt;-</span> <span class="no">model_fit</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span>(<span class="kw">new_data</span> <span class="kw">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span>(<span class="no">splits</span>))
 
 <span class="no">calibration_tbl</span>
