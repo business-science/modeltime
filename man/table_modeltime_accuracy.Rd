@@ -124,13 +124,13 @@ models_tbl <- modeltime_table(
 models_tbl \%>\%
     modeltime_calibrate(new_data = testing(splits)) \%>\%
     modeltime_accuracy() \%>\%
-    table_modeltime_accuracy(.interactive = FALSE)
+    table_modeltime_accuracy()
 
 # With groups
 models_tbl \%>\%
     modeltime_calibrate(new_data = testing(splits)) \%>\%
     modeltime_accuracy() \%>\%
     group_by(.type) \%>\%
-    table_modeltime_accuracy(.interactive = FALSE)
+    table_modeltime_accuracy()
 
 }
