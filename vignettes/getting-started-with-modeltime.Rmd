@@ -253,7 +253,7 @@ From visualizing the test set forecast:
 - __Model 5: LM__ is over-shooting the local trend. This is because the trend component is a simple linear line, which doesn't account for the change points. 
 - __Model 6: EARTH__ is overfitting the local trend. This is because we did not tune the number of change points, so the algorithm is auto-calculating the change points. 
 
-#### 5B Accuracy Metrics
+#### 5B - Accuracy Metrics
 
 We can use `modeltime_accuracy()` to collect common accuracy metrics. The default reports the following metrics using `yardstick` functions:
 
@@ -271,7 +271,7 @@ To make table-creation a bit easier, I've included `table_modeltime_accuracy()` 
 ```{r, out.width='100%'}
 calibration_tbl %>%
     modeltime_accuracy() %>%
-    table_modeltime_accuracy()
+    table_modeltime_accuracy(resizable = TRUE, bordered = TRUE)
 ```
 
 From the accuracy metrics:

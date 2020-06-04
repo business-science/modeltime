@@ -1,5 +1,3 @@
-destination: docs
-
 template:
   params:
     bootswatch: flatly
@@ -34,40 +32,52 @@ navbar:
       href: https://github.com/business-science/modeltime
 
 reference:
-- title: Modeltime Workflow
-  desc: The main workflow functions for scalable time series modeling.
-  contents:
-  - modeltime_table
-  - modeltime_calibrate
-  - modeltime_forecast
-  - modeltime_accuracy
-  - modeltime_refit
-  - starts_with("plot_modeltime")
-  - starts_with("table_modeltime")
-  - default_forecast_accuracy_metric_set
-- title: Algorithms
-  desc: The `parsnip`-adjacent algorithms that implement time series models.
-  contents:
-  - arima_reg
-  - arima_boost
-  - exp_smoothing
-  - prophet_reg
-- title: Parameters
-  desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
-  contents:
-  - period
-  - starts_with("non_seasonal")
-  - error
-  - num_changepoints
-- title: Developer Tools
-  desc: Tools for extending `modeltime`.
-  contents:
-  - new_modeltime_bridge
-  - create_xreg_recipe
-  - juice_xreg_recipe
-  - parse_index_from_data
-  - get_model_description
-  - get_arima_description
+  - title: Modeltime Workflow
+    desc: The main workflow functions for scalable time series modeling.
+  - subtitle: Core Functions
+    contents:
+    - modeltime_table
+    - modeltime_calibrate
+    - modeltime_forecast
+    - modeltime_accuracy
+    - modeltime_refit
+  - subtitle: Plotting & Tables
+    contents:
+    - starts_with("plot_modeltime")
+    - starts_with("table_modeltime")
+  - subtitle: Workflow Helpers
+    contents:
+    - default_forecast_accuracy_metric_set
+  - title: Algorithms
+    desc: The `parsnip`-adjacent algorithms that implement time series models.
+    contents:
+    - arima_reg
+    - arima_boost
+    - exp_smoothing
+    - prophet_reg
+  - title: Parameters
+    desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
+  - subtitle: General Time Series
+    contents:
+    - period
+  - subtitle: ARIMA
+    contents:
+    - starts_with("non_seasonal")
+  - subtitle: Exponential Smoothing
+    contents:
+    - error
+  - subtitle: Prophet
+    contents:
+    - num_changepoints
+  - title: Developer Tools
+    desc: Tools for extending `modeltime`.
+    contents:
+    - new_modeltime_bridge
+    - create_xreg_recipe
+    - juice_xreg_recipe
+    - parse_index_from_data
+    - get_model_description
+    - get_arima_description
 
 repo:
   url:
