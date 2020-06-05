@@ -61,21 +61,25 @@ for visualization with \code{\link[=plot_modeltime_forecast]{plot_modeltime_fore
 
 \strong{Specifying New Data or Horizon (h)}
 
-When forecasting without external regressors, meaning that features are dependent on the
-date feature alone, you can specify future data using:
+When forecasting you can specify future data using:
 \enumerate{
-\item \code{new_data}: A future tibble with date column extending the trained dates and
-exogonous regressors (xregs) if used.
+\item \code{new_data}: This is a future tibble with date column and columns for xregs
+extending the trained dates and exogonous regressors (xregs) if used.
 \itemize{
-\item Evaluating Models: See \code{\link[rsample:testing]{rsample::testing()}} for getting test data sets
-\item Forecasting Future Data: See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
+\item \strong{Forecasting Evaluation Data}: By default, the \code{new_data} will use the \code{.calibration_data}
+if \code{new_data} is not provided.
+This is the equivalent of using \code{\link[rsample:testing]{rsample::testing()}} for getting test data sets.
+\item \strong{Forecasting Future Data}: See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
+\item \strong{Xregs}: Can be used with this method
 }
-\item \code{h}: This is dependent on the \code{.calibration_data}.
+\item \code{h}: This is a phrase like "1 year", which extends the \code{.calibration_data} into the future.
 \itemize{
-\item All forecasts are extended after the calibration data, which is
+\item \strong{Forecasting Future Data}: All forecasts using \code{h} are
+\emph{\strong{extended after the calibration data}}, which is
 desirable \emph{after refitting} with \code{\link[=modeltime_refit]{modeltime_refit()}}.
-\item This method cannot be used if non-time-based exogonous regresssors
-are used in the models.
+Internally, a call is made to \code{\link[=future_frame]{future_frame()}} to
+expedite creating new data using the date feature.
+\item \strong{Xregs}: Cannot be used because future data must include new xregs.
 }
 }
 
@@ -86,15 +90,22 @@ It helps in visualizing the performance of the forecast vs the actual data.
 
 \strong{Confidence Interval Estimation}
 
-Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
+Confidence intervals (\code{.conf_lo}, \code{.conf_hi}) are estimated based on the normal estimation of
+the testing errors (out of sample) from \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}.
+The out-of-sample error estimates are then carried through and
+applied to applied to any future forecasts.
 
 The confidence interval can be adjusted with the \code{conf_interval} parameter. An
-80\% confidence interval estimates a normal (gaussian distribution) that assumes that
+80\% confidence interval estimates a normal (Gaussian distribution) that assumes that
 80\% of the future data will fall within the upper and lower confidence limits.
 
 The confidence interval is \emph{mean-adjusted}, meaning that if the mean of the residuals
 is non-zero, the confidence interval is adjusted to widen the interval to capture
 the difference in means.
+
+Refitting has no affect on the confidence interval since this is calculated independently of
+the refitted model (on data with a smaller sample size). New observations typically improve
+future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.
 }
 \examples{
 library(tidyverse)

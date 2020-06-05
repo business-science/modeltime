@@ -36,22 +36,27 @@
 #' combining with existing data (controlled by `actual_data`) in preparation
 #' for visualization with [plot_modeltime_forecast()].
 #'
+#'
 #' __Specifying New Data or Horizon (h)__
 #'
-#' When forecasting without external regressors, meaning that features are dependent on the
-#' date feature alone, you can specify future data using:
+#' When forecasting you can specify future data using:
 #'
-#' 1. `new_data`: A future tibble with date column extending the trained dates and
-#'  exogonous regressors (xregs) if used.
-#'    - Evaluating Models: See [rsample::testing()] for getting test data sets
-#'    - Forecasting Future Data: See [future_frame()] for creating future tibbles.
+#' 1. `new_data`: This is a future tibble with date column and columns for xregs
+#'  extending the trained dates and exogonous regressors (xregs) if used.
+#'    - __Forecasting Evaluation Data__: By default, the `new_data` will use the `.calibration_data`
+#'      if `new_data` is not provided.
+#'      This is the equivalent of using [rsample::testing()] for getting test data sets.
+#'    - __Forecasting Future Data__: See [future_frame()] for creating future tibbles.
+#'    - __Xregs__: Can be used with this method
 #'
 #'
-#' 2. `h`: This is dependent on the `.calibration_data`.
-#'    - All forecasts are extended after the calibration data, which is
-#'     desirable _after refitting_ with [modeltime_refit()].
-#'    - This method cannot be used if non-time-based exogonous regresssors
-#'     are used in the models.
+#' 2. `h`: This is a phrase like "1 year", which extends the `.calibration_data` into the future.
+#'    - __Forecasting Future Data__: All forecasts using `h` are
+#'      ___extended after the calibration data___, which is
+#'      desirable _after refitting_ with [modeltime_refit()].
+#'      Internally, a call is made to [future_frame()] to
+#'      expedite creating new data using the date feature.
+#'    - __Xregs__: Cannot be used because future data must include new xregs.
 #'
 #' __Actual Data__
 #'
@@ -60,15 +65,22 @@
 #'
 #' __Confidence Interval Estimation__
 #'
-#' Confidence intervals are estimated based on the normal estimation of the testing errors (out of sample).
+#' Confidence intervals (`.conf_lo`, `.conf_hi`) are estimated based on the normal estimation of
+#' the testing errors (out of sample) from [modeltime_calibrate()].
+#' The out-of-sample error estimates are then carried through and
+#' applied to applied to any future forecasts.
 #'
 #' The confidence interval can be adjusted with the `conf_interval` parameter. An
-#' 80% confidence interval estimates a normal (gaussian distribution) that assumes that
+#' 80% confidence interval estimates a normal (Gaussian distribution) that assumes that
 #' 80% of the future data will fall within the upper and lower confidence limits.
 #'
 #' The confidence interval is _mean-adjusted_, meaning that if the mean of the residuals
 #' is non-zero, the confidence interval is adjusted to widen the interval to capture
 #' the difference in means.
+#'
+#' Refitting has no affect on the confidence interval since this is calculated independently of
+#' the refitted model (on data with a smaller sample size). New observations typically improve
+#' future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.
 #'
 #'
 #' @examples
@@ -537,6 +549,7 @@ safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
         )
 }
 
+
 # Normal Conf Interval
 normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {
 
@@ -565,33 +578,5 @@ normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {
     return(ret)
 }
 
-# High Density Estimate
-# hdi_mean_shifted <- function (x, conf_interval = 0.89) {
-#
-#     # Calculate HDI (High Density Interval)
-#     # - https://easystats.github.io/bayestestR/articles/credible_interval.html
-#     hdi_ci_estimates_df <- bayestestR::hdi(
-#         x = x,
-#         ci = conf_interval,
-#         verbose = FALSE
-#     )
-#
-#     ci_lo_vec = hdi_ci_estimates_df$CI_low
-#     ci_hi_vec = hdi_ci_estimates_df$CI_high
-#
-#     # Apply mean shift
-#     mu <- mean(x, na.rm = T)
-#
-#     ci_lo_vec_shifted <- min(ci_lo_vec, ci_lo_vec - mu)
-#     ci_hi_vec_shifted <- max(ci_hi_vec, ci_hi_vec - mu)
-#
-#     # Tibble
-#     ret <- tibble::tibble(
-#         .conf_lo = ci_lo_vec_shifted,
-#         .conf_hi = ci_hi_vec_shifted
-#     )
-#
-#     return(ret)
-#
-#
-# }
+
+
