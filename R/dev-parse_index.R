@@ -70,10 +70,18 @@ parse_period_from_index.default <- function(data, period) {
 #' @export
 parse_period_from_index.data.frame <- function(data, period) {
 
+    # If character, parse period / If numeric, pass over
     tryCatch({
-        if (tolower(period) == "auto" | is.character(period)) {
-            idx     <- data %>% timetk::tk_index()
-            period  <- timetk::tk_get_frequency(idx, period, message = TRUE)
+        if (is.character(period)) {
+            period <- tolower(period)
+            if (period != "none") {
+                idx     <- data %>% timetk::tk_index()
+                period  <- timetk::tk_get_frequency(idx, period, message = TRUE)
+            } else {
+                # period = "none"
+                message("Using period = 1 (no seasonal period).")
+                period <- 1
+            }
         }
     }, error = function(e) {
         rlang::abort("The `period` argument could not be parsed.")

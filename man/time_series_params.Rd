@@ -2,33 +2,40 @@
 % Please edit documentation in R/dials-ts_params.R
 \name{time_series_params}
 \alias{time_series_params}
-\alias{period}
+\alias{seasonal_period}
 \title{Tuning Parameters for Time Series (ts-class) Models}
 \usage{
-period(range = c(1L, 12L), trans = NULL)
+seasonal_period(values = c("none", "daily", "weekly", "yearly"))
 }
 \arguments{
-\item{range}{A two-element vector holding the \emph{defaults} for the smallest and
-largest possible values, respectively.}
-
-\item{trans}{A \code{trans} object from the \code{scales} package, such as
-\code{scales::log10_trans()} or \code{scales::reciprocal_trans()}. If not provided,
-the default is used which matches the units used in \code{range}. If no
-transformation, \code{NULL}.}
+\item{values}{A time-based phrase}
 }
 \description{
 Tuning Parameters for Time Series (ts-class) Models
 }
 \details{
-Time series models (e.g. \code{Arima()} and \code{ets()}) use \code{\link[stats:ts]{stats::ts()}}
+Time series models (e.g. \code{Arima()} and \code{ets()}) use \code{\link[stats:ts]{stats::ts()}} or \code{\link[forecast:msts]{forecast::msts()}}
 to apply seasonality. We can do the same process using the following
 general time series parameter:
 \itemize{
-\item \code{period}: The periodic nature of the seasonality. Set 1 for non-seasonal.
+\item \code{period}: The periodic nature of the seasonality.
 }
+
+It's usually best practice to \emph{not} tune this parameter, but rather set
+to obvious values based on the seasonality of the data:
+\itemize{
+\item \strong{Daily Seasonality:} Often used with hourly data (e.g. 24 hourly timestamps per day)
+\item \strong{Weekly Seasonality:} Often used with daily data (e.g. 7 daily timestamps per week)
+\item \strong{Yearly Seasonalty:} Often used with weekly, monthly, and quarterly data
+(e.g. 12 monthly observations per year).
+}
+
+However, in the event that users want to experiment with period tuning, you
+can do so with \code{seasonal_period()}.
 }
 \examples{
-period()
+seasonal_period()
+
 
 
 }
