@@ -4,7 +4,7 @@
 \alias{modeltime_calibrate}
 \title{Preparation for forecasting}
 \usage{
-modeltime_calibrate(object, new_data = NULL, quiet = TRUE, ...)
+modeltime_calibrate(object, new_data, quiet = TRUE, ...)
 }
 \arguments{
 \item{object}{A fitted model object that is either:

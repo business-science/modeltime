@@ -91,25 +91,31 @@ NULL
 
 #' @export
 #' @rdname modeltime_calibrate
-modeltime_calibrate <- function(object, new_data = NULL,
+modeltime_calibrate <- function(object, new_data,
                                 quiet = TRUE, ...) {
+
+    # Checks
+    if (rlang::is_missing(new_data)) {
+        glubort("Missing 'new_data'. Try adding a test data set using rsample::testing(splits). See help for more info: ?modeltime_calibrate ")
+    }
+
     UseMethod("modeltime_calibrate")
 }
 
 #' @export
-modeltime_calibrate.default <- function(object, new_data = NULL,
+modeltime_calibrate.default <- function(object, new_data,
                                         quiet = TRUE, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'workflow' - That has been fitted (trained).\n 2. 'model_fit' - A fitted parsnip model.\n 3. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()'.")
 }
 
 #' @export
-modeltime_calibrate.model_spec <- function(object, new_data = NULL,
+modeltime_calibrate.model_spec <- function(object, new_data,
                                            quiet = TRUE, ...) {
     rlang::abort("Model spec must be trained using the 'fit()' function.")
 }
 
 #' @export
-modeltime_calibrate.model_fit <- function(object, new_data = NULL,
+modeltime_calibrate.model_fit <- function(object, new_data,
                                           quiet = TRUE, ...) {
 
     ret <- modeltime_table(object) %>%
@@ -122,7 +128,7 @@ modeltime_calibrate.model_fit <- function(object, new_data = NULL,
 }
 
 #' @export
-modeltime_calibrate.workflow <- function(object, new_data = NULL,
+modeltime_calibrate.workflow <- function(object, new_data,
                                          quiet = TRUE, ...) {
 
     # Checks
@@ -140,7 +146,7 @@ modeltime_calibrate.workflow <- function(object, new_data = NULL,
 }
 
 #' @export
-modeltime_calibrate.mdl_time_tbl <- function(object, new_data = NULL,
+modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
                                              quiet = TRUE, ...) {
     data <- object
 
