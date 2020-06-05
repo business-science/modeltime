@@ -172,7 +172,7 @@ The main algorithms are:</p><ul>
 
     <pre class="usage"><span class='fu'>arima_boost</span>(
   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"regression"</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>non_seasonal_ar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>non_seasonal_differences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>non_seasonal_ma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -198,7 +198,7 @@ The main algorithms are:</p><ul>
 The only possible value for this model is "regression".</p></td>
     </tr>
     <tr>
-      <th>period</th>
+      <th>seasonal_period</th>
       <td><p>A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
@@ -287,7 +287,7 @@ following <em>engines</em>:</p><ul>
 
 <p><strong>Main Arguments</strong></p>
 <p>The main arguments (tuning parameters) for the <strong>ARIMA model</strong> are:</p><ul>
-<li><p><code>period</code>: The periodic nature of the seasonality. Uses "auto" by default.</p></li>
+<li><p><code>seasonal_period</code>: The periodic nature of the seasonality. Uses "auto" by default.</p></li>
 <li><p><code>non_seasonal_ar</code>: The order of the non-seasonal auto-regressive (AR) terms.</p></li>
 <li><p><code>non_seasonal_differences</code>: The order of integration for non-seasonal differencing.</p></li>
 <li><p><code>non_seasonal_ma</code>: The order of the non-seasonal moving average (MA) terms.</p></li>
@@ -328,7 +328,7 @@ in lieu of recreating the object from scratch.</p>
 names in each engine:</p>
 <p>Model 1: ARIMA:</p><table class='table'>
 <tr><td>modeltime</td><td>forecast::auto.arima</td><td>forecast::Arima</td></tr>
-<tr><td>period</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
+<tr><td>seasonal_period</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
 <tr><td>non_seasonal_ar, non_seasonal_differences, non_seasonal_ma</td><td>max.p, max.d, max.q</td><td>order = c(p,d,q)</td></tr>
 <tr><td>seasonal_ar, seasonal_differences, seasonal_ma</td><td>max.P, max.D, max.Q</td><td>seasonal = c(P,D,Q)</td></tr>
 </table>
@@ -390,12 +390,12 @@ The <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></co
 <li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
-<p><em>Period Specification</em></p>
-<p>The period can be non-seasonal (<code>period = 1</code>) or seasonal (e.g. <code>period = 12</code> or <code>period = "12 months"</code>).
+<p><em>Seasonal Period Specification</em></p>
+<p>The period can be non-seasonal (<code>seasonal_period = 1</code>) or seasonal (e.g. <code>seasonal_period = 12</code> or <code>seasonal_period = "12 months"</code>).
 There are 3 ways to specify:</p><ol>
-<li><p><code>period = "auto"</code>: A period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
-<li><p><code>period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
-<li><p><code>period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
+<li><p><code>seasonal_period = "auto"</code>: A period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
+<li><p><code>seasonal_period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
+<li><p><code>seasonal_period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
 </ol>
 
 <p><strong>Univariate (No xregs, Exogenous Regressors):</strong></p>
@@ -430,15 +430,13 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.arima_boost()</a></code>, <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ───────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ──────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4</span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tibble </span><span> 3.0.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dplyr  </span><span> 1.0.0</span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tidyr  </span><span> 1.1.0     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0</span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘ggplot2’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tibble’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tidyr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘purrr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ──────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘ggplot2’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tibble’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tidyr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘purrr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ─────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span> masks </span><span style='color: #0000BB;'>stats</span><span>::filter()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>    masks </span><span style='color: #0000BB;'>stats</span><span>::lag()</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘lubridate’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:modeltime’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    period</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    date, intersect, setdiff, union</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>parsnip</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘parsnip’ was built under R version 3.6.2</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rsample</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘rsample’ was built under R version 3.6.2</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>modeltime</span>)
@@ -453,7 +451,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='co'># MODEL SPEC ----</span>
 
 <span class='co'># Set engine and boosting parameters</span>
-<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_boost</span>(<span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.1</span>) <span class='kw'>%&gt;%</span>
+<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_boost</span>(<span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.1</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima_xgboost"</span>)
 
 <span class='co'># FIT ----</span>

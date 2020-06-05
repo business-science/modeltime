@@ -156,36 +156,41 @@
     <p>Tuning Parameters for Time Series (ts-class) Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>period</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1L</span>, <span class='fl'>12L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>seasonal_period</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"daily"</span>, <span class='st'>"weekly"</span>, <span class='st'>"yearly"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>range</th>
-      <td><p>A two-element vector holding the <em>defaults</em> for the smallest and
-largest possible values, respectively.</p></td>
-    </tr>
-    <tr>
-      <th>trans</th>
-      <td><p>A <code>trans</code> object from the <code>scales</code> package, such as
-<code><a href='https://scales.r-lib.org//reference/log_trans.html'>scales::log10_trans()</a></code> or <code><a href='https://scales.r-lib.org//reference/reciprocal_trans.html'>scales::reciprocal_trans()</a></code>. If not provided,
-the default is used which matches the units used in <code>range</code>. If no
-transformation, <code>NULL</code>.</p></td>
+      <th>values</th>
+      <td><p>A time-based phrase</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Time series models (e.g. <code>Arima()</code> and <code>ets()</code>) use <code><a href='https://rdrr.io/r/stats/ts.html'>stats::ts()</a></code>
+    <p>Time series models (e.g. <code>Arima()</code> and <code>ets()</code>) use <code><a href='https://rdrr.io/r/stats/ts.html'>stats::ts()</a></code> or <code><a href='https://rdrr.io/pkg/forecast/man/msts.html'>forecast::msts()</a></code>
 to apply seasonality. We can do the same process using the following
 general time series parameter:</p><ul>
-<li><p><code>period</code>: The periodic nature of the seasonality. Set 1 for non-seasonal.</p></li>
+<li><p><code>period</code>: The periodic nature of the seasonality.</p></li>
 </ul>
 
+<p>It's usually best practice to <em>not</em> tune this parameter, but rather set
+to obvious values based on the seasonality of the data:</p><ul>
+<li><p><strong>Daily Seasonality:</strong> Often used with hourly data (e.g. 24 hourly timestamps per day)</p></li>
+<li><p><strong>Weekly Seasonality:</strong> Often used with daily data (e.g. 7 daily timestamps per week)</p></li>
+<li><p><strong>Yearly Seasonalty:</strong> Often used with weekly, monthly, and quarterly data
+(e.g. 12 monthly observations per year).</p></li>
+</ul>
+
+<p>However, in the event that users want to experiment with period tuning, you
+can do so with <code>seasonal_period()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>period</span>()</div><div class='output co'>#&gt; &lt;Period[0]&gt;</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>seasonal_period</span>()</div><div class='output co'>#&gt; Period (Seasonal Frequency)  (qualitative)
+#&gt; 4 possible value include:
+#&gt; 'none', 'daily', 'weekly' and 'yearly' </div><div class='input'>
+
 
 </div></pre>
   </div>

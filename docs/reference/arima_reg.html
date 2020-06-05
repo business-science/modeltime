@@ -162,7 +162,7 @@ different packages. Currently the only package is <code>forecast</code>.</p>
 
     <pre class="usage"><span class='fu'>arima_reg</span>(
   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"regression"</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>non_seasonal_ar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>non_seasonal_differences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>non_seasonal_ma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -180,7 +180,7 @@ different packages. Currently the only package is <code>forecast</code>.</p>
 The only possible value for this model is "regression".</p></td>
     </tr>
     <tr>
-      <th>period</th>
+      <th>seasonal_period</th>
       <td><p>A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
@@ -225,7 +225,7 @@ following <em>engines</em>:</p><ul>
 
 <p><strong>Main Arguments</strong></p>
 <p>The main arguments (tuning parameters) for the model are:</p><ul>
-<li><p><code>period</code>: The periodic nature of the seasonality. Uses "auto" by default.</p></li>
+<li><p><code>seasonal_period</code>: The periodic nature of the seasonality. Uses "auto" by default.</p></li>
 <li><p><code>non_seasonal_ar</code>: The order of the non-seasonal auto-regressive (AR) terms.</p></li>
 <li><p><code>non_seasonal_differences</code>: The order of integration for non-seasonal differencing.</p></li>
 <li><p><code>non_seasonal_ma</code>: The order of the non-seasonal moving average (MA) terms.</p></li>
@@ -248,7 +248,7 @@ in lieu of recreating the object from scratch.</p>
 <p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
 names in each engine:</p><table class='table'>
 <tr><td>modeltime</td><td>forecast::auto.arima</td><td>forecast::Arima</td></tr>
-<tr><td>period</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
+<tr><td>seasonal_period</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
 <tr><td>non_seasonal_ar, non_seasonal_differences, non_seasonal_ma</td><td>max.p, max.d, max.q</td><td>order = c(p,d,q)</td></tr>
 <tr><td>seasonal_ar, seasonal_differences, seasonal_ma</td><td>max.P, max.D, max.Q</td><td>seasonal = c(P,D,Q)</td></tr>
 </table>
@@ -310,12 +310,13 @@ The <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></co
 <li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
-<p><em>Period Specification</em></p>
-<p>The period can be non-seasonal (<code>period = 1</code>) or seasonal (e.g. <code>period = 12</code> or <code>period = "12 months"</code>).
+<p><em>Seasonal Period Specification</em></p>
+<p>The period can be non-seasonal (<code>seasonal_period = 1 or "none"</code>) or
+yearly seasonal (e.g. For monthly time stamps, <code>seasonal_period = 12</code>, <code>seasonal_period = "12 months"</code>, or <code>seasonal_period = "yearly"</code>).
 There are 3 ways to specify:</p><ol>
-<li><p><code>period = "auto"</code>: A period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
-<li><p><code>period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
-<li><p><code>period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
+<li><p><code>seasonal_period = "auto"</code>: A seasonal period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
+<li><p><code>seasonal_period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
+<li><p><code>seasonal_period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
 </ol>
 
 <p><strong>Univariate (No xregs, Exogenous Regressors):</strong></p>
@@ -385,7 +386,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  440ms 
+#&gt; Fit time:  457ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(0,1,1)(1,1,1)[12] 
 #&gt; 
@@ -401,7 +402,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 
 <span class='co'># Model Spec</span>
 <span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_reg</span>(
-        <span class='kw'>period</span>                   <span class='kw'>=</span> <span class='fl'>12</span>,
+        <span class='kw'>seasonal_period</span>          <span class='kw'>=</span> <span class='fl'>12</span>,
         <span class='kw'>non_seasonal_ar</span>          <span class='kw'>=</span> <span class='fl'>3</span>,
         <span class='kw'>non_seasonal_differences</span> <span class='kw'>=</span> <span class='fl'>1</span>,
         <span class='kw'>non_seasonal_ma</span>          <span class='kw'>=</span> <span class='fl'>3</span>,
@@ -416,7 +417,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
 <span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  608ms 
+#&gt; Fit time:  590ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(3,1,3)(1,0,1)[12] 
 #&gt; 
