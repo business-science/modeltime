@@ -6,7 +6,7 @@
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
-#' @param period A seasonal frequency. Uses "auto" by default.
+#' @param seasonal_period A seasonal frequency. Uses "auto" by default.
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
@@ -35,7 +35,7 @@
 #' # parsnip::convert_args("exp_smoothing")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::ets",
-#'     "period()", "ts(frequency)",
+#'     "seasonal_period()", "ts(frequency)",
 #'     "error(), trend(), season()", "model",
 #'     "damping()", "damped"
 #' ) %>% knitr::kable()
@@ -76,14 +76,14 @@
 #'
 #' - `fit(y ~ date)`
 #'
-#' _Period Specification_
+#' _Seasonal Period Specification_
 #'
-#' The period can be non-seasonal (`period = 1`) or seasonal (e.g. `period = 12` or `period = "12 months"`).
+#' The period can be non-seasonal (`seasonal_period = 1` or `"none"`) or seasonal (e.g. `seasonal_period = 12` or `seasonal_period = "12 months"`).
 #' There are 3 ways to specify:
 #'
-#' 1. `period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
-#' 2. `period = 12`: A numeric frequency. For example, 12 is common for monthly data
-#' 3. `period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+#' 1. `seasonal_period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+#' 2. `seasonal_period = 12`: A numeric frequency. For example, 12 is common for monthly data
+#' 3. `seasonal_period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 #'
 #'
 #' __Univariate:__
@@ -131,10 +131,10 @@
 #'
 #' # Model Spec
 #' model_spec <- exp_smoothing(
-#'         period  = 12,
-#'         error   = "multiplicative",
-#'         trend   = "additive",
-#'         season  = "multiplicative"
+#'         seasonal_period  = 12,
+#'         error            = "multiplicative",
+#'         trend            = "additive",
+#'         season           = "multiplicative"
 #'     ) %>%
 #'     set_engine("ets")
 #'
@@ -144,15 +144,15 @@
 #' model_fit
 #'
 #' @export
-exp_smoothing <- function(mode = "regression", period = NULL,
+exp_smoothing <- function(mode = "regression", seasonal_period = NULL,
                           error = NULL, trend = NULL, season = NULL, damping = NULL) {
 
     args <- list(
-        period   = rlang::enquo(period),
-        error    = rlang::enquo(error),
-        trend    = rlang::enquo(trend),
-        season   = rlang::enquo(season),
-        damping  = rlang::enquo(damping)
+        seasonal_period   = rlang::enquo(seasonal_period),
+        error             = rlang::enquo(error),
+        trend             = rlang::enquo(trend),
+        season            = rlang::enquo(season),
+        damping           = rlang::enquo(damping)
     )
 
     parsnip::new_model_spec(
@@ -182,7 +182,7 @@ print.exp_smoothing <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.exp_smoothing <- function(object, parameters = NULL,
-                                 period = NULL,
+                                 seasonal_period = NULL,
                                  error = NULL, trend = NULL, season = NULL, damping = NULL,
                                  fresh = FALSE, ...) {
 
@@ -193,11 +193,11 @@ update.exp_smoothing <- function(object, parameters = NULL,
     }
 
     args <- list(
-        period   = rlang::enquo(period),
-        error    = rlang::enquo(error),
-        trend    = rlang::enquo(trend),
-        season   = rlang::enquo(season),
-        damping  = rlang::enquo(damping)
+        seasonal_period   = rlang::enquo(seasonal_period),
+        error             = rlang::enquo(error),
+        trend             = rlang::enquo(trend),
+        season            = rlang::enquo(season),
+        damping           = rlang::enquo(damping)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)
@@ -243,6 +243,8 @@ translate.exp_smoothing <- function(x, engine = x$engine, ...) {
 #' @inheritParams exp_smoothing
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
+#' @param period A seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
 #' @export

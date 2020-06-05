@@ -21,6 +21,14 @@ make_exp_smoothing <- function() {
     parsnip::set_model_arg(
         model        = "exp_smoothing",
         eng          = "ets",
+        parsnip      = "seasonal_period",
+        original     = "period",
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "ets",
         parsnip      = "error",
         original     = "error",
         func         = list(pkg = "modeltime", fun = "error"),

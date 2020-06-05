@@ -15,7 +15,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 # ** NO XREGS ----
 
 # Model Spec
-model_spec <- arima_reg(period = 12) %>%
+model_spec <- arima_reg(seasonal_period = 12) %>%
     set_engine("auto_arima")
 
 # Fit Spec
@@ -70,7 +70,7 @@ test_that("arima_reg: auto.arima (No xregs), Test Predictions", {
 # ** XREGS ----
 
 # Model Spec
-model_spec <- arima_reg(period = 12) %>%
+model_spec <- arima_reg(seasonal_period = 12) %>%
     set_engine("auto_arima")
 
 # Fit Spec
@@ -126,7 +126,7 @@ test_that("arima_reg: auto.arima (XREGS), Test Predictions", {
 # ---- WORKFLOWS ----
 
 # Model Spec
-model_spec <- arima_reg(period = 12) %>%
+model_spec <- arima_reg(seasonal_period = 12) %>%
     set_engine("auto_arima")
 
 # Recipe spec

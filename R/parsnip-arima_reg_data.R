@@ -21,9 +21,9 @@ make_arima_reg <- function() {
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "arima",
-        parsnip      = "period",
+        parsnip      = "seasonal_period",
         original     = "period",
-        func         = list(pkg = "modeltime", fun = "period"),
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
     )
 
@@ -122,9 +122,9 @@ make_arima_reg <- function() {
     parsnip::set_model_arg(
         model        = "arima_reg",
         eng          = "auto_arima",
-        parsnip      = "period",
+        parsnip      = "seasonal_period",
         original     = "period",
-        func         = list(pkg = "modeltime", fun = "period"),
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
     )
 

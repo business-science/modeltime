@@ -6,7 +6,7 @@
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
-#' @param period A seasonal frequency. Uses "auto" by default.
+#' @param seasonal_period A seasonal frequency. Uses "auto" by default.
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
@@ -34,7 +34,7 @@
 #'
 #' The main arguments (tuning parameters) for the model are:
 #'
-#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
+#'  - `seasonal_period`: The periodic nature of the seasonality. Uses "auto" by default.
 #'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
 #'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
 #'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
@@ -61,7 +61,7 @@
 #' # parsnip::convert_args("arima_reg")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
-#'     "period", "ts(frequency)", "ts(frequency)",
+#'     "seasonal_period", "ts(frequency)", "ts(frequency)",
 #'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
 #'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
 #' ) %>% knitr::kable()
@@ -119,14 +119,15 @@
 #'
 #' - `fit(y ~ date)`
 #'
-#' _Period Specification_
+#' _Seasonal Period Specification_
 #'
-#' The period can be non-seasonal (`period = 1`) or seasonal (e.g. `period = 12` or `period = "12 months"`).
+#' The period can be non-seasonal (`seasonal_period = 1 or "none"`) or
+#' yearly seasonal (e.g. For monthly time stamps, `seasonal_period = 12`, `seasonal_period = "12 months"`, or `seasonal_period = "yearly"`).
 #' There are 3 ways to specify:
 #'
-#' 1. `period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
-#' 2. `period = 12`: A numeric frequency. For example, 12 is common for monthly data
-#' 3. `period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+#' 1. `seasonal_period = "auto"`: A seasonal period is selected based on the periodicity of the data (e.g. 12 if monthly)
+#' 2. `seasonal_period = 12`: A numeric frequency. For example, 12 is common for monthly data
+#' 3. `seasonal_period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 #'
 #'
 #' __Univariate (No xregs, Exogenous Regressors):__
@@ -193,7 +194,7 @@
 #'
 #' # Model Spec
 #' model_spec <- arima_reg(
-#'         period                   = 12,
+#'         seasonal_period          = 12,
 #'         non_seasonal_ar          = 3,
 #'         non_seasonal_differences = 1,
 #'         non_seasonal_ma          = 3,
@@ -209,12 +210,12 @@
 #' model_fit
 #'
 #' @export
-arima_reg <- function(mode = "regression", period = NULL,
+arima_reg <- function(mode = "regression", seasonal_period = NULL,
                       non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
                       seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL) {
 
     args <- list(
-        period                    = rlang::enquo(period),
+        seasonal_period           = rlang::enquo(seasonal_period),
         non_seasonal_ar           = rlang::enquo(non_seasonal_ar),
         non_seasonal_differences  = rlang::enquo(non_seasonal_differences),
         non_seasonal_ma           = rlang::enquo(non_seasonal_ma),
@@ -250,7 +251,7 @@ print.arima_reg <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.arima_reg <- function(object, parameters = NULL,
-                             period = NULL, non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
+                             seasonal_period = NULL, non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
                              seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                              fresh = FALSE, ...) {
 
@@ -261,7 +262,7 @@ update.arima_reg <- function(object, parameters = NULL,
     }
 
     args <- list(
-        period                     = rlang::enquo(period),
+        seasonal_period            = rlang::enquo(seasonal_period),
         non_seasonal_ar            = rlang::enquo(non_seasonal_ar),
         non_seasonal_differences   = rlang::enquo(non_seasonal_differences),
         non_seasonal_ma            = rlang::enquo(non_seasonal_ma),
@@ -310,9 +311,10 @@ translate.arima_reg <- function(x, engine = x$engine, ...) {
 
 #' Low-Level ARIMA function for translating modeltime to forecast
 #'
-#' @inheritParams arima_reg
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
+#' @param period A seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param p The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
 #' @param d The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.
 #' @param q The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.
@@ -390,9 +392,10 @@ print.Arima_fit_impl <- function(x, ...) {
 
 #' Low-Level ARIMA function for translating modeltime to forecast
 #'
-#' @inheritParams arima_reg
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
+#' @param period A seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param max.p The maximum order of the non-seasonal auto-regressive (AR) terms.
 #' @param max.d The maximum order of integration for non-seasonal differencing.
 #' @param max.q The maximum order of the non-seasonal moving average (MA) terms.

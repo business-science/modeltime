@@ -22,7 +22,7 @@ recipe_spec <- recipe(value ~ date, data = m750) %>%
 model_spec <- arima_boost(
 
     # ARIMA(1,0,0)(0,1,0)[12]
-    period                   = "none",
+    seasonal_period          = "none",
     non_seasonal_ar          = 1,
     non_seasonal_differences = 0,
     non_seasonal_ma          = 0,

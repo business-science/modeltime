@@ -22,10 +22,8 @@ auto_arima_fit_impl(
 
 \item{y}{A numeric vector of values to fit}
 
-\item{period}{A seasonal frequency. Uses "auto" by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.}
+\item{period}{A seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}
 
 \item{max.p}{The maximum order of the non-seasonal auto-regressive (AR) terms.}
 

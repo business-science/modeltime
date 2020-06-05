@@ -6,7 +6,7 @@
 \usage{
 exp_smoothing(
   mode = "regression",
-  period = NULL,
+  seasonal_period = NULL,
   error = NULL,
   trend = NULL,
   season = NULL,
@@ -17,7 +17,7 @@ exp_smoothing(
 \item{mode}{A single character string for the type of model.
 The only possible value for this model is "regression".}
 
-\item{period}{A seasonal frequency. Uses "auto" by default.
+\item{seasonal_period}{A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
@@ -53,7 +53,7 @@ following \emph{engines}:
 The standardized parameter names in \code{modeltime} can be mapped to their original
 names in each engine:\tabular{ll}{
    modeltime \tab forecast::ets \cr
-   period() \tab ts(frequency) \cr
+   seasonal_period() \tab ts(frequency) \cr
    error(), trend(), season() \tab model \cr
    damping() \tab damped \cr
 }
@@ -105,14 +105,14 @@ The \code{fit()} interface accepts date and date-time features and handles them 
 \item \code{fit(y ~ date)}
 }
 
-\emph{Period Specification}
+\emph{Seasonal Period Specification}
 
-The period can be non-seasonal (\code{period = 1}) or seasonal (e.g. \code{period = 12} or \code{period = "12 months"}).
+The period can be non-seasonal (\code{seasonal_period = 1} or \code{"none"}) or seasonal (e.g. \code{seasonal_period = 12} or \code{seasonal_period = "12 months"}).
 There are 3 ways to specify:
 \enumerate{
-\item \code{period = "auto"}: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
-\item \code{period = 12}: A numeric frequency. For example, 12 is common for monthly data
-\item \code{period = "1 year"}: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+\item \code{seasonal_period = "auto"}: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+\item \code{seasonal_period = 12}: A numeric frequency. For example, 12 is common for monthly data
+\item \code{seasonal_period = "1 year"}: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 }
 
 \strong{Univariate:}
@@ -159,10 +159,10 @@ model_fit
 
 # Model Spec
 model_spec <- exp_smoothing(
-        period  = 12,
-        error   = "multiplicative",
-        trend   = "additive",
-        season  = "multiplicative"
+        seasonal_period  = 12,
+        error            = "multiplicative",
+        trend            = "additive",
+        season           = "multiplicative"
     ) \%>\%
     set_engine("ets")
 

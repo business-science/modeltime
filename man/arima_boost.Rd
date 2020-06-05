@@ -6,7 +6,7 @@
 \usage{
 arima_boost(
   mode = "regression",
-  period = NULL,
+  seasonal_period = NULL,
   non_seasonal_ar = NULL,
   non_seasonal_differences = NULL,
   non_seasonal_ma = NULL,
@@ -27,7 +27,7 @@ arima_boost(
 \item{mode}{A single character string for the type of model.
 The only possible value for this model is "regression".}
 
-\item{period}{A seasonal frequency. Uses "auto" by default.
+\item{seasonal_period}{A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
@@ -98,7 +98,7 @@ following \emph{engines}:
 
 The main arguments (tuning parameters) for the \strong{ARIMA model} are:
 \itemize{
-\item \code{period}: The periodic nature of the seasonality. Uses "auto" by default.
+\item \code{seasonal_period}: The periodic nature of the seasonality. Uses "auto" by default.
 \item \code{non_seasonal_ar}: The order of the non-seasonal auto-regressive (AR) terms.
 \item \code{non_seasonal_differences}: The order of integration for non-seasonal differencing.
 \item \code{non_seasonal_ma}: The order of the non-seasonal moving average (MA) terms.
@@ -142,7 +142,7 @@ names in each engine:
 
 Model 1: ARIMA:\tabular{lll}{
    modeltime \tab forecast::auto.arima \tab forecast::Arima \cr
-   period \tab ts(frequency) \tab ts(frequency) \cr
+   seasonal_period \tab ts(frequency) \tab ts(frequency) \cr
    non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p, max.d, max.q \tab order = c(p,d,q) \cr
    seasonal_ar, seasonal_differences, seasonal_ma \tab max.P, max.D, max.Q \tab seasonal = c(P,D,Q) \cr
 }
@@ -207,14 +207,14 @@ The \code{fit()} interface accepts date and date-time features and handles them 
 \item \code{fit(y ~ date)}
 }
 
-\emph{Period Specification}
+\emph{Seasonal Period Specification}
 
-The period can be non-seasonal (\code{period = 1}) or seasonal (e.g. \code{period = 12} or \code{period = "12 months"}).
+The period can be non-seasonal (\code{seasonal_period = 1}) or seasonal (e.g. \code{seasonal_period = 12} or \code{seasonal_period = "12 months"}).
 There are 3 ways to specify:
 \enumerate{
-\item \code{period = "auto"}: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
-\item \code{period = 12}: A numeric frequency. For example, 12 is common for monthly data
-\item \code{period = "1 year"}: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+\item \code{seasonal_period = "auto"}: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+\item \code{seasonal_period = 12}: A numeric frequency. For example, 12 is common for monthly data
+\item \code{seasonal_period = "1 year"}: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 }
 
 \strong{Univariate (No xregs, Exogenous Regressors):}
@@ -270,7 +270,7 @@ splits <- initial_time_split(m750, prop = 0.9)
 # MODEL SPEC ----
 
 # Set engine and boosting parameters
-model_spec <- arima_boost(period = "auto", learn_rate = 0.1) \%>\%
+model_spec <- arima_boost(seasonal_period = "auto", learn_rate = 0.1) \%>\%
     set_engine(engine = "auto_arima_xgboost")
 
 # FIT ----

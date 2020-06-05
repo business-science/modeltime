@@ -75,7 +75,7 @@ test_that("exp_smoothing: ets, Test Predictions", {
 
 # Model Spec
 model_spec <- exp_smoothing(
-    period = 12,
+    seasonal_period = 12,
     error = "multiplicative", trend = "additive", season = "multiplicative") %>%
     set_engine("ets")
 

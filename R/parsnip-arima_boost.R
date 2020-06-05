@@ -11,7 +11,7 @@
 #' @inheritParams parsnip::boost_tree
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
-#' @param period A seasonal frequency. Uses "auto" by default.
+#' @param seasonal_period A seasonal frequency. Uses "auto" by default.
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
@@ -42,7 +42,7 @@
 #'
 #' The main arguments (tuning parameters) for the __ARIMA model__ are:
 #'
-#'  - `period`: The periodic nature of the seasonality. Uses "auto" by default.
+#'  - `seasonal_period`: The periodic nature of the seasonality. Uses "auto" by default.
 #'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
 #'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
 #'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
@@ -89,7 +89,7 @@
 #' # parsnip::convert_args("arima_reg")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
-#'     "period", "ts(frequency)", "ts(frequency)",
+#'     "seasonal_period", "ts(frequency)", "ts(frequency)",
 #'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
 #'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
 #' ) %>% knitr::kable()
@@ -147,14 +147,14 @@
 #'
 #' - `fit(y ~ date)`
 #'
-#' _Period Specification_
+#' _Seasonal Period Specification_
 #'
-#' The period can be non-seasonal (`period = 1`) or seasonal (e.g. `period = 12` or `period = "12 months"`).
+#' The period can be non-seasonal (`seasonal_period = 1`) or seasonal (e.g. `seasonal_period = 12` or `seasonal_period = "12 months"`).
 #' There are 3 ways to specify:
 #'
-#' 1. `period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
-#' 2. `period = 12`: A numeric frequency. For example, 12 is common for monthly data
-#' 3. `period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
+#' 1. `seasonal_period = "auto"`: A period is selected based on the periodicity of the data (e.g. 12 if monthly)
+#' 2. `seasonal_period = 12`: A numeric frequency. For example, 12 is common for monthly data
+#' 3. `seasonal_period = "1 year"`: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.
 #'
 #'
 #' __Univariate (No xregs, Exogenous Regressors):__
@@ -209,7 +209,7 @@
 #' # MODEL SPEC ----
 #'
 #' # Set engine and boosting parameters
-#' model_spec <- arima_boost(period = "auto", learn_rate = 0.1) %>%
+#' model_spec <- arima_boost(seasonal_period = "auto", learn_rate = 0.1) %>%
 #'     set_engine(engine = "auto_arima_xgboost")
 #'
 #' # FIT ----
@@ -223,7 +223,7 @@
 #'
 #'
 #' @export
-arima_boost <- function(mode = "regression", period = NULL,
+arima_boost <- function(mode = "regression", seasonal_period = NULL,
                         non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
                         seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                         mtry = NULL, trees = NULL, min_n = NULL,
@@ -235,7 +235,7 @@ arima_boost <- function(mode = "regression", period = NULL,
     args <- list(
 
         # ARIMA
-        period                    = rlang::enquo(period),
+        seasonal_period           = rlang::enquo(seasonal_period),
         non_seasonal_ar           = rlang::enquo(non_seasonal_ar),
         non_seasonal_differences  = rlang::enquo(non_seasonal_differences),
         non_seasonal_ma           = rlang::enquo(non_seasonal_ma),
@@ -282,7 +282,7 @@ print.arima_boost <- function(x, ...) {
 #' @importFrom stats update
 update.arima_boost <- function(object,
                                parameters = NULL,
-                               period = NULL,
+                               seasonal_period = NULL,
                                non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
                                seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                                mtry = NULL, trees = NULL, min_n = NULL,
@@ -301,7 +301,7 @@ update.arima_boost <- function(object,
     args <- list(
 
         # ARIMA
-        period                    = rlang::enquo(period),
+        seasonal_period           = rlang::enquo(seasonal_period),
         non_seasonal_ar           = rlang::enquo(non_seasonal_ar),
         non_seasonal_differences  = rlang::enquo(non_seasonal_differences),
         non_seasonal_ma           = rlang::enquo(non_seasonal_ma),

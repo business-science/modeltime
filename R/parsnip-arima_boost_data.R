@@ -22,9 +22,9 @@ make_arima_boost <- function() {
     parsnip::set_model_arg(
         model        = "arima_boost",
         eng          = "auto_arima_xgboost",
-        parsnip      = "period",
+        parsnip      = "seasonal_period",
         original     = "period",
-        func         = list(pkg = "modeltime", fun = "period"),
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
     )
 
@@ -97,9 +97,9 @@ make_arima_boost <- function() {
     parsnip::set_model_arg(
         model        = "arima_boost",
         eng          = "auto_arima_xgboost",
-        parsnip      = "period",
+        parsnip      = "seasonal_period",
         original     = "period",
-        func         = list(pkg = "modeltime", fun = "period"),
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
     )
     parsnip::set_model_arg(
@@ -196,9 +196,9 @@ make_arima_boost <- function() {
     parsnip::set_model_arg(
         model        = "arima_boost",
         eng          = "arima_xgboost",
-        parsnip      = "period",
+        parsnip      = "seasonal_period",
         original     = "period",
-        func         = list(pkg = "modeltime", fun = "period"),
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
     )
 
@@ -271,9 +271,9 @@ make_arima_boost <- function() {
     parsnip::set_model_arg(
         model        = "arima_boost",
         eng          = "arima_xgboost",
-        parsnip      = "period",
+        parsnip      = "seasonal_period",
         original     = "period",
-        func         = list(pkg = "modeltime", fun = "period"),
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
     )
     parsnip::set_model_arg(

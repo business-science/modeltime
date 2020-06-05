@@ -8,7 +8,7 @@ m750   <- m4_monthly %>% filter(id == "M750")
 splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
-model_spec <- arima_reg(period = 12) %>%
+model_spec <- arima_reg(seasonal_period = 12) %>%
     set_engine("auto_arima")
 
 # PARSNIP INTERFACE ----
@@ -81,7 +81,7 @@ test_that("modeltime plot, Test Interactive plotly", {
 # WORKFLOW INTERFACE ----
 
 # Model Spec
-model_spec <- arima_reg(period = 12) %>%
+model_spec <- arima_reg(seasonal_period = 12) %>%
     set_engine("auto_arima")
 
 # Recipe spec

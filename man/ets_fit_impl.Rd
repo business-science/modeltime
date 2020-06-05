@@ -20,10 +20,8 @@ ets_fit_impl(
 
 \item{y}{A numeric vector of values to fit}
 
-\item{period}{A seasonal frequency. Uses "auto" by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.}
+\item{period}{A seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}
 
 \item{error}{The form of the error term: "auto", "additive", or "multiplicative".
 If the error is multiplicative, the data must be non-negative.}
