@@ -10,7 +10,6 @@ stlm_ets_fit_impl(
   period_1 = "auto",
   period_2 = NULL,
   period_3 = NULL,
-  s.window = 13,
   ...
 )
 }
@@ -26,9 +25,6 @@ of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time v
 of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}
 
 \item{period_3}{(optional) First seasonal frequency. Uses "auto" by default. A character phrase
-of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}
-
-\item{s.window}{(required) First seasonal frequency. Uses "auto" by default. A character phrase
 of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}
 
 \item{...}{Additional arguments passed to \code{forecast::stlm()}}

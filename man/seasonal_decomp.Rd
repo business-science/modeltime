@@ -8,8 +8,7 @@ seasonal_decomp(
   mode = "regression",
   seasonal_period_1 = NULL,
   seasonal_period_2 = NULL,
-  seasonal_period_3 = NULL,
-  seasonal_window = NULL
+  seasonal_period_3 = NULL
 )
 }
 \arguments{
@@ -33,9 +32,6 @@ Is \code{NULL} by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
-
-\item{seasonal_window}{A span in lags used for seasonal extraction.
-Is \code{13} by default.}
 }
 \description{
 \code{seasonal_decomp()} is a way to generate a \emph{specification} of an
@@ -51,8 +47,8 @@ mode will always be "regression".
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item "stlm_ets" (default) - Connects to \link[forecast:stlm(method = "ets")]{forecast::stlm(method = "ets")}
-\item "stlm_arima" (default) - Connects to \link[forecast:stlm(method = "arima")]{forecast::stlm(method = "arima")}
+\item "stlm_ets" (default) - Connects to \code{\link[forecast:stlm]{forecast::stlm()}}, \code{method = "ets"}
+\item "stlm_arima" (default) - Connects to \code{\link[forecast:stlm]{forecast::stlm()}}, \code{method = "arima"}
 }
 }
 \section{Engine Details}{
@@ -62,7 +58,6 @@ The standardized parameter names in \code{modeltime} can be mapped to their orig
 names in each engine:\tabular{ll}{
    modeltime \tab forecast::stlm \cr
    seasonal_period_1, seasonal_period_2, seasonal_period_3 \tab msts(seasonal.periods) \cr
-   seasonal_window \tab stlm(s.window) \cr
 }
 
 

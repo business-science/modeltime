@@ -45,15 +45,6 @@ make_seasonal_decomp <- function() {
         has_submodel = FALSE
     )
 
-    parsnip::set_model_arg(
-        model        = "seasonal_decomp",
-        eng          = "stlm_ets",
-        parsnip      = "seasonal_window",
-        original     = "s.window",
-        func         = list(pkg = "modeltime", fun = "seasonal_window"),
-        has_submodel = FALSE
-    )
-
     # * Fit ----
     parsnip::set_fit(
         model         = "seasonal_decomp",

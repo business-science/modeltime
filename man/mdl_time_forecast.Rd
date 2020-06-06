@@ -18,14 +18,16 @@ mdl_time_forecast(
 
 \item{calibration_data}{Data that has been calibrated from a testing set}
 
-\item{new_data}{A \code{tibble} containing future information to forecast.}
+\item{new_data}{A \code{tibble} containing future information to forecast.
+If \code{NULL}, forecasts the calibration data.}
 
 \item{h}{The forecast horizon (can be used instead of \code{new_data} for
-time series with no exogenous regressors). Always extends the calibration data.}
+time series with no exogenous regressors).
+Extends the calibration data \code{h} periods into the future.}
 
 \item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
-\item{...}{Additional arguments passed to \code{\link[=future_frame]{future_frame()}} for use with the \code{h} forecast horizon}
+\item{...}{Not currently used}
 }
 \value{
 A tibble with forecast features

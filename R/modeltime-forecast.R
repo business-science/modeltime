@@ -5,11 +5,13 @@
 #'
 #' @param object A Modeltime Table that has been calibrated with [modeltime_calibrate()]
 #' @param new_data A `tibble` containing future information to forecast.
+#'  If `NULL`, forecasts the calibration data.
 #' @param h The forecast horizon (can be used instead of `new_data` for
-#'  time series with no exogenous regressors). Always extends the calibration data.
-#' @param conf_interval An estimated confidence interval based on the in-sample residuals
+#'  time series with no exogenous regressors).
+#'  Extends the calibration data `h` periods into the future.
 #' @param actual_data Reference data that is combined with the output tibble and given a `.key = "actual"`
-#' @param ... Additional arguments passed to [future_frame()] for use with the `h` forecast horizon
+#' @param conf_interval An estimated confidence interval based on the in-sample residuals
+#' @param ... Not currently used
 #'
 #'
 #' @return
@@ -142,7 +144,7 @@ NULL
 
 #' @export
 #' @rdname modeltime_forecast
-modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.8, ...) {
 
     # Checks
 
@@ -160,13 +162,13 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, conf_interval 
 }
 
 #' @export
-modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.8, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
 
 }
 
 #' @export
-modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, conf_interval = 0.8, actual_data = NULL, ...) {
+modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.8, ...) {
 
     data <- object
 

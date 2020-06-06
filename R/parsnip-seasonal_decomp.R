@@ -22,8 +22,6 @@
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.
 #'  See Fit Details below.
-#' @param seasonal_window A span in lags used for seasonal extraction.
-#'  Is `13` by default.
 #'
 #'
 #' @details
@@ -34,8 +32,8 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "stlm_ets" (default) - Connects to [forecast::stlm(method = "ets")]
-#'  - "stlm_arima" (default) - Connects to [forecast::stlm(method = "arima")]
+#'  - "stlm_ets" (default) - Connects to [forecast::stlm()], `method = "ets"`
+#'  - "stlm_arima" (default) - Connects to [forecast::stlm()], `method = "arima"`
 #'
 #'
 #' @section Engine Details:
@@ -47,8 +45,7 @@
 #' # parsnip::convert_args("seasonal_decomp")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::stlm",
-#'     "seasonal_period_1, seasonal_period_2, seasonal_period_3", "msts(seasonal.periods)",
-#'     "seasonal_window", "stlm(s.window)"
+#'     "seasonal_period_1, seasonal_period_2, seasonal_period_3", "msts(seasonal.periods)"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -161,14 +158,12 @@
 #'
 #' @export
 seasonal_decomp <- function(mode = "regression",
-                            seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL,
-                            seasonal_window = NULL) {
+                            seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL) {
 
     args <- list(
         seasonal_period_1           = rlang::enquo(seasonal_period_1),
         seasonal_period_2           = rlang::enquo(seasonal_period_2),
-        seasonal_period_3           = rlang::enquo(seasonal_period_3),
-        seasonal_window             = rlang::enquo(seasonal_window)
+        seasonal_period_3           = rlang::enquo(seasonal_period_3)
     )
 
     parsnip::new_model_spec(
@@ -199,7 +194,6 @@ print.seasonal_decomp <- function(x, ...) {
 #' @importFrom stats update
 update.seasonal_decomp <- function(object, parameters = NULL,
                                    seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL,
-                                   seasonal_window = NULL,
                                    fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
@@ -211,8 +205,7 @@ update.seasonal_decomp <- function(object, parameters = NULL,
     args <- list(
         seasonal_period_1           = rlang::enquo(seasonal_period_1),
         seasonal_period_2           = rlang::enquo(seasonal_period_2),
-        seasonal_period_3           = rlang::enquo(seasonal_period_3),
-        seasonal_window             = rlang::enquo(seasonal_window)
+        seasonal_period_3           = rlang::enquo(seasonal_period_3)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)
@@ -263,14 +256,10 @@ translate.seasonal_decomp <- function(x, engine = x$engine, ...) {
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param period_3 (optional) First seasonal frequency. Uses "auto" by default. A character phrase
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
-#' @param s.window (required) First seasonal frequency. Uses "auto" by default. A character phrase
-#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
-
 #' @param ... Additional arguments passed to `forecast::stlm()`
 #'
 #' @export
-stlm_ets_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL,
-                              s.window = 13, ...) {
+stlm_ets_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL, ...) {
 
     # X & Y
     # Expect outcomes  = vector
@@ -278,7 +267,7 @@ stlm_ets_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3
     outcome    <- y
     predictor  <- x
 
-    if (period_1 == "none" || period_1 <=1) {
+    if (is.null(period_1) || period_1 == "none" || period_1 <=1) {
         glubort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
     }
 
@@ -297,11 +286,13 @@ stlm_ets_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3
     # Clean names, get xreg recipe, process predictors
     # xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     # xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
+    if (ncol(predictor) > 1) {
+        message("External regressors (xregs) detected. STLM + ETS is a univariate method. Ignoring xregs.")
+    }
 
     # FIT
-    outcome <- forecast::msts(outcome, seasonal.periods = c(period_1, period_2, period_3))
-
-    fit_stlm <- forecast::stlm(y = outcome, method = "ets", s.window = s.window, ...)
+    outcome  <- forecast::msts(outcome, seasonal.periods = c(period_1, period_2, period_3))
+    fit_stlm <- forecast::stlm(y = outcome, method = "ets", ...)
 
     # RETURN
     new_modeltime_bridge(
@@ -338,7 +329,7 @@ print.stlm_ets_fit_impl <- function(x, ...) {
     # print(model$call)
     cat("\n\n")
     print(
-        tibble(
+        tibble::tibble(
             aic    = model$aic,
             bic    = model$bic,
             aicc   = model$aicc,

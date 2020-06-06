@@ -8,24 +8,26 @@ modeltime_forecast(
   object,
   new_data = NULL,
   h = NULL,
-  conf_interval = 0.8,
   actual_data = NULL,
+  conf_interval = 0.8,
   ...
 )
 }
 \arguments{
 \item{object}{A Modeltime Table that has been calibrated with \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}}
 
-\item{new_data}{A \code{tibble} containing future information to forecast.}
+\item{new_data}{A \code{tibble} containing future information to forecast.
+If \code{NULL}, forecasts the calibration data.}
 
 \item{h}{The forecast horizon (can be used instead of \code{new_data} for
-time series with no exogenous regressors). Always extends the calibration data.}
-
-\item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
+time series with no exogenous regressors).
+Extends the calibration data \code{h} periods into the future.}
 
 \item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
-\item{...}{Additional arguments passed to \code{\link[=future_frame]{future_frame()}} for use with the \code{h} forecast horizon}
+\item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
+
+\item{...}{Not currently used}
 }
 \value{
 A tibble with predictions and time-stamp data. For ease of plotting and calculations,

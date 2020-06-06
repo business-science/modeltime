@@ -40,7 +40,8 @@ model_list_tbl <- tribble(
   "ARIMA", "arima_reg()", "arima", "forecast",
   "Boosted ARIMA", "arima_boost()", "auto_arima_xgboost", "forecast, xgboost",
   "Boosted ARIMA", "arima_boost()", "arima_xgboost", "forecast, xgboost",
-  "Exponential Smoothing", "exp_smoothing()", "ets", "forecast"
+  "Exponential Smoothing", "exp_smoothing()", "ets", "forecast",
+  "Seasonal Decomposition", "seasonal_decomp()", "stlm_ets", "forecast"
 ) %>% 
   mutate(Mode = "regression")
 
@@ -104,7 +105,11 @@ param_list_tbl <- tribble(
   "exp_smoothing", "ets", "error", "model = c(error, trend, season)", "forecast::ets",
   "exp_smoothing", "ets", "trend", "model = c(error, trend, season)", "forecast::ets",
   "exp_smoothing", "ets", "season", "model = c(error, trend, season)", "forecast::ets",
-  "exp_smoothing", "ets", "damping", "damped", "forecast::ets"
+  "exp_smoothing", "ets", "damping", "damped", "forecast::ets",
+  # seasonal decomp
+  "seasonal_decomp", "stlm_ets", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_decomp", "stlm_ets", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_decomp", "stlm_ets", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm"
 )
 
 ```
@@ -121,6 +126,7 @@ model_list_tbl %>%
     groupBy = "Model Category", 
     searchable = TRUE, 
     defaultExpanded = TRUE, 
+    resizable = TRUE, 
     filterable = FALSE, 
     striped = TRUE,
     highlight = TRUE,
@@ -157,6 +163,7 @@ param_list_tbl %>%
     groupBy = "Engine", 
     searchable = TRUE, 
     defaultExpanded = FALSE, 
+    resizable = TRUE, 
     filterable = TRUE, 
     striped = TRUE,
     highlight = TRUE,
