@@ -11,4 +11,5 @@
     make_arima_boost()
     make_exp_smoothing()
     make_prophet_reg()
+    make_seasonal_decomp()
 }

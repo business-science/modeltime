@@ -70,6 +70,8 @@ parse_period_from_index.default <- function(data, period) {
 #' @export
 parse_period_from_index.data.frame <- function(data, period) {
 
+    period <- switch_period(period)
+
     # If character, parse period / If numeric, pass over
     tryCatch({
         if (is.character(period)) {
@@ -89,4 +91,18 @@ parse_period_from_index.data.frame <- function(data, period) {
 
     return(period)
 
+}
+
+switch_period <- function(period) {
+    if (tolower(period) == "daily") {
+        period <- "1 day"
+    }
+    if (tolower(period) == "weekly") {
+        period <- "1 week"
+    }
+    if (tolower(period) == "yearly") {
+        period <- "1 year"
+    }
+
+    return(period)
 }

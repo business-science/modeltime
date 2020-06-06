@@ -60,7 +60,7 @@ The `forecast` package includes the `stlm()` function for creating models using 
 
 We can then forecast the components using models like: `auto.arima()` and `ets()`.
 
-
+__Note - I've added a `seasonal_decomp()` function that includes the functionality we are about to create. Check that function out to see more about seasonal decomposition.__
 
 
 ### Libraries
@@ -227,7 +227,7 @@ Here's a sample bridge function. It:
 5. Creates a new model bridge using the constructor, `new_modeltime_bridge()`
 
 ```{r}
-stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seasonal_2 = NULL, ...) {
+bridge_stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seasonal_2 = NULL, ...) {
   
   outcome    <- y # Comes in as a vector
   predictors <- x # Comes in as a data.frame (dates and possible xregs)
@@ -258,7 +258,7 @@ stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seasonal_2 
   
   # 5. New Modeltime Bridge
   new_modeltime_bridge(
-    class  = "stlm_ets_fit_impl",
+    class  = "bridge_stlm_ets_fit_impl",
     models = list(model_1 = model_1),
     data   = tibble::tibble(
       idx_col   := idx,
@@ -276,7 +276,7 @@ stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seasonal_2 
 We'll make a quick print method so we don't get crazy output. 
 
 ```{r}
-print.stlm_ets_fit_impl <- function(x, ...) {
+print.bridge_stlm_ets_fit_impl <- function(x, ...) {
   
   model <- x$models$model_1$model
   
@@ -301,7 +301,7 @@ print.stlm_ets_fit_impl <- function(x, ...) {
 Let's make sure our bridge works. 
 
 ```{r, paged.print = FALSE}
-stlm_test <- stlm_ets_fit_impl(
+stlm_test <- bridge_stlm_ets_fit_impl(
   x = taylor_30_min[,"date"],
   y = taylor_30_min %>% pull(value),
   period_seasonal_1 = 24*2,
@@ -325,7 +325,7 @@ set_fit(
   value  = list(
     interface = "data.frame",
     protect   = c("x", "y"),
-    func      = c(fun = "stlm_ets_fit_impl"),
+    func      = c(fun = "bridge_stlm_ets_fit_impl"),
     defaults  = list()
   )
 )
@@ -340,7 +340,7 @@ Next, we have an additional step to bridge the prediction. We create a predict m
 #### Step 4A: Create a Prediction Bridge
 
 ```{r}
-predict.stlm_ets_fit_impl <- function(object, new_data, ...) {
+predict.bridge_stlm_ets_fit_impl <- function(object, new_data, ...) {
 
     # PREPARE INPUTS
     model       <- object$models$model_1
