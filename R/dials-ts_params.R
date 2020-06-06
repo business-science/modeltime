@@ -13,9 +13,9 @@
 #' It's usually best practice to _not_ tune this parameter, but rather set
 #' to obvious values based on the seasonality of the data:
 #'
-#'  - __Daily Seasonality:__ Often used with hourly data (e.g. 24 hourly timestamps per day)
-#'  - __Weekly Seasonality:__ Often used with daily data (e.g. 7 daily timestamps per week)
-#'  - __Yearly Seasonalty:__ Often used with weekly, monthly, and quarterly data
+#'  - __Daily Seasonality:__ Often used with __hourly data__ (e.g. 24 hourly timestamps per day)
+#'  - __Weekly Seasonality:__ Often used with __daily data__ (e.g. 7 daily timestamps per week)
+#'  - __Yearly Seasonalty:__ Often used with __weekly, monthly, and quarterly data__
 #'    (e.g. 12 monthly observations per year).
 #'
 #' However, in the event that users want to experiment with period tuning, you

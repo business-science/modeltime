@@ -24,9 +24,9 @@ general time series parameter:
 It's usually best practice to \emph{not} tune this parameter, but rather set
 to obvious values based on the seasonality of the data:
 \itemize{
-\item \strong{Daily Seasonality:} Often used with hourly data (e.g. 24 hourly timestamps per day)
-\item \strong{Weekly Seasonality:} Often used with daily data (e.g. 7 daily timestamps per week)
-\item \strong{Yearly Seasonalty:} Often used with weekly, monthly, and quarterly data
+\item \strong{Daily Seasonality:} Often used with \strong{hourly data} (e.g. 24 hourly timestamps per day)
+\item \strong{Weekly Seasonality:} Often used with \strong{daily data} (e.g. 7 daily timestamps per week)
+\item \strong{Yearly Seasonalty:} Often used with \strong{weekly, monthly, and quarterly data}
 (e.g. 12 monthly observations per year).
 }
 
