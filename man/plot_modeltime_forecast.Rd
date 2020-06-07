@@ -6,10 +6,11 @@
 \usage{
 plot_modeltime_forecast(
   .data,
-  .include_conf_interval = TRUE,
+  .conf_interval_show = TRUE,
   .conf_interval_fill = "grey20",
   .conf_interval_alpha = 0.2,
-  .include_legend = TRUE,
+  .legend_show = TRUE,
+  .legend_max_width = 40,
   .title = "Forecast Plot",
   .x_lab = "",
   .y_lab = "",
@@ -22,14 +23,16 @@ plot_modeltime_forecast(
 \arguments{
 \item{.data}{A \code{tibble} that is the output of \code{\link[=modeltime_forecast]{modeltime_forecast()}}}
 
-\item{.include_conf_interval}{Logical. Whether or not to include the confidence interval as a ribbon.}
+\item{.conf_interval_show}{Logical. Whether or not to include the confidence interval as a ribbon.}
 
 \item{.conf_interval_fill}{Fill color for the confidence interval}
 
 \item{.conf_interval_alpha}{Fill opacity for the confidence interval. Range (0, 1).}
 
-\item{.include_legend}{Logical. Whether or not to show the legend.
+\item{.legend_show}{Logical. Whether or not to show the legend.
 Can save space with long model descriptions.}
+
+\item{.legend_max_width}{Numeric. The width of truncation to apply to the legend text.}
 
 \item{.title}{Title for the plot}
 
