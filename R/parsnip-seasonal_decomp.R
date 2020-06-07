@@ -154,7 +154,15 @@
 #'
 #'
 #' # ---- STLM ARIMA ----
-#' # TODO
+#'
+#' # Model Spec
+#' model_spec <- seasonal_decomp() %>%
+#'     set_engine("stlm_arima")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
 #'
 #' @export
 seasonal_decomp <- function(mode = "regression",
@@ -379,7 +387,148 @@ stlm_ets_predict_impl <- function(object, new_data, ...) {
 }
 
 
+# FIT - STLM ARIMA -----
 
+#' Low-Level stlm function for translating modeltime to forecast
+#'
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param period_1 (required) First seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param period_2 (optional) First seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param period_3 (optional) First seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param ... Additional arguments passed to `forecast::stlm()`
+#'
+#' @export
+stlm_arima_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL, ...) {
+
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
+    outcome    <- y
+    predictor  <- x
+
+    if (is.null(period_1) || period_1 == "none" || period_1 <=1) {
+        glubort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
+    }
+
+    # INDEX & PERIOD
+    # Determine Period, Index Col, and Index
+    index_tbl <- parse_index_from_data(predictor)
+
+    period_1  <- parse_period_from_index(index_tbl, period_1)
+    if (!is.null(period_2)) period_2 <- parse_period_from_index(index_tbl, period_2)
+    if (!is.null(period_3)) period_3 <- parse_period_from_index(index_tbl, period_3)
+
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
+
+    # XREGS - NOT USED FOR ETS METHOD
+    # Clean names, get xreg recipe, process predictors
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
+    xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
+
+    # FIT
+    outcome  <- forecast::msts(outcome, seasonal.periods = c(period_1, period_2, period_3))
+
+    if (!is.null(xreg_matrix)) {
+        fit_stlm   <- forecast::stlm(outcome, method = "arima", xreg = xreg_matrix, ...)
+    } else {
+        fit_stlm   <- forecast::stlm(outcome, method = "arima", ...)
+    }
+
+    # RETURN
+    new_modeltime_bridge(
+        class = "stlm_arima_fit_impl",
+
+        # Models
+        models = list(
+            model_1 = fit_stlm
+        ),
+
+        # Data - Date column (matches original), .actual, .fitted, and .residuals columns
+        data = tibble::tibble(
+            !! idx_col  := idx,
+            .actual      =  as.numeric(fit_stlm$x),
+            .fitted      =  as.numeric(fit_stlm$fitted),
+            .residuals   =  as.numeric(fit_stlm$residuals)
+        ),
+
+        # Preprocessing Recipe (prepped) - Used in predict method
+        extras = list(
+            xreg_recipe = xreg_recipe
+        ),
+
+        # Description - Convert arima model parameters to short description
+        desc = stringr::str_c("SEASONAL DECOMP: ", get_arima_description(fit_stlm$model))
+    )
+
+}
+
+#' @export
+print.stlm_arima_fit_impl <- function(x, ...) {
+    model <- x$models$model_1$model
+
+    cat(x$desc)
+    # cat("\n")
+    # print(model$call)
+    cat("\n\n")
+    print(model)
+    # print(
+    #     tibble::tibble(
+    #         aic    = model$aic,
+    #         bic    = model$bic,
+    #         aicc   = model$aicc,
+    #         loglik = model$loglik,
+    #         mse    = model$mse
+    #     )
+    # )
+    invisible(x)
+}
+
+
+
+
+# PREDICT - STLM ARIMA ----
+# - auto.arima produces an Arima model
+
+#' @export
+predict.stlm_arima_fit_impl <- function(object, new_data, ...) {
+    stlm_arima_predict_impl(object, new_data, ...)
+}
+
+#' Bridge prediction function for ARIMA models
+#'
+#' @inheritParams parsnip::predict.model_fit
+#' @param ... Additional arguments passed to `forecast::Arima()`
+#'
+#' @export
+stlm_arima_predict_impl <- function(object, new_data, ...) {
+
+    # PREPARE INPUTS
+    model       <- object$models$model_1
+    h_horizon   <- nrow(new_data)
+
+    # XREG
+    # NOT REQUIRED FOR ETS.
+    xreg_recipe <- object$extras$xreg_recipe
+    xreg_matrix <- bake_xreg_recipe(xreg_recipe, new_data, format = "matrix")
+
+    # PREDICTIONS
+    if (!is.null(xreg_matrix)) {
+        preds_forecast <- forecast::forecast(model, h = h_horizon, xreg = xreg_matrix, ...)
+    } else {
+        preds_forecast <- forecast::forecast(model, h = h_horizon, ...)
+    }
+
+    # Return predictions as numeric vector
+    preds <- as.numeric(preds_forecast$mean)
+
+    return(preds)
+
+}
 
 
 

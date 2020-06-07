@@ -171,7 +171,15 @@ model_fit
 
 
 # ---- STLM ARIMA ----
-# TODO
+
+# Model Spec
+model_spec <- seasonal_decomp() \%>\%
+    set_engine("stlm_arima")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(log(value) ~ date, data = training(splits))
+model_fit
 
 }
 \seealso{
