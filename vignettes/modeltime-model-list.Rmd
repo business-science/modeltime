@@ -21,7 +21,7 @@ The `modeltime` package provides an interface to a number of forecasting algorit
 
 - __Classical Algorithms:__ ARIMA, Expeonential Smoothing
 - __New Algorithms:__ Prophet
-- __Machine Learning Algorithms:__ Boosted ARIMA, or any `parnsip` algorithm
+- __Machine Learning Algorithms:__ Boosted ARIMA, Boosted Prophet, or any `parnsip` algorithm
 
 See [_"Getting Started with Modeltime"_](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) for an example of how to use the time series algorithms to make a forecast. 
 
@@ -36,6 +36,7 @@ interactive <- TRUE
 model_list_tbl <- tribble(
   ~ `Model Category`, ~ `Model Function`, ~ `Engine`, ~ `Packages`,
   "Prophet", "prophet_reg()", "prophet", "prophet",
+  "Boosted Prophet", "prophet_boost", "prophet_xgboost", "prophet, xgboost",
   "ARIMA", "arima_reg()", "auto_arima", "forecast",
   "ARIMA", "arima_reg()", "arima", "forecast",
   "Boosted ARIMA", "arima_boost()", "auto_arima_xgboost", "forecast, xgboost",
@@ -55,6 +56,20 @@ param_list_tbl <- tribble(
   "prophet_reg", "prophet", "prior_scale_changepoints", "changepoint.prior.scale", "prophet::prophet",
   "prophet_reg", "prophet", "prior_scale_seasonality", "seasonality.prior.scale", "prophet::prophet",
   "prophet_reg", "prophet", "prior_scale_holidays", "holiday.prior.scale", "prophet::prophet",
+  # prophet_boost: prophet_xgboost
+  "prophet_boost", "prophet_xgboost", "growth", "growth", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "num_changepoints", "n.changepoints", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "season", "seasonality.mode", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "prior_scale_changepoints", "changepoint.prior.scale", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "prior_scale_seasonality", "seasonality.prior.scale", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "prior_scale_holidays", "holiday.prior.scale", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "tree_depth", "max_depth", "xgboost::xgb.train",
+  "prophet_boost", "prophet_xgboost", "trees", "nrounds", "xgboost::xgb.train",
+  "prophet_boost", "prophet_xgboost", "learn_rate", "eta", "xgboost::xgb.train",
+  "prophet_boost", "prophet_xgboost", "mtry", "colsample_bytree", "xgboost::xgb.train",
+  "prophet_boost", "prophet_xgboost", "min_n", "min_child_weight", "xgboost::xgb.train",
+  "prophet_boost", "prophet_xgboost", "loss_reduction", "gamma", "xgboost::xgb.train",
+  "prophet_boost", "prophet_xgboost", "sample_size", "subsample", "xgboost::xgb.train",
   # arima_reg: auto_arima
   "arima_reg", "auto_arima", "seasonal_period", "ts(frequency)", "forecast::auto.arima",
   "arima_reg", "auto_arima", "non_seasonal_ar", "max.p", "forecast::auto.arima",

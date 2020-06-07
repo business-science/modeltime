@@ -535,7 +535,7 @@ print.auto_arima_xgboost_fit_impl <- function(x, ...) {
     cat("Model 1: Auto ARIMA\n")
     print(x$models$model_1)
     cat("\n---\n")
-    cat("Model 2: XGBoost ARIMA Errors\n\n")
+    cat("Model 2: XGBoost Errors\n\n")
     print(x$models$model_2$call)
     invisible(x)
 }
@@ -573,7 +573,6 @@ print.auto_arima_xgboost_fit_impl <- function(x, ...) {
 #' training iterations without improvement before stopping. If `validation` is
 #' used, performance is base on the validation set; otherwise the training set
 #' is used.
-#' @param ... Other options to pass to `xgb.train`.
 #' @param ... Additional arguments passed to `xgboost::xgb.train`
 #'
 #'
@@ -695,7 +694,7 @@ print.arima_xgboost_fit_impl <- function(x, ...) {
     cat("Model 1: Standard ARIMA\n")
     print(x$models$model_1)
     cat("\n---\n")
-    cat("Model 2: XGBoost ARIMA Errors\n\n")
+    cat("Model 2: XGBoost Errors\n\n")
     print(x$models$model_2$call)
     invisible(x)
 }

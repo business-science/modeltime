@@ -7,9 +7,18 @@
 
 .onLoad <- function(libname, pkgname) {
     # This defines the model database
+
+    # Prophet
+    make_prophet_reg()
+    make_prophet_boost()
+
+    # ARIMA
     make_arima_reg()
     make_arima_boost()
+
+    # Exponential Smoothing
     make_exp_smoothing()
-    make_prophet_reg()
+
+    # Seasonal Decomposition
     make_seasonal_decomp()
 }

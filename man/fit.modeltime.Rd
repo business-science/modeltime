@@ -6,6 +6,7 @@
 \alias{fit.arima_boost}
 \alias{fit.exp_smoothing}
 \alias{fit.prophet_reg}
+\alias{fit.prophet_boost}
 \alias{fit.seasonal_decomp}
 \title{Fit a Model Specification to a Dataset}
 \usage{
@@ -16,6 +17,8 @@
 \method{fit}{exp_smoothing}(object, formula, data, control = control_parsnip(), ...)
 
 \method{fit}{prophet_reg}(object, formula, data, control = control_parsnip(), ...)
+
+\method{fit}{prophet_boost}(object, formula, data, control = control_parsnip(), ...)
 
 \method{fit}{seasonal_decomp}(object, formula, data, control = control_parsnip(), ...)
 }
