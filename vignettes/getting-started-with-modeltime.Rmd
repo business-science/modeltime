@@ -121,11 +121,10 @@ Next, we create a boosted ARIMA using `arima_boost()`. Boosting uses XGBoost to 
  - ARIMA uses the date
  - XGBoost uses the derivatives of date as regressors
  
-Normally I'd use a preprocessing workflow for the month features using a function like `step_time_series_signature()` from `timetk` to help reduce the complexity of the parsnip formula interface. 
+Normally I'd use a preprocessing workflow for the month features using a function like `step_timeseries_signature()` from `timetk` to help reduce the complexity of the parsnip formula interface. 
 
 ```{r}
 # Model 2: arima_boost ----
-
 model_fit_arima_boosted <- arima_boost(
     min_n = 2,
     learn_rate = 0.015
