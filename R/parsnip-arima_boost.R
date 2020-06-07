@@ -448,7 +448,7 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
 
     # XREGS
     # Clean names, get xreg recipe, process predictors
-    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE, one_hot = FALSE)
     xreg_tbl    <- juice_xreg_recipe(xreg_recipe, format = "tbl")
 
     # FIT

@@ -427,7 +427,7 @@ stlm_arima_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period
 
     # XREGS - NOT USED FOR ETS METHOD
     # Clean names, get xreg recipe, process predictors
-    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE, one_hot = FALSE)
     xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
 
     # FIT

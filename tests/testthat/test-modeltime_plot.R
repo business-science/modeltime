@@ -26,12 +26,12 @@ forecast_tbl <- model_fit %>%
 # * ggplot2 visualization ----
 g <- forecast_tbl %>%
     mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = FALSE)
+    plot_modeltime_forecast(.interactive = FALSE)
 
 # * plotly visualization ----
 p <- forecast_tbl %>%
     mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = TRUE)
+    plot_modeltime_forecast(.interactive = TRUE)
 
 
 test_that("modeltime plot, Test Static ggplot", {
@@ -54,12 +54,12 @@ test_that("modeltime plot, Test Interactive plotly", {
 
 g <- forecast_tbl %>%
     mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.interactive = FALSE, .include_conf_interval = FALSE)
+    plot_modeltime_forecast(.interactive = FALSE, .conf_interval_show = FALSE)
 
 
 p <- forecast_tbl %>%
     mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.interactive = TRUE, .include_conf_interval = FALSE)
+    plot_modeltime_forecast(.interactive = TRUE, .conf_interval_show = FALSE)
 
 
 test_that("modeltime plot, Test Static ggplot", {
@@ -103,12 +103,12 @@ forecast_tbl <- wflw_fit %>%
 # * ggplot2 visualization ----
 g <- forecast_tbl %>%
     mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = FALSE)
+    plot_modeltime_forecast(.conf_interval_show = TRUE, .interactive = FALSE)
 
 # * plotly visualization ----
 p <- forecast_tbl %>%
     mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.include_conf_interval = TRUE, .interactive = TRUE)
+    plot_modeltime_forecast(.conf_interval_show = TRUE, .interactive = TRUE)
 
 
 test_that("modeltime plot - workflow, Test Static ggplot", {
