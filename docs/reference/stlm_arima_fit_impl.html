@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tuning Parameters for Time Series (ts-class) Models — time_series_params • modeltime</title>
+<title>Low-Level stlm function for translating modeltime to forecast — stlm_arima_fit_impl • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Tuning Parameters for Time Series (ts-class) Models — time_series_params" />
-<meta property="og:description" content="Tuning Parameters for Time Series (ts-class) Models" />
+<meta property="og:title" content="Low-Level stlm function for translating modeltime to forecast — stlm_arima_fit_impl" />
+<meta property="og:description" content="Low-Level stlm function for translating modeltime to forecast" />
 
 
 
@@ -147,52 +147,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tuning Parameters for Time Series (ts-class) Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dials-ts_params.R'><code>R/dials-ts_params.R</code></a></small>
-    <div class="hidden name"><code>time_series_params.Rd</code></div>
+    <h1>Low-Level stlm function for translating modeltime to forecast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-seasonal_decomp.R'><code>R/parsnip-seasonal_decomp.R</code></a></small>
+    <div class="hidden name"><code>stlm_arima_fit_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Tuning Parameters for Time Series (ts-class) Models</p>
+    <p>Low-Level stlm function for translating modeltime to forecast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>seasonal_period</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"daily"</span>, <span class='st'>"weekly"</span>, <span class='st'>"yearly"</span>))</pre>
+    <pre class="usage"><span class='fu'>stlm_arima_fit_impl</span>(
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>period_1</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>period_2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>period_3</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>values</th>
-      <td><p>A time-based phrase</p></td>
+      <th>x</th>
+      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>A numeric vector of values to fit</p></td>
+    </tr>
+    <tr>
+      <th>period_1</th>
+      <td><p>(required) First seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
+    </tr>
+    <tr>
+      <th>period_2</th>
+      <td><p>(optional) First seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
+    </tr>
+    <tr>
+      <th>period_3</th>
+      <td><p>(optional) First seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/forecast/man/forecast.stl.html'>forecast::stlm()</a></code></p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Time series models (e.g. <code>Arima()</code> and <code>ets()</code>) use <code><a href='https://rdrr.io/r/stats/ts.html'>stats::ts()</a></code> or <code><a href='https://rdrr.io/pkg/forecast/man/msts.html'>forecast::msts()</a></code>
-to apply seasonality. We can do the same process using the following
-general time series parameter:</p><ul>
-<li><p><code>period</code>: The periodic nature of the seasonality.</p></li>
-</ul>
-
-<p>It's usually best practice to <em>not</em> tune this parameter, but rather set
-to obvious values based on the seasonality of the data:</p><ul>
-<li><p><strong>Daily Seasonality:</strong> Often used with <strong>hourly data</strong> (e.g. 24 hourly timestamps per day)</p></li>
-<li><p><strong>Weekly Seasonality:</strong> Often used with <strong>daily data</strong> (e.g. 7 daily timestamps per week)</p></li>
-<li><p><strong>Yearly Seasonalty:</strong> Often used with <strong>weekly, monthly, and quarterly data</strong>
-(e.g. 12 monthly observations per year).</p></li>
-</ul>
-
-<p>However, in the event that users want to experiment with period tuning, you
-can do so with <code>seasonal_period()</code>.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>seasonal_period</span>()</div><div class='output co'>#&gt; Period (Seasonal Frequency)  (qualitative)
-#&gt; 4 possible value include:
-#&gt; 'none', 'daily', 'weekly' and 'yearly' </div><div class='input'>
-
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -98,7 +98,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="extending-modeltime_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extending Modeltime (Developer Tools)</h1>
@@ -161,6 +161,7 @@
 <li>Remainder</li>
 </ul>
 <p>We can then forecast the components using models like: <code><a href="https://rdrr.io/pkg/forecast/man/auto.arima.html">auto.arima()</a></code> and <code><a href="https://rdrr.io/pkg/forecast/man/ets.html">ets()</a></code>.</p>
+<p><strong>Note - I’ve added a <code><a href="../reference/seasonal_decomp.html">seasonal_decomp()</a></code> function that includes the functionality we are about to create. Check that function out to see more about seasonal decomposition.</strong></p>
 <div id="libraries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#libraries" class="anchor"></a>Libraries</h3>
@@ -333,7 +334,7 @@
 <li>Creates a new model bridge using the constructor, <code><a href="../reference/new_modeltime_bridge.html">new_modeltime_bridge()</a></code>
 </li>
 </ol>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">stlm_ets_fit_impl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">y</span>, <span class="no">period_seasonal_1</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="no">period_seasonal_2</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="no">...</span>) {
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">bridge_stlm_ets_fit_impl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">y</span>, <span class="no">period_seasonal_1</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="no">period_seasonal_2</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="no">...</span>) {
 
   <span class="no">outcome</span>    <span class="kw">&lt;-</span> <span class="no">y</span> <span class="co"># Comes in as a vector</span>
   <span class="no">predictors</span> <span class="kw">&lt;-</span> <span class="no">x</span> <span class="co"># Comes in as a data.frame (dates and possible xregs)</span>
@@ -364,7 +365,7 @@
 
   <span class="co"># 5. New Modeltime Bridge</span>
   <span class="fu"><a href="../reference/new_modeltime_bridge.html">new_modeltime_bridge</a></span>(
-    <span class="kw">class</span>  <span class="kw">=</span> <span class="st">"stlm_ets_fit_impl"</span>,
+    <span class="kw">class</span>  <span class="kw">=</span> <span class="st">"bridge_stlm_ets_fit_impl"</span>,
     <span class="kw">models</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">model_1</span> <span class="kw">=</span> <span class="no">model_1</span>),
     <span class="kw">data</span>   <span class="kw">=</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(
       <span class="no">idx_col</span>   <span class="kw">:=</span> <span class="no">idx</span>,
@@ -378,7 +379,7 @@
 
 }</pre></body></html></div>
 <p>We’ll make a quick print method so we don’t get crazy output.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">print.stlm_ets_fit_impl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">...</span>) {
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">print.bridge_stlm_ets_fit_impl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">...</span>) {
 
   <span class="no">model</span> <span class="kw">&lt;-</span> <span class="no">x</span>$<span class="no">models</span>$<span class="no">model_1</span>$<span class="no">model</span>
 
@@ -398,7 +399,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="no">x</span>)
 }</pre></body></html></div>
 <p>Let’s make sure our bridge works.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">stlm_test</span> <span class="kw">&lt;-</span> <span class="fu">stlm_ets_fit_impl</span>(
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">stlm_test</span> <span class="kw">&lt;-</span> <span class="fu">bridge_stlm_ets_fit_impl</span>(
   <span class="kw">x</span> <span class="kw">=</span> <span class="no">taylor_30_min</span>[,<span class="st">"date"</span>],
   <span class="kw">y</span> <span class="kw">=</span> <span class="no">taylor_30_min</span> <span class="kw">%&gt;%</span> <span class="fu">pull</span>(<span class="no">value</span>),
   <span class="kw">period_seasonal_1</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>,
@@ -426,7 +427,7 @@
   <span class="kw">value</span>  <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
     <span class="kw">interface</span> <span class="kw">=</span> <span class="st">"data.frame"</span>,
     <span class="kw">protect</span>   <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>),
-    <span class="kw">func</span>      <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">fun</span> <span class="kw">=</span> <span class="st">"stlm_ets_fit_impl"</span>),
+    <span class="kw">func</span>      <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">fun</span> <span class="kw">=</span> <span class="st">"bridge_stlm_ets_fit_impl"</span>),
     <span class="kw">defaults</span>  <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>()
   )
 )
@@ -457,7 +458,7 @@
 <div id="step-4a-create-a-prediction-bridge" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-4a-create-a-prediction-bridge" class="anchor"></a>Step 4A: Create a Prediction Bridge</h4>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">predict.stlm_ets_fit_impl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">new_data</span>, <span class="no">...</span>) {
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">predict.bridge_stlm_ets_fit_impl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">new_data</span>, <span class="no">...</span>) {
 
     <span class="co"># PREPARE INPUTS</span>
     <span class="no">model</span>       <span class="kw">&lt;-</span> <span class="no">object</span>$<span class="no">models</span>$<span class="no">model_1</span>
@@ -568,7 +569,7 @@
 <span class="no">model_fit</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  191ms </span>
+<span class="co">#&gt; Fit time:  186ms </span>
 <span class="co">#&gt; STLM Model: ETS(M,N,N)</span>
 <span class="co">#&gt; ets(y = x, model = etsmodel, allow.multiplicative.trend = allow.multiplicative.trend)</span>
 <span class="co">#&gt; </span>

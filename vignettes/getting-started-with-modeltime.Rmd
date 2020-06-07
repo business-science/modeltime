@@ -242,7 +242,10 @@ calibration_tbl %>%
         new_data    = testing(splits),
         actual_data = m750
     ) %>%
-    plot_modeltime_forecast(.interactive = interactive)
+    plot_modeltime_forecast(
+      .legend_max_width = 25, # For mobile screens
+      .interactive      = interactive
+    )
 ```
 
 From visualizing the test set forecast:
@@ -289,7 +292,10 @@ refit_tbl <- calibration_tbl %>%
 
 refit_tbl %>%
     modeltime_forecast(h = "3 years", actual_data = m750) %>%
-    plot_modeltime_forecast(.interactive = interactive)
+    plot_modeltime_forecast(
+      .legend_max_width = 25, # For mobile screens
+      .interactive      = interactive
+    )
 ```
 
 ## Refitting - What happened? 

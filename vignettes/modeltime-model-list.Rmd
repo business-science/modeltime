@@ -41,7 +41,8 @@ model_list_tbl <- tribble(
   "Boosted ARIMA", "arima_boost()", "auto_arima_xgboost", "forecast, xgboost",
   "Boosted ARIMA", "arima_boost()", "arima_xgboost", "forecast, xgboost",
   "Exponential Smoothing", "exp_smoothing()", "ets", "forecast",
-  "Seasonal Decomposition", "seasonal_decomp()", "stlm_ets", "forecast"
+  "Seasonal Decomposition", "seasonal_decomp()", "stlm_ets", "forecast",
+  "Seasonal Decomposition", "seasonal_decomp()", "stlm_arima", "forecast"
 ) %>% 
   mutate(Mode = "regression")
 
@@ -109,7 +110,11 @@ param_list_tbl <- tribble(
   # seasonal decomp
   "seasonal_decomp", "stlm_ets", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
   "seasonal_decomp", "stlm_ets", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_decomp", "stlm_ets", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm"
+  "seasonal_decomp", "stlm_ets", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
+  # seasonal decomp
+  "seasonal_decomp", "stlm_arima", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_decomp", "stlm_arima", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_decomp", "stlm_arima", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm"
 )
 
 ```

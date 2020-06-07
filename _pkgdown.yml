@@ -51,15 +51,16 @@ reference:
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
     contents:
+    - prophet_reg
     - arima_reg
     - arima_boost
     - exp_smoothing
-    - prophet_reg
+    - seasonal_decomp
   - title: Parameters
     desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
   - subtitle: General Time Series
     contents:
-    - period
+    - seasonal_period
   - subtitle: ARIMA
     contents:
     - starts_with("non_seasonal")

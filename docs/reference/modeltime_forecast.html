@@ -162,8 +162,8 @@ forecasting future data.</p>
   <span class='no'>object</span>,
   <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>conf_interval</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
   <span class='kw'>actual_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>conf_interval</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -176,24 +176,26 @@ forecasting future data.</p>
     </tr>
     <tr>
       <th>new_data</th>
-      <td><p>A <code>tibble</code> containing future information to forecast.</p></td>
+      <td><p>A <code>tibble</code> containing future information to forecast.
+If <code>NULL</code>, forecasts the calibration data.</p></td>
     </tr>
     <tr>
       <th>h</th>
       <td><p>The forecast horizon (can be used instead of <code>new_data</code> for
-time series with no exogenous regressors). Always extends the calibration data.</p></td>
-    </tr>
-    <tr>
-      <th>conf_interval</th>
-      <td><p>An estimated confidence interval based on the in-sample residuals</p></td>
+time series with no exogenous regressors).
+Extends the calibration data <code>h</code> periods into the future.</p></td>
     </tr>
     <tr>
       <th>actual_data</th>
       <td><p>Reference data that is combined with the output tibble and given a <code>.key = "actual"</code></p></td>
     </tr>
     <tr>
+      <th>conf_interval</th>
+      <td><p>An estimated confidence interval based on the in-sample residuals</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code>future_frame()</code> for use with the <code>h</code> forecast horizon</p></td>
+      <td><p>Not currently used</p></td>
     </tr>
     </table>
 

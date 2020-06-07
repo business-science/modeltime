@@ -180,12 +180,14 @@ These functions are not intended for user use.</p>
     </tr>
     <tr>
       <th>new_data</th>
-      <td><p>A <code>tibble</code> containing future information to forecast.</p></td>
+      <td><p>A <code>tibble</code> containing future information to forecast.
+If <code>NULL</code>, forecasts the calibration data.</p></td>
     </tr>
     <tr>
       <th>h</th>
       <td><p>The forecast horizon (can be used instead of <code>new_data</code> for
-time series with no exogenous regressors). Always extends the calibration data.</p></td>
+time series with no exogenous regressors).
+Extends the calibration data <code>h</code> periods into the future.</p></td>
     </tr>
     <tr>
       <th>actual_data</th>
@@ -193,7 +195,7 @@ time series with no exogenous regressors). Always extends the calibration data.<
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code>future_frame()</code> for use with the <code>h</code> forecast horizon</p></td>
+      <td><p>Not currently used</p></td>
     </tr>
     </table>
 

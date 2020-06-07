@@ -160,10 +160,11 @@
 
     <pre class="usage"><span class='fu'>plot_modeltime_forecast</span>(
   <span class='no'>.data</span>,
-  <span class='kw'>.include_conf_interval</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.conf_interval_show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>.conf_interval_fill</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>,
   <span class='kw'>.conf_interval_alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
-  <span class='kw'>.include_legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.legend_show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.legend_max_width</span> <span class='kw'>=</span> <span class='fl'>40</span>,
   <span class='kw'>.title</span> <span class='kw'>=</span> <span class='st'>"Forecast Plot"</span>,
   <span class='kw'>.x_lab</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>.y_lab</span> <span class='kw'>=</span> <span class='st'>""</span>,
@@ -181,7 +182,7 @@
       <td><p>A <code>tibble</code> that is the output of <code><a href='modeltime_forecast.html'>modeltime_forecast()</a></code></p></td>
     </tr>
     <tr>
-      <th>.include_conf_interval</th>
+      <th>.conf_interval_show</th>
       <td><p>Logical. Whether or not to include the confidence interval as a ribbon.</p></td>
     </tr>
     <tr>
@@ -193,9 +194,13 @@
       <td><p>Fill opacity for the confidence interval. Range (0, 1).</p></td>
     </tr>
     <tr>
-      <th>.include_legend</th>
+      <th>.legend_show</th>
       <td><p>Logical. Whether or not to show the legend.
 Can save space with long model descriptions.</p></td>
+    </tr>
+    <tr>
+      <th>.legend_max_width</th>
+      <td><p>Numeric. The width of truncation to apply to the legend text.</p></td>
     </tr>
     <tr>
       <th>.title</th>
