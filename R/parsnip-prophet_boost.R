@@ -189,6 +189,7 @@
 #'
 #' @examples
 #' library(dplyr)
+#' library(lubridate)
 #' library(parsnip)
 #' library(rsample)
 #' library(timetk)
@@ -211,7 +212,8 @@
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date, data = training(splits))
+#'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
+#'         data = training(splits))
 #' model_fit
 #'
 #'

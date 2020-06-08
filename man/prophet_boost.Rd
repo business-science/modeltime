@@ -249,6 +249,7 @@ Note that date or date-time class values are excluded from \code{xreg}.
 
 \examples{
 library(dplyr)
+library(lubridate)
 library(parsnip)
 library(rsample)
 library(timetk)
@@ -271,7 +272,8 @@ model_spec <- prophet_boost(
 
 # Fit Spec
 model_fit <- model_spec \%>\%
-    fit(log(value) ~ date, data = training(splits))
+    fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
+        data = training(splits))
 model_fit
 
 
