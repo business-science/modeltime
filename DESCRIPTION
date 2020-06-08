@@ -4,7 +4,7 @@ Version: 0.0.1
 Authors@R: 
     person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre"))
 Description: 
-    The time series forecasting framework for use with the use with the 'tidymodels' ecosystem. 
+    The time series forecasting framework for use with the 'tidymodels' ecosystem. 
     Models include ARIMA, ETS, and additional time series models
     from the 'forecast' and 'prophet' packages. Refer to Forecasting Principles & Practice
     (Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 
