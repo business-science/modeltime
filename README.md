@@ -14,11 +14,11 @@ status](https://travis-ci.org/business-science/modeltime.svg?branch=master)](htt
 
 The time series forecasting package for the `tidymodels` ecosystem.
 
-<img src="vignettes/forecast_plot.jpg" width="100%" style="display: block; margin: auto;" />
-
 ## Features & Benefits
 
 #### Modeltime unlocks time series models and machine learning in one framework
+
+<img src="vignettes/forecast_plot.jpg" width="100%" style="display: block; margin: auto;" />
 
 No need to switch back and forth between various frameworks. `modeltime`
 unlocks machine learning & classical time series analysis.
