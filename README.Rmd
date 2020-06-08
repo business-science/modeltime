@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 # modeltime
+<img src="vignettes/logo-modeltime.png" width="147" height="170" align="right" />
 
 [![Travis build status](https://travis-ci.org/business-science/modeltime.svg?branch=master)](https://travis-ci.org/business-science/modeltime)
 [![codecov](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://codecov.io/gh/business-science/modeltime)
@@ -34,7 +35,7 @@ knitr::include_graphics("vignettes/forecast_plot.jpg")
 ## Features & Benefits
 
 
-#### Modeltime unlocks time series models and machine learning in 1 framework 
+#### Modeltime unlocks time series models and machine learning in one framework 
 
 
 No need to switch back and forth between various frameworks. `modeltime` unlocks machine learning & classical time series analysis.

@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 ```{r, echo=F,  out.width="100%", fig.align='center'}
 knitr::include_graphics("forecast_plot.jpg")
 ```
+<br>
+<img src="logo-modeltime.png" width="147" height="170" align="right" />
 
 Forecasting with `tidymodels` made easy! This short tutorial shows how you can use:
 
@@ -33,7 +35,7 @@ To perform classical time series analysis and machine learning ___in one framewo
 
 Here's the general process and where the functions fit. 
 
-```{r, echo=F,  out.width="100%", fig.align='center'}
+```{r, echo=F,  out.width="100%", fig.align='center', fig.cap="The Modeltime Workflow"}
 knitr::include_graphics("modeltime_workflow.jpg")
 ```
 
