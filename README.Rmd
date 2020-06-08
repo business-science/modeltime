@@ -39,9 +39,9 @@ knitr::include_graphics("vignettes/forecast_plot.jpg")
 
 No need to switch back and forth between various frameworks. `modeltime` unlocks machine learning & classical time series analysis.
 
-  - __forecast__: Use ARIMA, ETS, and more models coming. 
-  - __prophet__: Use Facebook's `prophet()` algorithm
-  - __tidymodels__: Use any `parsnip` model: `rand_forest()`, Boosted `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast 
+  - __forecast__: Use ARIMA, ETS, and more models coming (`arima_reg()`, `arima_boost()`, & `exp_smoothing()`). 
+  - __prophet__: Use Facebook's Prophet algorithm (`prophet_reg()` & `prophet_boost()`)
+  - __tidymodels__: Use any `parsnip` model: `rand_forest()`, `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast 
 
 #### A streamlined workflow for forecasting
 

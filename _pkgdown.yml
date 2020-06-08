@@ -52,6 +52,7 @@ reference:
     desc: The `parsnip`-adjacent algorithms that implement time series models.
     contents:
     - prophet_reg
+    - prophet_boost
     - arima_reg
     - arima_boost
     - exp_smoothing
