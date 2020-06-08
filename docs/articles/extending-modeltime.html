@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -239,15 +239,15 @@
 <h3 class="hasAnchor">
 <a href="#step-1-register-the-model-modes-and-arguments" class="anchor"></a>Step 1: Register the Model, Modes, and Arguments</h3>
 <p>Let’s add a new model called <code>decomposition_reg()</code> for Regression by Decomposition. Because Time Series analysis is generally regression, we’ll just register the regression mode.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_new_model</a></span>(<span class="st">"decomposition_reg"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_model_mode</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"decomposition_reg"</span>, <span class="kw">mode</span> <span class="kw">=</span> <span class="st">"regression"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_model_engine</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"decomposition_reg"</span>, <span class="kw">mode</span> <span class="kw">=</span> <span class="st">"regression"</span>, <span class="kw">eng</span> <span class="kw">=</span> <span class="st">"stlm_ets"</span>)
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_new_model</a></span>(<span class="st">"decomposition_reg"</span>)
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_mode</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"decomposition_reg"</span>, <span class="kw">mode</span> <span class="kw">=</span> <span class="st">"regression"</span>)
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_engine</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"decomposition_reg"</span>, <span class="kw">mode</span> <span class="kw">=</span> <span class="st">"regression"</span>, <span class="kw">eng</span> <span class="kw">=</span> <span class="st">"stlm_ets"</span>)
 
 <span class="co"># Here we set the dependency to forecast, though we can also use</span>
 <span class="co"># your package if you import the lower level package</span>
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_dependency</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"decomposition_reg"</span>, <span class="kw">eng</span> <span class="kw">=</span> <span class="st">"stlm_ets"</span>, <span class="kw">pkg</span> <span class="kw">=</span> <span class="st">"forecast"</span>)</pre></body></html></div>
-<p>We can use <code><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">show_model_info()</a></code> to see what’s been added to the registered model.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">show_model_info</a></span>(<span class="st">"decomposition_reg"</span>)
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"decomposition_reg"</span>, <span class="kw">eng</span> <span class="kw">=</span> <span class="st">"stlm_ets"</span>, <span class="kw">pkg</span> <span class="kw">=</span> <span class="st">"forecast"</span>)</pre></body></html></div>
+<p>We can use <code><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info()</a></code> to see what’s been added to the registered model.</p>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info</a></span>(<span class="st">"decomposition_reg"</span>)
 <span class="co">#&gt; Information for `decomposition_reg`</span>
 <span class="co">#&gt;  modes: unknown, regression </span>
 <span class="co">#&gt; </span>
@@ -261,7 +261,7 @@
 <span class="co">#&gt;  no registered prediction modules.</span></pre></body></html></div>
 <p>We need to add model arguments as well. We’ll use <code>set_model_args()</code> to add the appropriate model arguments.</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># 1st Frequency (period_seasonal_1 is a non-jargony term)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_model_arg</a></span>(
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_arg</a></span>(
   <span class="kw">model</span>        <span class="kw">=</span> <span class="st">"decomposition_reg"</span>,
   <span class="kw">eng</span>          <span class="kw">=</span> <span class="st">"stlm_ets"</span>,
   <span class="kw">parsnip</span>      <span class="kw">=</span> <span class="st">"period_seasonal_1"</span>,
@@ -271,7 +271,7 @@
 )
 
 <span class="co"># 2nd Frequency (period_seasonal_2 is a non-jargony term)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_model_arg</a></span>(
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_arg</a></span>(
   <span class="kw">model</span>        <span class="kw">=</span> <span class="st">"decomposition_reg"</span>,
   <span class="kw">eng</span>          <span class="kw">=</span> <span class="st">"stlm_ets"</span>,
   <span class="kw">parsnip</span>      <span class="kw">=</span> <span class="st">"period_seasonal_2"</span>,
@@ -294,7 +294,7 @@
         <span class="kw">period_seasonal_2</span> <span class="kw">=</span> <span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span>(<span class="no">period_seasonal_2</span>)
     )
 
-    <span class="kw pkg">parsnip</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/add_on_exports.html">new_model_spec</a></span>(
+    <span class="kw pkg">parsnip</span><span class="kw ns">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/add_on_exports.html">new_model_spec</a></span>(
         <span class="st">"decomposition_reg"</span>,
         <span class="kw">args</span>     <span class="kw">=</span> <span class="no">args</span>,
         <span class="kw">eng_args</span> <span class="kw">=</span> <span class="kw">NULL</span>,
@@ -420,7 +420,7 @@
 <h4 class="hasAnchor">
 <a href="#step-3b-create-a-fit-module" class="anchor"></a>Step 3B: Create a Fit Module</h4>
 <p>Next, let’s hook up our <code>parsnip</code> fit module to the newly created bridge fit function.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_fit</a></span>(
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_fit</a></span>(
   <span class="kw">model</span>  <span class="kw">=</span> <span class="st">"decomposition_reg"</span>,
   <span class="kw">eng</span>    <span class="kw">=</span> <span class="st">"stlm_ets"</span>,
   <span class="kw">mode</span>   <span class="kw">=</span> <span class="st">"regression"</span>,
@@ -432,7 +432,7 @@
   )
 )
 
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">show_model_info</a></span>(<span class="st">"decomposition_reg"</span>)
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info</a></span>(<span class="st">"decomposition_reg"</span>)
 <span class="co">#&gt; Information for `decomposition_reg`</span>
 <span class="co">#&gt;  modes: unknown, regression </span>
 <span class="co">#&gt; </span>
@@ -489,7 +489,7 @@
 <h4 class="hasAnchor">
 <a href="#step-4b-add-modules-for-prediction" class="anchor"></a>Step 4B: Add Modules for Prediction</h4>
 <p>We’re now ready to register the prediction function we’ve created.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">set_pred</a></span>(
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_pred</a></span>(
     <span class="kw">model</span>         <span class="kw">=</span> <span class="st">"decomposition_reg"</span>,
     <span class="kw">eng</span>           <span class="kw">=</span> <span class="st">"stlm_ets"</span>,
     <span class="kw">mode</span>          <span class="kw">=</span> <span class="st">"regression"</span>,
@@ -506,7 +506,7 @@
     )
 )
 
-<span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_new_model.html">show_model_info</a></span>(<span class="st">"decomposition_reg"</span>)
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info</a></span>(<span class="st">"decomposition_reg"</span>)
 <span class="co">#&gt; Information for `decomposition_reg`</span>
 <span class="co">#&gt;  modes: unknown, regression </span>
 <span class="co">#&gt; </span>
@@ -531,13 +531,13 @@
 <h3 class="hasAnchor">
 <a href="#step-5-fit-indicators" class="anchor"></a>Step 5: Fit Indicators</h3>
 <p>We need to modify how parnsip handles features because date and date-time information cannot be processed by <code><a href="https://rdrr.io/r/stats/model.frame.html">model.frame()</a></code> (default behavior). This step will simplify once parsnip is updated.</p>
-<p><strong>Current Method (Not Desirable)</strong>: We have to modify the <code><a href="https://rdrr.io/pkg/parsnip/man/reexports.html">fit()</a></code> method to set <code>indicators = FALSE</code>, which is necessary to prevent dates from being converted to numeric features.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">fit.decomposition_reg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">formula</span>, <span class="no">data</span>, <span class="no">control</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/control_parsnip.html">control_parsnip</a></span>(), <span class="no">...</span>) {
+<p><strong>Current Method (Not Desirable)</strong>: We have to modify the <code><a href="https://parsnip.tidymodels.org/reference/reexports.html">fit()</a></code> method to set <code>indicators = FALSE</code>, which is necessary to prevent dates from being converted to numeric features.</p>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">fit.decomposition_reg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">formula</span>, <span class="no">data</span>, <span class="no">control</span> <span class="kw">=</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/control_parsnip.html">control_parsnip</a></span>(), <span class="no">...</span>) {
 
     <span class="co"># Needed to preserve date and date time attributes</span>
     <span class="co"># - Note this approach will change once is implemented:</span>
     <span class="co">#   https://github.com/tidymodels/parsnip/pull/319.</span>
-    <span class="kw pkg">parsnip</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/fit.html">fit.model_spec</a></span>(<span class="no">object</span>, <span class="no">formula</span>, <span class="no">data</span>, <span class="kw">control</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/control_parsnip.html">control_parsnip</a></span>(), <span class="no">...</span>, <span class="kw">indicators</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+    <span class="kw pkg">parsnip</span><span class="kw ns">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/fit.html">fit.model_spec</a></span>(<span class="no">object</span>, <span class="no">formula</span>, <span class="no">data</span>, <span class="kw">control</span> <span class="kw">=</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/control_parsnip.html">control_parsnip</a></span>(), <span class="no">...</span>, <span class="kw">indicators</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
 }</pre></body></html></div>
 <p><strong>New Method (Best Approach)</strong>: Coming soon to <code>parsnip (&gt;0.1.1)</code>.</p>
@@ -563,13 +563,13 @@
 <span class="no">model_fit</span> <span class="kw">&lt;-</span> <span class="fu">decomposition_reg</span>(
   <span class="kw">period_seasonal_1</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>,
   <span class="kw">period_seasonal_2</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>*<span class="fl">7</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/set_engine.html">set_engine</a></span>(<span class="st">"stlm_ets"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/parsnip/man/reexports.html">fit</a></span>(<span class="no">value</span> ~ <span class="no">date</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span>(<span class="no">splits</span>))
+  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span>(<span class="st">"stlm_ets"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/reexports.html">fit</a></span>(<span class="no">value</span> ~ <span class="no">date</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span>(<span class="no">splits</span>))
 
 <span class="no">model_fit</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  188ms </span>
+<span class="co">#&gt; Fit time:  210ms </span>
 <span class="co">#&gt; STLM Model: ETS(M,N,N)</span>
 <span class="co">#&gt; ets(y = x, model = etsmodel, allow.multiplicative.trend = allow.multiplicative.trend)</span>
 <span class="co">#&gt; </span>

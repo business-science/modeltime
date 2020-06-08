@@ -84,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -185,7 +185,7 @@
 <span class='co'># Model Specification ----</span>
 
 <span class='no'>arima_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='st'>"auto_arima"</span>)
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='st'>"auto_arima"</span>)
 
 <span class='fu'>get_model_description</span>(<span class='no'>arima_spec</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "AUTO_ARIMA (Not Trained)"</div><div class='input'>
 <span class='co'># Fitted Model ----</span>
@@ -193,7 +193,7 @@
 <span class='no'>m750</span> <span class='kw'>&lt;-</span> <span class='no'>m4_monthly</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>id</span> <span class='kw'>==</span> <span class='st'>"M750"</span>)
 
 <span class='no'>arima_fit</span> <span class='kw'>&lt;-</span> <span class='no'>arima_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>m750</span>)</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>m750</span>)</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
 <span class='fu'>get_model_description</span>(<span class='no'>arima_fit</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "ARIMA(0,1,1)(0,1,1)[12] (Trained)"</div><div class='input'>
 
 </div></pre>

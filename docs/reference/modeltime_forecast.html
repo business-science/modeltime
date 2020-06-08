@@ -85,7 +85,7 @@ forecasting future data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -280,15 +280,15 @@ future accuracy, which in most cases makes the out-of-sample confidence interval
 
 <span class='co'># Model 1: auto_arima ----</span>
 <span class='no'>model_fit_no_boost</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
 <span class='co'># Model 2: arima_boost ----</span>
 <span class='no'>model_fit_boosted</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_boost.html'>arima_boost</a></span>(
     <span class='kw'>min_n</span> <span class='kw'>=</span> <span class='fl'>2</span>,
     <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.015</span>
 ) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima_xgboost"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span> + <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima_xgboost"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span> + <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
         <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
 <span class='co'># ---- MODELTIME TABLE ----</span>
 

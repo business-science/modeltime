@@ -86,7 +86,7 @@ different packages. Currently the only package is forecast." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -217,7 +217,7 @@ See Fit Details below.</p></td>
     <p>The data given to the function are not saved and are only used
 to determine the <em>mode</em> of the model. For <code>arima_reg()</code>, the
 mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> function using the
+<p>The model can be created using the <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
 <li><p>"auto_arima" (default) - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima()</a></code></p></li>
 <li><p>"Arima" - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code></p></li>
@@ -237,7 +237,7 @@ following <em>engines</em>:</p><ul>
 <p>These arguments are converted to their specific names at the
 time that the model is fit.</p>
 <p>Other options and argument can be
-set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code> (See Engine Details below).</p>
+set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code> (See Engine Details below).</p>
 <p>If parameters need to be modified, <code><a href='https://rdrr.io/r/stats/update.html'>update()</a></code> can be used
 in lieu of recreating the object from scratch.</p>
     <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
@@ -255,7 +255,7 @@ names in each engine:</p><table class='table'>
 
 
 
-<p>Other options can be set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code>.</p>
+<p>Other options can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
 <p><strong>auto_arima (default engine)</strong></p>
 <p>The engine uses <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima()</a></code>.</p>
 <p>Function Parameters:</p><pre>## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
@@ -272,11 +272,11 @@ names in each engine:</p><table class='table'>
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
 <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima()</a></code> via <code>arima_reg()</code> parameters.
-Other options and argument can be set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code>.</p>
+Other options and argument can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
 <p>Parameter Notes:</p><ul>
 <li><p>All values of nonseasonal pdq and seasonal PDQ are maximums.
 The <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima()</a></code> model will select a value using these as an upper limit.</p></li>
-<li><p><code>xreg</code> - This is supplied via the parsnip / modeltime <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> interface
+<li><p><code>xreg</code> - This is supplied via the parsnip / modeltime <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> interface
 (so don't provide this manually). See Fit Details (below).</p></li>
 </ul>
 
@@ -289,9 +289,9 @@ The <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::a
 
 <p>The nonseasonal ARIMA terms (<code>order</code>) and seasonal ARIMA terms (<code>seasonal</code>)
 are provided to <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code> via <code>arima_reg()</code> parameters.
-Other options and argument can be set using <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code>.</p>
+Other options and argument can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
 <p>Parameter Notes:</p><ul>
-<li><p><code>xreg</code> - This is supplied via the parsnip / modeltime <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> interface
+<li><p><code>xreg</code> - This is supplied via the parsnip / modeltime <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> interface
 (so don't provide this manually). See Fit Details (below).</p></li>
 <li><p><code>method</code> - The default is set to "ML" (Maximum Likelihood).
 This method is more robust at the expense of speed and possible
@@ -306,8 +306,8 @@ evaluate Conditional Sum of Squares for starting values, then Maximium Likelihoo
 
 <p><strong>Date and Date-Time Variable</strong></p>
 <p>It's a requirement to have a date or date-time variable as a predictor.
-The <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
-<li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date)</a></code></p></li>
+The <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
+<li><p><code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
 <p><em>Seasonal Period Specification</em></p>
@@ -321,12 +321,12 @@ There are 3 ways to specify:</p><ol>
 
 <p><strong>Univariate (No xregs, Exogenous Regressors):</strong></p>
 <p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
-<li><p>Formula Interface (recommended): <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
-<li><p>XY Interface: <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
+<li><p>Formula Interface (recommended): <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
+<li><p>XY Interface: <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
 <p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
-<p>The <code>xreg</code> parameter is populated using the <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code> or <code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit_xy()</a></code> function:</p><ul>
+<p>The <code>xreg</code> parameter is populated using the <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> or <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit_xy()</a></code> function:</p><ul>
 <li><p>Only <code>factor</code>, <code>ordered factor</code>, and <code>numeric</code> data will be used as xregs.</p></li>
 <li><p>Date and Date-time variables are not used as xregs</p></li>
 <li><p><code>character</code> data should be converted to factor.</p></li>
@@ -339,16 +339,16 @@ There are 3 ways to specify:</p><ol>
 </ol>
 
 <p>The <code>month.lbl</code> is an exogenous regressor that can be passed to the <code>arima_reg()</code> using
-<code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit()</a></code>:</p><ul>
-<li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
+<code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code>:</p><ul>
+<li><p><code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
+<li><p><code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
 and the <code>date</code> feature. Only <code>month.lbl</code> will be used as an exogenous regressor.</p></li>
 </ul>
 
 <p>Note that date or date-time class values are excluded from <code>xreg</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.arima_reg()</a></code>, <code><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.arima_reg()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
@@ -380,13 +380,13 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 
 <span class='co'># Model Spec</span>
 <span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_reg</span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='st'>"auto_arima"</span>)
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='st'>"auto_arima"</span>)
 
 <span class='co'># Fit Spec</span>
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  299ms 
+#&gt; Fit time:  293ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(0,1,1)(1,1,1)[12] 
 #&gt; 
@@ -410,14 +410,14 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
         <span class='kw'>seasonal_differences</span>     <span class='kw'>=</span> <span class='fl'>0</span>,
         <span class='kw'>seasonal_ma</span>              <span class='kw'>=</span> <span class='fl'>1</span>
     ) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/set_engine.html'>set_engine</a></span>(<span class='st'>"arima"</span>)
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='st'>"arima"</span>)
 
 <span class='co'># Fit Spec</span>
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/parsnip/man/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
 <span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  592ms 
+#&gt; Fit time:  582ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(3,1,3)(1,0,1)[12] 
 #&gt; 
