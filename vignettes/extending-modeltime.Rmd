@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `modeltime` package was with extensibility in mind. It's impossible to incorporate the entire [R time series ecosystem](https://cran.r-project.org/web/views/TimeSeries.html) into a single package. More than likely your going to need something that hasn't been included yet. And, if you're a developer, ___I challenge you___ to extend `modeltime` to suit your needs. I've spent a lot of time thinking about:
+The `modeltime` package was with extensibility in mind. It's impossible to incorporate the entire [R time series ecosystem](https://CRAN.R-project.org/view=TimeSeries) into a single package. More than likely your going to need something that hasn't been included yet. And, if you're a developer, ___I challenge you___ to extend `modeltime` to suit your needs. I've spent a lot of time thinking about:
 
 - A [systematic workflow](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) that can be used for time series analysis
 - A way to integrate time series into a [best-in-class modeling framework](https://www.tidymodels.org/) (i.e. `tidymodels`)
