@@ -47,7 +47,7 @@
 #'  extending the trained dates and exogonous regressors (xregs) if used.
 #'    - __Forecasting Evaluation Data__: By default, the `new_data` will use the `.calibration_data`
 #'      if `new_data` is not provided.
-#'      This is the equivalent of using [rsample::testing()] for getting test data sets.
+#'      This is the equivalent of using `rsample::testing()` for getting test data sets.
 #'    - __Forecasting Future Data__: See [future_frame()] for creating future tibbles.
 #'    - __Xregs__: Can be used with this method
 #'
@@ -101,24 +101,15 @@
 #' # --- MODELS ---
 #'
 #' # Model 1: auto_arima ----
-#' model_fit_no_boost <- arima_reg() %>%
+#' model_fit_arima <- arima_reg() %>%
 #'     set_engine(engine = "auto_arima") %>%
 #'     fit(value ~ date, data = training(splits))
 #'
-#' # Model 2: arima_boost ----
-#' model_fit_boosted <- arima_boost(
-#'     min_n = 2,
-#'     learn_rate = 0.015
-#' ) %>%
-#'     set_engine(engine = "auto_arima_xgboost") %>%
-#'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
-#'         data = training(splits))
 #'
 #' # ---- MODELTIME TABLE ----
 #'
 #' models_tbl <- modeltime_table(
-#'     model_fit_no_boost,
-#'     model_fit_boosted
+#'     model_fit_arima
 #' )
 #'
 #' # ---- CALIBRATE ----

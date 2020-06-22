@@ -47,8 +47,8 @@ mode will always be "regression".
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item "stlm_ets" (default) - Connects to \code{\link[forecast:stlm]{forecast::stlm()}}, \code{method = "ets"}
-\item "stlm_arima" (default) - Connects to \code{\link[forecast:stlm]{forecast::stlm()}}, \code{method = "arima"}
+\item "stlm_ets" (default) - Connects to \code{forecast::stlm()}, \code{method = "ets"}
+\item "stlm_arima" (default) - Connects to \code{forecast::stlm()}, \code{method = "arima"}
 }
 }
 \section{Engine Details}{
@@ -63,7 +63,7 @@ names in each engine:\tabular{ll}{
 
 Other options can be set using \code{set_engine()}.
 
-The engines use \code{\link[forecast:stlm]{forecast::stlm()}}.
+The engines use \code{forecast::stlm()}.
 
 Function Parameters:\preformatted{## function (y, s.window = 13, robust = FALSE, method = c("ets", "arima"), 
 ##     modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL, 

@@ -32,8 +32,8 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "stlm_ets" (default) - Connects to [forecast::stlm()], `method = "ets"`
-#'  - "stlm_arima" (default) - Connects to [forecast::stlm()], `method = "arima"`
+#'  - "stlm_ets" (default) - Connects to `forecast::stlm()`, `method = "ets"`
+#'  - "stlm_arima" (default) - Connects to `forecast::stlm()`, `method = "arima"`
 #'
 #'
 #' @section Engine Details:
@@ -51,7 +51,7 @@
 #'
 #' Other options can be set using `set_engine()`.
 #'
-#' The engines use [forecast::stlm()].
+#' The engines use `forecast::stlm()`.
 #'
 #' Function Parameters:
 #' ```{r echo = FALSE}

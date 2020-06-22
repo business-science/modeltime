@@ -270,17 +270,33 @@ splits <- initial_time_split(m750, prop = 0.9)
 # MODEL SPEC ----
 
 # Set engine and boosting parameters
-model_spec <- arima_boost(seasonal_period = "auto", learn_rate = 0.1) \%>\%
-    set_engine(engine = "auto_arima_xgboost")
+model_spec <- arima_boost(
+
+    # ARIMA args
+    seasonal_period = 12,
+    non_seasonal_ar = 0,
+    non_seasonal_differences = 1,
+    non_seasonal_ma = 1,
+    seasonal_ar     = 0,
+    seasonal_differences = 1,
+    seasonal_ma     = 1,
+
+    # XGBoost Args
+    tree_depth = 6,
+    learn_rate = 0.1
+) \%>\%
+    set_engine(engine = "arima_xgboost")
 
 # FIT ----
 
+\dontrun{
 # Boosting - Happens by adding numeric date and month features
 model_fit_boosted <- model_spec \%>\%
     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 
 model_fit_boosted
+}
 
 
 }

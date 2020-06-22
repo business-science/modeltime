@@ -20,6 +20,7 @@ This function:
 \item Creates a table of models
 \item Validates that all objects are models (parsnip or workflows objects) and
 all models have been fitted (trained)
+\item Provides an ID and Description of the models
 }
 }
 \examples{
@@ -38,24 +39,15 @@ splits <- initial_time_split(m750, prop = 0.9)
 # --- MODELS ---
 
 # Model 1: auto_arima ----
-model_fit_no_boost <- arima_reg() \%>\%
+model_fit_arima <- arima_reg() \%>\%
     set_engine(engine = "auto_arima") \%>\%
     fit(value ~ date, data = training(splits))
 
-# Model 2: arima_boost ----
-model_fit_boosted <- arima_boost(
-    min_n = 2,
-    learn_rate = 0.015
-) \%>\%
-    set_engine(engine = "auto_arima_xgboost") \%>\%
-    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
-        data = training(splits))
 
 # ---- MODELTIME TABLE ----
 
 models_tbl <- modeltime_table(
-    model_fit_no_boost,
-    model_fit_boosted
+    model_fit_arima
 )
 
 # ---- CALIBRATE ----

@@ -271,10 +271,12 @@ model_spec <- prophet_boost(
     set_engine("prophet_xgboost")
 
 # Fit Spec
+\dontrun{
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
 model_fit
+}
 
 
 

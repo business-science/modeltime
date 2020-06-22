@@ -70,7 +70,7 @@ extending the trained dates and exogonous regressors (xregs) if used.
 \itemize{
 \item \strong{Forecasting Evaluation Data}: By default, the \code{new_data} will use the \code{.calibration_data}
 if \code{new_data} is not provided.
-This is the equivalent of using \code{\link[rsample:testing]{rsample::testing()}} for getting test data sets.
+This is the equivalent of using \code{rsample::testing()} for getting test data sets.
 \item \strong{Forecasting Future Data}: See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
 \item \strong{Xregs}: Can be used with this method
 }
@@ -125,24 +125,15 @@ splits <- initial_time_split(m750, prop = 0.9)
 # --- MODELS ---
 
 # Model 1: auto_arima ----
-model_fit_no_boost <- arima_reg() \%>\%
+model_fit_arima <- arima_reg() \%>\%
     set_engine(engine = "auto_arima") \%>\%
     fit(value ~ date, data = training(splits))
 
-# Model 2: arima_boost ----
-model_fit_boosted <- arima_boost(
-    min_n = 2,
-    learn_rate = 0.015
-) \%>\%
-    set_engine(engine = "auto_arima_xgboost") \%>\%
-    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
-        data = training(splits))
 
 # ---- MODELTIME TABLE ----
 
 models_tbl <- modeltime_table(
-    model_fit_no_boost,
-    model_fit_boosted
+    model_fit_arima
 )
 
 # ---- CALIBRATE ----
