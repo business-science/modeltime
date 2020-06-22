@@ -265,37 +265,21 @@ For more information, refer to the <a href='https://gt.rstudio.com/index.html'>G
 <span class='co'># --- MODELS ---</span>
 
 <span class='co'># Model 1: auto_arima ----</span>
-<span class='no'>model_fit_no_boost</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
+<span class='no'>model_fit_arima</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
-<span class='co'># Model 2: arima_boost ----</span>
-<span class='no'>model_fit_boosted</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_boost.html'>arima_boost</a></span>(
-    <span class='kw'>min_n</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-    <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.015</span>
-) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima_xgboost"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span> + <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-        <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
 <span class='no'>models_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span>(
-    <span class='no'>model_fit_no_boost</span>,
-    <span class='no'>model_fit_boosted</span>
+    <span class='no'>model_fit_arima</span>
 )
 
 <span class='co'># ---- ACCURACY ----</span>
 
-<span class='co'># No groups</span>
 <span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'>table_modeltime_accuracy</span>()
-
-<span class='co'># With groups</span>
-<span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'>group_by</span>(<span class='no'>.type</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>table_modeltime_accuracy</span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

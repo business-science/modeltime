@@ -430,10 +430,10 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.arima_boost()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ───────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2</span><span> 3.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr  </span><span> 0.3.4</span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tibble </span><span> 3.0.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dplyr  </span><span> 1.0.0</span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tidyr  </span><span> 1.1.0     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0</span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘ggplot2’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tibble’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tidyr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘purrr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ───────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘ggplot2’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tibble’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘tidyr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘purrr’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ──────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span> masks </span><span style='color: #0000BB;'>stats</span><span>::filter()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>    masks </span><span style='color: #0000BB;'>stats</span><span>::lag()</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘lubridate’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
@@ -451,41 +451,33 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='co'># MODEL SPEC ----</span>
 
 <span class='co'># Set engine and boosting parameters</span>
-<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_boost</span>(<span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.1</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima_xgboost"</span>)
+<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_boost</span>(
+
+    <span class='co'># ARIMA args</span>
+    <span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+    <span class='kw'>non_seasonal_ar</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+    <span class='kw'>non_seasonal_differences</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <span class='kw'>non_seasonal_ma</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <span class='kw'>seasonal_ar</span>     <span class='kw'>=</span> <span class='fl'>0</span>,
+    <span class='kw'>seasonal_differences</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <span class='kw'>seasonal_ma</span>     <span class='kw'>=</span> <span class='fl'>1</span>,
+
+    <span class='co'># XGBoost Args</span>
+    <span class='kw'>tree_depth</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+    <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.1</span>
+) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"arima_xgboost"</span>)
 
 <span class='co'># FIT ----</span>
 
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Boosting - Happens by adding numeric date and month features</span>
 <span class='no'>model_fit_boosted</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span> + <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-        <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
-<span class='no'>model_fit_boosted</span></div><div class='output co'>#&gt; parsnip model object
-#&gt; 
-#&gt; Fit time:  1.6s 
-#&gt; ARIMA(0,1,1)(0,1,1)[12] w/ XGBoost Errors
-#&gt; ---
-#&gt; Model 1: Auto ARIMA
-#&gt; Series: outcome 
-#&gt; ARIMA(0,1,1)(0,1,1)[12] 
-#&gt; 
-#&gt; Coefficients:
-#&gt;           ma1     sma1
-#&gt;       -0.3405  -0.4781
-#&gt; s.e.   0.0652   0.0628
-#&gt; 
-#&gt; sigma^2 estimated as 25114:  log likelihood=-1699.55
-#&gt; AIC=3405.1   AICc=3405.19   BIC=3415.8
-#&gt; 
-#&gt; ---
-#&gt; Model 2: XGBoost Errors
-#&gt; 
-#&gt; xgboost::xgb.train(params = list(eta = 0.1, max_depth = 6, gamma = 0, 
-#&gt;     colsample_bytree = 1, min_child_weight = 1, subsample = 1), 
-#&gt;     data = x, nrounds = 15, verbose = 0, early_stopping_rounds = NULL, 
-#&gt;     objective = "reg:squarederror", validation = 0, nthread = 1)</div><div class='input'>
+        <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
 
-</div></span></pre>
+<span class='no'>model_fit_boosted</span>
+}</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
