@@ -1,16 +1,16 @@
 Package: modeltime
-Title: The tidymodels extension for time series modeling
+Title: The Tidymodels Extension for Time Series Modeling
 Version: 0.0.1
-Authors@R: 
-    person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre"))
+Authors@R: c(
+    person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre")),
+    person("Business Science", role = "cph"))
 Description: 
     The time series forecasting framework for use with the 'tidymodels' ecosystem. 
-    Models include ARIMA, ETS, and additional time series models
-    from the 'forecast' and 'prophet' packages. Refer to Forecasting Principles & Practice
-    (Hyndman, R.J., & Athanasopoulos, G. (2018) Forecasting: principles and practice, 
-    2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on April 20th, 2020).
-    Refer to "Prophet: forecasting at scale" (https://research.fb.com/blog/2017/02/prophet-forecasting-at-scale/.
-    Accessed on June 2nd, 2020).
+    Models include ARIMA, Exponential Smoothing, and additional time series models
+    from the 'forecast' and 'prophet' packages. Refer to "Forecasting Principles & Practice, Second edition" 
+    (<https://otexts.com/fpp2/>).
+    Refer to "Prophet: forecasting at scale" 
+    (<https://research.fb.com/blog/2017/02/prophet-forecasting-at-scale/>.).
 URL: https://github.com/business-science/modeltime
 BugReports: https://github.com/business-science/modeltime/issues
 License: MIT + file LICENSE
