@@ -2,7 +2,7 @@
 % Please edit documentation in R/tibble-type_sum.R
 \name{type_sum.mdl_time_tbl}
 \alias{type_sum.mdl_time_tbl}
-\title{Succinct summary of Modletime Tables}
+\title{Succinct summary of Modeltime Tables}
 \usage{
 \method{type_sum}{mdl_time_tbl}(x)
 }

@@ -1,4 +1,4 @@
-#' Succinct summary of Modletime Tables
+#' Succinct summary of Modeltime Tables
 #'
 #' `type_sum` controls how objects are shown when inside tibble
 #'  columns.
