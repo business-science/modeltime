@@ -148,10 +148,10 @@ make_prophet_boost <- function() {
             interface = "data.frame",
             protect   = c("x", "y"),
             func      = c(fun = "prophet_xgboost_fit_impl"),
-            defaults  = list(
-                uncertainty.samples = 0,
-                objective = list(objective = "reg:squarederror", nthread = 1, verbose = 0)
-            )
+            defaults  = list(uncertainty.samples = 0,
+                             objective = "reg:squarederror",
+                             nthread = 1,
+                             verbose = 0)
         )
     )
 
