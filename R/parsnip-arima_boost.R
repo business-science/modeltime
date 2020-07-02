@@ -770,35 +770,3 @@ arima_xgboost_predict_impl <- function(object, new_data, ...) {
 }
 
 
-# XGBOOST UTILITIES ----
-
-xgboost_impl <- function(x, y,
-                         max_depth = 6, nrounds = 15, eta  = 0.3, colsample_bytree = 1,
-                         min_child_weight = 1, gamma = 0, subsample = 1, validation = 0,
-                         early_stop = NULL, ...) {
-
-    parsnip::xgb_train(x, y,
-                       max_depth = max_depth, nrounds = nrounds, eta  = eta, colsample_bytree = colsample_bytree,
-                       min_child_weight = min_child_weight, gamma = gamma, subsample = subsample, validation = validation,
-                       early_stop = early_stop, ...)
-
-}
-
-
-xgboost_predict <- function(object, newdata, ...) {
-    if (!inherits(newdata, "xgb.DMatrix")) {
-        newdata <- as.matrix(newdata)
-        newdata <- xgboost::xgb.DMatrix(data = newdata, missing = NA)
-    }
-
-    res <- stats::predict(object, newdata, ...)
-
-    x = switch(
-        object$params$objective,
-        "reg:linear" = , "reg:logistic" = , "binary:logistic" = res,
-        "binary:logitraw" = stats::binomial()$linkinv(res),
-        "multi:softprob" = matrix(res, ncol = object$params$num_class, byrow = TRUE),
-        res
-    )
-    x
-}

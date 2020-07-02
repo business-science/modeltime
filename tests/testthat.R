@@ -15,7 +15,7 @@ library(dials)
 library(yardstick)
 
 library(timetk)
-library(modeltime)
+# library(modeltime)
 
 library(progressr)
 
