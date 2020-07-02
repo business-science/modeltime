@@ -9,7 +9,7 @@ modeltime_forecast(
   new_data = NULL,
   h = NULL,
   actual_data = NULL,
-  conf_interval = 0.8,
+  conf_interval = 0.95,
   ...
 )
 }

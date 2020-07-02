@@ -135,7 +135,7 @@ NULL
 
 #' @export
 #' @rdname modeltime_forecast
-modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.8, ...) {
+modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
 
     # Checks
 
@@ -153,13 +153,13 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
 }
 
 #' @export
-modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.8, ...) {
+modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
 
 }
 
 #' @export
-modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.8, ...) {
+modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
 
     data <- object
 
@@ -169,7 +169,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
     data_calibration <- data %>%
         dplyr::select(.model_id, .calibration_data)
 
-    # CREATE FORECAST
+    # CREATE FORECAST ----
 
     # Compute first model with actual data
     ret_1 <- data %>%
@@ -214,7 +214,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
 
     ret <- dplyr::bind_rows(ret_1, ret_2)
 
-    # ADD CONF INTERVALS
+    # ADD CONF INTERVALS ----
     if (!is.null(conf_interval)) {
         ret <- ret %>%
             safe_conf_interval_map(data_calibration, conf_interval = conf_interval)
@@ -514,8 +514,8 @@ safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_
 
 safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
 
-    safe_normal_ci_mean_shifted <- purrr::safely(
-        normal_ci_mean_shifted,
+    safe_ci <- purrr::safely(
+        centered_residuals,
         otherwise = tibble::tibble(
             .conf_lo = NA,
             .conf_hi = NA
@@ -526,50 +526,97 @@ safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
         dplyr::group_by(.model_id) %>%
         tidyr::nest() %>%
         dplyr::left_join(data_calibration, by = ".model_id") %>%
-        dplyr::mutate(.ci = purrr::map(.calibration_data, .f = function(.data) {
-            x   <- .data$.residuals
-            res <- safe_normal_ci_mean_shifted(x, conf_interval = conf_interval)
+        dplyr::mutate(.ci = purrr::map2(data, .calibration_data, .f = function(data_1, data_2) {
+            res <- safe_ci(data_1, data_2, conf_interval = conf_interval)
             res %>% purrr::pluck("result")
         })
         ) %>%
         dplyr::select(-.calibration_data) %>%
-        tidyr::unnest(cols = c(.ci)) %>%
-        tidyr::unnest(cols = c(data)) %>%
-        dplyr::ungroup() %>%
-        dplyr::mutate(
-            .conf_lo = .value + .conf_lo,
-            .conf_hi = .value + .conf_hi
-        )
+        tidyr::unnest(cols = c(data, .ci)) %>%
+        dplyr::ungroup()
 }
 
 
-# Normal Conf Interval
-normal_ci_mean_shifted <- function(x, conf_interval = 0.8) {
+centered_residuals <- function(data_1, data_2, conf_interval) {
 
-    probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
-    quantile_x <- stats::quantile(x, prob = probs, na.rm = TRUE)
-    iq_range   <- quantile_x[[2]] - quantile_x[[1]]
-    limits     <- quantile_x + iq_range * c(-1, 1)
+    # Collect absolute residuals
+    ret <- tryCatch({
 
-    ci_lo_vec  <- limits[1]
-    ci_hi_vec  <- limits[2]
+        residuals <- c(data_2$.residuals, -data_2$.residuals)
+        s <- stats::sd(residuals)
 
-    # Apply mean shift
-    suppressWarnings({
-        mu <- mean(x, na.rm = T)
+        data_1 %>%
+            dplyr::mutate(
+                .conf_lo = stats::qnorm((1-conf_interval)/2, mean = .value, sd = s),
+                .conf_hi = stats::qnorm((1+conf_interval)/2, mean = .value, sd = s)
+            ) %>%
+            dplyr::select(.conf_lo, .conf_hi)
+
+    }, error = function(e) {
+        tibble::tibble(
+            .conf_lo = NA,
+            .conf_hi = NA
+        )
     })
 
-    ci_lo_vec_shifted <- min(ci_lo_vec, ci_lo_vec - mu)
-    ci_hi_vec_shifted <- max(ci_hi_vec, ci_hi_vec - mu)
-
-    # Tibble
-    ret <- tibble::tibble(
-        .conf_lo = ci_lo_vec_shifted,
-        .conf_hi = ci_hi_vec_shifted
-    )
-
     return(ret)
+
 }
 
+
+# # Normal Conf Interval
+# normal_ci_mean_shifted <- function(data, conf_interval = 0.95) {
+#
+#     x <- data$.residuals
+#
+#     probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
+#     quantile_x <- stats::quantile(x, prob = probs, na.rm = TRUE)
+#     iq_range   <- quantile_x[[2]] - quantile_x[[1]]
+#     limits     <- quantile_x + iq_range * c(-1, 1)
+#
+#     ci_lo_vec  <- limits[1]
+#     ci_hi_vec  <- limits[2]
+#
+#     # Apply mean shift
+#     suppressWarnings({
+#         mu <- mean(x, na.rm = T)
+#     })
+#
+#     ci_lo_vec_shifted <- min(ci_lo_vec, ci_lo_vec - mu)
+#     ci_hi_vec_shifted <- max(ci_hi_vec, ci_hi_vec - mu)
+#
+#     # Tibble
+#     ret <- tibble::tibble(
+#         .conf_lo = ci_lo_vec_shifted,
+#         .conf_hi = ci_hi_vec_shifted
+#     )
+#
+#     return(ret)
+# }
+#
+# # Normal Conf Interval
+# residual_regression <- function(data, conf_interval = 0.95) {
+#
+#     model <- tryCatch({
+#         stats::lm(data$.residuals ~ seq_along(data$.residuals))
+#     }, error = function(e) {
+#         NULL
+#     })
+#
+#     sd_residuals <- stats::sd(model$residuals)
+#
+#     alpha   <- (1-conf_interval)/2
+#     z_score <- abs(qnorm(alpha))
+#
+#     # Tibble
+#     ret <- tibble::tibble(
+#         .conf_lo = (-z_score) * sd_residuals,
+#         .conf_hi = (z_score) * sd_residuals
+#     )
+#
+#     return(ret)
+#
+#
+# }
 
 
