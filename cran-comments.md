@@ -7,4 +7,4 @@
 
 0 errors | 0 warnings | 0 notes
 
-* Fixed issue with "Business Science" as copyright holder
+* Compatability with parsnip 0.1.2

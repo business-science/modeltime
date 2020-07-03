@@ -1,5 +1,7 @@
 
-# modeltime 0.0.1.9000 (Development Version)
+# modeltime 0.0.2.9000 (Development Version)
+
+# modeltime 0.0.2
 
 ### Confidence Interval Estimation
 
