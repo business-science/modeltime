@@ -31,9 +31,13 @@ g <- forecast_tbl %>%
     plot_modeltime_forecast(.interactive = FALSE)
 
 # * plotly visualization ----
-p <- forecast_tbl %>%
-    mutate_at(vars(.value:.conf_hi), exp) %>%
-    plot_modeltime_forecast(.interactive = TRUE)
+suppressWarnings({
+    # Needed until plotly is resolved: https://github.com/ropensci/plotly/issues/1783
+    p <- forecast_tbl %>%
+        mutate_at(vars(.value:.conf_hi), exp) %>%
+        plot_modeltime_forecast(.interactive = TRUE)
+})
+
 
 
 test_that("modeltime plot, Test Static ggplot", {

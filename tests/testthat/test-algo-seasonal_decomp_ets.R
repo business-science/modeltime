@@ -1,5 +1,5 @@
 # ---- STANDARD ARIMA ----
-context("TEST seasonal_decomp()")
+context("TEST seasonal_decomp() - stlm_ets")
 
 
 # SETUP ----

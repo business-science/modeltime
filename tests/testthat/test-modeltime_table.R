@@ -1,5 +1,5 @@
 # FORECAST PLOTS -----
-context("TEST MODELTIME PLOTS")
+context("TEST MODELTIME TABLES")
 
 # SETUP ----
 
