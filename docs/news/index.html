@@ -83,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -150,11 +150,34 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="modeltime-0009000" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.0.9000">
-<a href="#modeltime-0009000" class="anchor"></a>modeltime 0.0.0.9000</h1>
+    <div id="modeltime-0019000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.1.9000">
+<a href="#modeltime-0019000-development-version" class="anchor"></a>modeltime 0.0.1.9000 (Development Version)<small> Unreleased </small>
+</h1>
+<div id="confidence-interval-estimation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#confidence-interval-estimation" class="anchor"></a>Confidence Interval Estimation</h3>
 <ul>
-<li>Working on essential package functionality</li>
+<li>
+<code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>: Now estimates confidence intervals using centered standard deviation. The mean is assumed to be zero and residuals deviate from mean = 0.</li>
+</ul>
+</div>
+<div id="fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fixes" class="anchor"></a>Fixes</h3>
+<ul>
+<li>Updates to work with <code>parsnip</code> 0.1.2.</li>
+<li>
+<code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: Set <code>nthreads = 1</code> (default) to ensure parallelization is thread safe.</li>
+</ul>
+</div>
+</div>
+    <div id="modeltime-001" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.1">
+<a href="#modeltime-001" class="anchor"></a>modeltime 0.0.1<small> 2020-06-22 </small>
+</h1>
+<ul>
+<li>Initial Release</li>
 </ul>
 </div>
   </div>

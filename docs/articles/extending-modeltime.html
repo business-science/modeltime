@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
 
       
 
-      </header><script src="extending-modeltime_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><script src="extending-modeltime_files/header-attrs-2.3/header-attrs.js"></script><script src="extending-modeltime_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extending Modeltime (Developer Tools)</h1>
@@ -167,9 +167,9 @@
 <a href="#libraries" class="anchor"></a>Libraries</h3>
 <p>To use the code in this tutorial, you’ll need to have the following packages installed.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">parsnip</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modeltime</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">forecast</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rsample</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modeltime</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">timetk</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rlang</span>)</pre></body></html></div>
@@ -350,7 +350,7 @@
   <span class="no">outcome_msts</span> <span class="kw">&lt;-</span> <span class="kw pkg">forecast</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/forecast/man/msts.html">msts</a></span>(<span class="no">outcome</span>, <span class="kw">seasonal.periods</span> <span class="kw">=</span> <span class="no">seasonal.periods</span>)
 
   <span class="co"># 2. Predictors - Handle Dates </span>
-  <span class="no">index_tbl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/parse_index.html">parse_index_from_data</a></span>(<span class="no">predictors</span>)
+  <span class="no">index_tbl</span> <span class="kw">&lt;-</span> <span class="kw pkg">modeltime</span><span class="kw ns">::</span><span class="fu"><a href="../reference/parse_index.html">parse_index_from_data</a></span>(<span class="no">predictors</span>)
   <span class="no">idx_col</span>   <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">index_tbl</span>)
   <span class="no">idx</span>       <span class="kw">&lt;-</span> <span class="kw pkg">timetk</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_index.html">tk_index</a></span>(<span class="no">index_tbl</span>)
 
@@ -527,62 +527,56 @@
 <span class="co">#&gt;    regression stlm_ets numeric</span></pre></body></html></div>
 </div>
 </div>
-<div id="step-5-fit-indicators" class="section level3">
+<div id="step-5-add-encoding" class="section level3">
 <h3 class="hasAnchor">
-<a href="#step-5-fit-indicators" class="anchor"></a>Step 5: Fit Indicators</h3>
-<p>We need to modify how parnsip handles features because date and date-time information cannot be processed by <code><a href="https://rdrr.io/r/stats/model.frame.html">model.frame()</a></code> (default behavior). This step will simplify once parsnip is updated.</p>
-<p><strong>Current Method (Not Desirable)</strong>: We have to modify the <code><a href="https://parsnip.tidymodels.org/reference/reexports.html">fit()</a></code> method to set <code>indicators = FALSE</code>, which is necessary to prevent dates from being converted to numeric features.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">fit.decomposition_reg</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">formula</span>, <span class="no">data</span>, <span class="no">control</span> <span class="kw">=</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/control_parsnip.html">control_parsnip</a></span>(), <span class="no">...</span>) {
-
-    <span class="co"># Needed to preserve date and date time attributes</span>
-    <span class="co"># - Note this approach will change once is implemented:</span>
-    <span class="co">#   https://github.com/tidymodels/parsnip/pull/319.</span>
-    <span class="kw pkg">parsnip</span><span class="kw ns">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/fit.html">fit.model_spec</a></span>(<span class="no">object</span>, <span class="no">formula</span>, <span class="no">data</span>, <span class="kw">control</span> <span class="kw">=</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/control_parsnip.html">control_parsnip</a></span>(), <span class="no">...</span>, <span class="kw">indicators</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-
-}</pre></body></html></div>
-<p><strong>New Method (Best Approach)</strong>: Coming soon to <code>parsnip (&gt;0.1.1)</code>.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"># Don't do this until parsnip (&gt;0.1.1) is released
-# set_encoding(
-#   model   = "decomposition_reg",
-#   eng     = "stlm_ets",
-#   mode    = "regression",
-#   options = list(predictor_indicators = FALSE)
-# )</pre></body></html></div>
+<a href="#step-5-add-encoding" class="anchor"></a>Step 5: Add Encoding</h3>
+<p>We need to modify how <code>parnsip</code> handles features because date and date-time information cannot be processed by <code><a href="https://rdrr.io/r/stats/model.frame.html">model.frame()</a></code> (default behavior). We use <code><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_encoding()</a></code> to ensure the predictors are processed without any preprocessing. We’ll handle all preprocessing in our fit model bridge, <code>bridge_stlm_ets_fit_impl()</code> (shown next).</p>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="kw pkg">parsnip</span><span class="kw ns">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_encoding</a></span>(
+  <span class="kw">model</span>   <span class="kw">=</span> <span class="st">"decomposition_reg"</span>,
+  <span class="kw">eng</span>     <span class="kw">=</span> <span class="st">"stlm_ets"</span>,
+  <span class="kw">mode</span>    <span class="kw">=</span> <span class="st">"regression"</span>,
+  <span class="kw">options</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+    <span class="kw">predictor_indicators</span> <span class="kw">=</span> <span class="st">"none"</span>,
+    <span class="kw">compute_intercept</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+    <span class="kw">remove_intercept</span> <span class="kw">=</span> <span class="fl">FALSE</span>
+  )
+)</pre></body></html></div>
 </div>
 </div>
 <div id="does-it-work" class="section level2">
 <h2 class="hasAnchor">
-<a href="#does-it-work" class="anchor"></a>Does it work???</h2>
+<a href="#does-it-work" class="anchor"></a>Does it work?</h2>
 <p>The moment of truth is upon us! Let’s test this new <code>modeltime</code> function out.</p>
 <div id="make-the-fitted-stl-decomposition-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#make-the-fitted-stl-decomposition-model" class="anchor"></a>Make the Fitted STL Decomposition Model</h3>
-<p>We’ll split the data into training and test sets. Then create a model on the training set.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">splits</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_time_split</a></span>(<span class="no">taylor_30_min</span>, <span class="kw">prop</span> <span class="kw">=</span> <span class="fl">0.9</span>)
-
-<span class="no">model_fit</span> <span class="kw">&lt;-</span> <span class="fu">decomposition_reg</span>(
-  <span class="kw">period_seasonal_1</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>,
-  <span class="kw">period_seasonal_2</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>*<span class="fl">7</span>) <span class="kw">%&gt;%</span>
+<p>We’ll split the data into training and test sets.</p>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">splits</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_time_split</a></span>(<span class="no">taylor_30_min</span>, <span class="kw">prop</span> <span class="kw">=</span> <span class="fl">0.9</span>)</pre></body></html></div>
+<p>Then create a model on the training set.</p>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">model_fit</span> <span class="kw">&lt;-</span> <span class="fu">decomposition_reg</span>(
+    <span class="kw">period_seasonal_1</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>,
+    <span class="kw">period_seasonal_2</span> <span class="kw">=</span> <span class="fl">24</span>*<span class="fl">2</span>*<span class="fl">7</span>
+  ) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span>(<span class="st">"stlm_ets"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://parsnip.tidymodels.org/reference/reexports.html">fit</a></span>(<span class="no">value</span> ~ <span class="no">date</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span>(<span class="no">splits</span>))
 
-<span class="no">model_fit</span>
-<span class="co">#&gt; parsnip model object</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  188ms </span>
-<span class="co">#&gt; STLM Model: ETS(M,N,N)</span>
-<span class="co">#&gt; ets(y = x, model = etsmodel, allow.multiplicative.trend = allow.multiplicative.trend)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; # A tibble: 1 x 5</span>
-<span class="co">#&gt;      aic    bic   aicc  loglik    mse</span>
-<span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 63151. 63170. 63151. -31573. 10019.</span></pre></body></html></div>
+<span class="no">model_fit</span></pre></body></html></div>
+<pre><code>#&gt; parsnip model object
+#&gt; 
+#&gt; Fit time:  194ms 
+#&gt; STLM Model: ETS(M,N,N)
+#&gt; ets(y = x, model = etsmodel, allow.multiplicative.trend = allow.multiplicative.trend)
+#&gt; 
+#&gt; # A tibble: 1 x 5
+#&gt;      aic    bic   aicc  loglik    mse
+#&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 63151. 63170. 63151. -31573. 10019.</code></pre>
 </div>
 <div id="make-a-calibrated-modeltime-table" class="section level3">
 <h3 class="hasAnchor">
 <a href="#make-a-calibrated-modeltime-table" class="anchor"></a>Make a Calibrated Modeltime Table</h3>
 <p>Next, let’s calibrate the fitted model.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">calibration_tbl</span> <span class="kw">&lt;-</span> <span class="no">model_fit</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">calibration_tbl</span> <span class="kw">&lt;-</span> <span class="no">model_fit</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span>(<span class="kw">new_data</span> <span class="kw">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span>(<span class="no">splits</span>))
 
@@ -596,12 +590,14 @@
 <div id="refit-on-the-full-dataset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#refit-on-the-full-dataset" class="anchor"></a>Refit on the Full Dataset</h3>
-<p>We’ll refit on the full dataset and forecast forward 1 week.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">calibration_tbl</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">taylor_30_min</span>) <span class="kw">%&gt;%</span>
+<p>We’ll refit on the full dataset.</p>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">refit_tbl</span> <span class="kw">&lt;-</span> <span class="no">calibration_tbl</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">taylor_30_min</span>)</pre></body></html></div>
+<p>Then forecast forward 1 week.</p>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">refit_tbl</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span>(<span class="kw">h</span> <span class="kw">=</span> <span class="st">"1 week"</span>, <span class="kw">actual_data</span> <span class="kw">=</span> <span class="no">taylor_30_min</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span>(<span class="kw">.interactive</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>And now you’ve just created a new model. Just wrap it up in a package and you’ve extended <code>parsnip</code> and <code>modeltime</code>. Congrats!</p>
 </div>
 </div>

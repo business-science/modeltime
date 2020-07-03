@@ -86,7 +86,7 @@ different packages. Currently the only package is forecast." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -348,7 +348,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <p>Note that date or date-time class values are excluded from <code>xreg</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='fit.modeltime.html'>fit.arima_reg()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://parsnip.tidymodels.org/reference/fit.html'>fit.model_spec()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
@@ -386,7 +386,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  444ms 
+#&gt; Fit time:  355ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(0,1,1)(1,1,1)[12] 
 #&gt; 
@@ -417,7 +417,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
 <span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  645ms 
+#&gt; Fit time:  597ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(3,1,3)(1,0,1)[12] 
 #&gt; 
