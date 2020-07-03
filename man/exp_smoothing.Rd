@@ -173,5 +173,5 @@ model_fit
 
 }
 \seealso{
-\code{\link[=fit.exp_smoothing]{fit.exp_smoothing()}}, \code{\link[=set_engine]{set_engine()}}
+\code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
 }

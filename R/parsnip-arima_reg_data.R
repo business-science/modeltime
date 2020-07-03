@@ -81,6 +81,18 @@ make_arima_reg <- function() {
         has_submodel = FALSE
     )
 
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "arima_reg",
+        eng     = "arima",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
+
     # * Fit ----
     parsnip::set_fit(
         model         = "arima_reg",
@@ -180,6 +192,18 @@ make_arima_reg <- function() {
         original     = "max.Q",
         func         = list(pkg = "modeltime", fun = "seasonal_ma"),
         has_submodel = FALSE
+    )
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "arima_reg",
+        eng     = "auto_arima",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
     )
 
     # * Fit ----

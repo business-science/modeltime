@@ -1,4 +1,4 @@
-context("TEST MODELTIME TABLE")
+context("TEST MODELTIME WORKFLOW VS MODELS")
 
 # Objectives
 # - Test Multiple Parsnip Objects
@@ -297,11 +297,12 @@ wflw_fit_svm <- workflow() %>%
 #         data = training(splits))
 #
 # model_fit_glmnet %>%
-#     modeltime_accuracy(new_data = testing(splits))
-#
-#
-# # * GLMNET (workflow) ----
-#
+#     modeltime_calibrate(testing(splits)) %>%
+#     modeltime_accuracy()
+
+
+# * GLMNET (workflow) ----
+
 # model_spec <- linear_reg(penalty = 0.000388) %>%
 #     set_engine("glmnet")
 #
@@ -317,7 +318,9 @@ wflw_fit_svm <- workflow() %>%
 #     add_model(model_spec) %>%
 #     fit(training(splits))
 #
-# wflw_fit_glmnet %>% modeltime_accuracy(testing(splits))
+# wflw_fit_glmnet %>%
+#     modeltime_calibrate(testing(splits)) %>%
+#     modeltime_accuracy()
 
 # * randomForest (parsnip) ----
 
@@ -450,6 +453,9 @@ test_that("modeltime_forecast", {
             actual_data = bind_rows(training(splits), testing(splits))
         )
 
+    # forecast_tbl %>%
+    #     plot_modeltime_forecast()
+
     # Structure
     expect_s3_class(forecast_tbl, "tbl_df")
 
@@ -465,13 +471,13 @@ test_that("modeltime_forecast", {
 
 # REFITTING ----
 
-
-
 test_that("modeltime_refit", {
 
     handlers("progress")
     with_progress({
         model_table_refit <- model_table %>%
+            # filter(.model_id %in% c(10)) %>%
+            # filter(.model_id %in% c(1,3,4,6,8,10,12,14)) %>%
             modeltime_calibrate(testing(splits)) %>%
             modeltime_refit(data = m750)
     })
@@ -481,10 +487,16 @@ test_that("modeltime_refit", {
 
     # Forecast
     forecast_tbl <- model_table_refit %>%
+
+        # REMOVE MARS-PARSNIP MODEL
+        # - Issue: https://github.com/tidymodels/parsnip/issues/341
+        filter(!.model_id %in% c(8)) %>%
+
         modeltime_forecast(
             new_data    = future_frame(m750, .length_out = "3 years"),
             actual_data = m750
         )
+    # forecast_tbl %>% plot_modeltime_forecast()
 
     # Forecast Structure
     expect_s3_class(forecast_tbl, "tbl_df")

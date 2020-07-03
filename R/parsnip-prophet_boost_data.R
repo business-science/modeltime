@@ -139,6 +139,18 @@ make_prophet_boost <- function() {
         has_submodel = FALSE
     )
 
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "prophet_boost",
+        eng     = "prophet_xgboost",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
+
     # * Fit ----
     parsnip::set_fit(
         model         = "prophet_boost",

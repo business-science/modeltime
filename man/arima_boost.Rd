@@ -301,5 +301,5 @@ model_fit_boosted
 
 }
 \seealso{
-\code{\link[=fit.arima_boost]{fit.arima_boost()}}, \code{\link[=set_engine]{set_engine()}}
+\code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
 }

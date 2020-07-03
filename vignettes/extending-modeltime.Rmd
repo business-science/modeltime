@@ -69,9 +69,9 @@ To use the code in this tutorial, you'll need to have the following packages ins
 
 ```{r setup}
 library(parsnip)
-library(modeltime)
 library(forecast)
 library(rsample)
+library(modeltime)
 library(tidyverse)
 library(timetk)
 library(rlang)
@@ -243,7 +243,7 @@ bridge_stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seas
   outcome_msts <- forecast::msts(outcome, seasonal.periods = seasonal.periods)
   
   # 2. Predictors - Handle Dates 
-  index_tbl <- parse_index_from_data(predictors)
+  index_tbl <- modeltime::parse_index_from_data(predictors)
   idx_col   <- names(index_tbl)
   idx       <- timetk::tk_index(index_tbl)
   
@@ -317,7 +317,7 @@ The bridge looks good.
 
 Next, let's hook up our `parsnip` fit module to the newly created bridge fit function. 
 
-```{r}
+```{r, paged.print = F}
 set_fit(
   model  = "decomposition_reg",
   eng    = "stlm_ets",
@@ -332,6 +332,7 @@ set_fit(
 
 show_model_info("decomposition_reg")
 ```
+
 
 ### Step 4: Add a Prediction Bridge & Module
 
@@ -397,59 +398,54 @@ set_pred(
 show_model_info("decomposition_reg")
 ```
 
-### Step 5: Fit Indicators
 
-We need to modify how parnsip handles features because date and date-time information cannot be processed by `model.frame()` (default behavior). This step will simplify once parsnip is updated. 
+### Step 5: Add Encoding
 
-__Current Method (Not Desirable)__: We have to modify the `fit()` method to set `indicators = FALSE`, which is necessary to prevent dates from being converted to numeric features. 
+We need to modify how `parnsip` handles features because date and date-time information cannot be processed by `model.frame()` (default behavior). We use `set_encoding()` to ensure the predictors are processed without any preprocessing. We'll handle all preprocessing in our fit model bridge, `bridge_stlm_ets_fit_impl()` (shown next).
 
-```{r}
-fit.decomposition_reg <- function(object, formula, data, control = control_parsnip(), ...) {
-
-    # Needed to preserve date and date time attributes
-    # - Note this approach will change once is implemented:
-    #   https://github.com/tidymodels/parsnip/pull/319.
-    parsnip::fit.model_spec(object, formula, data, control = control_parsnip(), ..., indicators = FALSE)
-
-}
-```
-
-
-__New Method (Best Approach)__: Coming soon to `parsnip (>0.1.1)`. 
 
 ```{r, eval = F}
-# Don't do this until parsnip (>0.1.1) is released
-# set_encoding(
-#   model   = "decomposition_reg",
-#   eng     = "stlm_ets",
-#   mode    = "regression",
-#   options = list(predictor_indicators = FALSE)
-# )
+parsnip::set_encoding(
+  model   = "decomposition_reg",
+  eng     = "stlm_ets",
+  mode    = "regression",
+  options = list(
+    predictor_indicators = "none",
+    compute_intercept = FALSE,
+    remove_intercept = FALSE
+  )
+)
 ```
 
-
-## Does it work???
+## Does it work?
 
 The moment of truth is upon us! Let's test this new `modeltime` function out. 
 
-
-
 ### Make the Fitted STL Decomposition Model
 
-We'll split the data into training and test sets. Then create a model on the training set. 
+We'll split the data into training and test sets. 
 
-```{r, paged.print = FALSE}
+```{r}
 splits <- initial_time_split(taylor_30_min, prop = 0.9)
+```
 
+Then create a model on the training set. 
+
+```{r, paged.print = FALSE, eval=F}
 model_fit <- decomposition_reg(
-  period_seasonal_1 = 24*2, 
-  period_seasonal_2 = 24*2*7) %>%
+    period_seasonal_1 = 24*2, 
+    period_seasonal_2 = 24*2*7
+  ) %>%
   set_engine("stlm_ets") %>%
   fit(value ~ date, data = training(splits))
 
 model_fit
 ```
 
+```{r echo=F}
+model_fit <- read_rds("model_fit.rds")
+model_fit
+```
 
 
 ### Make a Calibrated Modeltime Table
@@ -466,11 +462,21 @@ calibration_tbl
 
 ### Refit on the Full Dataset
 
-We'll refit on the full dataset and forecast forward 1 week. 
+We'll refit on the full dataset.
+
+```{r eval=F}
+refit_tbl <- calibration_tbl %>%
+  modeltime_refit(data = taylor_30_min)
+```
+
+```{r echo=F}
+refit_tbl <- read_rds("refit_tbl.rds")
+```
+
+Then forecast forward 1 week. 
 
 ```{r}
-calibration_tbl %>%
-  modeltime_refit(data = taylor_30_min) %>%
+refit_tbl %>%
   modeltime_forecast(h = "1 week", actual_data = taylor_30_min) %>%
   plot_modeltime_forecast(.interactive = FALSE)
 ```

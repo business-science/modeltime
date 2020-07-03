@@ -61,6 +61,18 @@ make_exp_smoothing <- function() {
 
 
 
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "exp_smoothing",
+        eng     = "ets",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
+
     # * Fit ----
     parsnip::set_fit(
         model         = "exp_smoothing",

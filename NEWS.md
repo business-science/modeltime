@@ -7,6 +7,7 @@
 
 ### Fixes
 
+- Updates to work with `parsnip` 0.1.2.
 - `prophet_boost()`: Set `nthreads = 1` (default) to ensure parallelization is thread safe. 
 
 # modeltime 0.0.1

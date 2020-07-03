@@ -55,13 +55,11 @@ Let's go through a guided tour to kick the tires on `modeltime`.
 Load libraries to complete this short tutorial.
 
 ```{r}
+library(tidymodels)
 library(modeltime)
 library(tidyverse)
 library(lubridate)
 library(timetk)
-library(parsnip)
-library(rsample)
-library(reactable)
 
 # This toggles plots from plotly (interactive) to ggplot (static)
 interactive <- TRUE
@@ -174,16 +172,25 @@ model_fit_lm <- linear_reg() %>%
         data = training(splits))
 ```
 
-#### Model 6: MARS (Parsnip)
+#### Model 6: MARS (Workflow)
 
-We can model a Multivariate Adaptive Regression Spline model using `mars()`. The process is the same as the Linear Regression model. 
+We can model a Multivariate Adaptive Regression Spline model using `mars()`. I've modified the process to use a `workflow` to standardize the preprocessing of the features that are provided to the machine learning model (mars). 
 
 ```{r}
 # Model 6: earth ----
-model_fit_mars <- mars(mode = "regression") %>%
-    set_engine("earth") %>%
-    fit(value ~ as.numeric(date) + factor(month(date, label = TRUE), ordered = FALSE),
-        data = training(splits))
+model_spec_mars <- mars(mode = "regression") %>%
+    set_engine("earth") 
+
+recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+    step_date(date, features = "month", ordinal = FALSE) %>%
+    step_mutate(date_num = as.numeric(date)) %>%
+    step_normalize(date_num) %>%
+    step_rm(date)
+  
+wflw_fit_mars <- workflow() %>%
+    add_recipe(recipe_spec) %>%
+    add_model(model_spec_mars) %>%
+    fit(training(splits))
 ```
 
 OK, with these 6 models, we'll show how easy it is to forecast. 
@@ -205,7 +212,7 @@ models_tbl <- modeltime_table(
     model_fit_ets,
     model_fit_prophet,
     model_fit_lm,
-    model_fit_mars
+    wflw_fit_mars
 )
 
 models_tbl

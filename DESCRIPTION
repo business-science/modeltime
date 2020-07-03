@@ -17,10 +17,10 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.5.0)
 Imports:
     timetk (>= 2.0.0),
-    parsnip (>= 0.1.0),
+    parsnip (>= 0.1.1),
     dials,
     yardstick,
     workflows,
@@ -43,8 +43,10 @@ Imports:
     magrittr,
     forecast,
     xgboost,
-    prophet
+    prophet,
+    methods
 Suggests:
+    tidymodels,
     recipes,
     rsample,
     tune,

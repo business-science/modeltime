@@ -189,7 +189,7 @@
 #'
 #'
 #'
-#' @seealso [fit.arima_boost()], [set_engine()]
+#' @seealso [fit.model_spec()], [set_engine()]
 #'
 #' @examples
 #' library(tidyverse)

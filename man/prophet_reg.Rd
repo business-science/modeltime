@@ -199,5 +199,5 @@ model_fit
 
 }
 \seealso{
-\code{\link[=fit.prophet_reg]{fit.prophet_reg()}}, \code{\link[=set_engine]{set_engine()}}
+\code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
 }

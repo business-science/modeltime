@@ -282,5 +282,5 @@ model_fit
 
 }
 \seealso{
-\code{\link[=fit.prophet_boost]{fit.prophet_boost()}}, \code{\link[=set_engine]{set_engine()}}
+\code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
 }

@@ -45,6 +45,18 @@ make_seasonal_decomp <- function() {
         has_submodel = FALSE
     )
 
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "seasonal_decomp",
+        eng     = "stlm_ets",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
+
     # * Fit ----
     parsnip::set_fit(
         model         = "seasonal_decomp",
@@ -109,6 +121,18 @@ make_seasonal_decomp <- function() {
         original     = "period_3",
         func         = list(pkg = "modeltime", fun = "seasonal_period"),
         has_submodel = FALSE
+    )
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "seasonal_decomp",
+        eng     = "stlm_arima",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
     )
 
     # * Fit ----

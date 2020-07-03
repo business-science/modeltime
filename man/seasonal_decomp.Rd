@@ -183,5 +183,5 @@ model_fit
 
 }
 \seealso{
-\code{\link[=fit.seasonal_decomp]{fit.seasonal_decomp()}}, \code{\link[=set_engine]{set_engine()}}
+\code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
 }

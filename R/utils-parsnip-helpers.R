@@ -7,10 +7,10 @@ find_formula <- function(object) {
     if (isS4(object)) {
         # S4 Class
 
-        slots <- slotNames(object)
+        slots <- methods::slotNames(object)
 
         for (slot_name in slots) {
-            sl <- slot(object, slot_name)
+            sl <- methods::slot(object, slot_name)
             if (rlang::is_formula(sl)) {
                 form <- stats::formula(sl)
             }

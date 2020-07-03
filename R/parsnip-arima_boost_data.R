@@ -142,6 +142,17 @@ make_arima_boost <- function() {
         has_submodel = FALSE
     )
 
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "arima_boost",
+        eng     = "auto_arima_xgboost",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
 
     # * Fit ----
     parsnip::set_fit(
@@ -307,6 +318,18 @@ make_arima_boost <- function() {
         has_submodel = FALSE
     )
 
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "arima_boost",
+        eng     = "arima_xgboost",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
 
     # * Fit ----
     parsnip::set_fit(

@@ -72,6 +72,18 @@ make_prophet_reg <- function() {
         has_submodel = FALSE
     )
 
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "prophet_reg",
+        eng     = "prophet",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
+
     # * Fit ----
     parsnip::set_fit(
         model         = "prophet_reg",
