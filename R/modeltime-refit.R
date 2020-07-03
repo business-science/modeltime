@@ -227,7 +227,7 @@ mdl_time_refit.model_fit <- function(object, data, control = NULL, ...) {
         if ("terms" %in% names(object$preproc)) {
             if (inherits(object$preproc$terms, "formula")) {
 
-                form <- object$preproc$terms
+                form <- stats::formula(object$preproc$terms)
 
                 ret <- model_spec %>%
                     fit(form, data = data)
