@@ -246,11 +246,15 @@ mdl_time_forecast <- function(object, calibration_data, new_data = NULL, h = NUL
 #' @export
 mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
 
+    calib_provided <- FALSE
+    h_provided     <- FALSE
+
     # MODEL OBJECT
 
     # If no 'new_data', forecast 'calibration_data'
     if (is.null(new_data) && is.null(h)) {
         new_data <- calibration_data
+        calib_provided <- TRUE
     }
 
     # Convert 'h' to 'new_data'
@@ -261,18 +265,30 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
         }, error = function(e) {
             rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
         })
-
+        h_provided <- TRUE
     }
 
+    # Setup data for predictions
     nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data)[1]
     time_stamp_predictors_tbl <- new_data %>%
         dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
         dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
-    modeltime_forecast <- object %>%
-        stats::predict(new_data = new_data) %>%
-        dplyr::bind_cols(time_stamp_predictors_tbl)
+    # Make predictions
+    modeltime_forecast <- tryCatch({
+        object %>%
+            stats::predict(new_data = new_data) %>%
+            dplyr::bind_cols(time_stamp_predictors_tbl)
+    }, error = function(e) {
+        if (any(c(h_provided, calib_provided))) {
+            # Most likely issue: need to provide external regressors
+            glubort("Problem occurred during prediction. Most likely cause is missing external regressors. Try using 'new_data' and supply a dataset containing all required columns. {e}")
+        } else {
+            glubort("Problem occurred during prediction. {e}")
+        }
+    })
 
+    # Format data
     data_formatted <- modeltime_forecast %>%
         dplyr::mutate(.key = "prediction") %>%
         dplyr::select(.key, dplyr::everything())
@@ -364,6 +380,9 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 #' @export
 mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
 
+    calib_provided <- FALSE
+    h_provided     <- FALSE
+
     # Checks
     if (!object$trained) {
         rlang::abort("Workflow must be trained using the 'fit()' function.")
@@ -379,6 +398,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     # If no 'new_data' and no 'h', forecast 'calibration_data'
     if (is.null(new_data) && is.null(h)) {
         new_data <- calibration_data
+        calib_provided <- TRUE
     }
 
     # Convert 'h' to 'new_data'
@@ -389,7 +409,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
         }, error = function(e) {
             rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
         })
-
+        h_provided <- TRUE
     }
 
     # Issue - Forge processes all recipe steps at once, so need to have outcomes
@@ -401,8 +421,17 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
         new_data[,y_var] <- 1000
     }
 
-    # Apply forge, just to get predictors
-    new_data_forged <- hardhat::forge(new_data = new_data, blueprint = mld$blueprint, outcomes = TRUE)
+    # Apply forge just to get predictors
+    new_data_forged <- tryCatch({
+        hardhat::forge(new_data, mld$blueprint, outcomes = TRUE)
+    }, error = function(e) {
+        if (any(c(h_provided, calib_provided))) {
+            # Most likely issue: need to provide external regressors
+            glubort("Problem occurred in getting predictors from new data. Most likely cause is missing external regressors. Try using 'new_data' and supply a dataset containing all required columns. {e}")
+        } else {
+            glubort("Problem occurred getting predictors from new data. {e}")
+        }
+    })
 
     nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data_forged$predictors)[1]
 
@@ -416,23 +445,15 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
             dplyr::mutate(.index = idx)
     }
 
-
     # FORGE NEW DATA
 
     # Issue - hardhat::forge defaults to outcomes = FALSE, which creates an error at predict.workflow()
-
-    # modeltime_forecast <- object %>%
-    #     stats::predict(new_data = new_data) %>%
-    #     dplyr::bind_cols(time_stamp_predictors_tbl)
-
     blueprint <- object$pre$mold$blueprint
     forged    <- hardhat::forge(new_data, blueprint, outcomes = TRUE)
     new_data  <- forged$predictors
-
-    fit <- object$fit$fit
+    fit       <- object$fit$fit
 
     # PREDICT
-
     data_formatted <- fit %>%
         stats::predict(new_data = new_data) %>%
         dplyr::bind_cols(time_stamp_predictors_tbl) %>%

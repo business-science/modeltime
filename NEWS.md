@@ -1,6 +1,10 @@
 
 # modeltime 0.0.2.9000 (Development Version)
 
+### Fixes
+
+- `modeltime_forecast()`: More descriptive errors when external regressors are required. 
+
 # modeltime 0.0.2
 
 ### Confidence Interval Estimation
