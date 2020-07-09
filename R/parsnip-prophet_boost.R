@@ -440,25 +440,34 @@ prophet_xgboost_fit_impl <- function(x, y,
     )
 
     # Construct model
-    fit_prophet <- prophet::prophet(
-        df = df,
-        growth = growth,
-        changepoints = changepoints,
-        n.changepoints = n.changepoints,
-        changepoint.range = changepoint.range,
-        yearly.seasonality = yearly.seasonality,
-        weekly.seasonality = weekly.seasonality,
-        daily.seasonality = daily.seasonality,
-        holidays = holidays,
-        seasonality.mode = seasonality.mode,
-        seasonality.prior.scale = seasonality.prior.scale,
-        holidays.prior.scale = holidays.prior.scale,
-        changepoint.prior.scale = changepoint.prior.scale,
-        mcmc.samples = mcmc.samples,
-        interval.width = interval.width,
-        uncertainty.samples = uncertainty.samples,
-        fit = fit
-    )
+    # Fit model
+    fit_prophet <- tryCatch({
+        prophet::prophet(
+            df = df,
+            growth = growth,
+            changepoints = changepoints,
+            n.changepoints = n.changepoints,
+            changepoint.range = changepoint.range,
+            yearly.seasonality = yearly.seasonality,
+            weekly.seasonality = weekly.seasonality,
+            daily.seasonality = daily.seasonality,
+            holidays = holidays,
+            seasonality.mode = seasonality.mode,
+            seasonality.prior.scale = seasonality.prior.scale,
+            holidays.prior.scale = holidays.prior.scale,
+            changepoint.prior.scale = changepoint.prior.scale,
+            mcmc.samples = mcmc.samples,
+            interval.width = interval.width,
+            uncertainty.samples = uncertainty.samples,
+            fit = fit
+        )
+    }, error = function(e) {
+        if (length(outcome) < 100) {
+            glubort("Prophet returns an error with less than 100 observations. {e}")
+        } else {
+            stop(e)
+        }
+    })
 
     # In-sample Predictions
     prophet_fitted    <- stats::predict(fit_prophet, df) %>% dplyr::pull(yhat)

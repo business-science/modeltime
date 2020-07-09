@@ -347,10 +347,19 @@ prophet_fit_impl <- function(x, y,
     # TODO
 
     # Fit model
-    m <- prophet::fit.prophet(m, df)
+    m_fit <- tryCatch({
+        prophet::fit.prophet(m, df)
+    }, error = function(e) {
+        if (length(outcome) < 100) {
+            glubort("Prophet returns an error with less than 100 observations. {e}")
+        } else {
+            stop(e)
+        }
+    })
+
 
     # In-sample Predictions
-    fitted <- stats::predict(m, df) %>% dplyr::pull(yhat)
+    fitted <- stats::predict(m_fit, df) %>% dplyr::pull(yhat)
 
     # Description
     desc <- "PROPHET"
@@ -364,7 +373,7 @@ prophet_fit_impl <- function(x, y,
 
         # Models
         models = list(
-            model_1 = m
+            model_1 = m_fit
         ),
 
         # Data - Date column (matches original), .actual, .fitted, and .residuals columns
