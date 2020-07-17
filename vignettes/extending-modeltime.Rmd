@@ -60,7 +60,7 @@ The `forecast` package includes the `stlm()` function for creating models using 
 
 We can then forecast the components using models like: `auto.arima()` and `ets()`.
 
-__Note - I've added a `seasonal_decomp()` function that includes the functionality we are about to create. Check that function out to see more about seasonal decomposition.__
+__Note - I've added a `seasonal_reg()` function that includes the functionality we are about to create. Check that function out to see more about seasonal decomposition methods.__
 
 
 ### Libraries
