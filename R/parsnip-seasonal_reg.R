@@ -1,4 +1,4 @@
-#' General Interface for Seasonal Decomposition Regression Models
+#' General Interface for Multiple Seasonality Regression Models (TBATS, STLM)
 #'
 #' `seasonal_reg()` is a way to generate a _specification_ of an
 #'  Seasonal Decomposition model

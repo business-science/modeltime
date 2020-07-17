@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Low-Level Exponential Smoothing function for translating modeltime to forecast — ets_fit_impl • modeltime</title>
+<title>Bridge prediction function for ARIMA models — tbats_predict_impl • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Low-Level Exponential Smoothing function for translating modeltime to forecast — ets_fit_impl" />
-<meta property="og:description" content="Low-Level Exponential Smoothing function for translating modeltime to forecast" />
+<meta property="og:title" content="Bridge prediction function for ARIMA models — tbats_predict_impl" />
+<meta property="og:description" content="Bridge prediction function for ARIMA models" />
 
 
 
@@ -147,62 +147,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Low-Level Exponential Smoothing function for translating modeltime to forecast</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-exp_smoothing.R'><code>R/parsnip-exp_smoothing.R</code></a></small>
-    <div class="hidden name"><code>ets_fit_impl.Rd</code></div>
+    <h1>Bridge prediction function for ARIMA models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-seasonal_reg.R'><code>R/parsnip-seasonal_reg.R</code></a></small>
+    <div class="hidden name"><code>tbats_predict_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Low-Level Exponential Smoothing function for translating modeltime to forecast</p>
+    <p>Bridge prediction function for ARIMA models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ets_fit_impl</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>error</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>trend</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>season</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>damping</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>tbats_predict_impl</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
+      <th>object</th>
+      <td><p>An object of class <code>model_fit</code></p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A numeric vector of values to fit</p></td>
-    </tr>
-    <tr>
-      <th>period</th>
-      <td><p>A seasonal frequency. Uses "auto" by default. A character phrase
-of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
-    </tr>
-    <tr>
-      <th>error</th>
-      <td><p>The form of the error term: "auto", "additive", or "multiplicative".
-If the error is multiplicative, the data must be non-negative.</p></td>
-    </tr>
-    <tr>
-      <th>trend</th>
-      <td><p>The form of the trend term: "auto", "additive", "multiplicative" or "none".</p></td>
-    </tr>
-    <tr>
-      <th>season</th>
-      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..</p></td>
-    </tr>
-    <tr>
-      <th>damping</th>
-      <td><p>Apply damping to a trend: "auto", "damped", or "none".</p></td>
+      <th>new_data</th>
+      <td><p>A rectangular data object, such as a data frame.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/forecast/man/ets.html'>forecast::ets</a></code></p></td>
+      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/forecast/man/forecast.html'>forecast::forecast()</a></code></p></td>
     </tr>
     </table>
 

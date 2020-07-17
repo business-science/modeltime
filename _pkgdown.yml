@@ -56,7 +56,7 @@ reference:
     - arima_reg
     - arima_boost
     - exp_smoothing
-    - seasonal_decomp
+    - seasonal_reg
   - title: Parameters
     desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
   - subtitle: General Time Series

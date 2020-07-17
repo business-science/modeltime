@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Low-Level Exponential Smoothing function for translating modeltime to forecast — ets_fit_impl • modeltime</title>
+<title>Low-Level tbats function for translating modeltime to forecast — tbats_fit_impl • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Low-Level Exponential Smoothing function for translating modeltime to forecast — ets_fit_impl" />
-<meta property="og:description" content="Low-Level Exponential Smoothing function for translating modeltime to forecast" />
+<meta property="og:title" content="Low-Level tbats function for translating modeltime to forecast — tbats_fit_impl" />
+<meta property="og:description" content="Low-Level tbats function for translating modeltime to forecast" />
 
 
 
@@ -147,23 +147,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Low-Level Exponential Smoothing function for translating modeltime to forecast</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-exp_smoothing.R'><code>R/parsnip-exp_smoothing.R</code></a></small>
-    <div class="hidden name"><code>ets_fit_impl.Rd</code></div>
+    <h1>Low-Level tbats function for translating modeltime to forecast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-seasonal_reg.R'><code>R/parsnip-seasonal_reg.R</code></a></small>
+    <div class="hidden name"><code>tbats_fit_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Low-Level Exponential Smoothing function for translating modeltime to forecast</p>
+    <p>Low-Level tbats function for translating modeltime to forecast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ets_fit_impl</span>(
+    <pre class="usage"><span class='fu'>tbats_fit_impl</span>(
   <span class='no'>x</span>,
   <span class='no'>y</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>error</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>trend</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>season</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>damping</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>period_1</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>period_2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>period_3</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use.parallel</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>y</span>) <span class='kw'>&gt;</span> <span class='fl'>1000</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -179,30 +178,27 @@
       <td><p>A numeric vector of values to fit</p></td>
     </tr>
     <tr>
-      <th>period</th>
-      <td><p>A seasonal frequency. Uses "auto" by default. A character phrase
+      <th>period_1</th>
+      <td><p>(required) First seasonal frequency. Uses "auto" by default. A character phrase
 of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
     </tr>
     <tr>
-      <th>error</th>
-      <td><p>The form of the error term: "auto", "additive", or "multiplicative".
-If the error is multiplicative, the data must be non-negative.</p></td>
+      <th>period_2</th>
+      <td><p>(optional) First seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
     </tr>
     <tr>
-      <th>trend</th>
-      <td><p>The form of the trend term: "auto", "additive", "multiplicative" or "none".</p></td>
+      <th>period_3</th>
+      <td><p>(optional) First seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
     </tr>
     <tr>
-      <th>season</th>
-      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..</p></td>
-    </tr>
-    <tr>
-      <th>damping</th>
-      <td><p>Apply damping to a trend: "auto", "damped", or "none".</p></td>
+      <th>use.parallel</th>
+      <td><p><code>TRUE/FALSE</code> indicates whether or not to use parallel processing.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/forecast/man/ets.html'>forecast::ets</a></code></p></td>
+      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/forecast/man/tbats.html'>forecast::tbats()</a></code></p></td>
     </tr>
     </table>
 
