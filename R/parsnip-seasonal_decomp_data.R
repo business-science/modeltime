@@ -6,20 +6,98 @@
 # nocov
 
 
-make_seasonal_decomp <- function() {
+make_seasonal_reg <- function() {
 
-    parsnip::set_new_model("seasonal_decomp")
-    parsnip::set_model_mode("seasonal_decomp", "regression")
+    parsnip::set_new_model("seasonal_reg")
+    parsnip::set_model_mode("seasonal_reg", "regression")
+
+    # TBATS ----
+
+    # * Model ----
+    parsnip::set_model_engine("seasonal_reg", mode = "regression", eng = "tbats")
+    parsnip::set_dependency("seasonal_reg", "tbats", "forecast")
+
+    # * Args ----
+    parsnip::set_model_arg(
+        model        = "seasonal_reg",
+        eng          = "tbats",
+        parsnip      = "seasonal_period_1",
+        original     = "period_1",
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "seasonal_reg",
+        eng          = "tbats",
+        parsnip      = "seasonal_period_2",
+        original     = "period_2",
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "seasonal_reg",
+        eng          = "tbats",
+        parsnip      = "seasonal_period_3",
+        original     = "period_3",
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
+        has_submodel = FALSE
+    )
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "seasonal_reg",
+        eng     = "tbats",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE
+        )
+    )
+
+    # * Fit ----
+    parsnip::set_fit(
+        model         = "seasonal_reg",
+        eng           = "tbats",
+        mode          = "regression",
+        value         = list(
+            interface = "data.frame",
+            protect   = c("x", "y"),
+            func      = c(fun = "tbats_fit_impl"),
+            defaults  = list(use.parallel = FALSE)
+        )
+    )
+
+    # * Predict ----
+    parsnip::set_pred(
+        model         = "seasonal_reg",
+        eng           = "tbats",
+        mode          = "regression",
+        type          = "numeric",
+        value         = list(
+            pre       = NULL,
+            post      = NULL,
+            func      = c(fun = "predict"),
+            args      =
+                list(
+                    object   = rlang::expr(object$fit),
+                    new_data = rlang::expr(new_data)
+                )
+        )
+    )
+
 
     # STLM ETS ----
 
     # * Model ----
-    parsnip::set_model_engine("seasonal_decomp", mode = "regression", eng = "stlm_ets")
-    parsnip::set_dependency("seasonal_decomp", "stlm_ets", "forecast")
+    parsnip::set_model_engine("seasonal_reg", mode = "regression", eng = "stlm_ets")
+    parsnip::set_dependency("seasonal_reg", "stlm_ets", "forecast")
 
     # * Args ----
     parsnip::set_model_arg(
-        model        = "seasonal_decomp",
+        model        = "seasonal_reg",
         eng          = "stlm_ets",
         parsnip      = "seasonal_period_1",
         original     = "period_1",
@@ -28,7 +106,7 @@ make_seasonal_decomp <- function() {
     )
 
     parsnip::set_model_arg(
-        model        = "seasonal_decomp",
+        model        = "seasonal_reg",
         eng          = "stlm_ets",
         parsnip      = "seasonal_period_2",
         original     = "period_2",
@@ -37,7 +115,7 @@ make_seasonal_decomp <- function() {
     )
 
     parsnip::set_model_arg(
-        model        = "seasonal_decomp",
+        model        = "seasonal_reg",
         eng          = "stlm_ets",
         parsnip      = "seasonal_period_3",
         original     = "period_3",
@@ -47,7 +125,7 @@ make_seasonal_decomp <- function() {
 
     # * Encoding ----
     parsnip::set_encoding(
-        model   = "seasonal_decomp",
+        model   = "seasonal_reg",
         eng     = "stlm_ets",
         mode    = "regression",
         options = list(
@@ -59,7 +137,7 @@ make_seasonal_decomp <- function() {
 
     # * Fit ----
     parsnip::set_fit(
-        model         = "seasonal_decomp",
+        model         = "seasonal_reg",
         eng           = "stlm_ets",
         mode          = "regression",
         value         = list(
@@ -72,7 +150,7 @@ make_seasonal_decomp <- function() {
 
     # * Predict ----
     parsnip::set_pred(
-        model         = "seasonal_decomp",
+        model         = "seasonal_reg",
         eng           = "stlm_ets",
         mode          = "regression",
         type          = "numeric",
@@ -92,12 +170,12 @@ make_seasonal_decomp <- function() {
     # STLM ARIMA ----
 
     # * Model ----
-    parsnip::set_model_engine("seasonal_decomp", mode = "regression", eng = "stlm_arima")
-    parsnip::set_dependency("seasonal_decomp", "stlm_arima", "forecast")
+    parsnip::set_model_engine("seasonal_reg", mode = "regression", eng = "stlm_arima")
+    parsnip::set_dependency("seasonal_reg", "stlm_arima", "forecast")
 
     # * Args ----
     parsnip::set_model_arg(
-        model        = "seasonal_decomp",
+        model        = "seasonal_reg",
         eng          = "stlm_arima",
         parsnip      = "seasonal_period_1",
         original     = "period_1",
@@ -106,7 +184,7 @@ make_seasonal_decomp <- function() {
     )
 
     parsnip::set_model_arg(
-        model        = "seasonal_decomp",
+        model        = "seasonal_reg",
         eng          = "stlm_arima",
         parsnip      = "seasonal_period_2",
         original     = "period_2",
@@ -115,7 +193,7 @@ make_seasonal_decomp <- function() {
     )
 
     parsnip::set_model_arg(
-        model        = "seasonal_decomp",
+        model        = "seasonal_reg",
         eng          = "stlm_arima",
         parsnip      = "seasonal_period_3",
         original     = "period_3",
@@ -125,7 +203,7 @@ make_seasonal_decomp <- function() {
 
     # * Encoding ----
     parsnip::set_encoding(
-        model   = "seasonal_decomp",
+        model   = "seasonal_reg",
         eng     = "stlm_arima",
         mode    = "regression",
         options = list(
@@ -137,7 +215,7 @@ make_seasonal_decomp <- function() {
 
     # * Fit ----
     parsnip::set_fit(
-        model         = "seasonal_decomp",
+        model         = "seasonal_reg",
         eng           = "stlm_arima",
         mode          = "regression",
         value         = list(
@@ -150,7 +228,7 @@ make_seasonal_decomp <- function() {
 
     # * Predict ----
     parsnip::set_pred(
-        model         = "seasonal_decomp",
+        model         = "seasonal_reg",
         eng           = "stlm_arima",
         mode          = "regression",
         type          = "numeric",

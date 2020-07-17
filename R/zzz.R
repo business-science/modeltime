@@ -20,5 +20,5 @@
     make_exp_smoothing()
 
     # Seasonal Decomposition
-    make_seasonal_decomp()
+    make_seasonal_reg()
 }

@@ -11,7 +11,7 @@ stlm_arima_predict_impl(object, new_data, ...)
 
 \item{new_data}{A rectangular data object, such as a data frame.}
 
-\item{...}{Additional arguments passed to \code{forecast::Arima()}}
+\item{...}{Additional arguments passed to \code{forecast::forecast()}}
 }
 \description{
 Bridge prediction function for ARIMA models

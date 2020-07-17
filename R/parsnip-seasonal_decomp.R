@@ -1,6 +1,6 @@
 #' General Interface for Seasonal Decomposition Regression Models
 #'
-#' `seasonal_decomp()` is a way to generate a _specification_ of an
+#' `seasonal_reg()` is a way to generate a _specification_ of an
 #'  Seasonal Decomposition model
 #'  before fitting and allows the model to be created using
 #'  different packages. Currently the only package is `forecast`.
@@ -26,14 +26,15 @@
 #'
 #' @details
 #' The data given to the function are not saved and are only used
-#'  to determine the _mode_ of the model. For `seasonal_decomp()`, the
+#'  to determine the _mode_ of the model. For `seasonal_reg()`, the
 #'  mode will always be "regression".
 #'
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "stlm_ets" (default) - Connects to `forecast::stlm()`, `method = "ets"`
-#'  - "stlm_arima" (default) - Connects to `forecast::stlm()`, `method = "arima"`
+#'  - "tbats" - Connects to `forecast::tbats()`
+#'  - "stlm_ets" - Connects to `forecast::stlm()`, `method = "ets"`
+#'  - "stlm_arima" - Connects to `forecast::stlm()`, `method = "arima"`
 #'
 #'
 #' @section Engine Details:
@@ -42,10 +43,10 @@
 #' names in each engine:
 #'
 #' ```{r echo = FALSE}
-#' # parsnip::convert_args("seasonal_decomp")
+#' # parsnip::convert_args("seasonal_reg")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "forecast::stlm",
-#'     "seasonal_period_1, seasonal_period_2, seasonal_period_3", "msts(seasonal.periods)"
+#'     ~ "modeltime", ~ "forecast::stlm", ~ "forecast::tbats",
+#'     "seasonal_period_1, seasonal_period_2, seasonal_period_3", "tbats(seasonal.periods)", "msts(seasonal.periods)"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -58,16 +59,21 @@
 #' str(forecast::stlm)
 #' ```
 #'
-#' __stlm_ets (default engine)__
+#' __tbats__
 #'
-#'  - __Method:__ Uses `method = "ets"`, which by default is auto-ETS.
-#'  - __Xregs:__ Cannot accept Exogenous Regressors (xregs). Xregs are ignored.
+#'  - __Method:__ Uses `method = "tbats"`, which by default is auto-TBATS.
+#'  - __Xregs:__ Univariate. Cannot accept Exogenous Regressors (xregs). Xregs are ignored.
+#'
+#' __stlm_ets__
+#'
+#'  - __Method:__ Uses `method = "stlm_ets"`, which by default is auto-ETS.
+#'  - __Xregs:__ Univariate. Cannot accept Exogenous Regressors (xregs). Xregs are ignored.
 #'
 #'
 #' __stlm_arima__
 #'
-#'  - __Method:__ Uses `method = "arima"`, which by default is auto-ARIMA.
-#'  - __Xregs:__ Can accept Exogenous Regressors (xregs).
+#'  - __Method:__ Uses `method = "stlm_arima"`, which by default is auto-ARIMA.
+#'  - __Xregs:__ Multivariate. Can accept Exogenous Regressors (xregs).
 #'
 #'
 #'
@@ -100,8 +106,9 @@
 #'
 #' __Multivariate (xregs, Exogenous Regressors)__
 #'
+#'  - The `tbats` engine _cannot_ accept Xregs.
 #'  - The `stlm_ets` engine _cannot_ accept Xregs.
-#'  - The `stlm_arima` engine can accept Xregs
+#'  - The `stlm_arima` engine _can_ accept Xregs
 #'
 #'  The `xreg` parameter is populated using the `fit()` or `fit_xy()` function:
 #'
@@ -115,7 +122,7 @@
 #'  2. `date` (time stamp),
 #'  3. `month.lbl` (labeled month as a ordered factor).
 #'
-#'  The `month.lbl` is an exogenous regressor that can be passed to the `seasonal_decomp()` using
+#'  The `month.lbl` is an exogenous regressor that can be passed to the `seasonal_reg()` using
 #'  `fit()`:
 #'
 #'  - `fit(y ~ date + month.lbl)` will pass `month.lbl` on as an exogenous regressor.
@@ -144,7 +151,7 @@
 #' # ---- STLM ETS ----
 #'
 #' # Model Spec
-#' model_spec <- seasonal_decomp() %>%
+#' model_spec <- seasonal_reg() %>%
 #'     set_engine("stlm_ets")
 #'
 #' # Fit Spec
@@ -156,7 +163,7 @@
 #' # ---- STLM ARIMA ----
 #'
 #' # Model Spec
-#' model_spec <- seasonal_decomp() %>%
+#' model_spec <- seasonal_reg() %>%
 #'     set_engine("stlm_arima")
 #'
 #' # Fit Spec
@@ -165,7 +172,7 @@
 #' model_fit
 #'
 #' @export
-seasonal_decomp <- function(mode = "regression",
+seasonal_reg <- function(mode = "regression",
                             seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL) {
 
     args <- list(
@@ -175,7 +182,7 @@ seasonal_decomp <- function(mode = "regression",
     )
 
     parsnip::new_model_spec(
-        "seasonal_decomp",
+        "seasonal_reg",
         args     = args,
         eng_args = NULL,
         mode     = mode,
@@ -186,7 +193,7 @@ seasonal_decomp <- function(mode = "regression",
 }
 
 #' @export
-print.seasonal_decomp <- function(x, ...) {
+print.seasonal_reg <- function(x, ...) {
     cat("Seasonal Decomposition Regression Model Specification (", x$mode, ")\n\n", sep = "")
     parsnip::model_printer(x, ...)
 
@@ -200,7 +207,7 @@ print.seasonal_decomp <- function(x, ...) {
 
 #' @export
 #' @importFrom stats update
-update.seasonal_decomp <- function(object, parameters = NULL,
+update.seasonal_reg <- function(object, parameters = NULL,
                                    seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL,
                                    fresh = FALSE, ...) {
 
@@ -229,7 +236,7 @@ update.seasonal_decomp <- function(object, parameters = NULL,
     }
 
     parsnip::new_model_spec(
-        "seasonal_decomp",
+        "seasonal_reg",
         args     = object$args,
         eng_args = object$eng_args,
         mode     = object$mode,
@@ -241,14 +248,137 @@ update.seasonal_decomp <- function(object, parameters = NULL,
 
 #' @export
 #' @importFrom parsnip translate
-translate.seasonal_decomp <- function(x, engine = x$engine, ...) {
+translate.seasonal_reg <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
-        message("Used `engine = 'stlm_ets'` for translation.")
-        engine <- "stlm_ets"
+        message("Used `engine = 'tbats'` for translation.")
+        engine <- "tbats"
     }
     x <- parsnip::translate.default(x, engine, ...)
 
     x
+}
+
+# FIT - TBATS -----
+
+#' Low-Level tbats function for translating modeltime to forecast
+#'
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param period_1 (required) First seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param period_2 (optional) First seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param period_3 (optional) First seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param use.parallel `TRUE/FALSE` indicates whether or not to use parallel processing.
+#' @param ... Additional arguments passed to `forecast::tbats()`
+#'
+#' @export
+tbats_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL, use.parallel = length(y) > 1000, ...) {
+
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
+    outcome    <- y
+    predictor  <- x
+
+    if (is.null(period_1) || period_1 == "none" || period_1 <=1) {
+        glubort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
+    }
+
+    # INDEX & PERIOD
+    # Determine Period, Index Col, and Index
+    index_tbl <- parse_index_from_data(predictor)
+
+    period_1  <- parse_period_from_index(index_tbl, period_1)
+    if (!is.null(period_2)) period_2 <- parse_period_from_index(index_tbl, period_2)
+    if (!is.null(period_3)) period_3 <- parse_period_from_index(index_tbl, period_3)
+
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
+
+    # XREGS - NOT USED FOR TBATS METHOD
+    # Clean names, get xreg recipe, process predictors
+    # xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
+    # xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
+    if (ncol(predictor) > 1) {
+        message("External regressors (xregs) detected. TBATS is a univariate method. Ignoring xregs.")
+    }
+
+    # FIT
+    outcome   <- forecast::msts(outcome,
+                                seasonal.periods = c(period_1, period_2, period_3))
+    fit_tbats <- forecast::tbats(y = outcome, use.parallel = use.parallel, ...)
+
+    # RETURN
+    new_modeltime_bridge(
+        class = "tbats_fit_impl",
+
+        # Models
+        models = list(
+            model_1 = fit_tbats
+        ),
+
+        # Data - Date column (matches original), .actual, .fitted, and .residuals columns
+        data = tibble::tibble(
+            !! idx_col  := idx,
+            .actual      =  as.numeric(y),
+            .fitted      =  as.numeric(fit_tbats$fitted.values),
+            .residuals   =  as.numeric(y) - as.numeric(fit_tbats$fitted.values)
+        ),
+
+        # Preprocessing Recipe (prepped) - Used in predict method
+        extras = list(),
+
+        # Description - Convert tbats model parameters to short description
+        desc = get_tbats_description(fit_tbats)
+    )
+
+}
+
+#' @export
+print.tbats_fit_impl <- function(x, ...) {
+    model <- x$models$model_1
+    print(model)
+    invisible(x)
+}
+
+
+
+
+# PREDICT - TBATS ----
+# - auto.arima produces an Arima model
+
+#' @export
+predict.tbats_fit_impl <- function(object, new_data, ...) {
+    tbats_predict_impl(object, new_data, ...)
+}
+
+#' Bridge prediction function for ARIMA models
+#'
+#' @inheritParams parsnip::predict.model_fit
+#' @param ... Additional arguments passed to `forecast::forecast()`
+#'
+#' @export
+tbats_predict_impl <- function(object, new_data, ...) {
+
+    # PREPARE INPUTS
+    model       <- object$models$model_1
+    h_horizon   <- nrow(new_data)
+
+    # XREG
+    # NOT REQUIRED FOR ETS.
+    # xreg_recipe <- object$extras$xreg_recipe
+    # xreg_matrix <- bake_xreg_recipe(xreg_recipe, new_data, format = "matrix")
+
+    # PREDICTIONS
+    preds_forecast <- forecast::forecast(model, h = h_horizon, ...)
+
+    # Return predictions as numeric vector
+    preds <- as.numeric(preds_forecast$mean)
+
+    return(preds)
+
 }
 
 
@@ -362,7 +492,7 @@ predict.stlm_ets_fit_impl <- function(object, new_data, ...) {
 #' Bridge prediction function for ARIMA models
 #'
 #' @inheritParams parsnip::predict.model_fit
-#' @param ... Additional arguments passed to `forecast::Arima()`
+#' @param ... Additional arguments passed to `forecast::forecast()`
 #'
 #' @export
 stlm_ets_predict_impl <- function(object, new_data, ...) {
@@ -377,7 +507,7 @@ stlm_ets_predict_impl <- function(object, new_data, ...) {
     # xreg_matrix <- bake_xreg_recipe(xreg_recipe, new_data, format = "matrix")
 
     # PREDICTIONS
-    preds_forecast <- forecast::forecast(model, h = h_horizon)
+    preds_forecast <- forecast::forecast(model, h = h_horizon, ...)
 
     # Return predictions as numeric vector
     preds <- as.numeric(preds_forecast$mean)
@@ -502,7 +632,7 @@ predict.stlm_arima_fit_impl <- function(object, new_data, ...) {
 #' Bridge prediction function for ARIMA models
 #'
 #' @inheritParams parsnip::predict.model_fit
-#' @param ... Additional arguments passed to `forecast::Arima()`
+#' @param ... Additional arguments passed to `forecast::forecast()`
 #'
 #' @export
 stlm_arima_predict_impl <- function(object, new_data, ...) {

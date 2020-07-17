@@ -229,3 +229,23 @@ get_arima_description.Arima <- function(object, padding = FALSE) {
 
     return(result)
 }
+
+# TBATS Model Descriptions ----
+
+#' Get model descriptions for TBATS objects
+#'
+#' @param object Objects of class `tbats`
+#'
+#' @source
+#' - Forecast R Package, `forecast:::as.character.tbats()`
+#'
+#'
+#' @export
+get_tbats_description <- function(object) {
+
+    if (!inherits(object, "tbats")) {
+        glubort("No method for class '{class(object)[1]}'. Expecting an object of class 'tbats'.")
+    }
+
+    as.character(object)
+}

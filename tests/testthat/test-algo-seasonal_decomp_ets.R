@@ -1,5 +1,5 @@
 # ---- STANDARD ARIMA ----
-context("TEST seasonal_decomp() - stlm_ets")
+context("TEST seasonal_reg() - stlm_ets")
 
 
 # SETUP ----
@@ -8,21 +8,21 @@ context("TEST seasonal_decomp() - stlm_ets")
 splits <- initial_time_split(taylor_30_min, prop = 0.9)
 
 # Model Spec
-model_spec <- seasonal_decomp(seasonal_period_1 = "1 day", seasonal_period_2 = "week") %>%
+model_spec <- seasonal_reg(seasonal_period_1 = "1 day", seasonal_period_2 = "week") %>%
     set_engine("stlm_ets")
 
 # CHECKS ----
-test_that("seasonal_decomp: checks", {
+test_that("seasonal_reg: checks", {
 
     # external regressors message
     expect_message({
-        seasonal_decomp(seasonal_period_1 = 24*2) %>%
+        seasonal_reg(seasonal_period_1 = 24*2) %>%
             set_engine("stlm_ets") %>%
             fit(value ~ date + month(date, label = TRUE), data = training(splits))
     })
 
     expect_error({
-        seasonal_decomp(seasonal_period_1 = 1) %>%
+        seasonal_reg(seasonal_period_1 = 1) %>%
             set_engine("stlm_ets") %>%
             fit(value ~ date, data = training(splits))
     })
@@ -44,7 +44,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("seasonal_decomp: parnip", {
+test_that("seasonal_reg: parnip", {
 
     testthat::expect_s3_class(model_fit$fit, "stlm_ets_fit_impl")
 
@@ -108,7 +108,7 @@ predictions_tbl <- wflw_fit %>%
 
 
 # TESTS
-test_that("seasonal_decomp: workflow", {
+test_that("seasonal_reg: workflow", {
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "stlm_ets_fit_impl")
 
