@@ -42,8 +42,9 @@ model_list_tbl <- tribble(
   "Boosted ARIMA", "arima_boost()", "auto_arima_xgboost", "forecast, xgboost",
   "Boosted ARIMA", "arima_boost()", "arima_xgboost", "forecast, xgboost",
   "Exponential Smoothing", "exp_smoothing()", "ets", "forecast",
-  "Seasonal Decomposition", "seasonal_decomp()", "stlm_ets", "forecast",
-  "Seasonal Decomposition", "seasonal_decomp()", "stlm_arima", "forecast"
+  "TBATS", "seasonal_reg()", "tbats", "forecast",
+  "Seasonal Decomposition", "seasonal_reg()", "stlm_ets", "forecast",
+  "Seasonal Decomposition", "seasonal_reg()", "stlm_arima", "forecast"
 ) %>% 
   mutate(Mode = "regression")
 
@@ -122,14 +123,18 @@ param_list_tbl <- tribble(
   "exp_smoothing", "ets", "trend", "model = c(error, trend, season)", "forecast::ets",
   "exp_smoothing", "ets", "season", "model = c(error, trend, season)", "forecast::ets",
   "exp_smoothing", "ets", "damping", "damped", "forecast::ets",
-  # seasonal decomp
-  "seasonal_decomp", "stlm_ets", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_decomp", "stlm_ets", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_decomp", "stlm_ets", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
-  # seasonal decomp
-  "seasonal_decomp", "stlm_arima", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_decomp", "stlm_arima", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_decomp", "stlm_arima", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm"
+  # seasonal_reg: ets
+  "seasonal_reg", "tbats", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_reg", "tbats", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_reg", "tbats", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
+  # seasonal_reg: ets
+  "seasonal_reg", "stlm_ets", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_reg", "stlm_ets", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_reg", "stlm_ets", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
+  # seasonal_reg: arima
+  "seasonal_reg", "stlm_arima", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_reg", "stlm_arima", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
+  "seasonal_reg", "stlm_arima", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm"
 )
 
 ```

@@ -46,7 +46,7 @@
 #' # parsnip::convert_args("seasonal_reg")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::stlm", ~ "forecast::tbats",
-#'     "seasonal_period_1, seasonal_period_2, seasonal_period_3", "tbats(seasonal.periods)", "msts(seasonal.periods)"
+#'     "seasonal_period_1, seasonal_period_2, seasonal_period_3", "msts(seasonal.periods)", "msts(seasonal.periods)"
 #' ) %>% knitr::kable()
 #' ```
 #'

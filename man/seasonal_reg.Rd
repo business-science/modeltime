@@ -58,7 +58,7 @@ following \emph{engines}:
 The standardized parameter names in \code{modeltime} can be mapped to their original
 names in each engine:\tabular{lll}{
    modeltime \tab forecast::stlm \tab forecast::tbats \cr
-   seasonal_period_1, seasonal_period_2, seasonal_period_3 \tab tbats(seasonal.periods) \tab msts(seasonal.periods) \cr
+   seasonal_period_1, seasonal_period_2, seasonal_period_3 \tab msts(seasonal.periods) \tab msts(seasonal.periods) \cr
 }
 
 
