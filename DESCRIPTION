@@ -17,7 +17,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.5.0),
+    rstan
 Imports:
     timetk (>= 2.1.0),
     parsnip (>= 0.1.2),

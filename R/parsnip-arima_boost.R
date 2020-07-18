@@ -11,6 +11,7 @@
 #' @inheritParams parsnip::boost_tree
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
+#' @param sample_size  number for the number (or proportion) of data that is exposed to the fitting routine.
 #' @param seasonal_period A seasonal frequency. Uses "auto" by default.
 #'  A character phrase of "auto" or time-based phrase of "2 weeks"
 #'  can be used if a date or date-time variable is provided.

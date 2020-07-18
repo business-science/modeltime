@@ -169,7 +169,7 @@
 #' model_fit
 #'
 #'
-#'
+#' @import rstan
 #' @export
 prophet_reg <- function(mode = "regression",
                         growth = NULL, num_changepoints = NULL, season = NULL,

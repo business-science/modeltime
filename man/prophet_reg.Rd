@@ -196,7 +196,6 @@ model_fit <- model_spec \%>\%
 model_fit
 
 
-
 }
 \seealso{
 \code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
