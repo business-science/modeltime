@@ -473,17 +473,67 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
         actual_data_prepped <- actual_data_forged$outcomes %>%
             dplyr::bind_cols(actual_data_forged$predictors) %>%
-            dplyr::mutate(.key = "actual") %>%
-            dplyr::mutate(.index = timetk::tk_index(actual_data))
+            dplyr::mutate(.key = "actual")
 
-        target_sym <- rlang::sym(names(actual_data_prepped)[1])
+        # ---- BUG: if NROWs before/after don't match ----
+        # - This situation is likely due to missing values in predictors
+        # - Predictors are irrelevant to Actual Data, so the solution implemented fills
+        #   missing predictors with a downup strategy. Filling reduces the likelihood that
+        #   rows will be dropped.
 
-        data_formatted <- data_formatted %>%
-            dplyr::bind_rows(actual_data_prepped) %>%
-            dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred))
+        nrow_before <- nrow(actual_data)
+        nrow_after  <- nrow(actual_data_prepped)
+        idx_actual  <- timetk::tk_index(actual_data)
 
-        data_formatted <- data_formatted %>%
-            dplyr::select(!!! rlang::syms(nms_final))
+        if (nrow_after == nrow_before) {
+
+            actual_data_prepped <- actual_data_prepped %>%
+                dplyr::mutate(.index = idx_actual)
+
+        } else if (nrow_after < nrow_before) {
+            message("Transformations are resulting in a reduced number of rows in actual data. Attempting to reconcile.")
+
+            # Try to reconcile by filling in missing data
+            # - Most likely cause is NA's being dropped by step_naomit()
+
+            actual_data_fill_missing <- actual_data %>%
+                tidyr::fill(dplyr::everything(), -names(actual_data_forged$outcomes), .direction = c("downup"))
+
+            actual_data_reconcile_forged <- hardhat::forge(
+                new_data = actual_data_fill_missing,
+                blueprint = mld$blueprint,
+                outcomes = TRUE
+            )
+
+            actual_data_reconcile_prepped <- actual_data_reconcile_forged$outcomes %>%
+                dplyr::bind_cols(actual_data_reconcile_forged$predictors) %>%
+                dplyr::mutate(.key = "actual")
+
+            if (nrow(actual_data_reconcile_prepped) == nrow(actual_data) ) {
+                message("Reconciliation successful.")
+
+                actual_data_prepped <- actual_data_reconcile_prepped %>%
+                    dplyr::mutate(.index = idx_actual)
+
+            } else {
+                rlang::warn("Could not reconcile actual data. To reconcile, please remove actual data from modeltime_forecast() and add manually using bind_rows().")
+                actual_data_prepped <- NULL
+            }
+
+        } else {
+            rlang::warn("Transformations are causing your actual data to increase in size. To reconcile, please remove actual data from modeltime_forecast() and add manually using bind_rows().")
+            actual_data_prepped <- NULL
+        }
+
+        # Combine Actual Data with Data Formatted
+        if (!is.null(actual_data_prepped)) {
+            target_sym <- rlang::sym(names(actual_data_prepped)[1])
+
+            data_formatted <- data_formatted %>%
+                dplyr::bind_rows(actual_data_prepped) %>%
+                dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred)) %>%
+                dplyr::select(!!! rlang::syms(nms_final))
+        }
 
     }
 
