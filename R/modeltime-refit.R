@@ -103,8 +103,12 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
     new_data <- data
     data     <- object # object is a Modeltime Table
 
-    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NA, quiet = FALSE)
+    # Model descriptions
+    model_desc_vec <- object$.model_desc
 
+
+    # Safely refit
+    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NA, quiet = FALSE)
 
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
@@ -130,7 +134,8 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
                 return(ret)
             })
         ) %>%
-        dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
+        # dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
+        dplyr::mutate(.model_desc = model_desc_vec)
 
 
     return(ret)
