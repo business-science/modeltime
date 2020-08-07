@@ -25,7 +25,8 @@ Extends the calibration data \code{h} periods into the future.}
 
 \item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
-\item{conf_interval}{An estimated confidence interval based on the in-sample residuals}
+\item{conf_interval}{An estimated confidence interval based on the calibration data.
+This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
 
 \item{...}{Not currently used}
 }

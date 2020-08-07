@@ -4,7 +4,7 @@
 \alias{update_model_description}
 \title{Update the model description by model id in a Modeltime Table}
 \usage{
-update_model_description(object, .model_id, .new_description)
+update_model_description(object, .model_id, .new_model_desc)
 }
 \arguments{
 \item{object}{A Modeltime Table}

@@ -10,7 +10,8 @@
 #'  time series with no exogenous regressors).
 #'  Extends the calibration data `h` periods into the future.
 #' @param actual_data Reference data that is combined with the output tibble and given a `.key = "actual"`
-#' @param conf_interval An estimated confidence interval based on the in-sample residuals
+#' @param conf_interval An estimated confidence interval based on the calibration data.
+#'  This is designed to estimate future confidence from _out-of-sample prediction error_.
 #' @param ... Not currently used
 #'
 #'
