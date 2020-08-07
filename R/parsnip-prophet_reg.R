@@ -7,7 +7,15 @@
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
 #' @param growth String 'linear' or 'logistic' to specify a linear or logistic trend.
-#' @param num_changepoints Number of potential changepoints to include for modeling trend.
+#' @param changepoint_num Number of potential changepoints to include for modeling trend.
+#' @param changepoint_range Adjusts the flexibility of the trend component by limiting to a percentage of data
+#'  before the end of the time series. 0.80 means that a changepoint cannot exist after the first 80% of the data.
+#' @param seasonality_yearly One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
+#'  models year-over-year seasonality.
+#' @param seasonality_weekly One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
+#'  models week-over-week seasonality.
+#' @param seasonality_daily One of "auto", TRUE or FALSE. Toggles on/off a seasonal componet that
+#'  models day-over-day seasonality.
 #' @param season 'additive' (default) or 'multiplicative'.
 #' @param prior_scale_changepoints Parameter modulating the flexibility of the
 #'  automatic changepoint selection. Large values will allow many changepoints,
@@ -34,7 +42,7 @@
 #' The main arguments (tuning parameters) for the model are:
 #'
 #'  - `growth`: String 'linear' or 'logistic' to specify a linear or logistic trend.
-#' - `num_changepoints`: Number of potential changepoints to include for modeling trend.
+#' - `changepoint_num`: Number of potential changepoints to include for modeling trend.
 #' - `season`: 'additive' (default) or 'multiplicative'.
 #' - `prior_scale_changepoints`: Parameter modulating the flexibility of the
 #'   automatic changepoint selection. Large values will allow many changepoints,
@@ -64,7 +72,7 @@
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "prophet",
 #'     "growth", "growth",
-#'     "num_changepoints", "n.changepoints",
+#'     "changepoint_num", "n.changepoints",
 #'     "season", "seasonality.mode",
 #'     "prior_scale_changepoints", "changepoint.prior.scale",
 #'     "prior_scale_seasonality", "seasonality.prior.scale",
@@ -171,17 +179,23 @@
 #'
 #' @export
 prophet_reg <- function(mode = "regression",
-                        growth = NULL, num_changepoints = NULL, season = NULL,
-                        prior_scale_changepoints = NULL, prior_scale_seasonality = NULL,
-                        prior_scale_holidays = NULL) {
+                        growth = NULL, changepoint_num = NULL, changepoint_range = NULL,
+                        seasonality_yearly = NULL, seasonality_weekly = NULL, seasonality_daily = NULL, season = NULL,
+                        prior_scale_changepoints = NULL, prior_scale_seasonality = NULL, prior_scale_holidays = NULL
+                        ) {
 
     args <- list(
-        growth                  = rlang::enquo(growth),
-        num_changepoints        = rlang::enquo(num_changepoints),
-        season                  = rlang::enquo(season),
-        prior_scale_changepoints = rlang::enquo(prior_scale_changepoints),
-        prior_scale_seasonality = rlang::enquo(prior_scale_seasonality),
-        prior_scale_holidays    = rlang::enquo(prior_scale_holidays)
+        # Prophet
+        growth                    = rlang::enquo(growth),
+        changepoint_num           = rlang::enquo(changepoint_num),
+        changepoint_range         = rlang::enquo(changepoint_range),
+        seasonality_yearly        = rlang::enquo(seasonality_yearly),
+        seasonality_weekly        = rlang::enquo(seasonality_weekly),
+        seasonality_daily         = rlang::enquo(seasonality_daily),
+        season                    = rlang::enquo(season),
+        prior_scale_changepoints  = rlang::enquo(prior_scale_changepoints),
+        prior_scale_seasonality   = rlang::enquo(prior_scale_seasonality),
+        prior_scale_holidays      = rlang::enquo(prior_scale_holidays)
     )
 
     parsnip::new_model_spec(
@@ -211,9 +225,9 @@ print.prophet_reg <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.prophet_reg <- function(object, parameters = NULL,
-                               growth = NULL, num_changepoints = NULL, season = NULL,
-                               prior_scale_changepoints = NULL, prior_scale_seasonality = NULL,
-                               prior_scale_holidays = NULL,
+                               growth = NULL, changepoint_num = NULL, changepoint_range = NULL,
+                               seasonality_yearly = NULL, seasonality_weekly = NULL, seasonality_daily = NULL, season = NULL,
+                               prior_scale_changepoints = NULL, prior_scale_seasonality = NULL, prior_scale_holidays = NULL,
                                fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
@@ -223,12 +237,17 @@ update.prophet_reg <- function(object, parameters = NULL,
     }
 
     args <- list(
-        growth                  = rlang::enquo(growth),
-        num_changepoints        = rlang::enquo(num_changepoints),
-        season                  = rlang::enquo(season),
-        prior_scale_changepoints = rlang::enquo(prior_scale_changepoints),
-        prior_scale_seasonality = rlang::enquo(prior_scale_seasonality),
-        prior_scale_holidays    = rlang::enquo(prior_scale_holidays)
+        # Prophet
+        growth                    = rlang::enquo(growth),
+        changepoint_num           = rlang::enquo(changepoint_num),
+        changepoint_range         = rlang::enquo(changepoint_range),
+        seasonality_yearly        = rlang::enquo(seasonality_yearly),
+        seasonality_weekly        = rlang::enquo(seasonality_weekly),
+        seasonality_daily         = rlang::enquo(seasonality_daily),
+        season                    = rlang::enquo(season),
+        prior_scale_changepoints  = rlang::enquo(prior_scale_changepoints),
+        prior_scale_seasonality   = rlang::enquo(prior_scale_seasonality),
+        prior_scale_holidays      = rlang::enquo(prior_scale_holidays)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)
@@ -280,6 +299,10 @@ translate.prophet_reg <- function(x, engine = x$engine, ...) {
 prophet_fit_impl <- function(x, y,
                              growth = "linear",
                              n.changepoints = 25,
+                             changepoint.range = 0.8,
+                             yearly.seasonality = "auto",
+                             weekly.seasonality = "auto",
+                             daily.seasonality  = "auto",
                              seasonality.mode = "additive",
                              changepoint.prior.scale = 0.05,
                              seasonality.prior.scale = 10,
@@ -327,6 +350,10 @@ prophet_fit_impl <- function(x, y,
     m <- prophet::prophet(
         growth = growth,
         n.changepoints = n.changepoints,
+        changepoint.range = changepoint.range,
+        yearly.seasonality = yearly.seasonality,
+        weekly.seasonality = weekly.seasonality,
+        daily.seasonality = daily.seasonality,
         seasonality.mode = seasonality.mode,
         changepoint.prior.scale = changepoint.prior.scale,
         seasonality.prior.scale = seasonality.prior.scale,

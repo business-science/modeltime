@@ -13,7 +13,11 @@ splits <- initial_time_split(m750, prop = 0.8)
 # Model Spec
 model_spec <- prophet_boost(
     growth                   = 'linear',
-    num_changepoints         = 10,
+    changepoint_num          = 10,
+    changepoint_range        = 0.75,
+    seasonality_yearly       = TRUE,
+    seasonality_weekly       = FALSE,
+    seasonality_daily        = FALSE,
     season                   = 'multiplicative',
     prior_scale_changepoints = 20,
     prior_scale_seasonality  = 20,
@@ -60,6 +64,12 @@ test_that("prophet_boost: No Xregs", {
 
     testthat::expect_identical(model_fit$fit$models$model_1$growth, "linear")
     testthat::expect_identical(model_fit$fit$models$model_1$n.changepoints, 10)
+
+    testthat::expect_identical(model_fit$fit$models$model_1$changepoint.range, 0.75)
+    testthat::expect_identical(model_fit$fit$models$model_1$yearly.seasonality, TRUE)
+    testthat::expect_identical(model_fit$fit$models$model_1$weekly.seasonality, FALSE)
+    testthat::expect_identical(model_fit$fit$models$model_1$daily.seasonality, FALSE)
+
     testthat::expect_identical(model_fit$fit$models$model_1$seasonality.mode, 'multiplicative')
     testthat::expect_identical(model_fit$fit$models$model_1$seasonality.prior.scale, 20)
     testthat::expect_identical(model_fit$fit$models$model_1$changepoint.prior.scale, 20)
@@ -124,6 +134,12 @@ test_that("prophet_boost: prophet, XREGS", {
 
     testthat::expect_identical(model_fit$fit$models$model_1$growth, "linear")
     testthat::expect_identical(model_fit$fit$models$model_1$n.changepoints, 10)
+
+    testthat::expect_identical(model_fit$fit$models$model_1$changepoint.range, 0.75)
+    testthat::expect_identical(model_fit$fit$models$model_1$yearly.seasonality, TRUE)
+    testthat::expect_identical(model_fit$fit$models$model_1$weekly.seasonality, FALSE)
+    testthat::expect_identical(model_fit$fit$models$model_1$daily.seasonality, FALSE)
+
     testthat::expect_identical(model_fit$fit$models$model_1$seasonality.mode, 'multiplicative')
     testthat::expect_identical(model_fit$fit$models$model_1$seasonality.prior.scale, 20)
     testthat::expect_identical(model_fit$fit$models$model_1$changepoint.prior.scale, 20)
@@ -221,6 +237,12 @@ test_that("prophet_boost: prophet_xgboost (workflow)", {
 
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$growth, "linear")
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$n.changepoints, 10)
+
+    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$changepoint.range, 0.75)
+    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$yearly.seasonality, TRUE)
+    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$weekly.seasonality, FALSE)
+    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$daily.seasonality, FALSE)
+
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$seasonality.mode, 'multiplicative')
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$seasonality.prior.scale, 20)
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$changepoint.prior.scale, 20)

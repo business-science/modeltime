@@ -5,14 +5,19 @@
 
 __TBATS Model__
 
+- Use `seasonal_reg()` and set engine to "tbats".
+
 ``` r
-seasonal_reg() %>%
-    set_engine("tbats")
+seasonal_reg() %>% set_engine("tbats")
 ```
 
 ### New Functions
 
 - `update_model_description()` - A helper function making it easier to update model descriptions. 
+
+### Improvements
+
+- `prophet_reg()` and `prophet_boost()`: New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, and `seasonality_daily`
 
 ### Bug Fixes
 
@@ -23,7 +28,9 @@ seasonal_reg() %>%
 
 ### Breaking Changes
 
-- `seasonal_decomp()` has changed to `seasonal_reg()`
+- `seasonal_decomp()` has changed to `seasonal_reg()` and now supports both TBATS and Seasonal Decomposition Models.
+- `prophet_reg()` & `prophet_boost()`: Argument changes:
+    - `num_changepoints` has become `changepoint_num`
 
 # modeltime 0.0.2
 

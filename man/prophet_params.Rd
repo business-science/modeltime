@@ -3,7 +3,11 @@
 \name{prophet_params}
 \alias{prophet_params}
 \alias{growth}
-\alias{num_changepoints}
+\alias{changepoint_num}
+\alias{changepoint_range}
+\alias{seasonality_yearly}
+\alias{seasonality_weekly}
+\alias{seasonality_daily}
 \alias{prior_scale_changepoints}
 \alias{prior_scale_seasonality}
 \alias{prior_scale_holidays}
@@ -11,7 +15,15 @@
 \usage{
 growth(values = c("linear", "logistic"))
 
-num_changepoints(range = c(0L, 50L), trans = NULL)
+changepoint_num(range = c(0L, 50L), trans = NULL)
+
+changepoint_range(range = c(0.6, 0.9), trans = NULL)
+
+seasonality_yearly(values = c(TRUE, FALSE))
+
+seasonality_weekly(values = c(TRUE, FALSE))
+
+seasonality_daily(values = c(TRUE, FALSE))
 
 prior_scale_changepoints(range = c(-3, 2), trans = log10_trans())
 
@@ -37,7 +49,15 @@ Tuning Parameters for Prophet Models
 The main parameters for Prophet models are:
 \itemize{
 \item \code{growth}: The form of the trend: "linear", or "logistic".
-\item \code{num_changepoints}: The number of trend changepoints allowed in modeling the trend
+\item \code{changepoint_num}: The maximum number of trend changepoints allowed when modeling the trend
+\item \code{changepoint_range}: The range affects how close the changepoints can go to the end of the time series.
+The larger the value, the more flexible the trend.
+\item Yearly, Weekly, and Daily Seasonality:
+\itemize{
+\item \emph{Yearly}: \code{seasonality_yearly} - Useful when seasonal patterns appear year-over-year
+\item \emph{Weekly}: \code{seasonality_weekly} - Useful when seasonal patterns appear week-over-week (e.g. daily data)
+\item \emph{Daily}: \code{seasonality_daily} - Useful when seasonal patterns appear day-over-day (e.g. hourly data)
+}
 \item \code{season}:
 \itemize{
 \item The form of the seasonal term: "additive" or "multiplicative".
@@ -57,7 +77,7 @@ which effectively weights lower values more heavily than larger values.
 
 growth()
 
-num_changepoints()
+changepoint_num()
 
 season()
 

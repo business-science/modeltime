@@ -30,9 +30,45 @@ make_prophet_boost <- function() {
     parsnip::set_model_arg(
         model        = "prophet_boost",
         eng          = "prophet_xgboost",
-        parsnip      = "num_changepoints",
+        parsnip      = "changepoint_num",
         original     = "n.changepoints",
-        func         = list(pkg = "modeltime", fun = "num_changepoints"),
+        func         = list(pkg = "modeltime", fun = "changepoint_num"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "prophet_boost",
+        eng          = "prophet_xgboost",
+        parsnip      = "changepoint_range",
+        original     = "changepoint.range",
+        func         = list(pkg = "modeltime", fun = "changepoint_range"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "prophet_boost",
+        eng          = "prophet_xgboost",
+        parsnip      = "seasonality_yearly",
+        original     = "yearly.seasonality",
+        func         = list(pkg = "modeltime", fun = "seasonality_yearly"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "prophet_boost",
+        eng          = "prophet_xgboost",
+        parsnip      = "seasonality_weekly",
+        original     = "weekly.seasonality",
+        func         = list(pkg = "modeltime", fun = "seasonality_weekly"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "prophet_boost",
+        eng          = "prophet_xgboost",
+        parsnip      = "seasonality_daily",
+        original     = "daily.seasonality",
+        func         = list(pkg = "modeltime", fun = "seasonality_daily"),
         has_submodel = FALSE
     )
 

@@ -71,7 +71,7 @@ reference:
     - error
   - subtitle: Prophet
     contents:
-    - num_changepoints
+    - changepoint_num
   - title: Developer Tools
     desc: Tools for extending `modeltime`.
     contents:

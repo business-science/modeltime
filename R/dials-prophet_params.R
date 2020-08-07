@@ -7,7 +7,13 @@
 #' The main parameters for Prophet models are:
 #'
 #' - `growth`: The form of the trend: "linear", or "logistic".
-#' - `num_changepoints`: The number of trend changepoints allowed in modeling the trend
+#' - `changepoint_num`: The maximum number of trend changepoints allowed when modeling the trend
+#' - `changepoint_range`: The range affects how close the changepoints can go to the end of the time series.
+#'   The larger the value, the more flexible the trend.
+#' - Yearly, Weekly, and Daily Seasonality:
+#'     - _Yearly_: `seasonality_yearly` - Useful when seasonal patterns appear year-over-year
+#'     - _Weekly_: `seasonality_weekly` - Useful when seasonal patterns appear week-over-week (e.g. daily data)
+#'     - _Daily_: `seasonality_daily` - Useful when seasonal patterns appear day-over-day (e.g. hourly data)
 #' - `season`:
 #'     - The form of the seasonal term: "additive" or "multiplicative".
 #'     - See [season()].
@@ -24,7 +30,7 @@
 #'
 #' growth()
 #'
-#' num_changepoints()
+#' changepoint_num()
 #'
 #' season()
 #'
@@ -47,14 +53,63 @@ growth <- function(values = c("linear", "logistic")) {
 
 #' @export
 #' @rdname prophet_params
-num_changepoints <- function(range = c(0L, 50L), trans = NULL) {
+changepoint_num <- function(range = c(0L, 50L), trans = NULL) {
     dials::new_quant_param(
         type      = "integer",
         range     = range,
         inclusive = c(TRUE, TRUE),
         trans     = trans,
-        label     = c(num_changepoints = "Number of Trend Changepoints"),
+        label     = c(changepoint_num = "Number of Possible Trend Changepoints"),
         finalize  = NULL
+    )
+}
+
+#' @export
+#' @rdname prophet_params
+changepoint_range <- function(range = c(0.6, 0.9), trans = NULL) {
+    dials::new_quant_param(
+        type      = "double",
+        range     = range,
+        inclusive = c(TRUE, TRUE),
+        trans     = trans,
+        label     = c(changepoint_range = "Range of Trend Changepoints"),
+        finalize  = NULL
+    )
+}
+
+#' @export
+#' @rdname prophet_params
+seasonality_yearly <- function(values = c(TRUE, FALSE)) {
+    dials::new_qual_param(
+        type     = c("logical"),
+        values   = values,
+        default  = TRUE,
+        label    = c(seasonality_yearly = "Use Yearly Seasonality"),
+        finalize = NULL
+    )
+}
+
+#' @export
+#' @rdname prophet_params
+seasonality_weekly <- function(values = c(TRUE, FALSE)) {
+    dials::new_qual_param(
+        type     = c("logical"),
+        values   = values,
+        default  = TRUE,
+        label    = c(seasonality_weekly = "Use Weekly Seasonality"),
+        finalize = NULL
+    )
+}
+
+#' @export
+#' @rdname prophet_params
+seasonality_daily <- function(values = c(TRUE, FALSE)) {
+    dials::new_qual_param(
+        type     = c("logical"),
+        values   = values,
+        default  = TRUE,
+        label    = c(seasonality_daily = "Use Daily Seasonality"),
+        finalize = NULL
     )
 }
 

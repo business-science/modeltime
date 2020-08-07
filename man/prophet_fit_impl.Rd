@@ -9,6 +9,10 @@ prophet_fit_impl(
   y,
   growth = "linear",
   n.changepoints = 25,
+  changepoint.range = 0.8,
+  yearly.seasonality = "auto",
+  weekly.seasonality = "auto",
+  daily.seasonality = "auto",
   seasonality.mode = "additive",
   changepoint.prior.scale = 0.05,
   seasonality.prior.scale = 10,
@@ -28,6 +32,19 @@ trend.}
 if input `changepoints` is supplied. If `changepoints` is not supplied,
 then n.changepoints potential changepoints are selected uniformly from the
 first `changepoint.range` proportion of df$ds.}
+
+\item{changepoint.range}{Proportion of history in which trend changepoints
+will be estimated. Defaults to 0.8 for the first 80%. Not used if
+`changepoints` is specified.}
+
+\item{yearly.seasonality}{Fit yearly seasonality. Can be 'auto', TRUE,
+FALSE, or a number of Fourier terms to generate.}
+
+\item{weekly.seasonality}{Fit weekly seasonality. Can be 'auto', TRUE,
+FALSE, or a number of Fourier terms to generate.}
+
+\item{daily.seasonality}{Fit daily seasonality. Can be 'auto', TRUE,
+FALSE, or a number of Fourier terms to generate.}
 
 \item{seasonality.mode}{'additive' (default) or 'multiplicative'.}
 

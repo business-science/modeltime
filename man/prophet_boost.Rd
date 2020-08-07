@@ -7,7 +7,11 @@
 prophet_boost(
   mode = "regression",
   growth = NULL,
-  num_changepoints = NULL,
+  changepoint_num = NULL,
+  changepoint_range = NULL,
+  seasonality_yearly = NULL,
+  seasonality_weekly = NULL,
+  seasonality_daily = NULL,
   season = NULL,
   prior_scale_changepoints = NULL,
   prior_scale_seasonality = NULL,
@@ -28,7 +32,19 @@ The only possible value for this model is "regression".}
 
 \item{growth}{String 'linear' or 'logistic' to specify a linear or logistic trend.}
 
-\item{num_changepoints}{Number of potential changepoints to include for modeling trend.}
+\item{changepoint_num}{Number of potential changepoints to include for modeling trend.}
+
+\item{changepoint_range}{Adjusts the flexibility of the trend component by limiting to a percentage of data
+before the end of the time series. 0.80 means that a changepoint cannot exist after the first 80\% of the data.}
+
+\item{seasonality_yearly}{One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
+models year-over-year seasonality.}
+
+\item{seasonality_weekly}{One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
+models week-over-week seasonality.}
+
+\item{seasonality_daily}{One of "auto", TRUE or FALSE. Toggles on/off a seasonal componet that
+models day-over-day seasonality.}
 
 \item{season}{'additive' (default) or 'multiplicative'.}
 
@@ -88,7 +104,7 @@ following \emph{engines}:
 The main arguments (tuning parameters) for the \strong{PROPHET} model are:
 \itemize{
 \item \code{growth}: String 'linear' or 'logistic' to specify a linear or logistic trend.
-\item \code{num_changepoints}: Number of potential changepoints to include for modeling trend.
+\item \code{changepoint_num}: Number of potential changepoints to include for modeling trend.
 \item \code{season}: 'additive' (default) or 'multiplicative'.
 \item \code{prior_scale_changepoints}: Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
@@ -136,7 +152,7 @@ names in each engine:
 Model 1: PROPHET:\tabular{ll}{
    modeltime \tab prophet \cr
    growth \tab growth \cr
-   num_changepoints \tab n.changepoints \cr
+   changepoint_num \tab n.changepoints \cr
    season \tab seasonality.mode \cr
    prior_scale_changepoints \tab changepoint.prior.scale \cr
    prior_scale_seasonality \tab seasonality.prior.scale \cr
