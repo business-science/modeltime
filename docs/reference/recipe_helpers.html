@@ -211,7 +211,7 @@ for machine learning algorithms).</p>
 #&gt; </span><span style='color: #555555;'> 8</span><span> M750  1990-08-01 Aug  
 #&gt; </span><span style='color: #555555;'> 9</span><span> M750  1990-09-01 Sep  
 #&gt; </span><span style='color: #555555;'>10</span><span> M750  1990-10-01 Oct  
-#&gt; </span><span style='color: #555555;'># … with 296 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 296 more rows</span><span></div><div class='input'>
 <span class='co'># Create default recipe</span>
 <span class='no'>xreg_recipe_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_xreg_recipe.html'>create_xreg_recipe</a></span>(<span class='no'>predictors</span>, <span class='kw'>prepare</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -229,8 +229,8 @@ for machine learning algorithms).</p>
 #&gt; </span><span style='color: #555555;'> 8</span><span>         0         0         0         0         0         0         1
 #&gt; </span><span style='color: #555555;'> 9</span><span>         0         0         0         0         0         0         0
 #&gt; </span><span style='color: #555555;'>10</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #555555;'># … with 296 more rows, and 4 more variables: month_Sep </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Oct </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   month_Nov </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Dec </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 296 more rows, and 4 more variables: month_Sep </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   month_Oct </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Nov </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Dec </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='co'># Applies the prepared recipe to new data (used in your predict function)</span>
 <span class='fu'>bake_xreg_recipe</span>(<span class='no'>xreg_recipe_spec</span>, <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='no'>predictors</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 306 x 11</span><span>
 #&gt;    month_Feb month_Mar month_Apr month_May month_Jun month_Jul month_Aug
@@ -245,8 +245,8 @@ for machine learning algorithms).</p>
 #&gt; </span><span style='color: #555555;'> 8</span><span>         0         0         0         0         0         0         1
 #&gt; </span><span style='color: #555555;'> 9</span><span>         0         0         0         0         0         0         0
 #&gt; </span><span style='color: #555555;'>10</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #555555;'># … with 296 more rows, and 4 more variables: month_Sep </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Oct </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   month_Nov </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Dec </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># ... with 296 more rows, and 4 more variables: month_Sep </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   month_Oct </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Nov </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, month_Dec </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 
 </div></span></pre>
   </div>

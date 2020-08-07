@@ -98,7 +98,7 @@
 
       
 
-      </header><script src="extending-modeltime_files/header-attrs-2.3/header-attrs.js"></script><script src="extending-modeltime_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="extending-modeltime_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extending Modeltime (Developer Tools)</h1>
@@ -481,7 +481,7 @@
 <p>Let’s test the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method out. To help, I’ll leverage <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame()</a></code> to predict the next 3-hours worth of forecast points.</p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">stlm_test</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="kw">new_data</span> <span class="kw">=</span> <span class="no">taylor_30_min</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span>(<span class="kw">.length_out</span> <span class="kw">=</span> <span class="st">"1 week"</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>()</pre></body></html></div>
+  <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>()</pre></body></html></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Excellent. We have predictions!</p>
 </div>
@@ -585,7 +585,7 @@
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;   .model_id .model   .model_desc            .type .calibration_data </span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;                  &lt;chr&gt; &lt;list&gt;            </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt; STLM MODEL: ETS(M,N,N) Test  &lt;tibble [404 × 4]&gt;</span></pre></body></html></div>
+<span class="co">#&gt; 1         1 &lt;fit[+]&gt; STLM MODEL: ETS(M,N,N) Test  &lt;tibble [404 x 4]&gt;</span></pre></body></html></div>
 </div>
 <div id="refit-on-the-full-dataset" class="section level3">
 <h3 class="hasAnchor">
