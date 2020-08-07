@@ -1,6 +1,11 @@
 ---
 title: "Getting Started with Modeltime"
 output: rmarkdown::html_vignette
+resource_files:
+  - articles/logo-modeltime.png
+  - articles/forecast_plot.jpg
+  - articles/modeltime_workflow.jpg
+  - articles/time_series_course.jpg
 vignette: >
   %\VignetteIndexEntry{Getting Started with Modeltime}
   %\VignetteEngine{knitr::rmarkdown}

@@ -52,7 +52,11 @@ param_list_tbl <- tribble(
   ~ `Model Function`, ~ `Engine`, ~ `Parameter`, ~ `Original Param`, ~ `Original Func`,
   # prophet_reg: prophet
   "prophet_reg", "prophet", "growth", "growth", "prophet::prophet",
-  "prophet_reg", "prophet", "num_changepoints", "n.changepoints", "prophet::prophet",
+  "prophet_reg", "prophet", "changepoint_num", "n.changepoints", "prophet::prophet",
+  "prophet_reg", "prophet", "changepoint_range", "changepoints.range", "prophet::prophet",
+  "prophet_reg", "prophet", "seasonality_yearly", "yearly.seasonality", "prophet::prophet",
+  "prophet_reg", "prophet", "seasonality_weekly", "weekly.seasonality", "prophet::prophet",
+  "prophet_reg", "prophet", "seasonality_daily", "daily.seasonality", "prophet::prophet",
   "prophet_reg", "prophet", "season", "seasonality.mode", "prophet::prophet",
   "prophet_reg", "prophet", "prior_scale_changepoints", "changepoint.prior.scale", "prophet::prophet",
   "prophet_reg", "prophet", "prior_scale_seasonality", "seasonality.prior.scale", "prophet::prophet",
@@ -60,6 +64,10 @@ param_list_tbl <- tribble(
   # prophet_boost: prophet_xgboost
   "prophet_boost", "prophet_xgboost", "growth", "growth", "prophet::prophet",
   "prophet_boost", "prophet_xgboost", "num_changepoints", "n.changepoints", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "changepoint_range", "changepoints.range", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "seasonality_yearly", "yearly.seasonality", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "seasonality_weekly", "weekly.seasonality", "prophet::prophet",
+  "prophet_boost", "prophet_xgboost", "seasonality_daily", "daily.seasonality", "prophet::prophet",
   "prophet_boost", "prophet_xgboost", "season", "seasonality.mode", "prophet::prophet",
   "prophet_boost", "prophet_xgboost", "prior_scale_changepoints", "changepoint.prior.scale", "prophet::prophet",
   "prophet_boost", "prophet_xgboost", "prior_scale_seasonality", "seasonality.prior.scale", "prophet::prophet",

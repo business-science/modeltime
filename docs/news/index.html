@@ -158,8 +158,10 @@
 <h3 class="hasAnchor">
 <a href="#new-models" class="anchor"></a>New Models</h3>
 <p><strong>TBATS Model</strong></p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span>() <span class="kw">%&gt;%</span>
-    <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
+<ul>
+<li>Use <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and set engine to “tbats”.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span>() <span class="kw">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
 </div>
 <div id="new-functions" class="section level3">
 <h3 class="hasAnchor">
@@ -167,6 +169,15 @@
 <ul>
 <li>
 <code><a href="../reference/update_model_description.html">update_model_description()</a></code> - A helper function making it easier to update model descriptions.</li>
+</ul>
+</div>
+<div id="improvements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h3>
+<ul>
+<li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: New arguments making it easier to modify the <code>changepoint_num</code>, <code>changepoint_range</code>, <code>seasonality_yearly</code>, <code>seasonality_weekly</code>, and <code>seasonality_daily</code>
+</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
@@ -187,7 +198,14 @@
 <a href="#breaking-changes" class="anchor"></a>Breaking Changes</h3>
 <ul>
 <li>
-<code>seasonal_decomp()</code> has changed to <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code>
+<code>seasonal_decomp()</code> has changed to <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and now supports both TBATS and Seasonal Decomposition Models.</li>
+<li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> &amp; <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: Argument changes:
+<ul>
+<li>
+<code>num_changepoints</code> has become <code>changepoint_num</code>
+</li>
+</ul>
 </li>
 </ul>
 </div>

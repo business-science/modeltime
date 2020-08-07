@@ -163,7 +163,11 @@ different packages. Currently the only package is <code>prophet</code>.</p>
     <pre class="usage"><span class='fu'>prophet_boost</span>(
   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"regression"</span>,
   <span class='kw'>growth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>num_changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>changepoint_num</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>changepoint_range</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>seasonality_yearly</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>seasonality_weekly</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>seasonality_daily</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>season</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prior_scale_changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prior_scale_seasonality</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -191,8 +195,28 @@ The only possible value for this model is "regression".</p></td>
       <td><p>String 'linear' or 'logistic' to specify a linear or logistic trend.</p></td>
     </tr>
     <tr>
-      <th>num_changepoints</th>
+      <th>changepoint_num</th>
       <td><p>Number of potential changepoints to include for modeling trend.</p></td>
+    </tr>
+    <tr>
+      <th>changepoint_range</th>
+      <td><p>Adjusts the flexibility of the trend component by limiting to a percentage of data
+before the end of the time series. 0.80 means that a changepoint cannot exist after the first 80% of the data.</p></td>
+    </tr>
+    <tr>
+      <th>seasonality_yearly</th>
+      <td><p>One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
+models year-over-year seasonality.</p></td>
+    </tr>
+    <tr>
+      <th>seasonality_weekly</th>
+      <td><p>One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
+models week-over-week seasonality.</p></td>
+    </tr>
+    <tr>
+      <th>seasonality_daily</th>
+      <td><p>One of "auto", TRUE or FALSE. Toggles on/off a seasonal componet that
+models day-over-day seasonality.</p></td>
     </tr>
     <tr>
       <th>season</th>
@@ -270,7 +294,7 @@ following <em>engines</em>:</p><ul>
 <p><strong>Main Arguments</strong></p>
 <p>The main arguments (tuning parameters) for the <strong>PROPHET</strong> model are:</p><ul>
 <li><p><code>growth</code>: String 'linear' or 'logistic' to specify a linear or logistic trend.</p></li>
-<li><p><code>num_changepoints</code>: Number of potential changepoints to include for modeling trend.</p></li>
+<li><p><code>changepoint_num</code>: Number of potential changepoints to include for modeling trend.</p></li>
 <li><p><code>season</code>: 'additive' (default) or 'multiplicative'.</p></li>
 <li><p><code>prior_scale_changepoints</code>: Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
@@ -315,7 +339,7 @@ names in each engine:</p>
 <p>Model 1: PROPHET:</p><table class='table'>
 <tr><td>modeltime</td><td>prophet</td></tr>
 <tr><td>growth</td><td>growth</td></tr>
-<tr><td>num_changepoints</td><td>n.changepoints</td></tr>
+<tr><td>changepoint_num</td><td>n.changepoints</td></tr>
 <tr><td>season</td><td>seasonality.mode</td></tr>
 <tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale</td></tr>
 <tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale</td></tr>

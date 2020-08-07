@@ -161,6 +161,10 @@
   <span class='no'>y</span>,
   <span class='kw'>growth</span> <span class='kw'>=</span> <span class='st'>"linear"</span>,
   <span class='kw'>n.changepoints</span> <span class='kw'>=</span> <span class='fl'>25</span>,
+  <span class='kw'>changepoint.range</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>yearly.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>weekly.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>daily.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
   <span class='kw'>seasonality.mode</span> <span class='kw'>=</span> <span class='st'>"additive"</span>,
   <span class='kw'>changepoint.prior.scale</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>seasonality.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
@@ -190,6 +194,27 @@ trend.</p></td>
 if input `changepoints` is supplied. If `changepoints` is not supplied,
 then n.changepoints potential changepoints are selected uniformly from the
 first `changepoint.range` proportion of df$ds.</p></td>
+    </tr>
+    <tr>
+      <th>changepoint.range</th>
+      <td><p>Proportion of history in which trend changepoints
+will be estimated. Defaults to 0.8 for the first 80<!-- %. Not used if -->
+`changepoints` is specified.</p></td>
+    </tr>
+    <tr>
+      <th>yearly.seasonality</th>
+      <td><p>Fit yearly seasonality. Can be 'auto', TRUE,
+FALSE, or a number of Fourier terms to generate.</p></td>
+    </tr>
+    <tr>
+      <th>weekly.seasonality</th>
+      <td><p>Fit weekly seasonality. Can be 'auto', TRUE,
+FALSE, or a number of Fourier terms to generate.</p></td>
+    </tr>
+    <tr>
+      <th>daily.seasonality</th>
+      <td><p>Fit daily seasonality. Can be 'auto', TRUE,
+FALSE, or a number of Fourier terms to generate.</p></td>
     </tr>
     <tr>
       <th>seasonality.mode</th>
