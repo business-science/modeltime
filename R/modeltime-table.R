@@ -90,6 +90,28 @@ print.mdl_time_tbl <- function(x, ...) {
 }
 
 
+#' Update the model description by model id in a Modeltime Table
+#'
+#' @param object A Modeltime Table
+#' @param .model_id A numeric value matching the .model_id that you want to update
+#' @param .new_model_desc Text describing the new model description
+#'
+#' @export
+update_model_description <- function(object, .model_id, .new_model_desc) {
+    UseMethod("update_model_description", object)
+}
+
+#' @export
+update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_desc) {
+
+    .id <- .model_id
+
+    object %>%
+        dplyr::mutate(.model_desc = ifelse(.model_id == .id, .new_model_desc, .model_desc))
+}
+
+
+
 
 
 

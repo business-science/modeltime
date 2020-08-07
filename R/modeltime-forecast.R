@@ -491,7 +491,9 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
                 dplyr::mutate(.index = idx_actual)
 
         } else if (nrow_after < nrow_before) {
-            message("Transformations are resulting in a reduced number of rows in actual data. Attempting to reconcile.")
+            message(stringr::str_glue("Transformations are resulting in a reduced number of rows in actual data.
+                                      Attempting to reconcile:
+                                      - Filling missing predictors in actual data to prevent NA values from causing rows to be dropped."))
 
             # Try to reconcile by filling in missing data
             # - Most likely cause is NA's being dropped by step_naomit()

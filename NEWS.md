@@ -3,17 +3,25 @@
 
 ### New Models
 
-TBATS Model
+__TBATS Model__
 
 ``` r
 seasonal_reg() %>%
     set_engine("tbats")
 ```
 
-### Fixes
+### New Functions
 
-- `modeltime_forecast()`: More descriptive errors when external regressors are required. 
-- `prophet_reg()` & `prophet_boost()`: More descriptive error message when less than 100 observations are trained on. Prophet requires >= 100 observations per [facebook/prophet#1554](https://github.com/facebook/prophet/issues/1554)
+- `update_model_description()` - A helper function making it easier to update model descriptions. 
+
+### Bug Fixes
+
+- `modeltime_forecast()`: 
+    - Implement actual_data reconciliation strategies when recipe removes rows. Strategy attempts to fill predictors using downup strategy to prevent NA values from removing rows. 
+    - More descriptive errors when external regressors are required. 
+    
+- `prophet_reg()` & `prophet_boost()`: 
+    - `rstan` dependency for prophet failing to load on MacOS. 
 
 ### Breaking Changes
 
