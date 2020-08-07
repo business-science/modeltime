@@ -17,8 +17,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R (>= 3.5.0),
-    rstan
+    R (>= 3.5.0)
 Imports:
     timetk (>= 2.1.0),
     parsnip (>= 0.1.2),
@@ -47,6 +46,7 @@ Imports:
     prophet,
     methods
 Suggests:
+    rstan,
     tidymodels,
     recipes,
     rsample,

@@ -20,8 +20,6 @@ seasonal_reg() %>%
     - Implement `actual_data` reconciliation strategies when recipe removes rows. Strategy attempts to fill predictors using "downup" strategy to prevent `NA` values from removing rows. 
     - More descriptive errors when external regressors are required. 
     
-- `prophet_reg()` & `prophet_boost()`: 
-    - `rstan` dependency for prophet failing to load on MacOS. 
 
 ### Breaking Changes
 
