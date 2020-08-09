@@ -548,10 +548,21 @@ prophet_xgboost_fit_impl <- function(x, y,
 #' @export
 print.prophet_xgboost_fit_impl <- function(x, ...) {
 
+    prophet_model <- x$models$model_1
+
     msg_1 <- stringr::str_glue(
-         "- growth: '{x$models$model_1$growth}'
-          - n.changepoints: {x$models$model_1$n.changepoints}
-          - seasonality.mode: '{x$models$model_1$seasonality.mode}'")
+         "
+          - growth: '{prophet_model$growth}'
+          - n.changepoints: {prophet_model$n.changepoints}
+          - changepoint.range: {prophet_model$changepoint.range}
+          - yearly.seasonality: '{prophet_model$yearly.seasonality}'
+          - weekly.seasonality: '{prophet_model$weekly.seasonality}'
+          - daily.seasonality: '{prophet_model$daily.seasonality}'
+          - seasonality.mode: '{prophet_model$seasonality.mode}'
+          - changepoint.prior.scale: {prophet_model$changepoint.prior.scale}
+          - seasonality.prior.scale: {prophet_model$seasonality.prior.scale}
+          - holidays.prior.scale: {prophet_model$holidays.prior.scale}
+         ")
 
     if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
     cat("---\n")
