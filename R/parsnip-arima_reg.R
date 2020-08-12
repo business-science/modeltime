@@ -28,7 +28,7 @@
 #'  following _engines_:
 #'
 #'  - "auto_arima" (default) - Connects to [forecast::auto.arima()]
-#'  - "Arima" - Connects to [forecast::Arima()]
+#'  - "arima" - Connects to [forecast::Arima()]
 #'
 #' __Main Arguments__
 #'

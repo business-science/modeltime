@@ -194,7 +194,7 @@ seasonal_reg <- function(mode = "regression",
 
 #' @export
 print.seasonal_reg <- function(x, ...) {
-    cat("Seasonal Decomposition Regression Model Specification (", x$mode, ")\n\n", sep = "")
+    cat("Seasonal Regression Model Specification (", x$mode, ")\n\n", sep = "")
     parsnip::model_printer(x, ...)
 
     if(!is.null(x$method$fit$args)) {

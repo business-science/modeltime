@@ -50,7 +50,7 @@ The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
 \item "auto_arima" (default) - Connects to \code{\link[forecast:auto.arima]{forecast::auto.arima()}}
-\item "Arima" - Connects to \code{\link[forecast:Arima]{forecast::Arima()}}
+\item "arima" - Connects to \code{\link[forecast:Arima]{forecast::Arima()}}
 }
 
 \strong{Main Arguments}
