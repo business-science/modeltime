@@ -19,6 +19,8 @@ seasonal_reg() %>% set_engine("tbats")
 
 - `prophet_reg()` and `prophet_boost()`: New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, and `seasonality_daily`
 
+- `modeltime_refit()`: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. "UPDATE: ARIMA(0,1,1)(1,1,1)[12]").
+
 ### Bug Fixes
 
 - `modeltime_forecast()`: 

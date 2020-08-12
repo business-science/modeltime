@@ -6,5 +6,5 @@ utils::globalVariables(
       ".estimate", ".estimator", ".metric", ".model", ".nested.col",
       "value", ".model_desc", ".model_id",
       ".actual", ".calibration_data", ".prediction", ".ci",
-      "yhat")
+      "yhat", ".model_desc_new", ".model_desc_old", ".model_desc_user")
 )

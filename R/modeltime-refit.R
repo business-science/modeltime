@@ -103,9 +103,9 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
     new_data <- data
     data     <- object # object is a Modeltime Table
 
-    # Model descriptions
-    model_desc_vec <- object$.model_desc
-
+    # Save current model descriptions
+    model_desc_user_vec          <- object$.model_desc
+    model_desc_modeltime_old_vec <- object$.model %>% purrr::map_chr(get_model_description)
 
     # Safely refit
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NA, quiet = FALSE)
@@ -133,9 +133,27 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
 
                 return(ret)
             })
+        )
+
+    # Get new Model Descriptions
+    ret <- ret %>%
+        dplyr::mutate(.model_desc_user = model_desc_user_vec) %>%
+        dplyr::mutate(.model_desc_old  = model_desc_modeltime_old_vec) %>%
+        dplyr::mutate(.model_desc_new  = purrr::map_chr(.model, .f = get_model_description)) %>%
+
+        # Description Logic
+        dplyr::mutate(.model_desc = ifelse(
+            .model_desc_old == .model_desc_new,
+            # TRUE - Let User Choice Alone
+            .model_desc_user,
+            # FALSE - Model Algorithm Parameters Have Changed
+            # - Reflect Updated Model Params in Description
+            paste0("UPDATE: ", .model_desc_new)
+            )
         ) %>%
-        # dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
-        dplyr::mutate(.model_desc = model_desc_vec)
+
+        # Clean up columns
+        dplyr::select(-.model_desc_user, -.model_desc_old, -.model_desc_new)
 
 
     return(ret)

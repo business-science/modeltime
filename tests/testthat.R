@@ -6,6 +6,8 @@ library(kernlab)
 library(earth)
 
 library(stats)
+
+library(tidymodels)
 library(parsnip)
 library(workflows)
 library(rsample)
