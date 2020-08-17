@@ -19,6 +19,7 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Imports:
+    StanHeaders,
     timetk (>= 2.1.0),
     parsnip (>= 0.1.2),
     dials,

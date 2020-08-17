@@ -1,3 +1,8 @@
+# IMPORTS ----
+# StanHeaders - Used to prevent issues with Prophet dynload error
+
+#' @import StanHeaders
+
 
 # ON LOAD ----
 
