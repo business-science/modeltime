@@ -240,10 +240,10 @@ forecast accuracy (regression) metrics.</p></td>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>modeltime_accuracy</span>(
         <span class='kw'>metric_set</span> <span class='kw'>=</span> <span class='fu'>metric_set</span>(<span class='no'>mae</span>, <span class='no'>rmse</span>, <span class='no'>rsq</span>)
-    )</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
-#&gt;   .model_id .model_desc             .type
-#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>         1 ARIMA(0,1,1)(0,1,1)[12] Test </div><div class='input'>
+    )</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
+#&gt;   .model_id .model_desc             .type   mae  rmse   rsq
+#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  198. 0.930</div><div class='input'>
 
 </div></span></pre>
   </div>

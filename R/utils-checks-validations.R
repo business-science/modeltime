@@ -21,6 +21,21 @@ check_classes <- function(data, col, accept_classes = c("model_fit", "workflow")
 
 }
 
+check_ncols <- function(data, col, accept_ncol = 3) {
+
+    .col <- rlang::enquo(col)
+
+    # Class Number of Columns
+    ret_1 <- data %>%
+        dplyr::mutate(ncol = purrr::map_dbl(!! .col, .f = function(obj) {
+            ncol(obj)
+        })) %>%
+        dplyr::mutate(fail_check = ifelse(ncol != accept_ncol, TRUE, FALSE))
+
+    return(ret_1)
+
+}
+
 check_models_are_trained <- function(data) {
 
     # Class Check
@@ -120,6 +135,28 @@ validate_modeltime_table_classes <- function(data, accept_classes = c("mdl_time_
             "All objects must be Modeltime Tables inheriting class 'mdl_time_tbl'. The following are not:",
             "\n",
             "{bad_msg}")
+        )
+    }
+
+}
+
+validate_ncols <- function(data, accept_ncol = 3) {
+
+    result_tbl <- check_ncols(data, .model_table, accept_ncol) %>%
+        dplyr::filter(fail_check)
+
+    if (nrow(result_tbl) > 0) {
+        bad_tables <- result_tbl$.id
+        bad_values <- glue::single_quote(result_tbl$ncol)
+        bad_msg    <- glue::glue("- Model Table {bad_tables}: Has {bad_values} and should have {accept_ncol}")
+        bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
+
+        rlang::abort(glue::glue(
+            "All objects must be Modeltime Tables with 3 columns. The following are not:",
+            "\n",
+            "{bad_msg}",
+            "\n",
+            "This problem may have occurred if some tables are calibrated.")
         )
     }
 

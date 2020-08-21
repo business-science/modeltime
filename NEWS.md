@@ -13,6 +13,7 @@ seasonal_reg() %>% set_engine("tbats")
 
 ### New Functions
 
+- `combine_modeltime_tables()` - A helper function making it easy to combine multiple modeltime tables.
 - `update_model_description()` - A helper function making it easier to update model descriptions. 
 
 ### Improvements

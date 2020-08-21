@@ -169,8 +169,21 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function can be used with both uncalibrated and calibrated
-modeltime tables.</p>
+    <p>This function combines multiple Modeltime Tables.</p><ul>
+<li><p>The <code>.model_id</code> will automatically be renumbered to ensure
+each model has a unique ID.</p></li>
+<li><p>Only the <code>.model_id</code>, <code>.model</code>, and <code>.model_desc</code> columns will be returned.</p></li>
+</ul>
+
+<p><strong>Re-Training Models on the Same Datasets</strong></p>
+<p>One issue can arise if your models are trained on different datasets.
+If your models have been trained on different datasets, you can run
+<code><a href='modeltime_refit.html'>modeltime_refit()</a></code> to train all models on the same data.</p>
+<p><strong>Re-Calibrating Models</strong></p>
+<p>If your data has been calibrated using <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code>,
+the <code>.test</code> and <code>.calibration_data</code> columns will be removed.
+To re-calibrate, simply run <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code> on the newly
+combined Modeltime Table.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
