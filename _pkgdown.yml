@@ -47,6 +47,7 @@ reference:
     - starts_with("table_modeltime")
   - subtitle: Workflow Helpers
     contents:
+    - combine_model_tables
     - update_model_description
     - default_forecast_accuracy_metric_set
   - title: Algorithms

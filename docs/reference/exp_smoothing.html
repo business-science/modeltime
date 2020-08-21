@@ -308,7 +308,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; </span><span style='color: #555555;'> 8</span><span> M750  1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450
 #&gt; </span><span style='color: #555555;'> 9</span><span> M750  1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480
 #&gt; </span><span style='color: #555555;'>10</span><span> M750  1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820
-#&gt; </span><span style='color: #555555;'># ... with 296 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># … with 296 more rows</span><span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='no'>splits</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span>(<span class='no'>m750</span>, <span class='kw'>prop</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
@@ -323,7 +323,7 @@ There are 3 ways to specify:</p><ol>
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  1.1s 
+#&gt; Fit time:  679ms 
 #&gt; ETS(A,A,A) 
 #&gt; 
 #&gt; Call:
@@ -361,7 +361,7 @@ There are 3 ways to specify:</p><ol>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
 <span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  250ms 
+#&gt; Fit time:  169ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:

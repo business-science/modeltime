@@ -220,7 +220,7 @@ mode will always be "regression".</p>
 <p>The model can be created using the <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
 <li><p>"auto_arima" (default) - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima()</a></code></p></li>
-<li><p>"Arima" - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code></p></li>
+<li><p>"arima" - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code></p></li>
 </ul>
 
 <p><strong>Main Arguments</strong></p>
@@ -372,7 +372,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 #&gt; </span><span style='color: #555555;'> 8</span><span> M750  1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450
 #&gt; </span><span style='color: #555555;'> 9</span><span> M750  1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480
 #&gt; </span><span style='color: #555555;'>10</span><span> M750  1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820
-#&gt; </span><span style='color: #555555;'># ... with 296 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># … with 296 more rows</span><span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='no'>splits</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span>(<span class='no'>m750</span>, <span class='kw'>prop</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
 
@@ -386,7 +386,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  330ms 
+#&gt; Fit time:  354ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(0,1,1)(1,1,1)[12] 
 #&gt; 
@@ -417,14 +417,14 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
 <span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  571ms 
+#&gt; Fit time:  670ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(3,1,3)(1,0,1)[12] 
 #&gt; 
 #&gt; Coefficients:
 #&gt;          ar1     ar2      ar3      ma1      ma2     ma3    sar1     sma1
 #&gt;       0.2258  0.2542  -0.2801  -0.5205  -0.2663  0.2491  0.9846  -0.5381
-#&gt; s.e.  0.6883  0.4581   0.2378   0.6995   0.4192  0.3959  0.0077   0.0751
+#&gt; s.e.  0.6883  0.4581   0.2378   0.6994   0.4192  0.3959  0.0077   0.0751
 #&gt; 
 #&gt; sigma^2 estimated as 0.0003465:  log likelihood=613.46
 #&gt; AIC=-1208.91   AICc=-1208.14   BIC=-1177.48</div><div class='input'>

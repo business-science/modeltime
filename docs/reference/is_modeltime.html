@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • modeltime</title>
+<title>Test if object contains a fitted modeltime model — is_modeltime • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Test if object contains a fitted modeltime model — is_modeltime" />
+<meta property="og:description" content="This function returns TRUE for trained workflows and parsnip objects
+that contain modeltime models" />
 
 
 
@@ -70,7 +72,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -146,107 +148,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Test if object contains a fitted modeltime model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/utils-is_modeltime.R'><code>R/utils-is_modeltime.R</code></a></small>
+    <div class="hidden name"><code>is_modeltime.Rd</code></div>
     </div>
 
-    <div id="modeltime-0029000-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.2.9000">
-<a href="#modeltime-0029000-development-version" class="anchor"></a>modeltime 0.0.2.9000 (Development Version)<small> Unreleased </small>
-</h1>
-<div id="new-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#new-models" class="anchor"></a>New Models</h3>
-<p><strong>TBATS Model</strong></p>
-<ul>
-<li>Use <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and set engine to “tbats”.</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span>() <span class="kw">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
-</div>
-<div id="new-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#new-functions" class="anchor"></a>New Functions</h3>
-<ul>
-<li>
-<code><a href="../reference/update_model_description.html">update_model_description()</a></code> - A helper function making it easier to update model descriptions.</li>
-</ul>
-</div>
-<div id="improvements" class="section level3">
-<h3 class="hasAnchor">
-<a href="#improvements" class="anchor"></a>Improvements</h3>
-<ul>
-<li><p><code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: New arguments making it easier to modify the <code>changepoint_num</code>, <code>changepoint_range</code>, <code>seasonality_yearly</code>, <code>seasonality_weekly</code>, and <code>seasonality_daily</code></p></li>
-<li><p><code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. “UPDATE: ARIMA(0,1,1)(1,1,1)[12]”).</p></li>
-</ul>
-</div>
-<div id="bug-fixes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
-<ul>
-<li>
-<code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>:
-<ul>
-<li>Implement <code>actual_data</code> reconciliation strategies when recipe removes rows. Strategy attempts to fill predictors using “downup” strategy to prevent <code>NA</code> values from removing rows.</li>
-<li>More descriptive errors when external regressors are required.</li>
-</ul>
-</li>
-</ul>
-</div>
-<div id="breaking-changes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking Changes</h3>
-<ul>
-<li>
-<code>seasonal_decomp()</code> has changed to <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and now supports both TBATS and Seasonal Decomposition Models.</li>
-<li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> &amp; <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: Argument changes:
-<ul>
-<li>
-<code>num_changepoints</code> has become <code>changepoint_num</code>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-    <div id="modeltime-002" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.2">
-<a href="#modeltime-002" class="anchor"></a>modeltime 0.0.2<small> 2020-07-03 </small>
-</h1>
-<div id="confidence-interval-estimation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#confidence-interval-estimation" class="anchor"></a>Confidence Interval Estimation</h3>
-<ul>
-<li>
-<code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>: Now estimates confidence intervals using centered standard deviation. The mean is assumed to be zero and residuals deviate from mean = 0.</li>
-</ul>
-</div>
-<div id="fixes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fixes" class="anchor"></a>Fixes</h3>
-<ul>
-<li>Updates to work with <code>parsnip</code> 0.1.2.</li>
-<li>
-<code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: Set <code>nthreads = 1</code> (default) to ensure parallelization is thread safe.</li>
-</ul>
-</div>
-</div>
-    <div id="modeltime-001" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.1">
-<a href="#modeltime-001" class="anchor"></a>modeltime 0.0.1<small> 2020-06-22 </small>
-</h1>
-<ul>
-<li>Initial Release</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>This function returns <code>TRUE</code> for trained workflows and parsnip objects
+that contain modeltime models</p>
+    </div>
 
+    <pre class="usage"><span class='fu'>is_modeltime</span>(<span class='no'>object</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>An object to detect if contains a fitted modeltime model</p></td>
+    </tr>
+    </table>
+
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 
