@@ -113,7 +113,7 @@ _Parsnip models_ (e.g. `linear_reg()`) typically should not have date features, 
 
 First, we create a basic univariate ARIMA model using "Auto Arima" using `arima_reg()`
 
-```{r}
+```{r, message=TRUE}
 # Model 1: auto_arima ----
 model_fit_arima_no_boost <- arima_reg() %>%
     set_engine(engine = "auto_arima") %>%
@@ -128,7 +128,7 @@ Next, we create a boosted ARIMA using `arima_boost()`. Boosting uses XGBoost to 
  
 Normally I'd use a preprocessing workflow for the month features using a function like `step_timeseries_signature()` from `timetk` to help reduce the complexity of the parsnip formula interface. 
 
-```{r}
+```{r, message=TRUE}
 # Model 2: arima_boost ----
 model_fit_arima_boosted <- arima_boost(
     min_n = 2,
@@ -144,7 +144,7 @@ model_fit_arima_boosted <- arima_boost(
 
 Next, create an Error-Trend-Season (ETS) model using an Exponential Smoothing State Space model. This is accomplished with `exp_smoothing()`.
 
-```{r}
+```{r, message=TRUE}
 # Model 3: ets ----
 model_fit_ets <- exp_smoothing() %>%
     set_engine(engine = "ets") %>%
@@ -155,7 +155,7 @@ model_fit_ets <- exp_smoothing() %>%
 
 We'll create a `prophet` model using `prophet_reg()`.
 
-```{r}
+```{r, message=TRUE}
 # Model 4: prophet ----
 model_fit_prophet <- prophet_reg() %>%
     set_engine(engine = "prophet") %>%
@@ -169,7 +169,7 @@ We can model time series linear regression (TSLM) using the `linear_reg()` algor
 - _Trend:_ Modeled using `as.numeric(date)`
 - _Seasonal:_ Modeled using `month(date)`
 
-```{r}
+```{r, message=TRUE}
 # Model 5: lm ----
 model_fit_lm <- linear_reg() %>%
     set_engine("lm") %>%
@@ -181,7 +181,7 @@ model_fit_lm <- linear_reg() %>%
 
 We can model a Multivariate Adaptive Regression Spline model using `mars()`. I've modified the process to use a `workflow` to standardize the preprocessing of the features that are provided to the machine learning model (mars). 
 
-```{r}
+```{r, message=TRUE}
 # Model 6: earth ----
 model_spec_mars <- mars(mode = "regression") %>%
     set_engine("earth") 

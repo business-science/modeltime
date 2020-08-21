@@ -110,8 +110,36 @@ update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_
         dplyr::mutate(.model_desc = ifelse(.model_id == .id, .new_model_desc, .model_desc))
 }
 
+#' Combine multiple Modeltime Tables into a single Modeltime Table
+#'
+#' @param ... A Modeltime Tables (class `mdl_time_tbl`)
+#'
+#' @details
+#' This function can be used with both uncalibrated and calibrated
+#' modeltime tables.
+#'
+#' @export
+combine_model_tables <- function(...) {
 
+    dots <- list(...)
 
+    # CHECKS
+    meta_data <- tibble::enframe(dots, name = ".id", value = ".model_table")
+    validate_modeltime_table_classes(meta_data, accept_classes = c("mdl_time_tbl"))
+    # validate_ncol(meta_data, )
+
+    # CREATE MODELTIME OBJECT
+    combined_tbl <- dplyr::bind_rows(dots)
+
+    # Renumber .model_ids
+    ret <- combined_tbl %>%
+        dplyr::mutate(.model_id = dplyr::row_number())
+
+    class(ret) <- c("mdl_time_tbl", class(ret)) %>% unique()
+
+    return(ret)
+
+}
 
 
 
