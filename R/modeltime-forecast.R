@@ -225,6 +225,92 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
 }
 
 
+# SAFE FORECAST MAPPERS ----
+
+safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+
+    safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
+
+    data %>%
+        dplyr::mutate(.nested.col = purrr::map2(
+            .x         = .model,
+            .y         = .calibration_data,
+            .f         = function(obj, cal) {
+
+                ret <- safe_modeltime_forecast(
+                    obj, cal,
+                    new_data      = new_data,
+                    h             = h,
+                    actual_data   = actual_data
+                    # ,
+                    # ...
+                )
+
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        ) %>%
+        # Drop unnecessary columns
+        dplyr::select(-.model, -.type, -.calibration_data) %>%
+        tidyr::unnest(cols = .nested.col)
+}
+
+
+# SAFE CONF INTERVAL MAPPERS ----
+
+safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
+
+    safe_ci <- purrr::safely(
+        centered_residuals,
+        otherwise = tibble::tibble(
+            .conf_lo = NA,
+            .conf_hi = NA
+        ),
+        quiet = FALSE)
+
+    data %>%
+        dplyr::group_by(.model_id) %>%
+        tidyr::nest() %>%
+        dplyr::left_join(data_calibration, by = ".model_id") %>%
+        dplyr::mutate(.ci = purrr::map2(data, .calibration_data, .f = function(data_1, data_2) {
+            res <- safe_ci(data_1, data_2, conf_interval = conf_interval)
+            res %>% purrr::pluck("result")
+        })
+        ) %>%
+        dplyr::select(-.calibration_data) %>%
+        tidyr::unnest(cols = c(data, .ci)) %>%
+        dplyr::ungroup()
+}
+
+
+centered_residuals <- function(data_1, data_2, conf_interval) {
+
+    # Collect absolute residuals
+    ret <- tryCatch({
+
+        residuals <- c(data_2$.residuals, -data_2$.residuals)
+        s <- stats::sd(residuals)
+
+        data_1 %>%
+            dplyr::mutate(
+                .conf_lo = stats::qnorm((1-conf_interval)/2, mean = .value, sd = s),
+                .conf_hi = stats::qnorm((1+conf_interval)/2, mean = .value, sd = s)
+            ) %>%
+            dplyr::select(.conf_lo, .conf_hi)
+
+    }, error = function(e) {
+        tibble::tibble(
+            .conf_lo = NA,
+            .conf_hi = NA
+        )
+    })
+
+    return(ret)
+
+}
+
+
 # FORECAST UTILITIES ----
 
 #' Modeltime Forecast Helpers
@@ -550,147 +636,3 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     return(ret)
 
 }
-
-
-# SAFE FORECAST MAPPERS ----
-
-safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
-
-    safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
-
-    data %>%
-        dplyr::mutate(.nested.col = purrr::map2(
-            .x         = .model,
-            .y         = .calibration_data,
-            .f         = function(obj, cal) {
-
-                ret <- safe_modeltime_forecast(
-                    obj, cal,
-                    new_data      = new_data,
-                    h             = h,
-                    actual_data   = actual_data
-                    # ,
-                    # ...
-                )
-
-                ret <- ret %>% purrr::pluck("result")
-
-                return(ret)
-            })
-        ) %>%
-        # Drop unnecessary columns
-        dplyr::select(-.model, -.type, -.calibration_data) %>%
-        tidyr::unnest(cols = .nested.col)
-}
-
-
-# SAFE CONF INTERVAL MAPPERS ----
-
-safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
-
-    safe_ci <- purrr::safely(
-        centered_residuals,
-        otherwise = tibble::tibble(
-            .conf_lo = NA,
-            .conf_hi = NA
-        ),
-        quiet = FALSE)
-
-    data %>%
-        dplyr::group_by(.model_id) %>%
-        tidyr::nest() %>%
-        dplyr::left_join(data_calibration, by = ".model_id") %>%
-        dplyr::mutate(.ci = purrr::map2(data, .calibration_data, .f = function(data_1, data_2) {
-            res <- safe_ci(data_1, data_2, conf_interval = conf_interval)
-            res %>% purrr::pluck("result")
-        })
-        ) %>%
-        dplyr::select(-.calibration_data) %>%
-        tidyr::unnest(cols = c(data, .ci)) %>%
-        dplyr::ungroup()
-}
-
-
-centered_residuals <- function(data_1, data_2, conf_interval) {
-
-    # Collect absolute residuals
-    ret <- tryCatch({
-
-        residuals <- c(data_2$.residuals, -data_2$.residuals)
-        s <- stats::sd(residuals)
-
-        data_1 %>%
-            dplyr::mutate(
-                .conf_lo = stats::qnorm((1-conf_interval)/2, mean = .value, sd = s),
-                .conf_hi = stats::qnorm((1+conf_interval)/2, mean = .value, sd = s)
-            ) %>%
-            dplyr::select(.conf_lo, .conf_hi)
-
-    }, error = function(e) {
-        tibble::tibble(
-            .conf_lo = NA,
-            .conf_hi = NA
-        )
-    })
-
-    return(ret)
-
-}
-
-
-# # Normal Conf Interval
-# normal_ci_mean_shifted <- function(data, conf_interval = 0.95) {
-#
-#     x <- data$.residuals
-#
-#     probs      <- 0.5 + c(-conf_interval/2, conf_interval/2)
-#     quantile_x <- stats::quantile(x, prob = probs, na.rm = TRUE)
-#     iq_range   <- quantile_x[[2]] - quantile_x[[1]]
-#     limits     <- quantile_x + iq_range * c(-1, 1)
-#
-#     ci_lo_vec  <- limits[1]
-#     ci_hi_vec  <- limits[2]
-#
-#     # Apply mean shift
-#     suppressWarnings({
-#         mu <- mean(x, na.rm = T)
-#     })
-#
-#     ci_lo_vec_shifted <- min(ci_lo_vec, ci_lo_vec - mu)
-#     ci_hi_vec_shifted <- max(ci_hi_vec, ci_hi_vec - mu)
-#
-#     # Tibble
-#     ret <- tibble::tibble(
-#         .conf_lo = ci_lo_vec_shifted,
-#         .conf_hi = ci_hi_vec_shifted
-#     )
-#
-#     return(ret)
-# }
-#
-# # Normal Conf Interval
-# residual_regression <- function(data, conf_interval = 0.95) {
-#
-#     model <- tryCatch({
-#         stats::lm(data$.residuals ~ seq_along(data$.residuals))
-#     }, error = function(e) {
-#         NULL
-#     })
-#
-#     sd_residuals <- stats::sd(model$residuals)
-#
-#     alpha   <- (1-conf_interval)/2
-#     z_score <- abs(qnorm(alpha))
-#
-#     # Tibble
-#     ret <- tibble::tibble(
-#         .conf_lo = (-z_score) * sd_residuals,
-#         .conf_hi = (z_score) * sd_residuals
-#     )
-#
-#     return(ret)
-#
-#
-# }
-
-
