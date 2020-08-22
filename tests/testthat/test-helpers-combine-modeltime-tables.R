@@ -5,7 +5,6 @@ context("TEST COMBINING MULTIPLE MODELTIME TABLES")
 
 # library(modeltime)
 # library(tidymodels)
-#
 # library(tidyverse)
 # library(timetk)
 # library(lubridate)
