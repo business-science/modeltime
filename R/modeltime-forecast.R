@@ -22,6 +22,9 @@
 #' - `.key`: Values labeled either "prediction" or "actual"
 #' - `.index`: The timestamp index.
 #' - `.value`: The value being forecasted.
+#'
+#' Additionally, if the Modeltime Table has been previously calibrated using [modeltime_calibrate()],
+#' you will gain confidence intervals.
 #' - `.conf_lo`: The lower limit of the confidence interval.
 #' - `.conf_hi`: The upper limit of the confidence interval.
 #'
@@ -35,36 +38,52 @@
 #'
 #' @details
 #'
-#' The key parameters are (controlled by `new_data` or `h`) and
-#' combining with existing data (controlled by `actual_data`) in preparation
-#' for visualization with [plot_modeltime_forecast()].
+#' The `modeltime_forecast()` function prepares a forecast for visualization with
+#' with [plot_modeltime_forecast()]. The forecast is controlled by `new_data` or `h`,
+#' which can be combined with existing data (controlled by `actual_data`).
+#' Confidence intervals are included if the incoming Modeltime Table has been
+#' calibrated using [modeltime_calibrate()].
+#' Otherwise confidence intervals are not estimated.
 #'
+#' __New Data__
 #'
-#' __Specifying New Data or Horizon (h)__
-#'
-#' When forecasting you can specify future data using:
-#'
-#' 1. `new_data`: This is a future tibble with date column and columns for xregs
+#' When forecasting you can specify future data using `new_data`.
+#' This is a future tibble with date column and columns for xregs
 #'  extending the trained dates and exogonous regressors (xregs) if used.
+#'
 #'    - __Forecasting Evaluation Data__: By default, the `new_data` will use the `.calibration_data`
 #'      if `new_data` is not provided.
 #'      This is the equivalent of using `rsample::testing()` for getting test data sets.
-#'    - __Forecasting Future Data__: See [future_frame()] for creating future tibbles.
+#'    - __Forecasting Future Data__: See [timetk::future_frame()] for creating future tibbles.
 #'    - __Xregs__: Can be used with this method
 #'
 #'
-#' 2. `h`: This is a phrase like "1 year", which extends the `.calibration_data` into the future.
+#' __H (Horizon)__
+#'
+#' When forecasting, you can specify `h`. This is a phrase like "1 year",
+#' which extends the `.calibration_data` (1st priority) or the `actual_data` (2nd priority)
+#' into the future.
 #'    - __Forecasting Future Data__: All forecasts using `h` are
-#'      ___extended after the calibration data___, which is
+#'      ___extended after the calibration data or actual_data___.
+#'
+#'    - Extending `.calibration_data` - Calibration data is given 1st priority, which is
 #'      desirable _after refitting_ with [modeltime_refit()].
-#'      Internally, a call is made to [future_frame()] to
+#'      Internally, a call is made to [timetk::future_frame()] to
 #'      expedite creating new data using the date feature.
+#'    - Extending `actual_data` - If `h` is provided, and the modeltime table has not been
+#'      calibrated, the "actual_data" will be extended into the future. This is useful
+#'      in situations where you want to go directly from `modeltime_table()` to `modeltime_forecast()`
+#'      without calibrating or refitting.
 #'    - __Xregs__: Cannot be used because future data must include new xregs.
+#'      If xregs are desired, build a future data frame and use `new_data`.
 #'
 #' __Actual Data__
 #'
 #' This is reference data that contains the true values of the time-stamp data.
 #' It helps in visualizing the performance of the forecast vs the actual data.
+#'
+#' When `h` is used and the Modeltime Table has _not been calibrated_, then the
+#' actual data is extended into the future periods that are defined by `h`.
 #'
 #' __Confidence Interval Estimation__
 #'
@@ -123,9 +142,18 @@
 #' calibration_tbl %>%
 #'     modeltime_accuracy()
 #'
-#' # ---- FORECAST ----
+#' # ---- FUTURE FORECAST ----
 #'
 #' calibration_tbl %>%
+#'     modeltime_forecast(
+#'         new_data    = testing(splits),
+#'         actual_data = m750
+#'     )
+#'
+#' # ---- ALTERNATIVE: FORECAST WITHOUT CONFIDENCE INTERVALS ----
+#' # Skips Calibration Step, No Confidence Intervals
+#'
+#' models_tbl %>%
 #'     modeltime_forecast(
 #'         new_data    = testing(splits),
 #'         actual_data = m750
@@ -144,14 +172,14 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
         } else if (!is.null(actual_data)) {
             message("Using 'actual_data' to forecast. This may not be desirable for sequence models such as ARIMA.")
         } else {
-            rlang::abort("Forecast requires 'new_data', 'calibration_data', or 'actual_data'.")
+            rlang::abort("Forecast requires either: \n - 'new_data' \n - 'h'")
         }
     }
 
     if (!is.null(h)) {
         if (!all(c(".type", ".calibration_data") %in% names(object))) {
            if (is.null(actual_data)) {
-               rlang::abort("Either '.calibration_data' or 'actual_data' must be provided to use 'h' as the forecast horizon. Try using 'modeltime_calibrate()'.")
+               rlang::abort("Forecasting with 'h' requires one of: \n - '.calibration_data' (see '?modeltime_calibrate()') \n - 'actual_data'")
            }
         }
     }

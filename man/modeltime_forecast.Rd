@@ -37,6 +37,11 @@ the column names are transformed to:
 \item \code{.key}: Values labeled either "prediction" or "actual"
 \item \code{.index}: The timestamp index.
 \item \code{.value}: The value being forecasted.
+}
+
+Additionally, if the Modeltime Table has been previously calibrated using \code{\link[=modeltime_calibrate]{modeltime_calibrate()}},
+you will gain confidence intervals.
+\itemize{
 \item \code{.conf_lo}: The lower limit of the confidence interval.
 \item \code{.conf_hi}: The upper limit of the confidence interval.
 }
@@ -58,38 +63,53 @@ The goal of \code{modeltime_forecast()} is to simplify the process of
 forecasting future data.
 }
 \details{
-The key parameters are (controlled by \code{new_data} or \code{h}) and
-combining with existing data (controlled by \code{actual_data}) in preparation
-for visualization with \code{\link[=plot_modeltime_forecast]{plot_modeltime_forecast()}}.
+The \code{modeltime_forecast()} function prepares a forecast for visualization with
+with \code{\link[=plot_modeltime_forecast]{plot_modeltime_forecast()}}. The forecast is controlled by \code{new_data} or \code{h},
+which can be combined with existing data (controlled by \code{actual_data}).
+Confidence intervals are included if the incoming Modeltime Table has been
+calibrated using \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}.
+Otherwise confidence intervals are not estimated.
 
-\strong{Specifying New Data or Horizon (h)}
+\strong{New Data}
 
-When forecasting you can specify future data using:
-\enumerate{
-\item \code{new_data}: This is a future tibble with date column and columns for xregs
+When forecasting you can specify future data using \code{new_data}.
+This is a future tibble with date column and columns for xregs
 extending the trained dates and exogonous regressors (xregs) if used.
 \itemize{
 \item \strong{Forecasting Evaluation Data}: By default, the \code{new_data} will use the \code{.calibration_data}
 if \code{new_data} is not provided.
 This is the equivalent of using \code{rsample::testing()} for getting test data sets.
-\item \strong{Forecasting Future Data}: See \code{\link[=future_frame]{future_frame()}} for creating future tibbles.
+\item \strong{Forecasting Future Data}: See \code{\link[timetk:future_frame]{timetk::future_frame()}} for creating future tibbles.
 \item \strong{Xregs}: Can be used with this method
 }
-\item \code{h}: This is a phrase like "1 year", which extends the \code{.calibration_data} into the future.
+
+\strong{H (Horizon)}
+
+When forecasting, you can specify \code{h}. This is a phrase like "1 year",
+which extends the \code{.calibration_data} (1st priority) or the \code{actual_data} (2nd priority)
+into the future.
 \itemize{
 \item \strong{Forecasting Future Data}: All forecasts using \code{h} are
-\emph{\strong{extended after the calibration data}}, which is
+\emph{\strong{extended after the calibration data or actual_data}}.
+\item Extending \code{.calibration_data} - Calibration data is given 1st priority, which is
 desirable \emph{after refitting} with \code{\link[=modeltime_refit]{modeltime_refit()}}.
-Internally, a call is made to \code{\link[=future_frame]{future_frame()}} to
+Internally, a call is made to \code{\link[timetk:future_frame]{timetk::future_frame()}} to
 expedite creating new data using the date feature.
+\item Extending \code{actual_data} - If \code{h} is provided, and the modeltime table has not been
+calibrated, the "actual_data" will be extended into the future. This is useful
+in situations where you want to go directly from \code{modeltime_table()} to \code{modeltime_forecast()}
+without calibrating or refitting.
 \item \strong{Xregs}: Cannot be used because future data must include new xregs.
-}
+If xregs are desired, build a future data frame and use \code{new_data}.
 }
 
 \strong{Actual Data}
 
 This is reference data that contains the true values of the time-stamp data.
 It helps in visualizing the performance of the forecast vs the actual data.
+
+When \code{h} is used and the Modeltime Table has \emph{not been calibrated}, then the
+actual data is extended into the future periods that are defined by \code{h}.
 
 \strong{Confidence Interval Estimation}
 
@@ -147,9 +167,18 @@ calibration_tbl <- models_tbl \%>\%
 calibration_tbl \%>\%
     modeltime_accuracy()
 
-# ---- FORECAST ----
+# ---- FUTURE FORECAST ----
 
 calibration_tbl \%>\%
+    modeltime_forecast(
+        new_data    = testing(splits),
+        actual_data = m750
+    )
+
+# ---- ALTERNATIVE: FORECAST WITHOUT CONFIDENCE INTERVALS ----
+# Skips Calibration Step, No Confidence Intervals
+
+models_tbl \%>\%
     modeltime_forecast(
         new_data    = testing(splits),
         actual_data = m750
