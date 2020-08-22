@@ -138,16 +138,22 @@ NULL
 #' @rdname modeltime_forecast
 modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
 
-    # Checks
-
-    # Check calibration data
-    if (!all(c(".type", ".calibration_data") %in% names(object))) {
-        glubort("Expecting columns '.type' and '.calibration_data'. Try running 'modeltime_calibrate()' before using 'modeltime_forecast()'.")
+    if (is.null(new_data) && is.null(h)) {
+        if (all(c(".type", ".calibration_data") %in% names(object))) {
+            message("Using '.calibration_data' to forecast.")
+        } else if (!is.null(actual_data)) {
+            message("Using 'actual_data' to forecast. This may not be desirable for sequence models such as ARIMA.")
+        } else {
+            rlang::abort("Forecast requires 'new_data', 'calibration_data', or 'actual_data'.")
+        }
     }
 
-    # Check New Data
-    if (is.null(new_data) && is.null(h)) {
-        message("'new_data' is missing. Using '.calibration_data' to forecast.")
+    if (!is.null(h)) {
+        if (!all(c(".type", ".calibration_data") %in% names(object))) {
+           if (is.null(actual_data)) {
+               rlang::abort("Either '.calibration_data' or 'actual_data' must be provided to use 'h' as the forecast horizon. Try using 'modeltime_calibrate()'.")
+           }
+        }
     }
 
     UseMethod("modeltime_forecast")
@@ -167,8 +173,18 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
     n_models <- data$.model_id %>% unique() %>% length()
 
     # HANDLE CALIBRATION DATA
-    data_calibration <- data %>%
-        dplyr::select(.model_id, .calibration_data)
+    if (!all(c(".type", ".calibration_data") %in% names(data))) {
+        # glubort("Expecting columns '.type' and '.calibration_data'. Try running 'modeltime_calibrate()' before using 'modeltime_forecast()'.")
+        conf_interval = NULL
+        data <- data %>%
+            dplyr::mutate(
+                .type = NA,
+                .calibration_data = NA
+            )
+    } else {
+        data_calibration <- data %>%
+            dplyr::select(.model_id, .calibration_data)
+    }
 
     # CREATE FORECAST ----
 
@@ -179,27 +195,31 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
         safe_modeltime_forecast_map(
             new_data    = new_data,
             h           = h,
-            actual_data = actual_data
+            actual_data = actual_data,
+            bind_actual = TRUE # Binds the actual data during the forecast
         )
 
     if ("actual" %in% unique(ret_1$.key)) {
         ret_1 <- ret_1 %>%
             dplyr::mutate(.model_desc = ifelse(.key == "actual", "ACTUAL", .model_desc)) %>%
-            dplyr::mutate(.model_id = ifelse(.key == "actual", NA_integer_, .model_id))
+            dplyr::mutate(.model_id   = ifelse(.key == "actual", NA_integer_, .model_id))
     }
 
     # Compute subsequent models without actual data
     ret_2 <- tibble::tibble()
 
     if (n_models > 1) {
+
         ret_2 <- data %>%
             dplyr::ungroup() %>%
             dplyr::slice(2:dplyr::n()) %>%
             safe_modeltime_forecast_map(
                 new_data    = new_data,
                 h           = h,
-                actual_data = NULL # Don't pass actual_data
+                actual_data = actual_data,
+                bind_actual = FALSE # Skips iterative rowwise binding of actual_data
             )
+
     }
 
     # If errors occur, .nested.col remains - needs removed
@@ -227,7 +247,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
 
 # SAFE FORECAST MAPPERS ----
 
-safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
 
     safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
 
@@ -241,12 +261,15 @@ safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_
                     obj, cal,
                     new_data      = new_data,
                     h             = h,
-                    actual_data   = actual_data
-                    # ,
-                    # ...
+                    actual_data   = actual_data,
+                    bind_actual   = bind_actual
                 )
 
-                ret <- ret %>% purrr::pluck("result")
+                err <- ret$error
+
+                ret <- ret$result
+
+                # if (!is.null(error)) warning(err)
 
                 return(ret)
             })
@@ -320,18 +343,19 @@ centered_residuals <- function(data_1, data_2, conf_interval) {
 #'
 #' @inheritParams modeltime_forecast
 #' @param calibration_data Data that has been calibrated from a testing set
+#' @param bind_actual Logical. Whether or not to skip rowwise binding of `actual_data``
 #'
 #' @return A tibble with forecast features
 #'
 #' @keywords internal
 #'
 #' @export
-mdl_time_forecast <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+mdl_time_forecast <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
     UseMethod("mdl_time_forecast", object)
 }
 
 #' @export
-mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
 
     calib_provided <- FALSE
     h_provided     <- FALSE
@@ -340,18 +364,36 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 
     # If no 'new_data', forecast 'calibration_data'
     if (is.null(new_data) && is.null(h)) {
-        new_data <- calibration_data
-        calib_provided <- TRUE
+        if (is.data.frame(calibration_data)) {
+            new_data <- calibration_data
+            calib_provided <- TRUE
+        } else if (is.data.frame(actual_data)) {
+            new_data <- actual_data
+        } else {
+            rlang::abort("Forecast requires 'new_data', 'calibration_data', or 'actual_data'.")
+        }
     }
 
     # Convert 'h' to 'new_data'
     if (!is.null(h)) {
-        # Suppress date selection
-        tryCatch({
-            suppressMessages(new_data <- timetk::future_frame(calibration_data, .length_out = h, ...))
-        }, error = function(e) {
-            rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
-        })
+        if (is.data.frame(calibration_data)) {
+            tryCatch({
+                # Suppress date selection
+                suppressMessages(new_data <- timetk::future_frame(calibration_data, .length_out = h, ...))
+            }, error = function(e) {
+                rlang::abort("Attempt to extend '.calibration_data' into the future using 'h' has failed.")
+            })
+        } else if (is.data.frame(actual_data)) {
+            tryCatch({
+                # Suppress date selection
+                suppressMessages(new_data <- timetk::future_frame(actual_data, .length_out = h, ...))
+            }, error = function(e) {
+                rlang::abort("Attempt to extend 'actual_data' into the future using 'h' has failed.")
+            })
+        } else {
+            rlang::abort("Forecast requires 'new_data', '.calibration_data', or 'actual_data'.")
+        }
+
         h_provided <- TRUE
     }
 
@@ -382,7 +424,7 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 
     # COMBINE ACTUAL DATA
 
-    if (!is.null(actual_data)) {
+    if (!is.null(actual_data) && bind_actual) {
 
         # setup
         nms_final     <- names(data_formatted)
@@ -465,7 +507,7 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 }
 
 #' @export
-mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, ...) {
+mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
 
     calib_provided <- FALSE
     h_provided     <- FALSE
@@ -482,20 +524,38 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
     # NEW DATA
 
-    # If no 'new_data' and no 'h', forecast 'calibration_data'
+    # If no 'new_data', forecast 'calibration_data' or 'actual_data'
     if (is.null(new_data) && is.null(h)) {
-        new_data <- calibration_data
-        calib_provided <- TRUE
+        if (is.data.frame(calibration_data)) {
+            new_data <- calibration_data
+            calib_provided <- TRUE
+        } else if (is.data.frame(actual_data)) {
+            new_data <- actual_data
+        } else {
+            rlang::abort("Forecast requires 'new_data', 'calibration_data', or 'actual_data'.")
+        }
     }
 
     # Convert 'h' to 'new_data'
     if (!is.null(h)) {
-        # Suppress date selection
-        tryCatch({
-            suppressMessages(new_data <- timetk::future_frame(calibration_data, .length_out = h, ...))
-        }, error = function(e) {
-            rlang::abort("'h' requires a 'modeltime' model fitted with a date feature to extend into the future. 'parsnip' models do not contain this.")
-        })
+        if (is.data.frame(calibration_data)) {
+            tryCatch({
+                # Suppress date selection
+                suppressMessages(new_data <- timetk::future_frame(calibration_data, .length_out = h, ...))
+            }, error = function(e) {
+                rlang::abort("Attempt to extend '.calibration_data' into the future using 'h' has failed.")
+            })
+        } else if (is.data.frame(actual_data)) {
+            tryCatch({
+                # Suppress date selection
+                suppressMessages(new_data <- timetk::future_frame(actual_data, .length_out = h, ...))
+            }, error = function(e) {
+                rlang::abort("Attempt to extend 'actual_data' into the future using 'h' has failed.")
+            })
+        } else {
+            rlang::abort("Forecast requires 'new_data', '.calibration_data', or 'actual_data'.")
+        }
+
         h_provided <- TRUE
     }
 
@@ -550,7 +610,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
     # COMBINE ACTUAL DATA
 
-    if (!is.null(actual_data)) {
+    if (!is.null(actual_data) && bind_actual) {
 
         nms_final <- names(data_formatted)
 

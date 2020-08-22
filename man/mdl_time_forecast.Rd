@@ -10,6 +10,7 @@ mdl_time_forecast(
   new_data = NULL,
   h = NULL,
   actual_data = NULL,
+  bind_actual = TRUE,
   ...
 )
 }
@@ -26,6 +27,8 @@ time series with no exogenous regressors).
 Extends the calibration data \code{h} periods into the future.}
 
 \item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
+
+\item{bind_actual}{Logical. Whether or not to skip rowwise binding of `actual_data``}
 
 \item{...}{Not currently used}
 }
