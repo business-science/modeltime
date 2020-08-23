@@ -3,7 +3,7 @@
 
 ### New Features 
 
-__Forecast without Claibration/Refitting__
+__Forecast without Calibration/Refitting__
 
 Sometimes it's important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the `modeltime_calibrate()` and `modeltime_refit()` steps and jump straight into forecasting the future. Here's an example with `h = "3 years"`. Note that you will not get confidence intervals with this approach because calibration data is needed for this. 
 

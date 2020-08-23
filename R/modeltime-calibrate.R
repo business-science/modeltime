@@ -1,3 +1,5 @@
+# MODELTIME CALIBRATE ----
+
 #' Preparation for forecasting
 #'
 #' Calibration sets the stage for accuracy and forecast confidence
@@ -100,43 +102,6 @@ modeltime_calibrate.default <- function(object, new_data,
 }
 
 #' @export
-modeltime_calibrate.model_spec <- function(object, new_data,
-                                           quiet = TRUE, ...) {
-    rlang::abort("Model spec must be trained using the 'fit()' function.")
-}
-
-#' @export
-modeltime_calibrate.model_fit <- function(object, new_data,
-                                          quiet = TRUE, ...) {
-
-    ret <- modeltime_table(object) %>%
-        modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
-
-    message("Converting to Modeltime Table.")
-
-    return(ret)
-
-}
-
-#' @export
-modeltime_calibrate.workflow <- function(object, new_data,
-                                         quiet = TRUE, ...) {
-
-    # Checks
-    if (!object$trained) {
-        rlang::abort("Workflow must be trained using the 'fit()' function.")
-    }
-
-    ret <- modeltime_table(object) %>%
-        modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
-
-    message("Converting to Modeltime Table.")
-
-    return(ret)
-
-}
-
-#' @export
 modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
                                              quiet = TRUE, ...) {
     data <- object
@@ -178,6 +143,45 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
 
     return(ret)
 }
+
+#' @export
+modeltime_calibrate.model_spec <- function(object, new_data,
+                                           quiet = TRUE, ...) {
+    rlang::abort("Model spec must be trained using the 'fit()' function.")
+}
+
+#' @export
+modeltime_calibrate.model_fit <- function(object, new_data,
+                                          quiet = TRUE, ...) {
+
+    ret <- modeltime_table(object) %>%
+        modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
+
+    message("Converting to Modeltime Table.")
+
+    return(ret)
+
+}
+
+#' @export
+modeltime_calibrate.workflow <- function(object, new_data,
+                                         quiet = TRUE, ...) {
+
+    # Checks
+    if (!object$trained) {
+        rlang::abort("Workflow must be trained using the 'fit()' function.")
+    }
+
+    ret <- modeltime_table(object) %>%
+        modeltime_calibrate(new_data = new_data, quiet = quiet, ...)
+
+    message("Converting to Modeltime Table.")
+
+    return(ret)
+
+}
+
+
 
 
 
