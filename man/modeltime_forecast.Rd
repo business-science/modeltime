@@ -79,7 +79,7 @@ extending the trained dates and exogonous regressors (xregs) if used.
 \item \strong{Forecasting Evaluation Data}: By default, the \code{new_data} will use the \code{.calibration_data}
 if \code{new_data} is not provided.
 This is the equivalent of using \code{rsample::testing()} for getting test data sets.
-\item \strong{Forecasting Future Data}: See \code{\link[timetk:future_frame]{timetk::future_frame()}} for creating future tibbles.
+\item \strong{Forecasting Future Data}: See \code{timetk::future_frame()} for creating future tibbles.
 \item \strong{Xregs}: Can be used with this method
 }
 
@@ -93,7 +93,7 @@ into the future.
 \emph{\strong{extended after the calibration data or actual_data}}.
 \item Extending \code{.calibration_data} - Calibration data is given 1st priority, which is
 desirable \emph{after refitting} with \code{\link[=modeltime_refit]{modeltime_refit()}}.
-Internally, a call is made to \code{\link[timetk:future_frame]{timetk::future_frame()}} to
+Internally, a call is made to \code{timetk::future_frame()} to
 expedite creating new data using the date feature.
 \item Extending \code{actual_data} - If \code{h} is provided, and the modeltime table has not been
 calibrated, the "actual_data" will be extended into the future. This is useful

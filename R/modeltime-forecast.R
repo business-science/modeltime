@@ -54,7 +54,7 @@
 #'    - __Forecasting Evaluation Data__: By default, the `new_data` will use the `.calibration_data`
 #'      if `new_data` is not provided.
 #'      This is the equivalent of using `rsample::testing()` for getting test data sets.
-#'    - __Forecasting Future Data__: See [timetk::future_frame()] for creating future tibbles.
+#'    - __Forecasting Future Data__: See `timetk::future_frame()` for creating future tibbles.
 #'    - __Xregs__: Can be used with this method
 #'
 #'
@@ -68,7 +68,7 @@
 #'
 #'    - Extending `.calibration_data` - Calibration data is given 1st priority, which is
 #'      desirable _after refitting_ with [modeltime_refit()].
-#'      Internally, a call is made to [timetk::future_frame()] to
+#'      Internally, a call is made to `timetk::future_frame()` to
 #'      expedite creating new data using the date feature.
 #'    - Extending `actual_data` - If `h` is provided, and the modeltime table has not been
 #'      calibrated, the "actual_data" will be extended into the future. This is useful

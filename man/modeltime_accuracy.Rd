@@ -16,9 +16,9 @@ modeltime_accuracy(
 \item{object}{A fitted model object that is either (1) a workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
 (2) a parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}}
 
-\item{new_data}{A \code{tibble} containing future information (timestamps and actual values).}
+\item{new_data}{A \code{tibble} to predict and calculate accuracy metrics on. Overrides any calibration data.}
 
-\item{metric_set}{A \code{\link[=metric_set]{metric_set()}} that is used to summarize one or more
+\item{metric_set}{A \code{yardstick::metric_set()} that is used to summarize one or more
 forecast accuracy (regression) metrics.}
 
 \item{quiet}{Hide errors (\code{TRUE}, the default), or display them as they occur?}
