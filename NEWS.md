@@ -1,14 +1,37 @@
 
 # modeltime 0.0.2.9000 (Development Version)
 
+### New Features 
+
+__Forecast without Claibration/Refitting__
+
+Sometimes it's important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the `modeltime_calibrate()` and `modeltime_refit()` steps and jump straight into forecasting the future. Here's an example with `h = "3 years"`. Note that you will not get confidence intervals with this approach because calibration data is needed for this. 
+
+``` r
+# Make forecasts without calibration/refitting
+modeltime_table(
+    model_fit_prophet,
+    model_fit_lm
+) %>%
+    modeltime_forecast(
+        h = "3 years",
+        actual_data = m750
+    ) %>%
+    plot_modeltime_forecast(.conf_interval_show = F)
+```
+
 ### New Models
 
 __TBATS Model__
 
-- Use `seasonal_reg()` and set engine to "tbats".
+Use `seasonal_reg()` and set engine to "tbats".
 
 ``` r
-seasonal_reg() %>% set_engine("tbats")
+seasonal_reg(
+    seasonal_period_1 = "1 day",
+    seasonal_period_2 = "1 week"
+) %>% 
+    set_engine("tbats")
 ```
 
 ### New Functions

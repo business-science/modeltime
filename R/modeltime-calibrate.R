@@ -141,6 +141,12 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
                                              quiet = TRUE, ...) {
     data <- object
 
+    # If object has already been calibrated, remove calibration
+    if (is_calibrated(data)) {
+        data <- data %>%
+            dplyr::select(-.type, -.calibration_data)
+    }
+
     safe_calc_residuals <- purrr::safely(calc_residuals, otherwise = NA, quiet = quiet)
 
     ret <- data %>%

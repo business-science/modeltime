@@ -73,6 +73,12 @@ NULL
 modeltime_accuracy <- function(object, new_data = NULL,
                                metric_set = default_forecast_accuracy_metric_set(),
                                quiet = TRUE, ...) {
+    if (!is_calibrated(object)) {
+       if (is.null(new_data)) {
+           rlang::abort("Modeltime Table must be calibrated (see 'modeltime_calbirate()') or include 'new_data'.")
+       }
+    }
+
     UseMethod("modeltime_accuracy")
 }
 
@@ -90,6 +96,14 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                                             quiet = TRUE, ...) {
     data <- object
 
+    # Handle New Data ----
+    if (!is.null(new_data)) {
+        data <- data %>%
+            modeltime_calibrate(new_data = new_data)
+    }
+
+
+    # Accuracy Calculation ----
     safe_calc_accuracy <- purrr::safely(calc_accuracy_2, otherwise = NA, quiet = quiet)
 
     ret <- data %>%
@@ -110,7 +124,6 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
         ) %>%
         dplyr::select(-.model, -.calibration_data) %>%
         tidyr::unnest(cols = .nested.col)
-    # ret <- data
 
     if (".nested.col" %in% names(ret)) {
         ret <- ret %>%
