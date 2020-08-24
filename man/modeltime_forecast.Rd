@@ -14,7 +14,7 @@ modeltime_forecast(
 )
 }
 \arguments{
-\item{object}{A Modeltime Table that has been calibrated with \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}}
+\item{object}{A Modeltime Table}
 
 \item{new_data}{A \code{tibble} containing future information to forecast.
 If \code{NULL}, forecasts the calibration data.}

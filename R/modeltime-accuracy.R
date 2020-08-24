@@ -5,13 +5,13 @@
 #' This is a wrapper for `yardstick` that simplifies time series regression accuracy metric
 #' calculations from a fitted `workflow` (trained workflow) or `model_fit` (trained parsnip model).
 #'
-#' @param object A fitted model object that is either (1) a workflow that has been fit by [fit.workflow()] or
-#'  (2) a parsnip model that has been fit using [fit.model_spec()]
-#' @param new_data A `tibble` to predict and calculate accuracy metrics on. Overrides any calibration data.
+#' @param object A Modeltime Table
+#' @param new_data A `tibble` to predict and calculate residuals on.
+#'  If provided, overrides any calibration data.
 #' @param metric_set A `yardstick::metric_set()` that is used to summarize one or more
 #'  forecast accuracy (regression) metrics.
 #' @param quiet Hide errors (`TRUE`, the default), or display them as they occur?
-#' @param ... Additional arguments passed to [modeltime_forecast()].
+#' @param ... Not currently used
 #'
 #'
 #' @return A tibble with accuracy estimates.

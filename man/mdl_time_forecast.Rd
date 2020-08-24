@@ -15,7 +15,7 @@ mdl_time_forecast(
 )
 }
 \arguments{
-\item{object}{A Modeltime Table that has been calibrated with \code{\link[=modeltime_calibrate]{modeltime_calibrate()}}}
+\item{object}{A Modeltime Table}
 
 \item{calibration_data}{Data that has been calibrated from a testing set}
 

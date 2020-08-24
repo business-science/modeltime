@@ -5,7 +5,7 @@
 #' The goal of `modeltime_forecast()` is to simplify the process of
 #' forecasting future data.
 #'
-#' @param object A Modeltime Table that has been calibrated with [modeltime_calibrate()]
+#' @param object A Modeltime Table
 #' @param new_data A `tibble` containing future information to forecast.
 #'  If `NULL`, forecasts the calibration data.
 #' @param h The forecast horizon (can be used instead of `new_data` for
