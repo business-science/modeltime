@@ -16,6 +16,7 @@ make_exp_smoothing <- function() {
     # * Model ----
     parsnip::set_model_engine("exp_smoothing", mode = "regression", eng = "ets")
     parsnip::set_dependency("exp_smoothing", "ets", "forecast")
+    parsnip::set_dependency("exp_smoothing", "ets", "modeltime")
 
     # * Args ----
     parsnip::set_model_arg(

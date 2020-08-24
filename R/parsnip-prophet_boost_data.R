@@ -16,6 +16,7 @@ make_prophet_boost <- function() {
     # * Model ----
     parsnip::set_model_engine("prophet_boost", mode = "regression", eng = "prophet_xgboost")
     parsnip::set_dependency("prophet_boost", eng = "prophet_xgboost", pkg = "prophet")
+    parsnip::set_dependency("prophet_boost", eng = "prophet_xgboost", pkg = "modeltime")
 
     # * Args - Prophet ----
     parsnip::set_model_arg(

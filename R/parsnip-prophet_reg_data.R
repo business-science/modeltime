@@ -16,6 +16,7 @@ make_prophet_reg <- function() {
     # * Model ----
     parsnip::set_model_engine("prophet_reg", mode = "regression", eng = "prophet")
     parsnip::set_dependency("prophet_reg", eng = "prophet", pkg = "prophet")
+    parsnip::set_dependency("prophet_reg", eng = "prophet", pkg = "modeltime")
 
     # * Args ----
     parsnip::set_model_arg(

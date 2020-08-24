@@ -17,6 +17,7 @@ make_arima_boost <- function() {
     parsnip::set_model_engine("arima_boost", mode = "regression", eng = "auto_arima_xgboost")
     parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "forecast")
     parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "xgboost")
+    parsnip::set_dependency("arima_boost", "auto_arima_xgboost", "modeltime")
 
     # * Args - ARIMA ----
     parsnip::set_model_arg(
@@ -193,6 +194,7 @@ make_arima_boost <- function() {
     parsnip::set_model_engine("arima_boost", mode = "regression", eng = "arima_xgboost")
     parsnip::set_dependency("arima_boost", "arima_xgboost", "forecast")
     parsnip::set_dependency("arima_boost", "arima_xgboost", "xgboost")
+    parsnip::set_dependency("arima_boost", "arima_xgboost", "modeltime")
 
     # * Args - ARIMA ----
     parsnip::set_model_arg(
