@@ -16,6 +16,7 @@ make_seasonal_reg <- function() {
     # * Model ----
     parsnip::set_model_engine("seasonal_reg", mode = "regression", eng = "tbats")
     parsnip::set_dependency("seasonal_reg", "tbats", "forecast")
+    parsnip::set_dependency("seasonal_reg", "tbats", "modeltime")
 
     # * Args ----
     parsnip::set_model_arg(
@@ -94,6 +95,7 @@ make_seasonal_reg <- function() {
     # * Model ----
     parsnip::set_model_engine("seasonal_reg", mode = "regression", eng = "stlm_ets")
     parsnip::set_dependency("seasonal_reg", "stlm_ets", "forecast")
+    parsnip::set_dependency("seasonal_reg", "stlm_ets", "modeltime")
 
     # * Args ----
     parsnip::set_model_arg(
@@ -172,6 +174,7 @@ make_seasonal_reg <- function() {
     # * Model ----
     parsnip::set_model_engine("seasonal_reg", mode = "regression", eng = "stlm_arima")
     parsnip::set_dependency("seasonal_reg", "stlm_arima", "forecast")
+    parsnip::set_dependency("seasonal_reg", "stlm_arima", "modeltime")
 
     # * Args ----
     parsnip::set_model_arg(
