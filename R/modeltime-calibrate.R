@@ -183,9 +183,33 @@ modeltime_calibrate.workflow <- function(object, new_data,
 
 
 
-
-
 # UTILITIES ----
+
+mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_text) {
+
+    predictions_tbl <- forecast_data %>%
+        tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
+        tidyr::drop_na()
+
+    # Return Residuals
+    tibble::tibble(
+        !!idx_var_text   := test_data %>% timetk::tk_index(),
+        .actual           = predictions_tbl$actual,
+        .prediction       = predictions_tbl$prediction,
+        .residuals        = predictions_tbl$actual - predictions_tbl$prediction
+    )
+
+}
+
+mdl_time_residuals_to_calibration <- function(residuals_data, .type = "Test") {
+
+    # Return nested calibration tbl
+    tibble::tibble(
+        .type = .type,
+        .calibration_data = list(residuals_data)
+    )
+
+}
 
 calc_residuals <- function(object, test_data = NULL, ...) {
 
@@ -196,36 +220,61 @@ calc_residuals <- function(object, test_data = NULL, ...) {
 
     # Testing Metrics
     test_metrics_tbl <- tibble::tibble()
+
+    # CALIBRATION -----
     if (!is.null(test_data)) {
 
-        predictions_tbl <- object %>%
-            mdl_time_forecast(
-                new_data      = test_data,
-                actual_data   = test_data,
-                conf_interval = NULL,
-                ...
-            )
-
-        test_metrics_prepped_tbl <- predictions_tbl %>%
-            tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
-            tidyr::drop_na() %>%
-            tibble::add_column(.type = "Test", .before = 1) %>%
-            dplyr::group_by(.type)
-
         idx_var_text <- timetk::tk_get_timeseries_variables(test_data)[1]
-        test_metrics_tbl <- test_metrics_prepped_tbl %>%
-            dplyr::summarize(.calibration_data = list(
-                    tibble::tibble(
-                        !!idx_var_text   := test_data %>% timetk::tk_index(),
-                        .actual           = actual,
-                        .prediction       = prediction,
-                        .residuals        = actual - prediction
-                    )
-                )
-            ) %>%
-            dplyr::ungroup()
+
+        # print(is_modeltime_model(object))
+        if (is_modeltime_model(object)) {
+            # Is Modeltime Object
+
+            residual_tbl <- pull_modeltime_residuals(object) %>%
+                dplyr::rename(.prediction = .fitted)
+
+            idx_resid <- timetk::tk_index(residual_tbl)
+            idx_test  <- timetk::tk_index(test_data)
+
+            # print(identical(idx_resid, idx_test))
+            if (identical(idx_resid, idx_test)) {
+                # Can use Stored Residuals
+                test_metrics_tbl <- residual_tbl %>%
+                    mdl_time_residuals_to_calibration(.type = "Fitted")
+            } else {
+                # Cannot use Stored Residuals
+                test_metrics_tbl <- object %>%
+                    mdl_time_forecast(
+                        new_data      = test_data,
+                        actual_data   = test_data,
+                        conf_interval = NULL,
+                        ...
+                    ) %>%
+                    mdl_time_forecast_to_residuals(
+                        test_data    = test_data,
+                        idx_var_text = idx_var_text
+                    ) %>%
+                    mdl_time_residuals_to_calibration(.type = "Test")
+            }
+        } else {
+            # Not modeltime object
+            test_metrics_tbl <- object %>%
+                mdl_time_forecast(
+                    new_data      = test_data,
+                    actual_data   = test_data,
+                    conf_interval = NULL,
+                    ...
+                ) %>%
+                mdl_time_forecast_to_residuals(
+                    test_data    = test_data,
+                    idx_var_text = idx_var_text
+                ) %>%
+                mdl_time_residuals_to_calibration(.type = "Test")
+        }
 
     }
+
+    # print(test_metrics_tbl)
 
     metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
 

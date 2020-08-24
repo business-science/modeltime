@@ -189,35 +189,16 @@ default_forecast_accuracy_metric_set <- function() {
 
 # UTILITIES ----
 
-calc_accuracy_2 <- function(train_data, test_data = NULL, metric_set, ...) {
+calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...) {
 
     # Training Metrics
     train_metrics_tbl <- tibble::tibble()
-
-    # if (is.null(train_data)) {
-    #     metrics_tbl <- tibble::tibble(
-    #         .type = "Training"
-    #     )
-    # } else {
-    #     metrics_tbl <- train_data %>%
-    #         tibble::add_column(.type = "Training", .before = 1) %>%
-    #         dplyr::group_by(.type) %>%
-    #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
-    #         dplyr::ungroup()
-    # }
-
-    # if (!is.null(train_data)) {
-    #     train_metrics_tbl <- train_data %>%
-    #         tibble::add_column(.type = "Training", .before = 1) %>%
-    #         dplyr::group_by(.type) %>%
-    #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
-    #         dplyr::ungroup()
-    # }
 
     # Testing Metrics
     test_metrics_tbl <- tibble::tibble()
     if (!is.null(test_data)) {
 
+        # print(test_data)
         test_metrics_tbl <- test_data %>%
             summarize_accuracy_metrics(.actual, .prediction, metric_set) %>%
             dplyr::ungroup()
@@ -228,73 +209,6 @@ calc_accuracy_2 <- function(train_data, test_data = NULL, metric_set, ...) {
 
     return(metrics_tbl)
 }
-
-# calc_accuracy <- function(object, train_data, test_data = NULL, metric_set, ...) {
-#
-#     model_fit <- object
-#
-#
-#     # Training Metrics
-#     train_metrics_tbl <- tibble::tibble()
-#
-#     # if (is.null(train_data)) {
-#     #     metrics_tbl <- tibble::tibble(
-#     #         .type = "Training"
-#     #     )
-#     # } else {
-#     #     metrics_tbl <- train_data %>%
-#     #         tibble::add_column(.type = "Training", .before = 1) %>%
-#     #         dplyr::group_by(.type) %>%
-#     #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
-#     #         dplyr::ungroup()
-#     # }
-#
-#     # if (!is.null(train_data)) {
-#     #     train_metrics_tbl <- train_data %>%
-#     #         tibble::add_column(.type = "Training", .before = 1) %>%
-#     #         dplyr::group_by(.type) %>%
-#     #         summarize_accuracy_metrics(.value, .fitted, metric_set) %>%
-#     #         dplyr::ungroup()
-#     # }
-#
-#     # Testing Metrics
-#     test_metrics_tbl <- tibble::tibble()
-#     if (!is.null(test_data)) {
-#
-#         predictions_tbl <- object %>%
-#             modeltime_forecast(
-#                 new_data      = test_data,
-#                 actual_data   = test_data,
-#                 conf_interval = NULL,
-#                 ...
-#             )
-#
-#
-#         test_metrics_prepped_tbl <- predictions_tbl %>%
-#             tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
-#             tidyr::drop_na() %>%
-#             tibble::add_column(.type = "Test", .before = 1) %>%
-#             dplyr::group_by(.type)
-#
-#         # test_metrics_residuals_tbl <- test_metrics_prepped_tbl %>%
-#         #     dplyr::summarize(residuals = list(actual - prediction)) %>%
-#         #     dplyr::ungroup()
-#
-#         test_metrics_tbl <- test_metrics_prepped_tbl %>%
-#             summarize_accuracy_metrics(actual, prediction, metric_set) %>%
-#             dplyr::ungroup()
-#
-#         # test_metrics_tbl <- dplyr::left_join(
-#         #     test_metrics_residuals_tbl,
-#         #     test_metrics_accuracy_tbl,
-#         #     by = ".type")
-#
-#     }
-#
-#     metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
-#
-#     return(metrics_tbl)
-# }
 
 summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
