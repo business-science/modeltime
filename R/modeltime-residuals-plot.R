@@ -89,7 +89,7 @@ plot_modeltime_residuals <- function(.data,
     data_prepared <- .data %>%
         # dplyr::ungroup() %>%
         dplyr::mutate(.model_desc = ifelse(!is.na(.model_id), stringr::str_c(.model_id, "_", .model_desc), .model_desc)) %>%
-        # dplyr::mutate(.model_desc = ifelse(is.na(.value), stringr::str_c("(ERROR) ", .model_desc), .model_desc)) %>%
+        dplyr::mutate(.model_desc = ifelse(is.na(.type), stringr::str_c("(ERROR) ", .model_desc), .model_desc)) %>%
         dplyr::mutate(.model_desc = .model_desc %>% stringr::str_trunc(width = .legend_max_width)) %>%
         dplyr::mutate(.model_desc = forcats::as_factor(.model_desc))
 

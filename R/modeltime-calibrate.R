@@ -137,6 +137,12 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
             dplyr::select(-.nested.col)
     }
 
+    # Handle NULL .calibration_data - happens when NA values are present
+    ret <- ret %>%
+        dplyr::mutate(.is_null = purrr::map_lgl(.calibration_data, is.null)) %>%
+        dplyr::mutate(.calibration_data = ifelse(.is_null, list(NA), .calibration_data)) %>%
+        dplyr::select(-.is_null)
+
     if (!"mdl_time_tbl" %in% class(ret)) {
         class(ret) <- c("mdl_time_tbl", class(ret))
     }
