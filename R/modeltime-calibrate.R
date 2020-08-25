@@ -237,9 +237,10 @@ calc_residuals <- function(object, test_data = NULL, ...) {
             idx_test  <- timetk::tk_index(test_data)
 
             # print(identical(idx_resid, idx_test))
-            if (identical(idx_resid, idx_test)) {
+            if (all(idx_test %in% idx_resid)) {
                 # Can use Stored Residuals
                 test_metrics_tbl <- residual_tbl %>%
+                    dplyr::filter(!! sym(idx_var_text) %in% idx_test) %>%
                     mdl_time_residuals_to_calibration(.type = "Fitted")
             } else {
                 # Cannot use Stored Residuals

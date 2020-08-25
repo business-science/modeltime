@@ -433,11 +433,14 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
         dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
         dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
-    # Make predictions
+    # PREDICTIONS
+
     modeltime_forecast <- tryCatch({
-        object %>%
-            stats::predict(new_data = new_data) %>%
+        predictions_tbl <- object %>% stats::predict(new_data = new_data)
+
+        modeltime_forecast <- predictions_tbl %>%
             dplyr::bind_cols(time_stamp_predictors_tbl)
+
     }, error = function(e) {
         if (any(c(h_provided, calib_provided))) {
             # Most likely issue: need to provide external regressors
@@ -610,6 +613,8 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
         }
     })
 
+    # TIMESTAMP + PREDICTORS
+
     nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data_forged$predictors)[1]
 
     if (!is.na(nms_time_stamp_predictors)) {
@@ -617,9 +622,27 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
             dplyr::select(!! rlang::sym(nms_time_stamp_predictors)) %>%
             dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
     } else {
+        # Most ML algorithms won't have time stamp
         idx <- new_data %>% timetk::tk_index()
-        time_stamp_predictors_tbl <- new_data_forged$predictors %>%
-            dplyr::mutate(.index = idx)
+
+        if (length(idx) == nrow(new_data_forged$predictors)) {
+            # IF index and predictors are same length, all good
+            time_stamp_predictors_tbl <- new_data_forged$predictors %>%
+                dplyr::mutate(.index = idx)
+        } else {
+            # Test to see if missing data is being dropped (happens with step_naomit)
+            new_data_missing_removed_tbl <- new_data %>%
+                tibble::rowid_to_column(var = "..id") %>%
+                tidyr::drop_na()
+
+            if (nrow(new_data_forged$predictors) == nrow(new_data_missing_removed_tbl)) {
+                # If row counts are identical, subset idx by retained rows
+                time_stamp_predictors_tbl <- new_data_forged$predictors %>%
+                    dplyr::mutate(.index = idx[new_data_missing_removed_tbl$..id])
+            } else {
+                glubort("Problem occurred combining processed data with timestamps. Most likely cause is rows being added or removed during preprocessing. Try imputing missing values to retain the full number of rows.")
+            }
+        }
     }
 
     # FORGE NEW DATA
@@ -668,9 +691,9 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
                 dplyr::mutate(.index = idx_actual)
 
         } else if (nrow_after < nrow_before) {
-            message(stringr::str_glue("Transformations are resulting in a reduced number of rows in actual data.
-                                      Attempting to reconcile:
-                                      - Filling missing predictors in actual data to prevent NA values from causing rows to be dropped."))
+            # message(stringr::str_glue("Transformations are resulting in a reduced number of rows in actual data.
+            #                           Attempting to reconcile:
+            #                           - Filling missing predictors in actual data to prevent NA values from causing rows to be dropped."))
 
             # Try to reconcile by filling in missing data
             # - Most likely cause is NA's being dropped by step_naomit()
@@ -689,7 +712,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
                 dplyr::mutate(.key = "actual")
 
             if (nrow(actual_data_reconcile_prepped) == nrow(actual_data) ) {
-                message("Reconciliation successful.")
+                # message("Reconciliation successful.")
 
                 actual_data_prepped <- actual_data_reconcile_prepped %>%
                     dplyr::mutate(.index = idx_actual)

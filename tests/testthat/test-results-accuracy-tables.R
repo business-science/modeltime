@@ -52,6 +52,13 @@ test_that("Test Modeltime Accuracy", {
 
     expect_true(all(nms_expected %in% names(acc_tbl_1)))
 
+    # Results
+    expect_false(any(is.na(acc_tbl_1$mae)))
+    expect_equal(acc_tbl_1$.type, rep("Test", 3))
+
+    expect_false(any(is.na(acc_tbl_3$mae)))
+    expect_equal(acc_tbl_3$.type, c("Fitted", "Fitted", "Test"))
+
     # Equivalence
     expect_equal(acc_tbl_1, acc_tbl_2)
 
