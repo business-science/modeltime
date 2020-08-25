@@ -41,10 +41,17 @@
 #'
 #' # ---- RESIDUALS ----
 #'
+#' # In-Sample
+#' models_tbl %>%
+#'     modeltime_calibrate(new_data = training(splits)) %>%
+#'     modeltime_residuals() %>%
+#'     plot_modeltime_residuals(.interactive = FALSE)
+#'
+#' # Out-of-Sample
 #' models_tbl %>%
 #'     modeltime_calibrate(new_data = testing(splits)) %>%
 #'     modeltime_residuals() %>%
-#'     plot_modeltime_residuals()
+#'     plot_modeltime_residuals(.interactive = FALSE)
 #'
 #'
 #' @name modeltime_residuals

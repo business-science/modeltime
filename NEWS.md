@@ -5,10 +5,11 @@
 
 __Forecast without Calibration/Refitting__
 
-Sometimes it's important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the `modeltime_calibrate()` and `modeltime_refit()` steps and jump straight into forecasting the future. Here's an example with `h = "3 years"`. Note that you will not get confidence intervals with this approach because calibration data is needed for this. 
+Sometimes it's important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the `modeltime_calibrate()` and `modeltime_refit()` steps and jump straight into forecasting the future. Here's an example with `h = "3 years"`. Note that __you will not get confidence intervals__ with this approach because calibration data is needed for this. 
 
 ``` r
-# Make forecasts without calibration/refitting
+# Make forecasts without calibration/refitting (No Confidence Intervals)
+# - This assumes the models have been trained on m750
 modeltime_table(
     model_fit_prophet,
     model_fit_lm
@@ -19,6 +20,16 @@ modeltime_table(
     ) %>%
     plot_modeltime_forecast(.conf_interval_show = F)
 ```
+
+__Residual Analysis & Diagonstics__
+
+A common tool when forecasting and analyzing residuals, where residuals are `.resid = .actual - .prediction`. The residuals may have autocorrelation or nonzero mean, which can indicate model improvement opportunities. In addition, users may which to inspect in-sample and out-of-sample residuals, which can display different results. 
+
+- `modeltime_residuals()` - A new function used to extract out residual information
+- `plot_modeltime_residuals()` - Visualizes the output of `modeltime_residuals()`. Offers 3 plots:
+    1. __Time Plot__ - Residuals over time
+    2. __ACF Plot__ - Residual Autocorrelation vs Lags
+    3. __Seasonality__ - Residual Seasonality Plot
 
 ### New Models
 
@@ -34,7 +45,7 @@ seasonal_reg(
     set_engine("tbats")
 ```
 
-### New Functions
+### New Workflow Helper Functions
 
 - `combine_modeltime_tables()` - A helper function making it easy to combine multiple modeltime tables.
 - `update_model_description()` - A helper function making it easier to update model descriptions. 
@@ -44,6 +55,8 @@ seasonal_reg(
 - `prophet_reg()` and `prophet_boost()`: New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, and `seasonality_daily`
 
 - `modeltime_refit()`: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. "UPDATE: ARIMA(0,1,1)(1,1,1)[12]").
+
+- `modeltime_calibrate()`: When training data is supplied in a time window that the model has previously been trained on (e.g. `training(splits)`), the calibration calculation first inspects whether the "Fitted" data exists. If it iexists, it returns the "Fitted" data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If "Fitted" data is being used, the `.type` column will display "Fitted" instead of "Test".
 
 ### Bug Fixes
 

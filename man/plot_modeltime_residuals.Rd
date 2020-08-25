@@ -9,8 +9,6 @@ plot_modeltime_residuals(
   .type = c("timeplot", "acf", "seasonality"),
   .legend_show = TRUE,
   .legend_max_width = 40,
-  .y_intercept = 0,
-  .y_intercept_color = "#3366FF",
   .title = "Residuals Plot",
   .x_lab = "",
   .y_lab = "",
@@ -28,10 +26,6 @@ plot_modeltime_residuals(
 Can save space with long model descriptions.}
 
 \item{.legend_max_width}{Numeric. The width of truncation to apply to the legend text.}
-
-\item{.y_intercept}{Value for a y-intercept on the plot}
-
-\item{.y_intercept_color}{Color for the y-intercept}
 
 \item{.title}{Title for the plot}
 
@@ -90,9 +84,14 @@ models_tbl <- modeltime_table(
 
 # ---- RESIDUALS ----
 
-models_tbl \%>\%
+residuals_tbl <- models_tbl \%>\%
     modeltime_calibrate(new_data = testing(splits)) \%>\%
-    modeltime_residuals() \%>\%
-    plot_modeltime_residuals(.interactive = FALSE)
+    modeltime_residuals()
+
+residuals_tbl \%>\%
+    plot_modeltime_residuals(
+        .type = "timeplot",
+        .interactive = FALSE
+    )
 
 }

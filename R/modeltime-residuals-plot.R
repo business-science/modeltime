@@ -49,18 +49,23 @@
 #'
 #' # ---- RESIDUALS ----
 #'
-#' models_tbl %>%
+#' residuals_tbl <- models_tbl %>%
 #'     modeltime_calibrate(new_data = testing(splits)) %>%
-#'     modeltime_residuals() %>%
-#'     plot_modeltime_residuals(.interactive = FALSE)
+#'     modeltime_residuals()
+#'
+#' residuals_tbl %>%
+#'     plot_modeltime_residuals(
+#'         .type = "timeplot",
+#'         .interactive = FALSE
+#'     )
 #'
 #' @export
 plot_modeltime_residuals <- function(.data,
                                      .type = c("timeplot", "acf", "seasonality"),
                                      .legend_show = TRUE,
                                      .legend_max_width = 40,
-                                     .y_intercept = 0,
-                                     .y_intercept_color = "#3366FF",
+                                     # .y_intercept = 0,
+                                     # .y_intercept_color = "#3366FF",
                                      .title = "Residuals Plot", .x_lab = "", .y_lab = "",
                                      .color_lab = "Legend",
                                      .interactive = TRUE,
@@ -68,11 +73,16 @@ plot_modeltime_residuals <- function(.data,
 
     # Checks
     if (!inherits(.data, "data.frame")) {
-        glubort("No method for {class(.data)[1]}. Expecting the output of 'modeltime_forecast()'.")
+        glubort("No method for {class(.data)[1]}. Expecting the output of 'modeltime_residuals()'.")
     }
 
     if (!all(c(".model_id", ".model_desc", ".type", ".index", ".actual", ".prediction", ".residuals") %in% names(.data))) {
         rlang::abort("Expecting the following names to be in the data frame: .index, .actual, .prediction, and .residuals. Try using 'modeltime_residuals()' to return a data frame in the appropriate structure.")
+    }
+
+    .type <- tolower(.type[[1]])
+    if (!any(c("timeplot", "acf", "seasonality") %in% .type)) {
+        rlang::abort("Expecting `.type` to be one of 'timeplot', 'acf', 'seasonality'.")
     }
 
 
@@ -84,8 +94,6 @@ plot_modeltime_residuals <- function(.data,
         dplyr::mutate(.model_desc = forcats::as_factor(.model_desc))
 
 
-    .type <- tolower(.type[[1]])
-
     if (.type == "timeplot") {
         timetk::plot_time_series(
             .data          = data_prepared,
@@ -94,8 +102,8 @@ plot_modeltime_residuals <- function(.data,
             .color_var     = .model_desc,
 
             .smooth            = FALSE,
-            .y_intercept       = .y_intercept,
-            .y_intercept_color = .y_intercept_color,
+            # .y_intercept       = .y_intercept,
+            # .y_intercept_color = .y_intercept_color,
 
             .title         = .title,
             .x_lab         = .x_lab,
@@ -104,6 +112,7 @@ plot_modeltime_residuals <- function(.data,
             .interactive   = .interactive,
             ...
         )
+
     } else if (.type == "acf") {
 
         timetk::plot_acf_diagnostics(

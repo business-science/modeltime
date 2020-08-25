@@ -21,10 +21,10 @@ Depends:
 Imports:
     StanHeaders,
     timetk (>= 2.1.0),
-    parsnip (>= 0.1.2),
+    parsnip (>= 0.1.3),
     dials,
     yardstick,
-    workflows,
+    workflows (>= 0.1.3),
     hardhat,
     rlang (>= 0.1.2),
     glue,
