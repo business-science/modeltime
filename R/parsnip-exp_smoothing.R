@@ -267,6 +267,10 @@ ets_fit_impl <- function(x, y, period = "auto",
 
     outcome   <- stats::ts(outcome, frequency = period)
 
+    error  <- tolower(error)
+    trend  <- tolower(trend)
+    season <- tolower(season)
+
     # CHECK PARAMS
     if (!error %in% c("auto", "additive", "multiplicative")) {
         rlang::abort("'error' must be one of 'auto', 'additive', or 'multiplicative'.")
