@@ -52,7 +52,7 @@ seasonal_reg(
 
 ### Improvements
 
-- `prophet_reg()` and `prophet_boost()`: New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, and `seasonality_daily`
+- `prophet_reg()` and `prophet_boost()`: New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, `seasonality_daily`, `logistic_cap`, `logistic_floor`
 
 - `modeltime_refit()`: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. "UPDATE: ARIMA(0,1,1)(1,1,1)[12]").
 
@@ -65,6 +65,8 @@ seasonal_reg(
     - More descriptive errors when external regressors are required. 
     
 - `modeltime_accuracy()`: Fix issue with `new_data` not recalibrating. 
+
+- `prophet_reg()` and `prophet_boost()` - Can now perform logistic growth `growth = 'logistic'`. The user can supply "saturation" bounds using `logistic_cap` and/or `logisitc_floor`. 
     
 
 ### Breaking Changes

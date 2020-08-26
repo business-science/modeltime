@@ -109,6 +109,24 @@ make_prophet_reg <- function() {
         has_submodel = FALSE
     )
 
+    parsnip::set_model_arg(
+        model        = "prophet_reg",
+        eng          = "prophet",
+        parsnip      = "logistic_cap",
+        original     = "logistic_cap",
+        func         = list(pkg = "modeltime", fun = "logistic_cap"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "prophet_reg",
+        eng          = "prophet",
+        parsnip      = "logistic_floor",
+        original     = "logistic_floor",
+        func         = list(pkg = "modeltime", fun = "logistic_floor"),
+        has_submodel = FALSE
+    )
+
     # * Encoding ----
     parsnip::set_encoding(
         model   = "prophet_reg",

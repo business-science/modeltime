@@ -17,6 +17,8 @@ prophet_fit_impl(
   changepoint.prior.scale = 0.05,
   seasonality.prior.scale = 10,
   holidays.prior.scale = 10,
+  logistic_cap = NULL,
+  logistic_floor = NULL,
   ...
 )
 }
@@ -59,6 +61,10 @@ individual seasonalities using add_seasonality.}
 
 \item{holidays.prior.scale}{Parameter modulating the strength of the holiday
 components model, unless overridden in the holidays input.}
+
+\item{logistic_cap}{When growth is logistic, the upper-bound for "saturation".}
+
+\item{logistic_floor}{When growth is logistic, the lower-bound for "saturation".}
 
 \item{...}{Additional arguments passed to \code{prophet::prophet}}
 }

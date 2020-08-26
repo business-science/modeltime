@@ -15,7 +15,9 @@ prophet_reg(
   season = NULL,
   prior_scale_changepoints = NULL,
   prior_scale_seasonality = NULL,
-  prior_scale_holidays = NULL
+  prior_scale_holidays = NULL,
+  logistic_cap = NULL,
+  logistic_floor = NULL
 )
 }
 \arguments{
@@ -50,6 +52,10 @@ fluctuations, smaller values dampen the seasonality.}
 
 \item{prior_scale_holidays}{Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.}
+
+\item{logistic_cap}{When growth is logistic, the upper-bound for "saturation".}
+
+\item{logistic_floor}{When growth is logistic, the lower-bound for "saturation".}
 }
 \description{
 \code{prophet_reg()} is a way to generate a \emph{specification} of a PROPHET model
@@ -130,6 +136,13 @@ Parameter Notes:
 \item \code{uncertainty.samples}: The default is set to 0 because the prophet
 uncertainty intervals are not used as part of the Modeltime Workflow.
 You can override this setting if you plan to use prophet's uncertainty tools.
+}
+
+Logistic Growth and Saturation Levels:
+\itemize{
+\item For \code{growth = "logistic"}, simply add numeric values for \code{logistic_cap} and / or
+\code{logistic_floor}. There is \emph{no need} to add additional columns
+for "cap" and "floor" to your data frame.
 }
 
 Limitations:

@@ -30,7 +30,7 @@ model_spec <- prophet_reg(
 
 # * NO XREGS ----
 
-test_that("prophet_reg: prophet, (XREGS), Test Model Fit Object", {
+test_that("prophet_reg: prophet, (NO XREGS), Test Model Fit Object", {
 
 
     # ** MODEL FIT ----
@@ -251,6 +251,76 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
 
     # - MAE less than 700
     testthat::expect_lte(mean(abs(resid)), 700)
+
+})
+
+
+# LOGISTIC GROWTH ----
+
+# * MODELS ----
+
+test_that("prophet_reg: prophet, Logistic Growth", {
+
+
+    # ** MODEL FIT ----
+
+    # Model Fit
+    model_fit <- prophet_reg(
+        growth = "logistic",
+        logistic_cap = 11000
+    ) %>%
+        set_engine(engine = "prophet") %>%
+        fit(value ~ date, m750)
+
+    # Structure
+
+    testthat::expect_s3_class(model_fit$fit, "prophet_fit_impl")
+
+    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
+
+    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+
+    testthat::expect_false(is.null(model_fit$fit$extras$logistic_params$logistic_cap))
+
+    # $fit PROPHET
+
+    testthat::expect_s3_class(model_fit$fit$models$model_1, "prophet")
+
+    testthat::expect_identical(model_fit$fit$models$model_1$growth, "logistic")
+
+    testthat::expect_identical(model_fit$fit$extras$logistic_params$growth, "logistic")
+    testthat::expect_identical(model_fit$fit$extras$logistic_params$logistic_cap, 11000)
+    testthat::expect_true(is.null(model_fit$fit$extras$logistic_params$logistic_floor))
+
+    # $preproc
+
+    testthat::expect_equal(model_fit$preproc$y_var, "value")
+
+
+    # ** PREDICTIONS ----
+    forecast_prophet_logisitic <- modeltime_table(
+        model_fit
+    ) %>%
+        modeltime_forecast(
+            h = 12 * 10,
+            actual_data = m750
+        ) %>%
+        filter(.model_desc != "ACTUAL")
+
+    expect_lt(
+        forecast_prophet_logisitic$.value %>% max(),
+        11500
+    )
+
+    # ERROR IF CAP/FLOOR NOT SPECIFIED
+
+    expect_error({
+        prophet_reg(
+            growth = "logistic"
+        ) %>%
+            set_engine(engine = "prophet") %>%
+            fit(value ~ date, m750)
+    })
 
 })
 
