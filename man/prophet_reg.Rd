@@ -79,6 +79,8 @@ The main arguments (tuning parameters) for the model are:
 \itemize{
 \item \code{growth}: String 'linear' or 'logistic' to specify a linear or logistic trend.
 \item \code{changepoint_num}: Number of potential changepoints to include for modeling trend.
+\item \code{changepoint_range}: Range changepoints that adjusts how close to the end
+the last changepoint can be located.
 \item \code{season}: 'additive' (default) or 'multiplicative'.
 \item \code{prior_scale_changepoints}: Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
@@ -88,6 +90,8 @@ seasonality model. Larger values allow the model to fit larger seasonal
 fluctuations, smaller values dampen the seasonality.
 \item \code{prior_scale_holidays}: Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.
+\item \code{logistic_cap}: When growth is logistic, the upper-bound for "saturation".
+\item \code{logistic_floor}: When growth is logistic, the lower-bound for "saturation".
 }
 
 These arguments are converted to their specific names at the

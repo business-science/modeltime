@@ -20,6 +20,8 @@ prophet_xgboost_fit_impl(
   seasonality.prior.scale = 10,
   holidays.prior.scale = 10,
   changepoint.prior.scale = 0.05,
+  logistic_cap = NULL,
+  logistic_floor = NULL,
   mcmc.samples = 0,
   interval.width = 0.8,
   uncertainty.samples = 1000,
@@ -91,6 +93,10 @@ components model, unless overridden in the holidays input.}
 \item{changepoint.prior.scale}{Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
 small values will allow few changepoints.}
+
+\item{logistic_cap}{When growth is logistic, the upper-bound for "saturation".}
+
+\item{logistic_floor}{When growth is logistic, the lower-bound for "saturation".}
 
 \item{mcmc.samples}{Integer, if greater than 0, will do full Bayesian
 inference with the specified number of MCMC samples. If 0, will do MAP

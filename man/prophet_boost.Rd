@@ -16,6 +16,8 @@ prophet_boost(
   prior_scale_changepoints = NULL,
   prior_scale_seasonality = NULL,
   prior_scale_holidays = NULL,
+  logistic_cap = NULL,
+  logistic_floor = NULL,
   mtry = NULL,
   trees = NULL,
   min_n = NULL,
@@ -58,6 +60,10 @@ fluctuations, smaller values dampen the seasonality.}
 
 \item{prior_scale_holidays}{Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.}
+
+\item{logistic_cap}{When growth is logistic, the upper-bound for "saturation".}
+
+\item{logistic_floor}{When growth is logistic, the lower-bound for "saturation".}
 
 \item{mtry}{A number for the number (or proportion) of predictors that will
 be randomly sampled at each split when creating the tree models (\code{xgboost}
@@ -105,6 +111,8 @@ The main arguments (tuning parameters) for the \strong{PROPHET} model are:
 \itemize{
 \item \code{growth}: String 'linear' or 'logistic' to specify a linear or logistic trend.
 \item \code{changepoint_num}: Number of potential changepoints to include for modeling trend.
+\item \code{changepoint_range}: Range changepoints that adjusts how close to the end
+the last changepoint can be located.
 \item \code{season}: 'additive' (default) or 'multiplicative'.
 \item \code{prior_scale_changepoints}: Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
@@ -114,6 +122,8 @@ seasonality model. Larger values allow the model to fit larger seasonal
 fluctuations, smaller values dampen the seasonality.
 \item \code{prior_scale_holidays}: Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.
+\item \code{logistic_cap}: When growth is logistic, the upper-bound for "saturation".
+\item \code{logistic_floor}: When growth is logistic, the lower-bound for "saturation".
 }
 
 The main arguments (tuning parameters) for the model \strong{XGBoost model} are:
@@ -192,6 +202,13 @@ Parameter Notes:
 \item \code{uncertainty.samples}: The default is set to 0 because the prophet
 uncertainty intervals are not used as part of the Modeltime Workflow.
 You can override this setting if you plan to use prophet's uncertainty tools.
+}
+
+Logistic Growth and Saturation Levels:
+\itemize{
+\item For \code{growth = "logistic"}, simply add numeric values for \code{logistic_cap} and / or
+\code{logistic_floor}. There is \emph{no need} to add additional columns
+for "cap" and "floor" to your data frame.
 }
 
 Limitations:

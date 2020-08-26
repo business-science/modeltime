@@ -45,8 +45,10 @@
 #'
 #' The main arguments (tuning parameters) for the model are:
 #'
-#'  - `growth`: String 'linear' or 'logistic' to specify a linear or logistic trend.
+#' - `growth`: String 'linear' or 'logistic' to specify a linear or logistic trend.
 #' - `changepoint_num`: Number of potential changepoints to include for modeling trend.
+#' - `changepoint_range`: Range changepoints that adjusts how close to the end
+#'    the last changepoint can be located.
 #' - `season`: 'additive' (default) or 'multiplicative'.
 #' - `prior_scale_changepoints`: Parameter modulating the flexibility of the
 #'   automatic changepoint selection. Large values will allow many changepoints,
@@ -56,6 +58,8 @@
 #'  fluctuations, smaller values dampen the seasonality.
 #' - `prior_scale_holidays`: Parameter modulating the strength of the holiday components model,
 #'  unless overridden in the holidays input.
+#' - `logistic_cap`: When growth is logistic, the upper-bound for "saturation".
+#' - `logistic_floor`: When growth is logistic, the lower-bound for "saturation".
 #'
 #' These arguments are converted to their specific names at the
 #'  time that the model is fit.
@@ -404,16 +408,7 @@ prophet_fit_impl <- function(x, y,
     }
 
     # Fit model
-    m_fit <- tryCatch({
-        prophet::fit.prophet(m, df)
-    }, error = function(e) {
-        if (length(outcome) < 100) {
-            glubort("Prophet returns an error with less than 100 observations. {e}")
-        } else {
-            stop(e)
-        }
-    })
-
+    m_fit <- prophet::fit.prophet(m, df)
 
     # In-sample Predictions
     fitted <- stats::predict(m_fit, df) %>% dplyr::pull(yhat)
