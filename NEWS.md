@@ -45,6 +45,12 @@ seasonal_reg(
     set_engine("tbats")
 ```
 
+__Prophet Model - Logistic Growth Support__
+
+- `prophet_reg()` and `prophet_boost()`: 
+    - Now supports logistic growth. Set `growth = 'logistic'` and one or more of `logistic_cap` and `logistic_floor` to valid saturation boundaries.
+    - New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, `seasonality_daily`, `logistic_cap`, `logistic_floor`
+
 ### New Workflow Helper Functions
 
 - `combine_modeltime_tables()` - A helper function making it easy to combine multiple modeltime tables.
@@ -52,7 +58,7 @@ seasonal_reg(
 
 ### Improvements
 
-- `prophet_reg()` and `prophet_boost()`: New arguments making it easier to modify the `changepoint_num`, `changepoint_range`, `seasonality_yearly`, `seasonality_weekly`, `seasonality_daily`, `logistic_cap`, `logistic_floor`
+
 
 - `modeltime_refit()`: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. "UPDATE: ARIMA(0,1,1)(1,1,1)[12]").
 
