@@ -7,6 +7,7 @@
 plot_modeltime_residuals(
   .data,
   .type = c("timeplot", "acf", "seasonality"),
+  .smooth = FALSE,
   .legend_show = TRUE,
   .legend_max_width = 40,
   .title = "Residuals Plot",
@@ -21,6 +22,9 @@ plot_modeltime_residuals(
 \item{.data}{A \code{tibble} that is the output of \code{\link[=modeltime_residuals]{modeltime_residuals()}}}
 
 \item{.type}{One of "timeplot", "acf", or "seasonality". The default is "timeplot".}
+
+\item{.smooth}{Logical - Whether or not to include a trendline smoother.
+Uses See \code{\link[timetk:smooth_vec]{smooth_vec()}} to apply a LOESS smoother.}
 
 \item{.legend_show}{Logical. Whether or not to show the legend.
 Can save space with long model descriptions.}

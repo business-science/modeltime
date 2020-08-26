@@ -62,6 +62,7 @@
 #' @export
 plot_modeltime_residuals <- function(.data,
                                      .type = c("timeplot", "acf", "seasonality"),
+                                     .smooth = FALSE,
                                      .legend_show = TRUE,
                                      .legend_max_width = 40,
                                      # .y_intercept = 0,
@@ -101,7 +102,7 @@ plot_modeltime_residuals <- function(.data,
             .value         = .residuals,
             .color_var     = .model_desc,
 
-            .smooth            = FALSE,
+            .smooth            = .smooth,
             # .y_intercept       = .y_intercept,
             # .y_intercept_color = .y_intercept_color,
 

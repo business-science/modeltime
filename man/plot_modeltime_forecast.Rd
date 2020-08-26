@@ -9,6 +9,7 @@ plot_modeltime_forecast(
   .conf_interval_show = TRUE,
   .conf_interval_fill = "grey20",
   .conf_interval_alpha = 0.2,
+  .smooth = FALSE,
   .legend_show = TRUE,
   .legend_max_width = 40,
   .title = "Forecast Plot",
@@ -28,6 +29,9 @@ plot_modeltime_forecast(
 \item{.conf_interval_fill}{Fill color for the confidence interval}
 
 \item{.conf_interval_alpha}{Fill opacity for the confidence interval. Range (0, 1).}
+
+\item{.smooth}{Logical - Whether or not to include a trendline smoother.
+Uses See \code{\link[timetk:smooth_vec]{smooth_vec()}} to apply a LOESS smoother.}
 
 \item{.legend_show}{Logical. Whether or not to show the legend.
 Can save space with long model descriptions.}
