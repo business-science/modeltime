@@ -58,8 +58,6 @@ __Prophet Model - Logistic Growth Support__
 
 ### Improvements
 
-
-
 - `modeltime_refit()`: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. "UPDATE: ARIMA(0,1,1)(1,1,1)[12]").
 
 - `modeltime_calibrate()`: When training data is supplied in a time window that the model has previously been trained on (e.g. `training(splits)`), the calibration calculation first inspects whether the "Fitted" data exists. If it iexists, it returns the "Fitted" data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If "Fitted" data is being used, the `.type` column will display "Fitted" instead of "Test".

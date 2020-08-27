@@ -24,6 +24,9 @@
     # Exponential Smoothing
     make_exp_smoothing()
 
-    # Seasonal Decomposition
+    # TBATS & SEASONAL DECOMP
     make_seasonal_reg()
+
+    # NNETAR
+    make_nnetar_reg()
 }
