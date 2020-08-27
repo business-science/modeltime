@@ -171,16 +171,16 @@ calculations from a fitted <code>workflow</code> (trained workflow) or <code>mod
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A fitted model object that is either (1) a workflow that has been fit by <code>fit.workflow()</code> or
-(2) a parsnip model that has been fit using <code>fit.model_spec()</code></p></td>
+      <td><p>A Modeltime Table</p></td>
     </tr>
     <tr>
       <th>new_data</th>
-      <td><p>A <code>tibble</code> containing future information (timestamps and actual values).</p></td>
+      <td><p>A <code>tibble</code> to predict and calculate residuals on.
+If provided, overrides any calibration data.</p></td>
     </tr>
     <tr>
       <th>metric_set</th>
-      <td><p>A <code>metric_set()</code> that is used to summarize one or more
+      <td><p>A <code><a href='https://rdrr.io/pkg/yardstick/man/metric_set.html'>yardstick::metric_set()</a></code> that is used to summarize one or more
 forecast accuracy (regression) metrics.</p></td>
     </tr>
     <tr>
@@ -189,7 +189,7 @@ forecast accuracy (regression) metrics.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='modeltime_forecast.html'>modeltime_forecast()</a></code>.</p></td>
+      <td><p>Not currently used</p></td>
     </tr>
     </table>
 

@@ -154,18 +154,65 @@
 <h1 class="page-header" data-toc-text="0.0.2.9000">
 <a href="#modeltime-0029000-development-version" class="anchor"></a>modeltime 0.0.2.9000 (Development Version)<small> Unreleased </small>
 </h1>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New Features</h3>
+<p><strong>Forecast without Calibration/Refitting</strong></p>
+<p>Sometimes it’s important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the <code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code> and <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> steps and jump straight into forecasting the future. Here’s an example with <code>h = "3 years"</code>. Note that <strong>you will not get confidence intervals</strong> with this approach because calibration data is needed for this.</p>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># Make forecasts without calibration/refitting (No Confidence Intervals)</span>
+<span class="co"># - This assumes the models have been trained on m750</span>
+<span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span>(
+    <span class="no">model_fit_prophet</span>,
+    <span class="no">model_fit_lm</span>
+) <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span>(
+        <span class="kw">h</span> <span class="kw">=</span> <span class="st">"3 years"</span>,
+        <span class="kw">actual_data</span> <span class="kw">=</span> <span class="no">m750</span>
+    ) <span class="kw">%&gt;%</span>
+    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span>(<span class="kw">.conf_interval_show</span> <span class="kw">=</span> <span class="no">F</span>)</pre></div>
+<p><strong>Residual Analysis &amp; Diagonstics</strong></p>
+<p>A common tool when forecasting and analyzing residuals, where residuals are <code>.resid = .actual - .prediction</code>. The residuals may have autocorrelation or nonzero mean, which can indicate model improvement opportunities. In addition, users may which to inspect in-sample and out-of-sample residuals, which can display different results.</p>
+<ul>
+<li>
+<code><a href="../reference/modeltime_residuals.html">modeltime_residuals()</a></code> - A new function used to extract out residual information</li>
+<li>
+<code><a href="../reference/plot_modeltime_residuals.html">plot_modeltime_residuals()</a></code> - Visualizes the output of <code><a href="../reference/modeltime_residuals.html">modeltime_residuals()</a></code>. Offers 3 plots:
+<ol>
+<li>
+<strong>Time Plot</strong> - Residuals over time</li>
+<li>
+<strong>ACF Plot</strong> - Residual Autocorrelation vs Lags</li>
+<li>
+<strong>Seasonality</strong> - Residual Seasonality Plot</li>
+</ol>
+</li>
+</ul>
+</div>
 <div id="new-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-models" class="anchor"></a>New Models</h3>
 <p><strong>TBATS Model</strong></p>
+<p>Use <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and set engine to “tbats”.</p>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span>(
+    <span class="kw">seasonal_period_1</span> <span class="kw">=</span> <span class="st">"1 day"</span>,
+    <span class="kw">seasonal_period_2</span> <span class="kw">=</span> <span class="st">"1 week"</span>
+) <span class="kw">%&gt;%</span>
+    <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
+<p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul>
-<li>Use <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and set engine to “tbats”.</li>
+<li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>:
+<ul>
+<li>Now supports logistic growth. Set <code>growth = 'logistic'</code> and one or more of <code>logistic_cap</code> and <code>logistic_floor</code> to valid saturation boundaries.</li>
+<li>New arguments making it easier to modify the <code>changepoint_num</code>, <code>changepoint_range</code>, <code>seasonality_yearly</code>, <code>seasonality_weekly</code>, <code>seasonality_daily</code>, <code>logistic_cap</code>, <code>logistic_floor</code>
+</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span>() <span class="kw">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
+</li>
+</ul>
 </div>
-<div id="new-functions" class="section level3">
+<div id="new-workflow-helper-functions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-functions" class="anchor"></a>New Functions</h3>
+<a href="#new-workflow-helper-functions" class="anchor"></a>New Workflow Helper Functions</h3>
 <ul>
 <li>
 <code><a href="../reference/combine_modeltime_tables.html">combine_modeltime_tables()</a></code> - A helper function making it easy to combine multiple modeltime tables.</li>
@@ -177,8 +224,8 @@
 <h3 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
-<li><p><code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: New arguments making it easier to modify the <code>changepoint_num</code>, <code>changepoint_range</code>, <code>seasonality_yearly</code>, <code>seasonality_weekly</code>, and <code>seasonality_daily</code></p></li>
 <li><p><code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. “UPDATE: ARIMA(0,1,1)(1,1,1)[12]”).</p></li>
+<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code>training(splits)</code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
@@ -186,12 +233,14 @@
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>
-<code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>:
+<p><code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>:</p>
 <ul>
 <li>Implement <code>actual_data</code> reconciliation strategies when recipe removes rows. Strategy attempts to fill predictors using “downup” strategy to prevent <code>NA</code> values from removing rows.</li>
 <li>More descriptive errors when external regressors are required.</li>
 </ul>
 </li>
+<li><p><code><a href="../reference/modeltime_accuracy.html">modeltime_accuracy()</a></code>: Fix issue with <code>new_data</code> not recalibrating.</p></li>
+<li><p><code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code> - Can now perform logistic growth <code>growth = 'logistic'</code>. The user can supply “saturation” bounds using <code>logistic_cap</code> and/or <code>logisitc_floor</code>.</p></li>
 </ul>
 </div>
 <div id="breaking-changes" class="section level3">

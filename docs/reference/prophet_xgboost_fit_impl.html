@@ -172,6 +172,8 @@
   <span class='kw'>seasonality.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>holidays.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>changepoint.prior.scale</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+  <span class='kw'>logistic_cap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>logistic_floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>mcmc.samples</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>interval.width</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
   <span class='kw'>uncertainty.samples</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
@@ -275,6 +277,14 @@ components model, unless overridden in the holidays input.</p></td>
       <td><p>Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
 small values will allow few changepoints.</p></td>
+    </tr>
+    <tr>
+      <th>logistic_cap</th>
+      <td><p>When growth is logistic, the upper-bound for "saturation".</p></td>
+    </tr>
+    <tr>
+      <th>logistic_floor</th>
+      <td><p>When growth is logistic, the lower-bound for "saturation".</p></td>
     </tr>
     <tr>
       <th>mcmc.samples</th>

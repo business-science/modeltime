@@ -171,7 +171,9 @@ different packages. Currently the only package is <code>prophet</code>.</p>
   <span class='kw'>season</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prior_scale_changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prior_scale_seasonality</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prior_scale_holidays</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>prior_scale_holidays</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>logistic_cap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>logistic_floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -231,6 +233,14 @@ fluctuations, smaller values dampen the seasonality.</p></td>
       <td><p>Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.</p></td>
     </tr>
+    <tr>
+      <th>logistic_cap</th>
+      <td><p>When growth is logistic, the upper-bound for "saturation".</p></td>
+    </tr>
+    <tr>
+      <th>logistic_floor</th>
+      <td><p>When growth is logistic, the lower-bound for "saturation".</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -247,6 +257,8 @@ following <em>engines</em>:</p><ul>
 <p>The main arguments (tuning parameters) for the model are:</p><ul>
 <li><p><code>growth</code>: String 'linear' or 'logistic' to specify a linear or logistic trend.</p></li>
 <li><p><code>changepoint_num</code>: Number of potential changepoints to include for modeling trend.</p></li>
+<li><p><code>changepoint_range</code>: Range changepoints that adjusts how close to the end
+the last changepoint can be located.</p></li>
 <li><p><code>season</code>: 'additive' (default) or 'multiplicative'.</p></li>
 <li><p><code>prior_scale_changepoints</code>: Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
@@ -256,6 +268,8 @@ seasonality model. Larger values allow the model to fit larger seasonal
 fluctuations, smaller values dampen the seasonality.</p></li>
 <li><p><code>prior_scale_holidays</code>: Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.</p></li>
+<li><p><code>logistic_cap</code>: When growth is logistic, the upper-bound for "saturation".</p></li>
+<li><p><code>logistic_floor</code>: When growth is logistic, the lower-bound for "saturation".</p></li>
 </ul>
 
 <p>These arguments are converted to their specific names at the
@@ -300,6 +314,12 @@ names in each engine:</p><table class='table'>
 <li><p><code>uncertainty.samples</code>: The default is set to 0 because the prophet
 uncertainty intervals are not used as part of the Modeltime Workflow.
 You can override this setting if you plan to use prophet's uncertainty tools.</p></li>
+</ul>
+
+<p>Logistic Growth and Saturation Levels:</p><ul>
+<li><p>For <code>growth = "logistic"</code>, simply add numeric values for <code>logistic_cap</code> and / or
+<code>logistic_floor</code>. There is <em>no need</em> to add additional columns
+for "cap" and "floor" to your data frame.</p></li>
 </ul>
 
 <p>Limitations:</p><ul>
@@ -386,7 +406,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span></div><div class='output co'>#&gt; <span class='message'>Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  401ms 
+#&gt; Fit time:  324ms 
 #&gt; PROPHET Model
 #&gt; - growth: 'linear'
 #&gt; - n.changepoints: 25
@@ -398,6 +418,8 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 #&gt; - changepoint.prior.scale: 0.05
 #&gt; - seasonality.prior.scale: 10
 #&gt; - holidays.prior.scale: 10
+#&gt; - logistic_cap: NULL
+#&gt; - logistic_floor: NULL
 #&gt; - extra_regressors: 0</div><div class='input'>
 
 </div></span></pre>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Low-Level PROPHET function for translating modeltime to PROPHET — prophet_fit_impl • modeltime</title>
+<title>Extract Residuals Information — modeltime_residuals • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Low-Level PROPHET function for translating modeltime to PROPHET — prophet_fit_impl" />
-<meta property="og:description" content="Low-Level PROPHET function for translating modeltime to PROPHET" />
+<meta property="og:title" content="Extract Residuals Information — modeltime_residuals" />
+<meta property="og:description" content="This is a convenience function to unnest model residuals" />
 
 
 
@@ -147,114 +147,83 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Low-Level PROPHET function for translating modeltime to PROPHET</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-prophet_reg.R'><code>R/parsnip-prophet_reg.R</code></a></small>
-    <div class="hidden name"><code>prophet_fit_impl.Rd</code></div>
+    <h1>Extract Residuals Information</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-residuals.R'><code>R/modeltime-residuals.R</code></a></small>
+    <div class="hidden name"><code>modeltime_residuals.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Low-Level PROPHET function for translating modeltime to PROPHET</p>
+    <p>This is a convenience function to unnest model residuals</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prophet_fit_impl</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>growth</span> <span class='kw'>=</span> <span class='st'>"linear"</span>,
-  <span class='kw'>n.changepoints</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>changepoint.range</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>yearly.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>weekly.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>daily.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>seasonality.mode</span> <span class='kw'>=</span> <span class='st'>"additive"</span>,
-  <span class='kw'>changepoint.prior.scale</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>seasonality.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>holidays.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>logistic_cap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>logistic_floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>modeltime_residuals</span>(<span class='no'>object</span>, <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
+      <th>object</th>
+      <td><p>A Modeltime Table</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>A numeric vector of values to fit</p></td>
+      <th>new_data</th>
+      <td><p>A <code>tibble</code> to predict and calculate residuals on.
+If provided, overrides any calibration data.</p></td>
     </tr>
     <tr>
-      <th>growth</th>
-      <td><p>String 'linear' or 'logistic' to specify a linear or logistic
-trend.</p></td>
-    </tr>
-    <tr>
-      <th>n.changepoints</th>
-      <td><p>Number of potential changepoints to include. Not used
-if input `changepoints` is supplied. If `changepoints` is not supplied,
-then n.changepoints potential changepoints are selected uniformly from the
-first `changepoint.range` proportion of df$ds.</p></td>
-    </tr>
-    <tr>
-      <th>changepoint.range</th>
-      <td><p>Proportion of history in which trend changepoints
-will be estimated. Defaults to 0.8 for the first 80<!-- %. Not used if -->
-`changepoints` is specified.</p></td>
-    </tr>
-    <tr>
-      <th>yearly.seasonality</th>
-      <td><p>Fit yearly seasonality. Can be 'auto', TRUE,
-FALSE, or a number of Fourier terms to generate.</p></td>
-    </tr>
-    <tr>
-      <th>weekly.seasonality</th>
-      <td><p>Fit weekly seasonality. Can be 'auto', TRUE,
-FALSE, or a number of Fourier terms to generate.</p></td>
-    </tr>
-    <tr>
-      <th>daily.seasonality</th>
-      <td><p>Fit daily seasonality. Can be 'auto', TRUE,
-FALSE, or a number of Fourier terms to generate.</p></td>
-    </tr>
-    <tr>
-      <th>seasonality.mode</th>
-      <td><p>'additive' (default) or 'multiplicative'.</p></td>
-    </tr>
-    <tr>
-      <th>changepoint.prior.scale</th>
-      <td><p>Parameter modulating the flexibility of the
-automatic changepoint selection. Large values will allow many changepoints,
-small values will allow few changepoints.</p></td>
-    </tr>
-    <tr>
-      <th>seasonality.prior.scale</th>
-      <td><p>Parameter modulating the strength of the
-seasonality model. Larger values allow the model to fit larger seasonal
-fluctuations, smaller values dampen the seasonality. Can be specified for
-individual seasonalities using add_seasonality.</p></td>
-    </tr>
-    <tr>
-      <th>holidays.prior.scale</th>
-      <td><p>Parameter modulating the strength of the holiday
-components model, unless overridden in the holidays input.</p></td>
-    </tr>
-    <tr>
-      <th>logistic_cap</th>
-      <td><p>When growth is logistic, the upper-bound for "saturation".</p></td>
-    </tr>
-    <tr>
-      <th>logistic_floor</th>
-      <td><p>When growth is logistic, the lower-bound for "saturation".</p></td>
+      <th>quiet</th>
+      <td><p>Hide errors (<code>TRUE</code>, the default), or display them as they occur?</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/prophet/man/prophet.html'>prophet::prophet</a></code></p></td>
+      <td><p>Not currently used.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A tibble with residuals.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>parsnip</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rsample</span>)
+
+<span class='co'># Data</span>
+<span class='no'>m750</span> <span class='kw'>&lt;-</span> <span class='no'>m4_monthly</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>id</span> <span class='kw'>==</span> <span class='st'>"M750"</span>)
+
+<span class='co'># Split Data 80/20</span>
+<span class='no'>splits</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span>(<span class='no'>m750</span>, <span class='kw'>prop</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)
+
+<span class='co'># --- MODELS ---</span>
+
+<span class='co'># Model 1: auto_arima ----</span>
+<span class='no'>model_fit_arima</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+
+<span class='co'># ---- MODELTIME TABLE ----</span>
+
+<span class='no'>models_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span>(
+    <span class='no'>model_fit_arima</span>
+)
+
+<span class='co'># ---- RESIDUALS ----</span>
+
+<span class='co'># In-Sample</span>
+<span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>modeltime_residuals</span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='plot_modeltime_residuals.html'>plot_modeltime_residuals</a></span>(<span class='kw'>.interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='modeltime_residuals-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Out-of-Sample</span>
+<span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>modeltime_residuals</span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='plot_modeltime_residuals.html'>plot_modeltime_residuals</a></span>(<span class='kw'>.interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='modeltime_residuals-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

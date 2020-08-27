@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interactive Forecast Visualization — plot_modeltime_forecast • modeltime</title>
+<title>Interactive Residuals Visualization — plot_modeltime_residuals • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,9 +41,13 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Interactive Forecast Visualization — plot_modeltime_forecast" />
-<meta property="og:description" content="This is a wrapper for plot_time_series() that generates an interactive (plotly) or static
-(ggplot2) plot with the forecasted data." />
+<meta property="og:title" content="Interactive Residuals Visualization — plot_modeltime_residuals" />
+<meta property="og:description" content="This is a wrapper for examining residuals using:
+Time Plot: plot_time_series()
+ACF Plot: plot_acf_diagnostics()
+Seasonality Plot: plot_seasonal_diagnostics()
+
+" />
 
 
 
@@ -148,30 +152,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interactive Forecast Visualization</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-forecast-plot.R'><code>R/modeltime-forecast-plot.R</code></a></small>
-    <div class="hidden name"><code>plot_modeltime_forecast.Rd</code></div>
+    <h1>Interactive Residuals Visualization</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-residuals-plot.R'><code>R/modeltime-residuals-plot.R</code></a></small>
+    <div class="hidden name"><code>plot_modeltime_residuals.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is a wrapper for <code>plot_time_series()</code> that generates an interactive (<code>plotly</code>) or static
-(<code>ggplot2</code>) plot with the forecasted data.</p>
+    <p>This is a wrapper for examining residuals using:</p><ul>
+<li><p>Time Plot: <code>plot_time_series()</code></p></li>
+<li><p>ACF Plot: <code>plot_acf_diagnostics()</code></p></li>
+<li><p>Seasonality Plot: <code>plot_seasonal_diagnostics()</code></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>plot_modeltime_forecast</span>(
+    <pre class="usage"><span class='fu'>plot_modeltime_residuals</span>(
   <span class='no'>.data</span>,
-  <span class='kw'>.conf_interval_show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.conf_interval_fill</span> <span class='kw'>=</span> <span class='st'>"grey20"</span>,
-  <span class='kw'>.conf_interval_alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
+  <span class='kw'>.type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"timeplot"</span>, <span class='st'>"acf"</span>, <span class='st'>"seasonality"</span>),
   <span class='kw'>.smooth</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>.legend_show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>.legend_max_width</span> <span class='kw'>=</span> <span class='fl'>40</span>,
-  <span class='kw'>.title</span> <span class='kw'>=</span> <span class='st'>"Forecast Plot"</span>,
+  <span class='kw'>.title</span> <span class='kw'>=</span> <span class='st'>"Residuals Plot"</span>,
   <span class='kw'>.x_lab</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>.y_lab</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>.color_lab</span> <span class='kw'>=</span> <span class='st'>"Legend"</span>,
   <span class='kw'>.interactive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.plotly_slider</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -180,19 +185,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>A <code>tibble</code> that is the output of <code><a href='modeltime_forecast.html'>modeltime_forecast()</a></code></p></td>
+      <td><p>A <code>tibble</code> that is the output of <code><a href='modeltime_residuals.html'>modeltime_residuals()</a></code></p></td>
     </tr>
     <tr>
-      <th>.conf_interval_show</th>
-      <td><p>Logical. Whether or not to include the confidence interval as a ribbon.</p></td>
-    </tr>
-    <tr>
-      <th>.conf_interval_fill</th>
-      <td><p>Fill color for the confidence interval</p></td>
-    </tr>
-    <tr>
-      <th>.conf_interval_alpha</th>
-      <td><p>Fill opacity for the confidence interval. Range (0, 1).</p></td>
+      <th>.type</th>
+      <td><p>One of "timeplot", "acf", or "seasonality". The default is "timeplot".</p></td>
     </tr>
     <tr>
       <th>.smooth</th>
@@ -229,18 +226,18 @@ Can save space with long model descriptions.</p></td>
       <td><p>Returns either a static (<code>ggplot2</code>) visualization or an interactive (<code>plotly</code>) visualization</p></td>
     </tr>
     <tr>
-      <th>.plotly_slider</th>
-      <td><p>If TRUE, returns a plotly date range slider.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/timetk/man/plot_time_series.html'>timetk::plot_time_series()</a></code>.</p></td>
+      <td><p>Additional arguments passed to:</p><ul>
+<li><p>Time Plot: <code>plot_time_series()</code></p></li>
+<li><p>ACF Plot: <code>plot_acf_diagnostics()</code></p></li>
+<li><p>Seasonality Plot: <code>plot_seasonal_diagnostics()</code></p></li>
+</ul></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A static <code>ggplot2</code> plot or an interactive <code>plotly</code> plot containing a forecast</p>
+    <p>A static <code>ggplot2</code> plot or an interactive <code>plotly</code> plot containing residuals vs time</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
@@ -268,15 +265,17 @@ Can save space with long model descriptions.</p></td>
     <span class='no'>model_fit_arima</span>
 )
 
-<span class='co'># ---- FORECAST ----</span>
+<span class='co'># ---- RESIDUALS ----</span>
 
-<span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
+<span class='no'>residuals_tbl</span> <span class='kw'>&lt;-</span> <span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span>(
-        <span class='kw'>new_data</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>),
-        <span class='kw'>actual_data</span> <span class='kw'>=</span> <span class='no'>m750</span>
-    ) <span class='kw'>%&gt;%</span>
-    <span class='fu'>plot_modeltime_forecast</span>(<span class='kw'>.interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='img'><img src='plot_modeltime_forecast-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <span class='fu'><a href='modeltime_residuals.html'>modeltime_residuals</a></span>()
+
+<span class='no'>residuals_tbl</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'>plot_modeltime_residuals</span>(
+        <span class='kw'>.type</span> <span class='kw'>=</span> <span class='st'>"timeplot"</span>,
+        <span class='kw'>.interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    )</div><div class='img'><img src='plot_modeltime_residuals-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

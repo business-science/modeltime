@@ -172,6 +172,8 @@ different packages. Currently the only package is <code>prophet</code>.</p>
   <span class='kw'>prior_scale_changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prior_scale_seasonality</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prior_scale_holidays</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>logistic_cap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>logistic_floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>mtry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>trees</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>min_n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -240,6 +242,14 @@ fluctuations, smaller values dampen the seasonality.</p></td>
 unless overridden in the holidays input.</p></td>
     </tr>
     <tr>
+      <th>logistic_cap</th>
+      <td><p>When growth is logistic, the upper-bound for "saturation".</p></td>
+    </tr>
+    <tr>
+      <th>logistic_floor</th>
+      <td><p>When growth is logistic, the lower-bound for "saturation".</p></td>
+    </tr>
+    <tr>
       <th>mtry</th>
       <td><p>A number for the number (or proportion) of predictors that will
 be randomly sampled at each split when creating the tree models (<code>xgboost</code>
@@ -295,6 +305,8 @@ following <em>engines</em>:</p><ul>
 <p>The main arguments (tuning parameters) for the <strong>PROPHET</strong> model are:</p><ul>
 <li><p><code>growth</code>: String 'linear' or 'logistic' to specify a linear or logistic trend.</p></li>
 <li><p><code>changepoint_num</code>: Number of potential changepoints to include for modeling trend.</p></li>
+<li><p><code>changepoint_range</code>: Range changepoints that adjusts how close to the end
+the last changepoint can be located.</p></li>
 <li><p><code>season</code>: 'additive' (default) or 'multiplicative'.</p></li>
 <li><p><code>prior_scale_changepoints</code>: Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
@@ -304,6 +316,8 @@ seasonality model. Larger values allow the model to fit larger seasonal
 fluctuations, smaller values dampen the seasonality.</p></li>
 <li><p><code>prior_scale_holidays</code>: Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.</p></li>
+<li><p><code>logistic_cap</code>: When growth is logistic, the upper-bound for "saturation".</p></li>
+<li><p><code>logistic_floor</code>: When growth is logistic, the lower-bound for "saturation".</p></li>
 </ul>
 
 <p>The main arguments (tuning parameters) for the model <strong>XGBoost model</strong> are:</p><ul>
@@ -378,6 +392,12 @@ names in each engine:</p>
 <li><p><code>uncertainty.samples</code>: The default is set to 0 because the prophet
 uncertainty intervals are not used as part of the Modeltime Workflow.
 You can override this setting if you plan to use prophet's uncertainty tools.</p></li>
+</ul>
+
+<p>Logistic Growth and Saturation Levels:</p><ul>
+<li><p>For <code>growth = "logistic"</code>, simply add numeric values for <code>logistic_cap</code> and / or
+<code>logistic_floor</code>. There is <em>no need</em> to add additional columns
+for "cap" and "floor" to your data frame.</p></li>
 </ul>
 
 <p>Limitations:</p><ul>

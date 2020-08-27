@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Low-Level PROPHET function for translating modeltime to PROPHET — prophet_fit_impl • modeltime</title>
+<title>Test if object is a Modeltime Table — is_modeltime_table • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Low-Level PROPHET function for translating modeltime to PROPHET — prophet_fit_impl" />
-<meta property="og:description" content="Low-Level PROPHET function for translating modeltime to PROPHET" />
+<meta property="og:title" content="Test if object is a Modeltime Table — is_modeltime_table" />
+<meta property="og:description" content="This function returns TRUE for objects that contain class mdl_time_tbl" />
 
 
 
@@ -147,110 +147,23 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Low-Level PROPHET function for translating modeltime to PROPHET</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-prophet_reg.R'><code>R/parsnip-prophet_reg.R</code></a></small>
-    <div class="hidden name"><code>prophet_fit_impl.Rd</code></div>
+    <h1>Test if object is a Modeltime Table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/utils-is_modeltime.R'><code>R/utils-is_modeltime.R</code></a></small>
+    <div class="hidden name"><code>is_modeltime_table.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Low-Level PROPHET function for translating modeltime to PROPHET</p>
+    <p>This function returns <code>TRUE</code> for objects that contain class <code>mdl_time_tbl</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>prophet_fit_impl</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>growth</span> <span class='kw'>=</span> <span class='st'>"linear"</span>,
-  <span class='kw'>n.changepoints</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>changepoint.range</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>yearly.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>weekly.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>daily.seasonality</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>seasonality.mode</span> <span class='kw'>=</span> <span class='st'>"additive"</span>,
-  <span class='kw'>changepoint.prior.scale</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>seasonality.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>holidays.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>logistic_cap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>logistic_floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>is_modeltime_table</span>(<span class='no'>object</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>A numeric vector of values to fit</p></td>
-    </tr>
-    <tr>
-      <th>growth</th>
-      <td><p>String 'linear' or 'logistic' to specify a linear or logistic
-trend.</p></td>
-    </tr>
-    <tr>
-      <th>n.changepoints</th>
-      <td><p>Number of potential changepoints to include. Not used
-if input `changepoints` is supplied. If `changepoints` is not supplied,
-then n.changepoints potential changepoints are selected uniformly from the
-first `changepoint.range` proportion of df$ds.</p></td>
-    </tr>
-    <tr>
-      <th>changepoint.range</th>
-      <td><p>Proportion of history in which trend changepoints
-will be estimated. Defaults to 0.8 for the first 80<!-- %. Not used if -->
-`changepoints` is specified.</p></td>
-    </tr>
-    <tr>
-      <th>yearly.seasonality</th>
-      <td><p>Fit yearly seasonality. Can be 'auto', TRUE,
-FALSE, or a number of Fourier terms to generate.</p></td>
-    </tr>
-    <tr>
-      <th>weekly.seasonality</th>
-      <td><p>Fit weekly seasonality. Can be 'auto', TRUE,
-FALSE, or a number of Fourier terms to generate.</p></td>
-    </tr>
-    <tr>
-      <th>daily.seasonality</th>
-      <td><p>Fit daily seasonality. Can be 'auto', TRUE,
-FALSE, or a number of Fourier terms to generate.</p></td>
-    </tr>
-    <tr>
-      <th>seasonality.mode</th>
-      <td><p>'additive' (default) or 'multiplicative'.</p></td>
-    </tr>
-    <tr>
-      <th>changepoint.prior.scale</th>
-      <td><p>Parameter modulating the flexibility of the
-automatic changepoint selection. Large values will allow many changepoints,
-small values will allow few changepoints.</p></td>
-    </tr>
-    <tr>
-      <th>seasonality.prior.scale</th>
-      <td><p>Parameter modulating the strength of the
-seasonality model. Larger values allow the model to fit larger seasonal
-fluctuations, smaller values dampen the seasonality. Can be specified for
-individual seasonalities using add_seasonality.</p></td>
-    </tr>
-    <tr>
-      <th>holidays.prior.scale</th>
-      <td><p>Parameter modulating the strength of the holiday
-components model, unless overridden in the holidays input.</p></td>
-    </tr>
-    <tr>
-      <th>logistic_cap</th>
-      <td><p>When growth is logistic, the upper-bound for "saturation".</p></td>
-    </tr>
-    <tr>
-      <th>logistic_floor</th>
-      <td><p>When growth is logistic, the lower-bound for "saturation".</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/prophet/man/prophet.html'>prophet::prophet</a></code></p></td>
+      <th>object</th>
+      <td><p>An object to detect if is a Modeltime Table</p></td>
     </tr>
     </table>
 

@@ -172,7 +172,7 @@ forecasting future data.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A Modeltime Table that has been calibrated with <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code></p></td>
+      <td><p>A Modeltime Table</p></td>
     </tr>
     <tr>
       <th>new_data</th>
@@ -207,6 +207,10 @@ the column names are transformed to:</p><ul>
 <li><p><code>.key</code>: Values labeled either "prediction" or "actual"</p></li>
 <li><p><code>.index</code>: The timestamp index.</p></li>
 <li><p><code>.value</code>: The value being forecasted.</p></li>
+</ul>
+
+<p>Additionally, if the Modeltime Table has been previously calibrated using <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code>,
+you will gain confidence intervals.</p><ul>
 <li><p><code>.conf_lo</code>: The lower limit of the confidence interval.</p></li>
 <li><p><code>.conf_hi</code>: The upper limit of the confidence interval.</p></li>
 </ul>
@@ -223,32 +227,46 @@ the column names are transformed to:</p><ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The key parameters are (controlled by <code>new_data</code> or <code>h</code>) and
-combining with existing data (controlled by <code>actual_data</code>) in preparation
-for visualization with <code><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast()</a></code>.</p>
-<p><strong>Specifying New Data or Horizon (h)</strong></p>
-<p>When forecasting you can specify future data using:</p><ol>
-<li><p><code>new_data</code>: This is a future tibble with date column and columns for xregs
+    <p>The <code>modeltime_forecast()</code> function prepares a forecast for visualization with
+with <code><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast()</a></code>. The forecast is controlled by <code>new_data</code> or <code>h</code>,
+which can be combined with existing data (controlled by <code>actual_data</code>).
+Confidence intervals are included if the incoming Modeltime Table has been
+calibrated using <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code>.
+Otherwise confidence intervals are not estimated.</p>
+<p><strong>New Data</strong></p>
+<p>When forecasting you can specify future data using <code>new_data</code>.
+This is a future tibble with date column and columns for xregs
 extending the trained dates and exogonous regressors (xregs) if used.</p><ul>
 <li><p><strong>Forecasting Evaluation Data</strong>: By default, the <code>new_data</code> will use the <code>.calibration_data</code>
 if <code>new_data</code> is not provided.
 This is the equivalent of using <code><a href='https://rsample.tidymodels.org/reference/initial_split.html'>rsample::testing()</a></code> for getting test data sets.</p></li>
-<li><p><strong>Forecasting Future Data</strong>: See <code><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>future_frame()</a></code> for creating future tibbles.</p></li>
+<li><p><strong>Forecasting Future Data</strong>: See <code><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>timetk::future_frame()</a></code> for creating future tibbles.</p></li>
 <li><p><strong>Xregs</strong>: Can be used with this method</p></li>
-</ul></li>
-<li><p><code>h</code>: This is a phrase like "1 year", which extends the <code>.calibration_data</code> into the future.</p><ul>
+</ul>
+
+<p><strong>H (Horizon)</strong></p>
+<p>When forecasting, you can specify <code>h</code>. This is a phrase like "1 year",
+which extends the <code>.calibration_data</code> (1st priority) or the <code>actual_data</code> (2nd priority)
+into the future.</p><ul>
 <li><p><strong>Forecasting Future Data</strong>: All forecasts using <code>h</code> are
-<em><strong>extended after the calibration data</strong></em>, which is
+<em><strong>extended after the calibration data or actual_data</strong></em>.</p></li>
+<li><p>Extending <code>.calibration_data</code> - Calibration data is given 1st priority, which is
 desirable <em>after refitting</em> with <code><a href='modeltime_refit.html'>modeltime_refit()</a></code>.
-Internally, a call is made to <code><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>future_frame()</a></code> to
+Internally, a call is made to <code><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>timetk::future_frame()</a></code> to
 expedite creating new data using the date feature.</p></li>
-<li><p><strong>Xregs</strong>: Cannot be used because future data must include new xregs.</p></li>
-</ul></li>
-</ol>
+<li><p>Extending <code>actual_data</code> - If <code>h</code> is provided, and the modeltime table has not been
+calibrated, the "actual_data" will be extended into the future. This is useful
+in situations where you want to go directly from <code><a href='modeltime_table.html'>modeltime_table()</a></code> to <code>modeltime_forecast()</code>
+without calibrating or refitting.</p></li>
+<li><p><strong>Xregs</strong>: Cannot be used because future data must include new xregs.
+If xregs are desired, build a future data frame and use <code>new_data</code>.</p></li>
+</ul>
 
 <p><strong>Actual Data</strong></p>
 <p>This is reference data that contains the true values of the time-stamp data.
 It helps in visualizing the performance of the forecast vs the actual data.</p>
+<p>When <code>h</code> is used and the Modeltime Table has <em>not been calibrated</em>, then the
+actual data is extended into the future periods that are defined by <code>h</code>.</p>
 <p><strong>Confidence Interval Estimation</strong></p>
 <p>Confidence intervals (<code>.conf_lo</code>, <code>.conf_hi</code>) are estimated based on the normal estimation of
 the testing errors (out of sample) from <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code>.
@@ -302,7 +320,7 @@ future accuracy, which in most cases makes the out-of-sample confidence interval
 #&gt;   .model_id .model_desc             .type   mae  mape  mase smape  rmse   rsq
 #&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  1.41 0.516  1.43  198. 0.930</div><div class='input'>
-<span class='co'># ---- FORECAST ----</span>
+<span class='co'># ---- FUTURE FORECAST ----</span>
 
 <span class='no'>calibration_tbl</span> <span class='kw'>%&gt;%</span>
     <span class='fu'>modeltime_forecast</span>(
@@ -321,6 +339,27 @@ future accuracy, which in most cases makes the out-of-sample confidence interval
 #&gt; </span><span style='color: #555555;'> 8</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-08-01   </span><span style='text-decoration: underline;'>5</span><span>450       </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #BB0000;'>NA</span><span>
 #&gt; </span><span style='color: #555555;'> 9</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-09-01   </span><span style='text-decoration: underline;'>6</span><span>480       </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #BB0000;'>NA</span><span>
 #&gt; </span><span style='color: #555555;'>10</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-10-01   </span><span style='text-decoration: underline;'>6</span><span>820       </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'># … with 327 more rows</span><span></div><div class='input'>
+<span class='co'># ---- ALTERNATIVE: FORECAST WITHOUT CONFIDENCE INTERVALS ----</span>
+<span class='co'># Skips Calibration Step, No Confidence Intervals</span>
+
+<span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'>modeltime_forecast</span>(
+        <span class='kw'>new_data</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>),
+        <span class='kw'>actual_data</span> <span class='kw'>=</span> <span class='no'>m750</span>
+    )</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 337 x 5</span><span>
+#&gt;    .model_id .model_desc .key   .index     .value
+#&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-01-01   </span><span style='text-decoration: underline;'>6</span><span>370
+#&gt; </span><span style='color: #555555;'> 2</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-02-01   </span><span style='text-decoration: underline;'>6</span><span>430
+#&gt; </span><span style='color: #555555;'> 3</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-03-01   </span><span style='text-decoration: underline;'>6</span><span>520
+#&gt; </span><span style='color: #555555;'> 4</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-04-01   </span><span style='text-decoration: underline;'>6</span><span>580
+#&gt; </span><span style='color: #555555;'> 5</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-05-01   </span><span style='text-decoration: underline;'>6</span><span>620
+#&gt; </span><span style='color: #555555;'> 6</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-06-01   </span><span style='text-decoration: underline;'>6</span><span>690
+#&gt; </span><span style='color: #555555;'> 7</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-07-01   </span><span style='text-decoration: underline;'>6</span><span>000
+#&gt; </span><span style='color: #555555;'> 8</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-08-01   </span><span style='text-decoration: underline;'>5</span><span>450
+#&gt; </span><span style='color: #555555;'> 9</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-09-01   </span><span style='text-decoration: underline;'>6</span><span>480
+#&gt; </span><span style='color: #555555;'>10</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-10-01   </span><span style='text-decoration: underline;'>6</span><span>820
 #&gt; </span><span style='color: #555555;'># … with 327 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
