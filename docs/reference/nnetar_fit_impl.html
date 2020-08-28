@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get model descriptions for parsnip, workflows &amp; modeltime objects — get_model_description • modeltime</title>
+<title>Low-Level NNETAR function for translating modeltime to forecast — nnetar_fit_impl • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Get model descriptions for parsnip, workflows &amp; modeltime objects — get_model_description" />
-<meta property="og:description" content="Get model descriptions for parsnip, workflows &amp;amp; modeltime objects" />
+<meta property="og:title" content="Low-Level NNETAR function for translating modeltime to forecast — nnetar_fit_impl" />
+<meta property="og:description" content="Low-Level NNETAR function for translating modeltime to forecast" />
 
 
 
@@ -147,56 +147,81 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get model descriptions for parsnip, workflows &amp; modeltime objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dev-model_descriptions.R'><code>R/dev-model_descriptions.R</code></a></small>
-    <div class="hidden name"><code>get_model_description.Rd</code></div>
+    <h1>Low-Level NNETAR function for translating modeltime to forecast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-nnetar_reg.R'><code>R/parsnip-nnetar_reg.R</code></a></small>
+    <div class="hidden name"><code>nnetar_fit_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get model descriptions for parsnip, workflows &amp; modeltime objects</p>
+    <p>Low-Level NNETAR function for translating modeltime to forecast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_model_description</span>(<span class='no'>object</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>upper_case</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>nnetar_fit_impl</span>(
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>P</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>repeats</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>decay</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>maxit</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>Parsnip or workflow objects</p></td>
+      <th>x</th>
+      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
     </tr>
     <tr>
-      <th>indicate_training</th>
-      <td><p>Whether or not to indicate if the model has been trained</p></td>
+      <th>y</th>
+      <td><p>A numeric vector of values to fit</p></td>
     </tr>
     <tr>
-      <th>upper_case</th>
-      <td><p>Whether to return upper or lower case model descriptions</p></td>
+      <th>period</th>
+      <td><p>A seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>Embedding dimension for non-seasonal time series. Number of
+non-seasonal lags used as inputs. For non-seasonal time series, the default
+is the optimal number of lags (according to the AIC) for a linear AR(p)
+model. For seasonal time series, the same method is used but applied to
+seasonally adjusted data (from an stl decomposition).</p></td>
+    </tr>
+    <tr>
+      <th>P</th>
+      <td><p>Number of seasonal lags used as inputs.</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>Number of nodes in the hidden layer. Default is half of the
+number of input nodes (including external regressors, if given) plus 1.</p></td>
+    </tr>
+    <tr>
+      <th>repeats</th>
+      <td><p>Number of networks to fit with different random starting
+weights. These are then averaged when producing forecasts.</p></td>
+    </tr>
+    <tr>
+      <th>decay</th>
+      <td><p>Parameter for weight decay. Default 0.</p></td>
+    </tr>
+    <tr>
+      <th>maxit</th>
+      <td><p>Maximum number of iterations. Default 100.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/forecast/man/nnetar.html'>forecast::nnetar</a></code></p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>parsnip</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>modeltime</span>)
-
-<span class='co'># Model Specification ----</span>
-
-<span class='no'>arima_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='st'>"auto_arima"</span>)
-
-<span class='fu'>get_model_description</span>(<span class='no'>arima_spec</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "AUTO_ARIMA (Not Trained)"</div><div class='input'>
-<span class='co'># Fitted Model ----</span>
-
-<span class='no'>m750</span> <span class='kw'>&lt;-</span> <span class='no'>m4_monthly</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/filter.html'>filter</a></span>(<span class='no'>id</span> <span class='kw'>==</span> <span class='st'>"M750"</span>)
-
-<span class='no'>arima_fit</span> <span class='kw'>&lt;-</span> <span class='no'>arima_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>m750</span>)</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
-<span class='fu'>get_model_description</span>(<span class='no'>arima_fit</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "ARIMA(0,1,1)(0,1,1)[12] (Trained)"</div><div class='input'>
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

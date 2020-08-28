@@ -198,6 +198,10 @@
     <span class="kw">seasonal_period_2</span> <span class="kw">=</span> <span class="st">"1 week"</span>
 ) <span class="kw">%&gt;%</span>
     <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
+<p><strong>NNETAR Model</strong></p>
+<p>Use <code><a href="../reference/nnetar_reg.html">nnetar_reg()</a></code> and set engine to “nnetar”.</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="no">model_fit_nnetar</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/nnetar_reg.html">nnetar_reg</a></span>() <span class="kw">%&gt;%</span>
+    <span class="fu">set_engine</span>(<span class="st">"nnetar"</span>)</pre></div>
 <p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul>
 <li>

@@ -145,6 +145,7 @@
 #'     set_engine("nnetar")
 #'
 #' # Fit Spec
+#' set.seed(123)
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
 #' model_fit

@@ -52,12 +52,6 @@ A streamlined workflow for forecasting
 
 <hr>
 
-#### Interactive plotting by default
-
-All plots incorporate both `plotly` (interactive) and `ggplot2` (static)
-visualizations. This means you can quickly add forecasts to `shiny`
-apps, `rmarkdown` documents, and more.
-
 ## Tutorials
 
   - [**Getting Started with

@@ -342,7 +342,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  354ms 
+#&gt; Fit time:  359ms 
 #&gt; SEASONAL DECOMP: ETS(A,Ad,N)
 #&gt; 
 #&gt; </span><span style='color: #555555;'># A tibble: 1 x 5</span><span>
@@ -360,7 +360,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  583ms 
+#&gt; Fit time:  616ms 
 #&gt; SEASONAL DECOMP: ARIMA(3,1,2)
 #&gt; 
 #&gt; Series: x 
