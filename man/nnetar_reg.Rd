@@ -28,13 +28,15 @@ See Fit Details below.}
 
 \item{seasonal_ar}{The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.}
 
-\item{non_seasonal_differences}{The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.}
+\item{hidden_units}{An integer for the number of units in the hidden model.}
 
-\item{non_seasonal_ma}{The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.}
+\item{num_networks}{Number of networks to fit with different random starting weights.
+These are then averaged when producing forecasts.}
 
-\item{seasonal_differences}{The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.}
+\item{penalty}{A non-negative numeric value for the amount of weight
+decay.}
 
-\item{seasonal_ma}{The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.}
+\item{epochs}{An integer for the number of training iterations.}
 }
 \description{
 \code{nnetar_reg()} is a way to generate a \emph{specification} of an NNETAR model
@@ -54,18 +56,8 @@ following \emph{engines}:
 
 \strong{Main Arguments}
 
-The main arguments (tuning parameters) for the model are:
-\itemize{
-\item \code{seasonal_period}: The periodic nature of the seasonality. Uses "auto" by default.
-\item \code{non_seasonal_ar}: The order of the non-seasonal auto-regressive (AR) terms.
-\item \code{non_seasonal_differences}: The order of integration for non-seasonal differencing.
-\item \code{non_seasonal_ma}: The order of the non-seasonal moving average (MA) terms.
-\item \code{seasonal_ar}: The order of the seasonal auto-regressive (SAR) terms.
-\item \code{seasonal_differences}: The order of integration for seasonal differencing.
-\item \code{seasonal_ma}: The order of the seasonal moving average (SMA) terms.
-}
-
-These arguments are converted to their specific names at the
+The main arguments (tuning parameters) for the model are the parameters in
+\code{nnetar_reg()} function. These arguments are converted to their specific names at the
 time that the model is fit.
 
 Other options and argument can be
@@ -78,64 +70,34 @@ in lieu of recreating the object from scratch.
 
 
 The standardized parameter names in \code{modeltime} can be mapped to their original
-names in each engine:\tabular{lll}{
-   modeltime \tab forecast::auto.arima \tab forecast::Arima \cr
-   seasonal_period \tab ts(frequency) \tab ts(frequency) \cr
-   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p, max.d, max.q \tab order = c(p,d,q) \cr
-   seasonal_ar, seasonal_differences, seasonal_ma \tab max.P, max.D, max.Q \tab seasonal = c(P,D,Q) \cr
+names in each engine:\tabular{ll}{
+   modeltime \tab forecast::nnetar \cr
+   seasonal_period \tab ts(frequency) \cr
+   non_seasonal_ar \tab p \cr
+   seasonal_ar \tab P \cr
+   hidden_units \tab size \cr
+   num_networks \tab repeats \cr
+   epochs \tab maxit \cr
+   penalty \tab decay \cr
 }
 
 
 Other options can be set using \code{set_engine()}.
 
-\strong{auto_arima (default engine)}
+\strong{nnetar}
 
-The engine uses \code{\link[forecast:auto.arima]{forecast::auto.arima()}}.
-
-Function Parameters:\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
-##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
-##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
-##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
-##         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
-##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
-##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
-##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
-##     num.cores = 2, x = y, ...)
-}
-
-The \emph{MAXIMUM} nonseasonal NNETAR terms (\code{max.p}, \code{max.d}, \code{max.q}) and
-seasonal NNETAR terms (\code{max.P}, \code{max.D}, \code{max.Q}) are provided to
-\code{\link[forecast:auto.arima]{forecast::auto.arima()}} via \code{nnetar_reg()} parameters.
-Other options and argument can be set using \code{set_engine()}.
-
-Parameter Notes:
-\itemize{
-\item All values of nonseasonal pdq and seasonal PDQ are maximums.
-The \code{forecast::auto.arima()} model will select a value using these as an upper limit.
-\item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
-(so don't provide this manually). See Fit Details (below).
-}
-
-\strong{arima}
-
-The engine uses \code{\link[forecast:Arima]{forecast::Arima()}}.
+The engine uses \code{\link[forecast:nnetar]{forecast::nnetar()}}.
 
 Function Parameters:\preformatted{## function (y, p, P = 1, size, repeats = 20, xreg = NULL, lambda = NULL, 
 ##     model = NULL, subset = NULL, scale.inputs = TRUE, x = y, ...)
 }
 
-The nonseasonal NNETAR terms (\code{order}) and seasonal NNETAR terms (\code{seasonal})
-are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{nnetar_reg()} parameters.
-Other options and argument can be set using \code{set_engine()}.
-
 Parameter Notes:
 \itemize{
 \item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
 (so don't provide this manually). See Fit Details (below).
-\item \code{method} - The default is set to "ML" (Maximum Likelihood).
-This method is more robust at the expense of speed and possible
-selections may fail unit root inversion testing. Alternatively, you can add \code{method = "CSS-ML"} to
-evaluate Conditional Sum of Squares for starting values, then Maximium Likelihood.
+\item \code{size} - Is set to 10 by default. This differs from the \code{forecast} implementation
+\item \code{p} and \code{P} - Are set to 1 by default.
 }
 }
 
@@ -214,7 +176,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- nnetar_reg() \%>\%
-    set_engine("auto_arima")
+    set_engine("nnetar")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

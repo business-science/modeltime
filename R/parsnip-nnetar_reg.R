@@ -4,19 +4,10 @@
 #'  before fitting and allows the model to be created using
 #'  different packages. Currently the only package is `forecast`.
 #'
-#' @param mode A single character string for the type of model.
-#'  The only possible value for this model is "regression".
-#' @param seasonal_period A seasonal frequency. Uses "auto" by default.
-#'  A character phrase of "auto" or time-based phrase of "2 weeks"
-#'  can be used if a date or date-time variable is provided.
-#'  See Fit Details below.
-#' @param non_seasonal_ar The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
-#' @param non_seasonal_differences The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.
-#' @param non_seasonal_ma The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.
-#' @param seasonal_ar The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.
-#' @param seasonal_differences The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.
-#' @param seasonal_ma The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.
-#'
+#' @inheritParams arima_reg
+#' @inheritParams parsnip::mlp
+#' @param num_networks Number of networks to fit with different random starting weights.
+#'  These are then averaged when producing forecasts.
 #'
 #'
 #' @details
@@ -31,23 +22,14 @@
 #'
 #' __Main Arguments__
 #'
-#' The main arguments (tuning parameters) for the model are:
-#'
-#'  - `seasonal_period`: The periodic nature of the seasonality. Uses "auto" by default.
-#'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
-#'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
-#'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
-#'  - `seasonal_ar`: The order of the seasonal auto-regressive (SAR) terms.
-#'  - `seasonal_differences`: The order of integration for seasonal differencing.
-#'  - `seasonal_ma`: The order of the seasonal moving average (SMA) terms.
-#'
-#' These arguments are converted to their specific names at the
+#' The main arguments (tuning parameters) for the model are the parameters in
+#'  `nnetar_reg()` function. These arguments are converted to their specific names at the
 #'  time that the model is fit.
 #'
 #' Other options and argument can be
 #'  set using `set_engine()` (See Engine Details below).
 #'
-#'  If parameters need to be modified, `update()` can be used
+#' If parameters need to be modified, `update()` can be used
 #'  in lieu of recreating the object from scratch.
 #'
 #'
@@ -59,54 +41,33 @@
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("nnetar_reg")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
-#'     "seasonal_period", "ts(frequency)", "ts(frequency)",
-#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
-#'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
+#'     ~ "modeltime", ~ "forecast::nnetar",
+#'     "seasonal_period", "ts(frequency)",
+#'     "non_seasonal_ar", "p",
+#'     "seasonal_ar", "P",
+#'     "hidden_units", "size",
+#'     "num_networks", "repeats",
+#'     "epochs", "maxit",
+#'     "penalty", "decay"
 #' ) %>% knitr::kable()
 #' ```
 #'
 #' Other options can be set using `set_engine()`.
 #'
-#' __auto_arima (default engine)__
+#' __nnetar__
 #'
-#' The engine uses [forecast::auto.arima()].
-#'
-#' Function Parameters:
-#' ```{r echo = FALSE}
-#' str(forecast::auto.arima)
-#' ```
-#' The _MAXIMUM_ nonseasonal NNETAR terms (`max.p`, `max.d`, `max.q`) and
-#' seasonal NNETAR terms (`max.P`, `max.D`, `max.Q`) are provided to
-#' [forecast::auto.arima()] via `nnetar_reg()` parameters.
-#' Other options and argument can be set using `set_engine()`.
-#'
-#' Parameter Notes:
-#' - All values of nonseasonal pdq and seasonal PDQ are maximums.
-#'  The `forecast::auto.arima()` model will select a value using these as an upper limit.
-#' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
-#'  (so don't provide this manually). See Fit Details (below).
-#'
-#' __arima__
-#'
-#' The engine uses [forecast::Arima()].
+#' The engine uses [forecast::nnetar()].
 #'
 #' Function Parameters:
 #' ```{r echo = FALSE}
 #' str(forecast::nnetar)
 #' ```
 #'
-#' The nonseasonal NNETAR terms (`order`) and seasonal NNETAR terms (`seasonal`)
-#' are provided to [forecast::Arima()] via `nnetar_reg()` parameters.
-#' Other options and argument can be set using `set_engine()`.
-#'
 #' Parameter Notes:
 #' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
 #'  (so don't provide this manually). See Fit Details (below).
-#' - `method` - The default is set to "ML" (Maximum Likelihood).
-#'  This method is more robust at the expense of speed and possible
-#'  selections may fail unit root inversion testing. Alternatively, you can add `method = "CSS-ML"` to
-#'  evaluate Conditional Sum of Squares for starting values, then Maximium Likelihood.
+#' - `size` - Is set to 10 by default. This differs from the `forecast` implementation
+#' - `p` and `P` - Are set to 1 by default.
 #'
 #'
 #' @section Fit Details:
@@ -181,7 +142,7 @@
 #'
 #' # Model Spec
 #' model_spec <- nnetar_reg() %>%
-#'     set_engine("auto_arima")
+#'     set_engine("nnetar")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
@@ -300,6 +261,8 @@ translate.nnetar_reg <- function(x, engine = x$engine, ...) {
 #' @param y A numeric vector of values to fit
 #' @param period A seasonal frequency. Uses "auto" by default. A character phrase
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param decay Parameter for weight decay. Default 0.
+#' @param maxit Maximum number of iterations. Default 100.
 #' @param ... Additional arguments passed to `forecast::nnetar`
 #'
 #' @export

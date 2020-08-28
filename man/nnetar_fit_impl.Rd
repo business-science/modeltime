@@ -8,9 +8,9 @@ nnetar_fit_impl(
   x,
   y,
   period = "auto",
-  p = 0,
-  P = 0,
-  size,
+  p = 1,
+  P = 1,
+  size = 10,
   repeats = 20,
   decay = 0,
   maxit = 100,
@@ -38,6 +38,10 @@ number of input nodes (including external regressors, if given) plus 1.}
 
 \item{repeats}{Number of networks to fit with different random starting
 weights. These are then averaged when producing forecasts.}
+
+\item{decay}{Parameter for weight decay. Default 0.}
+
+\item{maxit}{Maximum number of iterations. Default 100.}
 
 \item{...}{Additional arguments passed to \code{forecast::nnetar}}
 }
