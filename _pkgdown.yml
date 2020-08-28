@@ -75,6 +75,9 @@ reference:
   - subtitle: Prophet
     contents:
     - changepoint_num
+  - subtitle: NNETAR
+    contents:
+    - num_networks
   - title: Developer Tools
     desc: Tools for extending `modeltime`.
     contents:
