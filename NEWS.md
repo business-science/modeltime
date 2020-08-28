@@ -45,6 +45,15 @@ seasonal_reg(
     set_engine("tbats")
 ```
 
+__NNETAR Model__
+
+Use `nnetar_reg()` and set engine to "nnetar".
+
+``` r
+model_fit_nnetar <- nnetar_reg() %>%
+    set_engine("nnetar") 
+```
+
 __Prophet Model - Logistic Growth Support__
 
 - `prophet_reg()` and `prophet_boost()`: 
