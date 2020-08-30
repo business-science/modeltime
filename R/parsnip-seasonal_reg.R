@@ -208,8 +208,8 @@ print.seasonal_reg <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.seasonal_reg <- function(object, parameters = NULL,
-                                   seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL,
-                                   fresh = FALSE, ...) {
+                                seasonal_period_1 = NULL, seasonal_period_2 = NULL, seasonal_period_3 = NULL,
+                                fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
 

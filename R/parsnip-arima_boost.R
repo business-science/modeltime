@@ -299,14 +299,12 @@ print.arima_boost <- function(x, ...) {
 #' @importFrom stats update
 update.arima_boost <- function(object,
                                parameters = NULL,
-                               seasonal_period = NULL,
                                non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
                                seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                                mtry = NULL, trees = NULL, min_n = NULL,
                                tree_depth = NULL, learn_rate = NULL,
                                loss_reduction = NULL,
-                               sample_size = NULL,
-                               stop_iter = NULL,
+                               sample_size = NULL, stop_iter = NULL,
                                fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)

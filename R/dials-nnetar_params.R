@@ -14,7 +14,7 @@
 #'
 #'
 #' @seealso
-#' [non_seasonal_ar()], [seasonal_ar()], [dials::hidden_units()], [dials::penalty()], [dials::epochs]
+#' [non_seasonal_ar()], [seasonal_ar()], [dials::hidden_units()], [dials::penalty()], [dials::epochs()]
 #'
 #' @examples
 #'

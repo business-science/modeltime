@@ -36,5 +36,5 @@ num_networks()
 
 }
 \seealso{
-\code{\link[=non_seasonal_ar]{non_seasonal_ar()}}, \code{\link[=seasonal_ar]{seasonal_ar()}}, \code{\link[dials:dropout]{dials::hidden_units()}}, \code{\link[dials:penalty]{dials::penalty()}}, \link[dials:dropout]{dials::epochs}
+\code{\link[=non_seasonal_ar]{non_seasonal_ar()}}, \code{\link[=seasonal_ar]{seasonal_ar()}}, \code{\link[dials:dropout]{dials::hidden_units()}}, \code{\link[dials:penalty]{dials::penalty()}}, \code{\link[dials:dropout]{dials::epochs()}}
 }

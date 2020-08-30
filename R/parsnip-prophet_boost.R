@@ -286,7 +286,9 @@ print.prophet_boost <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.prophet_boost <- function(object, parameters = NULL,
-                                 growth = NULL, changepoint_num = NULL, season = NULL,
+                                 growth = NULL, changepoint_num = NULL, changepoint_range = NULL,
+                                 seasonality_yearly = NULL, seasonality_weekly = NULL, seasonality_daily = NULL,
+                                 season = NULL,
                                  prior_scale_changepoints = NULL, prior_scale_seasonality = NULL,
                                  prior_scale_holidays = NULL,
                                  logistic_cap = NULL, logistic_floor = NULL,
