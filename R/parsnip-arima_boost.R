@@ -298,7 +298,7 @@ print.arima_boost <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.arima_boost <- function(object,
-                               parameters = NULL,
+                               parameters = NULL, seasonal_period = NULL,
                                non_seasonal_ar = NULL, non_seasonal_differences = NULL, non_seasonal_ma = NULL,
                                seasonal_ar = NULL, seasonal_differences = NULL, seasonal_ma = NULL,
                                mtry = NULL, trees = NULL, min_n = NULL,
