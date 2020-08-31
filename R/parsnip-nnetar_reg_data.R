@@ -62,7 +62,7 @@ make_nnetar_reg <- function() {
         eng          = engine,
         parsnip      = "num_networks",
         original     = "repeats",
-        func         = list(pkg = "dials", fun = "num_networks"),
+        func         = list(pkg = "modeltime", fun = "num_networks"),
         has_submodel = FALSE
     )
 
