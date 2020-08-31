@@ -98,6 +98,8 @@ Parameter Notes:
 (so don't provide this manually). See Fit Details (below).
 \item \code{size} - Is set to 10 by default. This differs from the \code{forecast} implementation
 \item \code{p} and \code{P} - Are set to 1 by default.
+\item \code{maxit} and \code{decay} are \code{nnet::nnet} parameters that are exposed in the \code{nnetar_reg()} interface.
+These are key tuning parameters.
 }
 }
 

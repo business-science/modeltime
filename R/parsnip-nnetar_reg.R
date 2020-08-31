@@ -1,3 +1,5 @@
+# NNETAR ----
+
 #' General Interface for NNETAR Regression Models
 #'
 #' `nnetar_reg()` is a way to generate a _specification_ of an NNETAR model
@@ -68,6 +70,8 @@
 #'  (so don't provide this manually). See Fit Details (below).
 #' - `size` - Is set to 10 by default. This differs from the `forecast` implementation
 #' - `p` and `P` - Are set to 1 by default.
+#' - `maxit` and `decay` are `nnet::nnet` parameters that are exposed in the `nnetar_reg()` interface.
+#'   These are key tuning parameters.
 #'
 #'
 #' @section Fit Details:

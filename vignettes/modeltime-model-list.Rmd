@@ -43,6 +43,7 @@ model_list_tbl <- tribble(
   "Boosted ARIMA", "arima_boost()", "arima_xgboost", "forecast, xgboost",
   "Exponential Smoothing", "exp_smoothing()", "ets", "forecast",
   "TBATS", "seasonal_reg()", "tbats", "forecast",
+  "NNETAR", "nnetar_reg()", "nnetar", "forecast",
   "Seasonal Decomposition", "seasonal_reg()", "stlm_ets", "forecast",
   "Seasonal Decomposition", "seasonal_reg()", "stlm_arima", "forecast"
 ) %>% 
@@ -131,7 +132,7 @@ param_list_tbl <- tribble(
   "exp_smoothing", "ets", "trend", "model = c(error, trend, season)", "forecast::ets",
   "exp_smoothing", "ets", "season", "model = c(error, trend, season)", "forecast::ets",
   "exp_smoothing", "ets", "damping", "damped", "forecast::ets",
-  # seasonal_reg: ets
+  # seasonal_reg: tbats
   "seasonal_reg", "tbats", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
   "seasonal_reg", "tbats", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
   "seasonal_reg", "tbats", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
@@ -142,7 +143,15 @@ param_list_tbl <- tribble(
   # seasonal_reg: arima
   "seasonal_reg", "stlm_arima", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
   "seasonal_reg", "stlm_arima", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "stlm_arima", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm"
+  "seasonal_reg", "stlm_arima", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
+  # nnetar_reg: nnetar
+  "nnetar_reg", "nnetar", "seasonal_period", "ts(frequency)", "forecast::nnetar",
+  "nnetar_reg", "nnetar", "non_seasonal_ar", "p", "forecast::nnetar",
+  "nnetar_reg", "nnetar", "seasonal_ar", "P", "forecast::nnetar",
+  "nnetar_reg", "nnetar", "hidden_units", "size", "forecast::nnetar",
+  "nnetar_reg", "nnetar", "num_networks", "repeats", "forecast::nnetar",
+  "nnetar_reg", "nnetar", "epochs", "maxit", "nnet::nnet",
+  "nnetar_reg", "nnetar", "penalty", "decay", "nnet::nnet"
 )
 
 ```
