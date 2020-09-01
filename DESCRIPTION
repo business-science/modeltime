@@ -61,7 +61,8 @@ Suggests:
     randomForest,
     tidyquant,
     knitr,
-    rmarkdown
+    rmarkdown,
+    webshot
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

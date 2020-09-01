@@ -169,11 +169,17 @@ plot_modeltime_forecast_multi <- function(.data,
 
         # Add ribbon
         g <- g +
-            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo, ymax = .conf_hi, color = .model_desc),
-                                 fill = .conf_interval_fill,
-                                 alpha = .conf_interval_alpha,
-                                 # color = .conf_interval_fill,
-                                 linetype = 0)
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo,
+                                              ymax = .conf_hi,
+                                              color = .model_desc),
+                                 fill     = .conf_interval_fill,
+                                 alpha    = .conf_interval_alpha,
+                                 # color    = .conf_interval_fill,
+                                 # na.rm    = TRUE, # causes error
+                                 linetype = 0,
+                                 data = data_prepared %>% dplyr::filter(!is.na(.conf_lo))
+                                )
+
 
         # Reorder Ribbon to 1st level
         layers_start <- g$layers
