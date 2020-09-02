@@ -27,18 +27,24 @@ test_that("seasonal_reg: checks", {
 
 # * XREGS ----
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date + wday(date, label = TRUE), data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
 test_that("seasonal_reg - arima: parnip", {
+
+    skip_on_cran()
+
+    # SETUP
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date + wday(date, label = TRUE), data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
+
+
+    # TEST
 
     testthat::expect_s3_class(model_fit$fit, "stlm_arima_fit_impl")
 
@@ -81,29 +87,36 @@ test_that("seasonal_reg - arima: parnip", {
 
 # ---- WORKFLOWS ----
 
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE) %>%
-    step_date(date, features = "dow")
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
 
 
 # TESTS
 test_that("seasonal_reg: workflow", {
+
+    skip_on_cran()
+
+    # SETUP
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE) %>%
+        step_date(date, features = "dow")
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
+
+    # TEST
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "stlm_arima_fit_impl")
 

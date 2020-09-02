@@ -28,20 +28,22 @@ test_that("seasonal_reg: checks", {
 
 # PARSNIP ----
 
-# * XREGS ----
+test_that("seasonal_reg - tbats: parsnip", {
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date + wday(date, label = TRUE), data = training(splits))
+    skip_on_cran()
 
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
+    # SETUP
 
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date + wday(date, label = TRUE), data = training(splits))
 
-# TESTS
-test_that("seasonal_reg - tbats: parnip", {
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
+
+    # TEST
 
     testthat::expect_s3_class(model_fit$fit, "tbats_fit_impl")
 
@@ -84,29 +86,32 @@ test_that("seasonal_reg - tbats: parnip", {
 
 # ---- WORKFLOWS ----
 
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE) %>%
-    step_date(date, features = "dow")
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
-
-
-# TESTS
 test_that("seasonal_reg: workflow", {
+
+    skip_on_cran()
+
+    # SETUP
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE) %>%
+        step_date(date, features = "dow")
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
+    # TEST
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "tbats_fit_impl")
 
