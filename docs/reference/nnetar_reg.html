@@ -86,7 +86,7 @@ different packages. Currently the only package is forecast." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -263,6 +263,8 @@ names in each engine:</p><table class='table'>
 (so don't provide this manually). See Fit Details (below).</p></li>
 <li><p><code>size</code> - Is set to 10 by default. This differs from the <code>forecast</code> implementation</p></li>
 <li><p><code>p</code> and <code>P</code> - Are set to 1 by default.</p></li>
+<li><p><code>maxit</code> and <code>decay</code> are <code><a href='https://rdrr.io/pkg/nnet/man/nnet.html'>nnet::nnet</a></code> parameters that are exposed in the <code>nnetar_reg()</code> interface.
+These are key tuning parameters.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="fit-details"><a class="anchor" href="#fit-details"></a>Fit Details</h2>
@@ -353,7 +355,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='no'>model_fit</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='no'>model_fit</span></div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  291ms 
+#&gt; Fit time:  257ms 
 #&gt; Series: outcome 
 #&gt; Model:  NNAR(1,1,10)[12] 
 #&gt; Call:   forecast::nnetar(y = outcome, p = p, P = P, size = size, repeats = repeats, 
