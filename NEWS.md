@@ -1,4 +1,10 @@
 
+# modeltime 0.1.0.9000 (Development Version)
+
+__Bug Fix__
+
+- `plot_modeltime_forecast()` fix issue with "ACTUAL" data being shown at bottom of legend list. Should be first item. 
+
 # modeltime 0.1.0 
 
 ### New Features 
