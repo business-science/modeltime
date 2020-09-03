@@ -142,6 +142,16 @@ uncertainty intervals are not used as part of the Modeltime Workflow.
 You can override this setting if you plan to use prophet's uncertainty tools.
 }
 
+Regressors:
+\itemize{
+\item Regressors are provided via the \code{fit()} or \code{recipes} interface, which passes
+regressors to \code{prophet::add_regressor()}
+\item Parameters can be controlled in \code{set_engine()} via: \code{regressors.prior.scale}, \code{regressors.standardize},
+and \code{regressors.mode}
+\item The regressor prior scale implementation default is \code{regressors.prior.scale = 1e4}, which deviates from
+the \code{prophet} implementation (defaults to holidays.prior.scale)
+}
+
 Logistic Growth and Saturation Levels:
 \itemize{
 \item For \code{growth = "logistic"}, simply add numeric values for \code{logistic_cap} and / or

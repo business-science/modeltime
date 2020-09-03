@@ -108,6 +108,14 @@
 #'  uncertainty intervals are not used as part of the Modeltime Workflow.
 #'  You can override this setting if you plan to use prophet's uncertainty tools.
 #'
+#' Regressors:
+#' - Regressors are provided via the `fit()` or `recipes` interface, which passes
+#'   regressors to `prophet::add_regressor()`
+#' - Parameters can be controlled in `set_engine()` via: `regressors.prior.scale`, `regressors.standardize`,
+#'   and `regressors.mode`
+#' - The regressor prior scale implementation default is `regressors.prior.scale = 1e4`, which deviates from
+#'   the `prophet` implementation (defaults to holidays.prior.scale)
+#'
 #' Logistic Growth and Saturation Levels:
 #' - For `growth = "logistic"`, simply add numeric values for `logistic_cap` and / or
 #'   `logistic_floor`. There is _no need_ to add additional columns
@@ -312,6 +320,15 @@ translate.prophet_reg <- function(x, engine = x$engine, ...) {
 #' @inheritParams prophet_reg
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
+#' @param regressors.prior.scale Float scale for the normal prior.
+#'  Default is 10,000.
+#'  Gets passed to `prophet::add_regressor(prior.scale)`
+#' @param regressors.standardize Bool, specify whether this regressor will be
+#'  standardized prior to fitting.
+#'  Can be 'auto' (standardize if not binary), True, or False.
+#'  Gets passed to `prophet::add_regressor(standardize)`.
+#' @param regressors.mode Optional, 'additive' or 'multiplicative'.
+#'  Defaults to `seasonality.mode`.
 #' @param ... Additional arguments passed to `prophet::prophet`
 #'
 #' @export
@@ -326,6 +343,9 @@ prophet_fit_impl <- function(x, y,
                              changepoint.prior.scale = 0.05,
                              seasonality.prior.scale = 10,
                              holidays.prior.scale = 10,
+                             regressors.prior.scale = 1e4,
+                             regressors.standardize = "auto",
+                             regressors.mode = NULL,
                              logistic_cap = NULL,
                              logistic_floor = NULL,
                              ...) {
@@ -394,7 +414,11 @@ prophet_fit_impl <- function(x, y,
     xreg_nms <- names(xreg_tbl)
     if (length(xreg_nms) > 0) {
         for (nm in xreg_nms) {
-            m <- prophet::add_regressor(m, name = nm, prior.scale = 10000)
+            m <- prophet::add_regressor(m, name = nm,
+                                        prior.scale = regressors.prior.scale,
+                                        standardize = regressors.standardize,
+                                        mode        = regressors.mode
+                                        )
         }
     }
 

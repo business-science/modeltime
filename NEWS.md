@@ -1,6 +1,13 @@
 
 # modeltime 0.1.0.9000 (Development Version)
 
+__Improvements__
+
+- `prophet_reg()` can now have regressors controlled via `set_engine()` using the following parameters:
+    - `regressors.mode` - Set to `seasonality.mode` by default.
+    - `regressors.prior.scale` - Set to 10,000 by default.
+    - `regressors.standardize` - Set to "auto" by default. 
+
 __Bug Fix__
 
 - `plot_modeltime_forecast()` fix issue with "ACTUAL" data being shown at bottom of legend list. Should be first item. 

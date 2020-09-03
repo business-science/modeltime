@@ -17,6 +17,9 @@ prophet_fit_impl(
   changepoint.prior.scale = 0.05,
   seasonality.prior.scale = 10,
   holidays.prior.scale = 10,
+  regressors.prior.scale = 10000,
+  regressors.standardize = "auto",
+  regressors.mode = NULL,
   logistic_cap = NULL,
   logistic_floor = NULL,
   ...
@@ -61,6 +64,18 @@ individual seasonalities using add_seasonality.}
 
 \item{holidays.prior.scale}{Parameter modulating the strength of the holiday
 components model, unless overridden in the holidays input.}
+
+\item{regressors.prior.scale}{Float scale for the normal prior.
+Default is 10,000.
+Gets passed to \code{prophet::add_regressor(prior.scale)}}
+
+\item{regressors.standardize}{Bool, specify whether this regressor will be
+standardized prior to fitting.
+Can be 'auto' (standardize if not binary), True, or False.
+Gets passed to \code{prophet::add_regressor(standardize)}.}
+
+\item{regressors.mode}{Optional, 'additive' or 'multiplicative'.
+Defaults to \code{seasonality.mode}.}
 
 \item{logistic_cap}{When growth is logistic, the upper-bound for "saturation".}
 
