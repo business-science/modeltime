@@ -54,8 +54,8 @@ The standardized parameter names in \code{modeltime} can be mapped to their orig
 names in each engine:\tabular{ll}{
    modeltime \tab forecast::ets \cr
    seasonal_period() \tab ts(frequency) \cr
-   error(), trend(), season() \tab model \cr
-   damping() \tab damped \cr
+   error(), trend(), season() \tab model ('ZZZ') \cr
+   damping() \tab damped (NULL) \cr
 }
 
 

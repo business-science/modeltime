@@ -73,12 +73,12 @@ The standardized parameter names in \code{modeltime} can be mapped to their orig
 names in each engine:\tabular{ll}{
    modeltime \tab forecast::nnetar \cr
    seasonal_period \tab ts(frequency) \cr
-   non_seasonal_ar \tab p \cr
-   seasonal_ar \tab P \cr
-   hidden_units \tab size \cr
-   num_networks \tab repeats \cr
-   epochs \tab maxit \cr
-   penalty \tab decay \cr
+   non_seasonal_ar \tab p (1) \cr
+   seasonal_ar \tab P (1) \cr
+   hidden_units \tab size (10) \cr
+   num_networks \tab repeats (20) \cr
+   epochs \tab maxit (100) \cr
+   penalty \tab decay (0) \cr
 }
 
 

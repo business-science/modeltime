@@ -1,3 +1,5 @@
+# EXPONENTIAL SMOOTHING ----
+
 #' General Interface for Exponential Smoothing State Space Models
 #'
 #' `exp_smoothing()` is a way to generate a _specification_ of an Exponential Smoothing model
@@ -36,8 +38,8 @@
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::ets",
 #'     "seasonal_period()", "ts(frequency)",
-#'     "error(), trend(), season()", "model",
-#'     "damping()", "damped"
+#'     "error(), trend(), season()", "model ('ZZZ')",
+#'     "damping()", "damped (NULL)"
 #' ) %>% knitr::kable()
 #' ```
 #'

@@ -62,8 +62,8 @@
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
 #'     "seasonal_period", "ts(frequency)", "ts(frequency)",
-#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
-#'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
+#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p(5), max.d(2), max.q(5)", "order = c(p(0), d(0), q(0))",
+#'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P(2), max.D(1), max.Q(2)", "seasonal = c(P(0), D(0), Q(0))"
 #' ) %>% knitr::kable()
 #' ```
 #'

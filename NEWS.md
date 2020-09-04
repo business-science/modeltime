@@ -3,6 +3,7 @@
 
 __Improvements__
 
+- Documentation - Algorithms now identify default parameter values in the  "Engine Details" Section in their respective documentation. E.g. `?prophet_boost`
 - `prophet_reg()` can now have regressors controlled via `set_engine()` using the following parameters:
     - `regressors.mode` - Set to `seasonality.mode` by default.
     - `regressors.prior.scale` - Set to 10,000 by default.

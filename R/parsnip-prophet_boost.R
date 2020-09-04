@@ -77,12 +77,18 @@
 #' ```{r echo = FALSE}
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "prophet",
-#'     "growth", "growth",
-#'     "changepoint_num", "n.changepoints",
-#'     "season", "seasonality.mode",
-#'     "prior_scale_changepoints", "changepoint.prior.scale",
-#'     "prior_scale_seasonality", "seasonality.prior.scale",
-#'     "prior_scale_holidays", "holidays.prior.scale"
+#'     "growth", "growth ('linear')",
+#'     "changepoint_num", "n.changepoints (25)",
+#'     "changepoint_range", "changepoints.range (0.8)",
+#'     "seasonality_yearly", "yearly.seasonality ('auto')",
+#'     "seasonality_weekly", "weekly.seasonality ('auto')",
+#'     "seasonality_daily", "daily.seasonality ('auto')",
+#'     "season", "seasonality.mode ('additive')",
+#'     "prior_scale_changepoints", "changepoint.prior.scale (0.05)",
+#'     "prior_scale_seasonality", "seasonality.prior.scale (10)",
+#'     "prior_scale_holidays", "holidays.prior.scale (10)",
+#'     "logistic_cap", "df$cap (NULL)",
+#'     "logistic_floor", "df$floor (NULL)"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -92,13 +98,14 @@
 #' # parsnip::convert_args("arima_boost")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "xgboost::xgb.train",
-#'     "tree_depth", "max_depth",
-#'     "trees", "nrounds",
-#'     "learn_rate", "eta",
-#'     "mtry", "colsample_bytree",
-#'     "min_n", "min_child_weight",
-#'     "loss_reduction", "gamma",
-#'     "sample_size", "subsample"
+#'     "tree_depth", "max_depth (6)",
+#'     "trees", "nrounds (15)",
+#'     "learn_rate", "eta (0.3)",
+#'     "mtry", "colsample_bytree (1)",
+#'     "min_n", "min_child_weight (1)",
+#'     "loss_reduction", "gamma (0)",
+#'     "sample_size", "subsample (1)",
+#'     "stop_iter", "early_stop"
 #' ) %>% knitr::kable()
 #' ```
 #'

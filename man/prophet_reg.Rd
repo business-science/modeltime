@@ -109,12 +109,18 @@ in lieu of recreating the object from scratch.
 The standardized parameter names in \code{modeltime} can be mapped to their original
 names in each engine:\tabular{ll}{
    modeltime \tab prophet \cr
-   growth \tab growth \cr
-   changepoint_num \tab n.changepoints \cr
-   season \tab seasonality.mode \cr
-   prior_scale_changepoints \tab changepoint.prior.scale \cr
-   prior_scale_seasonality \tab seasonality.prior.scale \cr
-   prior_scale_holidays \tab holidays.prior.scale \cr
+   growth \tab growth ('linear') \cr
+   changepoint_num \tab n.changepoints (25) \cr
+   changepoint_range \tab changepoints.range (0.8) \cr
+   seasonality_yearly \tab yearly.seasonality ('auto') \cr
+   seasonality_weekly \tab weekly.seasonality ('auto') \cr
+   seasonality_daily \tab daily.seasonality ('auto') \cr
+   season \tab seasonality.mode ('additive') \cr
+   prior_scale_changepoints \tab changepoint.prior.scale (0.05) \cr
+   prior_scale_seasonality \tab seasonality.prior.scale (10) \cr
+   prior_scale_holidays \tab holidays.prior.scale (10) \cr
+   logistic_cap \tab df$cap (NULL) \cr
+   logistic_floor \tab df$floor (NULL) \cr
 }
 
 

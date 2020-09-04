@@ -45,12 +45,12 @@
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::nnetar",
 #'     "seasonal_period", "ts(frequency)",
-#'     "non_seasonal_ar", "p",
-#'     "seasonal_ar", "P",
-#'     "hidden_units", "size",
-#'     "num_networks", "repeats",
-#'     "epochs", "maxit",
-#'     "penalty", "decay"
+#'     "non_seasonal_ar", "p (1)",
+#'     "seasonal_ar", "P (1)",
+#'     "hidden_units", "size (10)",
+#'     "num_networks", "repeats (20)",
+#'     "epochs", "maxit (100)",
+#'     "penalty", "decay (0)"
 #' ) %>% knitr::kable()
 #' ```
 #'

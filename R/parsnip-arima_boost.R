@@ -91,8 +91,8 @@
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "forecast::auto.arima", ~ "forecast::Arima",
 #'     "seasonal_period", "ts(frequency)", "ts(frequency)",
-#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p, max.d, max.q", "order = c(p,d,q)",
-#'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P, max.D, max.Q", "seasonal = c(P,D,Q)"
+#'     "non_seasonal_ar, non_seasonal_differences, non_seasonal_ma", "max.p(5), max.d(2), max.q(5)", "order = c(p(0), d(0), q(0))",
+#'     "seasonal_ar, seasonal_differences, seasonal_ma", "max.P(2), max.D(1), max.Q(2)", "seasonal = c(P(0), D(0), Q(0))"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -102,13 +102,14 @@
 #' # parsnip::convert_args("arima_boost")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "xgboost::xgb.train",
-#'     "tree_depth", "max_depth",
-#'     "trees", "nrounds",
-#'     "learn_rate", "eta",
-#'     "mtry", "colsample_bytree",
-#'     "min_n", "min_child_weight",
-#'     "loss_reduction", "gamma",
-#'     "sample_size", "subsample"
+#'     "tree_depth", "max_depth (6)",
+#'     "trees", "nrounds (15)",
+#'     "learn_rate", "eta (0.3)",
+#'     "mtry", "colsample_bytree (1)",
+#'     "min_n", "min_child_weight (1)",
+#'     "loss_reduction", "gamma (0)",
+#'     "sample_size", "subsample (1)",
+#'     "stop_iter", "early_stop"
 #' ) %>% knitr::kable()
 #' ```
 #'

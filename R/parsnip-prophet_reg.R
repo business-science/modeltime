@@ -79,12 +79,18 @@
 #' ```{r echo = FALSE}
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "prophet",
-#'     "growth", "growth",
-#'     "changepoint_num", "n.changepoints",
-#'     "season", "seasonality.mode",
-#'     "prior_scale_changepoints", "changepoint.prior.scale",
-#'     "prior_scale_seasonality", "seasonality.prior.scale",
-#'     "prior_scale_holidays", "holidays.prior.scale"
+#'     "growth", "growth ('linear')",
+#'     "changepoint_num", "n.changepoints (25)",
+#'     "changepoint_range", "changepoints.range (0.8)",
+#'     "seasonality_yearly", "yearly.seasonality ('auto')",
+#'     "seasonality_weekly", "weekly.seasonality ('auto')",
+#'     "seasonality_daily", "daily.seasonality ('auto')",
+#'     "season", "seasonality.mode ('additive')",
+#'     "prior_scale_changepoints", "changepoint.prior.scale (0.05)",
+#'     "prior_scale_seasonality", "seasonality.prior.scale (10)",
+#'     "prior_scale_holidays", "holidays.prior.scale (10)",
+#'     "logistic_cap", "df$cap (NULL)",
+#'     "logistic_floor", "df$floor (NULL)"
 #' ) %>% knitr::kable()
 #' ```
 #'

@@ -141,20 +141,21 @@ names in each engine:
 Model 1: ARIMA:\tabular{lll}{
    modeltime \tab forecast::auto.arima \tab forecast::Arima \cr
    seasonal_period \tab ts(frequency) \tab ts(frequency) \cr
-   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p, max.d, max.q \tab order = c(p,d,q) \cr
-   seasonal_ar, seasonal_differences, seasonal_ma \tab max.P, max.D, max.Q \tab seasonal = c(P,D,Q) \cr
+   non_seasonal_ar, non_seasonal_differences, non_seasonal_ma \tab max.p(5), max.d(2), max.q(5) \tab order = c(p(0), d(0), q(0)) \cr
+   seasonal_ar, seasonal_differences, seasonal_ma \tab max.P(2), max.D(1), max.Q(2) \tab seasonal = c(P(0), D(0), Q(0)) \cr
 }
 
 
 Model 2: XGBoost:\tabular{ll}{
    modeltime \tab xgboost::xgb.train \cr
-   tree_depth \tab max_depth \cr
-   trees \tab nrounds \cr
-   learn_rate \tab eta \cr
-   mtry \tab colsample_bytree \cr
-   min_n \tab min_child_weight \cr
-   loss_reduction \tab gamma \cr
-   sample_size \tab subsample \cr
+   tree_depth \tab max_depth (6) \cr
+   trees \tab nrounds (15) \cr
+   learn_rate \tab eta (0.3) \cr
+   mtry \tab colsample_bytree (1) \cr
+   min_n \tab min_child_weight (1) \cr
+   loss_reduction \tab gamma (0) \cr
+   sample_size \tab subsample (1) \cr
+   stop_iter \tab early_stop \cr
 }
 
 

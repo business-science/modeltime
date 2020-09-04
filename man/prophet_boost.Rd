@@ -161,24 +161,31 @@ names in each engine:
 
 Model 1: PROPHET:\tabular{ll}{
    modeltime \tab prophet \cr
-   growth \tab growth \cr
-   changepoint_num \tab n.changepoints \cr
-   season \tab seasonality.mode \cr
-   prior_scale_changepoints \tab changepoint.prior.scale \cr
-   prior_scale_seasonality \tab seasonality.prior.scale \cr
-   prior_scale_holidays \tab holidays.prior.scale \cr
+   growth \tab growth ('linear') \cr
+   changepoint_num \tab n.changepoints (25) \cr
+   changepoint_range \tab changepoints.range (0.8) \cr
+   seasonality_yearly \tab yearly.seasonality ('auto') \cr
+   seasonality_weekly \tab weekly.seasonality ('auto') \cr
+   seasonality_daily \tab daily.seasonality ('auto') \cr
+   season \tab seasonality.mode ('additive') \cr
+   prior_scale_changepoints \tab changepoint.prior.scale (0.05) \cr
+   prior_scale_seasonality \tab seasonality.prior.scale (10) \cr
+   prior_scale_holidays \tab holidays.prior.scale (10) \cr
+   logistic_cap \tab df$cap (NULL) \cr
+   logistic_floor \tab df$floor (NULL) \cr
 }
 
 
 Model 2: XGBoost:\tabular{ll}{
    modeltime \tab xgboost::xgb.train \cr
-   tree_depth \tab max_depth \cr
-   trees \tab nrounds \cr
-   learn_rate \tab eta \cr
-   mtry \tab colsample_bytree \cr
-   min_n \tab min_child_weight \cr
-   loss_reduction \tab gamma \cr
-   sample_size \tab subsample \cr
+   tree_depth \tab max_depth (6) \cr
+   trees \tab nrounds (15) \cr
+   learn_rate \tab eta (0.3) \cr
+   mtry \tab colsample_bytree (1) \cr
+   min_n \tab min_child_weight (1) \cr
+   loss_reduction \tab gamma (0) \cr
+   sample_size \tab subsample (1) \cr
+   stop_iter \tab early_stop \cr
 }
 
 
