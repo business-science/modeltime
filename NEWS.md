@@ -1,6 +1,11 @@
 
 # modeltime 0.1.0.9000 (Development Version)
 
+___New Workflow Helper Functions___
+
+- `pull_modeltime_model()` - A helper function making it easy to extract a model from a modeltime table 
+
+
 __Improvements__
 
 - Documentation - Algorithms now identify default parameter values in the  "Engine Details" Section in their respective documentation. E.g. `?prophet_boost`

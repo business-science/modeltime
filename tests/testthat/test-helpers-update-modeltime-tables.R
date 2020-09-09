@@ -1,4 +1,4 @@
-context("TEST UPDATE MODELTIME TABLES")
+context("TEST MODELTIME TABLE HELPERS")
 
 # SETUP ----
 
@@ -42,14 +42,31 @@ workflow_fit_arima_12 <- workflow() %>%
 
 # TESTS ----
 
-# * Test Automatic Descriptions ----
-
 model_tbl <- modeltime_table(
     model_fit_arima_1,
     model_fit_arima_12,
     workflow_fit_arima_1,
     workflow_fit_arima_12
 )
+
+# * Pull Modeltime Table Works ----
+
+test_that("Pull Model", {
+
+    mdl_1 <- model_tbl %>%
+        pull_modeltime_model(1)
+
+    testthat::expect_s3_class(mdl_1, "model_fit")
+
+    expect_error({
+        "Hi" %>%
+            pull_modeltime_model(1)
+    })
+
+})
+
+
+# * Test Automatic Descriptions ----
 
 test_that("1 - Description Updates, Automatic", {
 
@@ -102,5 +119,6 @@ test_that("Description Updates, Post Refit", {
     expect_equal(refit_tbl$.model_desc, expected)
 
 })
+
 
 
