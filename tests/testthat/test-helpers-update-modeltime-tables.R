@@ -49,18 +49,18 @@ model_tbl <- modeltime_table(
     workflow_fit_arima_12
 )
 
-# * Pull Modeltime Table Works ----
+# * Pluck Modeltime Table Works ----
 
-test_that("Pull Model", {
+test_that("Pluck Model", {
 
     mdl_1 <- model_tbl %>%
-        pull_modeltime_model(1)
+        pluck_modeltime_model(1)
 
     testthat::expect_s3_class(mdl_1, "model_fit")
 
     expect_error({
         "Hi" %>%
-            pull_modeltime_model(1)
+            pluck_modeltime_model(1)
     })
 
 })

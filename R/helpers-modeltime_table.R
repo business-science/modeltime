@@ -119,12 +119,12 @@ update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_
 #' @param .model_id A numeric value matching the .model_id that you want to update
 #'
 #' @export
-pull_modeltime_model <- function(object, .model_id) {
-    UseMethod("pull_modeltime_model", object)
+pluck_modeltime_model <- function(object, .model_id) {
+    UseMethod("pluck_modeltime_model", object)
 }
 
 #' @export
-pull_modeltime_model.mdl_time_tbl <- function(object, .model_id) {
+pluck_modeltime_model.mdl_time_tbl <- function(object, .model_id) {
 
     .id <- .model_id
 
