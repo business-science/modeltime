@@ -1,5 +1,8 @@
 # MODELTIME TALBE HELPERS ----
 
+
+# COMBINING MODELTIME TABLES -----
+
 #' Combine multiple Modeltime Tables into a single Modeltime Table
 #'
 #' @param ... Multiple Modeltime Tables (class `mdl_time_tbl`)
@@ -91,6 +94,9 @@ combine_modeltime_tables <- function(...) {
 
 }
 
+
+# UPDATE MODELTIME DESCRIPTION ----
+
 #' Update the model description by model id in a Modeltime Table
 #'
 #' @param object A Modeltime Table
@@ -113,17 +119,25 @@ update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_
 
 
 
+# PULL / PLUCK MODELTIME MODEL ----
+
 #' Extract model by model id in a Modeltime Table
+#'
+#' The `pull_modeltime_model()` and `pluck_modeltime_model()` functions are synonymns.
 #'
 #' @param object A Modeltime Table
 #' @param .model_id A numeric value matching the .model_id that you want to update
 #'
+#' @name pluck_modeltime_model
+
 #' @export
+#' @rdname pluck_modeltime_model
 pluck_modeltime_model <- function(object, .model_id) {
     UseMethod("pluck_modeltime_model", object)
 }
 
 #' @export
+#' @rdname pluck_modeltime_model
 pluck_modeltime_model.mdl_time_tbl <- function(object, .model_id) {
 
     .id <- .model_id
@@ -132,4 +146,8 @@ pluck_modeltime_model.mdl_time_tbl <- function(object, .model_id) {
         dplyr::filter(.model_id == .id) %>%
         purrr::pluck(".model", 1)
 }
+
+#' @export
+#' @rdname pluck_modeltime_model
+pull_modeltime_model <- pluck_modeltime_model
 

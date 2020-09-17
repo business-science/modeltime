@@ -2,9 +2,15 @@
 % Please edit documentation in R/helpers-modeltime_table.R
 \name{pluck_modeltime_model}
 \alias{pluck_modeltime_model}
+\alias{pluck_modeltime_model.mdl_time_tbl}
+\alias{pull_modeltime_model}
 \title{Extract model by model id in a Modeltime Table}
 \usage{
 pluck_modeltime_model(object, .model_id)
+
+\method{pluck_modeltime_model}{mdl_time_tbl}(object, .model_id)
+
+pull_modeltime_model(object, .model_id)
 }
 \arguments{
 \item{object}{A Modeltime Table}
@@ -12,5 +18,5 @@ pluck_modeltime_model(object, .model_id)
 \item{.model_id}{A numeric value matching the .model_id that you want to update}
 }
 \description{
-Extract model by model id in a Modeltime Table
+The \code{pull_modeltime_model()} and \code{pluck_modeltime_model()} functions are synonymns.
 }
