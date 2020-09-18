@@ -84,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -169,6 +169,9 @@
   <span class='kw'>changepoint.prior.scale</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>seasonality.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>holidays.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>regressors.prior.scale</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>regressors.standardize</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>regressors.mode</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>logistic_cap</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>logistic_floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
@@ -239,6 +242,24 @@ individual seasonalities using add_seasonality.</p></td>
       <th>holidays.prior.scale</th>
       <td><p>Parameter modulating the strength of the holiday
 components model, unless overridden in the holidays input.</p></td>
+    </tr>
+    <tr>
+      <th>regressors.prior.scale</th>
+      <td><p>Float scale for the normal prior.
+Default is 10,000.
+Gets passed to <code><a href='https://rdrr.io/pkg/prophet/man/add_regressor.html'>prophet::add_regressor(prior.scale)</a></code></p></td>
+    </tr>
+    <tr>
+      <th>regressors.standardize</th>
+      <td><p>Bool, specify whether this regressor will be
+standardized prior to fitting.
+Can be 'auto' (standardize if not binary), True, or False.
+Gets passed to <code><a href='https://rdrr.io/pkg/prophet/man/add_regressor.html'>prophet::add_regressor(standardize)</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>regressors.mode</th>
+      <td><p>Optional, 'additive' or 'multiplicative'.
+Defaults to <code>seasonality.mode</code>.</p></td>
     </tr>
     <tr>
       <th>logistic_cap</th>

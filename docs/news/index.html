@@ -83,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -150,6 +150,37 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modeltime-0109000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0.9000">
+<a href="#modeltime-0109000-development-version" class="anchor"></a>modeltime 0.1.0.9000 (Development Version)<small> Unreleased </small>
+</h1>
+<p><strong><em>New Workflow Helper Functions</em></strong></p>
+<ul>
+<li>
+<code><a href="../reference/pluck_modeltime_model.html">pluck_modeltime_model()</a></code> &amp; <code><a href="../reference/pluck_modeltime_model.html">pull_modeltime_model()</a></code> - A helper function making it easy to extract a model from a modeltime table</li>
+</ul>
+<p><strong>Improvements</strong></p>
+<ul>
+<li>Documentation - Algorithms now identify default parameter values in the “Engine Details” Section in their respective documentation. E.g. <code><a href="../reference/prophet_boost.html">?prophet_boost</a></code>
+</li>
+<li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code>set_engine()</code> using the following parameters:
+<ul>
+<li>
+<code>regressors.mode</code> - Set to <code>seasonality.mode</code> by default.</li>
+<li>
+<code>regressors.prior.scale</code> - Set to 10,000 by default.</li>
+<li>
+<code>regressors.standardize</code> - Set to “auto” by default.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Bug Fix</strong></p>
+<ul>
+<li>
+<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> fix issue with “ACTUAL” data being shown at bottom of legend list. Should be first item.</li>
+</ul>
+</div>
     <div id="modeltime-010" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.0">
 <a href="#modeltime-010" class="anchor"></a>modeltime 0.1.0<small> 2020-09-02 </small>

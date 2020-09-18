@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bridge prediction Function for ARIMA-XGBoost Models — arima_xgboost_predict_impl • modeltime</title>
+<title>Extract model by model id in a Modeltime Table — pluck_modeltime_model • modeltime</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Bridge prediction Function for ARIMA-XGBoost Models — arima_xgboost_predict_impl" />
-<meta property="og:description" content="Bridge prediction Function for ARIMA-XGBoost Models" />
+<meta property="og:title" content="Extract model by model id in a Modeltime Table — pluck_modeltime_model" />
+<meta property="og:description" content="The pull_modeltime_model() and pluck_modeltime_model() functions are synonymns." />
 
 
 
@@ -147,31 +147,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bridge prediction Function for ARIMA-XGBoost Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-arima_boost.R'><code>R/parsnip-arima_boost.R</code></a></small>
-    <div class="hidden name"><code>arima_xgboost_predict_impl.Rd</code></div>
+    <h1>Extract model by model id in a Modeltime Table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/helpers-modeltime_table.R'><code>R/helpers-modeltime_table.R</code></a></small>
+    <div class="hidden name"><code>pluck_modeltime_model.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Bridge prediction Function for ARIMA-XGBoost Models</p>
+    <p>The <code>pull_modeltime_model()</code> and <code>pluck_modeltime_model()</code> functions are synonymns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>arima_xgboost_predict_impl</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>pluck_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>.model_id</span>)
+
+<span class='co'># S3 method for mdl_time_tbl</span>
+<span class='fu'>pluck_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>.model_id</span>)
+
+<span class='fu'>pull_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>.model_id</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class <code>model_fit</code></p></td>
+      <td><p>A Modeltime Table</p></td>
     </tr>
     <tr>
-      <th>new_data</th>
-      <td><p>A rectangular data object, such as a data frame.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to <code>predict.xgb.Booster()</code></p></td>
+      <th>.model_id</th>
+      <td><p>A numeric value matching the .model_id that you want to update</p></td>
     </tr>
     </table>
 

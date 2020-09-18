@@ -86,7 +86,7 @@ different packages. Currently the only package is prophet." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -352,25 +352,32 @@ in lieu of recreating the object from scratch.</p>
 names in each engine:</p>
 <p>Model 1: PROPHET:</p><table class='table'>
 <tr><td>modeltime</td><td>prophet</td></tr>
-<tr><td>growth</td><td>growth</td></tr>
-<tr><td>changepoint_num</td><td>n.changepoints</td></tr>
-<tr><td>season</td><td>seasonality.mode</td></tr>
-<tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale</td></tr>
-<tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale</td></tr>
-<tr><td>prior_scale_holidays</td><td>holidays.prior.scale</td></tr>
+<tr><td>growth</td><td>growth ('linear')</td></tr>
+<tr><td>changepoint_num</td><td>n.changepoints (25)</td></tr>
+<tr><td>changepoint_range</td><td>changepoints.range (0.8)</td></tr>
+<tr><td>seasonality_yearly</td><td>yearly.seasonality ('auto')</td></tr>
+<tr><td>seasonality_weekly</td><td>weekly.seasonality ('auto')</td></tr>
+<tr><td>seasonality_daily</td><td>daily.seasonality ('auto')</td></tr>
+<tr><td>season</td><td>seasonality.mode ('additive')</td></tr>
+<tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale (0.05)</td></tr>
+<tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale (10)</td></tr>
+<tr><td>prior_scale_holidays</td><td>holidays.prior.scale (10)</td></tr>
+<tr><td>logistic_cap</td><td>df$cap (NULL)</td></tr>
+<tr><td>logistic_floor</td><td>df$floor (NULL)</td></tr>
 </table>
 
 
 
 <p>Model 2: XGBoost:</p><table class='table'>
 <tr><td>modeltime</td><td>xgboost::xgb.train</td></tr>
-<tr><td>tree_depth</td><td>max_depth</td></tr>
-<tr><td>trees</td><td>nrounds</td></tr>
-<tr><td>learn_rate</td><td>eta</td></tr>
-<tr><td>mtry</td><td>colsample_bytree</td></tr>
-<tr><td>min_n</td><td>min_child_weight</td></tr>
-<tr><td>loss_reduction</td><td>gamma</td></tr>
-<tr><td>sample_size</td><td>subsample</td></tr>
+<tr><td>tree_depth</td><td>max_depth (6)</td></tr>
+<tr><td>trees</td><td>nrounds (15)</td></tr>
+<tr><td>learn_rate</td><td>eta (0.3)</td></tr>
+<tr><td>mtry</td><td>colsample_bytree (1)</td></tr>
+<tr><td>min_n</td><td>min_child_weight (1)</td></tr>
+<tr><td>loss_reduction</td><td>gamma (0)</td></tr>
+<tr><td>sample_size</td><td>subsample (1)</td></tr>
+<tr><td>stop_iter</td><td>early_stop</td></tr>
 </table>
 
 
