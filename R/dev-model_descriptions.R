@@ -59,14 +59,14 @@ get_model_description.model_fit <- function(object, indicate_training = FALSE, u
         }
     }
 
+    if (indicate_training) {
+        desc <- stringr::str_c(desc, " (Trained)")
+    }
+
     if (upper_case) {
         desc <- toupper(desc)
     } else {
         desc <- tolower(desc)
-    }
-
-    if (indicate_training) {
-        desc <- stringr::str_c(desc, " (Trained)")
     }
 
     return(desc)
@@ -85,14 +85,14 @@ get_model_description.model_spec <- function(object, indicate_training = FALSE, 
         desc <- class(spec)[1]
     }
 
+    if (indicate_training) {
+        desc <- stringr::str_c(desc, " (Not Trained)")
+    }
+
     if (upper_case) {
         desc <- toupper(desc)
     } else {
         desc <- tolower(desc)
-    }
-
-    if (indicate_training) {
-        desc <- stringr::str_c(desc, " (Not Trained)")
     }
 
     return(desc)
@@ -133,12 +133,6 @@ get_model_description.workflow <- function(object, indicate_training = FALSE, up
         }
     }
 
-    if (upper_case) {
-        desc <- toupper(desc)
-    } else {
-        desc <- tolower(desc)
-    }
-
     if (indicate_training) {
 
         if (x$trained) {
@@ -147,6 +141,12 @@ get_model_description.workflow <- function(object, indicate_training = FALSE, up
             desc <- stringr::str_c(desc, " (Not Trained)")
         }
 
+    }
+
+    if (upper_case) {
+        desc <- toupper(desc)
+    } else {
+        desc <- tolower(desc)
     }
 
     return(desc)

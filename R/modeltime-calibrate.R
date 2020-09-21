@@ -269,7 +269,7 @@ calc_residuals <- function(object, test_data = NULL, ...) {
                 mdl_time_forecast(
                     new_data      = test_data,
                     actual_data   = test_data,
-                    conf_interval = NULL,
+                    # conf_interval = NULL,
                     ...
                 ) %>%
                 mdl_time_forecast_to_residuals(

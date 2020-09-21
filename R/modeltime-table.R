@@ -70,7 +70,7 @@ modeltime_table <- function(...) {
         tibble::rowid_to_column(var = ".model_id")
 
     # CHECKS
-    validate_model_classes(ret, accept_classes = c("model_fit", "workflow"))
+    validate_model_classes(ret, accept_classes = c("model_fit", "workflow", "mdl_time_ensemble"))
     validate_models_are_trained(ret)
 
     # CREATE MODELTIME OBJECT

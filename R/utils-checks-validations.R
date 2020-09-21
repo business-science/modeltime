@@ -256,6 +256,10 @@ is_trained <- function(x) {
         trained <- x$trained
     }
 
+    if (inherits(x, "mdl_time_ensemble")) {
+        trained <- TRUE
+    }
+
     return(trained)
 }
 
