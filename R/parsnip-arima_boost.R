@@ -1,3 +1,5 @@
+# ARIMA BOOST ----
+
 #' General Interface for "Boosted" ARIMA Regression Models
 #'
 #' `arima_boost()` is a way to generate a _specification_ of a time series model
