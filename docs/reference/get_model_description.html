@@ -8,6 +8,13 @@
 
 <title>Get model descriptions for parsnip, workflows &amp; modeltime objects — get_model_description • modeltime</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -43,6 +50,7 @@
 
 <meta property="og:title" content="Get model descriptions for parsnip, workflows &amp; modeltime objects — get_model_description" />
 <meta property="og:description" content="Get model descriptions for parsnip, workflows &amp;amp; modeltime objects" />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -187,14 +195,14 @@
 <span class='no'>arima_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='st'>"auto_arima"</span>)
 
-<span class='fu'>get_model_description</span>(<span class='no'>arima_spec</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "AUTO_ARIMA (Not Trained)"</div><div class='input'>
+<span class='fu'>get_model_description</span>(<span class='no'>arima_spec</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "AUTO_ARIMA (NOT TRAINED)"</div><div class='input'>
 <span class='co'># Fitted Model ----</span>
 
 <span class='no'>m750</span> <span class='kw'>&lt;-</span> <span class='no'>m4_monthly</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>id</span> <span class='kw'>==</span> <span class='st'>"M750"</span>)
 
 <span class='no'>arima_fit</span> <span class='kw'>&lt;-</span> <span class='no'>arima_spec</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>m750</span>)</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
-<span class='fu'>get_model_description</span>(<span class='no'>arima_fit</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "ARIMA(0,1,1)(0,1,1)[12] (Trained)"</div><div class='input'>
+<span class='fu'>get_model_description</span>(<span class='no'>arima_fit</span>, <span class='kw'>indicate_training</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "ARIMA(0,1,1)(0,1,1)[12] (TRAINED)"</div><div class='input'>
 
 </div></pre>
   </div>
