@@ -1,6 +1,10 @@
 
 # modeltime 0.1.0.9000 (Development Version)
 
+__Ensembles__
+
+- Integrates `modeltime.ensemble`, a new R package designed for forecasting with ensemble models. 
+
 ___New Workflow Helper Functions___
 
 - `pluck_modeltime_model()` & `pull_modeltime_model()` - A helper function making it easy to extract a model from a modeltime table 
