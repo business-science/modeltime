@@ -220,41 +220,10 @@ mdl_time_refit.model_fit <- function(object, data, control = NULL, ...) {
 
     model_spec <- object$spec
 
-    # Deterimine Interface
-    fit_interface <- object$spec$method$fit$interface
+    form <- object %>% pull_parsnip_preprocessor()
 
-    if (fit_interface == "formula") {
-
-        # Formula interface includes preprocessing internally to the object's fit method
-        # - Need to extract formula using find_formula()
-
-        form <- object$fit %>% find_formula()
-        if (is.null(form)) {
-            rlang::abort("Could not 'refit()' model. The model formula could not be located. Consider using a 'workflow()' instead to ensure model refitting is possible.")
-        }
-
-        ret <- model_spec %>%
-            parsnip::fit(form, data = data, control = control, ...)
-
-    } else {
-
-        # fit_interface is either "data.frame" or "matrix"
-
-        # check for formula in object$peproc$terms
-        if ("terms" %in% names(object$preproc)) {
-            if (inherits(object$preproc$terms, "formula")) {
-
-                form <- stats::formula(object$preproc$terms)
-
-                ret <- model_spec %>%
-                    fit(form, data = data)
-            }
-        } else {
-            rlang::abort("Could not 'refit()' model. The model formula could not be located. Consider using a 'workflow()' instead to ensure model refitting is possible.")
-
-        }
-
-    }
+    ret <- model_spec %>%
+        parsnip::fit(form, data = data, control = control, ...)
 
     return(ret)
 
