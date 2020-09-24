@@ -1,5 +1,6 @@
 # PARSNIP HELPERS ----
 
+# For Formula Objects
 find_formula <- function(object) {
 
     form <- NULL

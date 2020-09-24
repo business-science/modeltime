@@ -1,3 +1,5 @@
+# MODELTIME REFIT ----
+
 #' Refit one or more trained models to new data
 #'
 #' This is a wrapper for `fit()` that takes a
@@ -88,14 +90,6 @@ NULL
 modeltime_refit <- function(object, data, control = NULL, ...) {
     UseMethod("modeltime_refit", object)
 }
-
-# #' @export
-# #' @rdname modeltime_refit
-# modeltime_refit_xy <- function(object, x, y, control = NULL, ...) {
-#     UseMethod("modeltime_refit_xy", object)
-# }
-
-# MODELTIME ----
 
 #' @export
 modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
@@ -268,30 +262,30 @@ mdl_time_refit.model_fit <- function(object, data, control = NULL, ...) {
 
 
 
-#' # REFIT XY ----
-#'
-#' #' @export
-#' mdl_time_refit_xy.workflow <- function(object, x, y, control = NULL, ...) {
-#'     rlang::abort("Using 'mdl_time_refit_xy()' on a workflow object is not allowed. Try using 'modeltime_refit()'.")
-#' }
-#'
-#' #' @export
-#' mdl_time_refit_xy.model_fit <- function(object, x, y, control = NULL, ...) {
-#'
-#'     if (is.null(control)) {
-#'         control <- parsnip::control_parsnip()
-#'     }
-#'
-#'     model_spec <- object$spec
-#'
-#'     ret <- model_spec %>%
-#'         fit_xy(x = x, y = y, control = control, ...)
-#'
-#'     return(ret)
-#'
-#' }
-#'
-#' #' @export
-#' mdl_time_refit_xy.default <- function(object, x, y, control = NULL, ...) {
-#'     rlang::abort(paste0("No method for class '", class(object)[1], "'."))
-#' }
+# # REFIT XY ----
+#
+# #' @export
+# mdl_time_refit_xy.workflow <- function(object, x, y, control = NULL, ...) {
+#     rlang::abort("Using 'mdl_time_refit_xy()' on a workflow object is not allowed. Try using 'modeltime_refit()'.")
+# }
+#
+# #' @export
+# mdl_time_refit_xy.model_fit <- function(object, x, y, control = NULL, ...) {
+#
+#     if (is.null(control)) {
+#         control <- parsnip::control_parsnip()
+#     }
+#
+#     model_spec <- object$spec
+#
+#     ret <- model_spec %>%
+#         fit_xy(x = x, y = y, control = control, ...)
+#
+#     return(ret)
+#
+# }
+#
+# #' @export
+# mdl_time_refit_xy.default <- function(object, x, y, control = NULL, ...) {
+#     rlang::abort(paste0("No method for class '", class(object)[1], "'."))
+# }
