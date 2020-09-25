@@ -16,3 +16,9 @@ update_model_description(object, .model_id, .new_model_desc)
 \description{
 Update the model description by model id in a Modeltime Table
 }
+\examples{
+
+m750_models \%>\%
+    update_model_description(2, "PROPHET - No Regressors")
+
+}

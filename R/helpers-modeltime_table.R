@@ -94,6 +94,42 @@ combine_modeltime_tables <- function(...) {
 
 }
 
+# ADD MODEL -----
+
+#' Add a Model into a Modeltime Table
+#'
+#' @param object Multiple Modeltime Tables (class `mdl_time_tbl`)
+#' @param model A model of class `model_fit` or a fitted `workflow` object
+#' @param location Where to add the model. Either "top" or "bottom". Default: bottom.
+#'
+#' @examples
+#' library(modeltime)
+#' library(tidymodels)
+#'
+#'
+#' model_fit_ets <- exp_smoothing() %>%
+#'     set_engine("ets") %>%
+#'     fit(value ~ date, training(m750_splits))
+#'
+#' m750_models %>%
+#'     add_modeltime_model(model_fit_ets)
+#'
+#' @export
+add_modeltime_model <- function(object, model, location = "bottom") {
+
+    object_1 <- object
+    object_2 <- modeltime_table(model)
+
+    if (location == "bottom") {
+        ret <- combine_modeltime_tables(object_1, object_2)
+    } else {
+        ret <- combine_modeltime_tables(object_2, object_1)
+    }
+
+    return(ret)
+
+}
+
 
 # UPDATE MODELTIME DESCRIPTION ----
 
@@ -102,6 +138,11 @@ combine_modeltime_tables <- function(...) {
 #' @param object A Modeltime Table
 #' @param .model_id A numeric value matching the .model_id that you want to update
 #' @param .new_model_desc Text describing the new model description
+#'
+#' @examples
+#'
+#' m750_models %>%
+#'     update_model_description(2, "PROPHET - No Regressors")
 #'
 #' @export
 update_model_description <- function(object, .model_id, .new_model_desc) {
@@ -127,6 +168,11 @@ update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_
 #'
 #' @param object A Modeltime Table
 #' @param .model_id A numeric value matching the .model_id that you want to update
+#'
+#' @examples
+#'
+#' m750_models %>%
+#'     pluck_modeltime_model(2)
 #'
 #' @name pluck_modeltime_model
 

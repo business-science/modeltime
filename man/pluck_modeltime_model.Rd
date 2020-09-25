@@ -20,3 +20,9 @@ pull_modeltime_model(object, .model_id)
 \description{
 The \code{pull_modeltime_model()} and \code{pluck_modeltime_model()} functions are synonymns.
 }
+\examples{
+
+m750_models \%>\%
+    pluck_modeltime_model(2)
+
+}

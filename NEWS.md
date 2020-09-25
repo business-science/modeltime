@@ -7,6 +7,7 @@ __Ensembles__
 
 ___New Workflow Helper Functions___
 
+- `add_modeltime_model()` - A helper function making it easy to add a fitted parsnip or workflow object to a modeltime table
 - `pluck_modeltime_model()` & `pull_modeltime_model()` - A helper function making it easy to extract a model from a modeltime table 
 
 
