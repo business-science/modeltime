@@ -17,6 +17,15 @@ __Improvements__
     - `regressors.mode` - Set to `seasonality.mode` by default.
     - `regressors.prior.scale` - Set to 10,000 by default.
     - `regressors.standardize` - Set to "auto" by default. 
+    
+__Data Sets__
+
+Modeltime now includes 4 new data sets:
+
+- `m750` - M750 Time Series Dataset
+- `m750_models` - 3 Modeltime Models made on the M750 Dataset
+- `m750_splits` - An `rsplit` object containing Train/test splits of the M750 data
+- `m750_training_resamples` - A Time Series Cross Validation `time_series_cv` object made from the `training(m750_splits)`
 
 __Bug Fix__
 

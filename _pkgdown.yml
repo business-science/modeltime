@@ -88,6 +88,10 @@ reference:
     - parse_index_from_data
     - get_model_description
     - get_arima_description
+  - title: Data
+    contents:
+    - starts_with("m750")
+    - starts_with("arima_workflow_tuned")
 
 repo:
   url:
