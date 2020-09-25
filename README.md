@@ -14,6 +14,28 @@ status](https://travis-ci.org/business-science/modeltime.svg?branch=master)](htt
 
 The time series forecasting package for the `tidymodels` ecosystem.
 
+## Tutorials
+
+  - [**Getting Started with
+    Modeltime**](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html):
+    A walkthrough of the 6-Step Process for using `modeltime` to
+    forecast
+
+  - [**Modeltime
+    Documentation**](https://business-science.github.io/modeltime/):
+    Learn how to **use** `modeltime`, **find** *Modeltime Models*, and
+    **extend** `modeltime` so you can use new algorithms inside the
+    *Modeltime Workflow*.
+
+## Installation
+
+Install the development version:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("business-science/modeltime")
+```
+
 ## Features & Benefits
 
 #### Modeltime unlocks time series models and machine learning in one framework
@@ -51,28 +73,6 @@ A streamlined workflow for forecasting
 </div>
 
 <hr>
-
-## Tutorials
-
-  - [**Getting Started with
-    Modeltime**](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html):
-    A walkthrough of the 6-Step Process for using `modeltime` to
-    forecast
-
-  - [**Modeltime
-    Documentation**](https://business-science.github.io/modeltime/):
-    Learn how to **use** `modeltime`, **find** *Modeltime Models*, and
-    **extend** `modeltime` so you can use new algorithms inside the
-    *Modeltime Workflow*.
-
-## Installation
-
-Install the development version from with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("business-science/modeltime")
-```
 
 # Learning More
 

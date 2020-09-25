@@ -30,6 +30,23 @@ The time series forecasting package for the `tidymodels` ecosystem.
 
 
 
+## Tutorials
+
+- [__Getting Started with Modeltime__](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html): A walkthrough of the 6-Step Process for using `modeltime` to forecast
+
+- [__Modeltime Documentation__](https://business-science.github.io/modeltime/): Learn how to __use__ `modeltime`, __find__ _Modeltime Models_, and __extend__ `modeltime` so you can use new algorithms inside the _Modeltime Workflow_. 
+
+
+
+## Installation
+
+Install the development version:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("business-science/modeltime")
+```
+
 ## Features & Benefits
 
 
@@ -60,22 +77,7 @@ knitr::include_graphics("vignettes/modeltime_workflow.jpg")
 
 
 
-## Tutorials
 
-- [__Getting Started with Modeltime__](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html): A walkthrough of the 6-Step Process for using `modeltime` to forecast
-
-- [__Modeltime Documentation__](https://business-science.github.io/modeltime/): Learn how to __use__ `modeltime`, __find__ _Modeltime Models_, and __extend__ `modeltime` so you can use new algorithms inside the _Modeltime Workflow_. 
-
-
-
-## Installation
-
-Install the development version from with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("business-science/modeltime")
-```
 
 # Learning More
 
