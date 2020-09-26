@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Example ARIMA Tuning Results — arima_workflow_tuned • modeltime</title>
+<title>The Time Series Cross Validation Resamples the M750 Data (Training Set) — m750_training_resamples • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,9 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Example ARIMA Tuning Results — arima_workflow_tuned" />
-<meta property="og:description" content="These objects are the results of an analysis of the
-M750 data set, which came from the M4 Forecast Competition." />
+<meta property="og:title" content="The Time Series Cross Validation Resamples the M750 Data (Training Set) — m750_training_resamples" />
+<meta property="og:description" content="The Time Series Cross Validation Resamples the M750 Data (Training Set)" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -156,37 +155,48 @@ M750 data set, which came from the M4 Forecast Competition." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Example ARIMA Tuning Results</h1>
+    <h1>The Time Series Cross Validation Resamples the M750 Data (Training Set)</h1>
     <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>arima_workflow_tuned.Rd</code></div>
+    <div class="hidden name"><code>m750_training_resamples.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These objects are the results of an analysis of the
-M750 data set, which came from the M4 Forecast Competition.</p>
+    <p>The Time Series Cross Validation Resamples the M750 Data (Training Set)</p>
     </div>
 
-    <pre class="usage"><span class='no'>arima_workflow_tuned</span></pre>
+    <pre class="usage"><span class='no'>m750_training_resamples</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>tune_results</code> (inherits from <code>time_series_cv</code>, <code>rset</code>, <code>tbl_df</code>, <code>tbl</code>, <code>data.frame</code>) with 2 rows and 4 columns.</p>
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <p>An <code>time_series_cv</code> object with 6 slices of Time Series Cross Validation
+resamples made on the <code><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training(m750_splits)</a></code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is the output of <code>tune_grid()</code> for an ARIMA model created
-with <code><a href='arima_reg.html'>arima_reg()</a></code>.</p>
+    <p><div class="r"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
+<span class='no'>m750_training_resamples</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/time_series_cv.html'>time_series_cv</a></span>(
+    <span class='kw'>data</span>        <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>m750_splits</span>),
+    <span class='kw'>assess</span>      <span class='kw'>=</span> <span class='st'>"2 years"</span>,
+    <span class='kw'>skip</span>        <span class='kw'>=</span> <span class='st'>"2 years"</span>,
+    <span class='kw'>cumulative</span>  <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>slice_limit</span> <span class='kw'>=</span> <span class='fl'>6</span>
+)</pre><p></div></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>arima_workflow_tuned</span></div><div class='output co'>#&gt; <span class='warning'>Warning: This tuning result has notes. Example notes on model fitting include:</span>
-#&gt; <span class='warning'>model 17/30: Error in optim(init[mask], armafn, method = optim.method, hessian = TRUE, : non-finite finite-difference value [1]</span>
-#&gt; <span class='warning'>model  5/30: Error in optim(init[mask], armafn, method = optim.method, hessian = TRUE, : non-finite finite-difference value [4]</span>
-#&gt; <span class='warning'>model 17/30: Error in optim(init[mask], armafn, method = optim.method, hessian = TRUE, : non-finite finite-difference value [1]</span></div><div class='output co'>#&gt; # Tuning results
-#&gt; <span style='color: #555555;'># A tibble: 2 x 4</span><span>
-#&gt;   splits          id     .metrics           .notes          
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>          
-#&gt; </span><span style='color: #555555;'>1</span><span> </span><span style='color: #555555;'>&lt;split [72/24]&gt;</span><span> Slice1 </span><span style='color: #555555;'>&lt;tibble [174 × 9]&gt;</span><span> </span><span style='color: #555555;'>&lt;tibble [1 × 1]&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> </span><span style='color: #555555;'>&lt;split [72/24]&gt;</span><span> Slice2 </span><span style='color: #555555;'>&lt;tibble [168 × 9]&gt;</span><span> </span><span style='color: #555555;'>&lt;tibble [2 × 1]&gt;</span><span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rsample</span>)
+
+<span class='no'>m750_training_resamples</span></div><div class='output co'>#&gt; # Time Series Cross Validation Plan 
+#&gt; <span style='color: #555555;'># A tibble: 6 x 2</span><span>
+#&gt;   splits           id    
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #555555;'>1</span><span> </span><span style='color: #555555;'>&lt;split [258/24]&gt;</span><span> Slice1
+#&gt; </span><span style='color: #555555;'>2</span><span> </span><span style='color: #555555;'>&lt;split [234/24]&gt;</span><span> Slice2
+#&gt; </span><span style='color: #555555;'>3</span><span> </span><span style='color: #555555;'>&lt;split [210/24]&gt;</span><span> Slice3
+#&gt; </span><span style='color: #555555;'>4</span><span> </span><span style='color: #555555;'>&lt;split [186/24]&gt;</span><span> Slice4
+#&gt; </span><span style='color: #555555;'>5</span><span> </span><span style='color: #555555;'>&lt;split [162/24]&gt;</span><span> Slice5
+#&gt; </span><span style='color: #555555;'>6</span><span> </span><span style='color: #555555;'>&lt;split [138/24]&gt;</span><span> Slice6</div><div class='input'>
+
+
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

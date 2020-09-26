@@ -169,6 +169,8 @@
 <p><strong><em>New Workflow Helper Functions</em></strong></p>
 <ul>
 <li>
+<code><a href="../reference/add_modeltime_model.html">add_modeltime_model()</a></code> - A helper function making it easy to add a fitted parsnip or workflow object to a modeltime table</li>
+<li>
 <code><a href="../reference/pluck_modeltime_model.html">pluck_modeltime_model()</a></code> &amp; <code><a href="../reference/pluck_modeltime_model.html">pull_modeltime_model()</a></code> - A helper function making it easy to extract a model from a modeltime table</li>
 </ul>
 <p><strong>Improvements</strong></p>
@@ -185,6 +187,19 @@
 <li>
 <code>regressors.standardize</code> - Set to “auto” by default.</li>
 </ul>
+</li>
+</ul>
+<p><strong>Data Sets</strong></p>
+<p>Modeltime now includes 4 new data sets:</p>
+<ul>
+<li>
+<code>m750</code> - M750 Time Series Dataset</li>
+<li>
+<code>m750_models</code> - 3 Modeltime Models made on the M750 Dataset</li>
+<li>
+<code>m750_splits</code> - An <code>rsplit</code> object containing Train/test splits of the M750 data</li>
+<li>
+<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code>training(m750_splits)</code>
 </li>
 </ul>
 <p><strong>Bug Fix</strong></p>

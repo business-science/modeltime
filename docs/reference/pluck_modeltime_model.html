@@ -185,6 +185,39 @@
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>m750_models</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'>pluck_modeltime_model</span>(<span class='fl'>2</span>)</div><div class='output co'>#&gt; ══ Workflow [trained] ══════════════════════════════════════════════════════════════════════════════════
+#&gt; <span style='font-style: italic;'>Preprocessor:</span><span> Recipe
+#&gt; </span><span style='font-style: italic;'>Model:</span><span> prophet_reg()
+#&gt; 
+#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────────────────────────────
+#&gt; 6 Recipe Steps
+#&gt; 
+#&gt; ● step_timeseries_signature()
+#&gt; ● step_rm()
+#&gt; ● step_normalize()
+#&gt; ● step_dummy()
+#&gt; ● step_fourier()
+#&gt; ● step_rm()
+#&gt; 
+#&gt; ── Model ───────────────────────────────────────────────────────────────────────────────────────────────
+#&gt; PROPHET Model
+#&gt; - growth: 'linear'
+#&gt; - n.changepoints: 25
+#&gt; - changepoint.range: 0.8
+#&gt; - yearly.seasonality: 'auto'
+#&gt; - weekly.seasonality: 'auto'
+#&gt; - daily.seasonality: 'auto'
+#&gt; - seasonality.mode: 'additive'
+#&gt; - changepoint.prior.scale: 0.05
+#&gt; - seasonality.prior.scale: 10
+#&gt; - holidays.prior.scale: 10
+#&gt; - logistic_cap: NULL
+#&gt; - logistic_floor: NULL
+#&gt; - extra_regressors: 0</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
