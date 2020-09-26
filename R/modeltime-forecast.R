@@ -271,6 +271,11 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
             safe_conf_interval_map(data_calibration, conf_interval = conf_interval)
     }
 
+    # REMOVE ANY EXTRA-ACTUAL DATA ----
+    # - Happens when ensembling
+    ret <- ret %>%
+        dplyr::filter(.model_desc == "ACTUAL" | .key == "prediction")
+
     return(ret)
 }
 
