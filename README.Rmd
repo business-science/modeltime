@@ -40,11 +40,16 @@ The time series forecasting package for the `tidymodels` ecosystem.
 
 ## Installation
 
-Install the development version:
+Install the CRAN version:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("business-science/modeltime")
+install.packages("modeltime")
+```
+
+Or, install the development version:
+
+``` r
+remotes::install_github("business-science/modeltime")
 ```
 
 ## Features & Benefits
