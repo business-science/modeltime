@@ -8,9 +8,8 @@
 #'
 #' @param object A Modeltime Table
 #' @param data A `tibble` that contains data to retrain the model(s) using.
-#' @param control Either [control_parsnip()] or [control_workflow()] depending on the object.
-#'  If NULL, created automatically.
-#' @param ... Additional arguments passed to [fit()].
+#' @param control Under construction. Will be used to control refitting.
+#' @param ... Under construction. Additional arguments to control refitting.
 #'
 #'
 #' @return
@@ -87,12 +86,12 @@ NULL
 
 #' @export
 #' @rdname modeltime_refit
-modeltime_refit <- function(object, data, control = NULL, ...) {
+modeltime_refit <- function(object, data, ..., control = NULL) {
     UseMethod("modeltime_refit", object)
 }
 
 #' @export
-modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
+modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = NULL) {
 
     new_data <- data
     data     <- object # object is a Modeltime Table
@@ -102,7 +101,7 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
     model_desc_modeltime_old_vec <- object$.model %>% purrr::map_chr(get_model_description)
 
     # Safely refit
-    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NA, quiet = FALSE)
+    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
@@ -128,6 +127,12 @@ modeltime_refit.mdl_time_tbl <- function(object, data, control = NULL, ...) {
                 return(ret)
             })
         )
+
+    validate_models_are_not_null(ret)
+
+    # Safely refit
+    # safe_get_model_description <- purrr::safely(get_model_description, otherwise = "TODO", quiet = FALSE)
+
 
     # Get new Model Descriptions
     ret <- ret %>%
@@ -179,16 +184,12 @@ mdl_time_refit <- function(object, data, ..., control = NULL) {
 }
 
 #' @export
-mdl_time_refit.default <- function(object, data, control = NULL, ...) {
+mdl_time_refit.default <- function(object, data, ..., control = NULL) {
     glubort("No method for an object of class: {class(object)[1]}. .")
 }
 
 #' @export
 mdl_time_refit.workflow <- function(object, data, ..., control = NULL) {
-
-    if (is.null(control)) {
-        control <- workflows::control_workflow(control_parsnip = NULL)
-    }
 
     model_spec    <- object %>% workflows::pull_workflow_spec()
     model_preproc <- object %>% workflows::pull_workflow_preprocessor()
@@ -212,18 +213,14 @@ mdl_time_refit.workflow <- function(object, data, ..., control = NULL) {
 }
 
 #' @export
-mdl_time_refit.model_fit <- function(object, data, control = NULL, ...) {
-
-    if (is.null(control)) {
-        control <- parsnip::control_parsnip()
-    }
+mdl_time_refit.model_fit <- function(object, data, ...,  control = NULL) {
 
     model_spec <- object$spec
 
     form <- object %>% pull_parsnip_preprocessor()
 
     ret <- model_spec %>%
-        parsnip::fit(form, data = data, control = control, ...)
+        parsnip::fit(form, data = data)
 
     return(ret)
 

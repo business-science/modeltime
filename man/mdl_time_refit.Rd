@@ -11,10 +11,9 @@ mdl_time_refit(object, data, ..., control = NULL)
 
 \item{data}{A \code{tibble} that contains data to retrain the model(s) using.}
 
-\item{...}{Additional arguments passed to \code{\link[=fit]{fit()}}.}
+\item{...}{Under construction. Additional arguments to control refitting.}
 
-\item{control}{Either \code{\link[=control_parsnip]{control_parsnip()}} or \code{\link[=control_workflow]{control_workflow()}} depending on the object.
-If NULL, created automatically.}
+\item{control}{Under construction. Will be used to control refitting.}
 }
 \value{
 A tibble with forecast features

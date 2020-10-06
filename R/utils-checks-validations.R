@@ -48,6 +48,16 @@ check_models_are_trained <- function(data) {
 
 }
 
+check_models_are_not_null <- function(data) {
+
+    # Class Check
+    ret_1 <- data %>%
+        dplyr::mutate(fail_check = purrr::map_lgl(.model, .f = is.null))
+
+    return(ret_1)
+
+}
+
 check_non_bad_class_data <- function(data, bad_classes = c("character")) {
 
     # Bad Class Check
@@ -176,6 +186,29 @@ validate_models_are_trained <- function(data) {
             "All objects must be fitted workflow or parsnip models. The following are not:",
             "\n",
             "{bad_msg}"
+        )
+    }
+
+}
+
+validate_models_are_not_null <- function(data) {
+
+    result_tbl <- check_models_are_not_null(data) %>%
+        dplyr::filter(fail_check)
+
+    if (nrow(result_tbl) > 0) {
+        bad_models <- result_tbl$.model_id
+        bad_msg    <- glue::glue("- Model {bad_models}: Is NULL.")
+        bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
+
+        message("\nModel Failure Report: ")
+        print(data)
+        glubort(
+            "The following models had NULL errors <NULL>:",
+            "\n",
+            "{bad_msg}",
+            "\n",
+            "  Potential Solution: Make sure required modeling packages are loaded.\n"
         )
     }
 

@@ -4,17 +4,16 @@
 \alias{modeltime_refit}
 \title{Refit one or more trained models to new data}
 \usage{
-modeltime_refit(object, data, control = NULL, ...)
+modeltime_refit(object, data, ..., control = NULL)
 }
 \arguments{
 \item{object}{A Modeltime Table}
 
 \item{data}{A \code{tibble} that contains data to retrain the model(s) using.}
 
-\item{control}{Either \code{\link[=control_parsnip]{control_parsnip()}} or \code{\link[=control_workflow]{control_workflow()}} depending on the object.
-If NULL, created automatically.}
+\item{...}{Under construction. Additional arguments to control refitting.}
 
-\item{...}{Additional arguments passed to \code{\link[=fit]{fit()}}.}
+\item{control}{Under construction. Will be used to control refitting.}
 }
 \value{
 A Modeltime Table containing one or more re-trained models.
