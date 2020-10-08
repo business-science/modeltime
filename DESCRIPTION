@@ -21,7 +21,7 @@ Depends:
 Imports:
     StanHeaders,
     timetk (>= 2.1.0),
-    parsnip (>= 0.1.3),
+    parsnip (>= 0.1.3.9000),
     dials,
     yardstick,
     workflows (>= 0.1.3),
@@ -64,5 +64,5 @@ Suggests:
     rmarkdown,
     webshot
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
 VignetteBuilder: knitr
+Remotes: tidymodels/parsnip
