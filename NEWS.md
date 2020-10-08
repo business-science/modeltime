@@ -1,4 +1,4 @@
-# modeltime (development version)
+# modeltime 0.2.1
 
 __Ensembles__
 
