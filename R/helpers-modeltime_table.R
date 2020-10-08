@@ -103,9 +103,8 @@ combine_modeltime_tables <- function(...) {
 #' @param location Where to add the model. Either "top" or "bottom". Default: bottom.
 #'
 #' @examples
-#' library(modeltime)
+#' \donttest{
 #' library(tidymodels)
-#'
 #'
 #' model_fit_ets <- exp_smoothing() %>%
 #'     set_engine("ets") %>%
@@ -113,6 +112,7 @@ combine_modeltime_tables <- function(...) {
 #'
 #' m750_models %>%
 #'     add_modeltime_model(model_fit_ets)
+#' }
 #'
 #' @export
 add_modeltime_model <- function(object, model, location = "bottom") {

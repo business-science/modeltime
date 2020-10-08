@@ -17,9 +17,8 @@ add_modeltime_model(object, model, location = "bottom")
 Add a Model into a Modeltime Table
 }
 \examples{
-library(modeltime)
+\donttest{
 library(tidymodels)
-
 
 model_fit_ets <- exp_smoothing() \%>\%
     set_engine("ets") \%>\%
@@ -27,5 +26,6 @@ model_fit_ets <- exp_smoothing() \%>\%
 
 m750_models \%>\%
     add_modeltime_model(model_fit_ets)
+}
 
 }
