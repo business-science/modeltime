@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -164,23 +164,23 @@
     <p>Tuning Parameters for Prophet Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>growth</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"linear"</span>, <span class='st'>"logistic"</span>))
+    <pre class="usage"><span class='fu'>growth</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"linear"</span>, <span class='st'>"logistic"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>changepoint_num</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>50L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>changepoint_num</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>50L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>changepoint_range</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.6</span>, <span class='fl'>0.9</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>changepoint_range</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.6</span>, <span class='fl'>0.9</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>seasonality_yearly</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))
+<span class='fu'>seasonality_yearly</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>seasonality_weekly</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))
+<span class='fu'>seasonality_weekly</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>seasonality_daily</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>))
+<span class='fu'>seasonality_daily</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>prior_scale_changepoints</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fu'>log10_trans</span>())
+<span class='fu'>prior_scale_changepoints</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='fu'>log10_trans</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>prior_scale_seasonality</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fu'>log10_trans</span>())
+<span class='fu'>prior_scale_seasonality</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='fu'>log10_trans</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>prior_scale_holidays</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fu'>log10_trans</span>())</pre>
+<span class='fu'>prior_scale_holidays</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='fu'>log10_trans</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -231,15 +231,19 @@ which effectively weights lower values more heavily than larger values.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>growth</span>()</div><div class='output co'>#&gt; Growth Trend  (qualitative)
+<span class='fu'>growth</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Growth Trend  (qualitative)
 #&gt; 2 possible value include:
 #&gt; 'linear' and 'logistic' </div><div class='input'>
-<span class='fu'>changepoint_num</span>()</div><div class='output co'>#&gt; Number of Possible Trend Changepoints (quantitative)
+<span class='fu'>changepoint_num</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Number of Possible Trend Changepoints (quantitative)
 #&gt; Range: [0, 50]</div><div class='input'>
-<span class='fu'><a href='exp_smoothing_params.html'>season</a></span>()</div><div class='output co'>#&gt; Season Term  (qualitative)
+<span class='fu'><a href='exp_smoothing_params.html'>season</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Season Term  (qualitative)
 #&gt; 3 possible value include:
 #&gt; 'additive', 'multiplicative' and 'none' </div><div class='input'>
-<span class='fu'>prior_scale_changepoints</span>()</div><div class='output co'>#&gt; Prior Scale Changepoints (quantitative)
+<span class='fu'>prior_scale_changepoints</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Prior Scale Changepoints (quantitative)
 #&gt; Transformer:  log-10 
 #&gt; Range (transformed scale): [-3, 2]</div><div class='input'>
 </div></pre>
@@ -258,7 +262,7 @@ which effectively weights lower values more heavily than larger values.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

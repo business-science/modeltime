@@ -93,7 +93,7 @@ by computing predictions and residuals from out of sample data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ by computing predictions and residuals from out of sample data." />
 by computing predictions and residuals from out of sample data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>modeltime_calibrate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>modeltime_calibrate</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,7 +176,7 @@ by computing predictions and residuals from out of sample data.</p>
       <td><p>A fitted model object that is either:</p><ol>
 <li><p>A modeltime table that has been created using <code><a href='modeltime_table.html'>modeltime_table()</a></code></p></li>
 <li><p>A workflow that has been fit by <code>fit.workflow()</code> or</p></li>
-<li><p>A parsnip model that has been fit using <code>fit.model_spec()</code></p></li>
+<li><p>A parsnip model that has been fit using <code><a href='https://parsnip.tidymodels.org/reference/fit.html'>fit.model_spec()</a></code></p></li>
 </ol></td>
     </tr>
     <tr>
@@ -217,50 +217,53 @@ calculated from <code>new_data</code> (Test Data)</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>parsnip</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rsample</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://parsnip.tidymodels.org'>parsnip</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
 
 <span class='co'># Data</span>
-<span class='no'>m750</span> <span class='kw'>&lt;-</span> <span class='no'>m4_monthly</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>id</span> <span class='kw'>==</span> <span class='st'>"M750"</span>)
+<span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 
 <span class='co'># Split Data 80/20</span>
-<span class='no'>splits</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span>(<span class='no'>m750</span>, <span class='kw'>prop</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)
+<span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span>
 
 <span class='co'># --- MODELS ---</span>
 
 <span class='co'># Model 1: auto_arima ----</span>
-<span class='no'>model_fit_arima</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"auto_arima"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+<span class='va'>model_fit_arima</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"auto_arima"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
 
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
-<span class='no'>models_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span>(
-    <span class='no'>model_fit_arima</span>
-)
+<span class='va'>models_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
+    <span class='va'>model_fit_arima</span>
+<span class='op'>)</span>
 
 <span class='co'># ---- CALIBRATE ----</span>
 
-<span class='no'>calibration_tbl</span> <span class='kw'>&lt;-</span> <span class='no'>models_tbl</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'>modeltime_calibrate</span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>))
+<span class='va'>calibration_tbl</span> <span class='op'>&lt;-</span> <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>modeltime_calibrate</span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># ---- ACCURACY ----</span>
 
-<span class='no'>calibration_tbl</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 9</span><span>
+<span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 9</span><span>
 #&gt;   .model_id .model_desc             .type   mae  mape  mase smape  rmse   rsq
 #&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  1.41 0.516  1.43  198. 0.930</div><div class='input'>
 <span class='co'># ---- FORECAST ----</span>
 
-<span class='no'>calibration_tbl</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span>(
-        <span class='kw'>new_data</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span>(<span class='no'>splits</span>),
-        <span class='kw'>actual_data</span> <span class='kw'>=</span> <span class='no'>m750</span>
-    )</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 337 x 7</span><span>
+<span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span><span class='op'>(</span>
+        new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
+        actual_data <span class='op'>=</span> <span class='va'>m750</span>
+    <span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 337 x 7</span><span>
 #&gt;    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi
 #&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>        </span><span style='color: #BB0000;'>NA</span><span> ACTUAL      actual 1990-01-01   </span><span style='text-decoration: underline;'>6</span><span>370       </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #BB0000;'>NA</span><span>
@@ -291,7 +294,7 @@ calculated from <code>new_data</code> (Test Data)</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

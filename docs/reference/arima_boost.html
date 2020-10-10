@@ -99,7 +99,7 @@ ARIMA + XGBoost Errors (engine = arima_xgboost)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -178,24 +178,24 @@ The main algorithms are:</p><ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>arima_boost</span>(
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"regression"</span>,
-  <span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>non_seasonal_ar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>non_seasonal_differences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>non_seasonal_ma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>seasonal_ar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>seasonal_differences</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>seasonal_ma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mtry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>trees</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tree_depth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>loss_reduction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sample_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stop_iter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>arima_boost</span><span class='op'>(</span>
+  mode <span class='op'>=</span> <span class='st'>"regression"</span>,
+  seasonal_period <span class='op'>=</span> <span class='cn'>NULL</span>,
+  non_seasonal_ar <span class='op'>=</span> <span class='cn'>NULL</span>,
+  non_seasonal_differences <span class='op'>=</span> <span class='cn'>NULL</span>,
+  non_seasonal_ma <span class='op'>=</span> <span class='cn'>NULL</span>,
+  seasonal_ar <span class='op'>=</span> <span class='cn'>NULL</span>,
+  seasonal_differences <span class='op'>=</span> <span class='cn'>NULL</span>,
+  seasonal_ma <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mtry <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trees <span class='op'>=</span> <span class='cn'>NULL</span>,
+  min_n <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tree_depth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  learn_rate <span class='op'>=</span> <span class='cn'>NULL</span>,
+  loss_reduction <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sample_size <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stop_iter <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,11 +283,11 @@ stopping  (<code>xgboost</code> only).</p></td>
     <p>The data given to the function are not saved and are only used
 to determine the <em>mode</em> of the model. For <code>arima_boost()</code>, the
 mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> function using the
+<p>The model can be created using the <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
-<li><p>"auto_arima_xgboost" (default) - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima()</a></code> and
+<li><p>"auto_arima_xgboost" (default) - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/auto.arima.html'>forecast::auto.arima()</a></code> and
 <a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgboost::xgb.train</a></p></li>
-<li><p>"arima_xgboost" - Connects to <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code> and
+<li><p>"arima_xgboost" - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/Arima.html'>forecast::Arima()</a></code> and
 <a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgboost::xgb.train</a></p></li>
 </ul>
 
@@ -357,15 +357,15 @@ names in each engine:</p>
 
 <p>Other options can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
 <p><strong>auto_arima_xgboost (default engine)</strong></p>
-<p>Model 1: Auto ARIMA (<code><a href='https://rdrr.io/pkg/forecast/man/auto.arima.html'>forecast::auto.arima</a></code>):</p><pre>## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
-##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
-##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
-##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) &amp;gt; 
-##         150 | frequency(x) &amp;gt; 12), method = NULL, truncate = NULL, xreg = NULL, 
-##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
-##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
-##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
-##     num.cores = 2, x = y, ...)
+<p>Model 1: Auto ARIMA (<code><a href='https://pkg.robjhyndman.com/forecast/reference/auto.arima.html'>forecast::auto.arima</a></code>):</p><pre><span class='co'>## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, </span>
+<span class='co'>##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, </span>
+<span class='co'>##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", </span>
+<span class='co'>##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) &gt; </span>
+<span class='co'>##         150 | frequency(x) &gt; 12), method = NULL, truncate = NULL, xreg = NULL, </span>
+<span class='co'>##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", </span>
+<span class='co'>##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, </span>
+<span class='co'>##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, </span>
+<span class='co'>##     num.cores = 2, x = y, ...)</span>
 </pre>
 
 <p>Parameter Notes:</p><ul>
@@ -374,10 +374,10 @@ The <code>auto.arima</code> will select a value using these as an upper limit.</
 <li><p><code>xreg</code> - This should not be used since XGBoost will be doing the regression</p></li>
 </ul>
 
-<p>Model 2: XGBoost (<code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgboost::xgb.train</a></code>):</p><pre>## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
-##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
-##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
-##     callbacks = list(), ...)
+<p>Model 2: XGBoost (<code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgboost::xgb.train</a></code>):</p><pre><span class='co'>## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, </span>
+<span class='co'>##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, </span>
+<span class='co'>##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, </span>
+<span class='co'>##     callbacks = list(), ...)</span>
 </pre>
 
 <p>Parameter Notes:</p><ul>
@@ -393,8 +393,8 @@ the <code>params = list(...)</code>.</p></li>
 
 <p><strong>Date and Date-Time Variable</strong></p>
 <p>It's a requirement to have a date or date-time variable as a predictor.
-The <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
-<li><p><code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit(y ~ date)</a></code></p></li>
+The <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
+<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
 <p><em>Seasonal Period Specification</em></p>
@@ -407,12 +407,12 @@ There are 3 ways to specify:</p><ol>
 
 <p><strong>Univariate (No xregs, Exogenous Regressors):</strong></p>
 <p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
-<li><p>Formula Interface (recommended): <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
-<li><p>XY Interface: <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
+<li><p>Formula Interface (recommended): <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
+<li><p>XY Interface: <code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
 <p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
-<p>The <code>xreg</code> parameter is populated using the <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code> or <code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit_xy()</a></code> function:</p><ul>
+<p>The <code>xreg</code> parameter is populated using the <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> or <code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy()</a></code> function:</p><ul>
 <li><p>Only <code>factor</code>, <code>ordered factor</code>, and <code>numeric</code> data will be used as xregs.</p></li>
 <li><p>Date and Date-time variables are not used as xregs</p></li>
 <li><p><code>character</code> data should be converted to factor.</p></li>
@@ -425,9 +425,9 @@ There are 3 ways to specify:</p><ol>
 </ol>
 
 <p>The <code>month.lbl</code> is an exogenous regressor that can be passed to the <code>arima_boost()</code> using
-<code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit()</a></code>:</p><ul>
-<li><p><code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
-<li><p><code><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
+<code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code>:</p><ul>
+<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
 and the <code>date</code> feature. Only <code>month.lbl</code> will be used as an exogenous regressor.</p></li>
 </ul>
 
@@ -437,58 +437,63 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <div class='dont-index'><p><code><a href='https://parsnip.tidymodels.org/reference/fit.html'>fit.model_spec()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyverse</span>)</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ─────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0     </span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>readr  </span><span> 1.3.1     </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>forcats</span><span> 0.5.0</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>stringr</span><span> 1.4.0     </span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ───────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>readr</span><span>::</span><span style='color: #00BB00;'>col_factor()</span><span> masks </span><span style='color: #0000BB;'>scales</span><span>::col_factor()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>discard()</span><span>    masks </span><span style='color: #0000BB;'>scales</span><span>::discard()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span>     masks </span><span style='color: #0000BB;'>stats</span><span>::filter()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>stringr</span><span>::</span><span style='color: #00BB00;'>fixed()</span><span>    masks </span><span style='color: #0000BB;'>recipes</span><span>::fixed()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>        masks </span><span style='color: #0000BB;'>stats</span><span>::lag()</span>
-#&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>readr</span><span>::</span><span style='color: #00BB00;'>spec()</span><span>       masks </span><span style='color: #0000BB;'>yardstick</span><span>::spec()</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>readr</span><span>::</span><span style='color: #00BB00;'>spec()</span><span>       masks </span><span style='color: #0000BB;'>yardstick</span><span>::spec()</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    date, intersect, setdiff, union</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>parsnip</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rsample</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>timetk</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>modeltime</span>)
+#&gt; <span class='message'>    date, intersect, setdiff, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://parsnip.tidymodels.org'>parsnip</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 
 
 <span class='co'># Data</span>
-<span class='no'>m750</span> <span class='kw'>&lt;-</span> <span class='no'>m4_monthly</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>id</span> <span class='kw'>==</span> <span class='st'>"M750"</span>)
+<span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 
 <span class='co'># Split Data 80/20</span>
-<span class='no'>splits</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span>(<span class='no'>m750</span>, <span class='kw'>prop</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)
+<span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span>
 
 <span class='co'># MODEL SPEC ----</span>
 
 <span class='co'># Set engine and boosting parameters</span>
-<span class='no'>model_spec</span> <span class='kw'>&lt;-</span> <span class='fu'>arima_boost</span>(
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>arima_boost</span><span class='op'>(</span>
 
     <span class='co'># ARIMA args</span>
-    <span class='kw'>seasonal_period</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-    <span class='kw'>non_seasonal_ar</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-    <span class='kw'>non_seasonal_differences</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-    <span class='kw'>non_seasonal_ma</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-    <span class='kw'>seasonal_ar</span>     <span class='kw'>=</span> <span class='fl'>0</span>,
-    <span class='kw'>seasonal_differences</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-    <span class='kw'>seasonal_ma</span>     <span class='kw'>=</span> <span class='fl'>1</span>,
+    seasonal_period <span class='op'>=</span> <span class='fl'>12</span>,
+    non_seasonal_ar <span class='op'>=</span> <span class='fl'>0</span>,
+    non_seasonal_differences <span class='op'>=</span> <span class='fl'>1</span>,
+    non_seasonal_ma <span class='op'>=</span> <span class='fl'>1</span>,
+    seasonal_ar     <span class='op'>=</span> <span class='fl'>0</span>,
+    seasonal_differences <span class='op'>=</span> <span class='fl'>1</span>,
+    seasonal_ma     <span class='op'>=</span> <span class='fl'>1</span>,
 
     <span class='co'># XGBoost Args</span>
-    <span class='kw'>tree_depth</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-    <span class='kw'>learn_rate</span> <span class='kw'>=</span> <span class='fl'>0.1</span>
-) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span>(<span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"arima_xgboost"</span>)
+    tree_depth <span class='op'>=</span> <span class='fl'>6</span>,
+    learn_rate <span class='op'>=</span> <span class='fl'>0.1</span>
+<span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"arima_xgboost"</span><span class='op'>)</span>
 
 <span class='co'># FIT ----</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Boosting - Happens by adding numeric date and month features</span>
-<span class='no'>model_fit_boosted</span> <span class='kw'>&lt;-</span> <span class='no'>model_spec</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/reexports.html'>fit</a></span>(<span class='no'>value</span> ~ <span class='no'>date</span> + <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>date</span>) + <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span>(<span class='no'>date</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-        <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span>(<span class='no'>splits</span>))
+<span class='va'>model_fit_boosted</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span><span class='op'>(</span><span class='va'>date</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+        data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='no'>model_fit_boosted</span>
-}</div></span></pre>
+<span class='va'>model_fit_boosted</span>
+<span class='op'>}</span>
+
+
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -504,7 +509,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -164,13 +164,13 @@
     <p>Tuning Parameters for Exponential Smoothing Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>error</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>))
+    <pre class="usage"><span class='fu'>error</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>trend</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span>))
+<span class='fu'>trend</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>season</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span>))
+<span class='fu'>season</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>damping</span>(<span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"damped"</span>, <span class='st'>"none"</span>))</pre>
+<span class='fu'>damping</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"damped"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,13 +194,16 @@ If the error is multiplicative, the data must be non-negative.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>error</span>()</div><div class='output co'>#&gt; Error Term  (qualitative)
+<span class='fu'>error</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error Term  (qualitative)
 #&gt; 2 possible value include:
 #&gt; 'additive' and 'multiplicative' </div><div class='input'>
-<span class='fu'>trend</span>()</div><div class='output co'>#&gt; Trend Term  (qualitative)
+<span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Trend Term  (qualitative)
 #&gt; 3 possible value include:
 #&gt; 'additive', 'multiplicative' and 'none' </div><div class='input'>
-<span class='fu'>season</span>()</div><div class='output co'>#&gt; Season Term  (qualitative)
+<span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Season Term  (qualitative)
 #&gt; 3 possible value include:
 #&gt; 'additive', 'multiplicative' and 'none' </div><div class='input'>
 </div></pre>
@@ -219,7 +222,7 @@ If the error is multiplicative, the data must be non-negative.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -164,17 +164,17 @@
     <p>Tuning Parameters for ARIMA Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>non_seasonal_ar</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>5L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>non_seasonal_ar</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>5L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>non_seasonal_differences</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>2L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>non_seasonal_differences</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>2L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>non_seasonal_ma</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>5L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>non_seasonal_ma</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>5L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>seasonal_ar</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>2L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>seasonal_ar</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>2L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>seasonal_differences</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>1L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>seasonal_differences</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>1L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>seasonal_ma</span>(<span class='kw'>range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>2L</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>seasonal_ma</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='fl'>2L</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,11 +206,14 @@ transformation, <code>NULL</code>.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>non_seasonal_ar</span>()</div><div class='output co'>#&gt; Non-seasonal AR Term (quantitative)
+    <pre class="examples"><div class='input'><span class='fu'>non_seasonal_ar</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Non-seasonal AR Term (quantitative)
 #&gt; Range: [0, 5]</div><div class='input'>
-<span class='fu'>non_seasonal_differences</span>()</div><div class='output co'>#&gt; Non-seasonal Differencing Term (quantitative)
+<span class='fu'>non_seasonal_differences</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Non-seasonal Differencing Term (quantitative)
 #&gt; Range: [0, 2]</div><div class='input'>
-<span class='fu'>non_seasonal_ma</span>()</div><div class='output co'>#&gt; Non-seasonal MA Term (quantitative)
+<span class='fu'>non_seasonal_ma</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Non-seasonal MA Term (quantitative)
 #&gt; Range: [0, 5]</div><div class='input'>
 
 </div></pre>
@@ -229,7 +232,7 @@ transformation, <code>NULL</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

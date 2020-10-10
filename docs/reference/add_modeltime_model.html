@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -164,7 +164,7 @@
     <p>Add a Model into a Modeltime Table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>model</span>, <span class='kw'>location</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>)</pre>
+    <pre class="usage"><span class='fu'>add_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>model</span>, location <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,32 +185,35 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>modeltime</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidymodels</span>)</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ────────────────────────────────────────────────────────────── tidymodels 0.1.1 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>broom    </span><span> 0.7.0           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>recipes  </span><span> 0.1.13.</span><span style='color: #BB0000;'>9001</span><span></span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dials    </span><span> 0.0.9.</span><span style='color: #BB0000;'>9000</span><span>      </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>rsample  </span><span> 0.0.7.</span><span style='color: #BB0000;'>9000</span><span> </span>
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span><span> ───────────────────────────────────────────────────────────────────────────────── tidymodels 0.1.1 ──</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>broom    </span><span> 0.7.1           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>recipes  </span><span> 0.1.13.</span><span style='color: #BB0000;'>9001</span><span></span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dials    </span><span> 0.0.9.</span><span style='color: #BB0000;'>9000</span><span>      </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>rsample  </span><span> 0.0.8      </span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>dplyr    </span><span> 1.0.2           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tibble   </span><span> 3.0.3      </span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>ggplot2  </span><span> 3.3.2           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tidyr    </span><span> 1.1.2      </span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>infer    </span><span> 0.5.3           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>tune     </span><span> 0.1.1.</span><span style='color: #BB0000;'>9000</span><span> </span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>modeldata</span><span> 0.0.2           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>workflows</span><span> 0.2.0.</span><span style='color: #BB0000;'>9000</span><span> </span>
 #&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>parsnip  </span><span> 0.1.3           </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>yardstick</span><span> 0.0.7      </span>
-#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr    </span><span> 0.3.4           </span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ───────────────────────────────────────────────────────────────── tidymodels_conflicts() ──</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>purrr    </span><span> 0.3.4           </span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>Conflicts</span><span> ──────────────────────────────────────────────────────────────────────────────────── tidymodels_conflicts() ──</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>purrr</span><span>::</span><span style='color: #00BB00;'>discard()</span><span> masks </span><span style='color: #0000BB;'>scales</span><span>::discard()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>filter()</span><span>  masks </span><span style='color: #0000BB;'>stats</span><span>::filter()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>dplyr</span><span>::</span><span style='color: #00BB00;'>lag()</span><span>     masks </span><span style='color: #0000BB;'>stats</span><span>::lag()</span>
 #&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> </span><span style='color: #0000BB;'>recipes</span><span>::</span><span style='color: #00BB00;'>step()</span><span>  masks </span><span style='color: #0000BB;'>stats</span><span>::step()</span></div><div class='input'>
-
-<span class='no'>model_fit_ets</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exp_smoothing.html'>exp_smoothing</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'>set_engine</span>(<span class='st'>"ets"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>fit</span>(<span class='no'>value</span> ~ <span class='no'>date</span>, <span class='fu'>training</span>(<span class='no'>m750_splits</span>))</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
-<span class='no'>m750_models</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'>add_modeltime_model</span>(<span class='no'>model_fit_ets</span>)</div><div class='output co'>#&gt; # Modeltime Table
+<span class='va'>model_fit_ets</span> <span class='op'>&lt;-</span> <span class='fu'><a href='exp_smoothing.html'>exp_smoothing</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"ets"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>fit</span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, <span class='fu'>training</span><span class='op'>(</span><span class='va'>m750_splits</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+<span class='va'>m750_models</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>add_modeltime_model</span><span class='op'>(</span><span class='va'>model_fit_ets</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; # Modeltime Table
 #&gt; </span><span style='color: #555555;'># A tibble: 4 x 3</span><span>
 #&gt;   .model_id .model     .model_desc            
 #&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                  
 #&gt; </span><span style='color: #555555;'>1</span><span>         1 </span><span style='color: #555555;'>&lt;workflow&gt;</span><span> ARIMA(0,1,1)(0,1,1)[12]
 #&gt; </span><span style='color: #555555;'>2</span><span>         2 </span><span style='color: #555555;'>&lt;workflow&gt;</span><span> PROPHET                
 #&gt; </span><span style='color: #555555;'>3</span><span>         3 </span><span style='color: #555555;'>&lt;workflow&gt;</span><span> GLMNET                 
-#&gt; </span><span style='color: #555555;'>4</span><span>         4 </span><span style='color: #555555;'>&lt;fit[+]&gt;</span><span>   ETS(A,A,A)             </div><div class='input'>
+#&gt; </span><span style='color: #555555;'>4</span><span>         4 </span><span style='color: #555555;'>&lt;fit[+]&gt;</span><span>   ETS(A,A,A)             </div><div class='input'><span class='co'># }</span>
+
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -227,7 +230,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

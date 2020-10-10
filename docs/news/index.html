@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -158,9 +158,24 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="modeltime-0109000-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0.9000">
-<a href="#modeltime-0109000-development-version" class="anchor"></a>modeltime 0.1.0.9000 (Development Version)<small> Unreleased </small>
+    <div id="modeltime-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="development version">
+<a href="#modeltime-development-version" class="anchor"></a>modeltime (development version)<small> Unreleased </small>
+</h1>
+</div>
+    <div id="modeltime-021" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.1">
+<a href="#modeltime-021" class="anchor"></a>modeltime 0.2.1<small> 2020-10-08 </small>
+</h1>
+<p><strong>Ensembles</strong></p>
+<ul>
+<li>
+<code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> - Changes to improve fault tolerance and error handling / messaging when making ensembles.</li>
+</ul>
+</div>
+    <div id="modeltime-020" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#modeltime-020" class="anchor"></a>modeltime 0.2.0<small> 2020-09-28 </small>
 </h1>
 <p><strong>Ensembles</strong></p>
 <ul>
@@ -178,7 +193,7 @@
 <li>Documentation - Algorithms now identify default parameter values in the “Engine Details” Section in their respective documentation. E.g. <code><a href="../reference/prophet_boost.html">?prophet_boost</a></code>
 </li>
 <li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code>set_engine()</code> using the following parameters:
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine()</a></code> using the following parameters:
 <ul>
 <li>
 <code>regressors.mode</code> - Set to <code>seasonality.mode</code> by default.</li>
@@ -199,7 +214,7 @@
 <li>
 <code>m750_splits</code> - An <code>rsplit</code> object containing Train/test splits of the M750 data</li>
 <li>
-<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code>training(m750_splits)</code>
+<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(m750_splits)</a></code>
 </li>
 </ul>
 <p><strong>Bug Fix</strong></p>
@@ -217,17 +232,18 @@
 <a href="#new-features" class="anchor"></a>New Features</h3>
 <p><strong>Forecast without Calibration/Refitting</strong></p>
 <p>Sometimes it’s important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the <code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code> and <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> steps and jump straight into forecasting the future. Here’s an example with <code>h = "3 years"</code>. Note that <strong>you will not get confidence intervals</strong> with this approach because calibration data is needed for this.</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># Make forecasts without calibration/refitting (No Confidence Intervals)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># Make forecasts without calibration/refitting (No Confidence Intervals)</span>
 <span class="co"># - This assumes the models have been trained on m750</span>
-<span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span>(
-    <span class="no">model_fit_prophet</span>,
-    <span class="no">model_fit_lm</span>
-) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span>(
-        <span class="kw">h</span> <span class="kw">=</span> <span class="st">"3 years"</span>,
-        <span class="kw">actual_data</span> <span class="kw">=</span> <span class="no">m750</span>
-    ) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span>(<span class="kw">.conf_interval_show</span> <span class="kw">=</span> <span class="no">F</span>)</pre></div>
+<span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
+    <span class="va">model_fit_prophet</span>,
+    <span class="va">model_fit_lm</span>
+<span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
+        h <span class="op">=</span> <span class="st">"3 years"</span>,
+        actual_data <span class="op">=</span> <span class="va">m750</span>
+    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.conf_interval_show <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></pre></div>
 <p><strong>Residual Analysis &amp; Diagonstics</strong></p>
 <p>A common tool when forecasting and analyzing residuals, where residuals are <code>.resid = .actual - .prediction</code>. The residuals may have autocorrelation or nonzero mean, which can indicate model improvement opportunities. In addition, users may which to inspect in-sample and out-of-sample residuals, which can display different results.</p>
 <ul>
@@ -251,15 +267,17 @@
 <a href="#new-models" class="anchor"></a>New Models</h3>
 <p><strong>TBATS Model</strong></p>
 <p>Use <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and set engine to “tbats”.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span>(
-    <span class="kw">seasonal_period_1</span> <span class="kw">=</span> <span class="st">"1 day"</span>,
-    <span class="kw">seasonal_period_2</span> <span class="kw">=</span> <span class="st">"1 week"</span>
-) <span class="kw">%&gt;%</span>
-    <span class="fu">set_engine</span>(<span class="st">"tbats"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span><span class="op">(</span>
+    seasonal_period_1 <span class="op">=</span> <span class="st">"1 day"</span>,
+    seasonal_period_2 <span class="op">=</span> <span class="st">"1 week"</span>
+<span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></pre></div>
 <p><strong>NNETAR Model</strong></p>
 <p>Use <code><a href="../reference/nnetar_reg.html">nnetar_reg()</a></code> and set engine to “nnetar”.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="no">model_fit_nnetar</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/nnetar_reg.html">nnetar_reg</a></span>() <span class="kw">%&gt;%</span>
-    <span class="fu">set_engine</span>(<span class="st">"nnetar"</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">model_fit_nnetar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nnetar_reg.html">nnetar_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </pre></div>
 <p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul>
 <li>
@@ -287,7 +305,7 @@
 <a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
 <li><p><code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. “UPDATE: ARIMA(0,1,1)(1,1,1)[12]”).</p></li>
-<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code>training(splits)</code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
+<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(splits)</a></code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
@@ -369,7 +387,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -164,12 +164,12 @@
     <p>The <code>pull_modeltime_model()</code> and <code>pluck_modeltime_model()</code> functions are synonymns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pluck_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>.model_id</span>)
+    <pre class="usage"><span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span><span class='op'>)</span>
 
 <span class='co'># S3 method for mdl_time_tbl</span>
-<span class='fu'>pluck_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>.model_id</span>)
+<span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span><span class='op'>)</span>
 
-<span class='fu'>pull_modeltime_model</span>(<span class='no'>object</span>, <span class='no'>.model_id</span>)</pre>
+<span class='fu'>pull_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,12 +187,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>m750_models</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'>pluck_modeltime_model</span>(<span class='fl'>2</span>)</div><div class='output co'>#&gt; ══ Workflow [trained] ══════════════════════════════════════════════════════════════════════════════════
+<span class='va'>m750_models</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ══ Workflow [trained] ═════════════════════════════════════════════════════════════════════════════════════════════════════
 #&gt; <span style='font-style: italic;'>Preprocessor:</span><span> Recipe
 #&gt; </span><span style='font-style: italic;'>Model:</span><span> prophet_reg()
 #&gt; 
-#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────────────────────────────
+#&gt; ── Preprocessor ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt; 6 Recipe Steps
 #&gt; 
 #&gt; ● step_timeseries_signature()
@@ -202,7 +203,7 @@
 #&gt; ● step_fourier()
 #&gt; ● step_rm()
 #&gt; 
-#&gt; ── Model ───────────────────────────────────────────────────────────────────────────────────────────────
+#&gt; ── Model ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt; PROPHET Model
 #&gt; - growth: 'linear'
 #&gt; - n.changepoints: 25
@@ -233,7 +234,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

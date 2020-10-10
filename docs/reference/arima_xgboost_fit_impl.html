@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
       </span>
     </div>
 
@@ -164,34 +164,34 @@
     <p>Bridge ARIMA-XGBoost Modeling function</p>
     </div>
 
-    <pre class="usage"><span class='fu'>arima_xgboost_fit_impl</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>q</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>P</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>D</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>Q</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>include.mean</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>include.drift</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>include.constant</span>,
-  <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='no'>model</span>$<span class='no'>lambda</span>,
-  <span class='kw'>biasadj</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CSS-ML"</span>, <span class='st'>"ML"</span>, <span class='st'>"CSS"</span>),
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_depth</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>nrounds</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>eta</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>colsample_bytree</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>min_child_weight</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>subsample</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>validation</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>early_stop</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>arima_xgboost_fit_impl</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  period <span class='op'>=</span> <span class='st'>"auto"</span>,
+  p <span class='op'>=</span> <span class='fl'>0</span>,
+  d <span class='op'>=</span> <span class='fl'>0</span>,
+  q <span class='op'>=</span> <span class='fl'>0</span>,
+  P <span class='op'>=</span> <span class='fl'>0</span>,
+  D <span class='op'>=</span> <span class='fl'>0</span>,
+  Q <span class='op'>=</span> <span class='fl'>0</span>,
+  include.mean <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  include.drift <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>include.constant</span>,
+  lambda <span class='op'>=</span> <span class='va'>model</span><span class='op'>$</span><span class='va'>lambda</span>,
+  biasadj <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CSS-ML"</span>, <span class='st'>"ML"</span>, <span class='st'>"CSS"</span><span class='op'>)</span>,
+  model <span class='op'>=</span> <span class='cn'>NULL</span>,
+  max_depth <span class='op'>=</span> <span class='fl'>6</span>,
+  nrounds <span class='op'>=</span> <span class='fl'>15</span>,
+  eta <span class='op'>=</span> <span class='fl'>0.3</span>,
+  colsample_bytree <span class='op'>=</span> <span class='fl'>1</span>,
+  min_child_weight <span class='op'>=</span> <span class='fl'>1</span>,
+  gamma <span class='op'>=</span> <span class='fl'>0</span>,
+  subsample <span class='op'>=</span> <span class='fl'>1</span>,
+  validation <span class='op'>=</span> <span class='fl'>0</span>,
+  early_stop <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -346,7 +346,7 @@ is used.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
