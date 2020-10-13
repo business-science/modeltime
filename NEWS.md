@@ -1,5 +1,9 @@
 # modeltime (development version)
 
+__Compatibility__
+
+- Compatibility with `parsnip >= 0.1.3.9000`. Uses `set_encodings()` new parameter `allow_sparse_x`. 
+
 # modeltime 0.2.1
 
 __Ensembles__

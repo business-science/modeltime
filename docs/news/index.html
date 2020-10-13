@@ -162,6 +162,10 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#modeltime-development-version" class="anchor"></a>modeltime (development version)<small> Unreleased </small>
 </h1>
+<p><strong>Compatibility</strong></p>
+<ul>
+<li>Compatibility with <code>parsnip &gt;= 0.1.3.9000</code>. Uses <code>set_encodings()</code> new parameter <code>allow_sparse_x</code>.</li>
+</ul>
 </div>
     <div id="modeltime-021" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
@@ -193,7 +197,7 @@
 <li>Documentation - Algorithms now identify default parameter values in the “Engine Details” Section in their respective documentation. E.g. <code><a href="../reference/prophet_boost.html">?prophet_boost</a></code>
 </li>
 <li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine()</a></code> using the following parameters:
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code>set_engine()</code> using the following parameters:
 <ul>
 <li>
 <code>regressors.mode</code> - Set to <code>seasonality.mode</code> by default.</li>
@@ -214,7 +218,7 @@
 <li>
 <code>m750_splits</code> - An <code>rsplit</code> object containing Train/test splits of the M750 data</li>
 <li>
-<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(m750_splits)</a></code>
+<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code>training(m750_splits)</code>
 </li>
 </ul>
 <p><strong>Bug Fix</strong></p>
@@ -272,12 +276,12 @@
     seasonal_period_1 <span class="op">=</span> <span class="st">"1 day"</span>,
     seasonal_period_2 <span class="op">=</span> <span class="st">"1 week"</span>
 <span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></pre></div>
+    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></pre></div>
 <p><strong>NNETAR Model</strong></p>
 <p>Use <code><a href="../reference/nnetar_reg.html">nnetar_reg()</a></code> and set engine to “nnetar”.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="va">model_fit_nnetar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nnetar_reg.html">nnetar_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </pre></div>
+    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </pre></div>
 <p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul>
 <li>
@@ -305,7 +309,7 @@
 <a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
 <li><p><code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. “UPDATE: ARIMA(0,1,1)(1,1,1)[12]”).</p></li>
-<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(splits)</a></code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
+<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code>training(splits)</code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
