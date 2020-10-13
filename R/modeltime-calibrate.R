@@ -154,6 +154,9 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
     # Alert Failures
     if (!quiet) {
         alert_modeltime_calibration(ret)
+    } else {
+        check_bad_type_tbl <- check_type_not_missing(ret)
+        if (nrow(check_bad_type_tbl) > 0) rlang::warn("Some models failed during calibration. Re-run with `modeltime_calibrate(quiet = FALSE)` to find the exact cause.")
     }
 
     if (!"mdl_time_tbl" %in% class(ret)) {

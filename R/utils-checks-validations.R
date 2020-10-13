@@ -214,7 +214,6 @@ validate_models_are_not_null <- function(data) {
 
         message("\n")
         message(cli::rule("Model Refit Failure Report", width = 60))
-        message("\n")
         print(data)
         msg <- stringr::str_glue(
             "\nAll models failed Modeltime Calibration:",
@@ -243,7 +242,6 @@ alert_modeltime_calibration <- function(data) {
 
         message("\n")
         message(cli::rule("Model Calibration Failure Report", width = 60))
-        message("\n")
         print(result_tbl)
         msg <- stringr::str_glue(
             "\nThe following models had errors:",
@@ -270,7 +268,6 @@ validate_modeltime_calibration <- function(data) {
 
         message("\n")
         message(cli::rule("Model Calibration Failure Report", width = 60))
-        message("\n")
         print(data)
         msg <- stringr::str_glue(
             "\nAll models failed Modeltime Calibration:",

@@ -1,5 +1,9 @@
 # modeltime (development version)
 
+__Error Messaging__
+
+- __Calibration:__ Improve error messaging during calibration. Provide warnings if models fail. Provide report with `modeltime_calibrate(quiet = FALSE)`.
+
 __Compatibility__
 
 - Compatibility with `parsnip >= 0.1.3.9000`. Uses `set_encodings()` new parameter `allow_sparse_x`. 
