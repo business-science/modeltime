@@ -70,7 +70,8 @@ make_exp_smoothing <- function() {
         options = list(
             predictor_indicators = "none",
             compute_intercept    = FALSE,
-            remove_intercept     = FALSE
+            remove_intercept     = FALSE,
+            allow_sparse_x       = FALSE
         )
     )
 
