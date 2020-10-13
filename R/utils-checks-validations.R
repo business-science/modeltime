@@ -58,6 +58,17 @@ check_models_are_not_null <- function(data) {
 
 }
 
+check_type_not_missing <- function(data) {
+
+    # Class Check
+    ret_1 <- data %>%
+        dplyr::mutate(fail_check = is.na(.type))
+
+    return(ret_1)
+
+}
+
+
 check_non_bad_class_data <- function(data, bad_classes = c("character")) {
 
     # Bad Class Check
@@ -201,15 +212,77 @@ validate_models_are_not_null <- function(data) {
         bad_msg    <- glue::glue("- Model {bad_models}: Is NULL.")
         bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
 
-        message("\nModel Failure Report: ")
+        message("\n")
+        message(cli::rule("Model Refit Failure Report", width = 60))
+        message("\n")
         print(data)
-        glubort(
-            "The following models had NULL errors <NULL>:",
+        msg <- stringr::str_glue(
+            "\nAll models failed Modeltime Calibration:",
             "\n",
             "{bad_msg}",
-            "\n",
-            "  Potential Solution: Make sure required modeling packages are loaded.\n"
+            "\n\n",
+            "Potential Solution: Make sure required modeling packages are loaded.\n",
+            "{cli::rule('End Model Refit Failure Report', width = 60)}",
+            "\n\n"
         )
+        message(msg)
+        rlang::abort("Models failed Modeltime Refitting.")
+    }
+
+}
+
+alert_modeltime_calibration <- function(data) {
+
+    result_tbl <- check_type_not_missing(data) %>%
+        dplyr::filter(fail_check)
+
+    if (nrow(result_tbl) > 0) {
+        bad_models <- result_tbl$.model_id
+        bad_msg    <- glue::glue("- Model {bad_models}: Failed Calibration.")
+        bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
+
+        message("\n")
+        message(cli::rule("Model Calibration Failure Report", width = 60))
+        message("\n")
+        print(result_tbl)
+        msg <- stringr::str_glue(
+            "\nThe following models had errors:",
+            "\n",
+            "{bad_msg}",
+            "\n\n",
+            "Potential Solution: Check the Error/Warning Messages for clues as to why your model(s) failed calibration.\n",
+            "{cli::rule('End Model Calibration Failure Report', width = 60)}",
+            "\n\n"
+        )
+        message(msg)
+    }
+
+}
+
+validate_modeltime_calibration <- function(data) {
+
+    # This happens when only some of the models fail
+    if (!".calibration_data" %in% names(data)) {
+
+        bad_models <- data$.model_id
+        bad_msg    <- glue::glue("- Model {bad_models}: Failed Calibration.")
+        bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
+
+        message("\n")
+        message(cli::rule("Model Calibration Failure Report", width = 60))
+        message("\n")
+        print(data)
+        msg <- stringr::str_glue(
+            "\nAll models failed Modeltime Calibration:",
+            "\n",
+            "{bad_msg}",
+            "\n\n",
+            "Potential Solution: Use `modeltime_calibrate(quiet = FALSE)` AND Check the Error/Warning Messages for clues as to why your model(s) failed calibration.\n",
+            "{cli::rule('End Model Calibration Failure Report', width = 60)}",
+            "\n\n"
+        )
+        message(msg)
+        rlang::abort("All models failed Modeltime Calibration.")
     }
 
 }

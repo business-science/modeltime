@@ -45,7 +45,8 @@ Imports:
     forecast,
     xgboost (>= 1.2.0.1),
     prophet,
-    methods
+    methods,
+    cli
 Suggests:
     rstan,
     tidymodels,

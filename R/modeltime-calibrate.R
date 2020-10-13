@@ -112,18 +112,21 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
             dplyr::select(-.type, -.calibration_data)
     }
 
-    safe_calc_residuals <- purrr::safely(calc_residuals, otherwise = NA, quiet = quiet)
+    safe_calc_residuals <- purrr::safely(calc_residuals,
+                                         otherwise = NA, # Need NA here for plotting correctly
+                                         quiet = quiet)
 
     ret <- data %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(.nested.col = purrr::map(
+        dplyr::mutate(.nested.col = purrr::map2(
             .x         = .model,
-            .f         = function(obj) {
+            .y         = .model_id,
+            .f         = function(obj, idx) {
+
                 ret <- safe_calc_residuals(
                     obj,
                     test_data = new_data
                 )
-
                 ret <- ret %>% purrr::pluck("result")
 
                 return(ret)
@@ -132,6 +135,11 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
         # dplyr::select(-.model) %>%
         tidyr::unnest(cols = .nested.col)
 
+    # Stop when errors are Fatal (all calibrations fail)
+    # - Example: New levels in the testing(splits) are present
+    validate_modeltime_calibration(ret)
+
+    # Remove .nested_col - happens some model fail, but not all models
     if (".nested.col" %in% names(ret)) {
         ret <- ret %>%
             dplyr::select(-.nested.col)
@@ -142,6 +150,11 @@ modeltime_calibrate.mdl_time_tbl <- function(object, new_data,
         dplyr::mutate(.is_null = purrr::map_lgl(.calibration_data, is.null)) %>%
         dplyr::mutate(.calibration_data = ifelse(.is_null, list(NA), .calibration_data)) %>%
         dplyr::select(-.is_null)
+
+    # Alert Failures
+    if (!quiet) {
+        alert_modeltime_calibration(ret)
+    }
 
     if (!"mdl_time_tbl" %in% class(ret)) {
         class(ret) <- c("mdl_time_tbl", class(ret))
