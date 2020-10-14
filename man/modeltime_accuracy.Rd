@@ -44,11 +44,10 @@ The following accuracy metrics are included by default via \code{\link[=default_
 }
 }
 \examples{
+library(tidymodels)
 library(tidyverse)
 library(lubridate)
 library(timetk)
-library(parsnip)
-library(rsample)
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")

@@ -216,7 +216,7 @@ validate_models_are_not_null <- function(data) {
         message(cli::rule("Model Refit Failure Report", width = 60))
         print(data)
         msg <- stringr::str_glue(
-            "\nAll models failed Modeltime Calibration:",
+            "\nModels failed Modeltime Refit:",
             "\n",
             "{bad_msg}",
             "\n\n",

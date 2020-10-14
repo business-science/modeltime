@@ -30,11 +30,10 @@
 #'
 #'
 #' @examples
+#' library(tidymodels)
 #' library(tidyverse)
 #' library(lubridate)
 #' library(timetk)
-#' library(parsnip)
-#' library(rsample)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
@@ -96,6 +95,8 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                                             quiet = TRUE, ...) {
     data <- object
 
+    metrics <- metric_set
+
     # Handle New Data ----
     if (!is.null(new_data)) {
         data <- data %>%
@@ -113,7 +114,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
             .f         = function(.data) {
                 ret <- safe_calc_accuracy(
                     test_data  = .data,
-                    metric_set = metric_set,
+                    metric_set = metrics,
                     ...
                 )
 
@@ -187,29 +188,19 @@ default_forecast_accuracy_metric_set <- function() {
     )
 }
 
-# UTILITIES ----
 
-calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...) {
+# SUMMARIZE ACCURACY ----
 
-    # Training Metrics
-    train_metrics_tbl <- tibble::tibble()
-
-    # Testing Metrics
-    test_metrics_tbl <- tibble::tibble()
-    if (!is.null(test_data)) {
-
-        # print(test_data)
-        test_metrics_tbl <- test_data %>%
-            summarize_accuracy_metrics(.actual, .prediction, metric_set) %>%
-            dplyr::ungroup()
-
-    }
-
-    metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
-
-    return(metrics_tbl)
-}
-
+#' Summarize Accuracy Metrics
+#'
+#' This is an internal function used by `modeltime_accuracy()`.
+#'
+#' @inheritParams modeltime_accuracy
+#' @param data  A `data.frame` containing the truth and estimate columns.
+#' @param truth The column identifier for the true results (that is numeric).
+#' @param estimate The column identifier for the predicted results (that is also numeric).
+#'
+#' @export
 summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
     truth_expr    <- rlang::enquo(truth)
@@ -223,4 +214,29 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
         # mutate(.metric = toupper(.metric)) %>%
         tidyr::pivot_wider(names_from = .metric, values_from = .estimate)
 
+}
+
+# UTILITIES ----
+
+calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...) {
+
+    metrics <- metric_set
+
+    # Training Metrics
+    train_metrics_tbl <- tibble::tibble()
+
+    # Testing Metrics
+    test_metrics_tbl <- tibble::tibble()
+    if (!is.null(test_data)) {
+
+        # print(test_data)
+        test_metrics_tbl <- test_data %>%
+            summarize_accuracy_metrics(truth = .actual, estimate = .prediction, metric_set = metrics) %>%
+            dplyr::ungroup()
+
+    }
+
+    metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
+
+    return(metrics_tbl)
 }

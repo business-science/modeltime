@@ -52,7 +52,7 @@ only).}
 the ensemble.}
 
 \item{min_n}{An integer for the minimum number of data points
-in a node that are required for the node to be split further.}
+in a node that is required for the node to be split further.}
 
 \item{tree_depth}{An integer for the maximum depth of the tree (i.e. number
 of splits) (\code{xgboost} only).}
@@ -61,7 +61,7 @@ of splits) (\code{xgboost} only).}
 from iteration-to-iteration (\code{xgboost} only).}
 
 \item{loss_reduction}{A number for the reduction in the loss function required
-to split further  (\code{xgboost} only).}
+to split further (\code{xgboost} only).}
 
 \item{sample_size}{number for the number (or proportion) of data that is exposed to the fitting routine.}
 
