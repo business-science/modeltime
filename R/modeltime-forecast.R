@@ -456,6 +456,9 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
         h_provided <- TRUE
     }
 
+    # For combining new data
+    new_data_unprocessed <- new_data
+
     # Setup data for predictions
     nms_time_stamp_predictors <- timetk::tk_get_timeseries_variables(new_data)[1]
     time_stamp_predictors_tbl <- new_data %>%
@@ -561,18 +564,20 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.key, .index, .value) %>%
-        dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
-        dplyr::arrange(.key, .index)
+        dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction")))
 
     if (keep_new_data) {
         act_tbl <- ret %>%
             dplyr::filter(.key == "actual")
         pred_tbl <- ret %>%
             dplyr::filter(.key == "prediction") %>%
-            dplyr::bind_cols(new_data)
+            dplyr::bind_cols(new_data_unprocessed)
         ret <- dplyr::bind_rows(act_tbl, pred_tbl)
 
     }
+
+    ret <- ret %>%
+        dplyr::arrange(.key, .index)
 
     return(ret)
 
@@ -630,6 +635,9 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
         h_provided <- TRUE
     }
+
+    # For combining new data
+    new_data_unprocessed <- new_data
 
     # Issue - Forge processes all recipe steps at once, so need to have outcomes
     # Reference: https://tidymodels.github.io/hardhat/articles/forge.html
@@ -782,18 +790,20 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.key, .index, .value) %>%
-        dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
-        dplyr::arrange(.key, .index)
+        dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction")))
 
     if (keep_new_data) {
         act_tbl <- ret %>%
             dplyr::filter(.key == "actual")
         pred_tbl <- ret %>%
             dplyr::filter(.key == "prediction") %>%
-            dplyr::bind_cols(new_data)
+            dplyr::bind_cols(new_data_unprocessed)
         ret <- dplyr::bind_rows(act_tbl, pred_tbl)
 
     }
+
+    ret <- ret %>%
+        dplyr::arrange(.key, .index)
 
     return(ret)
 
