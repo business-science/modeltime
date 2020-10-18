@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract model by model id in a Modeltime Table — pluck_modeltime_model • modeltime</title>
+<title>Summarize Accuracy Metrics — summarize_accuracy_metrics • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Extract model by model id in a Modeltime Table — pluck_modeltime_model" />
-<meta property="og:description" content="The pull_modeltime_model() and pluck_modeltime_model() functions are synonymns." />
+<meta property="og:title" content="Summarize Accuracy Metrics — summarize_accuracy_metrics" />
+<meta property="og:description" content="This is an internal function used by modeltime_accuracy()." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -155,70 +155,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract model by model id in a Modeltime Table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/helpers-modeltime_table.R'><code>R/helpers-modeltime_table.R</code></a></small>
-    <div class="hidden name"><code>pluck_modeltime_model.Rd</code></div>
+    <h1>Summarize Accuracy Metrics</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-accuracy.R'><code>R/modeltime-accuracy.R</code></a></small>
+    <div class="hidden name"><code>summarize_accuracy_metrics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>pull_modeltime_model()</code> and <code>pluck_modeltime_model()</code> functions are synonymns.</p>
+    <p>This is an internal function used by <code><a href='modeltime_accuracy.html'>modeltime_accuracy()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span><span class='op'>)</span>
-
-<span class='co'># S3 method for mdl_time_tbl</span>
-<span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span><span class='op'>)</span>
-
-<span class='fu'>pull_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>summarize_accuracy_metrics</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>truth</span>, <span class='va'>estimate</span>, <span class='va'>metric_set</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>A Modeltime Table</p></td>
+      <th>data</th>
+      <td><p>A <code>data.frame</code> containing the truth and estimate columns.</p></td>
     </tr>
     <tr>
-      <th>.model_id</th>
-      <td><p>A numeric value matching the .model_id that you want to update</p></td>
+      <th>truth</th>
+      <td><p>The column identifier for the true results (that is numeric).</p></td>
+    </tr>
+    <tr>
+      <th>estimate</th>
+      <td><p>The column identifier for the predicted results (that is also numeric).</p></td>
+    </tr>
+    <tr>
+      <th>metric_set</th>
+      <td><p>A <code><a href='https://yardstick.tidymodels.org/reference/metric_set.html'>yardstick::metric_set()</a></code> that is used to summarize one or more
+forecast accuracy (regression) metrics.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>m750_models</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ══ Workflow [trained] ══════════════════════════════════════════════════════════
-#&gt; <span style='font-style: italic;'>Preprocessor:</span><span> Recipe
-#&gt; </span><span style='font-style: italic;'>Model:</span><span> prophet_reg()
-#&gt; 
-#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────
-#&gt; 6 Recipe Steps
-#&gt; 
-#&gt; ● step_timeseries_signature()
-#&gt; ● step_rm()
-#&gt; ● step_normalize()
-#&gt; ● step_dummy()
-#&gt; ● step_fourier()
-#&gt; ● step_rm()
-#&gt; 
-#&gt; ── Model ───────────────────────────────────────────────────────────────────────
-#&gt; PROPHET Model
-#&gt; - growth: 'linear'
-#&gt; - n.changepoints: 25
-#&gt; - changepoint.range: 0.8
-#&gt; - yearly.seasonality: 'auto'
-#&gt; - weekly.seasonality: 'auto'
-#&gt; - daily.seasonality: 'auto'
-#&gt; - seasonality.mode: 'additive'
-#&gt; - changepoint.prior.scale: 0.05
-#&gt; - seasonality.prior.scale: 10
-#&gt; - holidays.prior.scale: 10
-#&gt; - logistic_cap: NULL
-#&gt; - logistic_floor: NULL
-#&gt; - extra_regressors: 0</div><div class='input'>
-</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
