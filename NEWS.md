@@ -1,5 +1,9 @@
 # modeltime (development version)
 
+__Improvements__
+
+- `modeltime_forecast()`: New argument `keep_new_data`. This is useful when the `new_data` has imprtamt information needed in analyzing the forecast.
+
 __Error Messaging__
 
 - __Calibration:__ Improve error messaging during calibration. Provide warnings if models fail. Provide report with `modeltime_calibrate(quiet = FALSE)`.

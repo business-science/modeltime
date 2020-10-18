@@ -14,6 +14,10 @@
 #' @param actual_data Reference data that is combined with the output tibble and given a `.key = "actual"`
 #' @param conf_interval An estimated confidence interval based on the calibration data.
 #'  This is designed to estimate future confidence from _out-of-sample prediction error_.
+#' @param keep_new_data Whether or not to keep the new_data in the results.
+#'  This can be useful if there is an important feature in the `new_data` needed
+#'  when forecasting.
+#'  Default: `FALSE`.
 #' @param ... Not currently used
 #'
 #'
@@ -106,6 +110,13 @@
 #' the refitted model (on data with a smaller sample size). New observations typically improve
 #' future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.
 #'
+#' __Keep New Data__
+#'
+#' Include the new data with the results of the model forecasts.
+#' This can be helpful when the new data includes information useful to the forecasts.
+#' An example is when forecasting Panel Data and the new data contains
+#' ID features related to the time series group that the forecast belongs to.
+#'
 #'
 #' @examples
 #' library(tidyverse)
@@ -161,12 +172,22 @@
 #'         actual_data = m750
 #'     )
 #'
+#' # ---- KEEP NEW DATA WITH FORECAST ----
+#' # Keeps the new data. Useful if new data has information
+#' #  like ID features that should be kept with the forecast data
+#'
+#' calibration_tbl %>%
+#'     modeltime_forecast(
+#'         new_data      = testing(splits),
+#'         keep_new_data = TRUE
+#'     )
+#'
 #' @name modeltime_forecast
 NULL
 
 #' @export
 #' @rdname modeltime_forecast
-modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
+modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_new_data = FALSE, ...) {
 
     if (is.null(new_data) && is.null(h)) {
         if (all(c(".type", ".calibration_data") %in% names(object))) {
@@ -190,13 +211,13 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
 }
 
 #' @export
-modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
+modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_new_data = FALSE, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
 
 }
 
 #' @export
-modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, ...) {
+modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_new_data = FALSE, ...) {
 
     data <- object
 
@@ -226,7 +247,8 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
             new_data    = new_data,
             h           = h,
             actual_data = actual_data,
-            bind_actual = TRUE # Binds the actual data during the forecast
+            keep_new_data = keep_new_data,
+            bind_actual = TRUE # Rowwise binds the actual data during the forecast
         )
 
     if ("actual" %in% unique(ret_1$.key)) {
@@ -247,6 +269,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
                 new_data    = new_data,
                 h           = h,
                 actual_data = actual_data,
+                keep_new_data = keep_new_data,
                 bind_actual = FALSE # Skips iterative rowwise binding of actual_data
             )
 
@@ -282,7 +305,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
 
 # SAFE FORECAST MAPPERS ----
 
-safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
+safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, keep_new_data = FALSE, ...) {
 
     safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
 
@@ -297,7 +320,8 @@ safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_
                     new_data      = new_data,
                     h             = h,
                     actual_data   = actual_data,
-                    bind_actual   = bind_actual
+                    bind_actual   = bind_actual,
+                    keep_new_data = keep_new_data
                 )
 
                 err <- ret$error
@@ -385,12 +409,12 @@ centered_residuals <- function(data_1, data_2, conf_interval) {
 #' @keywords internal
 #'
 #' @export
-mdl_time_forecast <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
+mdl_time_forecast <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, keep_new_data = FALSE, ...) {
     UseMethod("mdl_time_forecast", object)
 }
 
 #' @export
-mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
+mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, keep_new_data = FALSE, ...) {
 
     calib_provided <- FALSE
     h_provided     <- FALSE
@@ -540,12 +564,22 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
         dplyr::arrange(.key, .index)
 
+    if (keep_new_data) {
+        act_tbl <- ret %>%
+            dplyr::filter(.key == "actual")
+        pred_tbl <- ret %>%
+            dplyr::filter(.key == "prediction") %>%
+            dplyr::bind_cols(new_data)
+        ret <- dplyr::bind_rows(act_tbl, pred_tbl)
+
+    }
+
     return(ret)
 
 }
 
 #' @export
-mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, ...) {
+mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE, keep_new_data = FALSE, ...) {
 
     calib_provided <- FALSE
     h_provided     <- FALSE
@@ -750,6 +784,16 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
         dplyr::select(.key, .index, .value) %>%
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction"))) %>%
         dplyr::arrange(.key, .index)
+
+    if (keep_new_data) {
+        act_tbl <- ret %>%
+            dplyr::filter(.key == "actual")
+        pred_tbl <- ret %>%
+            dplyr::filter(.key == "prediction") %>%
+            dplyr::bind_cols(new_data)
+        ret <- dplyr::bind_rows(act_tbl, pred_tbl)
+
+    }
 
     return(ret)
 

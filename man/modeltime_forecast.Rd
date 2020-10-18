@@ -10,6 +10,7 @@ modeltime_forecast(
   h = NULL,
   actual_data = NULL,
   conf_interval = 0.95,
+  keep_new_data = FALSE,
   ...
 )
 }
@@ -27,6 +28,11 @@ Extends the calibration data \code{h} periods into the future.}
 
 \item{conf_interval}{An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
+
+\item{keep_new_data}{Whether or not to keep the new_data in the results.
+This can be useful if there is an important feature in the \code{new_data} needed
+when forecasting.
+Default: \code{FALSE}.}
 
 \item{...}{Not currently used}
 }
@@ -129,6 +135,13 @@ the difference in means.
 Refitting has no affect on the confidence interval since this is calculated independently of
 the refitted model (on data with a smaller sample size). New observations typically improve
 future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.
+
+\strong{Keep New Data}
+
+Include the new data with the results of the model forecasts.
+This can be helpful when the new data includes information useful to the forecasts.
+An example is when forecasting Panel Data and the new data contains
+ID features related to the time series group that the forecast belongs to.
 }
 \examples{
 library(tidyverse)
@@ -182,6 +195,16 @@ models_tbl \%>\%
     modeltime_forecast(
         new_data    = testing(splits),
         actual_data = m750
+    )
+
+# ---- KEEP NEW DATA WITH FORECAST ----
+# Keeps the new data. Useful if new data has information
+#  like ID features that should be kept with the forecast data
+
+calibration_tbl \%>\%
+    modeltime_forecast(
+        new_data      = testing(splits),
+        keep_new_data = TRUE
     )
 
 }

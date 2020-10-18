@@ -11,6 +11,7 @@ mdl_time_forecast(
   h = NULL,
   actual_data = NULL,
   bind_actual = TRUE,
+  keep_new_data = FALSE,
   ...
 )
 }
@@ -29,6 +30,11 @@ Extends the calibration data \code{h} periods into the future.}
 \item{actual_data}{Reference data that is combined with the output tibble and given a \code{.key = "actual"}}
 
 \item{bind_actual}{Logical. Whether or not to skip rowwise binding of `actual_data``}
+
+\item{keep_new_data}{Whether or not to keep the new_data in the results.
+This can be useful if there is an important feature in the \code{new_data} needed
+when forecasting.
+Default: \code{FALSE}.}
 
 \item{...}{Not currently used}
 }
