@@ -141,6 +141,7 @@ plot_modeltime_forecast_multi <- function(.data,
 
     # Data prep
     data_prepared <- .data %>%
+        dplyr::arrange(.key, .model_id, .index) %>%
         # dplyr::ungroup() %>%
         dplyr::mutate(.model_desc = ifelse(!is.na(.model_id), stringr::str_c(.model_id, "_", .model_desc), .model_desc)) %>%
         dplyr::mutate(.model_desc = ifelse(is.na(.value), stringr::str_c("(ERROR) ", .model_desc), .model_desc)) %>%
