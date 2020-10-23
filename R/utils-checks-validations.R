@@ -119,6 +119,15 @@ check_unused_factor_levels <- function(data) {
 
 # VALIDATIONS ----
 
+validate_no_overlapping_dates <- function(data, abort_message) {
+
+    date_var_expr <- rlang::sym(timetk::tk_get_timeseries_variables(data)[1])
+    idx <- data %>% dplyr::pull(!! date_var_expr)
+    if (length(idx) != length(unique(idx)) ) {
+        rlang::abort(abort_message)
+    }
+
+}
 
 validate_model_classes <- function(data, accept_classes = c("model_fit", "workflow")) {
 

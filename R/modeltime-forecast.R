@@ -208,11 +208,32 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
     }
 
     if (!is.null(h)) {
+
+        # Check for .calibration data or actual data
+        using_actual <- FALSE
         if (!all(c(".type", ".calibration_data") %in% names(object))) {
-           if (is.null(actual_data)) {
+            if (is.null(actual_data)) {
                rlang::abort("Forecasting with 'h' requires one of: \n - '.calibration_data' (see '?modeltime_calibrate()') \n - 'actual_data'")
-           }
+            }
+            using_actual <- TRUE
         }
+
+        # Ensure no overlapping timestamps
+        if (using_actual) {
+            validate_no_overlapping_dates(
+                data          = actual_data,
+                abort_message = "Overlapping dates detected indicating time series groups. `h` cannot be used to forecast. Try using `new_data` that has been extended using `timetk::future_frame()`."
+            )
+        } else {
+            calib_data <- object %>%
+                purrr::pluck(".calibration_data", 1)
+
+            validate_no_overlapping_dates(
+                data          = calib_data,
+                abort_message = "Overlapping dates detected indicating time series groups. `h` cannot be used to forecast. Try using `new_data` that has been extended using `timetk::future_frame()`."
+            )
+        }
+
     }
 
     UseMethod("modeltime_forecast")

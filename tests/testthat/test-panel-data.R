@@ -30,7 +30,7 @@ wflw_fit_svm <- workflow() %>%
 
 
 
-test_that("Forecast Jumbled", {
+test_that("Panel Data - Forecast Jumbled", {
 
     forecast_tbl <- modeltime_table(
         wflw_fit_prophet,
@@ -38,7 +38,7 @@ test_that("Forecast Jumbled", {
     ) %>%
         modeltime_forecast(
             new_data       = data_set,
-            actual_data    = m4_monthly_jumbled,
+            actual_data    = data_set,
             keep_data      = TRUE,
             arrange_index  = FALSE
         )
@@ -53,11 +53,32 @@ test_that("Forecast Jumbled", {
 
     expect_equal(svm_tbl$.index, svm_tbl$date)
 
-    # forecast_tbl %>%
-    #     ggplot(aes(.index, .value, color = id)) +
-    #     geom_line() +
-    #     facet_wrap(~ id + .model_desc)
+
 
 })
 
+test_that("Panel Data - Error Checks", {
+
+    # Using h with overlapping actual data
+    expect_error({
+        modeltime_table(
+            wflw_fit_prophet,
+            wflw_fit_svm
+        ) %>%
+            modeltime_forecast(h = "2 years", actual_data = data_set)
+    })
+
+    # Using h with overlapping actual data
+    expect_error({
+        modeltime_table(
+            wflw_fit_prophet,
+            wflw_fit_svm
+        ) %>%
+            modeltime_calibrate(data_set, quiet = FALSE) %>%
+            modeltime_forecast(h = "2 years")
+    })
+
+
+
+})
 
