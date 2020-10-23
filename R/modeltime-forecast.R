@@ -197,6 +197,7 @@ NULL
 #' @rdname modeltime_forecast
 modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_data = FALSE, arrange_index = FALSE, ...) {
 
+    # Required arguments & messages
     if (is.null(new_data) && is.null(h)) {
         if (all(c(".type", ".calibration_data") %in% names(object))) {
             message("Using '.calibration_data' to forecast.")
@@ -207,9 +208,11 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
         }
     }
 
+    # Horizon, h: Checks
     if (!is.null(h)) {
 
-        # Check for .calibration data or actual data
+        # Check for .calibration data or actual data if using `h`
+        # - h needs this to extend from
         using_actual <- FALSE
         if (!all(c(".type", ".calibration_data") %in% names(object))) {
             if (is.null(actual_data)) {
@@ -218,11 +221,13 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
             using_actual <- TRUE
         }
 
-        # Ensure no overlapping timestamps
+        # Ensure no overlapping timestamps if using `h`
+        # - `h` doesn't know how to handle overlapping time series
+        abort_msg <- "modeltime_forecast(): Overlapping dates detected indicating time series groups. 'h' cannot be used to forecast. Try using 'new_data' that has been extended using `timetk::future_frame()`."
         if (using_actual) {
             validate_no_overlapping_dates(
                 data          = actual_data,
-                abort_message = "Overlapping dates detected indicating time series groups. `h` cannot be used to forecast. Try using `new_data` that has been extended using `timetk::future_frame()`."
+                abort_message = abort_msg
             )
         } else {
             calib_data <- object %>%
@@ -230,7 +235,7 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
 
             validate_no_overlapping_dates(
                 data          = calib_data,
-                abort_message = "Overlapping dates detected indicating time series groups. `h` cannot be used to forecast. Try using `new_data` that has been extended using `timetk::future_frame()`."
+                abort_message = abort_msg
             )
         }
 
@@ -242,7 +247,6 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
 #' @export
 modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_data = FALSE, arrange_index = FALSE, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
-
 }
 
 #' @export
@@ -322,7 +326,8 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
     # ADD CONF INTERVALS ----
     if (!is.null(conf_interval)) {
         ret <- ret %>%
-            safe_conf_interval_map(data_calibration, conf_interval = conf_interval)
+            safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
+            dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
     }
 
     # REMOVE ANY EXTRA-ACTUAL DATA ----

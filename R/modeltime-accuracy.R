@@ -229,7 +229,6 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...
     test_metrics_tbl <- tibble::tibble()
     if (!is.null(test_data)) {
 
-        # print(test_data)
         test_metrics_tbl <- test_data %>%
             summarize_accuracy_metrics(truth = .actual, estimate = .prediction, metric_set = metrics) %>%
             dplyr::ungroup()

@@ -8,6 +8,11 @@ __Panel Data__
 - `arrange_index`: Gains a new argument `arrange_index`. By default, the forecast keeps the rows in the same order as the incoming data. Prior versions arranged Model Predictions by `.index`, which impacts the users ability to match to Panel Data which is not likely to be arranged by date. Prediction best-practices are to keep the original order of the data, which 
 will be preserved by default. To get the old behavior, simply toggle `arrange_index = TRUE`. 
 
+`modeltime_calibrate()`: Can now handle panel data.
+
+`modeltime_accuracy()`: Can now handle panel data. 
+
+`plot_modeltime_forecast()`: Can handle panel data provided the data is grouped by an ID column prior to plotting. 
 
 __Error Messaging__
 

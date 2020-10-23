@@ -210,9 +210,12 @@ modeltime_calibrate.workflow <- function(object, new_data,
 
 mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_text) {
 
+    # Generate Predictions
+    # - Return format: .index, actual, prediction
     predictions_tbl <- forecast_data %>%
-        tidyr::pivot_wider(names_from = .key, values_from = .value) %>%
-        tidyr::drop_na()
+        tidyr::pivot_wider(names_from = .key, values_from = .value, values_fn = list) %>%
+        tidyr::drop_na() %>%
+        tidyr::unnest(cols = c(actual, prediction))
 
     # Return Residuals
     tibble::tibble(
@@ -249,7 +252,6 @@ calc_residuals <- function(object, test_data = NULL, ...) {
 
         idx_var_text <- timetk::tk_get_timeseries_variables(test_data)[1]
 
-        # print(is_modeltime_model(object))
         if (is_modeltime_model(object)) {
             # Is Modeltime Object
 
@@ -259,7 +261,6 @@ calc_residuals <- function(object, test_data = NULL, ...) {
             idx_resid <- timetk::tk_index(residual_tbl)
             idx_test  <- timetk::tk_index(test_data)
 
-            # print(identical(idx_resid, idx_test))
             if (all(idx_test %in% idx_resid)) {
                 # Can use Stored Residuals
                 test_metrics_tbl <- residual_tbl %>%
@@ -297,8 +298,6 @@ calc_residuals <- function(object, test_data = NULL, ...) {
         }
 
     }
-
-    # print(test_metrics_tbl)
 
     metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
 
