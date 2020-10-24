@@ -210,12 +210,18 @@ modeltime_calibrate.workflow <- function(object, new_data,
 
 mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_text) {
 
+    # print("Check 1")
+    # print(forecast_data)
+
     # Generate Predictions
     # - Return format: .index, actual, prediction
     predictions_tbl <- forecast_data %>%
         tidyr::pivot_wider(names_from = .key, values_from = .value, values_fn = list) %>%
         tidyr::drop_na() %>%
         tidyr::unnest(cols = c(actual, prediction))
+
+    # print("Check 2")
+    # print(predictions_tbl)
 
     # Return Residuals
     tibble::tibble(
