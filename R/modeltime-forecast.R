@@ -604,9 +604,11 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
         dplyr::select(.key, .index, .value) %>%
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction")))
 
+    # Keep Data
+    act_tbl  <- NULL
+    pred_tbl <- NULL
     if (keep_data) {
 
-        act_tbl <- NULL
         if (!is.null(actual_data) && bind_actual) {
             act_tbl <- ret %>%
                 dplyr::filter(.key == "actual") %>%
@@ -840,9 +842,11 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
         dplyr::select(.key, .index, .value) %>%
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction")))
 
+    # Keep Data
+    act_tbl  <- NULL
+    pred_tbl <- NULL
     if (keep_data) {
 
-        act_tbl <- NULL
         if (!is.null(actual_data) && bind_actual) {
             act_tbl <- ret %>%
                 dplyr::filter(.key == "actual") %>%

@@ -69,6 +69,8 @@ test_that("Panel Data - Forecast Jumbled", {
             arrange_index  = FALSE
         )
 
+    # forecast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
+
     # * Test Actual ----
     actual_tbl <- forecast_tbl %>%
         filter(.key == "actual")

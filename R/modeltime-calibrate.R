@@ -210,8 +210,11 @@ modeltime_calibrate.workflow <- function(object, new_data,
 
 mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_text) {
 
-    # print("Check 1")
-    # print(forecast_data)
+    # print("Check 1 - actual")
+    # print(forecast_data %>% dplyr::filter(.key == "actual"))
+    #
+    # print("Check 2 - predictions")
+    # print(forecast_data %>% dplyr::filter(.key == "prediction"))
 
     # Generate Predictions
     # - Return format: .index, actual, prediction
@@ -220,16 +223,18 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
         tidyr::drop_na() %>%
         tidyr::unnest(cols = c(actual, prediction))
 
-    # print("Check 2")
+    # print("Check 3 - Predictions Table")
     # print(predictions_tbl)
 
     # Return Residuals
     tibble::tibble(
         !!idx_var_text   := test_data %>% timetk::tk_index(),
         .actual           = predictions_tbl$actual,
-        .prediction       = predictions_tbl$prediction,
-        .residuals        = predictions_tbl$actual - predictions_tbl$prediction
-    )
+        .prediction       = predictions_tbl$prediction
+    ) %>%
+        dplyr::mutate(
+            .residuals    = .actual - .prediction
+        )
 
 }
 
@@ -277,9 +282,7 @@ calc_residuals <- function(object, test_data = NULL, ...) {
                 test_metrics_tbl <- object %>%
                     mdl_time_forecast(
                         new_data      = test_data,
-                        actual_data   = test_data,
-                        conf_interval = NULL,
-                        ...
+                        actual_data   = test_data
                     ) %>%
                     mdl_time_forecast_to_residuals(
                         test_data    = test_data,
@@ -292,9 +295,7 @@ calc_residuals <- function(object, test_data = NULL, ...) {
             test_metrics_tbl <- object %>%
                 mdl_time_forecast(
                     new_data      = test_data,
-                    actual_data   = test_data,
-                    # conf_interval = NULL,
-                    ...
+                    actual_data   = test_data
                 ) %>%
                 mdl_time_forecast_to_residuals(
                     test_data    = test_data,
