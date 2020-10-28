@@ -1,4 +1,4 @@
-# modeltime (development version)
+# modeltime 0.3.0
 
 __Panel Data__
 
@@ -20,7 +20,7 @@ __Error Messaging__
 
 __Compatibility__
 
-- Compatibility with `parsnip >= 0.1.3.9000`. Uses `set_encodings()` new parameter `allow_sparse_x`. 
+- Compatibility with `parsnip >= 0.1.4`. Uses `set_encodings()` new parameter `allow_sparse_x`. 
 
 # modeltime 0.2.1
 
