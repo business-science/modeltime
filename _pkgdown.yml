@@ -53,6 +53,7 @@ reference:
     - update_model_description
     - pluck_modeltime_model
     - default_forecast_accuracy_metric_set
+    - summarize_accuracy_metrics
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
     contents:

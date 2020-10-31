@@ -93,7 +93,7 @@ These functions are not intended for user use." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -173,7 +173,8 @@ These functions are not intended for user use.</p>
   h <span class='op'>=</span> <span class='cn'>NULL</span>,
   actual_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bind_actual <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  keep_new_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  keep_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  arrange_index <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -208,10 +209,16 @@ Extends the calibration data <code>h</code> periods into the future.</p></td>
       <td><p>Logical. Whether or not to skip rowwise binding of `actual_data``</p></td>
     </tr>
     <tr>
-      <th>keep_new_data</th>
-      <td><p>Whether or not to keep the new_data in the results.
-This can be useful if there is an important feature in the <code>new_data</code> needed
+      <th>keep_data</th>
+      <td><p>Whether or not to keep the <code>new_data</code> and <code>actual_data</code> as extra columns in the results.
+This can be useful if there is an important feature in the <code>new_data</code> and <code>actual_data</code> needed
 when forecasting.
+Default: <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>arrange_index</th>
+      <td><p>Whether or not to sort the index in rowwise chronological order (oldest to newest) or to
+keep the original order of the data.
 Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>

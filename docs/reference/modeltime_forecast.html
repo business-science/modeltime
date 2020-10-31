@@ -93,7 +93,7 @@ forecasting future data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -172,7 +172,8 @@ forecasting future data.</p>
   h <span class='op'>=</span> <span class='cn'>NULL</span>,
   actual_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   conf_interval <span class='op'>=</span> <span class='fl'>0.95</span>,
-  keep_new_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  keep_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  arrange_index <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -204,10 +205,16 @@ Extends the calibration data <code>h</code> periods into the future.</p></td>
 This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></td>
     </tr>
     <tr>
-      <th>keep_new_data</th>
-      <td><p>Whether or not to keep the new_data in the results.
-This can be useful if there is an important feature in the <code>new_data</code> needed
+      <th>keep_data</th>
+      <td><p>Whether or not to keep the <code>new_data</code> and <code>actual_data</code> as extra columns in the results.
+This can be useful if there is an important feature in the <code>new_data</code> and <code>actual_data</code> needed
 when forecasting.
+Default: <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>arrange_index</th>
+      <td><p>Whether or not to sort the index in rowwise chronological order (oldest to newest) or to
+keep the original order of the data.
 Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
@@ -297,11 +304,14 @@ the difference in means.</p>
 <p>Refitting has no affect on the confidence interval since this is calculated independently of
 the refitted model (on data with a smaller sample size). New observations typically improve
 future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.</p>
-<p><strong>Keep New Data</strong></p>
-<p>Include the new data with the results of the model forecasts.
+<p><strong>Keep Data</strong></p>
+<p>Include the new data (and actual data) as extra columns with the results of the model forecasts.
 This can be helpful when the new data includes information useful to the forecasts.
-An example is when forecasting Panel Data and the new data contains
+An example is when forecasting <em>Panel Data</em> and the new data contains
 ID features related to the time series group that the forecast belongs to.</p>
+<p><strong>Arrange Index</strong></p>
+<p>By default, <code>modeltime_forecast()</code> keeps the original order of the data.
+If desired, the user can sort the output by <code>.key</code>, <code>.model_id</code> and <code>.index</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
@@ -393,22 +403,22 @@ ID features related to the time series group that the forecast belongs to.</p>
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'>modeltime_forecast</span><span class='op'>(</span>
         new_data      <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
-        keep_new_data <span class='op'>=</span> <span class='cn'>TRUE</span>
+        keep_data     <span class='op'>=</span> <span class='cn'>TRUE</span>
     <span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 31 x 10</span><span>
-#&gt;    .model_id .model_desc .key  .index     .value id    date       value .conf_lo
-#&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>         1 ARIMA(0,1,… pred… 2012-12-01 </span><span style='text-decoration: underline;'>10</span><span>449. M750  2012-12-01 </span><span style='text-decoration: underline;'>10</span><span>490   </span><span style='text-decoration: underline;'>10</span><span>058.
-#&gt; </span><span style='color: #555555;'> 2</span><span>         1 ARIMA(0,1,… pred… 2013-01-01 </span><span style='text-decoration: underline;'>10</span><span>567. M750  2013-01-01 </span><span style='text-decoration: underline;'>10</span><span>550   </span><span style='text-decoration: underline;'>10</span><span>176.
-#&gt; </span><span style='color: #555555;'> 3</span><span>         1 ARIMA(0,1,… pred… 2013-02-01 </span><span style='text-decoration: underline;'>10</span><span>572. M750  2013-02-01 </span><span style='text-decoration: underline;'>10</span><span>540   </span><span style='text-decoration: underline;'>10</span><span>181.
-#&gt; </span><span style='color: #555555;'> 4</span><span>         1 ARIMA(0,1,… pred… 2013-03-01 </span><span style='text-decoration: underline;'>10</span><span>768. M750  2013-03-01 </span><span style='text-decoration: underline;'>10</span><span>720   </span><span style='text-decoration: underline;'>10</span><span>377.
-#&gt; </span><span style='color: #555555;'> 5</span><span>         1 ARIMA(0,1,… pred… 2013-04-01 </span><span style='text-decoration: underline;'>10</span><span>767. M750  2013-04-01 </span><span style='text-decoration: underline;'>10</span><span>700   </span><span style='text-decoration: underline;'>10</span><span>376.
-#&gt; </span><span style='color: #555555;'> 6</span><span>         1 ARIMA(0,1,… pred… 2013-05-01 </span><span style='text-decoration: underline;'>10</span><span>765. M750  2013-05-01 </span><span style='text-decoration: underline;'>10</span><span>750   </span><span style='text-decoration: underline;'>10</span><span>375.
-#&gt; </span><span style='color: #555555;'> 7</span><span>         1 ARIMA(0,1,… pred… 2013-06-01 </span><span style='text-decoration: underline;'>10</span><span>503. M750  2013-06-01 </span><span style='text-decoration: underline;'>10</span><span>540   </span><span style='text-decoration: underline;'>10</span><span>112.
-#&gt; </span><span style='color: #555555;'> 8</span><span>         1 ARIMA(0,1,… pred… 2013-07-01  </span><span style='text-decoration: underline;'>9</span><span>019. M750  2013-07-01  </span><span style='text-decoration: underline;'>9</span><span>030    </span><span style='text-decoration: underline;'>8</span><span>629.
-#&gt; </span><span style='color: #555555;'> 9</span><span>         1 ARIMA(0,1,… pred… 2013-08-01  </span><span style='text-decoration: underline;'>9</span><span>562. M750  2013-08-01  </span><span style='text-decoration: underline;'>9</span><span>620    </span><span style='text-decoration: underline;'>9</span><span>171.
-#&gt; </span><span style='color: #555555;'>10</span><span>         1 ARIMA(0,1,… pred… 2013-09-01  </span><span style='text-decoration: underline;'>9</span><span>831. M750  2013-09-01 </span><span style='text-decoration: underline;'>10</span><span>050    </span><span style='text-decoration: underline;'>9</span><span>440.
-#&gt; </span><span style='color: #555555;'># … with 21 more rows, and 1 more variable: .conf_hi </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;    .model_id .model_desc .key  .index     .value .conf_lo .conf_hi id   
+#&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>         1 ARIMA(0,1,… pred… 2012-12-01 </span><span style='text-decoration: underline;'>10</span><span>449.   </span><span style='text-decoration: underline;'>10</span><span>058.   </span><span style='text-decoration: underline;'>10</span><span>839. M750 
+#&gt; </span><span style='color: #555555;'> 2</span><span>         1 ARIMA(0,1,… pred… 2013-01-01 </span><span style='text-decoration: underline;'>10</span><span>567.   </span><span style='text-decoration: underline;'>10</span><span>176.   </span><span style='text-decoration: underline;'>10</span><span>957. M750 
+#&gt; </span><span style='color: #555555;'> 3</span><span>         1 ARIMA(0,1,… pred… 2013-02-01 </span><span style='text-decoration: underline;'>10</span><span>572.   </span><span style='text-decoration: underline;'>10</span><span>181.   </span><span style='text-decoration: underline;'>10</span><span>963. M750 
+#&gt; </span><span style='color: #555555;'> 4</span><span>         1 ARIMA(0,1,… pred… 2013-03-01 </span><span style='text-decoration: underline;'>10</span><span>768.   </span><span style='text-decoration: underline;'>10</span><span>377.   </span><span style='text-decoration: underline;'>11</span><span>159. M750 
+#&gt; </span><span style='color: #555555;'> 5</span><span>         1 ARIMA(0,1,… pred… 2013-04-01 </span><span style='text-decoration: underline;'>10</span><span>767.   </span><span style='text-decoration: underline;'>10</span><span>376.   </span><span style='text-decoration: underline;'>11</span><span>157. M750 
+#&gt; </span><span style='color: #555555;'> 6</span><span>         1 ARIMA(0,1,… pred… 2013-05-01 </span><span style='text-decoration: underline;'>10</span><span>765.   </span><span style='text-decoration: underline;'>10</span><span>375.   </span><span style='text-decoration: underline;'>11</span><span>156. M750 
+#&gt; </span><span style='color: #555555;'> 7</span><span>         1 ARIMA(0,1,… pred… 2013-06-01 </span><span style='text-decoration: underline;'>10</span><span>503.   </span><span style='text-decoration: underline;'>10</span><span>112.   </span><span style='text-decoration: underline;'>10</span><span>893. M750 
+#&gt; </span><span style='color: #555555;'> 8</span><span>         1 ARIMA(0,1,… pred… 2013-07-01  </span><span style='text-decoration: underline;'>9</span><span>019.    </span><span style='text-decoration: underline;'>8</span><span>629.    </span><span style='text-decoration: underline;'>9</span><span>410. M750 
+#&gt; </span><span style='color: #555555;'> 9</span><span>         1 ARIMA(0,1,… pred… 2013-08-01  </span><span style='text-decoration: underline;'>9</span><span>562.    </span><span style='text-decoration: underline;'>9</span><span>171.    </span><span style='text-decoration: underline;'>9</span><span>953. M750 
+#&gt; </span><span style='color: #555555;'>10</span><span>         1 ARIMA(0,1,… pred… 2013-09-01  </span><span style='text-decoration: underline;'>9</span><span>831.    </span><span style='text-decoration: underline;'>9</span><span>440.   </span><span style='text-decoration: underline;'>10</span><span>221. M750 
+#&gt; </span><span style='color: #555555;'># … with 21 more rows, and 2 more variables: date </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span style='color: #555555;'>, value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
