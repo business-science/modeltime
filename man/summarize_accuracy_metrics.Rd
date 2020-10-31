@@ -19,3 +19,25 @@ forecast accuracy (regression) metrics.}
 \description{
 This is an internal function used by \code{modeltime_accuracy()}.
 }
+\examples{
+library(tibble)
+library(dplyr)
+
+predictions_tbl <- tibble(
+    group = c("model 1", "model 1", "model 1",
+              "model 2", "model 2", "model 2"),
+    truth = c(1, 2, 3,
+              1, 2, 3),
+    estimate = c(1.2, 2.0, 2.5,
+                 0.9, 1.9, 3.3)
+)
+
+predictions_tbl \%>\%
+    group_by(group) \%>\%
+    summarize_accuracy_metrics(
+        truth, estimate,
+        metric_set = default_forecast_accuracy_metric_set()
+    )
+
+
+}
