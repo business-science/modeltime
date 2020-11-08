@@ -5,15 +5,21 @@
 #' in the `tidymodels` ecosystem.
 #'
 #' @param ... Fitted `parsnip` model or `workflow` objects
+#' @param .l A list containing fitted `parsnip` model or `workflow` objects
 #'
 #' @details
 #'
-#' This function:
+#' `modeltime_table()`:
 #'
 #' 1. Creates a table of models
 #' 2. Validates that all objects are models (parsnip or workflows objects) and
 #'  all models have been fitted (trained)
 #' 3. Provides an ID and Description of the models
+#'
+#' `as_modeltime_table()`:
+#'
+#' Converts a `list` of models to a modeltime table. Useful if programatically creating
+#' Modeltime Tables from models stored in a `list`.
 #'
 #' @examples
 #' library(tidyverse)
@@ -38,9 +44,14 @@
 #'
 #' # ---- MODELTIME TABLE ----
 #'
+#' # Make a Modeltime Table
 #' models_tbl <- modeltime_table(
 #'     model_fit_arima
 #' )
+#'
+#' # Can also convert a list of models
+#' list(model_fit_arima) %>%
+#'     as_modeltime_table()
 #'
 #' # ---- CALIBRATE ----
 #'
@@ -63,9 +74,22 @@
 #' @export
 #' @name modeltime_table
 modeltime_table <- function(...) {
+    as_modeltime_table(list(...))
+}
+
+#' @export
+print.mdl_time_tbl <- function(x, ...) {
+    cat("# Modeltime Table\n")
+    class(x) <- class(x)[!(class(x) %in% c("mdl_time_tbl"))]
+    print(x, ...)
+}
+
+#' @export
+#' @rdname modeltime_table
+as_modeltime_table <- function(.l) {
 
     ret <- tibble::tibble(
-        .model = list(...)
+        .model = .l
     ) %>%
         tibble::rowid_to_column(var = ".model_id")
 
@@ -81,12 +105,4 @@ modeltime_table <- function(...) {
 
     return(ret)
 }
-
-#' @export
-print.mdl_time_tbl <- function(x, ...) {
-    cat("# Modeltime Table\n")
-    class(x) <- class(x)[!(class(x) %in% c("mdl_time_tbl"))]
-    print(x, ...)
-}
-
 

@@ -2,12 +2,17 @@
 % Please edit documentation in R/modeltime-table.R
 \name{modeltime_table}
 \alias{modeltime_table}
+\alias{as_modeltime_table}
 \title{Scale forecast analysis with a Modeltime Table}
 \usage{
 modeltime_table(...)
+
+as_modeltime_table(.l)
 }
 \arguments{
 \item{...}{Fitted \code{parsnip} model or \code{workflow} objects}
+
+\item{.l}{A list containing fitted \code{parsnip} model or \code{workflow} objects}
 }
 \description{
 Designed to perform forecasts at scale using models created with
@@ -15,13 +20,18 @@ Designed to perform forecasts at scale using models created with
 in the \code{tidymodels} ecosystem.
 }
 \details{
-This function:
+\code{modeltime_table()}:
 \enumerate{
 \item Creates a table of models
 \item Validates that all objects are models (parsnip or workflows objects) and
 all models have been fitted (trained)
 \item Provides an ID and Description of the models
 }
+
+\code{as_modeltime_table()}:
+
+Converts a \code{list} of models to a modeltime table. Useful if programatically creating
+Modeltime Tables from models stored in a \code{list}.
 }
 \examples{
 library(tidyverse)
@@ -46,9 +56,14 @@ model_fit_arima <- arima_reg() \%>\%
 
 # ---- MODELTIME TABLE ----
 
+# Make a Modeltime Table
 models_tbl <- modeltime_table(
     model_fit_arima
 )
+
+# Can also convert a list of models
+list(model_fit_arima) \%>\%
+    as_modeltime_table()
 
 # ---- CALIBRATE ----
 
