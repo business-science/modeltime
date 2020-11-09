@@ -1,6 +1,10 @@
-# modeltime (development version)
+# modeltime 0.3.1
 
 `as_modeltime_table()`: New function to convert one or more fitted models stored in a `list` to a Modeltime Table. 
+
+__Bug Fixes__
+
+- Update `m750_models`: Fixes error "R parsnip Error: Internal error: Unknown `composition` type."
 
 # modeltime 0.3.0
 
