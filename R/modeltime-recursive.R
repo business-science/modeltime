@@ -4,8 +4,8 @@
 #' @param transform A transformation performed on new_data after
 #' each step of recursive algorithm. It can be an object of types:
 #'
-#' * recipe
-#' * function
+#' * prepped `recipe`
+#' * `function` with two argument: `temp_new_data` and `slice_idx`
 #'
 #' @param train_tail A tibble with tail of training data set.
 #' In most cases it'll be required to create some variables
@@ -13,11 +13,31 @@
 #'
 #' @return An object with added `recursive` class
 #'
+#' @details
+#' Recursive model can be used if some of the features used for training
+#' is based of dependent variable we already are trying to forecast.
+#' Typically, among these features we can find lags (e.g. created with `step_lag()`)
+#' or variables crated with sliding window.
+#'
+#' When producing forecast, the following steps are performed:
+#'
+#' 1. Computing forecast for first row of new data.
+#' The first row cannot contain NA in any required column.
+#' 2. Filling i-th place of the dependent variable column with
+#' already computed forecast.
+#' 3. Computing missing features for next step, based on
+#' already calculated prediction. These features are computed
+#' with on a tibble object made from binded `train_tail` (i.e. tail of
+#' training data set) and `new_data` (which is an argument of predict function).
+#' 4. Jumping into point 2., and repeating rest of steps till the for-loop is ended.
+#'
 #' @examples
 #' library(dplyr)
 #' library(parsnip)
 #' library(recipes)
 #' library(modeltime)
+#'
+#' # Using recipe object
 #'
 #' dax_stock <-
 #'    as_tibble(EuStockMarkets) %>%
@@ -55,6 +75,49 @@
 #'    recursive_linear %>%
 #'    predict(new_data)
 #'
+#' # Using function as transform
+#'
+#' dax_stock <-
+#'   as_tibble(EuStockMarkets) %>%
+#'   select(DAX) %>%
+#'   bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
+#'
+#' transform_fun <- function(data, slice_idx){
+#'    data %>%
+#'    mutate(moving_sum = lag(slider::slide_dbl(
+#'        DAX, .f = mean, .before = 4L
+#'     ), 1))
+#'  }
+#'
+#' dax_stock_m <-
+#'   dax_stock %>%
+#'   mutate(moving_sum = lag(slider::slide_dbl(
+#'        DAX, .f = mean, .before = 4L
+#'    ), 1))
+#'
+#' train_data <-
+#'   dax_stock_m %>%
+#'   filter(!is.na(DAX)) %>%
+#'   na.omit()
+#'
+#' new_data <-
+#'   dax_stock_m %>%
+#'   filter(is.na(DAX))
+#'
+#' model_linear <-
+#'    linear_reg() %>%
+#'    set_engine("lm") %>%
+#'    fit(DAX ~ ., data = train_data)
+#'
+#' recursive_linear <-
+#'    model_linear %>%
+#'    recursive(transform_fun,
+#'              train_tail = tail(train_data, 10))
+#'
+#' pred <-
+#'    recursive_linear %>%
+#'    predict(new_data)
+#'
 #' @export
 recursive <- function(object, transform, train_tail, ...){
     object$spec[["forecast"]] <- "recursive"
@@ -75,7 +138,7 @@ recursive <- function(object, transform, train_tail, ...){
             filter(source == "derived") %>%
             .$variable
 
-        .transform <- function(temp_new_data, new_data_size, slice_idx){
+        .transform_fun <- function(temp_new_data, new_data_size, slice_idx){
             temp_new_data <-
                 temp_new_data %>%
                 select(-!!.derived_features)
@@ -85,13 +148,13 @@ recursive <- function(object, transform, train_tail, ...){
                 .[slice_idx, ]
         }
     } else if (inherits(.transform, "function")){
-        .transform <- function(temp_new_data, new_data, slice_idx){
+        .transform_fun <- function(temp_new_data, new_data_size, slice_idx){
             .transform(temp_new_data, slice_idx) %>%
                 slice_tail(n = new_data_size) %>%
                 .[slice_idx, ]
         }
     }
-    .transform
+    .transform_fun
 }
 
 #' @export
@@ -131,3 +194,4 @@ predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...)
     }
     .preds
 }
+
