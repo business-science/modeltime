@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -105,7 +105,8 @@
 
       
 
-      </header><script src="extending-modeltime_files/header-attrs-2.4/header-attrs.js"></script><script src="extending-modeltime_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="extending-modeltime_files/header-attrs-2.5/header-attrs.js"></script><script src="extending-modeltime_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="extending-modeltime_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="extending-modeltime_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extending Modeltime (Developer Tools)</h1>
@@ -173,22 +174,22 @@
 <h3 class="hasAnchor">
 <a href="#libraries" class="anchor"></a>Libraries</h3>
 <p>To use the code in this tutorial, you’ll need to have the following packages installed.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://parsnip.tidymodels.org">parsnip</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://parsnip.tidymodels.org">parsnip</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/forecast/">forecast</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rsample.tidymodels.org">rsample</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data" class="anchor"></a>Data</h3>
 <p>We’ll use <code>taylor_30_min</code> data from the <code>timetk</code> package, which is electricity demand data at a 30-minute interval.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">taylor_30_min</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">taylor_30_min</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div id="stlm-model---a-quick-overview" class="section level3">
@@ -202,19 +203,19 @@
 <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html">stlm()</a></code> - Creates a model from the <code>msts</code> object.</li>
 </ul>
 <p>Note that we use seasonal periods (<code>24*2 = 48</code>) for daily seasonality because this series has been aggregated at a 30-minute interval. The second seasonality is at 7-days, so we just use <code>24*2*7</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">stlm_model</span> <span class="op">&lt;-</span> <span class="va">taylor_30_min</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">stlm_model</span> <span class="op">&lt;-</span> <span class="va">taylor_30_min</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/msts.html">msts</a></span><span class="op">(</span>seasonal.periods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span><span class="op">*</span><span class="fl">2</span>, <span class="fl">24</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html">stlm</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">stlm_model</span><span class="op">$</span><span class="va">stl</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<span class="va">stlm_model</span><span class="op">$</span><span class="va">stl</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>The <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.html">forecast()</a></code> function is used to generate predictions, much like the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> function.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">stlm_model</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">stlm_model</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.html">forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">7</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Looks like it’s doing a pretty decent job of forecasting the Taylor 30-Min Data.</p>
 </div>
@@ -250,17 +251,17 @@
 <h3 class="hasAnchor">
 <a href="#step-1-register-the-model-modes-and-arguments" class="anchor"></a>Step 1: Register the Model, Modes, and Arguments</h3>
 <p>Let’s add a new model called <code>decomposition_reg()</code> for Regression by Decomposition. Because Time Series analysis is generally regression, we’ll just register the regression mode.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_new_model</a></span><span class="op">(</span><span class="st">"decomposition_reg"</span><span class="op">)</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_new_model</a></span><span class="op">(</span><span class="st">"decomposition_reg"</span><span class="op">)</span>
 <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_mode</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"decomposition_reg"</span>, mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span>
 <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_engine</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"decomposition_reg"</span>, mode <span class="op">=</span> <span class="st">"regression"</span>, eng <span class="op">=</span> <span class="st">"stlm_ets"</span><span class="op">)</span>
 
 <span class="co"># Here we set the dependency to forecast, though we can also use</span>
 <span class="co"># your package if you import the lower level package</span>
-<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"decomposition_reg"</span>, eng <span class="op">=</span> <span class="st">"stlm_ets"</span>, pkg <span class="op">=</span> <span class="st">"forecast"</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_dependency</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"decomposition_reg"</span>, eng <span class="op">=</span> <span class="st">"stlm_ets"</span>, pkg <span class="op">=</span> <span class="st">"forecast"</span><span class="op">)</span></code></pre></div>
 <p>We can use <code><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info()</a></code> to see what’s been added to the registered model.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info</a></span><span class="op">(</span><span class="st">"decomposition_reg"</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">show_model_info</a></span><span class="op">(</span><span class="st">"decomposition_reg"</span><span class="op">)</span>
 <span class="co">#&gt; Information for `decomposition_reg`</span>
 <span class="co">#&gt;  modes: unknown, regression </span>
 <span class="co">#&gt; </span>
@@ -271,10 +272,10 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  no registered fit modules.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  no registered prediction modules.</span></pre></div>
+<span class="co">#&gt;  no registered prediction modules.</span></code></pre></div>
 <p>We need to add model arguments as well. We’ll use <code>set_model_args()</code> to add the appropriate model arguments.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># 1st Frequency (period_seasonal_1 is a non-jargony term)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># 1st Frequency (period_seasonal_1 is a non-jargony term)</span>
 <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_model_arg</a></span><span class="op">(</span>
   model        <span class="op">=</span> <span class="st">"decomposition_reg"</span>, 
   eng          <span class="op">=</span> <span class="st">"stlm_ets"</span>, 
@@ -292,15 +293,15 @@
   original     <span class="op">=</span> <span class="st">"period_seasonal_2"</span>, 
   func         <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"foo"</span>, fun <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span>,
   has_submodel <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><strong>Important note</strong>: We are going to map these “modeltime” arguments to a lower-level bridge function, so we don’t need <code>original = seasonal.periods</code>. In fact, we can’t do this because you need to have a one-to-one relationship between your parsnip/modeltime model arguments and the lower-level modeling function.</p>
 </div>
 <div id="step-2-create-the-model-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#step-2-create-the-model-function" class="anchor"></a>Step 2: Create the model function</h3>
 <p>We’ll create a <code>decomposition_reg()</code> function that will be our core <code>parsnip</code> function.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">decomposition_reg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mode</span> <span class="op">=</span> <span class="st">"regression"</span>, 
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">decomposition_reg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mode</span> <span class="op">=</span> <span class="st">"regression"</span>, 
                               <span class="va">period_seasonal_1</span> <span class="op">=</span> <span class="cn">NULL</span>, 
                               <span class="va">period_seasonal_2</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span>
 
@@ -318,7 +319,7 @@
         engine   <span class="op">=</span> <span class="cn">NULL</span>
     <span class="op">)</span>
 
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="step-3-add-a-fit-bridge-module" class="section level3">
 <h3 class="hasAnchor">
@@ -349,8 +350,8 @@
 <li>Creates a new model bridge using the constructor, <code><a href="../reference/new_modeltime_bridge.html">new_modeltime_bridge()</a></code>
 </li>
 </ol>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">bridge_stlm_ets_fit_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">period_seasonal_1</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">period_seasonal_2</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">bridge_stlm_ets_fit_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">period_seasonal_1</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">period_seasonal_2</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   
   <span class="va">outcome</span>    <span class="op">&lt;-</span> <span class="va">y</span> <span class="co"># Comes in as a vector</span>
   <span class="va">predictors</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="co"># Comes in as a data.frame (dates and possible xregs)</span>
@@ -393,10 +394,10 @@
     desc   <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"STLM Model: "</span>, <span class="va">model_1</span><span class="op">$</span><span class="va">model</span><span class="op">$</span><span class="va">method</span><span class="op">)</span>
   <span class="op">)</span>
   
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>We’ll make a quick print method so we don’t get crazy output.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">print.bridge_stlm_ets_fit_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">print.bridge_stlm_ets_fit_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   
   <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="va">models</span><span class="op">$</span><span class="va">model_1</span><span class="op">$</span><span class="va">model</span>
   
@@ -414,10 +415,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>Let’s make sure our bridge works.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">stlm_test</span> <span class="op">&lt;-</span> <span class="fu">bridge_stlm_ets_fit_impl</span><span class="op">(</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">stlm_test</span> <span class="op">&lt;-</span> <span class="fu">bridge_stlm_ets_fit_impl</span><span class="op">(</span>
   x <span class="op">=</span> <span class="va">taylor_30_min</span><span class="op">[</span>,<span class="st">"date"</span><span class="op">]</span>,
   y <span class="op">=</span> <span class="va">taylor_30_min</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,
   period_seasonal_1 <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">2</span>,
@@ -431,15 +432,15 @@
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;      aic    bic   aicc  loglik   mse</span>
 <span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 70492. 70510. 70492. -35243. 9733.</span></pre></div>
+<span class="co">#&gt; 1 70492. 70510. 70492. -35243. 9733.</span></code></pre></div>
 <p>The bridge looks good.</p>
 </div>
 <div id="step-3b-create-a-fit-module" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-3b-create-a-fit-module" class="anchor"></a>Step 3B: Create a Fit Module</h4>
 <p>Next, let’s hook up our <code>parsnip</code> fit module to the newly created bridge fit function.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_fit</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_fit</a></span><span class="op">(</span>
   model  <span class="op">=</span> <span class="st">"decomposition_reg"</span>,
   eng    <span class="op">=</span> <span class="st">"stlm_ets"</span>,
   mode   <span class="op">=</span> <span class="st">"regression"</span>,
@@ -467,7 +468,7 @@
 <span class="co">#&gt;      engine       mode</span>
 <span class="co">#&gt;    stlm_ets regression</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  no registered prediction modules.</span></pre></div>
+<span class="co">#&gt;  no registered prediction modules.</span></code></pre></div>
 </div>
 </div>
 <div id="step-4-add-a-prediction-bridge-module" class="section level3">
@@ -477,8 +478,8 @@
 <div id="step-4a-create-a-prediction-bridge" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-4a-create-a-prediction-bridge" class="anchor"></a>Step 4A: Create a Prediction Bridge</h4>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">predict.bridge_stlm_ets_fit_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">new_data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">predict.bridge_stlm_ets_fit_impl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">new_data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
 
     <span class="co"># PREPARE INPUTS</span>
     <span class="va">model</span>       <span class="op">&lt;-</span> <span class="va">object</span><span class="op">$</span><span class="va">models</span><span class="op">$</span><span class="va">model_1</span>
@@ -497,12 +498,12 @@
 
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span>
 
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>Let’s test the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method out. To help, I’ll leverage <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame()</a></code> to predict the next 3-hours worth of forecast points.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">stlm_test</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">stlm_test</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">taylor_30_min</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span><span class="op">(</span>.length_out <span class="op">=</span> <span class="st">"1 week"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Excellent. We have predictions!</p>
 </div>
@@ -510,8 +511,8 @@
 <h4 class="hasAnchor">
 <a href="#step-4b-add-modules-for-prediction" class="anchor"></a>Step 4B: Add Modules for Prediction</h4>
 <p>We’re now ready to register the prediction function we’ve created.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_pred</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_pred</a></span><span class="op">(</span>
     model         <span class="op">=</span> <span class="st">"decomposition_reg"</span>,
     eng           <span class="op">=</span> <span class="st">"stlm_ets"</span>,
     mode          <span class="op">=</span> <span class="st">"regression"</span>,
@@ -546,15 +547,15 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  prediction modules:</span>
 <span class="co">#&gt;          mode   engine methods</span>
-<span class="co">#&gt;    regression stlm_ets numeric</span></pre></div>
+<span class="co">#&gt;    regression stlm_ets numeric</span></code></pre></div>
 </div>
 </div>
 <div id="step-5-add-encoding" class="section level3">
 <h3 class="hasAnchor">
 <a href="#step-5-add-encoding" class="anchor"></a>Step 5: Add Encoding</h3>
 <p>We need to modify how <code>parnsip</code> handles features because date and date-time information cannot be processed by <code><a href="https://rdrr.io/r/stats/model.frame.html">model.frame()</a></code> (default behavior). We use <code><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_encoding()</a></code> to ensure the predictors are processed without any preprocessing. We’ll handle all preprocessing in our fit model bridge, <code>bridge_stlm_ets_fit_impl()</code> (shown next).</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_encoding</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_new_model.html">set_encoding</a></span><span class="op">(</span>
   model   <span class="op">=</span> <span class="st">"decomposition_reg"</span>,
   eng     <span class="op">=</span> <span class="st">"stlm_ets"</span>,
   mode    <span class="op">=</span> <span class="st">"regression"</span>,
@@ -564,7 +565,7 @@
     remove_intercept <span class="op">=</span> <span class="cn">FALSE</span>,
     allow_sparse_x <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="does-it-work" class="section level2">
@@ -575,18 +576,18 @@
 <h3 class="hasAnchor">
 <a href="#make-the-fitted-stl-decomposition-model" class="anchor"></a>Make the Fitted STL Decomposition Model</h3>
 <p>We’ll split the data into training and test sets.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_time_split</a></span><span class="op">(</span><span class="va">taylor_30_min</span>, prop <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_time_split</a></span><span class="op">(</span><span class="va">taylor_30_min</span>, prop <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
 <p>Then create a model on the training set.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu">decomposition_reg</span><span class="op">(</span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu">decomposition_reg</span><span class="op">(</span>
     period_seasonal_1 <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">2</span>, 
     period_seasonal_2 <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">7</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"stlm_ets"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/generics/man/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">model_fit</span></pre></div>
+<span class="va">model_fit</span></code></pre></div>
 <pre><code>#&gt; parsnip model object
 #&gt; 
 #&gt; Fit time:  194ms 
@@ -602,8 +603,8 @@
 <h3 class="hasAnchor">
 <a href="#make-a-calibrated-modeltime-table" class="anchor"></a>Make a Calibrated Modeltime Table</h3>
 <p>Next, let’s calibrate the fitted model.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="va">calibration_tbl</span> <span class="op">&lt;-</span> <span class="va">model_fit</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op">&lt;-</span> <span class="va">model_fit</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 
@@ -612,20 +613,20 @@
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;   .model_id .model   .model_desc            .type .calibration_data </span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;                  &lt;chr&gt; &lt;list&gt;            </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt; STLM MODEL: ETS(M,N,N) Test  &lt;tibble [404 × 4]&gt;</span></pre></div>
+<span class="co">#&gt; 1         1 &lt;fit[+]&gt; STLM MODEL: ETS(M,N,N) Test  &lt;tibble [404 × 4]&gt;</span></code></pre></div>
 </div>
 <div id="refit-on-the-full-dataset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#refit-on-the-full-dataset" class="anchor"></a>Refit on the Full Dataset</h3>
 <p>We’ll refit on the full dataset.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calibration_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taylor_30_min</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calibration_tbl</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taylor_30_min</span><span class="op">)</span></code></pre></div>
 <p>Then forecast forward 1 week.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="va">refit_tbl</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"1 week"</span>, actual_data <span class="op">=</span> <span class="va">taylor_30_min</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>And now you’ve just created a new model. Just wrap it up in a package and you’ve extended <code>parsnip</code> and <code>modeltime</code>. Congrats!</p>
 </div>

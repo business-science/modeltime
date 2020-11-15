@@ -1,4 +1,4 @@
-# ---- STANDARD ARIMA ----
+# ---- PROPHET BOOST ----
 context("TEST prophet_boost: prophet_xgboost")
 
 

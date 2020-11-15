@@ -99,7 +99,7 @@ ARIMA + XGBoost Errors (engine = arima_xgboost)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -283,7 +283,7 @@ stopping  (<code>xgboost</code> only).</p></td>
     <p>The data given to the function are not saved and are only used
 to determine the <em>mode</em> of the model. For <code>arima_boost()</code>, the
 mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> function using the
+<p>The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
 <li><p>"auto_arima_xgboost" (default) - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/auto.arima.html'>forecast::auto.arima()</a></code> and
 <a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgboost::xgb.train</a></p></li>
@@ -393,8 +393,8 @@ the <code>params = list(...)</code>.</p></li>
 
 <p><strong>Date and Date-Time Variable</strong></p>
 <p>It's a requirement to have a date or date-time variable as a predictor.
-The <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
-<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date)</a></code></p></li>
+The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
+<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
 <p><em>Seasonal Period Specification</em></p>
@@ -407,12 +407,12 @@ There are 3 ways to specify:</p><ol>
 
 <p><strong>Univariate (No xregs, Exogenous Regressors):</strong></p>
 <p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
-<li><p>Formula Interface (recommended): <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
-<li><p>XY Interface: <code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
+<li><p>Formula Interface (recommended): <code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
+<li><p>XY Interface: <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
 <p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
-<p>The <code>xreg</code> parameter is populated using the <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> or <code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy()</a></code> function:</p><ul>
+<p>The <code>xreg</code> parameter is populated using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> or <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy()</a></code> function:</p><ul>
 <li><p>Only <code>factor</code>, <code>ordered factor</code>, and <code>numeric</code> data will be used as xregs.</p></li>
 <li><p>Date and Date-time variables are not used as xregs</p></li>
 <li><p><code>character</code> data should be converted to factor.</p></li>
@@ -425,9 +425,9 @@ There are 3 ways to specify:</p><ol>
 </ol>
 
 <p>The <code>month.lbl</code> is an exogenous regressor that can be passed to the <code>arima_boost()</code> using
-<code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code>:</p><ul>
-<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
-<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
+<code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code>:</p><ul>
+<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
+<li><p><code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
 and the <code>date</code> feature. Only <code>month.lbl</code> will be used as an exogenous regressor.</p></li>
 </ul>
 
@@ -486,7 +486,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Boosting - Happens by adding numeric date and month features</span>
 <span class='va'>model_fit_boosted</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span><span class='op'>(</span><span class='va'>date</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span><span class='op'>(</span><span class='va'>date</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
         data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='va'>model_fit_boosted</span>

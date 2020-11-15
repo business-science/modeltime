@@ -94,7 +94,7 @@ different packages. Currently the only package is forecast." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -216,7 +216,7 @@ If the error is multiplicative, the data must be non-negative.</p></td>
     <p>The data given to the function are not saved and are only used
 to determine the <em>mode</em> of the model. For <code>exp_smoothing()</code>, the
 mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> function using the
+<p>The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
 <li><p>"ets" (default) - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/ets.html'>forecast::ets()</a></code></p></li>
 </ul>
@@ -270,8 +270,8 @@ models will be fit.</p></li>
 
 <p><strong>Date and Date-Time Variable</strong></p>
 <p>It's a requirement to have a date or date-time variable as a predictor.
-The <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
-<li><p><code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date)</a></code></p></li>
+The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> interface accepts date and date-time features and handles them internally.</p><ul>
+<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
 <p><em>Seasonal Period Specification</em></p>
@@ -284,8 +284,8 @@ There are 3 ways to specify:</p><ol>
 
 <p><strong>Univariate:</strong></p>
 <p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
-<li><p>Formula Interface (recommended): <code><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
-<li><p>XY Interface: <code><a href='https://rdrr.io/pkg/generics/man/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
+<li><p>Formula Interface (recommended): <code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
+<li><p>XY Interface: <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
 <p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
@@ -330,11 +330,11 @@ There are 3 ways to specify:</p><ol>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  667ms 
+#&gt; Fit time:  685ms 
 #&gt; ETS(A,A,A) 
 #&gt; 
 #&gt; Call:
@@ -369,11 +369,11 @@ There are 3 ways to specify:</p><ol>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  164ms 
+#&gt; Fit time:  167ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:

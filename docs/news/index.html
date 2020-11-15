@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -158,6 +158,16 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modeltime-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#modeltime-031" class="anchor"></a>modeltime 0.3.1<small> 2020-11-09 </small>
+</h1>
+<p><code><a href="../reference/modeltime_table.html">as_modeltime_table()</a></code>: New function to convert one or more fitted models stored in a <code>list</code> to a Modeltime Table.</p>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+<li>Update <code>m750_models</code>: Fixes error “R parsnip Error: Internal error: Unknown <code>composition</code> type.”</li>
+</ul>
+</div>
     <div id="modeltime-030" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.0">
 <a href="#modeltime-030" class="anchor"></a>modeltime 0.3.0<small> 2020-10-28 </small>
@@ -252,7 +262,8 @@
 <a href="#new-features" class="anchor"></a>New Features</h3>
 <p><strong>Forecast without Calibration/Refitting</strong></p>
 <p>Sometimes it’s important to make fast forecasts without calculating out-of-sample accuracy and refitting (which requires 2 rounds of model training). You can now bypass the <code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code> and <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> steps and jump straight into forecasting the future. Here’s an example with <code>h = "3 years"</code>. Note that <strong>you will not get confidence intervals</strong> with this approach because calibration data is needed for this.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># Make forecasts without calibration/refitting (No Confidence Intervals)</span>
 <span class="co"># - This assumes the models have been trained on m750</span>
 <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
@@ -263,7 +274,7 @@
         h <span class="op">=</span> <span class="st">"3 years"</span>,
         actual_data <span class="op">=</span> <span class="va">m750</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.conf_interval_show <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></pre></div>
+    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.conf_interval_show <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><strong>Residual Analysis &amp; Diagonstics</strong></p>
 <p>A common tool when forecasting and analyzing residuals, where residuals are <code>.resid = .actual - .prediction</code>. The residuals may have autocorrelation or nonzero mean, which can indicate model improvement opportunities. In addition, users may which to inspect in-sample and out-of-sample residuals, which can display different results.</p>
 <ul>
@@ -287,17 +298,19 @@
 <a href="#new-models" class="anchor"></a>New Models</h3>
 <p><strong>TBATS Model</strong></p>
 <p>Use <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and set engine to “tbats”.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="fu"><a href="../reference/seasonal_reg.html">seasonal_reg</a></span><span class="op">(</span>
     seasonal_period_1 <span class="op">=</span> <span class="st">"1 day"</span>,
     seasonal_period_2 <span class="op">=</span> <span class="st">"1 week"</span>
 <span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></pre></div>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></code></pre></div>
 <p><strong>NNETAR Model</strong></p>
 <p>Use <code><a href="../reference/nnetar_reg.html">nnetar_reg()</a></code> and set engine to “nnetar”.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="va">model_fit_nnetar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nnetar_reg.html">nnetar_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </pre></div>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </code></pre></div>
 <p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul>
 <li>

@@ -94,7 +94,7 @@ in the tidymodels ecosystem." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -168,7 +168,9 @@ in the tidymodels ecosystem." />
 in the <code>tidymodels</code> ecosystem.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>modeltime_table</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>modeltime_table</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>as_modeltime_table</span><span class='op'>(</span><span class='va'>.l</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,17 +179,24 @@ in the <code>tidymodels</code> ecosystem.</p>
       <th>...</th>
       <td><p>Fitted <code>parsnip</code> model or <code>workflow</code> objects</p></td>
     </tr>
+    <tr>
+      <th>.l</th>
+      <td><p>A list containing fitted <code>parsnip</code> model or <code>workflow</code> objects</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function:</p><ol>
+    <p><code>modeltime_table()</code>:</p><ol>
 <li><p>Creates a table of models</p></li>
 <li><p>Validates that all objects are models (parsnip or workflows objects) and
 all models have been fitted (trained)</p></li>
 <li><p>Provides an ID and Description of the models</p></li>
 </ol>
 
+<p><code>as_modeltime_table()</code>:</p>
+<p>Converts a <code>list</code> of models to a modeltime table. Useful if programatically creating
+Modeltime Tables from models stored in a <code>list</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
@@ -207,15 +216,24 @@ all models have been fitted (trained)</p></li>
 <span class='co'># Model 1: auto_arima ----</span>
 <span class='va'>model_fit_arima</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"auto_arima"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/generics/man/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
 
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
+<span class='co'># Make a Modeltime Table</span>
 <span class='va'>models_tbl</span> <span class='op'>&lt;-</span> <span class='fu'>modeltime_table</span><span class='op'>(</span>
     <span class='va'>model_fit_arima</span>
 <span class='op'>)</span>
 
+<span class='co'># Can also convert a list of models</span>
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>model_fit_arima</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>as_modeltime_table</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; # Modeltime Table
+#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
+#&gt;   .model_id .model   .model_desc            
+#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                  
+#&gt; </span><span style='color: #555555;'>1</span><span>         1 </span><span style='color: #555555;'>&lt;fit[+]&gt;</span><span> ARIMA(0,1,1)(0,1,1)[12]</div><div class='input'>
 <span class='co'># ---- CALIBRATE ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>&lt;-</span> <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
@@ -225,7 +243,7 @@ all models have been fitted (trained)</p></li>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 9</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 9</span><span>
 #&gt;   .model_id .model_desc             .type   mae  mape  mase smape  rmse   rsq
 #&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  1.41 0.516  1.43  198. 0.930</div><div class='input'>
