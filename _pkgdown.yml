@@ -50,7 +50,8 @@ reference:
     contents:
     - combine_modeltime_tables
     - add_modeltime_model
-    - update_model_description
+    - update_modeltime_model
+    - update_modeltime_description
     - pluck_modeltime_model
     - default_forecast_accuracy_metric_set
     - summarize_accuracy_metrics
