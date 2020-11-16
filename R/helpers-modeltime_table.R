@@ -27,6 +27,13 @@
 #' To re-calibrate, simply run [modeltime_calibrate()] on the newly
 #' combined Modeltime Table.
 #'
+#' @seealso
+#' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
+#' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
+#' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
+#' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
+#'
 #' @examples
 #' library(modeltime)
 #' library(tidymodels)
@@ -100,7 +107,14 @@ combine_modeltime_tables <- function(...) {
 #'
 #' @param object Multiple Modeltime Tables (class `mdl_time_tbl`)
 #' @param model A model of class `model_fit` or a fitted `workflow` object
-#' @param location Where to add the model. Either "top" or "bottom". Default: bottom.
+#' @param location Where to add the model. Either "top" or "bottom". Default: "bottom".
+#'
+#' @seealso
+#' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
+#' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
+#' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
+#' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
 #'
 #' @examples
 #' \donttest{
@@ -131,23 +145,88 @@ add_modeltime_model <- function(object, model, location = "bottom") {
 }
 
 
-# UPDATE MODELTIME DESCRIPTION ----
+# UPDATE MODEL ----
+
+#' Update the model by model id in a Modeltime Table
+#'
+#'
+#' @param object A Modeltime Table
+#' @param .model_id A numeric value matching the .model_id that you want to update
+#' @param .new_model A fitted workflow, model_fit, or mdl_time_ensmble object
+#'
+#' @seealso
+#' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
+#' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
+#' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
+#' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
+#'
+#' @examples
+#' \donttest{
+#' library(tidymodels)
+#'
+#' model_fit_ets <- exp_smoothing() %>%
+#'     set_engine("ets") %>%
+#'     fit(value ~ date, training(m750_splits))
+#'
+#' m750_models %>%
+#'     update_modeltime_model(1, model_fit_ets)
+#' }
+#'
+#' @export
+update_modeltime_model <- function(object, .model_id, .new_model) {
+    UseMethod("update_modeltime_model", object)
+}
+
+
+#' @export
+update_modeltime_model.mdl_time_tbl <- function(object, .model_id, .new_model) {
+
+    # Check .new_model is a trained model
+    if (!is_trained(.new_model)) {
+        rlang::abort("Could not update the Modeltime Model. The '.new_model' is not a trained model of class 'workflow', 'model_fit', or 'mdl_time_ensemble'.")
+    }
+
+    .id <- .model_id
+
+    .desc <- get_model_description(.new_model)
+
+    object %>%
+        dplyr::mutate(.model = ifelse(.model_id == .id, list(.new_model), .model)) %>%
+        update_model_description(.model_id = .id, .new_model_desc = .desc)
+
+}
+
+
+
+# UPDATE MODEL DESCRIPTION ----
 
 #' Update the model description by model id in a Modeltime Table
+#'
+#' The `update_model_description()` and `update_modeltime_description()` functions
+#' are synonyms.
 #'
 #' @param object A Modeltime Table
 #' @param .model_id A numeric value matching the .model_id that you want to update
 #' @param .new_model_desc Text describing the new model description
 #'
+#' @seealso
+#' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
+#' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
+#' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
+#' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
+#'
 #' @examples
 #'
 #' m750_models %>%
-#'     update_model_description(2, "PROPHET - No Regressors")
+#'     update_modeltime_description(2, "PROPHET - No Regressors")
 #'
 #' @export
 update_model_description <- function(object, .model_id, .new_model_desc) {
     UseMethod("update_model_description", object)
 }
+
 
 #' @export
 update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_desc) {
@@ -157,6 +236,11 @@ update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_
     object %>%
         dplyr::mutate(.model_desc = ifelse(.model_id == .id, .new_model_desc, .model_desc))
 }
+
+#' @export
+#' @rdname update_model_description
+update_modeltime_description <- update_model_description
+
 
 
 
@@ -168,6 +252,13 @@ update_model_description.mdl_time_tbl <- function(object, .model_id, .new_model_
 #'
 #' @param object A Modeltime Table
 #' @param .model_id A numeric value matching the .model_id that you want to update
+#'
+#' @seealso
+#' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
+#' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
+#' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
+#' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
 #'
 #' @examples
 #'

@@ -11,7 +11,7 @@ add_modeltime_model(object, model, location = "bottom")
 
 \item{model}{A model of class \code{model_fit} or a fitted \code{workflow} object}
 
-\item{location}{Where to add the model. Either "top" or "bottom". Default: bottom.}
+\item{location}{Where to add the model. Either "top" or "bottom". Default: "bottom".}
 }
 \description{
 Add a Model into a Modeltime Table
@@ -28,4 +28,13 @@ m750_models \%>\%
     add_modeltime_model(model_fit_ets)
 }
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=combine_modeltime_tables]{combine_modeltime_tables()}}: Combine 2 or more Modeltime Tables together
+\item \code{\link[=add_modeltime_model]{add_modeltime_model()}}: Adds a new row with a new model to a Modeltime Table
+\item \code{\link[=update_modeltime_description]{update_modeltime_description()}}: Updates a description for a model inside a Modeltime Table
+\item \code{\link[=update_modeltime_model]{update_modeltime_model()}}: Updates a model inside a Modeltime Table
+\item \code{\link[=pull_modeltime_model]{pull_modeltime_model()}}: Extracts a model from a Modeltime Table
+}
 }
