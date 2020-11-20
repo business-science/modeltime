@@ -1,10 +1,12 @@
+# RECURSIVE ----
+
 #' Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
 #'
-#' @param object An object of model_fit class
+#' @param object An object of `model_fit` or a fitted `workflow` class
 #' @param transform A transformation performed on new_data after
 #' each step of recursive algorithm. It can be an object of types:
 #'
-#' * `recipe`: The recipe generates lagged or sliding features
+#' * `recipe`: A recipe generates lagged or sliding features
 #' * `function` with two argument: `temp_new_data` and `slice_idx`
 #'
 #' @param train_tail A tibble with tail of training data set.
@@ -297,58 +299,6 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
 
 }
 
-# predict_recursive_workflow <- function(object, new_data, type = NULL, opts = list(), ...) {
-#
-#     # CHECKS
-#     if (!object$trained) {
-#         abort("Workflow has not yet been trained. Do you need to call `fit()`?")
-#     }
-#
-#     # SETUP ----
-#     mld         <- object %>% workflows::pull_workflow_mold()
-#     y_var       <- names(mld$outcomes)
-#     pred_fun    <- predict_workflow
-#     .transform  <- object$fit$fit$fit$spec[["transform"]]
-#     train_tail  <- object$fit$fit$fit$spec[["train_tail"]]
-#
-#     print({
-#         list(y_var, pred_fun, .transform, train_tail)
-#     })
-#
-#
-#     # LOOP LOGIC ----
-#     .preds <- tibble::tibble(.pred = numeric(nrow(new_data)))
-#
-#     .first_slice <- new_data %>%
-#         dplyr::slice_head(n = 1)
-#
-#     .preds[1,] <- new_data[1, y_var] <-
-#         pred_fun(
-#             object,
-#             new_data = .first_slice,
-#             type     = type,
-#             opts     = opts,
-#             ...
-#         )
-#
-#     for (i in 2:nrow(.preds)) {
-#
-#         .temp_new_data <- dplyr::bind_rows(
-#             train_tail,
-#             new_data
-#         )
-#
-#         .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
-#
-#         .preds[i,] <- new_data[i, y_var] <-
-#             pred_fun(
-#                 object, new_data = .nth_slice,
-#                 type = type, opts = opts, ...
-#             )
-#     }
-#     return(.preds)
-#
-# }
 
 # HELPERS ----
 
@@ -392,14 +342,4 @@ is_prepped_recipe <- function(recipe) {
     return(is_prepped)
 }
 
-# predict_workflow <- function (object, new_data, type = NULL, opts = list(), ...) {
-#     workflow <- object
-#     if (!workflow$trained) {
-#         abort("Workflow has not yet been trained. Do you need to call `fit()`?")
-#     }
-#     blueprint <- workflow$pre$mold$blueprint
-#     forged    <- hardhat::forge(new_data, blueprint)
-#     new_data  <- forged$predictors
-#     fit       <- workflow$fit$fit
-#     parsnip::predict.model_fit(fit, new_data, type = type, opts = opts, ...)
-# }
+
