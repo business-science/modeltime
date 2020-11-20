@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update the model by model id in a Modeltime Table — update_modeltime_model • modeltime</title>
+<title>Recursive Model Predictions — predict.recursive • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Update the model by model id in a Modeltime Table — update_modeltime_model" />
-<meta property="og:description" content="Update the model by model id in a Modeltime Table" />
+<meta property="og:title" content="Recursive Model Predictions — predict.recursive" />
+<meta property="og:description" content="Make predictions from a recursive model." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -155,65 +155,68 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update the model by model id in a Modeltime Table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/helpers-modeltime_table.R'><code>R/helpers-modeltime_table.R</code></a></small>
-    <div class="hidden name"><code>update_modeltime_model.Rd</code></div>
+    <h1>Recursive Model Predictions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-recursive.R'><code>R/modeltime-recursive.R</code></a></small>
+    <div class="hidden name"><code>predict.recursive.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Update the model by model id in a Modeltime Table</p>
+    <p>Make predictions from a recursive model.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_modeltime_model</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>.model_id</span>, <span class='va'>.new_model</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for recursive</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, type <span class='op'>=</span> <span class='cn'>NULL</span>, opts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A Modeltime Table</p></td>
+      <td><p>An object of class <code>model_fit</code></p></td>
     </tr>
     <tr>
-      <th>.model_id</th>
-      <td><p>A numeric value matching the .model_id that you want to update</p></td>
+      <th>new_data</th>
+      <td><p>A rectangular data object, such as a data frame.</p></td>
     </tr>
     <tr>
-      <th>.new_model</th>
-      <td><p>A fitted workflow, model_fit, or mdl_time_ensmble object</p></td>
+      <th>type</th>
+      <td><p>A single character value or <code>NULL</code>. Possible values
+are "numeric", "class", "prob", "conf_int", "pred_int", "quantile",
+or "raw". When <code>NULL</code>, <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code> will choose an appropriate value
+based on the model's mode.</p></td>
+    </tr>
+    <tr>
+      <th>opts</th>
+      <td><p>A list of optional arguments to the underlying
+predict function that will be used when <code>type = "raw"</code>. The
+list should not include options for the model object or the
+new data being predicted.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments to the underlying model's prediction
+function cannot be passed here (see <code>opts</code>). There are some
+<code>parsnip</code> related options that can be passed, depending on the
+value of <code>type</code>. Possible arguments are:</p><ul>
+<li><p><code>level</code>: for <code>type</code>s of "conf_int" and "pred_int" this
+is the parameter for the tail area of the intervals
+(e.g. confidence level for confidence intervals).
+Default value is 0.95.</p></li>
+<li><p><code>std_error</code>: add the standard error of fit or prediction (on
+the scale of the linear predictors) for <code>type</code>s of "conf_int"
+and "pred_int". Default value is <code>FALSE</code>.</p></li>
+<li><p><code>quantile</code>: the quantile(s) for quantile regression
+(not implemented yet)</p></li>
+<li><p><code>time</code>: the time(s) for hazard probability estimates
+(not implemented yet)</p></li>
+</ul></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'>
-<ul>
-<li><p><code><a href='combine_modeltime_tables.html'>combine_modeltime_tables()</a></code>: Combine 2 or more Modeltime Tables together</p></li>
-<li><p><code><a href='add_modeltime_model.html'>add_modeltime_model()</a></code>: Adds a new row with a new model to a Modeltime Table</p></li>
-<li><p><code><a href='update_model_description.html'>update_modeltime_description()</a></code>: Updates a description for a model inside a Modeltime Table</p></li>
-<li><p><code>update_modeltime_model()</code>: Updates a model inside a Modeltime Table</p></li>
-<li><p><code><a href='pluck_modeltime_model.html'>pull_modeltime_model()</a></code>: Extracts a model from a Modeltime Table</p></li>
-</ul>
-</div>
+    <p>Refer to <code><a href='recursive.html'>recursive()</a></code> for further details and examples.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span>
-
-<span class='va'>model_fit_ets</span> <span class='op'>&lt;-</span> <span class='fu'><a href='exp_smoothing.html'>exp_smoothing</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"ets"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>m750_splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
-<span class='va'>m750_models</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>update_modeltime_model</span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>model_fit_ets</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # Modeltime Table
-#&gt; <span style='color: #555555;'># A tibble: 3 x 3</span><span>
-#&gt;   .model_id .model     .model_desc
-#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #555555;'>1</span><span>         1 </span><span style='color: #555555;'>&lt;fit[+]&gt;</span><span>   ETS(A,A,A) 
-#&gt; </span><span style='color: #555555;'>2</span><span>         2 </span><span style='color: #555555;'>&lt;workflow&gt;</span><span> PROPHET    
-#&gt; </span><span style='color: #555555;'>3</span><span>         3 </span><span style='color: #555555;'>&lt;workflow&gt;</span><span> GLMNET     </div><div class='input'><span class='co'># }</span>
-
-</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

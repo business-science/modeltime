@@ -12,13 +12,15 @@ recursive(object, transform, train_tail, ...)
 \item{transform}{A transformation performed on new_data after
 each step of recursive algorithm. It can be an object of types:
 \itemize{
-\item prepped \code{recipe}
+\item prepped \code{recipe}: The recipe generates lagged or sliding features
 \item \code{function} with two argument: \code{temp_new_data} and \code{slice_idx}
 }}
 
 \item{train_tail}{A tibble with tail of training data set.
 In most cases it'll be required to create some variables
 based on dependent variable.}
+
+\item{...}{Not currently used.}
 }
 \value{
 An object with added \code{recursive} class
@@ -46,90 +48,102 @@ training data set) and \code{new_data} (which is an argument of predict function
 }
 }
 \examples{
-library(dplyr)
-library(parsnip)
-library(recipes)
+library(tidymodels)
 library(modeltime)
+library(slider)
+library(tidyverse)
 
-# Using recipe object
 
-dax_stock <-
-   as_tibble(EuStockMarkets) \%>\%
+# METHOD 1: RECIPE METHOD ----
+# - Add lags or sliding features
+
+dax_stock <- as_tibble(EuStockMarkets) \%>\%
    select(DAX) \%>\%
    bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
 
-recipe_dax_stock <-
-   recipe(DAX ~ ., data = dax_stock) \%>\%
+recipe_dax_stock <- recipe(DAX ~ ., data = dax_stock) \%>\%
    step_lag(all_outcomes(), lag = 1:10) \%>\%
    prep()
 
-dax_stock_m <-
-   juice(recipe_dax_stock)
+dax_stock_m <- juice(recipe_dax_stock)
 
-train_data <-
-   dax_stock_m \%>\%
+dax_stock_m
+
+# SPLIT INTO TRAIN / FORECAST DATA ----
+# - Divide set into training data and future forecast
+
+train_data <- dax_stock_m \%>\%
    filter(!is.na(DAX)) \%>\%
    na.omit()
 
-new_data <-
-   dax_stock_m \%>\%
+new_data <- dax_stock_m \%>\%
    filter(is.na(DAX))
 
-model_linear <-
-   linear_reg() \%>\%
+# RECURSIVE MODELING ----
+
+model_linear <- linear_reg() \%>\%
    set_engine("lm") \%>\%
    fit(DAX ~ ., data = train_data)
 
-recursive_linear <-
-   model_linear \%>\%
-   recursive(recipe_dax_stock,
-             train_tail = tail(train_data, 10))
+recursive_linear <- model_linear \%>\%
+   recursive(
+       transform  = recipe_dax_stock,
+       train_tail = tail(train_data, 10)
+   )
 
-pred <-
-   recursive_linear \%>\%
+pred <- recursive_linear \%>\%
    predict(new_data)
 
-# Using function as transform
+pred
+
+# METHOD 2: TRANSFORM METHOD  ----
+# - Using function as transform
 
 dax_stock <-
   as_tibble(EuStockMarkets) \%>\%
   select(DAX) \%>\%
   bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
 
+# Transform Function can be used to make complex lagged transformations
+#  beyond the available recipes
 transform_fun <- function(data, slice_idx){
    data \%>\%
-   mutate(moving_sum = lag(slider::slide_dbl(
-       DAX, .f = mean, .before = 4L
-    ), 1))
+       mutate(moving_sum = lag(slide_dbl(
+           DAX, .f = mean, .before = 4L
+       ), 1))
  }
 
-dax_stock_m <-
-  dax_stock \%>\%
+# Make Full Data
+dax_stock_m <- dax_stock \%>\%
   mutate(moving_sum = lag(slider::slide_dbl(
        DAX, .f = mean, .before = 4L
-   ), 1))
+  ), 1))
 
-train_data <-
-  dax_stock_m \%>\%
+dax_stock_m
+
+# Get Train Data
+train_data <- dax_stock_m \%>\%
   filter(!is.na(DAX)) \%>\%
   na.omit()
 
-new_data <-
-  dax_stock_m \%>\%
+# Get Future Data
+new_data <- dax_stock_m \%>\%
   filter(is.na(DAX))
 
-model_linear <-
-   linear_reg() \%>\%
+# Make Fitted Model
+model_linear <- linear_reg() \%>\%
    set_engine("lm") \%>\%
    fit(DAX ~ ., data = train_data)
 
-recursive_linear <-
-   model_linear \%>\%
+# Convert to Recursive Model
+recursive_linear <- model_linear \%>\%
    recursive(transform_fun,
              train_tail = tail(train_data, 10))
 
-pred <-
-   recursive_linear \%>\%
+# Make predictions
+pred <- recursive_linear \%>\%
    predict(new_data)
+
+pred
 
 }

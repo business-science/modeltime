@@ -42,6 +42,9 @@ reference:
     - modeltime_accuracy
     - modeltime_residuals
     - modeltime_refit
+  - subtitle: Recursive Forecast Prediction
+    contents:
+    - recursive
   - subtitle: Plotting & Tables
     contents:
     - starts_with("plot_modeltime")

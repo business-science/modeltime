@@ -36,6 +36,7 @@ Imports:
     tidyr,
     dplyr,
     purrr,
+    slider,
     stringr,
     forcats,
     scales,

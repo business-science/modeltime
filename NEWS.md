@@ -1,6 +1,9 @@
 # modeltime (development version)
 
-`update_modeltime_model()`: New function to update a modeltime model inside a Modeltime Table. 
+__New Functions__
+
+- `recursive()`: Turn a fitted model into a recursive predictor. 
+- `update_modeltime_model()`: New function to update a modeltime model inside a Modeltime Table. 
 
 # modeltime 0.3.1
 

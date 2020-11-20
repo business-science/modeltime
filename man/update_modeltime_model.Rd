@@ -14,8 +14,7 @@ update_modeltime_model(object, .model_id, .new_model)
 \item{.new_model}{A fitted workflow, model_fit, or mdl_time_ensmble object}
 }
 \description{
-The \code{update_model_description()} and \code{update_modeltime_description()} functions
-are synonyms.
+Update the model by model id in a Modeltime Table
 }
 \examples{
 \donttest{

@@ -15,6 +15,7 @@ library(recipes)
 library(tune)
 library(dials)
 library(yardstick)
+library(slider)
 
 library(timetk)
 # library(modeltime)
