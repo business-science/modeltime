@@ -1,10 +1,10 @@
-#' Create a recursive time series model from arbitrary parsnip regression model
+#' Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
 #'
 #' @param object An object of model_fit class
 #' @param transform A transformation performed on new_data after
 #' each step of recursive algorithm. It can be an object of types:
 #'
-#' * prepped `recipe`: The recipe generates lagged or sliding features
+#' * `recipe`: The recipe generates lagged or sliding features
 #' * `function` with two argument: `temp_new_data` and `slice_idx`
 #'
 #' @param train_tail A tibble with tail of training data set.
@@ -33,122 +33,336 @@
 #' 4. Jumping into point 2., and repeating rest of steps till the for-loop is ended.
 #'
 #' @examples
-#' library(tidymodels)
+#' # Libraries & Setup ----
 #' library(modeltime)
-#' library(slider)
+#' library(tidymodels)
 #' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
+#' library(slider)
+#'
+#' m750
+#'
+#' FORECAST_HORIZON <- 24
+#'
+#' m750_extended <- m750 %>%
+#'     group_by(id) %>%
+#'     future_frame(
+#'         .length_out = FORECAST_HORIZON,
+#'         .bind_data  = TRUE
+#'     ) %>%
+#'     ungroup()
+#'
+#' # METHOD 1: RECIPE ----
+#' # - Used for recursive transformations via recipe prepeocessing steps
+#'
+#' # Lag Recipe
+#' recipe_lag <- recipe(value ~ date, m750_extended) %>%
+#'     step_lag(value, lag = 1:12)
+#'
+#' # Data Preparation
+#' m750_lagged <- recipe_lag %>% prep() %>% juice()
+#'
+#' m750_lagged
+#'
+#' train_data <- m750_lagged %>%
+#'     filter(!is.na(value)) %>%
+#'     drop_na()
+#'
+#' future_data <- m750_lagged %>%
+#'     filter(is.na(value))
+#'
+#' # Modeling
+#' model_fit_lm <- linear_reg() %>%
+#'     set_engine("lm") %>%
+#'     fit(value ~ date, data = train_data)
+#'
+#' model_fit_lm_recursive <- linear_reg() %>%
+#'     set_engine("lm") %>%
+#'     fit(value ~ ., data = train_data) %>%
+#'     recursive(
+#'         transform  = recipe_lag,
+#'         train_tail = tail(train_data, 12)
+#'     )
+#'
+#' model_fit_lm_recursive
+#'
+#' # Forecasting
+#' modeltime_table(
+#'     model_fit_lm,
+#'     model_fit_lm_recursive
+#' ) %>%
+#'     modeltime_forecast(
+#'         new_data    = future_data,
+#'         actual_data = m750,
+#'         keep_data   = TRUE
+#'     ) %>%
+#'     plot_modeltime_forecast(
+#'         .interactive = FALSE
+#'     )
 #'
 #'
-#' # METHOD 1: RECIPE METHOD ----
-#' # - Add lags or sliding features
+#' # METHOD 2: TRANSFORM FUNCTION ----
+#' # - Used for complex transformations via transformation function
 #'
-#' dax_stock <- as_tibble(EuStockMarkets) %>%
-#'    select(DAX) %>%
-#'    bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
-#'
-#' recipe_dax_stock <- recipe(DAX ~ ., data = dax_stock) %>%
-#'    step_lag(all_outcomes(), lag = 1:10) %>%
-#'    prep()
-#'
-#' dax_stock_m <- juice(recipe_dax_stock)
-#'
-#' dax_stock_m
-#'
-#' # SPLIT INTO TRAIN / FORECAST DATA ----
-#' # - Divide set into training data and future forecast
-#'
-#' train_data <- dax_stock_m %>%
-#'    filter(!is.na(DAX)) %>%
-#'    na.omit()
-#'
-#' new_data <- dax_stock_m %>%
-#'    filter(is.na(DAX))
-#'
-#' # RECURSIVE MODELING ----
-#'
-#' model_linear <- linear_reg() %>%
-#'    set_engine("lm") %>%
-#'    fit(DAX ~ ., data = train_data)
-#'
-#' recursive_linear <- model_linear %>%
-#'    recursive(
-#'        transform  = recipe_dax_stock,
-#'        train_tail = tail(train_data, 10)
-#'    )
-#'
-#' pred <- recursive_linear %>%
-#'    predict(new_data)
-#'
-#' pred
-#'
-#' # METHOD 2: TRANSFORM METHOD  ----
-#' # - Using function as transform
-#'
-#' dax_stock <-
-#'   as_tibble(EuStockMarkets) %>%
-#'   select(DAX) %>%
-#'   bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
-#'
-#' # Transform Function can be used to make complex lagged transformations
-#' #  beyond the available recipes
+#' # Function run recursively that updates the forecasted dataset
 #' transform_fun <- function(data, slice_idx){
-#'    data %>%
-#'        mutate(moving_sum = lag(slide_dbl(
-#'            DAX, .f = mean, .before = 4L
-#'        ), 1))
-#'  }
+#'     data %>%
+#'         mutate(moving_sum = lag(slide_dbl(
+#'             value, .f = mean, .before = 4L
+#'         ), 1))
+#' }
 #'
-#' # Make Full Data
-#' dax_stock_m <- dax_stock %>%
-#'   mutate(moving_sum = lag(slider::slide_dbl(
-#'        DAX, .f = mean, .before = 4L
-#'   ), 1))
+#' # Data Preparation
+#' m750_rolling <- m750_extended %>%
+#'     mutate(moving_sum = lag(slide_dbl(
+#'         value, .f = mean, .before = 4L
+#'     ), 1)) %>%
+#'     select(-id)
 #'
-#' dax_stock_m
+#' m750_rolling
 #'
-#' # Get Train Data
-#' train_data <- dax_stock_m %>%
-#'   filter(!is.na(DAX)) %>%
-#'   na.omit()
+#' train_data <- m750_rolling %>%
+#'     filter(!is.na(value)) %>%
+#'     drop_na()
 #'
-#' # Get Future Data
-#' new_data <- dax_stock_m %>%
-#'   filter(is.na(DAX))
+#' future_data <- m750_rolling %>%
+#'     filter(is.na(value))
 #'
-#' # Make Fitted Model
-#' model_linear <- linear_reg() %>%
-#'    set_engine("lm") %>%
-#'    fit(DAX ~ ., data = train_data)
+#' # Modeling
+#' model_fit_lm <- linear_reg() %>%
+#'     set_engine("lm") %>%
+#'     fit(value ~ date, data = train_data)
 #'
-#' # Convert to Recursive Model
-#' recursive_linear <- model_linear %>%
-#'    recursive(transform_fun,
-#'              train_tail = tail(train_data, 10))
+#' model_fit_lm_recursive <- linear_reg() %>%
+#'     set_engine("lm") %>%
+#'     fit(value ~ ., data = train_data) %>%
+#'     recursive(
+#'         transform  = transform_fun,
+#'         train_tail = tail(train_data, 4)
+#'     )
 #'
-#' # Make predictions
-#' pred <- recursive_linear %>%
-#'    predict(new_data)
+#' model_fit_lm_recursive
 #'
-#' pred
+#' # Forecasting
+#' forecasted_data <- modeltime_table(
+#'     model_fit_lm,
+#'     model_fit_lm_recursive
+#' ) %>%
+#'     modeltime_forecast(
+#'         new_data    = future_data,
+#'         actual_data = m750
+#'     )
+#'
+#' forecasted_data %>%
+#'     plot_modeltime_forecast(
+#'         .interactive = FALSE
+#'     )
+#'
 #'
 #' @export
 recursive <- function(object, transform, train_tail, ...){
-    object$spec[["forecast"]] <- "recursive"
-    object$spec[["transform"]] <- .prepare_transform(transform)
+    UseMethod("recursive")
+}
+
+#' @export
+recursive.model_fit <- function(object, transform, train_tail, ...) {
+
+    dot_list <- list(...)
+
+    object$spec[["forecast"]]   <- "recursive"
+    object$spec[["transform"]]  <- .prepare_transform(transform)
     object$spec[["train_tail"]] <- train_tail
+
+    # Workflow: Need to pass in the y_var
+    object$spec[["y_var"]]      <- dot_list$y_var # Could be NULL or provided by workflow
+
     .class <- class(object)
     class(object) <- c(.class[1], "recursive", .class[2])
     object
 }
 
+#' @export
+recursive.workflow <- function(object, transform, train_tail, ...) {
+
+    # object$fit$fit$fit$spec[["forecast"]] <- "recursive"
+    # object$fit$fit$fit$spec[["transform"]] <- .prepare_transform(transform)
+    # object$fit$fit$fit$spec[["train_tail"]] <- train_tail
+
+    mld         <- object %>% workflows::pull_workflow_mold()
+    y_var       <- names(mld$outcomes)
+
+    object$fit$fit <- recursive(
+        object     = object$fit$fit,
+        transform  = transform,
+        train_tail = train_tail,
+        y_var      = y_var
+    )
+    .class <- class(object)
+    class(object) <- c("recursive", .class)
+    object
+}
+
+#' @export
+print.recursive <- function(x, ...) {
+
+    if (inherits(x, "model_fit")) {
+        cat("Recursive [parsnip model]\n\n")
+    } else {
+        cat("Recursive [workflow]\n\n")
+    }
+
+    y <- x
+    class(y) <- class(y)[class(y) %>% stringr::str_detect("recursive", negate = TRUE)]
+    print(y)
+    invisible(x)
+}
+
+#' Recursive Model Predictions
+#'
+#' Make predictions from a recursive model.
+#'
+#' @inheritParams parsnip::predict.model_fit
+#'
+#' @details
+#'
+#' Refer to [recursive()] for further details and examples.
+#'
+#'
+#' @export
+predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...) {
+
+    if (inherits(object, "model_fit")) {
+        # print("Model fit")
+        predict_recursive_model_fit(object, new_data, type = NULL, opts = list(), ...)
+    }
+
+}
+
+predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = list(), ...) {
+
+    # SETUP ----
+    y_var <- object$spec$y_var
+    if (is.null(y_var)) {
+        y_var      <- object$preproc$y_var
+    }
+    pred_fun   <- parsnip::predict.model_fit
+    .transform <- object$spec[["transform"]]
+    train_tail <- object$spec$train_tail
+
+    # print({
+    #     list(
+    #         y_var,
+    #         class(object),
+    #         new_data,
+    #         train_tail
+    #     )
+    # })
+
+
+    # LOOP LOGIC ----
+    .preds <- tibble::tibble(.pred = numeric(nrow(new_data)))
+
+    .first_slice <- new_data %>%
+        dplyr::slice_head(n = 1)
+
+
+    .preds[1,] <- new_data[1, y_var] <-
+        pred_fun(
+            object,
+            new_data = .first_slice,
+            type     = type,
+            opts     = opts,
+            ...
+        )
+
+
+
+    for (i in 2:nrow(.preds)) {
+
+        .temp_new_data <- dplyr::bind_rows(
+            train_tail,
+            new_data
+        )
+
+        .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
+
+        .preds[i,] <- new_data[i, y_var] <-
+            pred_fun(
+                object, new_data = .nth_slice,
+                type = type, opts = opts, ...
+            )
+    }
+    return(.preds)
+
+}
+
+# predict_recursive_workflow <- function(object, new_data, type = NULL, opts = list(), ...) {
+#
+#     # CHECKS
+#     if (!object$trained) {
+#         abort("Workflow has not yet been trained. Do you need to call `fit()`?")
+#     }
+#
+#     # SETUP ----
+#     mld         <- object %>% workflows::pull_workflow_mold()
+#     y_var       <- names(mld$outcomes)
+#     pred_fun    <- predict_workflow
+#     .transform  <- object$fit$fit$fit$spec[["transform"]]
+#     train_tail  <- object$fit$fit$fit$spec[["train_tail"]]
+#
+#     print({
+#         list(y_var, pred_fun, .transform, train_tail)
+#     })
+#
+#
+#     # LOOP LOGIC ----
+#     .preds <- tibble::tibble(.pred = numeric(nrow(new_data)))
+#
+#     .first_slice <- new_data %>%
+#         dplyr::slice_head(n = 1)
+#
+#     .preds[1,] <- new_data[1, y_var] <-
+#         pred_fun(
+#             object,
+#             new_data = .first_slice,
+#             type     = type,
+#             opts     = opts,
+#             ...
+#         )
+#
+#     for (i in 2:nrow(.preds)) {
+#
+#         .temp_new_data <- dplyr::bind_rows(
+#             train_tail,
+#             new_data
+#         )
+#
+#         .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
+#
+#         .preds[i,] <- new_data[i, y_var] <-
+#             pred_fun(
+#                 object, new_data = .nth_slice,
+#                 type = type, opts = opts, ...
+#             )
+#     }
+#     return(.preds)
+#
+# }
+
+# HELPERS ----
 
 .prepare_transform <- function(.transform){
+
     if (inherits(.transform, "recipe")) {
 
         .recipe <- .transform
 
-        .derived_features <-
-            .recipe$term_info %>%
+        if (!is_prepped_recipe(.recipe)) {
+            .recipe <- recipes::prep(.recipe)
+        }
+
+        .derived_features <- .recipe$term_info %>%
             dplyr::filter(source == "derived") %>%
             .$variable
 
@@ -170,49 +384,22 @@ recursive <- function(object, transform, train_tail, ...){
     .transform_fun
 }
 
-#' Recursive Model Predictions
-#'
-#' Make predictions from a recursive model.
-#'
-#' @inheritParams parsnip::predict.model_fit
-#'
-#' @details
-#'
-#' Refer to [recursive()] for further details and examples.
-#'
-#'
-#'
-#' @export
-predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...){
-
-    .transform <- object$spec[["transform"]]
-
-    .preds <- tibble::tibble(.pred = numeric(nrow(new_data)))
-
-    .first_slice <- new_data %>%
-        dplyr::slice_head(n = 1)
-
-    .preds[1,] <- new_data[1, object$preproc$y_var] <-
-        parsnip::predict.model_fit(
-            object, new_data = .first_slice,
-            type = type, opts = opts, ...
-        )
-
-    for (i in 2:nrow(.preds)) {
-
-        .temp_new_data <- dplyr::bind_rows(
-                object$spec$train_tail,
-                new_data
-            )
-
-        .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
-
-        .preds[i,] <- new_data[i, object$preproc$y_var] <-
-            parsnip::predict.model_fit(
-                object, new_data = .nth_slice,
-                type = type, opts = opts, ...
-            )
+is_prepped_recipe <- function(recipe) {
+    is_prepped <- FALSE
+    if ("orig_lvls" %in% names(recipe)) {
+        is_prepped <- TRUE
     }
-    .preds
+    return(is_prepped)
 }
 
+# predict_workflow <- function (object, new_data, type = NULL, opts = list(), ...) {
+#     workflow <- object
+#     if (!workflow$trained) {
+#         abort("Workflow has not yet been trained. Do you need to call `fit()`?")
+#     }
+#     blueprint <- workflow$pre$mold$blueprint
+#     forged    <- hardhat::forge(new_data, blueprint)
+#     new_data  <- forged$predictors
+#     fit       <- workflow$fit$fit
+#     parsnip::predict.model_fit(fit, new_data, type = type, opts = opts, ...)
+# }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-recursive.R
 \name{recursive}
 \alias{recursive}
-\title{Create a recursive time series model from arbitrary parsnip regression model}
+\title{Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model}
 \usage{
 recursive(object, transform, train_tail, ...)
 }
@@ -12,7 +12,7 @@ recursive(object, transform, train_tail, ...)
 \item{transform}{A transformation performed on new_data after
 each step of recursive algorithm. It can be an object of types:
 \itemize{
-\item prepped \code{recipe}: The recipe generates lagged or sliding features
+\item \code{recipe}: The recipe generates lagged or sliding features
 \item \code{function} with two argument: \code{temp_new_data} and \code{slice_idx}
 }}
 
@@ -26,7 +26,7 @@ based on dependent variable.}
 An object with added \code{recursive} class
 }
 \description{
-Create a recursive time series model from arbitrary parsnip regression model
+Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
 }
 \details{
 Recursive model can be used if some of the features used for training
@@ -48,102 +48,131 @@ training data set) and \code{new_data} (which is an argument of predict function
 }
 }
 \examples{
-library(tidymodels)
+# Libraries & Setup ----
 library(modeltime)
-library(slider)
+library(tidymodels)
 library(tidyverse)
+library(lubridate)
+library(timetk)
+library(slider)
+
+m750
+
+FORECAST_HORIZON <- 24
+
+m750_extended <- m750 \%>\%
+    group_by(id) \%>\%
+    future_frame(
+        .length_out = FORECAST_HORIZON,
+        .bind_data  = TRUE
+    ) \%>\%
+    ungroup()
+
+# METHOD 1: RECIPE ----
+# - Used for recursive transformations via recipe prepeocessing steps
+
+# Lag Recipe
+recipe_lag <- recipe(value ~ date, m750_extended) \%>\%
+    step_lag(value, lag = 1:12)
+
+# Data Preparation
+m750_lagged <- recipe_lag \%>\% prep() \%>\% juice()
+
+m750_lagged
+
+train_data <- m750_lagged \%>\%
+    filter(!is.na(value)) \%>\%
+    drop_na()
+
+future_data <- m750_lagged \%>\%
+    filter(is.na(value))
+
+# Modeling
+model_fit_lm <- linear_reg() \%>\%
+    set_engine("lm") \%>\%
+    fit(value ~ date, data = train_data)
+
+model_fit_lm_recursive <- linear_reg() \%>\%
+    set_engine("lm") \%>\%
+    fit(value ~ ., data = train_data) \%>\%
+    recursive(
+        transform  = recipe_lag,
+        train_tail = tail(train_data, 12)
+    )
+
+model_fit_lm_recursive
+
+# Forecasting
+modeltime_table(
+    model_fit_lm,
+    model_fit_lm_recursive
+) \%>\%
+    modeltime_forecast(
+        new_data    = future_data,
+        actual_data = m750,
+        keep_data   = TRUE
+    ) \%>\%
+    plot_modeltime_forecast(
+        .interactive = FALSE
+    )
 
 
-# METHOD 1: RECIPE METHOD ----
-# - Add lags or sliding features
+# METHOD 2: TRANSFORM FUNCTION ----
+# - Used for complex transformations via transformation function
 
-dax_stock <- as_tibble(EuStockMarkets) \%>\%
-   select(DAX) \%>\%
-   bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
-
-recipe_dax_stock <- recipe(DAX ~ ., data = dax_stock) \%>\%
-   step_lag(all_outcomes(), lag = 1:10) \%>\%
-   prep()
-
-dax_stock_m <- juice(recipe_dax_stock)
-
-dax_stock_m
-
-# SPLIT INTO TRAIN / FORECAST DATA ----
-# - Divide set into training data and future forecast
-
-train_data <- dax_stock_m \%>\%
-   filter(!is.na(DAX)) \%>\%
-   na.omit()
-
-new_data <- dax_stock_m \%>\%
-   filter(is.na(DAX))
-
-# RECURSIVE MODELING ----
-
-model_linear <- linear_reg() \%>\%
-   set_engine("lm") \%>\%
-   fit(DAX ~ ., data = train_data)
-
-recursive_linear <- model_linear \%>\%
-   recursive(
-       transform  = recipe_dax_stock,
-       train_tail = tail(train_data, 10)
-   )
-
-pred <- recursive_linear \%>\%
-   predict(new_data)
-
-pred
-
-# METHOD 2: TRANSFORM METHOD  ----
-# - Using function as transform
-
-dax_stock <-
-  as_tibble(EuStockMarkets) \%>\%
-  select(DAX) \%>\%
-  bind_rows(tibble(DAX = rep(NA, 30))) # Adding new data
-
-# Transform Function can be used to make complex lagged transformations
-#  beyond the available recipes
+# Function run recursively that updates the forecasted dataset
 transform_fun <- function(data, slice_idx){
-   data \%>\%
-       mutate(moving_sum = lag(slide_dbl(
-           DAX, .f = mean, .before = 4L
-       ), 1))
- }
+    data \%>\%
+        mutate(moving_sum = lag(slide_dbl(
+            value, .f = mean, .before = 4L
+        ), 1))
+}
 
-# Make Full Data
-dax_stock_m <- dax_stock \%>\%
-  mutate(moving_sum = lag(slider::slide_dbl(
-       DAX, .f = mean, .before = 4L
-  ), 1))
+# Data Preparation
+m750_rolling <- m750_extended \%>\%
+    mutate(moving_sum = lag(slide_dbl(
+        value, .f = mean, .before = 4L
+    ), 1)) \%>\%
+    select(-id)
 
-dax_stock_m
+m750_rolling
 
-# Get Train Data
-train_data <- dax_stock_m \%>\%
-  filter(!is.na(DAX)) \%>\%
-  na.omit()
+train_data <- m750_rolling \%>\%
+    filter(!is.na(value)) \%>\%
+    drop_na()
 
-# Get Future Data
-new_data <- dax_stock_m \%>\%
-  filter(is.na(DAX))
+future_data <- m750_rolling \%>\%
+    filter(is.na(value))
 
-# Make Fitted Model
-model_linear <- linear_reg() \%>\%
-   set_engine("lm") \%>\%
-   fit(DAX ~ ., data = train_data)
+# Modeling
+model_fit_lm <- linear_reg() \%>\%
+    set_engine("lm") \%>\%
+    fit(value ~ date, data = train_data)
 
-# Convert to Recursive Model
-recursive_linear <- model_linear \%>\%
-   recursive(transform_fun,
-             train_tail = tail(train_data, 10))
+model_fit_lm_recursive <- linear_reg() \%>\%
+    set_engine("lm") \%>\%
+    fit(value ~ ., data = train_data) \%>\%
+    recursive(
+        transform  = transform_fun,
+        train_tail = tail(train_data, 4)
+    )
 
-# Make predictions
-pred <- recursive_linear \%>\%
-   predict(new_data)
+model_fit_lm_recursive
 
-pred
+# Forecasting
+forecasted_data <- modeltime_table(
+    model_fit_lm,
+    model_fit_lm_recursive
+) \%>\%
+    modeltime_forecast(
+        new_data    = future_data,
+        actual_data = m750
+    )
+
+forecasted_data \%>\%
+    plot_modeltime_forecast(
+        .interactive = FALSE
+    )
+
 
 }
