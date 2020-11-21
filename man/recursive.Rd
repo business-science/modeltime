@@ -125,9 +125,9 @@ modeltime_table(
 lag_roll_transformer <- function(data){
     data \%>\%
         # Lags
-        tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) \%>\%
+        tk_augment_lags(value, .lags = 1:12) \%>\%
         # Rolling Features
-        mutate(rolling_mean_12 = lag(slide_dbl(value, .f = mean, .before = 12), 1))
+        mutate(rolling_mean_12 = lag(slide_dbl(value, .f = mean, .before = 12, .complete = FALSE), 1))
 }
 
 # Data Preparation
@@ -158,7 +158,7 @@ model_fit_lm_recursive <- linear_reg() \%>\%
 model_fit_lm_recursive
 
 # Forecasting
-forecasted_data <- modeltime_table(
+modeltime_table(
     model_fit_lm,
     model_fit_lm_recursive
 ) \%>\%

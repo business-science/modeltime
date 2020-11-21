@@ -349,9 +349,9 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 <span class='va'>lag_roll_transformer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span>
     <span class='va'>data</span> <span class='op'>%&gt;%</span>
         <span class='co'># Lags</span>
-        <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>FORECAST_HORIZON</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+        <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
         <span class='co'># Rolling Features</span>
-        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rolling_mean_12 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span><span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rolling_mean_12 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span><span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>12</span>, .complete <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'># Data Preparation</span>
@@ -397,22 +397,16 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 #&gt; 
 #&gt; Coefficients:
 #&gt;     (Intercept)             date       value_lag1       value_lag2  
-#&gt;       164.14732          0.00677          0.61244          0.18402  
+#&gt;       147.32008          0.01273          1.59298          0.76666  
 #&gt;      value_lag3       value_lag4       value_lag5       value_lag6  
-#&gt;        -0.07128          0.12089         -0.01750          0.07095  
+#&gt;         0.73081          0.76950          0.76871          0.74755  
 #&gt;      value_lag7       value_lag8       value_lag9      value_lag10  
-#&gt;         0.09785         -0.08053          0.04887          0.03030  
-#&gt;     value_lag11      value_lag12      value_lag13      value_lag14  
-#&gt;        -0.01755          0.73318         -0.52958         -0.21410  
-#&gt;     value_lag15      value_lag16      value_lag17      value_lag18  
-#&gt;         0.07734         -0.13879          0.04351         -0.08894  
-#&gt;     value_lag19      value_lag20      value_lag21      value_lag22  
-#&gt;        -0.08732          0.06641         -0.05737         -0.02331  
-#&gt;     value_lag23      value_lag24  rolling_mean_12  
-#&gt;         0.05754          0.15960               NA  
+#&gt;         0.77872          0.72985          0.75257          0.76582  
+#&gt;     value_lag11      value_lag12  rolling_mean_12  
+#&gt;         0.79979          1.62469         -9.85822  
 #&gt; </div><div class='input'>
 <span class='co'># Forecasting</span>
-<span class='va'>forecasted_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
+<span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
     <span class='va'>model_fit_lm</span>,
     <span class='va'>model_fit_lm_recursive</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -424,195 +418,147 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
         .interactive <span class='op'>=</span> <span class='cn'>FALSE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+</div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* NA -&gt; ...1</span>
 #&gt; <span class='message'>* NA -&gt; ...2</span>
 #&gt; <span class='message'>* NA -&gt; ...3</span>
 #&gt; <span class='message'>* NA -&gt; ...4</span>
 #&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
-#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Expecting the following names to be in the data frame: .conf_hi, .conf_lo. </span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Expecting the following names to be in the data frame: .conf_hi, .conf_lo. </span>
 #&gt; <span class='warning'>Proceeding with '.conf_interval_show = FALSE' to visualize the forecast without confidence intervals.</span>
-#&gt; <span class='warning'>Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.</span></div><div class='input'>
+#&gt; <span class='warning'>Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.</span></div><div class='img'><img src='recursive-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></span></pre>
   </div>
