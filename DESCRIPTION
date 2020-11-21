@@ -20,7 +20,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     StanHeaders,
-    timetk (>= 2.5.0),
+    timetk (>= 2.6.0),
     parsnip (>= 0.1.4),
     dials,
     yardstick,
@@ -68,3 +68,5 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+remotes:
+    business-science/timetk

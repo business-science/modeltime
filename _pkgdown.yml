@@ -97,7 +97,6 @@ reference:
   - title: Data
     contents:
     - starts_with("m750")
-    - starts_with("arima_workflow_tuned")
 
 repo:
   url:

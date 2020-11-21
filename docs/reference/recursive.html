@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a recursive time series model from arbitrary parsnip regression model — recursive • modeltime</title>
+<title>Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model — recursive • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Create a recursive time series model from arbitrary parsnip regression model — recursive" />
-<meta property="og:description" content="Create a recursive time series model from arbitrary parsnip regression model" />
+<meta property="og:title" content="Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model — recursive" />
+<meta property="og:description" content="Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -155,13 +155,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a recursive time series model from arbitrary parsnip regression model</h1>
+    <h1>Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model</h1>
     <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-recursive.R'><code>R/modeltime-recursive.R</code></a></small>
     <div class="hidden name"><code>recursive.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a recursive time series model from arbitrary parsnip regression model</p>
+    <p>Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model</p>
     </div>
 
     <pre class="usage"><span class='fu'>recursive</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>transform</span>, <span class='va'>train_tail</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -171,14 +171,14 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of model_fit class</p></td>
+      <td><p>An object of <code>model_fit</code> or a fitted <code>workflow</code> class</p></td>
     </tr>
     <tr>
       <th>transform</th>
       <td><p>A transformation performed on new_data after
 each step of recursive algorithm. It can be an object of types:</p><ul>
-<li><p><code>recipe</code>: The recipe generates lagged or sliding features</p></li>
-<li><p><code>function</code> with two argument: <code>temp_new_data</code> and <code>slice_idx</code></p></li>
+<li><p><strong>Method 1, <code>recipe</code>:</strong> A recipe generates lagged or sliding features (see examples)</p></li>
+<li><p><strong>Method 2, <code>function</code>:</strong> Must have one argument <code>data</code> (see examples)</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -254,13 +254,13 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 
 <span class='co'># Lag Recipe</span>
 <span class='va'>recipe_lag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/recipe.html'>recipe</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, <span class='va'>m750_extended</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://recipes.tidymodels.org/reference/step_lag.html'>step_lag</a></span><span class='op'>(</span><span class='va'>value</span>, lag <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>
+    <span class='fu'><a href='https://recipes.tidymodels.org/reference/step_lag.html'>step_lag</a></span><span class='op'>(</span><span class='va'>value</span>, lag <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
 
 <span class='co'># Data Preparation</span>
 <span class='va'>m750_lagged</span> <span class='op'>&lt;-</span> <span class='va'>recipe_lag</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/prep.html'>prep</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/juice.html'>juice</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>m750_lagged</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 330 x 14</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 330 x 26</span><span>
 #&gt;    date       value lag_1_value lag_2_value lag_3_value lag_4_value lag_5_value
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 1990-01-01  </span><span style='text-decoration: underline;'>6</span><span>370          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>
@@ -273,11 +273,16 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 #&gt; </span><span style='color: #555555;'> 8</span><span> 1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450        </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580        </span><span style='text-decoration: underline;'>6</span><span>520
 #&gt; </span><span style='color: #555555;'> 9</span><span> 1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480        </span><span style='text-decoration: underline;'>5</span><span>450        </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580
 #&gt; </span><span style='color: #555555;'>10</span><span> 1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820        </span><span style='text-decoration: underline;'>6</span><span>480        </span><span style='text-decoration: underline;'>5</span><span>450        </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620
-#&gt; </span><span style='color: #555555;'># … with 320 more rows, and 7 more variables: lag_6_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'># … with 320 more rows, and 19 more variables: lag_6_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   lag_7_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_8_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_9_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   lag_10_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_11_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_12_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'>#   lag_10_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_11_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_12_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   lag_13_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_14_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_15_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   lag_16_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_17_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_18_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   lag_19_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_20_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_21_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   lag_22_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_23_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lag_24_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_lagged</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>future_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_lagged</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
@@ -292,11 +297,13 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>recursive</span><span class='op'>(</span>
         transform  <span class='op'>=</span> <span class='va'>recipe_lag</span>,
-        train_tail <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='fl'>12</span><span class='op'>)</span>
+        train_tail <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
     <span class='op'>)</span>
 
 <span class='va'>model_fit_lm_recursive</span>
-</div><div class='output co'>#&gt; parsnip model object
+</div><div class='output co'>#&gt; Recursive [parsnip model]
+#&gt; 
+#&gt; parsnip model object
 #&gt; 
 #&gt; Fit time:  4ms 
 #&gt; 
@@ -305,17 +312,24 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 #&gt; 
 #&gt; Coefficients:
 #&gt;  (Intercept)          date   lag_1_value   lag_2_value   lag_3_value  
-#&gt;   301.639563     -0.003014      0.442504     -0.078007     -0.035787  
+#&gt;    164.14732       0.00677       0.61244       0.18402      -0.07128  
 #&gt;  lag_4_value   lag_5_value   lag_6_value   lag_7_value   lag_8_value  
-#&gt;     0.024823      0.057506     -0.048502      0.049845     -0.068797  
-#&gt;  lag_9_value  lag_10_value  lag_11_value  lag_12_value  
-#&gt;    -0.019639      0.016546      0.110980      0.531658  
+#&gt;      0.12089      -0.01750       0.07095       0.09785      -0.08053  
+#&gt;  lag_9_value  lag_10_value  lag_11_value  lag_12_value  lag_13_value  
+#&gt;      0.04887       0.03030      -0.01755       0.73318      -0.52958  
+#&gt; lag_14_value  lag_15_value  lag_16_value  lag_17_value  lag_18_value  
+#&gt;     -0.21410       0.07734      -0.13879       0.04351      -0.08894  
+#&gt; lag_19_value  lag_20_value  lag_21_value  lag_22_value  lag_23_value  
+#&gt;     -0.08732       0.06641      -0.05737      -0.02331       0.05754  
+#&gt; lag_24_value  
+#&gt;      0.15960  
 #&gt; </div><div class='input'>
 <span class='co'># Forecasting</span>
 <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
     <span class='va'>model_fit_lm</span>,
     <span class='va'>model_fit_lm_recursive</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='update_model_description.html'>update_model_description</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='st'>"LM - Lag Roll"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span><span class='op'>(</span>
         new_data    <span class='op'>=</span> <span class='va'>future_data</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>,
@@ -332,37 +346,28 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 <span class='co'># - Used for complex transformations via transformation function</span>
 
 <span class='co'># Function run recursively that updates the forecasted dataset</span>
-<span class='va'>transform_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>slice_idx</span><span class='op'>)</span><span class='op'>{</span>
+<span class='va'>lag_roll_transformer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span>
     <span class='va'>data</span> <span class='op'>%&gt;%</span>
-        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>moving_sum <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span>
-            <span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>4L</span>
-        <span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+        <span class='co'># Lags</span>
+        <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>FORECAST_HORIZON</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+        <span class='co'># Rolling Features</span>
+        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rolling_mean_12 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span><span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'># Data Preparation</span>
 <span class='va'>m750_rolling</span> <span class='op'>&lt;-</span> <span class='va'>m750_extended</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>moving_sum <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span>
-        <span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>4L</span>
-    <span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>lag_roll_transformer</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>id</span><span class='op'>)</span>
-
-<span class='va'>m750_rolling</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 330 x 3</span><span>
-#&gt;    date       value moving_sum
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 1990-01-01  </span><span style='text-decoration: underline;'>6</span><span>370         </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'> 2</span><span> 1990-02-01  </span><span style='text-decoration: underline;'>6</span><span>430       </span><span style='text-decoration: underline;'>6</span><span>370
-#&gt; </span><span style='color: #555555;'> 3</span><span> 1990-03-01  </span><span style='text-decoration: underline;'>6</span><span>520       </span><span style='text-decoration: underline;'>6</span><span>400
-#&gt; </span><span style='color: #555555;'> 4</span><span> 1990-04-01  </span><span style='text-decoration: underline;'>6</span><span>580       </span><span style='text-decoration: underline;'>6</span><span>440
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1990-05-01  </span><span style='text-decoration: underline;'>6</span><span>620       </span><span style='text-decoration: underline;'>6</span><span>475
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1990-06-01  </span><span style='text-decoration: underline;'>6</span><span>690       </span><span style='text-decoration: underline;'>6</span><span>504
-#&gt; </span><span style='color: #555555;'> 7</span><span> 1990-07-01  </span><span style='text-decoration: underline;'>6</span><span>000       </span><span style='text-decoration: underline;'>6</span><span>568
-#&gt; </span><span style='color: #555555;'> 8</span><span> 1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450       </span><span style='text-decoration: underline;'>6</span><span>482
-#&gt; </span><span style='color: #555555;'> 9</span><span> 1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480       </span><span style='text-decoration: underline;'>6</span><span>268
-#&gt; </span><span style='color: #555555;'>10</span><span> 1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820       </span><span style='text-decoration: underline;'>6</span><span>248
-#&gt; </span><span style='color: #555555;'># … with 320 more rows</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='input'>
 <span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_rolling</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>future_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_rolling</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
@@ -376,39 +381,238 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>recursive</span><span class='op'>(</span>
-        transform  <span class='op'>=</span> <span class='va'>transform_fun</span>,
-        train_tail <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='fl'>4</span><span class='op'>)</span>
+        transform  <span class='op'>=</span> <span class='va'>lag_roll_transformer</span>,
+        train_tail <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
     <span class='op'>)</span>
 
 <span class='va'>model_fit_lm_recursive</span>
-</div><div class='output co'>#&gt; parsnip model object
+</div><div class='output co'>#&gt; Recursive [parsnip model]
 #&gt; 
-#&gt; Fit time:  1ms 
+#&gt; parsnip model object
+#&gt; 
+#&gt; Fit time:  4ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)
 #&gt; 
 #&gt; Coefficients:
-#&gt; (Intercept)         date   moving_sum  
-#&gt;    888.1993       0.1277       0.7345  
+#&gt;     (Intercept)             date       value_lag1       value_lag2  
+#&gt;       164.14732          0.00677          0.61244          0.18402  
+#&gt;      value_lag3       value_lag4       value_lag5       value_lag6  
+#&gt;        -0.07128          0.12089         -0.01750          0.07095  
+#&gt;      value_lag7       value_lag8       value_lag9      value_lag10  
+#&gt;         0.09785         -0.08053          0.04887          0.03030  
+#&gt;     value_lag11      value_lag12      value_lag13      value_lag14  
+#&gt;        -0.01755          0.73318         -0.52958         -0.21410  
+#&gt;     value_lag15      value_lag16      value_lag17      value_lag18  
+#&gt;         0.07734         -0.13879          0.04351         -0.08894  
+#&gt;     value_lag19      value_lag20      value_lag21      value_lag22  
+#&gt;        -0.08732          0.06641         -0.05737         -0.02331  
+#&gt;     value_lag23      value_lag24  rolling_mean_12  
+#&gt;         0.05754          0.15960               NA  
 #&gt; </div><div class='input'>
 <span class='co'># Forecasting</span>
 <span class='va'>forecasted_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
     <span class='va'>model_fit_lm</span>,
     <span class='va'>model_fit_lm_recursive</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='update_model_description.html'>update_model_description</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='st'>"LM - Lag Roll"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span><span class='op'>(</span>
         new_data    <span class='op'>=</span> <span class='va'>future_data</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
-    <span class='op'>)</span>
-
-<span class='va'>forecasted_data</span> <span class='op'>%&gt;%</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
         .interactive <span class='op'>=</span> <span class='cn'>FALSE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Expecting the following names to be in the data frame: .conf_hi, .conf_lo. </span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* NA -&gt; ...1</span>
+#&gt; <span class='message'>* NA -&gt; ...2</span>
+#&gt; <span class='message'>* NA -&gt; ...3</span>
+#&gt; <span class='message'>* NA -&gt; ...4</span>
+#&gt; <span class='message'>* NA -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `.nested.col`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> prediction from a rank-deficient fit may be misleading</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `.nested.col` is `purrr::map2(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: prediction from a rank-deficient fit may be misleading</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Expecting the following names to be in the data frame: .conf_hi, .conf_lo. </span>
 #&gt; <span class='warning'>Proceeding with '.conf_interval_show = FALSE' to visualize the forecast without confidence intervals.</span>
-#&gt; <span class='warning'>Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.</span></div><div class='img'><img src='recursive-2.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; <span class='warning'>Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.</span></div><div class='input'>
 
 </div></span></pre>
   </div>

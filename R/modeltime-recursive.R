@@ -6,8 +6,8 @@
 #' @param transform A transformation performed on new_data after
 #' each step of recursive algorithm. It can be an object of types:
 #'
-#' * `recipe`: A recipe generates lagged or sliding features
-#' * `function` with two argument: `temp_new_data` and `slice_idx`
+#' * __Method 1, `recipe`:__ A recipe generates lagged or sliding features (see examples)
+#' * __Method 2, `function`:__ Must have one argument `data` (see examples)
 #'
 #' @param train_tail A tibble with tail of training data set.
 #' In most cases it'll be required to create some variables
@@ -60,7 +60,7 @@
 #'
 #' # Lag Recipe
 #' recipe_lag <- recipe(value ~ date, m750_extended) %>%
-#'     step_lag(value, lag = 1:12)
+#'     step_lag(value, lag = 1:FORECAST_HORIZON)
 #'
 #' # Data Preparation
 #' m750_lagged <- recipe_lag %>% prep() %>% juice()
@@ -84,7 +84,7 @@
 #'     fit(value ~ ., data = train_data) %>%
 #'     recursive(
 #'         transform  = recipe_lag,
-#'         train_tail = tail(train_data, 12)
+#'         train_tail = tail(train_data, FORECAST_HORIZON)
 #'     )
 #'
 #' model_fit_lm_recursive
@@ -94,6 +94,7 @@
 #'     model_fit_lm,
 #'     model_fit_lm_recursive
 #' ) %>%
+#'     update_model_description(2, "LM - Lag Roll") %>%
 #'     modeltime_forecast(
 #'         new_data    = future_data,
 #'         actual_data = m750,
@@ -108,21 +109,18 @@
 #' # - Used for complex transformations via transformation function
 #'
 #' # Function run recursively that updates the forecasted dataset
-#' transform_fun <- function(data, slice_idx){
+#' lag_roll_transformer <- function(data){
 #'     data %>%
-#'         mutate(moving_sum = lag(slide_dbl(
-#'             value, .f = mean, .before = 4L
-#'         ), 1))
+#'         # Lags
+#'         tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
+#'         # Rolling Features
+#'         mutate(rolling_mean_12 = lag(slide_dbl(value, .f = mean, .before = 12), 1))
 #' }
 #'
 #' # Data Preparation
 #' m750_rolling <- m750_extended %>%
-#'     mutate(moving_sum = lag(slide_dbl(
-#'         value, .f = mean, .before = 4L
-#'     ), 1)) %>%
+#'     lag_roll_transformer() %>%
 #'     select(-id)
-#'
-#' m750_rolling
 #'
 #' train_data <- m750_rolling %>%
 #'     filter(!is.na(value)) %>%
@@ -140,8 +138,8 @@
 #'     set_engine("lm") %>%
 #'     fit(value ~ ., data = train_data) %>%
 #'     recursive(
-#'         transform  = transform_fun,
-#'         train_tail = tail(train_data, 4)
+#'         transform  = lag_roll_transformer,
+#'         train_tail = tail(train_data, FORECAST_HORIZON)
 #'     )
 #'
 #' model_fit_lm_recursive
@@ -151,12 +149,11 @@
 #'     model_fit_lm,
 #'     model_fit_lm_recursive
 #' ) %>%
+#'     update_model_description(2, "LM - Lag Roll") %>%
 #'     modeltime_forecast(
 #'         new_data    = future_data,
 #'         actual_data = m750
-#'     )
-#'
-#' forecasted_data %>%
+#'     ) %>%
 #'     plot_modeltime_forecast(
 #'         .interactive = FALSE
 #'     )
@@ -302,7 +299,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
 
 # HELPERS ----
 
-.prepare_transform <- function(.transform){
+.prepare_transform <- function(.transform) {
 
     if (inherits(.transform, "recipe")) {
 
@@ -326,7 +323,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
         }
     } else if (inherits(.transform, "function")){
         .transform_fun <- function(temp_new_data, new_data_size, slice_idx){
-            .transform(temp_new_data, slice_idx) %>%
+            .transform(temp_new_data) %>%
                 dplyr::slice_tail(n = new_data_size) %>%
                 .[slice_idx, ]
         }

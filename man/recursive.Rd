@@ -7,13 +7,13 @@
 recursive(object, transform, train_tail, ...)
 }
 \arguments{
-\item{object}{An object of model_fit class}
+\item{object}{An object of \code{model_fit} or a fitted \code{workflow} class}
 
 \item{transform}{A transformation performed on new_data after
 each step of recursive algorithm. It can be an object of types:
 \itemize{
-\item \code{recipe}: The recipe generates lagged or sliding features
-\item \code{function} with two argument: \code{temp_new_data} and \code{slice_idx}
+\item \strong{Method 1, \code{recipe}:} A recipe generates lagged or sliding features (see examples)
+\item \strong{Method 2, \code{function}:} Must have one argument \code{data} (see examples)
 }}
 
 \item{train_tail}{A tibble with tail of training data set.
@@ -73,7 +73,7 @@ m750_extended <- m750 \%>\%
 
 # Lag Recipe
 recipe_lag <- recipe(value ~ date, m750_extended) \%>\%
-    step_lag(value, lag = 1:12)
+    step_lag(value, lag = 1:FORECAST_HORIZON)
 
 # Data Preparation
 m750_lagged <- recipe_lag \%>\% prep() \%>\% juice()
@@ -97,7 +97,7 @@ model_fit_lm_recursive <- linear_reg() \%>\%
     fit(value ~ ., data = train_data) \%>\%
     recursive(
         transform  = recipe_lag,
-        train_tail = tail(train_data, 12)
+        train_tail = tail(train_data, FORECAST_HORIZON)
     )
 
 model_fit_lm_recursive
@@ -107,6 +107,7 @@ modeltime_table(
     model_fit_lm,
     model_fit_lm_recursive
 ) \%>\%
+    update_model_description(2, "LM - Lag Roll") \%>\%
     modeltime_forecast(
         new_data    = future_data,
         actual_data = m750,
@@ -121,21 +122,18 @@ modeltime_table(
 # - Used for complex transformations via transformation function
 
 # Function run recursively that updates the forecasted dataset
-transform_fun <- function(data, slice_idx){
+lag_roll_transformer <- function(data){
     data \%>\%
-        mutate(moving_sum = lag(slide_dbl(
-            value, .f = mean, .before = 4L
-        ), 1))
+        # Lags
+        tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) \%>\%
+        # Rolling Features
+        mutate(rolling_mean_12 = lag(slide_dbl(value, .f = mean, .before = 12), 1))
 }
 
 # Data Preparation
 m750_rolling <- m750_extended \%>\%
-    mutate(moving_sum = lag(slide_dbl(
-        value, .f = mean, .before = 4L
-    ), 1)) \%>\%
+    lag_roll_transformer() \%>\%
     select(-id)
-
-m750_rolling
 
 train_data <- m750_rolling \%>\%
     filter(!is.na(value)) \%>\%
@@ -153,8 +151,8 @@ model_fit_lm_recursive <- linear_reg() \%>\%
     set_engine("lm") \%>\%
     fit(value ~ ., data = train_data) \%>\%
     recursive(
-        transform  = transform_fun,
-        train_tail = tail(train_data, 4)
+        transform  = lag_roll_transformer,
+        train_tail = tail(train_data, FORECAST_HORIZON)
     )
 
 model_fit_lm_recursive
@@ -164,12 +162,11 @@ forecasted_data <- modeltime_table(
     model_fit_lm,
     model_fit_lm_recursive
 ) \%>\%
+    update_model_description(2, "LM - Lag Roll") \%>\%
     modeltime_forecast(
         new_data    = future_data,
         actual_data = m750
-    )
-
-forecasted_data \%>\%
+    ) \%>\%
     plot_modeltime_forecast(
         .interactive = FALSE
     )
