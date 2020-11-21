@@ -101,7 +101,8 @@
 #'         keep_data   = TRUE
 #'     ) %>%
 #'     plot_modeltime_forecast(
-#'         .interactive = FALSE
+#'         .interactive        = FALSE,
+#'         .conf_interval_show = FALSE
 #'     )
 #'
 #'
@@ -157,7 +158,8 @@
 #'         actual_data = m750
 #'     ) %>%
 #'     plot_modeltime_forecast(
-#'         .interactive = FALSE
+#'         .interactive        = FALSE,
+#'         .conf_interval_show = FALSE
 #'     )
 #'
 #'

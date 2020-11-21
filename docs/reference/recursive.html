@@ -336,11 +336,10 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
         keep_data   <span class='op'>=</span> <span class='cn'>TRUE</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
-        .interactive <span class='op'>=</span> <span class='cn'>FALSE</span>
+        .interactive        <span class='op'>=</span> <span class='cn'>FALSE</span>,
+        .conf_interval_show <span class='op'>=</span> <span class='cn'>FALSE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Expecting the following names to be in the data frame: .conf_hi, .conf_lo. </span>
-#&gt; <span class='warning'>Proceeding with '.conf_interval_show = FALSE' to visualize the forecast without confidence intervals.</span>
-#&gt; <span class='warning'>Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.</span></div><div class='img'><img src='recursive-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='recursive-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># METHOD 2: TRANSFORM FUNCTION ----</span>
 <span class='co'># - Used for complex transformations via transformation function</span>
@@ -351,20 +350,16 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
         <span class='co'># Lags</span>
         <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
         <span class='co'># Rolling Features</span>
-        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rolling_mean_12 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span><span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>12</span>, .complete <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rolling_mean_12 <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/slider/man/slide.html'>slide_dbl</a></span><span class='op'>(</span>
+            <span class='va'>value</span>, .f <span class='op'>=</span> <span class='va'>mean</span>, .before <span class='op'>=</span> <span class='fl'>12</span>, .complete <span class='op'>=</span> <span class='cn'>FALSE</span>
+        <span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'># Data Preparation</span>
 <span class='va'>m750_rolling</span> <span class='op'>&lt;-</span> <span class='va'>m750_extended</span> <span class='op'>%&gt;%</span>
     <span class='fu'>lag_roll_transformer</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>id</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='input'>
+
 <span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_rolling</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
@@ -390,7 +385,7 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 #&gt; 
 #&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  4ms 
+#&gt; Fit time:  3ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)
@@ -416,149 +411,10 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
-        .interactive <span class='op'>=</span> <span class='cn'>FALSE</span>
+        .interactive        <span class='op'>=</span> <span class='cn'>FALSE</span>,
+        .conf_interval_show <span class='op'>=</span> <span class='cn'>FALSE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* NA -&gt; ...1</span>
-#&gt; <span class='message'>* NA -&gt; ...2</span>
-#&gt; <span class='message'>* NA -&gt; ...3</span>
-#&gt; <span class='message'>* NA -&gt; ...4</span>
-#&gt; <span class='message'>* NA -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Expecting the following names to be in the data frame: .conf_hi, .conf_lo. </span>
-#&gt; <span class='warning'>Proceeding with '.conf_interval_show = FALSE' to visualize the forecast without confidence intervals.</span>
-#&gt; <span class='warning'>Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.</span></div><div class='img'><img src='recursive-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='recursive-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></span></pre>
   </div>
