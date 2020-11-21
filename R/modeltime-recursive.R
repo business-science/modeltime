@@ -114,7 +114,9 @@
 #'         # Lags
 #'         tk_augment_lags(value, .lags = 1:12) %>%
 #'         # Rolling Features
-#'         mutate(rolling_mean_12 = lag(slide_dbl(value, .f = mean, .before = 12, .complete = FALSE), 1))
+#'         mutate(rolling_mean_12 = lag(slide_dbl(
+#'             value, .f = mean, .before = 12, .complete = FALSE
+#'         ), 1))
 #' }
 #'
 #' # Data Preparation
