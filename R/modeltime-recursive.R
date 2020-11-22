@@ -236,9 +236,16 @@ print.recursive <- function(x, ...) {
 predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...) {
 
     if (inherits(object, "model_fit")) {
-        # print("Model fit")
-        predict_recursive_model_fit(object, new_data, type = NULL, opts = list(), ...)
+        # print("Recursive Model fit")
+        ret <- predict_recursive_model_fit(object, new_data, type = NULL, opts = list(), ...)
     }
+
+    if (inherits(object, "workflow")) {
+        # print("Recursive Workflow")
+        ret <- predict_recursive_workflow(object, new_data, type = NULL, opts = list(), ...)
+    }
+
+    return(ret)
 
 }
 
@@ -255,6 +262,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
 
     # print({
     #     list(
+    #         object,
     #         y_var,
     #         class(object),
     #         new_data,
@@ -290,14 +298,32 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
 
         .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
 
-        .preds[i,] <- new_data[i, y_var] <-
-            pred_fun(
+        .preds[i,] <- new_data[i, y_var] <- pred_fun(
                 object, new_data = .nth_slice,
                 type = type, opts = opts, ...
             )
     }
+
     return(.preds)
 
+}
+
+predict_recursive_workflow <- function(object, new_data, type = NULL, opts = list(), ...) {
+    workflow <- object
+
+    if (!workflow$trained) {
+        rlang::abort("Workflow has not yet been trained. Do you need to call `fit()`?")
+    }
+
+    blueprint <- workflow$pre$mold$blueprint
+    forged    <- hardhat::forge(new_data, blueprint)
+    new_data  <- forged$predictors
+
+    fit <- workflow$fit$fit
+
+    # print(fit)
+
+    predict.recursive(fit, new_data, type = type, opts = opts, ...)
 }
 
 
@@ -342,5 +368,7 @@ is_prepped_recipe <- function(recipe) {
     }
     return(is_prepped)
 }
+
+
 
 
