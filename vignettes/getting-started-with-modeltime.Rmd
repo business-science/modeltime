@@ -18,9 +18,9 @@ knitr::opts_chunk$set(
   comment = "#>",
   
   out.width='100%',
-  # fig.align = "center",
-  # fig.width = 7,
-  # fig.height = 5,
+  fig.align = "center",
+  fig.width = 7,
+  fig.height = 5,
   
   message = FALSE,
   warning = FALSE
@@ -73,7 +73,7 @@ library(lubridate)
 library(timetk)
 
 # This toggles plots from plotly (interactive) to ggplot (static)
-interactive <- TRUE
+interactive <- FALSE
 ```
 
 ### Step 1 - Collect data and split into training and test sets. 
