@@ -4,6 +4,6 @@ pkgdown_sha: ~
 articles:
   extending-modeltime: extending-modeltime.html
   getting-started-with-modeltime: getting-started-with-modeltime.html
-  temp/modeltime-model-list: modeltime-model-list.html
-last_built: 2020-11-23T02:36Z
+  modeltime-model-list: modeltime-model-list.html
+last_built: 2020-12-02T18:44Z
 

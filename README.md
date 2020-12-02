@@ -5,12 +5,15 @@
 
 <img src="vignettes/logo-modeltime.png" width="147" height="170" align="right" />
 
+<!-- badges: start -->
+
 [![Travis build
 status](https://travis-ci.org/business-science/modeltime.svg?branch=master)](https://travis-ci.org/business-science/modeltime)
 [![codecov](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://codecov.io/gh/business-science/modeltime)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/modeltime)](https://cran.r-project.org/package=modeltime)
 ![](http://cranlogs.r-pkg.org/badges/modeltime?color=brightgreen)
 ![](http://cranlogs.r-pkg.org/badges/grand-total/modeltime?color=brightgreen)
+<!-- badges: end -->
 
 The time series forecasting package for the `tidymodels` ecosystem.
 
