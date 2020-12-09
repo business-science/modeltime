@@ -1,4 +1,8 @@
-# modeltime (development version)
+# modeltime 0.4.0.9000 (development version)
+
+__Fixes__
+
+- `recursive()` & `modeltime_refit()`: Now able to refit a recursive workflow or recursive fitted parsnip object. 
 
 # modeltime 0.4.0
 

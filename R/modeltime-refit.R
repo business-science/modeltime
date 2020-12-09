@@ -226,6 +226,52 @@ mdl_time_refit.model_fit <- function(object, data, ...,  control = NULL) {
 
 }
 
+#' @export
+mdl_time_refit.recursive <- function(object, data, ..., control = NULL) {
+
+    if (inherits(object, "model_fit")) {
+
+        # Swap out train_tail
+        train_tail_old <- object$spec$train_tail
+
+        object$spec$train_tail <- data %>%
+            dplyr::slice_tail(n = nrow(train_tail_old))
+
+        # Refit
+        object <- mdl_time_refit.model_fit(object, data, ..., control = control)
+
+        # Reconstruct class
+        .class        <- class(object)
+        class(object) <- c(.class[1], "recursive", .class[2])
+
+
+    } else {
+
+        # Get transformer
+        transformer <- object$fit$fit$spec$transform
+
+        # Create new train tail
+        train_tail_old <- object$fit$fit$spec$train_tail
+
+        train_tail_new <- data %>%
+            dplyr::slice_tail(n = nrow(train_tail_old))
+
+        # Refit
+        object <- mdl_time_refit.workflow(object, data, ..., control = control)
+
+        # Make Recursive
+        object <- recursive(object, transform = transformer, train_tail = train_tail_new)
+
+        # Need to overwrite transformer
+        object$fit$fit$spec$transform <- transformer
+
+    }
+
+    return(object)
+
+
+}
+
 
 
 # # REFIT XY ----
