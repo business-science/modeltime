@@ -46,7 +46,7 @@ growth <- function(values = c("linear", "logistic")) {
         type     = c("character"),
         values   = values,
         default  = "linear",
-        label    = c(linear = "Growth Trend"),
+        label    = c(growth = "Growth Trend"),
         finalize = NULL
     )
 }
