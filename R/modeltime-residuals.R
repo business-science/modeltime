@@ -62,7 +62,7 @@ NULL
 modeltime_residuals <- function(object, new_data = NULL, quiet = TRUE, ...) {
     if (!is_calibrated(object)) {
        if (is.null(new_data)) {
-           rlang::abort("Modeltime Table must be calibrated (see 'modeltime_calbirate()') or include 'new_data'.")
+           rlang::abort("Modeltime Table must be calibrated (see 'modeltime_calibrate()') or include 'new_data'.")
        }
     }
 
