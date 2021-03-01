@@ -95,7 +95,7 @@ different packages. Currently the only package is forecast." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ different packages. Currently the only package is forecast." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -141,7 +141,7 @@ different packages. Currently the only package is forecast." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/business-science/modeltime">
-    <span class="fa fa-github"></span>
+    <span class="fab fa-github"></span>
      
   </a>
 </li>
@@ -324,20 +324,20 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 
 <span class='co'># Data</span>
 <span class='va'>taylor_30_min</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4,032 x 2</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4,032 x 2</span><span>
 #&gt;    date                value
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2000-06-05 </span><span style='color: #555555;'>00:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>262
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2000-06-05 </span><span style='color: #555555;'>00:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>756
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2000-06-05 </span><span style='color: #555555;'>01:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>247
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2000-06-05 </span><span style='color: #555555;'>01:30:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>759
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2000-06-05 </span><span style='color: #555555;'>02:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>549
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2000-06-05 </span><span style='color: #555555;'>02:30:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>313
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2000-06-05 </span><span style='color: #555555;'>03:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>128
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2000-06-05 </span><span style='color: #555555;'>03:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>860
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2000-06-05 </span><span style='color: #555555;'>04:00:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>751
-#&gt; </span><span style='color: #555555;'>10</span><span> 2000-06-05 </span><span style='color: #555555;'>04:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>336
-#&gt; </span><span style='color: #555555;'># … with 4,022 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 2000-06-05 </span><span style='color: #949494;'>00:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>262
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 2000-06-05 </span><span style='color: #949494;'>00:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>756
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2000-06-05 </span><span style='color: #949494;'>01:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>247
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 2000-06-05 </span><span style='color: #949494;'>01:30:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>759
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2000-06-05 </span><span style='color: #949494;'>02:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>549
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 2000-06-05 </span><span style='color: #949494;'>02:30:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>313
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 2000-06-05 </span><span style='color: #949494;'>03:00:00</span><span> </span><span style='text-decoration: underline;'>22</span><span>128
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2000-06-05 </span><span style='color: #949494;'>03:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>860
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2000-06-05 </span><span style='color: #949494;'>04:00:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>751
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 2000-06-05 </span><span style='color: #949494;'>04:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>336
+#&gt; </span><span style='color: #949494;'># … with 4,022 more rows</span><span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>taylor_30_min</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
@@ -353,13 +353,13 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  339ms 
+#&gt; Fit time:  336ms 
 #&gt; SEASONAL DECOMP: ETS(A,Ad,N)
 #&gt; 
-#&gt; </span><span style='color: #555555;'># A tibble: 1 x 5</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 1 x 5</span><span>
 #&gt;      aic    bic   aicc loglik       mse
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span style='color: #BB0000;'>238.</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span style='color: #BB0000;'>201.</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span style='color: #BB0000;'>238.</span><span>  </span><span style='text-decoration: underline;'>3</span><span>125. 0.000</span><span style='text-decoration: underline;'>044</span><span>7</div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span style='color: #BB0000;'>238.</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span style='color: #BB0000;'>201.</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span style='color: #BB0000;'>238.</span><span>  </span><span style='text-decoration: underline;'>3</span><span>125. 0.000</span><span style='text-decoration: underline;'>044</span><span>7</div><div class='input'>
 
 <span class='co'># ---- STLM ARIMA ----</span>
 
@@ -373,7 +373,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  581ms 
+#&gt; Fit time:  598ms 
 #&gt; SEASONAL DECOMP: ARIMA(3,1,2)
 #&gt; 
 #&gt; Series: x 
