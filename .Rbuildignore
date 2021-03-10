@@ -10,3 +10,5 @@
 ^pkgdown$
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+^\.github$
+^codecov\.yml$

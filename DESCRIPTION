@@ -64,7 +64,8 @@ Suggests:
     tidyquant,
     knitr,
     rmarkdown,
-    webshot
+    webshot,
+    covr
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
