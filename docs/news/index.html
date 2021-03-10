@@ -165,10 +165,18 @@
 <div id="modeltime-residual-tests" class="section level3">
 <h3 class="hasAnchor">
 <a href="#modeltime-residual-tests" class="anchor"></a>Modeltime Residual Tests</h3>
-<p>A new function is added <code><a href="../reference/modeltime_residuals_test.html">modeltime_residuals_test()</a></code>. Tests are implemented:</p>
+<p>A new function is added <code><a href="../reference/modeltime_residuals_test.html">modeltime_residuals_test()</a></code> (<a href='https://github.com/business-science/modeltime/issues/62'>#62</a>, <a href='https://github.com/business-science/modeltime/issues/68'>#68</a>). Tests are implemented:</p>
 <ul>
 <li>Shapiro Test - Test for Normality of residuals</li>
 <li>Box-Pierce, Ljung-Box, and Durbin-Watson Tests - Test for Autocorrelation of residuals</li>
+</ul>
+</div>
+<div id="fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fixes" class="anchor"></a>Fixes</h3>
+<ul>
+<li>
+<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> - When plotting a single point forecast, <code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> now uses <code>geom_point()</code> instead of <code>geom_line()</code>. Fixes <a href='https://github.com/business-science/modeltime/issues/66'>#66</a>.</li>
 </ul>
 </div>
 </div>
@@ -425,9 +433,9 @@
 <code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>: Now estimates confidence intervals using centered standard deviation. The mean is assumed to be zero and residuals deviate from mean = 0.</li>
 </ul>
 </div>
-<div id="fixes" class="section level3">
+<div id="fixes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#fixes" class="anchor"></a>Fixes</h3>
+<a href="#fixes-1" class="anchor"></a>Fixes</h3>
 <ul>
 <li>Updates to work with <code>parsnip</code> 0.1.2.</li>
 <li>
