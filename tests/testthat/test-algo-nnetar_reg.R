@@ -133,7 +133,7 @@ test_that("nnetar_reg (XREGS)", {
     resid <- testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error 967.2171
-    testthat::expect_lte(max(abs(resid)), 1000)
+    testthat::expect_lte(max(abs(resid)), 1250)
 
     # - MAE 407.0114
     testthat::expect_lte(mean(abs(resid)), 500)

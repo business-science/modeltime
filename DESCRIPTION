@@ -56,6 +56,7 @@ Suggests:
     tune,
     tidyverse,
     lubridate,
+    progress,
     testthat,
     roxygen2,
     kernlab,
