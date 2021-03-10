@@ -47,3 +47,16 @@ is_modeltime_table <- function(object) {
 is_calibrated <- function(object) {
     all(c(".type", ".calibration_data") %in% names(object) )
 }
+
+
+
+#' Test if a table contains residuals.
+#'
+#' This function returns `TRUE` for objects that contains the column name '.residuals'.
+#'
+#' @param object An object to detect if it provides from modeltime::modeltime_residuals().
+#'
+#' @export
+is_residuals <- function(object) {
+    all(c(".residuals") %in% names(object) )
+}

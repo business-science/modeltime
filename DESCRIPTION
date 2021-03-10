@@ -57,6 +57,7 @@ Suggests:
     tidyverse,
     lubridate,
     testthat,
+    car,
     roxygen2,
     kernlab,
     earth,
