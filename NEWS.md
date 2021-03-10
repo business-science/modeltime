@@ -1,3 +1,12 @@
+# modeltime 0.4.1.9000
+
+### Modeltime Residual Tests
+
+A new function is added `modeltime_residuals_test()`. Tests are implemented:
+
+- Shapiro Test - Test for Normality of residuals
+- Box-Pierce, Ljung-Box, and Durbin-Watson Tests - Test for Autocorrelation of residuals
+
 # modeltime 0.4.1 
 
 __Fixes__

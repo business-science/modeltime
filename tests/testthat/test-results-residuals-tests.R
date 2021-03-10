@@ -39,23 +39,23 @@ residuals_tbl <- model_tbl %>%
 
 test_that("Test Modeltime Residuals Tests", {
 
-    res_tbl_1 <- residuals_tbl %>% modeltime_residuals_tests()
+    res_tbl_1 <- residuals_tbl %>% modeltime_residuals_test()
 
-    res_tbl_2 <- model_tbl %>% modeltime_residuals_tests(training(splits))
+    res_tbl_2 <- model_tbl %>% modeltime_residuals_test(training(splits))
 
-    res_tbl_3 <- model_tbl %>% modeltime_residuals_tests(testing(splits))
+    res_tbl_3 <- model_tbl %>% modeltime_residuals_test(testing(splits))
 
     res_tbl_4 <- model_fit_arima %>%
                  modeltime_calibrate(new_data = training(splits)) %>%
-                 modeltime_residuals_tests(new_data = training(splits))
+                 modeltime_residuals_test(new_data = training(splits))
 
     res_tbl_5 <- model_fit_arima %>%
                  modeltime_calibrate(new_data = testing(splits)) %>%
-                 modeltime_residuals_tests(new_data = testing(splits))
+                 modeltime_residuals_test(new_data = testing(splits))
 
-    res_tbl_6 <- residuals_tbl %>% modeltime_residuals_tests(training(splits))
+    res_tbl_6 <- residuals_tbl %>% modeltime_residuals_test(training(splits))
 
-    res_tbl_7 <- residuals_tbl %>% modeltime_residuals_tests(testing(splits))
+    res_tbl_7 <- residuals_tbl %>% modeltime_residuals_test(testing(splits))
 
     # Structure
     nms_expected <- c(".model_id", ".model_desc", "shapiro_wilk", "box_pierce", "ljung_box", "durbin_watson")
@@ -84,17 +84,17 @@ test_that("Test Modeltime Residuals Tests", {
     # Errors
     expect_error({
         # Missing new_data or calibration data
-        model_tbl %>% modeltime_residuals_tests()
+        model_tbl %>% modeltime_residuals_test()
     })
 
     expect_error({
         # Missing new_data or calibration data
-        model_fit_arima %>% modeltime_residuals_tests(new_data = training(splits))
+        model_fit_arima %>% modeltime_residuals_test(new_data = training(splits))
     })
 
     expect_error({
         # Missing new_data or calibration data
-        model_fit_arima %>% modeltime_residuals_tests()
+        model_fit_arima %>% modeltime_residuals_test()
     })
 
 })

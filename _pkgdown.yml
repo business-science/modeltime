@@ -41,6 +41,7 @@ reference:
     - modeltime_forecast
     - modeltime_accuracy
     - modeltime_residuals
+    - modeltime_residuals_test
     - modeltime_refit
   - subtitle: Recursive Forecast Prediction
     contents:
