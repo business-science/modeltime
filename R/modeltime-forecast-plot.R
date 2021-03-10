@@ -148,7 +148,19 @@ plot_modeltime_forecast_multi <- function(.data,
         dplyr::mutate(.model_desc = .model_desc %>% stringr::str_trunc(width = .legend_max_width)) %>%
         dplyr::mutate(.model_desc = forcats::as_factor(.model_desc))
 
+    # Isolate just the forecast data
+    data_prepared_forecast_only <- data_prepared %>%
+        dplyr::filter(.model_desc != "ACTUAL")
 
+    # Check for only 1 forecast
+    #  if 1 forecast, n_forecast_timestamps == 1
+    n_forecast_timestamps <- data_prepared_forecast_only %>%
+        dplyr::ungroup() %>%
+        dplyr::pull(.index) %>%
+        unique() %>%
+        length()
+
+    # Make the plot
     g <- timetk::plot_time_series(
         .data         = data_prepared,
         .date_var     = .index,
@@ -161,32 +173,51 @@ plot_modeltime_forecast_multi <- function(.data,
         .x_lab        = .x_lab,
         .y_lab        = .y_lab,
         .color_lab    = .color_lab,
-        .interactive  = FALSE,
+        .interactive  = FALSE
+        ,
         ...
     )
+
+    # If forecast timestamps are 1, add geom_point()
+    if (n_forecast_timestamps == 1) {
+        g <- g +
+            ggplot2::geom_point(
+                ggplot2::aes(color = .model_desc),
+                data = . %>% dplyr::filter(.model_desc != "ACTUAL")
+            )
+    }
 
     # Add ribbon
     if (.conf_interval_show) {
 
-        # Add ribbon
-        g <- g +
-            ggplot2::geom_ribbon(ggplot2::aes(ymin = .conf_lo,
-                                              ymax = .conf_hi,
-                                              color = .model_desc),
-                                 fill     = .conf_interval_fill,
-                                 alpha    = .conf_interval_alpha,
-                                 # color    = .conf_interval_fill,
-                                 # na.rm    = TRUE, # causes error
-                                 # data = data_prepared %>% dplyr::filter(!is.na(.conf_lo))
-                                 linetype = 0
-                                )
+        if (n_forecast_timestamps > 1) {
+
+            # Add ribbon
+            g <- g +
+                ggplot2::geom_ribbon(
+                    ggplot2::aes(
+                        ymin = .conf_lo,
+                        ymax = .conf_hi,
+                        # group = .model_desc
+                        # ,
+                        color = .model_desc
+                    ),
+                    fill     = .conf_interval_fill,
+                    alpha    = .conf_interval_alpha,
+                    # color    = .conf_interval_fill,
+                    # na.rm    = TRUE, # causes error
+                    data = . %>% dplyr::filter(.model_desc != "ACTUAL"),
+                    linetype = 0
+                )
 
 
-        # Reorder Ribbon to 1st level
-        layers_start <- g$layers
+            # Reorder Ribbon to 1st level
+            layers_start <- g$layers
 
-        g$layers[[1]] <- layers_start[[2]]
-        g$layers[[2]] <- layers_start[[1]]
+            g$layers[[1]] <- layers_start[[2]]
+            g$layers[[2]] <- layers_start[[1]]
+
+        }
 
     }
 

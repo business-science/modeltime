@@ -2,10 +2,14 @@
 
 ### Modeltime Residual Tests
 
-A new function is added `modeltime_residuals_test()`. Tests are implemented:
+A new function is added `modeltime_residuals_test()` (#62, #68). Tests are implemented:
 
 - Shapiro Test - Test for Normality of residuals
 - Box-Pierce, Ljung-Box, and Durbin-Watson Tests - Test for Autocorrelation of residuals
+
+### Fixes
+
+- `plot_modeltime_forecast()` - When plotting a single point forecast, `plot_modeltime_forecast()` now uses `geom_point()` instead of `geom_line()`. Fixes #66. 
 
 # modeltime 0.4.1 
 
