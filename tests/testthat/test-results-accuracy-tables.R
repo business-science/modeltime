@@ -33,7 +33,6 @@ calibration_tbl <- model_tbl %>%
     modeltime_calibrate(testing(splits))
 
 
-
 # ACCURACY ----
 
 test_that("Test Modeltime Accuracy", {
@@ -82,7 +81,25 @@ test_that("Test Modeltime Accuracy", {
 
 })
 
+# DEFAULT FORECAST ACCURACY METRIC SET ----
 
+test_that("Modifying Default Forecast Accuracy Metric Set", {
+
+    my_metric_set <- default_forecast_accuracy_metric_set(
+        metric_tweak(mase, m = 12)
+    )
+
+    acc_tbl_6 <- calibration_tbl %>%
+        modeltime_accuracy(
+            metric_set = my_metric_set
+        )
+
+    nms_expected <- c(".model_id", ".model_desc", ".type",
+                      "mae", "mape", "mase", "smape", "rmse", "rsq", "mase_1")
+
+    expect_true(all(nms_expected %in% names(acc_tbl_6)))
+
+})
 
 # TABLES ----
 
