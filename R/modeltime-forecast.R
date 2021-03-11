@@ -332,6 +332,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
 
     # REMOVE ANY EXTRA-ACTUAL DATA ----
     # - Happens when ensembling
+
     ret <- ret %>%
         dplyr::filter(.model_desc == "ACTUAL" | .key == "prediction")
 

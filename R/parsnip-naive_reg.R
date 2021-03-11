@@ -49,7 +49,6 @@
 #'   the data
 #' - The `seasonal_period` is used to determine how far back to define the repeated
 #'   series. This can be a numeric value (e.g. 28) or a period (e.g. "1 month")
-
 #'
 #' @section Fit Details:
 #'
@@ -160,7 +159,7 @@ naive_reg <- function(mode = "regression",
 
 #' @export
 print.naive_reg <- function(x, ...) {
-    cat("Baseline Forecast Model Specification (", x$mode, ")\n\n", sep = "")
+    cat("Naive Forecast Model Specification (", x$mode, ")\n\n", sep = "")
     parsnip::model_printer(x, ...)
 
     if(!is.null(x$method$fit$args)) {
@@ -184,13 +183,8 @@ update.naive_reg <- function(object, parameters = NULL,
     }
 
     args <- list(
-        seasonal_period            = rlang::enquo(seasonal_period),
-        non_seasonal_ar            = rlang::enquo(non_seasonal_ar),
-        non_seasonal_differences   = rlang::enquo(non_seasonal_differences),
-        non_seasonal_ma            = rlang::enquo(non_seasonal_ma),
-        seasonal_ar                = rlang::enquo(seasonal_ar),
-        seasonal_differences       = rlang::enquo(seasonal_differences),
-        seasonal_ma                = rlang::enquo(seasonal_ma)
+        id               = rlang::enquo(id),
+        seasonal_period  = rlang::enquo(seasonal_period)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)
@@ -491,11 +485,16 @@ snaive_predict_impl <- function(object, new_data) {
         h     <- nrow(new_data)
         preds <- rep_len(model$value, length.out = h)
     } else {
+        # print("Start")
+
         snaive_nested_tbl <- model %>%
             dplyr::select(- (!! idx_col)) %>%
             dplyr::group_by(!! rlang::sym(id)) %>%
             tidyr::nest(.snaive_values = value) %>%
             dplyr::ungroup()
+
+        # print("SNAIVE Nested")
+        # print(snaive_nested_tbl)
 
         new_data_nested_tbl <- new_data %>%
             dplyr::select(!! rlang::sym(id), !! rlang::sym(idx_col)) %>%
@@ -503,14 +502,32 @@ snaive_predict_impl <- function(object, new_data) {
             tidyr::nest(.idx_values = !! rlang::sym(idx_col)) %>%
             dplyr::ungroup()
 
+        # print("Data Nested")
+        # print(new_data_nested_tbl)
+
         data_joined_tbl <- new_data_nested_tbl %>%
-            dplyr::left_join(snaive_nested_tbl, by = id) %>%
-            dplyr::mutate(.final_values = purrr::map2(.idx_values, .snaive_values,
-                                                      .f = function(x, y) {
-                tibble::tibble(value = rep_len(y$value, length.out = nrow(x)))
+            dplyr::left_join(snaive_nested_tbl, by = id)
+
+        # print("Data Joined")
+        # print(data_joined_tbl)
+
+        data_joined_tbl <- data_joined_tbl %>%
+            dplyr::mutate(.final_values = purrr::map2(
+                .x = .idx_values, .y = .snaive_values, .f = function(x, y) {
+
+                    ret <- tryCatch({
+                        tibble::tibble(value = rep_len(y$value, length.out = nrow(x)))
+                    }, error = function(e) {
+                        tibble::tibble(value = rep_len(NA, length.out = nrow(x)))
+                    })
+
+                    return(ret)
+
             })) %>%
             dplyr::select(-.snaive_values) %>%
             tidyr::unnest(cols = c(.idx_values, .final_values))
+
+        # print(data_joined_tbl)
 
         preds <- data_joined_tbl$value
     }
