@@ -206,7 +206,7 @@ plot_modeltime_forecast_multi <- function(.data,
                     alpha    = .conf_interval_alpha,
                     # color    = .conf_interval_fill,
                     # na.rm    = TRUE, # causes error
-                    data = . %>% dplyr::filter(.model_desc != "ACTUAL"),
+                    # data = . %>% dplyr::filter(.model_desc != "ACTUAL"),
                     linetype = 0
                 )
 
