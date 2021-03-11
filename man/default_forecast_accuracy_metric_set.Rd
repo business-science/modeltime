@@ -4,7 +4,10 @@
 \alias{default_forecast_accuracy_metric_set}
 \title{Forecast Accuracy Metrics Sets}
 \usage{
-default_forecast_accuracy_metric_set()
+default_forecast_accuracy_metric_set(...)
+}
+\arguments{
+\item{...}{Add additional \code{yardstick} metrics}
 }
 \description{
 This is a wrapper for \code{\link[=metric_set]{metric_set()}} with several common forecast / regression

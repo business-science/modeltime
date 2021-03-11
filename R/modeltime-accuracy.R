@@ -143,6 +143,8 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' accuracy metrics included. These are the default time series accuracy
 #' metrics used with [modeltime_accuracy()].
 #'
+#' @param ... Add additional `yardstick` metrics
+#'
 #' @details
 #'
 #' The primary purpose is to use the default accuracy metrics to calculate the following
@@ -177,14 +179,15 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #'
 #' @export
 #' @importFrom yardstick mae mape mase smape rmse rsq
-default_forecast_accuracy_metric_set <- function() {
+default_forecast_accuracy_metric_set <- function(...) {
     yardstick::metric_set(
         mae,
         mape,
         mase,
         smape,
         rmse,
-        rsq
+        rsq,
+        ...
     )
 }
 
@@ -234,6 +237,45 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
         dplyr::select(-.estimator) %>%
         # mutate(.metric = toupper(.metric)) %>%
         tidyr::pivot_wider(names_from = .metric, values_from = .estimate)
+
+}
+
+# METRIC TWEAK ----
+
+#' Modify Yardstick Metric Functions
+#'
+#' This is an used to modify functions like `mase()`, which have parameters that
+#' need to be adjusted (e.g. `m = 1`) based on the seasonality of the data.
+#'
+#' @param .f A yardstick function (e.g. `mase`)
+#' @param ... Parameters to overload (.e.g. `m = 1`)
+#'
+#' @examples
+#' library(yardstick)
+#' library(tibble)
+#' library(purrr)
+#'
+#' fake_data <- tibble(
+#'     val1 = c(1:12, 2*1:12),
+#'     val2 = c(1 + 1:12, 2*1:12 - 1)
+#' )
+#'
+#' default_forecast_accuracy_metric_set(
+#'     metric_tweak(mase, m = 12)
+#' )
+#'
+#'
+#'
+#' @export
+metric_tweak <- function(.f, ...) {
+
+    f_attrs <- attributes(.f)
+
+    ret <- purrr::partial(.f = .f, ...)
+
+    attributes(ret) <- f_attrs
+
+    return(ret)
 
 }
 

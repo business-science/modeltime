@@ -57,8 +57,11 @@ reference:
     - update_modeltime_model
     - update_modeltime_description
     - pluck_modeltime_model
+  - title: Yardstick Metrics
+    contents:
     - default_forecast_accuracy_metric_set
     - summarize_accuracy_metrics
+    - metric_tweak
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
     contents:
