@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarize Accuracy Metrics — summarize_accuracy_metrics • modeltime</title>
+<title>Bridge prediction function for window Models — window_predict_impl • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Summarize Accuracy Metrics — summarize_accuracy_metrics" />
-<meta property="og:description" content="This is an internal function used by modeltime_accuracy()." />
+<meta property="og:title" content="Bridge prediction function for window Models — window_predict_impl" />
+<meta property="og:description" content="Bridge prediction function for window Models" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -155,67 +155,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Summarize Accuracy Metrics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-accuracy.R'><code>R/modeltime-accuracy.R</code></a></small>
-    <div class="hidden name"><code>summarize_accuracy_metrics.Rd</code></div>
+    <h1>Bridge prediction function for window Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-window_reg.R'><code>R/parsnip-window_reg.R</code></a></small>
+    <div class="hidden name"><code>window_predict_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is an internal function used by <code><a href='modeltime_accuracy.html'>modeltime_accuracy()</a></code>.</p>
+    <p>Bridge prediction function for window Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_accuracy_metrics</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>truth</span>, <span class='va'>estimate</span>, <span class='va'>metric_set</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>window_predict_impl</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A <code>data.frame</code> containing the truth and estimate columns.</p></td>
+      <th>object</th>
+      <td><p>An object of class <code>model_fit</code></p></td>
     </tr>
     <tr>
-      <th>truth</th>
-      <td><p>The column identifier for the true results (that is numeric).</p></td>
-    </tr>
-    <tr>
-      <th>estimate</th>
-      <td><p>The column identifier for the predicted results (that is also numeric).</p></td>
-    </tr>
-    <tr>
-      <th>metric_set</th>
-      <td><p>A <code><a href='https://yardstick.tidymodels.org/reference/metric_set.html'>yardstick::metric_set()</a></code> that is used to summarize one or more
-forecast accuracy (regression) metrics.</p></td>
+      <th>new_data</th>
+      <td><p>A rectangular data object, such as a data frame.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tibble.tidyverse.org/'>tibble</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='va'>predictions_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>
-    group <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"model 1"</span>, <span class='st'>"model 1"</span>, <span class='st'>"model 1"</span>,
-              <span class='st'>"model 2"</span>, <span class='st'>"model 2"</span>, <span class='st'>"model 2"</span><span class='op'>)</span>,
-    truth <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>,
-              <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>,
-    estimate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.2</span>, <span class='fl'>2.0</span>, <span class='fl'>2.5</span>,
-                 <span class='fl'>0.9</span>, <span class='fl'>1.9</span>, <span class='fl'>3.3</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='va'>predictions_tbl</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>group</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>summarize_accuracy_metrics</span><span class='op'>(</span>
-        <span class='va'>truth</span>, <span class='va'>estimate</span>,
-        metric_set <span class='op'>=</span> <span class='fu'><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set</a></span><span class='op'>(</span><span class='op'>)</span>
-    <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 13</span><span>
-#&gt;   group      mae  mae_1  mape mape_1   mase mase_1 smape smape_1   rmse rmse_1
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> model 1  0.233 </span><span style='color: #BB0000;'>NA</span><span>      12.2  </span><span style='color: #BB0000;'>NA</span><span>     0.233 </span><span style='color: #BB0000;'>NA</span><span>      12.1   </span><span style='color: #BB0000;'>NA</span><span>     0.311 </span><span style='color: #BB0000;'>NA</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> model 2 </span><span style='color: #BB0000;'>NA</span><span>      0.167  </span><span style='color: #BB0000;'>NA</span><span>     8.33 </span><span style='color: #BB0000;'>NA</span><span>      0.167  </span><span style='color: #BB0000;'>NA</span><span>      8.39 </span><span style='color: #BB0000;'>NA</span><span>      0.191
-#&gt; </span><span style='color: #949494;'># … with 2 more variables: rsq &lt;dbl&gt;, rsq_1 &lt;dbl&gt;</span><span></div><div class='input'>
-
-</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

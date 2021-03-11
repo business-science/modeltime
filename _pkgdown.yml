@@ -50,20 +50,9 @@ reference:
     contents:
     - starts_with("plot_modeltime")
     - starts_with("table_modeltime")
-  - subtitle: Modeltime Workflow Helpers
-    contents:
-    - combine_modeltime_tables
-    - add_modeltime_model
-    - update_modeltime_model
-    - update_modeltime_description
-    - pluck_modeltime_model
-  - title: Yardstick Metrics
-    contents:
-    - default_forecast_accuracy_metric_set
-    - summarize_accuracy_metrics
-    - metric_tweak
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
+  - subtitle: Core Forecasting Methods
     contents:
     - prophet_reg
     - prophet_boost
@@ -72,11 +61,23 @@ reference:
     - exp_smoothing
     - seasonal_reg
     - nnetar_reg
-  - title: Baseline Algorithms
-    desc: These algorithms are simple baselines that can be used to gauge model performance.
+  - subtitle: Baseline Algorithms (Simple Methods)
     contents:
+    - window_reg
     - naive_reg
-  - title: Parameters
+  - title: Modeltime Workflow Helpers
+    contents:
+    - combine_modeltime_tables
+    - add_modeltime_model
+    - update_modeltime_model
+    - update_modeltime_description
+    - pluck_modeltime_model
+  - title: Accuracy Metrics (Yardstick)
+    contents:
+    - default_forecast_accuracy_metric_set
+    - summarize_accuracy_metrics
+    - metric_tweak
+  - title: Parameters (Dials)
     desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
   - subtitle: General Time Series
     contents:

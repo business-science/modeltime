@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General Interface for NAIVE Forecast Models — naive_reg • modeltime</title>
+<title>General Interface for Window Forecast Models — window_reg • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,10 +48,10 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="General Interface for NAIVE Forecast Models — naive_reg" />
-<meta property="og:description" content="naive_reg() is a way to generate a specification of an NAIVE or SNAIVE model
+<meta property="og:title" content="General Interface for Window Forecast Models — window_reg" />
+<meta property="og:description" content="window_reg() is a way to generate a specification of a window model
 before fitting and allows the model to be created using
-different packages." />
+different R packages as backends." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -157,18 +157,23 @@ different packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General Interface for NAIVE Forecast Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-naive_reg.R'><code>R/parsnip-naive_reg.R</code></a></small>
-    <div class="hidden name"><code>naive_reg.Rd</code></div>
+    <h1>General Interface for Window Forecast Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-window_reg.R'><code>R/parsnip-window_reg.R</code></a></small>
+    <div class="hidden name"><code>window_reg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>naive_reg()</code> is a way to generate a <em>specification</em> of an NAIVE or SNAIVE model
+    <p><code>window_reg()</code> is a way to generate a <em>specification</em> of a window model
 before fitting and allows the model to be created using
-different packages.</p>
+different R packages as backends.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>naive_reg</span><span class='op'>(</span>mode <span class='op'>=</span> <span class='st'>"regression"</span>, id <span class='op'>=</span> <span class='cn'>NULL</span>, seasonal_period <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>window_reg</span><span class='op'>(</span>
+  mode <span class='op'>=</span> <span class='st'>"regression"</span>,
+  id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  window_function <span class='op'>=</span> <span class='cn'>NULL</span>,
+  window_size <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,23 +189,41 @@ The only possible value for this model is "regression".</p></td>
 identifying multiple time series (i.e. panel data).</p></td>
     </tr>
     <tr>
-      <th>seasonal_period</th>
-      <td><p>SNAIVE only. A seasonal frequency. Uses "auto" by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.</p></td>
+      <th>window_function</th>
+      <td><p>A function / formula:</p><ul>
+<li><p>If a function, e.g. <code>mean</code>, the function is used with
+any additional arguments, <code>...</code> in <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p></li>
+<li><p>If a formula, e.g. <code>~ mean(., na.rm = TRUE)</code>, it is converted to a function.</p></li>
+</ul>
+
+<p>This syntax allows you to create very compact anonymous functions.</p></td>
+    </tr>
+    <tr>
+      <th>window_size</th>
+      <td><p>A window to apply the window function. By default,
+the window uses the full data set, which is rarely the best choice.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The data given to the function are not saved and are only used
-to determine the <em>mode</em> of the model. For <code>naive_reg()</code>, the
-mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
+    <p>A time series window regression applies a <code>window_function</code> to a
+window of the data (last N observations).</p><ul>
+<li><p>The function can return a scalar (single value) or multiple values()</p></li>
+<li><p>Common use cases:</p><ul>
+<li><p><strong>Moving Average Forecasts:</strong> Forecast forward a 20-day average</p></li>
+<li><p><strong>Weighted Average Forecasts:</strong> Exponentially weighting the most recent observations</p></li>
+<li><p><strong>Median Forecasts:</strong> Forecasting forward a 20-day median</p></li>
+<li><p><strong>Repeating Forecasts:</strong> Simulating a Seasonal Naive Forecast by
+broadcasting the last 12 observations of a monthly dataset into the future</p></li>
+</ul></li>
+</ul>
+
+<p>A time series window regression is derived using <code>window_reg()</code>.
+The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
 following <em>engines</em>:</p><ul>
-<li><p>"naive" (default) - Performs a NAIVE forecast</p></li>
-<li><p>"snaive" - Performs a Seasonal NAIVE forecast</p></li>
+<li><p>"window" (default) - Performs a Window Forecast applying a <code>window_function</code>
+to a window of size defined by <code>window_size</code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
@@ -208,23 +231,8 @@ following <em>engines</em>:</p><ul>
     
 
 
-<p><strong>naive (default engine)</strong></p><ul>
-<li><p>The engine uses <code><a href='naive_fit_impl.html'>naive_fit_impl()</a></code></p></li>
-<li><p>The NAIVE implementation uses the last observation and forecasts this value forward.</p></li>
-<li><p>The <code>id</code> can be used to distinguish multiple time series contained in
-the data</p></li>
-<li><p>The <code>seasonal_period</code> is not used but provided for consistency with the SNAIVE
-implementation</p></li>
-</ul>
-
-<p><strong>snaive (default engine)</strong></p><ul>
-<li><p>The engine uses <code><a href='snaive_fit_impl.html'>snaive_fit_impl()</a></code></p></li>
-<li><p>The SNAIVE implementation uses the last seasonal series in the data
-and forecasts this sequence of observations forward</p></li>
-<li><p>The <code>id</code> can be used to distinguish multiple time series contained in
-the data</p></li>
-<li><p>The <code>seasonal_period</code> is used to determine how far back to define the repeated
-series. This can be a numeric value (e.g. 28) or a period (e.g. "1 month")</p></li>
+<p><strong>window (default engine)</strong></p><ul>
+<li><p>The engine uses <code><a href='window_fit_impl.html'>window_fit_impl()</a></code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="fit-details"><a class="anchor" href="#fit-details"></a>Fit Details</h2>
@@ -246,21 +254,28 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 <li><p><code>series_id</code> (a unique identifer that identifies each time series in your data).</p></li>
 </ol>
 
-<p>The <code>series_id</code> can be passed to the <code>naive_reg()</code> using
+<p>The <code>series_id</code> can be passed to the <code>window_reg()</code> using
 <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code>:</p><ul>
-<li><p><code>naive_reg(id = "series_id")</code> specifes that the <code>series_id</code> column should be used
+<li><p><code>window_reg(id = "series_id")</code> specifes that the <code>series_id</code> column should be used
 to identify each time series.</p></li>
-<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date + series_id)</a></code> will pass <code>series_id</code> on to the underlying
-naive or snaive functions.</p></li>
+<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date + series_id)</a></code> will pass <code>series_id</code> on to the underlying functions.</p></li>
 </ul>
 
-<p><strong>Seasonal Period Specification (snaive)</strong></p>
-<p>The period can be non-seasonal (<code>seasonal_period = 1 or "none"</code>) or
-yearly seasonal (e.g. For monthly time stamps, <code>seasonal_period = 12</code>, <code>seasonal_period = "12 months"</code>, or <code>seasonal_period = "yearly"</code>).
+<p><strong>Window Function Specification (window_function)</strong></p>
+<p>You can specify a function / formula using <code>purrr</code> syntax.</p><ul>
+<li><p>If a function, e.g. <code>mean</code>, the function is used with
+any additional arguments, <code>...</code> in <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p></li>
+<li><p>If a formula, e.g. <code>~ mean(., na.rm = TRUE)</code>, it is converted to a function.</p></li>
+</ul>
+
+<p>This syntax allows you to create very compact anonymous functions.</p>
+<p><strong>Window Size Specification (window_size)</strong></p>
+<p>The period can be non-seasonal (<code>window_size = 1 or "none"</code>) or
+yearly seasonal (e.g. For monthly time stamps, <code>window_size = 12</code>, <code>window_size = "12 months"</code>, or <code>window_size = "yearly"</code>).
 There are 3 ways to specify:</p><ol>
-<li><p><code>seasonal_period = "auto"</code>: A seasonal period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
-<li><p><code>seasonal_period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
-<li><p><code>seasonal_period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
+<li><p><code>window_size = "all"</code>: A seasonal period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
+<li><p><code>window_size = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
+<li><p><code>window_size = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
 </ol>
 
 <p><strong>External Regressors (Xregs)</strong></p>
@@ -296,61 +311,117 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
-<span class='co'># ---- NAIVE ----</span>
+<span class='co'># ---- SINGLE TIME SERIES ----</span>
 
 <span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>naive_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"naive"</span><span class='op'>)</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>window_reg</span><span class='op'>(</span>
+        window_function <span class='op'>=</span> <span class='va'>median</span>,
+        window_size     <span class='op'>=</span> <span class='fl'>12</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='co'># Extra parameters passed as: set_engine(...)</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"window"</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># A single mean. No ID column since an ID was not provided.</span>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  8ms 
-#&gt; NAIVE
+#&gt; Fit time:  13ms 
+#&gt; WINDOW [12]
 #&gt; --------
 #&gt; Model: 
-#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
-#&gt;   date       value
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 2010-04-01  9.29</div><div class='input'>
+#&gt; </span><span style='color: #949494;'># A tibble: 1 x 1</span><span>
+#&gt;   value
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  9.26</div><div class='input'>
 
-<span class='co'># ---- SEASONAL NAIVE ----</span>
+<span class='co'># ---- PANEL DATA ----</span>
 
-<span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>naive_reg</span><span class='op'>(</span>
+<span class='co'># Weighted Average Forecast</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>window_reg</span><span class='op'>(</span>
+        <span class='co'># Specify the ID column for Panel Data</span>
         id <span class='op'>=</span> <span class='st'>"id"</span>,
-        seasonal_period <span class='op'>=</span> <span class='fl'>12</span>
+        <span class='co'># Create a Weighted Average</span>
+        window_function <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.3</span>, <span class='fl'>0.6</span><span class='op'>)</span><span class='op'>)</span>,
+        window_size     <span class='op'>=</span> <span class='fl'>12</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"snaive"</span><span class='op'>)</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"window"</span><span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='va'>id</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># A single weighted value.</span>
+<span class='co'># An ID column identifies which series this belongs to.</span>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  14ms 
-#&gt; SNAIVE [12]
+#&gt; Fit time:  16ms 
+#&gt; WINDOW [12]
 #&gt; --------
 #&gt; Model: 
-#&gt; </span><span style='color: #949494;'># A tibble: 12 x 3</span><span>
-#&gt;    id    date       value
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> M750  2009-05-01  9.27
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> M750  2009-06-01  9.27
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> M750  2009-07-01  9.15
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> M750  2009-08-01  9.19
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> M750  2009-09-01  9.18
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> M750  2009-10-01  9.25
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> M750  2009-11-01  9.26
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M750  2009-12-01  9.27
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M750  2010-01-01  9.26
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750  2010-02-01  9.26
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> M750  2010-03-01  9.29
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> M750  2010-04-01  9.29</div><div class='input'>
+#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
+#&gt;   id    value
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> M750   9.29</div><div class='input'>
+<span class='co'># ---- BROADCASTING PANELS ----</span>
+
+<span class='co'># Simulating a Seasonal Naive Forecast by</span>
+<span class='co'># broadcasted model the last 12 observations into the future</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>window_reg</span><span class='op'>(</span>
+        id <span class='op'>=</span> <span class='st'>"id"</span>,
+        window_function <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='fl'>12</span><span class='op'>)</span>,
+        window_size     <span class='op'>=</span> <span class='cn'>Inf</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"window"</span><span class='op'>)</span>
+
+<span class='co'># Fit Spec</span>
+<span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='va'>id</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># A sequence of observations are returned.</span>
+<span class='co'># The sequence will be broadcasted (repeated) during prediction.</span>
+<span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; parsnip model object
+#&gt; 
+#&gt; Fit time:  16ms 
+#&gt; WINDOW [Inf]
+#&gt; --------
+#&gt; Model: 
+#&gt; </span><span style='color: #949494;'># A tibble: 12 x 2</span><span>
+#&gt;    id    value
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> M750   9.27
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> M750   9.27
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> M750   9.15
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> M750   9.19
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> M750   9.18
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> M750   9.25
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> M750   9.26
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M750   9.27
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M750   9.26
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750   9.26
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> M750   9.29
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> M750   9.29</div><div class='input'>
+<span class='co'># The sequence is broadcasted (repeated) during prediction</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 62 x 1</span><span>
+#&gt;    .pred
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  9.27
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  9.27
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  9.15
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  9.19
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  9.18
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  9.25
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  9.27
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  9.26
+#&gt; </span><span style='color: #949494;'># … with 52 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -207,12 +207,12 @@ forecast accuracy (regression) metrics.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The following accuracy metrics are included by default via <code><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set()</a></code>:</p><ul>
-<li><p>MAE - Mean absolute error, <code>mae()</code></p></li>
-<li><p>MAPE - Mean absolute percentage error, <code>mape()</code></p></li>
-<li><p>MASE  - Mean absolute scaled error, <code>mase()</code></p></li>
-<li><p>SMAPE - Symmetric mean absolute percentage error, <code>smape()</code></p></li>
-<li><p>RMSE  - Root mean squared error, <code>rmse()</code></p></li>
-<li><p>RSQ   - R-squared, <code>rsq()</code></p></li>
+<li><p>MAE - Mean absolute error, <code><a href='https://yardstick.tidymodels.org/reference/mae.html'>mae()</a></code></p></li>
+<li><p>MAPE - Mean absolute percentage error, <code><a href='https://yardstick.tidymodels.org/reference/mape.html'>mape()</a></code></p></li>
+<li><p>MASE  - Mean absolute scaled error, <code><a href='https://yardstick.tidymodels.org/reference/mase.html'>mase()</a></code></p></li>
+<li><p>SMAPE - Symmetric mean absolute percentage error, <code><a href='https://yardstick.tidymodels.org/reference/smape.html'>smape()</a></code></p></li>
+<li><p>RMSE  - Root mean squared error, <code><a href='https://yardstick.tidymodels.org/reference/rmse.html'>rmse()</a></code></p></li>
+<li><p>RSQ   - R-squared, <code><a href='https://yardstick.tidymodels.org/reference/rsq.html'>rsq()</a></code></p></li>
 </ul>
 
 
@@ -247,7 +247,7 @@ forecast accuracy (regression) metrics.</p></td>
 <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>modeltime_accuracy</span><span class='op'>(</span>
-        metric_set <span class='op'>=</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>rmse</span>, <span class='va'>rsq</span><span class='op'>)</span>
+        metric_set <span class='op'>=</span> <span class='fu'><a href='https://yardstick.tidymodels.org/reference/metric_set.html'>metric_set</a></span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>rmse</span>, <span class='va'>rsq</span><span class='op'>)</span>
     <span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span><span>
 #&gt;   .model_id .model_desc             .type   mae  rmse   rsq
