@@ -446,7 +446,8 @@ snaive_fit_impl <- function(x, y, id = NULL, seasonal_period = "auto", ...) {
         idx_column        = idx_col,
         value_column      = "value",
         constructed_tbl   = constructed_tbl,
-        is_grouped        = is_grouped
+        is_grouped        = is_grouped,
+        period            = period
     )
 
     # Model Description - Gets printed to describe the high-level model structure
