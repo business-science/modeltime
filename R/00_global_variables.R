@@ -7,5 +7,6 @@ utils::globalVariables(
       "value", ".model_desc", ".model_id", "shapiro_wilk", "durbin_watson",
       ".actual", ".calibration_data", ".prediction", ".ci",
       "yhat", ".model_desc_new", ".model_desc_old", ".model_desc_user",
-      ".model_table", ".model_table_clean", ".residuals", ".is_null", ".")
+      ".model_table", ".model_table_clean", ".residuals", ".is_null", ".",
+      ".final_values", ".idx_values", ".snaive_values")
 )

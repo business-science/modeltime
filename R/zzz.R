@@ -29,4 +29,7 @@
 
     # NNETAR
     make_nnetar_reg()
+
+    # NAIVE
+    make_naive_reg()
 }

@@ -78,7 +78,7 @@ parse_period_from_index.data.frame <- function(data, period) {
             period <- tolower(period)
             if (period != "none") {
                 idx     <- data %>% timetk::tk_index()
-                period  <- timetk::tk_get_frequency(idx, period, message = TRUE)
+                period  <- timetk::tk_get_frequency(unique(idx), period, message = TRUE)
             } else {
                 # period = "none"
                 message("Using period = 1 (no seasonal period).")
