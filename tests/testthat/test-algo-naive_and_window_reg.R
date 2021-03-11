@@ -91,7 +91,7 @@ testthat::test_that("NAIVE - Multiple Time Series (Panel uses ID)", {
 
 # * UNSEEN PANEL DATA ----
 
-testthat::test_that("SNAIVE - Check New Factors", {
+testthat::test_that("NAIVE - Check New Factors", {
 
     wflw_fit_panel <- workflow() %>%
         add_model(naive_reg(id = "id") %>% set_engine("naive")) %>%
@@ -104,25 +104,29 @@ testthat::test_that("SNAIVE - Check New Factors", {
     #     set_engine("naive") %>%
     #     fit(value ~ date + id, data = data_prepared_tbl)
 
-    future_forecast_panel_tbl <- modeltime_table(
-        # model_fit_panel,
-        wflw_fit_panel
-    ) %>%
-        modeltime_forecast(
-            new_data    = bind_rows(
-                future_tbl,
-                future_tbl %>%
-                    filter(id == "M1") %>%
-                    mutate(id = fct_recode(id, UNSEEN = "M1"))
-            ),
-            actual_data = bind_rows(
-                data_prepared_tbl,
-                data_prepared_tbl %>%
-                    filter(id == "M1") %>%
-                    mutate(id = fct_recode(id, UNSEEN = "M1"))
-            ),
-            keep_data   = TRUE
-        )
+    expect_warning({
+        future_forecast_panel_tbl <- modeltime_table(
+            # model_fit_panel,
+            wflw_fit_panel
+        ) %>%
+            modeltime_forecast(
+                new_data    = bind_rows(
+                    future_tbl,
+                    future_tbl %>%
+                        filter(id == "M1") %>%
+                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                ),
+                actual_data = bind_rows(
+                    data_prepared_tbl,
+                    data_prepared_tbl %>%
+                        filter(id == "M1") %>%
+                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                ),
+                keep_data   = TRUE
+            )
+    })
+
+
 
     future_forecast_vec <- future_forecast_panel_tbl %>%
         filter(!is.na(.model_id)) %>%
@@ -191,12 +195,116 @@ testthat::test_that("SNAIVE - Single Time Series (No ID)", {
 
 testthat::test_that("SNAIVE - Multiple Time Series (Panel ID)", {
 
-    model_fit <- naive_reg() %>%
+    model_fit_panel <- naive_reg(id = "id") %>%
         set_engine("snaive") %>%
+        fit(value ~ date + id, data = data_prepared_tbl)
+
+    future_forecast_panel_tbl <- modeltime_table(
+        model_fit_panel
+    ) %>%
+        modeltime_forecast(
+            new_data    = future_tbl,
+            actual_data = data_prepared_tbl,
+            keep_data   = TRUE
+        )
+
+    future_vec <- future_forecast_panel_tbl %>%
+        filter(!is.na(.model_id)) %>%
+        filter(id == "M1") %>%
+        pull(.value)
+
+    last_series_vec <- future_forecast_panel_tbl %>%
+        filter(is.na(.model_id)) %>%
+        filter(id == "M1") %>%
+        slice_tail(n = 12) %>%
+        pull(.value)
+
+
+    expect_equal(nrow(future_forecast_panel_tbl), 1814)
+    expect_equal(future_vec, rep_len(last_series_vec, 60))
+
+})
+
+
+# * UNSEEN PANEL DATA ----
+
+testthat::test_that("SNAIVE - Check New Factors", {
+
+    wflw_fit_panel <- workflow() %>%
+        add_model(naive_reg(id = "id") %>% set_engine("snaive")) %>%
+        add_recipe(recipe(value ~ date + id, data = data_prepared_tbl)) %>%
+        fit(data_prepared_tbl)
+
+    # FOR SOME REASON PARSNIP MODELS FAIL
+    # Error: Problem occurred during prediction. Error in model.frame.default(mod_terms, new_data, na.action = na.action, : factor id has new levels UNSEEN
+    # model_fit_panel <- naive_reg(id = "id") %>%
+    #     set_engine("snaive") %>%
+    #     fit(value ~ date + id, data = data_prepared_tbl)
+
+    expect_warning({
+        future_forecast_panel_tbl <- modeltime_table(
+            # model_fit_panel,
+            wflw_fit_panel
+        ) %>%
+            modeltime_forecast(
+                new_data    = bind_rows(
+                    future_tbl,
+                    future_tbl %>%
+                        filter(id == "M1") %>%
+                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                ),
+                actual_data = bind_rows(
+                    data_prepared_tbl,
+                    data_prepared_tbl %>%
+                        filter(id == "M1") %>%
+                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                ),
+                keep_data   = TRUE
+            )
+    })
+
+
+    future_forecast_vec <- future_forecast_panel_tbl %>%
+        filter(!is.na(.model_id)) %>%
+        filter(id == "UNSEEN") %>%
+        pull(.value)
+
+
+    expect_equal(future_forecast_vec, rep_len(NA_real_, 60))
+
+})
+
+
+# 3.0 WINDOW -----
+
+# * SINGLE TIME SERIES -----
+
+testthat::test_that("WINDOW - Single Time Series (No ID)", {
+
+    model_fit_1 <- window_reg(
+        window_function = ~ mean(.x, na.rm = TRUE),
+        window_size     = 24
+    ) %>%
+        set_engine("window") %>%
+        fit(value ~ date, data = training(splits))
+
+    model_fit_2 <- window_reg(
+        window_function = median,
+        window_size     = 36
+    ) %>%
+        set_engine("window", na.rm = TRUE) %>%
+        fit(value ~ date, data = training(splits))
+
+    model_fit_3 <- window_reg(
+        window_function = ~ tail(.x, 12)
+    ) %>%
+        set_engine("window", na.rm = TRUE) %>%
         fit(value ~ date, data = training(splits))
 
     calibration_tbl <- modeltime_table(
-        model_fit
+        model_fit_1,
+        model_fit_2,
+        model_fit_3
     ) %>%
         modeltime_calibrate(testing(splits))
 
@@ -218,7 +326,8 @@ testthat::test_that("SNAIVE - Multiple Time Series (Panel ID)", {
         modeltime_refit(m750) %>%
         modeltime_forecast(
             h = nrow(testing(splits)),
-            actual_data = m750
+            actual_data = m750,
+            keep_data = TRUE
         )
 
     future_forecast_vec <- future_forecast_tbl %>%
@@ -230,10 +339,49 @@ testthat::test_that("SNAIVE - Multiple Time Series (Panel ID)", {
         pull(value)
 
 
-    expect_equal(model_fit$fit$extras$period, 12)
-    expect_equal(nrow(forecast_tbl), 368)
-    expect_equal(forecast_vec, rep_len(last_series, 62))
-    expect_equal(future_forecast_vec, rep_len(future_last_series, 62))
+    expect_equal(model_fit_1$fit$extras$period, 24)
+    expect_equal(nrow(forecast_tbl), 492)
+    expect_true(all(forecast_vec < 10174))
+    expect_true(all(forecast_vec > 10173))
+
+})
+
+
+# * PANEL DATA ----
+
+testthat::test_that("WINDOW - Multiple Time Series (Panel ID)", {
+
+    model_fit_panel <- window_reg(
+            id = "id",
+            window_function = mean,
+            window_size     = 12
+        ) %>%
+        set_engine("window") %>%
+        fit(value ~ date + id, data = data_prepared_tbl)
+
+    future_forecast_panel_tbl <- modeltime_table(
+        model_fit_panel
+    ) %>%
+        modeltime_forecast(
+            new_data    = future_tbl,
+            actual_data = data_prepared_tbl,
+            keep_data   = TRUE
+        )
+
+    future_vec <- future_forecast_panel_tbl %>%
+        filter(!is.na(.model_id)) %>%
+        filter(id == "M1") %>%
+        pull(.value)
+
+    last_series_vec <- future_forecast_panel_tbl %>%
+        filter(is.na(.model_id)) %>%
+        filter(id == "M1") %>%
+        slice_tail(n = 12) %>%
+        pull(.value)
+
+
+    expect_equal(nrow(future_forecast_panel_tbl), 1814)
+    expect_equal(future_vec, rep_len(mean(last_series_vec), 60))
 
 })
 
@@ -243,7 +391,7 @@ testthat::test_that("SNAIVE - Multiple Time Series (Panel ID)", {
 testthat::test_that("SNAIVE - Check New Factors", {
 
     wflw_fit_panel <- workflow() %>%
-        add_model(naive_reg(id = "id") %>% set_engine("snaive")) %>%
+        add_model(window_reg(id = "id") %>% set_engine("window")) %>%
         add_recipe(recipe(value ~ date + id, data = data_prepared_tbl)) %>%
         fit(data_prepared_tbl)
 
@@ -253,25 +401,28 @@ testthat::test_that("SNAIVE - Check New Factors", {
     #     set_engine("snaive") %>%
     #     fit(value ~ date + id, data = data_prepared_tbl)
 
-    future_forecast_panel_tbl <- modeltime_table(
-        # model_fit_panel,
-        wflw_fit_panel
-    ) %>%
-        modeltime_forecast(
-            new_data    = bind_rows(
-                future_tbl,
-                future_tbl %>%
-                    filter(id == "M1") %>%
-                    mutate(id = fct_recode(id, UNSEEN = "M1"))
-            ),
-            actual_data = bind_rows(
-                data_prepared_tbl,
-                data_prepared_tbl %>%
-                    filter(id == "M1") %>%
-                    mutate(id = fct_recode(id, UNSEEN = "M1"))
-            ),
-            keep_data   = TRUE
-        )
+    expect_warning({
+        future_forecast_panel_tbl <- modeltime_table(
+            # model_fit_panel,
+            wflw_fit_panel
+        ) %>%
+            modeltime_forecast(
+                new_data    = bind_rows(
+                    future_tbl,
+                    future_tbl %>%
+                        filter(id == "M1") %>%
+                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                ),
+                actual_data = bind_rows(
+                    data_prepared_tbl,
+                    data_prepared_tbl %>%
+                        filter(id == "M1") %>%
+                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                ),
+                keep_data   = TRUE
+            )
+    })
+
 
     future_forecast_vec <- future_forecast_panel_tbl %>%
         filter(!is.na(.model_id)) %>%
@@ -282,4 +433,3 @@ testthat::test_that("SNAIVE - Check New Factors", {
     expect_equal(future_forecast_vec, rep_len(NA_real_, 60))
 
 })
-

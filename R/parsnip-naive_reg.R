@@ -485,51 +485,8 @@ snaive_predict_impl <- function(object, new_data) {
         h     <- nrow(new_data)
         preds <- rep_len(model$value, length.out = h)
     } else {
-        # print("Start")
-
-        snaive_nested_tbl <- model %>%
-            dplyr::select(- (!! idx_col)) %>%
-            dplyr::group_by(!! rlang::sym(id)) %>%
-            tidyr::nest(.snaive_values = value) %>%
-            dplyr::ungroup()
-
-        # print("SNAIVE Nested")
-        # print(snaive_nested_tbl)
-
-        new_data_nested_tbl <- new_data %>%
-            dplyr::select(!! rlang::sym(id), !! rlang::sym(idx_col)) %>%
-            dplyr::group_by(!! rlang::sym(id)) %>%
-            tidyr::nest(.idx_values = !! rlang::sym(idx_col)) %>%
-            dplyr::ungroup()
-
-        # print("Data Nested")
-        # print(new_data_nested_tbl)
-
-        data_joined_tbl <- new_data_nested_tbl %>%
-            dplyr::left_join(snaive_nested_tbl, by = id)
-
-        # print("Data Joined")
-        # print(data_joined_tbl)
-
-        data_joined_tbl <- data_joined_tbl %>%
-            dplyr::mutate(.final_values = purrr::map2(
-                .x = .idx_values, .y = .snaive_values, .f = function(x, y) {
-
-                    ret <- tryCatch({
-                        tibble::tibble(value = rep_len(y$value, length.out = nrow(x)))
-                    }, error = function(e) {
-                        tibble::tibble(value = rep_len(NA, length.out = nrow(x)))
-                    })
-
-                    return(ret)
-
-            })) %>%
-            dplyr::select(-.snaive_values) %>%
-            tidyr::unnest(cols = c(.idx_values, .final_values))
-
-        # print(data_joined_tbl)
-
-        preds <- data_joined_tbl$value
+        model <- model %>% dplyr::select(- (!! idx_col))
+        preds <- make_grouped_predictions(model, new_data, id_col = id, idx_col = idx_col)
     }
 
     return(preds)
@@ -540,3 +497,5 @@ snaive_predict_impl <- function(object, new_data) {
 predict.snaive_fit_impl <- function(object, new_data, ...) {
     snaive_predict_impl(object, new_data, ...)
 }
+
+
