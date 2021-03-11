@@ -12,22 +12,26 @@ metric_tweak(.f, ...)
 \item{...}{Parameters to overload (.e.g. \code{m = 1})}
 }
 \description{
-This is an used to modify functions like \code{mase()}, which have parameters that
+Used to modify functions like \code{mase()}, which have parameters that
 need to be adjusted (e.g. \code{m = 1}) based on the seasonality of the data.
 }
 \examples{
+library(modeltime)
 library(yardstick)
 library(tibble)
 library(purrr)
 
 fake_data <- tibble(
-    val1 = c(1:12, 2*1:12),
-    val2 = c(1 + 1:12, 2*1:12 - 1)
+    y    = c(1:12, 2*1:12),
+    yhat = c(1 + 1:12, 2*1:12 - 1)
 )
 
-default_forecast_accuracy_metric_set(
+my_metric_set <- default_forecast_accuracy_metric_set(
     metric_tweak(mase, m = 12)
 )
+my_metric_set
+
+my_metric_set(fake_data, y, yhat)
 
 
 

@@ -235,8 +235,11 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
     data %>%
         metric_summarizer_fun(!! truth_expr, !! estimate_expr) %>%
         dplyr::select(-.estimator) %>%
-        # mutate(.metric = toupper(.metric)) %>%
-        tidyr::pivot_wider(names_from = .metric, values_from = .estimate)
+        dplyr::mutate(.metric = make.unique(.metric, sep = "_")) %>%
+        tidyr::pivot_wider(
+            names_from  = .metric,
+            values_from = .estimate
+        )
 
 }
 
@@ -244,25 +247,29 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
 #' Modify Yardstick Metric Functions
 #'
-#' This is an used to modify functions like `mase()`, which have parameters that
+#' Used to modify functions like `mase()`, which have parameters that
 #' need to be adjusted (e.g. `m = 1`) based on the seasonality of the data.
 #'
 #' @param .f A yardstick function (e.g. `mase`)
 #' @param ... Parameters to overload (.e.g. `m = 1`)
 #'
 #' @examples
+#' library(modeltime)
 #' library(yardstick)
 #' library(tibble)
 #' library(purrr)
 #'
 #' fake_data <- tibble(
-#'     val1 = c(1:12, 2*1:12),
-#'     val2 = c(1 + 1:12, 2*1:12 - 1)
+#'     y    = c(1:12, 2*1:12),
+#'     yhat = c(1 + 1:12, 2*1:12 - 1)
 #' )
 #'
-#' default_forecast_accuracy_metric_set(
+#' my_metric_set <- default_forecast_accuracy_metric_set(
 #'     metric_tweak(mase, m = 12)
 #' )
+#' my_metric_set
+#'
+#' my_metric_set(fake_data, y, yhat)
 #'
 #'
 #'
