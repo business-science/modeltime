@@ -45,7 +45,9 @@ model_list_tbl <- tribble(
   "TBATS", "seasonal_reg()", "tbats", "forecast",
   "NNETAR", "nnetar_reg()", "nnetar", "forecast",
   "Seasonal Decomposition", "seasonal_reg()", "stlm_ets", "forecast",
-  "Seasonal Decomposition", "seasonal_reg()", "stlm_arima", "forecast"
+  "Seasonal Decomposition", "seasonal_reg()", "stlm_arima", "forecast",
+  "NAIVE Forecasting", "naive_reg", "naive", "modeltime",
+  "NAIVE Forecasting", "naive_reg", "snaive", "modeltime",
 ) %>% 
   mutate(Mode = "regression")
 

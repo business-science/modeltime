@@ -69,6 +69,10 @@ reference:
     - exp_smoothing
     - seasonal_reg
     - nnetar_reg
+  - title: Baseline Algorithms
+    desc: These algorithms are simple baselines that can be used to gauge model performance.
+    contents:
+    - naive_reg
   - title: Parameters
     desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
   - subtitle: General Time Series
