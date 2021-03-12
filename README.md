@@ -100,7 +100,7 @@ packages.
     Forecasts)](https://business-science.github.io/modeltime.ensemble/)
 
 -   [Learn Modeltime Resample
-    (Backtesting)](https://business-science.github.io/modeltime.h2o/)
+    (Backtesting)](https://business-science.github.io/modeltime.resample/)
 
 ## High-Performance Forecasting Course
 
