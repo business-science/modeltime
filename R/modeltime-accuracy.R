@@ -227,15 +227,23 @@ default_forecast_accuracy_metric_set <- function(...) {
 #' @export
 summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
+    data_tbl <- data
+
     truth_expr    <- rlang::enquo(truth)
     estimate_expr <- rlang::enquo(estimate)
 
     metric_summarizer_fun <- metric_set
 
-    data %>%
+    group_nms <- dplyr::group_vars(data_tbl)
+
+    data_tbl %>%
         metric_summarizer_fun(!! truth_expr, !! estimate_expr) %>%
         dplyr::select(-.estimator) %>%
+
+        dplyr::group_by(!!! rlang::syms(group_nms)) %>%
         dplyr::mutate(.metric = make.unique(.metric, sep = "_")) %>%
+        dplyr::ungroup() %>%
+
         tidyr::pivot_wider(
             names_from  = .metric,
             values_from = .estimate
@@ -300,7 +308,11 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...
     if (!is.null(test_data)) {
 
         test_metrics_tbl <- test_data %>%
-            summarize_accuracy_metrics(truth = .actual, estimate = .prediction, metric_set = metrics) %>%
+            summarize_accuracy_metrics(
+                truth      = .actual,
+                estimate   = .prediction,
+                metric_set = metrics
+            ) %>%
             dplyr::ungroup()
 
     }
