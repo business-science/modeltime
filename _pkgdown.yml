@@ -22,7 +22,7 @@ navbar:
         - text: 'Developers'
         - text: 'Extending Modeltime (Developer Tools)'
           href: articles/extending-modeltime.html
-    - text: "Key Functions"
+    - text: "API Functions"
       href: reference/index.html
     - text: "News"
       href: news/index.html
@@ -40,8 +40,6 @@ reference:
     - modeltime_calibrate
     - modeltime_forecast
     - modeltime_accuracy
-    - modeltime_residuals
-    - modeltime_residuals_test
     - modeltime_refit
   - subtitle: Recursive Forecast Prediction
     contents:
@@ -50,6 +48,11 @@ reference:
     contents:
     - starts_with("plot_modeltime")
     - starts_with("table_modeltime")
+  - subtitle: Residual Analysis
+    contents:
+    - modeltime_residuals
+    - modeltime_residuals_test
+    - plot_modeltime_residuals
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
   - subtitle: Core Forecasting Methods
