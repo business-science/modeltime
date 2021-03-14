@@ -116,12 +116,13 @@ packages.
 -   [Learn Modeltime Resample
     (Backtesting)](https://business-science.github.io/modeltime.resample/)
 
-## High-Performance Forecasting Course
+## Take the High-Performance Forecasting Course
 
-<a href="https://www.youtube.com/embed/elQb4VzRINg" target="_blank"><img src="http://img.youtube.com/vi/elQb4VzRINg/0.jpg" alt="Anomalize" width="100%" height="450"/></a>
+> Become the forecasting expert for your organization
 
-[*My Talk on High-Performance Time Series
-Forecasting*](https://youtu.be/elQb4VzRINg)
+<a href="https://www.youtube.com/embed/sM0ox2wVo4o" target="_blank"><img src="http://img.youtube.com/vi/sM0ox2wVo4o/0.jpg" alt="High-Performance Time Series Forecasting Course" width="100%" height="450"/></a>
+
+[*High-Performance Time Series Course*](https://youtu.be/sM0ox2wVo4o)
 
 ### Time Series is Changing
 
