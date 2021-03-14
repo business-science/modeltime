@@ -38,7 +38,7 @@ to a window of size defined by \code{window_size}
 
 \strong{function (default engine)}
 
-The engine uses \code{\link[=window_fit_impl]{window_fit_impl()}}. A time series window function
+The engine uses \code{\link[=window_function_fit_impl]{window_function_fit_impl()}}. A time series window function
 applies a \code{window_function} to a window of the data (last N observations).
 \itemize{
 \item The function can return a scalar (single value) or multiple values
@@ -62,10 +62,10 @@ any additional arguments, \code{...} in \code{set_engine()}.
 
 This syntax allows you to create very compact anonymous functions.
 
-\strong{lm}
-\itemize{
-\item The engine uses \code{\link[stats:lm]{stats::lm()}}
-}
+\strong{window_lm}
+
+This engine applies \code{\link[stats:lm]{stats::lm()}} to a window. Groups are treated as
+external regressors.
 }
 
 \section{Fit Details}{
@@ -163,12 +163,25 @@ model_fit <- model_spec \%>\%
     fit(log(value) ~ date, data = training(splits))
 model_fit
 
-# Predict: The 12-month median repeats going forward
+# Predict
+# - The 12-month median repeats going forward
 predict(model_fit, testing(splits))
 
 # ---- WINDOW LINEAR REGRESSION ----
 
-# TODO
+# Model Spec
+model_spec <- window_reg(
+        window_size = 12
+    ) \%>\%
+    set_engine("window_lm")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(log(value) ~ date, data = training(splits))
+model_fit
+
+# Predict
+predict(model_fit, testing(splits))
 
 # ---- PANEL FORECAST - WINDOW FUNCTION ----
 
