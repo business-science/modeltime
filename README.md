@@ -120,9 +120,10 @@ packages.
 
 > Become the forecasting expert for your organization
 
-<a href="https://www.youtube.com/embed/sM0ox2wVo4o" target="_blank"><img src="http://img.youtube.com/vi/sM0ox2wVo4o/0.jpg" alt="High-Performance Time Series Forecasting Course" width="100%" height="450"/></a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/jay1WUozSWCVHfFBEil3" alt="High-Performance Time Series Forecasting Course" width="100%" /></a>
 
-[*High-Performance Time Series Course*](https://youtu.be/sM0ox2wVo4o)
+[*High-Performance Time Series
+Course*](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)
 
 ### Time Series is Changing
 
@@ -131,18 +132,16 @@ forecasts every day.** This is what I call a *High-Performance Time
 Series Forecasting System (HPTSF)* - Accurate, Robust, and Scalable
 Forecasting.
 
-**High-Performance Forecasting Systems will save companies MILLIONS of
-dollars.** Imagine what will happen to your career if you can provide
-your organization a “High-Performance Time Series Forecasting System”
-(HPTSF System).
+**High-Performance Forecasting Systems will save companies by improving
+accuracy and scalability.** Imagine what will happen to your career if
+you can provide your organization a “High-Performance Time Series
+Forecasting System” (HPTSF System).
 
 ### How to Learn High-Performance Time Series Forecasting
 
-I teach how to build a HPTFS System in my **High-Performance Time Series
-Forecasting Course**. If interested in learning Scalable
-High-Performance Forecasting Strategies then [take my Time Series
-Forecasting
-Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting).
+I teach how to build a HPTFS System in my [**High-Performance Time
+Series Forecasting
+Course**](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting).
 You will learn:
 
 -   **Time Series Machine Learning** (cutting-edge) with `Modeltime` -
@@ -157,7 +156,11 @@ You will learn:
 -   **Scalable Forecasting** - Forecast 1000+ time series in parallel
 -   and more.
 
+<p class="text-center" style="font-size:24px;">
+Become the Time Series Expert for your organization.
+</p>
+<br>
 <p class="text-center" style="font-size:30px;">
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Unlock
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take
 the High-Performance Time Series Forecasting Course</a>
 </p>
