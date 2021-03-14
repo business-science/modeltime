@@ -61,9 +61,11 @@ unlocks machine learning & classical time series analysis.
 -   **tidymodels**: Use any `parsnip` model: `rand_forest()`,
     `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast
 
+## Forecast faster
+
 > A streamlined workflow for forecasting
 
-Modeltime incorporates a [simple workflow (see Getting Started with
+Modeltime incorporates a [streamlined workflow (see Getting Started with
 Modeltime)](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html)
 for using best practices to forecast.
 
@@ -80,13 +82,15 @@ A streamlined workflow for forecasting
 
 <hr>
 
-## Meet the Forecasting Ecosystem
+## Meet the modeltime ecosystem
+
+> Learn a growing ecosystem of forecasting packages
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/modeltime_ecosystem_growing.jpg" alt="A streamlined workflow for forecasting" width="100%" />
+<img src="man/figures/modeltime_ecosystem.jpg" alt="The modeltime ecosystem is growing" width="100%" />
 <p class="caption">
-A streamlined workflow for forecasting
+The modeltime ecosystem is growing
 </p>
 
 </div>

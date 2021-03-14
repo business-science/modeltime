@@ -69,9 +69,11 @@ No need to switch back and forth between various frameworks. `modeltime` unlocks
   - __prophet__: Use Facebook's Prophet algorithm (`prophet_reg()` & `prophet_boost()`)
   - __tidymodels__: Use any `parsnip` model: `rand_forest()`, `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast 
 
+## Forecast faster
+
 > A streamlined workflow for forecasting
 
-Modeltime incorporates a [simple workflow (see Getting Started with Modeltime)](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) for using best practices to forecast.
+Modeltime incorporates a [streamlined workflow (see Getting Started with Modeltime)](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) for using best practices to forecast.
 
 <hr>
 
@@ -83,10 +85,12 @@ knitr::include_graphics("vignettes/modeltime_workflow.jpg")
 
 
 
-## Meet the Forecasting Ecosystem 
+## Meet the modeltime ecosystem 
 
-```{r, echo=F, out.width='100%', fig.align='center', fig.cap="A streamlined workflow for forecasting"}
-knitr::include_graphics("man/figures/modeltime_ecosystem_growing.jpg")
+> Learn a growing ecosystem of forecasting packages
+
+```{r, echo=F, out.width='100%', fig.align='center', fig.cap="The modeltime ecosystem is growing"}
+knitr::include_graphics("man/figures/modeltime_ecosystem.jpg")
 ```
 
 Modeltime is part of a __growing ecosystem__ of Modeltime forecasting packages. 
