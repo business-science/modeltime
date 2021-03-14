@@ -13,9 +13,11 @@ make_grouped_predictions <- function(model, new_data, id_col, idx_col) {
     # print(nested_tbl)
 
     new_data_nested_tbl <- new_data %>%
-        dplyr::select(!! rlang::sym(id_col), !! rlang::sym(idx_col)) %>%
+
+        tibble::rowid_to_column(var = ".row_id") %>%
+        dplyr::select(.row_id, !! rlang::sym(id_col), !! rlang::sym(idx_col)) %>%
         dplyr::group_by(!! rlang::sym(id_col)) %>%
-        tidyr::nest(.idx_values = !! rlang::sym(idx_col)) %>%
+        tidyr::nest(.idx_values = c(.row_id, !! rlang::sym(idx_col))) %>%
         dplyr::ungroup()
 
     # print("Data Nested")
@@ -41,7 +43,9 @@ make_grouped_predictions <- function(model, new_data, id_col, idx_col) {
 
             })) %>%
         dplyr::select(-.pred_values) %>%
-        tidyr::unnest(cols = c(.idx_values, .final_values))
+        tidyr::unnest(cols = c(.idx_values, .final_values)) %>%
+
+        dplyr::arrange(.row_id)
 
     # print(data_joined_tbl)
 
