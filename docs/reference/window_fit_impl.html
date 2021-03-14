@@ -168,8 +168,8 @@
   <span class='va'>x</span>,
   <span class='va'>y</span>,
   id <span class='op'>=</span> <span class='cn'>NULL</span>,
-  window_function <span class='op'>=</span> <span class='cn'>NULL</span>,
   window_size <span class='op'>=</span> <span class='st'>"all"</span>,
+  window_function <span class='op'>=</span> <span class='va'>mean</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -189,16 +189,17 @@
       <td><p>An optional ID feature to identify different time series. Should be a quoted name.</p></td>
     </tr>
     <tr>
-      <th>window_function</th>
-      <td><p>A function to apply to the window</p></td>
-    </tr>
-    <tr>
       <th>window_size</th>
       <td><p>The period to apply the window function to</p></td>
     </tr>
     <tr>
+      <th>window_function</th>
+      <td><p>A function to apply to the window. The default is <code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Not currently used</p></td>
+      <td><p>Additional arguments for the <code>window_function</code>. For example, it's
+common to pass <code>na.rm = TRUE</code> for the mean forecast.</p></td>
     </tr>
     </table>
 

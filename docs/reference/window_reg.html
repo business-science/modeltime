@@ -51,7 +51,7 @@
 <meta property="og:title" content="General Interface for Window Forecast Models — window_reg" />
 <meta property="og:description" content="window_reg() is a way to generate a specification of a window model
 before fitting and allows the model to be created using
-different R packages as backends." />
+different backends." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -165,15 +165,10 @@ different R packages as backends." />
     <div class="ref-description">
     <p><code>window_reg()</code> is a way to generate a <em>specification</em> of a window model
 before fitting and allows the model to be created using
-different R packages as backends.</p>
+different backends.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>window_reg</span><span class='op'>(</span>
-  mode <span class='op'>=</span> <span class='st'>"regression"</span>,
-  id <span class='op'>=</span> <span class='cn'>NULL</span>,
-  window_function <span class='op'>=</span> <span class='cn'>NULL</span>,
-  window_size <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>window_reg</span><span class='op'>(</span>mode <span class='op'>=</span> <span class='st'>"regression"</span>, id <span class='op'>=</span> <span class='cn'>NULL</span>, window_size <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,16 +184,6 @@ The only possible value for this model is "regression".</p></td>
 identifying multiple time series (i.e. panel data).</p></td>
     </tr>
     <tr>
-      <th>window_function</th>
-      <td><p>A function / formula:</p><ul>
-<li><p>If a function, e.g. <code>mean</code>, the function is used with
-any additional arguments, <code>...</code> in <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p></li>
-<li><p>If a formula, e.g. <code>~ mean(., na.rm = TRUE)</code>, it is converted to a function.</p></li>
-</ul>
-
-<p>This syntax allows you to create very compact anonymous functions.</p></td>
-    </tr>
-    <tr>
       <th>window_size</th>
       <td><p>A window to apply the window function. By default,
 the window uses the full data set, which is rarely the best choice.</p></td>
@@ -207,9 +192,26 @@ the window uses the full data set, which is rarely the best choice.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A time series window regression applies a <code>window_function</code> to a
-window of the data (last N observations).</p><ul>
-<li><p>The function can return a scalar (single value) or multiple values()</p></li>
+    <p>A time series window regression is derived using <code>window_reg()</code>.
+The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
+following <em>engines</em>:</p><ul>
+<li><p><strong>"window_function" (default)</strong> - Performs a Window Forecast
+applying a <code>window_function</code> (engine parameter)
+to a window of size defined by <code>window_size</code></p></li>
+<li><p><strong>"window_lm"</strong> - Applies a linear regression using <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>
+to a window of size defined by <code>window_size</code></p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
+
+    
+
+
+<p><strong>function (default engine)</strong></p>
+<p>The engine uses <code><a href='window_fit_impl.html'>window_fit_impl()</a></code>. A time series window function
+applies a <code>window_function</code> to a window of the data (last N observations).</p><ul>
+<li><p>The function can return a scalar (single value) or multiple values
+that are repeated for each window</p></li>
 <li><p>Common use cases:</p><ul>
 <li><p><strong>Moving Average Forecasts:</strong> Forecast forward a 20-day average</p></li>
 <li><p><strong>Weighted Average Forecasts:</strong> Exponentially weighting the most recent observations</p></li>
@@ -219,20 +221,15 @@ broadcasting the last 12 observations of a monthly dataset into the future</p></
 </ul></li>
 </ul>
 
-<p>A time series window regression is derived using <code>window_reg()</code>.
-The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
-following <em>engines</em>:</p><ul>
-<li><p>"window" (default) - Performs a Window Forecast applying a <code>window_function</code>
-to a window of size defined by <code>window_size</code></p></li>
+<p>The key engine parameter is the <code>window_function</code>. A function / formula:</p><ul>
+<li><p>If a function, e.g. <code>mean</code>, the function is used with
+any additional arguments, <code>...</code> in <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p></li>
+<li><p>If a formula, e.g. <code>~ mean(., na.rm = TRUE)</code>, it is converted to a function.</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
-
-    
-
-
-<p><strong>window (default engine)</strong></p><ul>
-<li><p>The engine uses <code><a href='window_fit_impl.html'>window_fit_impl()</a></code></p></li>
+<p>This syntax allows you to create very compact anonymous functions.</p>
+<p><strong>lm</strong></p><ul>
+<li><p>The engine uses <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="fit-details"><a class="anchor" href="#fit-details"></a>Fit Details</h2>
@@ -311,21 +308,28 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
-<span class='co'># ---- SINGLE TIME SERIES ----</span>
+<span class='co'># ---- WINDOW FUNCTION -----</span>
+
+<span class='co'># Used to make:</span>
+<span class='co'># - Mean/Median forecasts</span>
+<span class='co'># - Simple repeating forecasts</span>
+
+<span class='co'># Median Forecast ----</span>
 
 <span class='co'># Model Spec</span>
 <span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>window_reg</span><span class='op'>(</span>
-        window_function <span class='op'>=</span> <span class='va'>median</span>,
         window_size     <span class='op'>=</span> <span class='fl'>12</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='co'># Extra parameters passed as: set_engine(...)</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"window"</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>
+        engine          <span class='op'>=</span> <span class='st'>"window_function"</span>,
+        window_function <span class='op'>=</span> <span class='va'>median</span>,
+        na.rm           <span class='op'>=</span> <span class='cn'>TRUE</span>
+    <span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># A single mean. No ID column since an ID was not provided.</span>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
@@ -337,53 +341,76 @@ There are 3 ways to specify:</p><ol>
 #&gt;   value
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>  9.26</div><div class='input'>
+<span class='co'># Predict: The 12-month median repeats going forward</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 62 x 1</span><span>
+#&gt;    .pred
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  9.26
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  9.26
+#&gt; </span><span style='color: #949494;'># … with 52 more rows</span><span></div><div class='input'>
+<span class='co'># ---- WINDOW LINEAR REGRESSION ----</span>
 
-<span class='co'># ---- PANEL DATA ----</span>
+<span class='co'># TODO</span>
+
+<span class='co'># ---- PANEL FORECAST - WINDOW FUNCTION ----</span>
 
 <span class='co'># Weighted Average Forecast</span>
 <span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>window_reg</span><span class='op'>(</span>
         <span class='co'># Specify the ID column for Panel Data</span>
-        id <span class='op'>=</span> <span class='st'>"id"</span>,
+        id          <span class='op'>=</span> <span class='st'>"id"</span>,
+        window_size <span class='op'>=</span> <span class='fl'>12</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>
+        engine <span class='op'>=</span> <span class='st'>"window_function"</span>,
         <span class='co'># Create a Weighted Average</span>
         window_function <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.3</span>, <span class='fl'>0.6</span><span class='op'>)</span><span class='op'>)</span>,
-        window_size     <span class='op'>=</span> <span class='fl'>12</span>
-    <span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"window"</span><span class='op'>)</span>
+    <span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='va'>id</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># A single weighted value.</span>
-<span class='co'># An ID column identifies which series this belongs to.</span>
-<span class='va'>model_fit</span>
-</div><div class='output co'>#&gt; parsnip model object
-#&gt; 
-#&gt; Fit time:  16ms 
-#&gt; WINDOW [12]
-#&gt; --------
-#&gt; Model: 
-#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
-#&gt;   id    value
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> M750   9.29</div><div class='input'>
-<span class='co'># ---- BROADCASTING PANELS ----</span>
+<span class='co'># Predict: The weighted average (scalar) repeats going forward</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 62 x 1</span><span>
+#&gt;    .pred
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  9.29
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>  9.29
+#&gt; </span><span style='color: #949494;'># … with 52 more rows</span><span></div><div class='input'>
+<span class='co'># ---- BROADCASTING PANELS (REPEATING) ----</span>
 
 <span class='co'># Simulating a Seasonal Naive Forecast by</span>
 <span class='co'># broadcasted model the last 12 observations into the future</span>
 <span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>window_reg</span><span class='op'>(</span>
-        id <span class='op'>=</span> <span class='st'>"id"</span>,
-        window_function <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='fl'>12</span><span class='op'>)</span>,
-        window_size     <span class='op'>=</span> <span class='cn'>Inf</span>
+        id          <span class='op'>=</span> <span class='st'>"id"</span>,
+        window_size <span class='op'>=</span> <span class='cn'>Inf</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"window"</span><span class='op'>)</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>
+        engine          <span class='op'>=</span> <span class='st'>"window_function"</span>,
+        window_function <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='fl'>12</span><span class='op'>)</span>,
+    <span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='va'>id</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># A sequence of observations are returned.</span>
-<span class='co'># The sequence will be broadcasted (repeated) during prediction.</span>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
@@ -406,7 +433,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750   9.26
 #&gt; </span><span style='color: #BCBCBC;'>11</span><span> M750   9.29
 #&gt; </span><span style='color: #BCBCBC;'>12</span><span> M750   9.29</div><div class='input'>
-<span class='co'># The sequence is broadcasted (repeated) during prediction</span>
+<span class='co'># Predict: The sequence is broadcasted (repeated) during prediction</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 62 x 1</span><span>
 #&gt;    .pred

@@ -32,21 +32,22 @@ The time series forecasting package for the `tidymodels` ecosystem.
 
 ## Installation
 
-Install the CRAN version:
+CRAN version:
 
 ``` r
 install.packages("modeltime")
 ```
 
-Or, install the development version:
+Development version:
 
 ``` r
 remotes::install_github("business-science/modeltime")
 ```
 
-## Features & Benefits
+## Why modeltime?
 
-#### Modeltime unlocks time series models and machine learning in one framework
+> Modeltime unlocks time series models and machine learning in one
+> framework
 
 <img src="vignettes/forecast_plot.jpg" width="100%" style="display: block; margin: auto;" />
 
@@ -60,7 +61,7 @@ unlocks machine learning & classical time series analysis.
 -   **tidymodels**: Use any `parsnip` model: `rand_forest()`,
     `boost_tree()`, `linear_reg()`, `mars()`, `svm_rbf()` to forecast
 
-#### A streamlined workflow for forecasting
+> A streamlined workflow for forecasting
 
 Modeltime incorporates a [simple workflow (see Getting Started with
 Modeltime)](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html)
@@ -80,6 +81,15 @@ A streamlined workflow for forecasting
 <hr>
 
 ## Meet the Forecasting Ecosystem
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/modeltime_ecosystem_growing.jpg" alt="A streamlined workflow for forecasting" width="100%" />
+<p class="caption">
+A streamlined workflow for forecasting
+</p>
+
+</div>
 
 Modeltime is part of a **growing ecosystem** of Modeltime forecasting
 packages.
