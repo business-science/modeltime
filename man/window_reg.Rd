@@ -4,12 +4,7 @@
 \alias{window_reg}
 \title{General Interface for Window Forecast Models}
 \usage{
-window_reg(
-  mode = "regression",
-  id = NULL,
-  window_function = NULL,
-  window_size = NULL
-)
+window_reg(mode = "regression", id = NULL, window_size = NULL)
 }
 \arguments{
 \item{mode}{A single character string for the type of model.
@@ -18,28 +13,36 @@ The only possible value for this model is "regression".}
 \item{id}{An optional quoted column name (e.g. "id") for
 identifying multiple time series (i.e. panel data).}
 
-\item{window_function}{A function / formula:
-\itemize{
-\item If a function, e.g. \code{mean}, the function is used with
-any additional arguments, \code{...} in \code{set_engine()}.
-\item If a formula, e.g. \code{~ mean(., na.rm = TRUE)}, it is converted to a function.
-}
-
-This syntax allows you to create very compact anonymous functions.}
-
 \item{window_size}{A window to apply the window function. By default,
 the window uses the full data set, which is rarely the best choice.}
 }
 \description{
 \code{window_reg()} is a way to generate a \emph{specification} of a window model
 before fitting and allows the model to be created using
-different R packages as backends.
+different backends.
 }
 \details{
-A time series window regression applies a \code{window_function} to a
-window of the data (last N observations).
+A time series window regression is derived using \code{window_reg()}.
+The model can be created using the \code{fit()} function using the
+following \emph{engines}:
 \itemize{
-\item The function can return a scalar (single value) or multiple values()
+\item \strong{"window_function" (default)} - Performs a Window Forecast
+applying a \code{window_function} (engine parameter)
+to a window of size defined by \code{window_size}
+\item \strong{"window_lm"} - Applies a linear regression using \code{stats::lm()}
+to a window of size defined by \code{window_size}
+}
+}
+\section{Engine Details}{
+
+
+\strong{function (default engine)}
+
+The engine uses \code{\link[=window_fit_impl]{window_fit_impl()}}. A time series window function
+applies a \code{window_function} to a window of the data (last N observations).
+\itemize{
+\item The function can return a scalar (single value) or multiple values
+that are repeated for each window
 \item Common use cases:
 \itemize{
 \item \strong{Moving Average Forecasts:} Forecast forward a 20-day average
@@ -50,20 +53,18 @@ broadcasting the last 12 observations of a monthly dataset into the future
 }
 }
 
-A time series window regression is derived using \code{window_reg()}.
-The model can be created using the \code{fit()} function using the
-following \emph{engines}:
+The key engine parameter is the \code{window_function}. A function / formula:
 \itemize{
-\item "window" (default) - Performs a Window Forecast applying a \code{window_function}
-to a window of size defined by \code{window_size}
+\item If a function, e.g. \code{mean}, the function is used with
+any additional arguments, \code{...} in \code{set_engine()}.
+\item If a formula, e.g. \code{~ mean(., na.rm = TRUE)}, it is converted to a function.
 }
-}
-\section{Engine Details}{
 
+This syntax allows you to create very compact anonymous functions.
 
-\strong{window (default engine)}
+\strong{lm}
 \itemize{
-\item The engine uses \code{\link[=window_fit_impl]{window_fit_impl()}}
+\item The engine uses \code{\link[stats:lm]{stats::lm()}}
 }
 }
 
@@ -138,64 +139,77 @@ m750
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
 
-# ---- SINGLE TIME SERIES ----
+# ---- WINDOW FUNCTION -----
+
+# Used to make:
+# - Mean/Median forecasts
+# - Simple repeating forecasts
+
+# Median Forecast ----
 
 # Model Spec
 model_spec <- window_reg(
-        window_function = median,
         window_size     = 12
     ) \%>\%
     # Extra parameters passed as: set_engine(...)
-    set_engine("window", na.rm = TRUE)
+    set_engine(
+        engine          = "window_function",
+        window_function = median,
+        na.rm           = TRUE
+    )
 
 # Fit Spec
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date, data = training(splits))
-
-# A single mean. No ID column since an ID was not provided.
 model_fit
 
+# Predict: The 12-month median repeats going forward
+predict(model_fit, testing(splits))
 
-# ---- PANEL DATA ----
+# ---- WINDOW LINEAR REGRESSION ----
+
+# TODO
+
+# ---- PANEL FORECAST - WINDOW FUNCTION ----
 
 # Weighted Average Forecast
 model_spec <- window_reg(
         # Specify the ID column for Panel Data
-        id = "id",
+        id          = "id",
+        window_size = 12
+    ) \%>\%
+    set_engine(
+        engine = "window_function",
         # Create a Weighted Average
         window_function = ~ sum(tail(.x, 3) * c(0.1, 0.3, 0.6)),
-        window_size     = 12
-    ) \%>\%
-    set_engine("window")
+    )
 
 # Fit Spec
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date + id, data = training(splits))
 
-# A single weighted value.
-# An ID column identifies which series this belongs to.
-model_fit
+# Predict: The weighted average (scalar) repeats going forward
+predict(model_fit, testing(splits))
 
-# ---- BROADCASTING PANELS ----
+# ---- BROADCASTING PANELS (REPEATING) ----
 
 # Simulating a Seasonal Naive Forecast by
 # broadcasted model the last 12 observations into the future
 model_spec <- window_reg(
-        id = "id",
-        window_function = ~ tail(.x, 12),
-        window_size     = Inf
+        id          = "id",
+        window_size = Inf
     ) \%>\%
-    set_engine("window")
+    set_engine(
+        engine          = "window_function",
+        window_function = ~ tail(.x, 12),
+    )
 
 # Fit Spec
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date + id, data = training(splits))
-
-# A sequence of observations are returned.
-# The sequence will be broadcasted (repeated) during prediction.
 model_fit
 
-# The sequence is broadcasted (repeated) during prediction
+# Predict: The sequence is broadcasted (repeated) during prediction
 predict(model_fit, testing(splits))
 
 }

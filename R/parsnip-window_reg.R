@@ -4,29 +4,38 @@
 #'
 #' `window_reg()` is a way to generate a _specification_ of a window model
 #'  before fitting and allows the model to be created using
-#'  different R packages as backends.
+#'  different backends.
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
 #' @param id An optional quoted column name (e.g. "id") for
 #'  identifying multiple time series (i.e. panel data).
-#' @param window_function A function / formula:
-#'
-#'  - If a function, e.g. `mean`, the function is used with
-#'    any additional arguments, `...` in `set_engine()`.
-#'  - If a formula, e.g. `~ mean(., na.rm = TRUE)`, it is converted to a function.
-#'
-#'  This syntax allows you to create very compact anonymous functions.
 #' @param window_size A window to apply the window function. By default,
 #'  the window uses the full data set, which is rarely the best choice.
 #'
 #'
 #' @details
 #'
-#' A time series window regression applies a `window_function` to a
-#' window of the data (last N observations).
+#' A time series window regression is derived using `window_reg()`.
+#' The model can be created using the `fit()` function using the
+#'  following _engines_:
 #'
-#'  - The function can return a scalar (single value) or multiple values()
+#'  - __"window_function" (default)__ - Performs a Window Forecast
+#'    applying a `window_function` (engine parameter)
+#'    to a window of size defined by `window_size`
+#'  - __"window_lm"__ - Applies a linear regression using `stats::lm()`
+#'    to a window of size defined by `window_size`
+#'
+#'
+#' @section Engine Details:
+#'
+#' __function (default engine)__
+#'
+#' The engine uses [window_fit_impl()]. A time series window function
+#' applies a `window_function` to a window of the data (last N observations).
+#'
+#'  - The function can return a scalar (single value) or multiple values
+#'    that are repeated for each window
 #'  - Common use cases:
 #'     - __Moving Average Forecasts:__ Forecast forward a 20-day average
 #'     - __Weighted Average Forecasts:__ Exponentially weighting the most recent observations
@@ -34,19 +43,17 @@
 #'     - __Repeating Forecasts:__ Simulating a Seasonal Naive Forecast by
 #'       broadcasting the last 12 observations of a monthly dataset into the future
 #'
-#' A time series window regression is derived using `window_reg()`.
-#' The model can be created using the `fit()` function using the
-#'  following _engines_:
+#' The key engine parameter is the `window_function`. A function / formula:
 #'
-#'  - "window" (default) - Performs a Window Forecast applying a `window_function`
-#'    to a window of size defined by `window_size`
+#'  - If a function, e.g. `mean`, the function is used with
+#'    any additional arguments, `...` in `set_engine()`.
+#'  - If a formula, e.g. `~ mean(., na.rm = TRUE)`, it is converted to a function.
 #'
+#'  This syntax allows you to create very compact anonymous functions.
 #'
-#' @section Engine Details:
+#' __lm__
 #'
-#' __window (default engine)__
-#'
-#' - The engine uses [window_fit_impl()]
+#' - The engine uses [stats::lm()]
 #'
 #' @section Fit Details:
 #'
@@ -117,76 +124,87 @@
 #' # Split Data 80/20
 #' splits <- initial_time_split(m750, prop = 0.8)
 #'
-#' # ---- SINGLE TIME SERIES ----
+#' # ---- WINDOW FUNCTION -----
+#'
+#' # Used to make:
+#' # - Mean/Median forecasts
+#' # - Simple repeating forecasts
+#'
+#' # Median Forecast ----
 #'
 #' # Model Spec
 #' model_spec <- window_reg(
-#'         window_function = median,
 #'         window_size     = 12
 #'     ) %>%
 #'     # Extra parameters passed as: set_engine(...)
-#'     set_engine("window", na.rm = TRUE)
+#'     set_engine(
+#'         engine          = "window_function",
+#'         window_function = median,
+#'         na.rm           = TRUE
+#'     )
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
-#'
-#' # A single mean. No ID column since an ID was not provided.
 #' model_fit
 #'
+#' # Predict: The 12-month median repeats going forward
+#' predict(model_fit, testing(splits))
 #'
-#' # ---- PANEL DATA ----
+#' # ---- WINDOW LINEAR REGRESSION ----
+#'
+#' # TODO
+#'
+#' # ---- PANEL FORECAST - WINDOW FUNCTION ----
 #'
 #' # Weighted Average Forecast
 #' model_spec <- window_reg(
 #'         # Specify the ID column for Panel Data
-#'         id = "id",
+#'         id          = "id",
+#'         window_size = 12
+#'     ) %>%
+#'     set_engine(
+#'         engine = "window_function",
 #'         # Create a Weighted Average
 #'         window_function = ~ sum(tail(.x, 3) * c(0.1, 0.3, 0.6)),
-#'         window_size     = 12
-#'     ) %>%
-#'     set_engine("window")
+#'     )
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date + id, data = training(splits))
 #'
-#' # A single weighted value.
-#' # An ID column identifies which series this belongs to.
-#' model_fit
+#' # Predict: The weighted average (scalar) repeats going forward
+#' predict(model_fit, testing(splits))
 #'
-#' # ---- BROADCASTING PANELS ----
+#' # ---- BROADCASTING PANELS (REPEATING) ----
 #'
 #' # Simulating a Seasonal Naive Forecast by
 #' # broadcasted model the last 12 observations into the future
 #' model_spec <- window_reg(
-#'         id = "id",
-#'         window_function = ~ tail(.x, 12),
-#'         window_size     = Inf
+#'         id          = "id",
+#'         window_size = Inf
 #'     ) %>%
-#'     set_engine("window")
+#'     set_engine(
+#'         engine          = "window_function",
+#'         window_function = ~ tail(.x, 12),
+#'     )
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date + id, data = training(splits))
-#'
-#' # A sequence of observations are returned.
-#' # The sequence will be broadcasted (repeated) during prediction.
 #' model_fit
 #'
-#' # The sequence is broadcasted (repeated) during prediction
+#' # Predict: The sequence is broadcasted (repeated) during prediction
 #' predict(model_fit, testing(splits))
 #'
 #' @export
 window_reg <- function(mode = "regression",
                       id = NULL,
-                      window_function = NULL,
                       window_size = NULL
                       ) {
 
     args <- list(
         id               = rlang::enquo(id),
-        window_function  = rlang::enquo(window_function),
         window_size      = rlang::enquo(window_size)
     )
 
@@ -218,7 +236,6 @@ print.window_reg <- function(x, ...) {
 #' @importFrom stats update
 update.window_reg <- function(object, parameters = NULL,
                               id = NULL,
-                              window_function = NULL,
                               window_size = NULL,
                               fresh = FALSE, ...) {
 
@@ -230,7 +247,6 @@ update.window_reg <- function(object, parameters = NULL,
 
     args <- list(
         id               = rlang::enquo(id),
-        window_function  = rlang::enquo(window_function),
         window_size      = rlang::enquo(window_size)
     )
 
@@ -261,8 +277,8 @@ update.window_reg <- function(object, parameters = NULL,
 #' @importFrom parsnip translate
 translate.window_reg <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
-        message("Used `engine = 'window'` for translation.")
-        engine <- "window"
+        message("Used `engine = 'window_function'` for translation.")
+        engine <- "window_function"
     }
     x <- parsnip::translate.default(x, engine, ...)
 
@@ -272,21 +288,22 @@ translate.window_reg <- function(x, engine = x$engine, ...) {
 
 
 
-# WINDOW ----
+# WINDOW FUNCTION ----
 
 #' Low-Level Window Forecast
 #'
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
 #' @param id An optional ID feature to identify different time series. Should be a quoted name.
-#' @param window_function A function to apply to the window
+#' @param window_function A function to apply to the window. The default is `mean()`.
 #' @param window_size The period to apply the window function to
-#' @param ... Not currently used
+#' @param ... Additional arguments for the `window_function`. For example, it's
+#'  common to pass `na.rm = TRUE` for the mean forecast.
 #'
 #' @export
 window_fit_impl <- function(x, y, id = NULL,
-                            window_function = NULL,
                             window_size = "all",
+                            window_function = mean,
                             ...) {
 
 
@@ -414,51 +431,12 @@ window_predict_impl <- function(object, new_data) {
         h     <- nrow(new_data)
         preds <- rep_len(model$value, length.out = h)
     } else {
-        preds <- make_grouped_predictions(model, new_data, id_col = id, idx_col = idx_col)
-        # # print("Start")
-        #
-        # window_nested_tbl <- model %>%
-        #     dplyr::group_by(!! rlang::sym(id)) %>%
-        #     tidyr::nest(.window_values = value) %>%
-        #     dplyr::ungroup()
-        #
-        # # print("window Nested")
-        # # print(window_nested_tbl)
-        #
-        # new_data_nested_tbl <- new_data %>%
-        #     dplyr::select(!! rlang::sym(id), !! rlang::sym(idx_col)) %>%
-        #     dplyr::group_by(!! rlang::sym(id)) %>%
-        #     tidyr::nest(.idx_values = !! rlang::sym(idx_col)) %>%
-        #     dplyr::ungroup()
-        #
-        # # print("Data Nested")
-        # # print(new_data_nested_tbl)
-        #
-        # data_joined_tbl <- new_data_nested_tbl %>%
-        #     dplyr::left_join(window_nested_tbl, by = id)
-        #
-        # # print("Data Joined")
-        # # print(data_joined_tbl)
-        #
-        # data_joined_tbl <- data_joined_tbl %>%
-        #     dplyr::mutate(.final_values = purrr::map2(
-        #         .x = .idx_values, .y = .window_values, .f = function(x, y) {
-        #
-        #             ret <- tryCatch({
-        #                 tibble::tibble(value = rep_len(y$value, length.out = nrow(x)))
-        #             }, error = function(e) {
-        #                 tibble::tibble(value = rep_len(NA, length.out = nrow(x)))
-        #             })
-        #
-        #             return(ret)
-        #
-        #         })) %>%
-        #     dplyr::select(-.window_values) %>%
-        #     tidyr::unnest(cols = c(.idx_values, .final_values))
-        #
-        # # print(data_joined_tbl)
-        #
-        # preds <- data_joined_tbl$value
+        preds <- make_grouped_predictions(
+            model    = model,
+            new_data = new_data,
+            id_col   = id,
+            idx_col  = idx_col
+        )
     }
 
     return(preds)

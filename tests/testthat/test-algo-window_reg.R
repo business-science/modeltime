@@ -1,4 +1,4 @@
-context("TEST naive_reg()")
+context("TEST window_reg() and naive_reg()")
 
 # Data - Single Time Series
 m750 <- m4_monthly %>% filter(id == "M750")
@@ -282,23 +282,21 @@ testthat::test_that("SNAIVE - Check New Factors", {
 testthat::test_that("WINDOW - Single Time Series (No ID)", {
 
     model_fit_1 <- window_reg(
-        window_function = ~ mean(.x, na.rm = TRUE),
         window_size     = 24
     ) %>%
-        set_engine("window") %>%
+        set_engine("window_function", window_function = ~ mean(.x, na.rm = TRUE),) %>%
         fit(value ~ date, data = training(splits))
 
     model_fit_2 <- window_reg(
-        window_function = median,
         window_size     = 36
     ) %>%
-        set_engine("window", na.rm = TRUE) %>%
+        set_engine("window_function", window_function = median, na.rm = TRUE) %>%
         fit(value ~ date, data = training(splits))
 
-    model_fit_3 <- window_reg(
-        window_function = ~ tail(.x, 12)
-    ) %>%
-        set_engine("window", na.rm = TRUE) %>%
+    model_fit_3 <- window_reg() %>%
+        set_engine("window_function",
+                   window_function = ~ tail(.x, 12),
+                   na.rm = TRUE) %>%
         fit(value ~ date, data = training(splits))
 
     calibration_tbl <- modeltime_table(
@@ -353,10 +351,9 @@ testthat::test_that("WINDOW - Multiple Time Series (Panel ID)", {
 
     model_fit_panel <- window_reg(
             id = "id",
-            window_function = mean,
-            window_size     = 12
+            window_size = 12
         ) %>%
-        set_engine("window") %>%
+        set_engine("window_function", window_function = mean) %>%
         fit(value ~ date + id, data = data_prepared_tbl)
 
     future_forecast_panel_tbl <- modeltime_table(
@@ -391,7 +388,7 @@ testthat::test_that("WINDOW - Multiple Time Series (Panel ID)", {
 testthat::test_that("SNAIVE - Check New Factors", {
 
     wflw_fit_panel <- workflow() %>%
-        add_model(window_reg(id = "id") %>% set_engine("window")) %>%
+        add_model(window_reg(id = "id") %>% set_engine("window_function")) %>%
         add_recipe(recipe(value ~ date + id, data = data_prepared_tbl)) %>%
         fit(data_prepared_tbl)
 

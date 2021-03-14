@@ -8,8 +8,8 @@ window_fit_impl(
   x,
   y,
   id = NULL,
-  window_function = NULL,
   window_size = "all",
+  window_function = mean,
   ...
 )
 }
@@ -20,11 +20,12 @@ window_fit_impl(
 
 \item{id}{An optional ID feature to identify different time series. Should be a quoted name.}
 
-\item{window_function}{A function to apply to the window}
-
 \item{window_size}{The period to apply the window function to}
 
-\item{...}{Not currently used}
+\item{window_function}{A function to apply to the window. The default is \code{mean()}.}
+
+\item{...}{Additional arguments for the \code{window_function}. For example, it's
+common to pass \code{na.rm = TRUE} for the mean forecast.}
 }
 \description{
 Low-Level Window Forecast
