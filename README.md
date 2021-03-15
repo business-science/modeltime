@@ -15,7 +15,7 @@
 coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://codecov.io/gh/business-science/modeltime?branch=master)
 <!-- badges: end -->
 
-> The time series forecasting package for the `tidymodels` ecosystem.
+> Tidy time series forecasting with `tidymodels`.
 
 ## Tutorials
 
@@ -98,29 +98,29 @@ The modeltime ecosystem is growing
 Modeltime is part of a **growing ecosystem** of Modeltime forecasting
 packages.
 
--   [Learn Modeltime (Machine
+-   [Modeltime (Machine
     Learning)](https://business-science.github.io/modeltime/)
 
--   [Learn Timetk (Feature Engineering,
-    Visualization)](https://business-science.github.io/timetk/)
-
--   [Learn Modeltime H2O
+-   [Modeltime H2O
     (AutoML)](https://business-science.github.io/modeltime.h2o/)
 
--   [Learn Modeltime GluonTS (Deep
+-   [Modeltime GluonTS (Deep
     Learning)](https://business-science.github.io/modeltime.gluonts/)
 
--   [Learn Modeltime Ensemble (Blending
+-   [Modeltime Ensemble (Blending
     Forecasts)](https://business-science.github.io/modeltime.ensemble/)
 
--   [Learn Modeltime Resample
+-   [Modeltime Resample
     (Backtesting)](https://business-science.github.io/modeltime.resample/)
+
+-   [Timetk (Feature Engineering, Data Wrangling, Time Series
+    Visualization)](https://business-science.github.io/timetk/)
 
 ## Take the High-Performance Forecasting Course
 
 > Become the forecasting expert for your organization
 
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/jay1WUozSWCVHfFBEil3" alt="High-Performance Time Series Forecasting Course" width="100%" /></a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"/></a>
 
 [*High-Performance Time Series
 Course*](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)

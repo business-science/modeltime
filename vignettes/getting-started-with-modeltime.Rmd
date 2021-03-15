@@ -345,11 +345,11 @@ More often than not refitting is a good idea. Refitting:
 
 
 
-## Learning More
+## Take the High-Performance Forecasting Course
 
 > Become the forecasting expert for your organization
 
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/jay1WUozSWCVHfFBEil3" alt="High-Performance Time Series Forecasting Course" width="100%" /></a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"/></a>
 
 [_High-Performance Time Series Course_](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)
 
@@ -380,4 +380,6 @@ Become the Time Series Expert for your organization.
 <p class="text-center" style="font-size:30px;">
 <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
 </p>
+
+
 
