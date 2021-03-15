@@ -15,7 +15,7 @@
 coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://codecov.io/gh/business-science/modeltime?branch=master)
 <!-- badges: end -->
 
-The time series forecasting package for the `tidymodels` ecosystem.
+> The time series forecasting package for the `tidymodels` ecosystem.
 
 ## Tutorials
 
