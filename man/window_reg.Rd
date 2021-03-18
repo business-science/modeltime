@@ -29,8 +29,6 @@ following \emph{engines}:
 \item \strong{"window_function" (default)} - Performs a Window Forecast
 applying a \code{window_function} (engine parameter)
 to a window of size defined by \code{window_size}
-\item \strong{"window_lm"} - Applies a linear regression using \code{stats::lm()}
-to a window of size defined by \code{window_size}
 }
 }
 \section{Engine Details}{
@@ -61,11 +59,6 @@ any additional arguments, \code{...} in \code{set_engine()}.
 }
 
 This syntax allows you to create very compact anonymous functions.
-
-\strong{window_lm}
-
-This engine applies \code{\link[stats:lm]{stats::lm()}} to a window. Groups are treated as
-external regressors.
 }
 
 \section{Fit Details}{
@@ -167,21 +160,6 @@ model_fit
 # - The 12-month median repeats going forward
 predict(model_fit, testing(splits))
 
-# ---- WINDOW LINEAR REGRESSION ----
-
-# Model Spec
-model_spec <- window_reg(
-        window_size = 12
-    ) \%>\%
-    set_engine("window_lm")
-
-# Fit Spec
-model_fit <- model_spec \%>\%
-    fit(log(value) ~ date, data = training(splits))
-model_fit
-
-# Predict
-predict(model_fit, testing(splits))
 
 # ---- PANEL FORECAST - WINDOW FUNCTION ----
 
@@ -200,6 +178,7 @@ model_spec <- window_reg(
 # Fit Spec
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date + id, data = training(splits))
+model_fit
 
 # Predict: The weighted average (scalar) repeats going forward
 predict(model_fit, testing(splits))

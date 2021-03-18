@@ -23,8 +23,6 @@
 #'  - __"window_function" (default)__ - Performs a Window Forecast
 #'    applying a `window_function` (engine parameter)
 #'    to a window of size defined by `window_size`
-#'  - __"window_lm"__ - Applies a linear regression using `stats::lm()`
-#'    to a window of size defined by `window_size`
 #'
 #'
 #' @section Engine Details:
@@ -51,10 +49,6 @@
 #'
 #'  This syntax allows you to create very compact anonymous functions.
 #'
-#' __window_lm__
-#'
-#' This engine applies [stats::lm()] to a window. Groups are treated as
-#' external regressors.
 #'
 #' @section Fit Details:
 #'
@@ -153,21 +147,6 @@
 #' # - The 12-month median repeats going forward
 #' predict(model_fit, testing(splits))
 #'
-#' # ---- WINDOW LINEAR REGRESSION ----
-#'
-#' # Model Spec
-#' model_spec <- window_reg(
-#'         window_size = 12
-#'     ) %>%
-#'     set_engine("window_lm")
-#'
-#' # Fit Spec
-#' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date, data = training(splits))
-#' model_fit
-#'
-#' # Predict
-#' predict(model_fit, testing(splits))
 #'
 #' # ---- PANEL FORECAST - WINDOW FUNCTION ----
 #'
@@ -186,6 +165,7 @@
 #' # Fit Spec
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date + id, data = training(splits))
+#' model_fit
 #'
 #' # Predict: The weighted average (scalar) repeats going forward
 #' predict(model_fit, testing(splits))
@@ -463,168 +443,168 @@ predict.window_function_fit_impl <- function(object, new_data, ...) {
 }
 
 
-# WINDOW LM FUNCTION ----
-
-#' Low-Level Window Linear Regression Function
-#'
-#' @param x A dataframe of xreg (exogenous regressors)
-#' @param y A numeric vector of values to fit
-#' @param id An optional ID feature to identify different time series. Should be a quoted name.
-#' @param window_size The period to apply the window function to
-#' @param ... Additional arguments for the `stats::lm()` function.
-#'
-#' @export
-window_lm_fit_impl <- function(x, y, id = NULL,
-                               window_size = "all",
-                               ...) {
-
-
-    # X & Y
-    # Expect outcomes  = vector
-    # Expect predictor = data.frame
-    outcome    <- y
-    predictor  <- x
-
-
-    # INDEX & PERIOD
-    # Determine Period, Index Col, and Index
-    index_tbl <- parse_index_from_data(predictor)
-    if (window_size == "all") {
-        message("window_reg: Using window_size = Inf")
-        period = Inf
-    } else {
-        period    <- parse_period_from_index(index_tbl, window_size)
-    }
-    idx_col   <- names(index_tbl)
-    idx       <- timetk::tk_index(index_tbl)
-
-
-    # VALUE COLUMN
-    value_tbl <- tibble::tibble(value = y)
-
-    # GROUPS
-    is_grouped <- FALSE
-    if (!is.null(id)) {
-        is_grouped <- TRUE
-    }
-
-
-    # CONSTRUCTED TBL
-    constructed_tbl <- dplyr::bind_cols(value_tbl, x)
-
-    if (is_grouped) {
-        window_df <- constructed_tbl %>%
-            dplyr::group_by(!! rlang::sym(id))
-    } else {
-        window_df <- constructed_tbl
-    }
-
-    # APPLY WINDOW
-    window_df <- window_df %>%
-        dplyr::arrange(dplyr::all_of(idx_col)) %>%
-        dplyr::slice_tail(n = period) %>%
-        dplyr::ungroup()
-
-    # XREGS
-    # Clean names, get xreg recipe, process predictors
-    value_window_tbl  <- window_df %>% dplyr::select(value)
-    index_window_tbl  <- window_df %>% dplyr::select(dplyr::all_of(idx_col))
-    predictors_window <- window_df %>% dplyr::select(-value, -dplyr::all_of(idx_col))
-
-    if (ncol(predictors_window) > 0) {
-        xreg_recipe       <- create_xreg_recipe(predictors_window, prepare = TRUE)
-    } else {
-        xreg_recipe <- NULL
-    }
-    xreg_tbl   <- juice_xreg_recipe(xreg_recipe, format = "tbl")
-
-    # CONSTRUCT WINDOW TIBBLE
-    constructed_window_tbl <- dplyr::bind_cols(value_window_tbl, index_window_tbl, xreg_tbl)
-
-    # FIT
-    fit_lm <- stats::lm(value ~ ., data = constructed_window_tbl, ...)
-
-    # RETURN A NEW MODELTIME BRIDGE
-
-    # Class - Add a class for the model
-    class <- "window_lm_fit_impl"
-
-    # Models - Insert model_1 and model_2 into a list
-    models <- list(
-        model_1 = fit_lm
-    )
-
-    # Data - Start with index tbl and add .actual, .fitted, and .residuals columns
-    data <- index_tbl %>%
-        dplyr::mutate(
-            .actual    =  y,
-            .fitted    =  NA,
-            .residuals = .actual - .fitted
-        )
-
-    # Extras - Pass on transformation recipe
-    extras <- list(
-        id                = id,
-        idx_column        = idx_col,
-        value_column      = "value",
-        xreg_recipe       = xreg_recipe,
-        is_grouped        = is_grouped,
-        period            = period
-    )
-
-    # Model Description - Gets printed to describe the high-level model structure
-    desc <- glue::glue("WINDOW LM [{period}]")
-
-    # Create new model
-    modeltime::new_modeltime_bridge(
-        class  = class,
-        models = models,
-        data   = data,
-        extras = extras,
-        desc   = desc
-    )
-
-}
-
-#' @export
-print.window_lm_fit_impl <- function(x, ...) {
-    cat(x$desc)
-    cat("\n")
-    cat("--------")
-    cat("\nModel: \n")
-    print(x$models$model_1)
-    invisible(x)
-}
-
-#' Bridge prediction function for window Models
-#'
-#' @inheritParams parsnip::predict.model_fit
-#'
-#' @export
-window_lm_predict_impl <- function(object, new_data) {
-
-    # PREPARE INPUTS
-    model           <- object$models$model_1
-    id              <- object$extras$id
-    idx_col         <- object$extras$idx_col
-    is_grouped      <- object$extras$is_grouped
-    xreg_recipe     <- object$extras$xreg_recipe
-
-    # INDEX
-    index_tbl <- new_data %>% dplyr::select(dplyr::all_of(idx_col))
-
-    # XREG
-    xreg_tbl <- bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
-
-    predictor_tbl <- dplyr::bind_cols(index_tbl, xreg_tbl)
-
-    preds <- stats::predict(model, predictor_tbl) %>% as.numeric()
-
-    return(preds)
-
-}
-
-#' @export
-predict.window_lm_fit_impl <- function(object, new_data, ...) {
-    window_lm_predict_impl(object, new_data, ...)
-}
+# # WINDOW LM FUNCTION ----
+#
+# #' Low-Level Window Linear Regression Function
+# #'
+# #' @param x A dataframe of xreg (exogenous regressors)
+# #' @param y A numeric vector of values to fit
+# #' @param id An optional ID feature to identify different time series. Should be a quoted name.
+# #' @param window_size The period to apply the window function to
+# #' @param ... Additional arguments for the `stats::lm()` function.
+# #'
+# #' @export
+# window_lm_fit_impl <- function(x, y, id = NULL,
+#                                window_size = "all",
+#                                ...) {
+#
+#
+#     # X & Y
+#     # Expect outcomes  = vector
+#     # Expect predictor = data.frame
+#     outcome    <- y
+#     predictor  <- x
+#
+#
+#     # INDEX & PERIOD
+#     # Determine Period, Index Col, and Index
+#     index_tbl <- parse_index_from_data(predictor)
+#     if (window_size == "all") {
+#         message("window_reg: Using window_size = Inf")
+#         period = Inf
+#     } else {
+#         period    <- parse_period_from_index(index_tbl, window_size)
+#     }
+#     idx_col   <- names(index_tbl)
+#     idx       <- timetk::tk_index(index_tbl)
+#
+#
+#     # VALUE COLUMN
+#     value_tbl <- tibble::tibble(value = y)
+#
+#     # GROUPS
+#     is_grouped <- FALSE
+#     if (!is.null(id)) {
+#         is_grouped <- TRUE
+#     }
+#
+#
+#     # CONSTRUCTED TBL
+#     constructed_tbl <- dplyr::bind_cols(value_tbl, x)
+#
+#     if (is_grouped) {
+#         window_df <- constructed_tbl %>%
+#             dplyr::group_by(!! rlang::sym(id))
+#     } else {
+#         window_df <- constructed_tbl
+#     }
+#
+#     # APPLY WINDOW
+#     window_df <- window_df %>%
+#         dplyr::arrange(dplyr::all_of(idx_col)) %>%
+#         dplyr::slice_tail(n = period) %>%
+#         dplyr::ungroup()
+#
+#     # XREGS
+#     # Clean names, get xreg recipe, process predictors
+#     value_window_tbl  <- window_df %>% dplyr::select(value)
+#     index_window_tbl  <- window_df %>% dplyr::select(dplyr::all_of(idx_col))
+#     predictors_window <- window_df %>% dplyr::select(-value, -dplyr::all_of(idx_col))
+#
+#     if (ncol(predictors_window) > 0) {
+#         xreg_recipe       <- create_xreg_recipe(predictors_window, prepare = TRUE)
+#     } else {
+#         xreg_recipe <- NULL
+#     }
+#     xreg_tbl   <- juice_xreg_recipe(xreg_recipe, format = "tbl")
+#
+#     # CONSTRUCT WINDOW TIBBLE
+#     constructed_window_tbl <- dplyr::bind_cols(value_window_tbl, index_window_tbl, xreg_tbl)
+#
+#     # FIT
+#     fit_lm <- stats::lm(value ~ ., data = constructed_window_tbl, ...)
+#
+#     # RETURN A NEW MODELTIME BRIDGE
+#
+#     # Class - Add a class for the model
+#     class <- "window_lm_fit_impl"
+#
+#     # Models - Insert model_1 and model_2 into a list
+#     models <- list(
+#         model_1 = fit_lm
+#     )
+#
+#     # Data - Start with index tbl and add .actual, .fitted, and .residuals columns
+#     data <- index_tbl %>%
+#         dplyr::mutate(
+#             .actual    =  y,
+#             .fitted    =  NA,
+#             .residuals = .actual - .fitted
+#         )
+#
+#     # Extras - Pass on transformation recipe
+#     extras <- list(
+#         id                = id,
+#         idx_column        = idx_col,
+#         value_column      = "value",
+#         xreg_recipe       = xreg_recipe,
+#         is_grouped        = is_grouped,
+#         period            = period
+#     )
+#
+#     # Model Description - Gets printed to describe the high-level model structure
+#     desc <- glue::glue("WINDOW LM [{period}]")
+#
+#     # Create new model
+#     modeltime::new_modeltime_bridge(
+#         class  = class,
+#         models = models,
+#         data   = data,
+#         extras = extras,
+#         desc   = desc
+#     )
+#
+# }
+#
+# #' @export
+# print.window_lm_fit_impl <- function(x, ...) {
+#     cat(x$desc)
+#     cat("\n")
+#     cat("--------")
+#     cat("\nModel: \n")
+#     print(x$models$model_1)
+#     invisible(x)
+# }
+#
+# #' Bridge prediction function for window Models
+# #'
+# #' @inheritParams parsnip::predict.model_fit
+# #'
+# #' @export
+# window_lm_predict_impl <- function(object, new_data) {
+#
+#     # PREPARE INPUTS
+#     model           <- object$models$model_1
+#     id              <- object$extras$id
+#     idx_col         <- object$extras$idx_col
+#     is_grouped      <- object$extras$is_grouped
+#     xreg_recipe     <- object$extras$xreg_recipe
+#
+#     # INDEX
+#     index_tbl <- new_data %>% dplyr::select(dplyr::all_of(idx_col))
+#
+#     # XREG
+#     xreg_tbl <- bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
+#
+#     predictor_tbl <- dplyr::bind_cols(index_tbl, xreg_tbl)
+#
+#     preds <- stats::predict(model, predictor_tbl) %>% as.numeric()
+#
+#     return(preds)
+#
+# }
+#
+# #' @export
+# predict.window_lm_fit_impl <- function(object, new_data, ...) {
+#     window_lm_predict_impl(object, new_data, ...)
+# }
