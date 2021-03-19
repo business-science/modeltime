@@ -43,5 +43,5 @@ and "pred_int". Default value is \code{FALSE}.
 Make predictions from a recursive model.
 }
 \details{
-Refer to \code{\link[=recursive]{recursive()}} for further details and examples.
+Refer to \code{\link[=recursive_panel]{recursive_panel()}} for further details and examples.
 }
