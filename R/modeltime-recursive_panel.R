@@ -276,7 +276,7 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
 
     # print(fit)
 
-    predict.recursive(fit, new_data, type = type, opts = opts, ...)
+    predict.recursive_panel(fit, new_data, type = type, opts = opts, ...)
 }
 
 
