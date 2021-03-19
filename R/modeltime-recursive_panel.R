@@ -247,8 +247,6 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
         .nth_slice <- .transform(.temp_new_data, new_data_size, i)
 
-        print(i)
-
         .preds[.preds$rowid == i, 2] <- new_data[new_data$rowid == i, y_var] <- pred_fun(object,
                                                                                          new_data = .nth_slice,
                                                                                          type = type,
