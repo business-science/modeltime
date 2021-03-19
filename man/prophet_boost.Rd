@@ -193,11 +193,9 @@ Other options can be set using \code{set_engine()}.
 
 \strong{prophet_xgboost}
 
-Model 1: PROPHET (\code{prophet::prophet}):\preformatted{## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, 
-##     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", 
-##     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", 
-##     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, 
-##     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, 
+Model 1: PROPHET (\code{prophet::prophet}):\preformatted{## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, changepoint.range = 0.8, yearly.seasonality = "auto", 
+##     weekly.seasonality = "auto", daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", seasonality.prior.scale = 10, 
+##     holidays.prior.scale = 10, changepoint.prior.scale = 0.05, mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, 
 ##     fit = TRUE, ...)
 }
 
@@ -225,10 +223,8 @@ specify non-standard seasonalities using fourier series. An alternative is to us
 \code{step_fourier()} and supply custom seasonalities as Extra Regressors.
 }
 
-Model 2: XGBoost (\code{xgboost::xgb.train}):\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
-##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
-##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
-##     callbacks = list(), ...)
+Model 2: XGBoost (\code{xgboost::xgb.train}):\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
+##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, callbacks = list(), ...)
 }
 
 Parameter Notes:
