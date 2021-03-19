@@ -48,7 +48,7 @@ default_forecast_accuracy_metric_set()
 calc_default_metrics <- default_forecast_accuracy_metric_set()
 
 # Apply the metric summarizer to new data
-calc_default_metrics(fake_data, y, y_hat)
+calc_default_metrics(fake_data, y, yhat)
 
 # ---- ADD MORE PARAMETERS ----
 
@@ -60,7 +60,7 @@ my_metric_set <- default_forecast_accuracy_metric_set(mase12)
 my_metric_set
 
 # Apply the newly created metric set
-my_metric_set(fake_data, y, y_hat)
+my_metric_set(fake_data, y, yhat)
 
 
 }

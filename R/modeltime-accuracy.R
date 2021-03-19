@@ -158,6 +158,9 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #'
 #' Adding additional metrics is possible via `...`.
 #'
+#' @seealso
+#' - [metric_tweek()] - For modifying `yardstick` metrics
+#'
 #' @examples
 #' library(tibble)
 #' library(dplyr)
@@ -178,7 +181,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' calc_default_metrics <- default_forecast_accuracy_metric_set()
 #'
 #' # Apply the metric summarizer to new data
-#' calc_default_metrics(fake_data, y, y_hat)
+#' calc_default_metrics(fake_data, y, yhat)
 #'
 #' # ---- ADD MORE PARAMETERS ----
 #'
@@ -190,7 +193,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' my_metric_set
 #'
 #' # Apply the newly created metric set
-#' my_metric_set(fake_data, y, y_hat)
+#' my_metric_set(fake_data, y, yhat)
 #'
 #'
 #' @export

@@ -49,8 +49,8 @@
   
 
 <meta property="og:title" content="Modify Yardstick Metric Functions — metric_tweak" />
-<meta property="og:description" content="Used to modify functions like mase(), which have parameters that
-need to be adjusted (e.g. m = 1) based on the seasonality of the data." />
+<meta property="og:description" content="Used to modify yardstick functions, which have parameters that
+need to be adjusted." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -93,7 +93,7 @@ need to be adjusted (e.g. m = 1) based on the seasonality of the data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
       </span>
     </div>
 
@@ -162,8 +162,8 @@ need to be adjusted (e.g. m = 1) based on the seasonality of the data." />
     </div>
 
     <div class="ref-description">
-    <p>Used to modify functions like <code>mase()</code>, which have parameters that
-need to be adjusted (e.g. <code>m = 1</code>) based on the seasonality of the data.</p>
+    <p>Used to modify <code>yardstick</code> functions, which have parameters that
+need to be adjusted.</p>
     </div>
 
     <pre class="usage"><span class='fu'>metric_tweak</span><span class='op'>(</span><span class='va'>.f</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -181,30 +181,44 @@ need to be adjusted (e.g. <code>m = 1</code>) based on the seasonality of the da
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function was created to help users quickly modify
+the <code><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set()</a></code> using existing <code>yardstick</code>
+functions with parameters that require adjustment.</p>
+<p>An example is <code><a href='https://yardstick.tidymodels.org/reference/mase.html'>yardstick::mase()</a></code>, which has a parameter <code>m = 1</code>.
+The <code>m</code> parameter identifies the seasonality for the MASE calculation.
+Users often need to adjust this to the dominant seasonality. This can be
+quickly accomplished using code:<div class="r"></p><pre><span class='va'>mase12</span> <span class='op'>&lt;-</span> <span class='fu'>metric_tweak</span><span class='op'>(</span><span class='va'>mase</span>, m <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>
+</pre><p></div></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidymodels/yardstick'>yardstick</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tibble.tidyverse.org/'>tibble</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://purrr.tidyverse.org'>purrr</a></span><span class='op'>)</span>
 
 <span class='va'>fake_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>
     y    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>2</span><span class='op'>*</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>,
     yhat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, <span class='fl'>2</span><span class='op'>*</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='op'>)</span>
 
+<span class='co'># Make new mase12 metric</span>
+<span class='va'>mase12</span> <span class='op'>&lt;-</span> <span class='fu'>metric_tweak</span><span class='op'>(</span><span class='va'>mase</span>, m <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>
+
+<span class='co'># Add to metric set</span>
 <span class='va'>my_metric_set</span> <span class='op'>&lt;-</span> <span class='fu'><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set</a></span><span class='op'>(</span>
-    <span class='fu'>metric_tweak</span><span class='op'>(</span><span class='va'>mase</span>, m <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>
+    <span class='va'>mase12</span>
 <span class='op'>)</span>
 <span class='va'>my_metric_set</span>
-</div><div class='output co'>#&gt;                       metric          class direction
-#&gt; 1                        mae numeric_metric  minimize
-#&gt; 2                       mape numeric_metric  minimize
-#&gt; 3                       mase numeric_metric  minimize
-#&gt; 4                      smape numeric_metric  minimize
-#&gt; 5                       rmse numeric_metric  minimize
-#&gt; 6                        rsq numeric_metric  maximize
-#&gt; 7 metric_tweak(mase, m = 12) numeric_metric  minimize</div><div class='input'>
+</div><div class='output co'>#&gt;   metric          class direction
+#&gt; 1    mae numeric_metric  minimize
+#&gt; 2   mape numeric_metric  minimize
+#&gt; 3   mase numeric_metric  minimize
+#&gt; 4  smape numeric_metric  minimize
+#&gt; 5   rmse numeric_metric  minimize
+#&gt; 6    rsq numeric_metric  maximize
+#&gt; 7 mase12 numeric_metric  minimize</div><div class='input'>
+<span class='co'># Apply metric set to fake_data</span>
 <span class='fu'>my_metric_set</span><span class='op'>(</span><span class='va'>fake_data</span>, <span class='va'>y</span>, <span class='va'>yhat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 3</span><span>
 #&gt;   .metric .estimator .estimate
