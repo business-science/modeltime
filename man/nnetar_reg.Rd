@@ -88,8 +88,8 @@ Other options can be set using \code{set_engine()}.
 
 The engine uses \code{\link[forecast:nnetar]{forecast::nnetar()}}.
 
-Function Parameters:\preformatted{## function (y, p, P = 1, size, repeats = 20, xreg = NULL, lambda = NULL, model = NULL, subset = NULL, scale.inputs = TRUE, x = y, 
-##     ...)
+Function Parameters:\preformatted{## function (y, p, P = 1, size, repeats = 20, xreg = NULL, lambda = NULL, 
+##     model = NULL, subset = NULL, scale.inputs = TRUE, x = y, ...)
 }
 
 Parameter Notes:
