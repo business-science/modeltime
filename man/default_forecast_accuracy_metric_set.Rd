@@ -25,26 +25,42 @@ forecast accuracy metrics using \code{\link[=modeltime_accuracy]{modeltime_accur
 \item RMSE  - Root mean squared error, \code{\link[=rmse]{rmse()}}
 \item RSQ   - R-squared, \code{\link[=rsq]{rsq()}}
 }
+
+Adding additional metrics is possible via \code{...}.
 }
 \examples{
 library(tibble)
 library(dplyr)
 library(timetk)
+library(yardstick)
 
-set.seed(1)
-data <- tibble(
-    time  = tk_make_timeseries("2020", by = "sec", length_out = 10),
-    y     = 1:10 + rnorm(10),
-    y_hat = 1:10 + rnorm(10)
+fake_data <- tibble(
+    y    = c(1:12, 2*1:12),
+    yhat = c(1 + 1:12, 2*1:12 - 1)
 )
 
-# Default Metric Specification
+# ---- HOW IT WORKS ----
+
+# Default Forecast Accuracy Metric Specification
 default_forecast_accuracy_metric_set()
 
 # Create a metric summarizer function from the metric set
 calc_default_metrics <- default_forecast_accuracy_metric_set()
 
 # Apply the metric summarizer to new data
-calc_default_metrics(data, y, y_hat)
+calc_default_metrics(fake_data, y, y_hat)
+
+# ---- ADD MORE PARAMETERS ----
+
+# Can create a version of mase() with seasonality = 12 (monthly)
+mase12 <- metric_tweak(mase, m = 12)
+
+# Add it to the default metric set
+my_metric_set <- default_forecast_accuracy_metric_set(mase12)
+my_metric_set
+
+# Apply the newly created metric set
+my_metric_set(fake_data, y, y_hat)
+
 
 }

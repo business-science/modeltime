@@ -12,25 +12,40 @@ metric_tweak(.f, ...)
 \item{...}{Parameters to overload (.e.g. \code{m = 1})}
 }
 \description{
-Used to modify functions like \code{mase()}, which have parameters that
-need to be adjusted (e.g. \code{m = 1}) based on the seasonality of the data.
+Used to modify \code{yardstick} functions, which have parameters that
+need to be adjusted.
+}
+\details{
+This function was created to help users quickly modify
+the \code{\link[=default_forecast_accuracy_metric_set]{default_forecast_accuracy_metric_set()}} using existing \code{yardstick}
+functions with parameters that require adjustment.
+
+An example is \code{\link[yardstick:mase]{yardstick::mase()}}, which has a parameter \code{m = 1}.
+The \code{m} parameter identifies the seasonality for the MASE calculation.
+Users often need to adjust this to the dominant seasonality. This can be
+quickly accomplished using code:\if{html}{\out{<div class="r">}}\preformatted{mase12 <- metric_tweak(mase, m = 12)
+}\if{html}{\out{</div>}}
 }
 \examples{
 library(modeltime)
 library(yardstick)
 library(tibble)
-library(purrr)
 
 fake_data <- tibble(
     y    = c(1:12, 2*1:12),
     yhat = c(1 + 1:12, 2*1:12 - 1)
 )
 
+# Make new mase12 metric
+mase12 <- metric_tweak(mase, m = 12)
+
+# Add to metric set
 my_metric_set <- default_forecast_accuracy_metric_set(
-    metric_tweak(mase, m = 12)
+    mase12
 )
 my_metric_set
 
+# Apply metric set to fake_data
 my_metric_set(fake_data, y, yhat)
 
 
