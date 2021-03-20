@@ -159,7 +159,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' Adding additional metrics is possible via `...`.
 #'
 #' @seealso
-#' - [metric_tweek()] - For modifying `yardstick` metrics
+#' - [metric_tweak()] - For modifying `yardstick` metrics
 #'
 #' @examples
 #' library(tibble)

@@ -64,3 +64,8 @@ my_metric_set(fake_data, y, yhat)
 
 
 }
+\seealso{
+\itemize{
+\item \code{\link[=metric_tweak]{metric_tweak()}} - For modifying \code{yardstick} metrics
+}
+}

@@ -12,18 +12,20 @@ recursive_panel(object, transform, train_tail, ...)
 \item{transform}{A transformation performed on new_data after
 each step of recursive algorithm. It can be an object of types:
 \itemize{
-\item \strong{Method 1, \code{recipe}:} A recipe generates lagged or sliding features (see examples)
-\item \strong{Method 2, \code{function}:} Must have one argument \code{data} (see examples)
+\item \strong{Method 1, \code{function}:} Must have one argument \code{data} and and you
+must group by the variable \code{id}, perform the transformations and
+finally ungroup. (see examples)
 }}
 
-\item{train_tail}{A tibble with tail of training data set.
+\item{train_tail}{A tibble with tail by group of training data set.
 In most cases it'll be required to create some variables
-based on dependent variable.}
+based on dependent variable. You can use the function
+modeltime::panel_data() (see examples)}
 
 \item{...}{Not currently used.}
 }
 \value{
-An object with added \code{recursive} class
+An object with added \code{recursive_panel} class
 }
 \description{
 Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
@@ -31,7 +33,7 @@ Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
 \details{
 Recursive model can be used if some of the features used for training
 is based of dependent variable we already are trying to forecast.
-Typically, among these features we can find lags (e.g. created with \code{step_lag()})
+Typically, among these features we can find lags (e.g. created with \code{tk_augment_lags()})
 or variables crated with sliding window.
 
 When producing forecast, the following steps are performed:
@@ -49,6 +51,7 @@ training data set) and \code{new_data} (which is an argument of predict function
 }
 \examples{
 # Libraries & Setup ----
+
 library(modeltime)
 library(tidymodels)
 library(tidyverse)
@@ -56,11 +59,13 @@ library(lubridate)
 library(timetk)
 library(slider)
 
-m750
+# METHOD 1: TRANSFORM FUNCTION ----
+
+m4_monthly
 
 FORECAST_HORIZON <- 24
 
-m750_extended <- m750 \%>\%
+m4_extended <- m4_monthly \%>\%
     group_by(id) \%>\%
     future_frame(
         .length_out = FORECAST_HORIZON,
@@ -68,110 +73,40 @@ m750_extended <- m750 \%>\%
     ) \%>\%
     ungroup()
 
-# METHOD 1: RECIPE ----
-# - Used for recursive transformations via recipe prepeocessing steps
-
-# Lag Recipe
-recipe_lag <- recipe(value ~ date, m750_extended) \%>\%
-    step_lag(value, lag = 1:FORECAST_HORIZON)
-
-# Data Preparation
-m750_lagged <- recipe_lag \%>\% prep() \%>\% juice()
-
-m750_lagged
-
-train_data <- m750_lagged \%>\%
-    filter(!is.na(value)) \%>\%
-    drop_na()
-
-future_data <- m750_lagged \%>\%
-    filter(is.na(value))
-
-# Modeling
-model_fit_lm <- linear_reg() \%>\%
-    set_engine("lm") \%>\%
-    fit(value ~ date, data = train_data)
-
-model_fit_lm_recursive <- linear_reg() \%>\%
-    set_engine("lm") \%>\%
-    fit(value ~ ., data = train_data) \%>\%
-    recursive(
-        transform  = recipe_lag,
-        train_tail = tail(train_data, FORECAST_HORIZON)
-    )
-
-model_fit_lm_recursive
-
-# Forecasting
-modeltime_table(
-    model_fit_lm,
-    model_fit_lm_recursive
-) \%>\%
-    update_model_description(2, "LM - Lag Roll") \%>\%
-    modeltime_forecast(
-        new_data    = future_data,
-        actual_data = m750,
-        keep_data   = TRUE
-    ) \%>\%
-    plot_modeltime_forecast(
-        .interactive        = FALSE,
-        .conf_interval_show = FALSE
-    )
-
-
-# METHOD 2: TRANSFORM FUNCTION ----
-# - Used for complex transformations via transformation function
-
-# Function run recursively that updates the forecasted dataset
-lag_roll_transformer <- function(data){
+lag_transformer <- function(data){
     data \%>\%
+        group_by(id) \%>\%
         # Lags
-        tk_augment_lags(value, .lags = 1:12) \%>\%
-        # Rolling Features
-        mutate(rolling_mean_12 = lag(slide_dbl(
-            value, .f = mean, .before = 12, .complete = FALSE
-        ), 1))
+        tk_augment_lags(value, .lags = 1:24) \%>\%
+        ungroup()
 }
 
-# Data Preparation
-m750_rolling <- m750_extended \%>\%
-    lag_roll_transformer() \%>\%
-    select(-id)
+m4_lags <- m4_extended \%>\%
+    lag_transformer()
 
-train_data <- m750_rolling \%>\%
+train_data <- m4_lags \%>\%
     filter(!is.na(value)) \%>\%
     drop_na()
 
-future_data <- m750_rolling \%>\%
+future_data <- m4_lags \%>\%
     filter(is.na(value))
 
-# Modeling
-model_fit_lm <- linear_reg() \%>\%
-    set_engine("lm") \%>\%
-    fit(value ~ date, data = train_data)
 
 model_fit_lm_recursive <- linear_reg() \%>\%
     set_engine("lm") \%>\%
     fit(value ~ ., data = train_data) \%>\%
-    recursive(
-        transform  = lag_roll_transformer,
-        train_tail = tail(train_data, FORECAST_HORIZON)
+    recursive_panel(
+        transform  = lag_transformer,
+        train_tail = modeltime::panel_tail(train_data, id, FORECAST_HORIZON)
     )
 
-model_fit_lm_recursive
-
-# Forecasting
-modeltime_table(
-    model_fit_lm,
-    model_fit_lm_recursive
-) \%>\%
-    update_model_description(2, "LM - Lag Roll") \%>\%
-    modeltime_forecast(
-        new_data    = future_data,
-        actual_data = m750
-    ) \%>\%
+modeltime_table(model_fit_lm_recursive) \%>\%
+    modeltime_forecast(new_data = future_data,
+                       actual_data = m4_monthly,
+                       keep_data = TRUE) \%>\%
+    group_by(id) \%>\%
     plot_modeltime_forecast(
-        .interactive        = FALSE,
+        .interactive = FALSE,
         .conf_interval_show = FALSE
     )
 

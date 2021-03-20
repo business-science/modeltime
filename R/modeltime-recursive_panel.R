@@ -184,7 +184,6 @@ predict.recursive_panel <- function(object, new_data, type = NULL, opts = list()
 
 }
 
-#' @export
 predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opts = list(), ...) {
 
     # SETUP ----
@@ -258,7 +257,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
 }
 
-#' @export
+
 predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts = list(), ...) {
     workflow <- object
 
@@ -279,7 +278,7 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
 
 
 # HELPERS ----
-#' @export
+
 .prepare_panel_transform <- function(.transform) {
 
     if (inherits(.transform, "function")) {
@@ -287,6 +286,9 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
         .transform_fun <- function(temp_new_data, new_data_size, slice_idx) {
 
             .transform(temp_new_data) %>%
+
+                tibble::rowid_to_column(var = "..row_id") %>%
+
                 dplyr::group_by(id) %>%
                 dplyr::group_split() %>%
                 purrr::map(function(x){
@@ -295,25 +297,45 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
                         .[slice_idx, ]
 
                 }) %>%
-                dplyr::bind_rows()
+                dplyr::bind_rows() %>%
+
+                dplyr::arrange(..row_id) %>%
+                dplyr::select(-..row_id)
         }
     }
 
     .transform_fun
 }
 
+# PANEL TAIL ----
+
+#' Filter the last N rows (Tail) for multiple time series
+#'
+#' @param data A data frame
+#' @param id An "id" feature indicating which column differentiates the time series panels
+#' @param n The number of rows to filter
+#'
+#' @return
+#' A data frame
+#'
+#' @examples
+#' library(timetk)
+#'
+#' # Get the last 6 observations from each group
+#' m4_monthly %>%
+#'     panel_tail(id = id, n = 6)
+#'
 #' @export
-panel_tail <- function(train_data, id, n){
+panel_tail <- function(data, id, n){
 
     id <- dplyr::enquo(id)
 
-    train_data <- train_data %>%
+    ret <- data %>%
         dplyr::group_by(!! id) %>%
-        dplyr::group_split() %>%
-        purrr::map(~tail(.x, n = n)) %>%
-        dplyr::bind_rows()
+        dplyr::slice_tail(n = n) %>%
+        dplyr::ungroup()
 
-    return(train_data)
+    return(ret)
 
 }
 

@@ -8,5 +8,6 @@ utils::globalVariables(
       ".actual", ".calibration_data", ".prediction", ".ci",
       "yhat", ".model_desc_new", ".model_desc_old", ".model_desc_user",
       ".model_table", ".model_table_clean", ".residuals", ".is_null", ".",
-      ".final_values", ".idx_values", ".pred_values", ".row_id")
+      ".final_values", ".idx_values", ".pred_values", ".row_id", "..row_id",
+      "id", ".id")
 )

@@ -1,5 +1,9 @@
 # 0.4.2.9000
 
+## Recursive Predictions
+
+- `recursive_panel()` (#71) - Amazing NEW function that enables __recursive prediction on Panel Data!__
+
 
 
 # modeltime 0.4.2
