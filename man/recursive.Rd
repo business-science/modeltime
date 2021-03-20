@@ -4,7 +4,7 @@
 \alias{recursive}
 \title{Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model}
 \usage{
-recursive(object, transform, train_tail, ...)
+recursive(object, transform, train_tail, id = NULL, ...)
 }
 \arguments{
 \item{object}{An object of \code{model_fit} or a fitted \code{workflow} class}
