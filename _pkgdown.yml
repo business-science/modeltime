@@ -38,9 +38,9 @@ navbar:
         - text: 'TimeTK (Data Transformation & Visualization)'
           href: https://business-science.github.io/timetk/
         - text: "---"
+        - text: 'Improve'
         - text: 'Modeltime Ensemble (Blending Forecasts)'
           href: https://business-science.github.io/modeltime.ensemble/
-        - text: 'Improve'
         - text: 'Modeltime Resample (Backtesting)'
           href: https://business-science.github.io/modeltime.resample/
         - text: "---"
