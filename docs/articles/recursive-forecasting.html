@@ -72,7 +72,7 @@
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
     <li>
-      <a href="../articles/recursivee-forecasting.html">Recursive Forecasting</a>
+      <a href="../articles/recursive-forecasting.html">Recursive Forecasting</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -163,6 +163,11 @@
 <li><p><strong>Make a Recursive Forecast Model</strong> for forecasting with short-term lags (i.e. Lag Size &lt; Forecast Horizon).</p></li>
 <li><p><strong>Perform Recursive Panel Forecasting</strong>, which is when you have a single autoregressive model that predicts forecasts for multiple time series.</p></li>
 </ul>
+<div class="figure" style="text-align: center">
+<img src="recursive_panel_forecast.png" alt="Recursive Panel Forecast with XGBoost" width="100%"><p class="caption">
+Recursive Panel Forecast with XGBoost
+</p>
+</div>
 <div id="what-is-a-recursive-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#what-is-a-recursive-model" class="anchor"></a>What is a Recursive Model?</h1>
@@ -223,7 +228,7 @@
     .smooth      <span class="op">=</span> <span class="cn">F</span>, 
     .interactive <span class="op">=</span> <span class="cn">F</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
@@ -362,7 +367,7 @@
 <span class="va">model_fit_lm</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  5ms </span>
+<span class="co">#&gt; Fit time:  4ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span>
@@ -402,7 +407,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  4ms </span>
+<span class="co">#&gt; Fit time:  3ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span>
@@ -454,7 +459,7 @@
         .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,
         .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>
     <span class="op">)</span></code></pre></div>
-<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We can see the benefit of autoregressive features.</p>
 </div>
 </div>
@@ -475,7 +480,7 @@
     .smooth      <span class="op">=</span> <span class="cn">F</span>, 
     .interactive <span class="op">=</span> <span class="cn">F</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
@@ -548,7 +553,7 @@
         .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>,
         .facet_ncol         <span class="op">=</span> <span class="fl">2</span>
     <span class="op">)</span></code></pre></div>
-<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-13-2.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-14-2.png" width="100%" style="display: block; margin: auto;"></p>
 <div id="summary" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h2>

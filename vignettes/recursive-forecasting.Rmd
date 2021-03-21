@@ -30,6 +30,11 @@ This short tutorial shows how you can use `recursive()` to:
 
 -   **Perform Recursive Panel Forecasting**, which is when you have a single autoregressive model that predicts forecasts for multiple time series.
 
+```{r, fig.cap="Recursive Panel Forecast with XGBoost", echo=F}
+knitr::include_graphics("recursive_panel_forecast.png")
+```
+
+
 # What is a Recursive Model?
 
 A *recursive model* uses predictions to generate new values for independent features. These features are typically lags used in autoregressive models. 

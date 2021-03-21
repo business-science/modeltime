@@ -17,7 +17,7 @@ navbar:
         - text: 'Getting Started with Modeltime'
           href: articles/getting-started-with-modeltime.html
         - text: 'Recursive Forecasting'
-          href: articles/recursivee-forecasting.html
+          href: articles/recursive-forecasting.html
         - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Base Algorithms'
