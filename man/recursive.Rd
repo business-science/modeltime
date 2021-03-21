@@ -20,6 +20,9 @@ each step of recursive algorithm. It can be an object of types:
 In most cases it'll be required to create some variables
 based on dependent variable.}
 
+\item{id}{(Optional) An identifier that can be provided to perform a panel forecast.
+A single quoted column name (e.g. \code{id = "id"}).}
+
 \item{...}{Not currently used.}
 }
 \value{
@@ -56,6 +59,8 @@ library(lubridate)
 library(timetk)
 library(slider)
 
+# ---- SINGLE TIME SERIES (NON-PANEL) -----
+
 m750
 
 FORECAST_HORIZON <- 24
@@ -68,61 +73,8 @@ m750_extended <- m750 \%>\%
     ) \%>\%
     ungroup()
 
-# METHOD 1: RECIPE ----
-# - Used for recursive transformations via recipe prepeocessing steps
-
-# Lag Recipe
-recipe_lag <- recipe(value ~ date, m750_extended) \%>\%
-    step_lag(value, lag = 1:FORECAST_HORIZON)
-
-# Data Preparation
-m750_lagged <- recipe_lag \%>\% prep() \%>\% juice()
-
-m750_lagged
-
-train_data <- m750_lagged \%>\%
-    filter(!is.na(value)) \%>\%
-    drop_na()
-
-future_data <- m750_lagged \%>\%
-    filter(is.na(value))
-
-# Modeling
-model_fit_lm <- linear_reg() \%>\%
-    set_engine("lm") \%>\%
-    fit(value ~ date, data = train_data)
-
-model_fit_lm_recursive <- linear_reg() \%>\%
-    set_engine("lm") \%>\%
-    fit(value ~ ., data = train_data) \%>\%
-    recursive(
-        transform  = recipe_lag,
-        train_tail = tail(train_data, FORECAST_HORIZON)
-    )
-
-model_fit_lm_recursive
-
-# Forecasting
-modeltime_table(
-    model_fit_lm,
-    model_fit_lm_recursive
-) \%>\%
-    update_model_description(2, "LM - Lag Roll") \%>\%
-    modeltime_forecast(
-        new_data    = future_data,
-        actual_data = m750,
-        keep_data   = TRUE
-    ) \%>\%
-    plot_modeltime_forecast(
-        .interactive        = FALSE,
-        .conf_interval_show = FALSE
-    )
-
-
-# METHOD 2: TRANSFORM FUNCTION ----
-# - Used for complex transformations via transformation function
-
-# Function run recursively that updates the forecasted dataset
+# TRANSFORM FUNCTION ----
+# - Function runs recursively that updates the forecasted dataset
 lag_roll_transformer <- function(data){
     data \%>\%
         # Lags
@@ -172,6 +124,64 @@ modeltime_table(
     ) \%>\%
     plot_modeltime_forecast(
         .interactive        = FALSE,
+        .conf_interval_show = FALSE
+    )
+
+# MULTIPLE TIME SERIES (PANEL DATA) -----
+
+m4_monthly
+
+FORECAST_HORIZON <- 24
+
+m4_extended <- m4_monthly \%>\%
+    group_by(id) \%>\%
+    future_frame(
+        .length_out = FORECAST_HORIZON,
+        .bind_data  = TRUE
+    ) \%>\%
+    ungroup()
+
+# TRANSFORM FUNCTION ----
+# - NOTE - We create lags by group inside
+lag_transformer <- function(data){
+    data \%>\%
+        group_by(id) \%>\%
+        # Lags
+        tk_augment_lags(value, .lags = 1:24) \%>\%
+        ungroup()
+}
+
+m4_lags <- m4_extended \%>\%
+    lag_transformer()
+
+train_data <- m4_lags \%>\%
+    filter(!is.na(value)) \%>\%
+    drop_na()
+
+future_data <- m4_lags \%>\%
+    filter(is.na(value))
+
+# NOTES - recursive() for Panel Data
+# - We add an id = "id" to specify the groups
+# - We sue a panel_tail() function to grab tail by groups
+model_fit_lm_recursive <- linear_reg() \%>\%
+    set_engine("lm") \%>\%
+    fit(value ~ ., data = train_data) \%>\%
+    recursive(
+        id         = "id",
+        transform  = lag_transformer,
+        train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
+    )
+
+modeltime_table(
+    model_fit_lm_recursive
+) \%>\%
+    modeltime_forecast(new_data = future_data,
+                       actual_data = m4_monthly,
+                       keep_data = TRUE) \%>\%
+    group_by(id) \%>\%
+    plot_modeltime_forecast(
+        .interactive = FALSE,
         .conf_interval_show = FALSE
     )
 

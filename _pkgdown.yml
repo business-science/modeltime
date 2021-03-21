@@ -44,6 +44,7 @@ reference:
   - subtitle: Recursive Forecast Prediction
     contents:
     - recursive
+    - panel_tail
   - subtitle: Plotting & Tables
     contents:
     - starts_with("plot_modeltime")

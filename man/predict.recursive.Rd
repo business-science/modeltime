@@ -39,6 +39,9 @@ and "pred_int". Default value is \code{FALSE}.
 (not implemented yet)
 }}
 }
+\value{
+Numeric values for the recursive panel prediction
+}
 \description{
 Make predictions from a recursive model.
 }

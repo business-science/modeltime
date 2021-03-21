@@ -13,6 +13,8 @@
 #' In most cases it'll be required to create some variables
 #' based on dependent variable.
 #' @param ... Not currently used.
+#' @param id (Optional) An identifier that can be provided to perform a panel forecast.
+#'  A single quoted column name (e.g. `id = "id"`).
 #'
 #' @return An object with added `recursive` class
 #'
@@ -43,6 +45,8 @@
 #' library(timetk)
 #' library(slider)
 #'
+#' # ---- SINGLE TIME SERIES (NON-PANEL) -----
+#'
 #' m750
 #'
 #' FORECAST_HORIZON <- 24
@@ -55,61 +59,8 @@
 #'     ) %>%
 #'     ungroup()
 #'
-#' # METHOD 1: RECIPE ----
-#' # - Used for recursive transformations via recipe prepeocessing steps
-#'
-#' # Lag Recipe
-#' recipe_lag <- recipe(value ~ date, m750_extended) %>%
-#'     step_lag(value, lag = 1:FORECAST_HORIZON)
-#'
-#' # Data Preparation
-#' m750_lagged <- recipe_lag %>% prep() %>% juice()
-#'
-#' m750_lagged
-#'
-#' train_data <- m750_lagged %>%
-#'     filter(!is.na(value)) %>%
-#'     drop_na()
-#'
-#' future_data <- m750_lagged %>%
-#'     filter(is.na(value))
-#'
-#' # Modeling
-#' model_fit_lm <- linear_reg() %>%
-#'     set_engine("lm") %>%
-#'     fit(value ~ date, data = train_data)
-#'
-#' model_fit_lm_recursive <- linear_reg() %>%
-#'     set_engine("lm") %>%
-#'     fit(value ~ ., data = train_data) %>%
-#'     recursive(
-#'         transform  = recipe_lag,
-#'         train_tail = tail(train_data, FORECAST_HORIZON)
-#'     )
-#'
-#' model_fit_lm_recursive
-#'
-#' # Forecasting
-#' modeltime_table(
-#'     model_fit_lm,
-#'     model_fit_lm_recursive
-#' ) %>%
-#'     update_model_description(2, "LM - Lag Roll") %>%
-#'     modeltime_forecast(
-#'         new_data    = future_data,
-#'         actual_data = m750,
-#'         keep_data   = TRUE
-#'     ) %>%
-#'     plot_modeltime_forecast(
-#'         .interactive        = FALSE,
-#'         .conf_interval_show = FALSE
-#'     )
-#'
-#'
-#' # METHOD 2: TRANSFORM FUNCTION ----
-#' # - Used for complex transformations via transformation function
-#'
-#' # Function run recursively that updates the forecasted dataset
+#' # TRANSFORM FUNCTION ----
+#' # - Function runs recursively that updates the forecasted dataset
 #' lag_roll_transformer <- function(data){
 #'     data %>%
 #'         # Lags
@@ -162,6 +113,66 @@
 #'         .conf_interval_show = FALSE
 #'     )
 #'
+#' # MULTIPLE TIME SERIES (PANEL DATA) -----
+#'
+#' m4_monthly
+#'
+#' FORECAST_HORIZON <- 24
+#'
+#' m4_extended <- m4_monthly %>%
+#'     group_by(id) %>%
+#'     future_frame(
+#'         .length_out = FORECAST_HORIZON,
+#'         .bind_data  = TRUE
+#'     ) %>%
+#'     ungroup()
+#'
+#' # TRANSFORM FUNCTION ----
+#' # - NOTE - We create lags by group inside
+#' lag_transformer <- function(data){
+#'     data %>%
+#'         group_by(id) %>%
+#'         # Lags
+#'         tk_augment_lags(value, .lags = 1:24) %>%
+#'         ungroup()
+#' }
+#'
+#' m4_lags <- m4_extended %>%
+#'     lag_transformer()
+#'
+#' train_data <- m4_lags %>%
+#'     filter(!is.na(value)) %>%
+#'     drop_na()
+#'
+#' future_data <- m4_lags %>%
+#'     filter(is.na(value))
+#'
+#' # NOTES - recursive() for Panel Data
+#' # - We add an id = "id" to specify the groups
+#' # - We sue a panel_tail() function to grab tail by groups
+#' model_fit_lm_recursive <- linear_reg() %>%
+#'     set_engine("lm") %>%
+#'     fit(value ~ ., data = train_data) %>%
+#'     recursive(
+#'         id         = "id",
+#'         transform  = lag_transformer,
+#'         train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
+#'     )
+#'
+#' modeltime_table(
+#'     model_fit_lm_recursive
+#' ) %>%
+#'     modeltime_forecast(
+#'         new_data    = future_data,
+#'         actual_data = m4_monthly,
+#'         keep_data   = TRUE
+#'     ) %>%
+#'     group_by(id) %>%
+#'     plot_modeltime_forecast(
+#'         .interactive = FALSE,
+#'         .conf_interval_show = FALSE
+#'     )
+#'
 #'
 #' @export
 recursive <- function(object, transform, train_tail, id = NULL, ...){
@@ -178,7 +189,7 @@ recursive.model_fit <- function(object, transform, train_tail, id = NULL, ...) {
     object$spec[["forecast"]]   <- .class_obj
     object$spec[["transform"]]  <- if(!is.null(id)){.prepare_panel_transform(transform)} else {.prepare_transform(transform)}
     object$spec[["train_tail"]] <- train_tail
-    object$spec[["id"]] <- id
+    object$spec[["id"]]         <- id
 
     # Workflow: Need to pass in the y_var
     object$spec[["y_var"]]      <- dot_list$y_var # Could be NULL or provided by workflow
@@ -219,7 +230,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
             y_var      = y_var,
             id         = id
         )
-        .class <- class(object)
+        .class        <- class(object)
         class(object) <- c("recursive_panel", .class)
 
     }
@@ -268,6 +279,8 @@ print.recursive_panel <- function(x, ...) {
 #'
 #' Refer to [recursive()] for further details and examples.
 #'
+#' @return
+#' Numeric values for the recursive panel prediction
 #'
 #' @export
 predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...) {
@@ -294,8 +307,10 @@ predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...)
 #'
 #' @details
 #'
-#' Refer to [recursive_panel()] for further details and examples.
+#' Refer to [recursive()] for further details and examples.
 #'
+#' @return
+#' Numeric values for the recursive panel prediction
 #'
 #' @export
 predict.recursive_panel <- function(object, new_data, type = NULL, opts = list(), ...) {
@@ -313,6 +328,8 @@ predict.recursive_panel <- function(object, new_data, type = NULL, opts = list()
     return(ret)
 
 }
+
+# SINGLE TIME SERIES DISPATCH ----
 
 predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = list(), ...) {
 
@@ -391,7 +408,8 @@ predict_recursive_workflow <- function(object, new_data, type = NULL, opts = lis
     predict.recursive(fit, new_data, type = type, opts = opts, ...)
 }
 
-#' @export
+# PANEL DISPATCH ----
+
 predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opts = list(), ...) {
 
     # SETUP ----
@@ -401,10 +419,10 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         y_var <- object$preproc$y_var
     }
 
-    pred_fun <- parsnip::predict.model_fit
+    pred_fun   <- parsnip::predict.model_fit
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
-    id <- object$spec$id
+    id         <- object$spec$id
 
     .id <- dplyr::ensym(id)
 
@@ -468,7 +486,6 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
 }
 
-#' @export
 predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts = list(), ...) {
     workflow <- object
 
@@ -488,45 +505,38 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
 }
 
 
-# HELPERS ----
+# PANEL TAIL ----
 
-.prepare_panel_transform <- function(.transform) {
-
-    if (inherits(.transform, "function")) {
-
-        .transform_fun <- function(temp_new_data, new_data_size, slice_idx, id) {
-
-            id <- as.character(id)
-            id <- dplyr::ensym(id)
-
-            .transform(temp_new_data) %>%
-                dplyr::group_by(!! id) %>%
-                dplyr::group_split() %>%
-                purrr::map(function(x){
-
-                    dplyr::slice_tail(x, n = new_data_size) %>%
-                        .[slice_idx, ]
-
-                }) %>%
-                dplyr::bind_rows()
-        }
-    }
-
-    .transform_fun
-}
-
+#' Filter the last N rows (Tail) for multiple time series
+#'
+#' @param data A data frame
+#' @param id An "id" feature indicating which column differentiates the time series panels
+#' @param n The number of rows to filter
+#'
+#' @return
+#' A data frame
+#'
+#' @examples
+#' library(timetk)
+#'
+#' # Get the last 6 observations from each group
+#' m4_monthly %>%
+#'     panel_tail(id = id, n = 6)
+#'
 #' @export
-panel_tail <- function(train_data, id, n){
+panel_tail <- function(data, id, n){
 
     id <- dplyr::ensym(id)
 
-    train_data <- train_data %>%
+    ret <- data %>%
+        tibble::rowid_to_column(var = "..row_id") %>%
         dplyr::group_by(!! id) %>%
-        dplyr::group_split() %>%
-        purrr::map(~tail(.x, n = n)) %>%
-        dplyr::bind_rows()
+        dplyr::slice_tail(n = n) %>%
+        dplyr::ungroup() %>%
+        dplyr::arrange(..row_id) %>%
+        dplyr::select(-..row_id)
 
-    return(train_data)
+    return(ret)
 
 }
 
@@ -562,6 +572,39 @@ panel_tail <- function(train_data, id, n){
                 .[slice_idx, ]
         }
     }
+    .transform_fun
+}
+
+.prepare_panel_transform <- function(.transform) {
+
+    if (inherits(.transform, "function")) {
+
+        .transform_fun <- function(temp_new_data, new_data_size, slice_idx, id) {
+
+            id <- as.character(id)
+            id <- dplyr::ensym(id)
+
+            .transform(temp_new_data) %>%
+
+                tibble::rowid_to_column(var = "..row_id") %>%
+
+                dplyr::group_by(!! id) %>%
+                dplyr::group_split() %>%
+                purrr::map(function(x){
+
+                    dplyr::slice_tail(x, n = new_data_size) %>%
+                        .[slice_idx, ]
+
+                }) %>%
+                dplyr::bind_rows() %>%
+
+                dplyr::arrange(..row_id) %>%
+                dplyr::select(-..row_id)
+        }
+    } else if (inherits(.transform, "recipe")) {
+        rlang::abort("Recursive Panel Data cannot use a recipe. Please use a transform function.")
+    }
+
     .transform_fun
 }
 
