@@ -9,11 +9,10 @@ recursive(object, transform, train_tail, id = NULL, ...)
 \arguments{
 \item{object}{An object of \code{model_fit} or a fitted \code{workflow} class}
 
-\item{transform}{A transformation performed on new_data after
-each step of recursive algorithm. It can be an object of types:
+\item{transform}{A transformation performed on \code{new_data} after
+each step of recursive algorithm.
 \itemize{
-\item \strong{Method 1, \code{recipe}:} A recipe generates lagged or sliding features (see examples)
-\item \strong{Method 2, \code{function}:} Must have one argument \code{data} (see examples)
+\item \strong{Transformation Function:} Must have one argument \code{data} (see examples)
 }}
 
 \item{train_tail}{A tibble with tail of training data set.

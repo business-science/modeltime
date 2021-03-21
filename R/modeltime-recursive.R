@@ -3,11 +3,10 @@
 #' Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
 #'
 #' @param object An object of `model_fit` or a fitted `workflow` class
-#' @param transform A transformation performed on new_data after
-#' each step of recursive algorithm. It can be an object of types:
+#' @param transform A transformation performed on `new_data` after
+#' each step of recursive algorithm.
 #'
-#' * __Method 1, `recipe`:__ A recipe generates lagged or sliding features (see examples)
-#' * __Method 2, `function`:__ Must have one argument `data` (see examples)
+#' * __Transformation Function:__ Must have one argument `data` (see examples)
 #'
 #' @param train_tail A tibble with tail of training data set.
 #' In most cases it'll be required to create some variables
@@ -57,7 +56,7 @@
 #'
 #' 1. Supply an `id` column as a quoted column name
 #'
-#' 2. Replace `tail()` with `[panel_tail()]` to use tails for each time series group.
+#' 2. Replace [tail()] with [panel_tail()] to use tails for each time series group.
 #'
 #' @seealso
 #' - [panel_tail()] - Used to generate tails for multiple time series groups.

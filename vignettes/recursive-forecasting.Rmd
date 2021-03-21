@@ -1,0 +1,219 @@
+---
+title: "Recursive Forecasting"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Recursive Forecasting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  
+  out.width='100%',
+  fig.align = "center",
+  fig.width = 7,
+  fig.height = 5,
+  
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+> Turn any `tidymodel` into an Autoregressive Forecasting Model
+
+This short tutorial shows how you can use `recursive()` to:
+
+-   **Make a Recursive Forecast Model** for forecasting with short-term lags (i.e. Lag Size \< Forecast Horizon).
+
+-   **Perform Recursive Panel Forecasting**, which is when you have a single autoregressive model that predicts forecasts for multiple time series.
+
+# What is a Recursive Model?
+
+A *recursive model* uses predictions to generate new values for independent features. These features are typically lags used in autoregressive models. 
+
+# Why is Recursive needed for Autoregressive Models?
+
+It's important to understand that a recursive model is only needed when using lagged features with a **Lag Size \< Forecast Horizon.** When the forecast horizon is less than the lag length, a problem exists were missing values are generated in the future data. 
+
+This solution that `recursive()` implements is to iteratively fill these missing values in with values generated from predictions. This technique can be used for:
+
+1. __Single time series predictions__ - Effectively turning any `tidymodels` model into an Autoregressive (AR) model
+
+2. __Panel time series predictions__ - In many situations we need to forecast more than one time series. We can batch-process these with 1 model by processing time series groups as panels. This technique can be extended to recursive forecasting for scalable models (1 model that predicts many time series).
+
+# Libraries
+
+Load the following libraries.
+
+```{r}
+library(modeltime)
+library(tidymodels)
+library(tidyverse)
+library(lubridate)
+library(timetk)
+library(slider)
+```
+
+
+# Make a Recursive Forecast Model
+
+We'll start with the simplest example, turning a Linear Regresion into an Autoregressive model. 
+
+## Data Visualization
+
+Let's start with the `m750` dataset.
+
+```{r}
+m750
+```
+
+We can visualize the data with `plot_time_series()`.
+
+```{r}
+m750 %>% 
+  plot_time_series(
+    .date_var    = date, 
+    .value       = value, 
+    .facet_var   = id, 
+    .smooth      = F, 
+    .interactive = F
+  )
+```
+
+## Data Preparation
+
+Let's establish a forecast horizon and extend the dataset to create a forecast region. 
+
+```{r}
+FORECAST_HORIZON <- 24
+
+m750_extended <- m750 %>%
+    group_by(id) %>%
+    future_frame(
+        .length_out = FORECAST_HORIZON,
+        .bind_data  = TRUE
+    ) %>%
+    ungroup()
+```
+
+## Transform Function
+
+We'll use __short-term lags__, lags with a size that are smaller than the forecast horizon. Here we create a custom function, `lag_roll_transformer()` that takes a dataset and adds lags 1 through 12 and a rolling mean using lag 12. Each of the features this function use lags less than our forecast horizon of 24 months, which means we need to use `recursive()`.
+
+```{r}
+lag_roll_transformer <- function(data) {
+    
+    data %>%
+        # Lags
+        tk_augment_lags(value, .lags = 1:12) %>%
+        
+        # Rolling Features
+        mutate(rolling_mean_12 = lag(slide_dbl(
+            value, .f = mean, .before = 12, .complete = FALSE
+        ), 1))
+}
+```
+
+## Apply the Transform Function
+
+When we apply the lag roll transformation to our extended data set, we can see the effect. 
+
+```{r}
+m750_rolling <- m750_extended %>%
+    lag_roll_transformer() %>%
+    select(-id)
+
+m750_rolling
+```
+
+## Split into Training and Future Data
+
+The __training data__ needs to be completely filled in. We remove any rows with `NA`.
+
+```{r}
+train_data <- m750_rolling %>%
+    drop_na()
+
+train_data
+```
+
+
+The __future data__ has missing values in the "value" column. We isolate these. Our autoregressive algorithm will predict these. Notice that the lags have missing data, this is OK - and why we are going to use `recursive()` to fill these missing values in with predictions.
+
+```{r}
+future_data <- m750_rolling %>%
+    filter(is.na(value))
+
+future_data
+```
+
+## Modeling 
+
+We'll make 2 models for comparison purposes:
+
+1. __Straight-Line Forecast Model__ using Linear Regression with the Date feature
+2. __Autoregressive Forecast Model__ using Linear Regression with the Date feature, Lags 1-12, and Rolling Mean Lag 12
+
+### Straight-Line Forecast Model
+
+A straight-line forecast is just to illustrate the effect of no autoregressive features. Consider this a NAIVE modeling approach. The only feature that is used as a dependent variable is the "date" column. 
+
+```{r}
+model_fit_lm <- linear_reg() %>%
+    set_engine("lm") %>%
+    fit(value ~ date, data = train_data)
+
+model_fit_lm
+```
+
+### Autoregressive Forecast Model
+
+The autoregressive forecast model is simply a `parsnip` model with one additional step: using `recursive()`. The key components are:
+
+- `transform`: A transformation function. We use the function previously made that generated Lags 1 to 12 and the Rolling Mean Lag 12 features. 
+
+- `train_tail`: The tail of the training data, which must be as large as the lags used in the transform function (i.e. lag 12). 
+    - Train tail can be larger than the lag size used. Notice that we use the Forecast Horizon, which is size 24. 
+    - For Panel Data, we need to include the tail for each group. We have provided a convenient `panel_tail()` function. 
+    
+- `id` (Optional): This is used to identify groups for Recursive Panel Data. 
+
+```{r}
+# Autoregressive Forecast
+model_fit_lm_recursive <- linear_reg() %>%
+    set_engine("lm") %>%
+    fit(value ~ ., data = train_data) %>%
+    # One additional step - use recursive()
+    recursive(
+        transform  = lag_roll_transformer,
+        train_tail = tail(train_data, FORECAST_HORIZON)
+    )
+
+model_fit_lm_recursive
+```
+
+## Forecasting
+
+```{r}
+modeltime_table(
+    model_fit_lm,
+    model_fit_lm_recursive
+) %>%
+    update_model_description(2, "LM - Lag Roll") %>%
+    modeltime_forecast(
+        new_data    = future_data,
+        actual_data = m750
+    ) %>%
+    plot_modeltime_forecast(
+        .interactive        = FALSE,
+        .conf_interval_show = FALSE
+    )
+```
+
+
+
+
+
