@@ -12,24 +12,23 @@ m750_extended <- m750 %>%
 
 # SINGLE / RECIPE / PARSNIP ----
 
-test_that("recursive  - single / recipe / parsnip", {
+test_that("recursive 1 - single / recipe / parsnip", {
 
-  recipe_spec <- recipe(value ~ ., data = training(m750_splits)) %>%
-    step_lag(all_outcomes(), lag = 1:12)
+  skip_on_cran()
 
   # Lag Recipe
   recipe_lag <- recipe(value ~ date, m750_extended) %>%
     step_lag(value, lag = 1:FORECAST_HORIZON)
 
-  # Data Preparation
+  # Data Transformation
   m750_lagged <- recipe_lag %>% prep() %>% juice()
 
   train_data <- m750_lagged %>%
-    filter(!is.na(value)) %>%
     drop_na()
 
   future_data <- m750_lagged %>%
     filter(is.na(value))
+
 
   # * Recursive Modeling ----
   model_fit_lm <- linear_reg() %>%
@@ -102,29 +101,24 @@ test_that("recursive  - single / recipe / parsnip", {
 
 # SINGLE / TRANSFORM FUNCTION / WORKFLOW ----
 
-# Function run recursively that updates the forcasted dataset
-lag_roll_transformer <- function(data){
-  data %>%
-    # Lags
-    tk_augment_lags(value, .lags = 1:12) %>%
-    # Rolling Features
-    mutate(rolling_mean_12 = lag(slide_dbl(
-      value, .f = mean, .before = 12, .complete = FALSE
-    ), 1))
-}
+test_that("recursive 2 - single / transform func / workflow", {
 
-test_that("recursive - single / transform func / workflow", {
+  # Function run recursively that updates the forcasted dataset
+  lag_transformer <- function(data){
+    data %>%
+      # Lags
+      tk_augment_lags(value, .lags = 1:FORECAST_HORIZON)
+  }
 
   # Data Preparation
-  m750_rolling <- m750_extended %>%
-    lag_roll_transformer() %>%
+  m750_lagged <- m750_extended %>%
+    lag_transformer() %>%
     select(-id)
 
-  train_data <- m750_rolling %>%
-    filter(!is.na(value)) %>%
+  train_data <- m750_lagged %>%
     drop_na()
 
-  future_data <- m750_rolling %>%
+  future_data <- m750_lagged %>%
     filter(is.na(value))
 
   # * Recursive Modeling ----
@@ -138,7 +132,7 @@ test_that("recursive - single / transform func / workflow", {
     add_model(linear_reg() %>% set_engine("lm")) %>%
     fit(train_data) %>%
     recursive(
-      transform  = lag_roll_transformer,
+      transform  = lag_transformer,
       train_tail = tail(train_data, FORECAST_HORIZON)
     )
 
@@ -163,7 +157,7 @@ test_that("recursive - single / transform func / workflow", {
     length(preds)
   )
 
-  expect_lt(max(preds), 11700)
+  expect_lt(max(preds), 11500)
   expect_gt(min(preds), 9650)
 
   # * Modeltime Refit ----
@@ -194,14 +188,14 @@ test_that("recursive - single / transform func / workflow", {
     length(preds)
   )
 
-  expect_lt(max(preds), 10000)
-  expect_gt(min(preds), 8300)
+  expect_lt(max(preds), 10600)
+  expect_gt(min(preds), 8800)
 
 })
 
-# PANEL / FUNCTION / PARSNIP ----
+# PANEL / FUNCTION / PARSNIP & WORKFLOW ----
 
-test_that("recursive  - single / function / parsnip", {
+test_that("recursive 3 - panel / function / parsnip + workflow", {
 
   # Jumble the data to make sure it forecasts properly
   m4_monthly_updated <- m4_monthly %>%
@@ -216,19 +210,19 @@ test_that("recursive  - single / function / parsnip", {
     ) %>%
     ungroup()
 
-  lag_transformer <- function(data){
+  # Transformation Function
+  lag_transformer_grouped <- function(data){
     data %>%
       group_by(id) %>%
       # Lags
-      tk_augment_lags(value, .lags = 1:24) %>%
+      tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
       ungroup()
   }
 
   m4_lags <- m4_extended %>%
-    lag_transformer()
+    lag_transformer_grouped()
 
   train_data <- m4_lags %>%
-    filter(!is.na(value)) %>%
     drop_na()
 
   future_data <- m4_lags %>%
@@ -241,7 +235,7 @@ test_that("recursive  - single / function / parsnip", {
     fit(value ~ ., data = train_data) %>%
     recursive(
       id         = "id",
-      transform  = lag_transformer,
+      transform  = lag_transformer_grouped,
       train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
     )
 
@@ -251,7 +245,7 @@ test_that("recursive  - single / function / parsnip", {
     fit(train_data) %>%
     recursive(
       id         = "id",
-      transform  = lag_roll_transformer,
+      transform  = lag_transformer_grouped,
       train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
     )
 
@@ -274,10 +268,7 @@ test_that("recursive  - single / function / parsnip", {
 
   forecast_tbl %>%
     group_by(id) %>%
-    plot_modeltime_forecast(
-      .interactive = FALSE,
-      .conf_interval_show = FALSE
-    )
+    plot_modeltime_forecast()
 
 })
 
