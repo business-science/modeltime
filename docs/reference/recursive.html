@@ -203,10 +203,18 @@ A single quoted column name (e.g. <code>id = "id"</code>).</p></td>
     <p>An object with added <code>recursive</code> class</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Recursive model can be used if some of the features used for training
-is based of dependent variable we already are trying to forecast.
-Typically, among these features we can find lags (e.g. created with <code><a href='https://recipes.tidymodels.org/reference/step_lag.html'>step_lag()</a></code>)
-or variables crated with sliding window.</p>
+    <p><strong>What is a Recursive Model?</strong></p>
+<p>A <em>recursive model</em> uses predictions to generate
+new values for independent features. These features are typically
+lags used in autoregressive models. It's important to understand that
+a recursive model is only needed when the <strong>Lag Size &lt; Forecast Horizon.</strong></p>
+<p><strong>Why is Recursive needed for Autoregressive Models with Lag Size &lt; Forecast Horizon?</strong></p>
+<p>When the forecast horizon is less
+than the lag length, a problem exists were missing values are
+generated in the future data. A solution that <code>recursive()</code> implements
+is to iteratively fill these missing values in with values generated
+from predictions.</p>
+<p><strong>Recursive Process</strong></p>
 <p>When producing forecast, the following steps are performed:</p><ol>
 <li><p>Computing forecast for first row of new data.
 The first row cannot contain NA in any required column.</p></li>
@@ -219,6 +227,20 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 <li><p>Jumping into point 2., and repeating rest of steps till the for-loop is ended.</p></li>
 </ol>
 
+<p><strong>Recursion for Panel Data</strong></p>
+<p>Panel data is time series data with multiple groups identified by an ID column.
+The <code>recursive()</code> function can be used for Panel Data with the following modifications:</p><ol>
+<li><p>Supply an <code>id</code> column as a quoted column name</p></li>
+<li><p>Replace <code><a href='https://rdrr.io/r/utils/head.html'>tail()</a></code> with <code>[panel_tail()]</code> to use tails for each time series group.</p></li>
+</ol>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'>
+<ul>
+<li><p><code><a href='panel_tail.html'>panel_tail()</a></code> - Used to generate tails for multiple time series groups.</p></li>
+</ul>
+</div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Libraries &amp; Setup ----</span>
@@ -274,20 +296,25 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>id</span><span class='op'>)</span>
 
 <span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_rolling</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>future_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_rolling</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Modeling</span>
+
+<span class='co'># Straight-Line Forecast</span>
 <span class='va'>model_fit_lm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='co'># Use only date feature as regressor</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span>
 
+<span class='co'># Autoregressive Forecast</span>
 <span class='va'>model_fit_lm_recursive</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='co'># Use date plus all lagged features</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='co'># Add recursive() w/ transformer and train_tail</span>
     <span class='fu'>recursive</span><span class='op'>(</span>
         transform  <span class='op'>=</span> <span class='va'>lag_roll_transformer</span>,
         train_tail <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
@@ -298,7 +325,7 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 #&gt; 
 #&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  2ms 
+#&gt; Fit time:  4ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)
@@ -356,34 +383,31 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>.date_var is missing. Using: date</span></div><div class='input'>
 <span class='co'># TRANSFORM FUNCTION ----</span>
-<span class='co'># - NOTE - We create lags by group inside</span>
-<span class='va'>lag_transformer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span>
+<span class='co'># - NOTE - We create lags by group</span>
+<span class='va'>lag_transformer_grouped</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span>
     <span class='va'>data</span> <span class='op'>%&gt;%</span>
         <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>id</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-        <span class='co'># Lags</span>
-        <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>24</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+        <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>FORECAST_HORIZON</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
         <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='va'>m4_lags</span> <span class='op'>&lt;-</span> <span class='va'>m4_extended</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>lag_transformer</span><span class='op'>(</span><span class='op'>)</span>
+    <span class='fu'>lag_transformer_grouped</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m4_lags</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>future_data</span> <span class='op'>&lt;-</span> <span class='va'>m4_lags</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># NOTES - recursive() for Panel Data</span>
-<span class='co'># - We add an id = "id" to specify the groups</span>
-<span class='co'># - We sue a panel_tail() function to grab tail by groups</span>
+<span class='co'># Modeling Autoregressive Panel Data</span>
 <span class='va'>model_fit_lm_recursive</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>recursive</span><span class='op'>(</span>
-        id         <span class='op'>=</span> <span class='st'>"id"</span>,
-        transform  <span class='op'>=</span> <span class='va'>lag_transformer</span>,
+        id         <span class='op'>=</span> <span class='st'>"id"</span>, <span class='co'># We add an id = "id" to specify the groups</span>
+        transform  <span class='op'>=</span> <span class='va'>lag_transformer_grouped</span>,
+        <span class='co'># We use panel_tail() to grab tail by groups</span>
         train_tail <span class='op'>=</span> <span class='fu'><a href='panel_tail.html'>panel_tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='va'>id</span>, <span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
     <span class='op'>)</span>
 
