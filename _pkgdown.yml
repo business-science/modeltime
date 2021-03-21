@@ -19,19 +19,9 @@ navbar:
         - text: 'Recursive Forecasting'
           href: articles/recursivee-forecasting.html
         - text: "---"
-        - text: 'Modeltime Ecosystem'
-        - text: 'Modeltime Model List'
+        - text: 'Algorithms'
+        - text: 'Modeltime Base Algorithms'
           href: articles/modeltime-model-list.html
-        - text: 'Modeltime H2O (AutoML)'
-          href: https://business-science.github.io/modeltime.h2o/
-        - text: 'Modeltime GluonTS (Deep Learning)'
-          href: https://business-science.github.io/modeltime.gluonts/
-        - text: 'Modeltime Resample (Backtesting)'
-          href: https://business-science.github.io/modeltime.resample/
-        - text: 'Modeltime Ensemble (Blending Forecasts)'
-          href: https://business-science.github.io/modeltime.ensemble/
-        - text: 'TimeTK (Visualization & Data Transformation)'
-          href: https://business-science.github.io/modeltime.ensemble/
         - text: "---"
         - text: 'Developers'
         - text: 'Extending Modeltime (Developer Tools)'
@@ -40,6 +30,25 @@ navbar:
       href: reference/index.html
     - text: "News"
       href: news/index.html
+    - text: "Ecosystem"
+      menu:
+        - text: 'Workflow'
+        - text: 'Modeltime (Machine Learning)'
+          href: https://business-science.github.io/modeltime/
+        - text: 'TimeTK (Data Transformation & Visualization)'
+          href: https://business-science.github.io/timetk/
+        - text: "---"
+        - text: 'Modeltime Ensemble (Blending Forecasts)'
+          href: https://business-science.github.io/modeltime.ensemble/
+        - text: 'Improve'
+        - text: 'Modeltime Resample (Backtesting)'
+          href: https://business-science.github.io/modeltime.resample/
+        - text: "---"
+        - text: 'More Power'
+        - text: 'Modeltime H2O (AutoML)'
+          href: https://business-science.github.io/modeltime.h2o/
+        - text: 'Modeltime GluonTS (Deep Learning)'
+          href: https://business-science.github.io/modeltime.gluonts/
 
   right:
     - icon: fab fa-github
