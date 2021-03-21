@@ -91,20 +91,25 @@ m750_rolling <- m750_extended \%>\%
     select(-id)
 
 train_data <- m750_rolling \%>\%
-    filter(!is.na(value)) \%>\%
     drop_na()
 
 future_data <- m750_rolling \%>\%
     filter(is.na(value))
 
 # Modeling
+
+# Straight-Line Forecast
 model_fit_lm <- linear_reg() \%>\%
     set_engine("lm") \%>\%
+    # Use only date feature as regressor
     fit(value ~ date, data = train_data)
 
+# Autoregressive Forecast
 model_fit_lm_recursive <- linear_reg() \%>\%
     set_engine("lm") \%>\%
+    # Use date plus all lagged features
     fit(value ~ ., data = train_data) \%>\%
+    # Add recursive() w/ transformer and train_tail
     recursive(
         transform  = lag_roll_transformer,
         train_tail = tail(train_data, FORECAST_HORIZON)
@@ -142,34 +147,31 @@ m4_extended <- m4_monthly \%>\%
     ungroup()
 
 # TRANSFORM FUNCTION ----
-# - NOTE - We create lags by group inside
-lag_transformer <- function(data){
+# - NOTE - We create lags by group
+lag_transformer_grouped <- function(data){
     data \%>\%
         group_by(id) \%>\%
-        # Lags
-        tk_augment_lags(value, .lags = 1:24) \%>\%
+        tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) \%>\%
         ungroup()
 }
 
 m4_lags <- m4_extended \%>\%
-    lag_transformer()
+    lag_transformer_grouped()
 
 train_data <- m4_lags \%>\%
-    filter(!is.na(value)) \%>\%
     drop_na()
 
 future_data <- m4_lags \%>\%
     filter(is.na(value))
 
-# NOTES - recursive() for Panel Data
-# - We add an id = "id" to specify the groups
-# - We sue a panel_tail() function to grab tail by groups
+# Modeling Autoregressive Panel Data
 model_fit_lm_recursive <- linear_reg() \%>\%
     set_engine("lm") \%>\%
     fit(value ~ ., data = train_data) \%>\%
     recursive(
-        id         = "id",
-        transform  = lag_transformer,
+        id         = "id", # We add an id = "id" to specify the groups
+        transform  = lag_transformer_grouped,
+        # We use panel_tail() to grab tail by groups
         train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
     )
 

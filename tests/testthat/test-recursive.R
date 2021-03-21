@@ -266,9 +266,9 @@ test_that("recursive 3 - panel / function / parsnip + workflow", {
       keep_data   = TRUE
     )
 
-  forecast_tbl %>%
-    group_by(id) %>%
-    plot_modeltime_forecast()
+  # forecast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
+
+  # * Modeltime Refit ----
 
 })
 
