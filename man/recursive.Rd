@@ -67,7 +67,7 @@ Panel data is time series data with multiple groups identified by an ID column.
 The \code{recursive()} function can be used for Panel Data with the following modifications:
 \enumerate{
 \item Supply an \code{id} column as a quoted column name
-\item Replace \code{tail()} with \verb{[panel_tail()]} to use tails for each time series group.
+\item Replace \code{\link[=tail]{tail()}} with \code{\link[=panel_tail]{panel_tail()}} to use tails for each time series group.
 }
 }
 \examples{

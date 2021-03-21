@@ -72,7 +72,27 @@
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Model List</a>
+      <a href="../articles/recursivee-forecasting.html">Recursive Forecasting</a>
+    </li>
+    <li class="divider">
+    <li class="dropdown-header">Modeltime Ecosystem</li>
+    <li>
+      <a href="../articles/modeltime-model-list.html">Modeltime Model List</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.ensemble/">TimeTK (Visualization &amp; Data Transformation)</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Developers</li>
@@ -155,7 +175,8 @@ The Modeltime Workflow
 <a href="#time-series-forecasting-example" class="anchor"></a>Time Series Forecasting Example</h2>
 <p>Load libraries to complete this short tutorial.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost">xgboost</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span>
@@ -414,7 +435,7 @@ The Modeltime Workflow
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mdbpqchmbo .gt_table {
+#faxirrfznp .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -439,7 +460,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_heading {
+#faxirrfznp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -451,7 +472,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_title {
+#faxirrfznp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -461,7 +482,7 @@ The Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#mdbpqchmbo .gt_subtitle {
+#faxirrfznp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -471,13 +492,13 @@ The Modeltime Workflow
   border-top-width: 0;
 }
 
-#mdbpqchmbo .gt_bottom_border {
+#faxirrfznp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_col_headings {
+#faxirrfznp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -492,7 +513,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_col_heading {
+#faxirrfznp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -512,7 +533,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#mdbpqchmbo .gt_column_spanner_outer {
+#faxirrfznp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -524,15 +545,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#mdbpqchmbo .gt_column_spanner_outer:first-child {
+#faxirrfznp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mdbpqchmbo .gt_column_spanner_outer:last-child {
+#faxirrfznp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mdbpqchmbo .gt_column_spanner {
+#faxirrfznp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -544,7 +565,7 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#mdbpqchmbo .gt_group_heading {
+#faxirrfznp .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -566,7 +587,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#mdbpqchmbo .gt_empty_group_heading {
+#faxirrfznp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -581,15 +602,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#mdbpqchmbo .gt_from_md > :first-child {
+#faxirrfznp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mdbpqchmbo .gt_from_md > :last-child {
+#faxirrfznp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mdbpqchmbo .gt_row {
+#faxirrfznp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -608,7 +629,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#mdbpqchmbo .gt_stub {
+#faxirrfznp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -620,7 +641,7 @@ The Modeltime Workflow
   padding-left: 12px;
 }
 
-#mdbpqchmbo .gt_summary_row {
+#faxirrfznp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -630,7 +651,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#mdbpqchmbo .gt_first_summary_row {
+#faxirrfznp .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -640,7 +661,7 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_grand_summary_row {
+#faxirrfznp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -650,7 +671,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#mdbpqchmbo .gt_first_grand_summary_row {
+#faxirrfznp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -660,11 +681,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_striped {
+#faxirrfznp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mdbpqchmbo .gt_table_body {
+#faxirrfznp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -673,7 +694,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_footnotes {
+#faxirrfznp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -687,13 +708,13 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_footnote {
+#faxirrfznp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mdbpqchmbo .gt_sourcenotes {
+#faxirrfznp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -707,46 +728,46 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mdbpqchmbo .gt_sourcenote {
+#faxirrfznp .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mdbpqchmbo .gt_left {
+#faxirrfznp .gt_left {
   text-align: left;
 }
 
-#mdbpqchmbo .gt_center {
+#faxirrfznp .gt_center {
   text-align: center;
 }
 
-#mdbpqchmbo .gt_right {
+#faxirrfznp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mdbpqchmbo .gt_font_normal {
+#faxirrfznp .gt_font_normal {
   font-weight: normal;
 }
 
-#mdbpqchmbo .gt_font_bold {
+#faxirrfznp .gt_font_bold {
   font-weight: bold;
 }
 
-#mdbpqchmbo .gt_font_italic {
+#faxirrfznp .gt_font_italic {
   font-style: italic;
 }
 
-#mdbpqchmbo .gt_super {
+#faxirrfznp .gt_super {
   font-size: 65%;
 }
 
-#mdbpqchmbo .gt_footnote_marks {
+#faxirrfznp .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="mdbpqchmbo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="table gt_table">
+<div id="faxirrfznp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="table gt_table">
 <thead class="gt_header">
 <tr>
 <th colspan="9" class="gt_heading gt_title gt_font_normal" style>Accuracy Table</th>
@@ -890,6 +911,19 @@ The Modeltime Workflow
 </ul>
 </li>
 </ul>
+</div>
+<div id="summary" class="section level2">
+<h2 class="hasAnchor">
+<a href="#summary" class="anchor"></a>Summary</h2>
+<p>We just showcased the Modeltime Workflow. But this is a simple problem. And, there’s a lot more to learning time series.</p>
+<ul>
+<li>Many more algorithms</li>
+<li>Ensembling</li>
+<li>Machine Learning</li>
+<li>Deep Learning</li>
+<li>Scalable Modeling: 10,000+ time series</li>
+</ul>
+<p>Your probably thinking how am I ever going to learn time series forecasting. Here’s the solution that will save you years of struggling.</p>
 </div>
 <div id="take-the-high-performance-forecasting-course" class="section level2">
 <h2 class="hasAnchor">

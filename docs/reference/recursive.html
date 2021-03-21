@@ -119,7 +119,27 @@
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Model List</a>
+      <a href="../articles/recursivee-forecasting.html">Recursive Forecasting</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Modeltime Ecosystem</li>
+    <li>
+      <a href="../articles/modeltime-model-list.html">Modeltime Model List</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    </li>
+    <li>
+      <a href="https://business-science.github.io/modeltime.ensemble/">TimeTK (Visualization &amp; Data Transformation)</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Developers</li>
@@ -175,10 +195,9 @@
     </tr>
     <tr>
       <th>transform</th>
-      <td><p>A transformation performed on new_data after
-each step of recursive algorithm. It can be an object of types:</p><ul>
-<li><p><strong>Method 1, <code>recipe</code>:</strong> A recipe generates lagged or sliding features (see examples)</p></li>
-<li><p><strong>Method 2, <code>function</code>:</strong> Must have one argument <code>data</code> (see examples)</p></li>
+      <td><p>A transformation performed on <code>new_data</code> after
+each step of recursive algorithm.</p><ul>
+<li><p><strong>Transformation Function:</strong> Must have one argument <code>data</code> (see examples)</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -231,7 +250,7 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 <p>Panel data is time series data with multiple groups identified by an ID column.
 The <code>recursive()</code> function can be used for Panel Data with the following modifications:</p><ol>
 <li><p>Supply an <code>id</code> column as a quoted column name</p></li>
-<li><p>Replace <code><a href='https://rdrr.io/r/utils/head.html'>tail()</a></code> with <code>[panel_tail()]</code> to use tails for each time series group.</p></li>
+<li><p>Replace <code><a href='https://rdrr.io/r/utils/head.html'>tail()</a></code> with <code><a href='panel_tail.html'>panel_tail()</a></code> to use tails for each time series group.</p></li>
 </ol>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -325,7 +344,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 #&gt; 
 #&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  4ms 
+#&gt; Fit time:  3ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)

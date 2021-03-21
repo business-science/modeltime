@@ -66,6 +66,7 @@ Let's go through a guided tour to kick the tires on `modeltime`.
 Load libraries to complete this short tutorial.
 
 ```{r}
+library(xgboost)
 library(tidymodels)
 library(modeltime)
 library(tidyverse)
@@ -343,7 +344,17 @@ More often than not refitting is a good idea. Refitting:
     - XGBoost Parameters in the Boosted ARIMA `min_n = 2`, `learn_rate = 0.015`.
     - Any other defaults that are not automatic calculations are used.
 
+## Summary
 
+We just showcased the Modeltime Workflow. But this is a simple problem. And, there's a lot more to learning time series. 
+
+- Many more algorithms
+- Ensembling
+- Machine Learning
+- Deep Learning
+- Scalable Modeling: 10,000+ time series
+
+Your probably thinking how am I ever going to learn time series forecasting. Here's the solution that will save you years of struggling. 
 
 ## Take the High-Performance Forecasting Course
 

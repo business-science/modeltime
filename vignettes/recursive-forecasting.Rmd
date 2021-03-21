@@ -54,7 +54,6 @@ library(tidymodels)
 library(tidyverse)
 library(lubridate)
 library(timetk)
-library(slider)
 ```
 
 
@@ -104,16 +103,15 @@ m750_extended <- m750 %>%
 We'll use __short-term lags__, lags with a size that are smaller than the forecast horizon. Here we create a custom function, `lag_roll_transformer()` that takes a dataset and adds lags 1 through 12 and a rolling mean using lag 12. Each of the features this function use lags less than our forecast horizon of 24 months, which means we need to use `recursive()`.
 
 ```{r}
-lag_roll_transformer <- function(data) {
-    
+lag_roll_transformer <- function(data){
     data %>%
-        # Lags
-        tk_augment_lags(value, .lags = 1:12) %>%
-        
-        # Rolling Features
-        mutate(rolling_mean_12 = lag(slide_dbl(
-            value, .f = mean, .before = 12, .complete = FALSE
-        ), 1))
+        tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
+        tk_augment_slidify(
+          contains("lag12"),
+          .f = ~mean(.x, na.rm = T),
+          .period  = 12,
+          .partial = TRUE
+        ) 
 }
 ```
 
@@ -157,7 +155,7 @@ We'll make 2 models for comparison purposes:
 1. __Straight-Line Forecast Model__ using Linear Regression with the Date feature
 2. __Autoregressive Forecast Model__ using Linear Regression with the Date feature, Lags 1-12, and Rolling Mean Lag 12
 
-### Straight-Line Forecast Model
+### Model 1 (Baseline): Straight-Line Forecast Model
 
 A straight-line forecast is just to illustrate the effect of no autoregressive features. Consider this a NAIVE modeling approach. The only feature that is used as a dependent variable is the "date" column. 
 
@@ -169,7 +167,7 @@ model_fit_lm <- linear_reg() %>%
 model_fit_lm
 ```
 
-### Autoregressive Forecast Model
+### Model 2: Autoregressive Forecast Model
 
 The autoregressive forecast model is simply a `parsnip` model with one additional step: using `recursive()`. The key components are:
 
@@ -195,7 +193,14 @@ model_fit_lm_recursive <- linear_reg() %>%
 model_fit_lm_recursive
 ```
 
-## Forecasting
+
+## Modeltime Forecasting Workflow
+
+Once we have our fitted model, we can follow the [Modeltime Workflow](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) (note we are skipping calibration and refitting, but this can be performed to get confidence intervals):
+
+-   Add fitted models to a **Model Table** using `modeltime_table()`.
+
+-   Perform **Forecast Evaluation** using `modeltime_forecast()` and `plot_modeltime_forecast()`.
 
 ```{r}
 modeltime_table(
@@ -203,17 +208,164 @@ modeltime_table(
     model_fit_lm_recursive
 ) %>%
     update_model_description(2, "LM - Lag Roll") %>%
+    
+    # Forecast using future data
     modeltime_forecast(
         new_data    = future_data,
         actual_data = m750
     ) %>%
+  
+    # Visualize the forecast
     plot_modeltime_forecast(
         .interactive        = FALSE,
         .conf_interval_show = FALSE
     )
 ```
 
+We can see the benefit of autoregressive features. 
 
+# Recursive Forecasting with Panel Models
 
+We can take this further by extending what we've learned here to panel data:
+
+__Panel Data:__
+   - Grouped transformation functions: `lag_roll_transformer_grouped()`
+   - `recursive()`: Using `id` and the `panel_tail()` function
+
+__More sophisticated algorithms:__
+   - Instead of using a simple Linear Regression
+   - We use `xgboost` to forecast multiple time series
+
+```{r}
+# M4 Monthly Dataset
+m4_monthly %>% 
+  plot_time_series(
+    .date_var    = date, 
+    .value       = value, 
+    .facet_var   = id, 
+    .facet_ncol  = 2,
+    .smooth      = F, 
+    .interactive = F
+  )
+
+FORECAST_HORIZON <- 24
+
+m4_extended <- m4_monthly %>%
+    group_by(id) %>%
+    future_frame(
+        .length_out = FORECAST_HORIZON,
+        .bind_data  = TRUE
+    ) %>%
+    ungroup()
+
+# TRANSFORM FUNCTION ----
+# - NOTE - We create lags by group
+lag_roll_transformer_grouped <- function(data){
+    data %>%
+        group_by(id) %>%
+        tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
+        tk_augment_slidify(
+          .value   = contains("lag12"),
+          .f       = ~mean(.x, na.rm = T),
+          .period  = c(12),
+          .partial = TRUE
+        ) %>%
+        ungroup()
+}
+
+m4_lags <- m4_extended %>%
+    lag_roll_transformer_grouped()
+
+train_data <- m4_lags %>%
+    drop_na()
+
+future_data <- m4_lags %>%
+    filter(is.na(value))
+
+# Modeling Autoregressive Panel Data
+set.seed(123)
+model_fit_lm_recursive <- boost_tree(
+        mode = "regression",
+        learn_rate = 0.35
+    ) %>%
+    set_engine("xgboost") %>%
+    fit(
+        value ~ . 
+        + month(date, label = TRUE) 
+        + as.numeric(date) 
+        - date, 
+        data = train_data
+    ) %>%
+    recursive(
+        id         = "id", # We add an id = "id" to specify the groups
+        transform  = lag_roll_transformer_grouped,
+        # We use panel_tail() to grab tail by groups
+        train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
+    )
+
+# Visualize with Modeltime
+modeltime_table(
+    model_fit_lm_recursive
+) %>%
+    modeltime_forecast(
+        new_data    = future_data,
+        actual_data = m4_monthly,
+        keep_data   = TRUE
+    ) %>%
+    group_by(id) %>%
+    plot_modeltime_forecast(
+        .interactive        = FALSE,
+        .conf_interval_show = FALSE,
+        .facet_ncol         = 2
+    )
+```
+
+## Summary
+
+We just showcased Recursive Forecasting. But this is a simple problem. And, there's a lot more to learning time series. 
+
+- Many more algorithms
+- Ensembling
+- Machine Learning
+- Deep Learning
+- Scalable Modeling: 10,000+ time series
+
+Your probably thinking how am I ever going to learn time series forecasting. Here's the solution that will save you years of struggling. 
+
+## Take the High-Performance Forecasting Course
+
+> Become the forecasting expert for your organization
+
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"/></a>
+
+[_High-Performance Time Series Course_](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)
+
+### Time Series is Changing
+
+Time series is changing. __Businesses now need 10,000+ time series forecasts every day.__ This is what I call a _High-Performance Time Series Forecasting System (HPTSF)_ - Accurate, Robust, and Scalable Forecasting. 
+
+ __High-Performance Forecasting Systems will save companies by improving accuracy and scalability.__ Imagine what will happen to your career if you can provide your organization a "High-Performance Time Series Forecasting System" (HPTSF System).
+
+### How to Learn High-Performance Time Series Forecasting
+
+I teach how to build a HPTFS System in my [__High-Performance Time Series Forecasting Course__](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting). You will learn:
+
+- __Time Series Machine Learning__ (cutting-edge) with `Modeltime` - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, & many more)
+- __Deep Learning__ with `GluonTS` (Competition Winners)
+- __Time Series Preprocessing__, Noise Reduction, & Anomaly Detection
+- __Feature engineering__ using lagged variables & external regressors
+- __Hyperparameter Tuning__
+- __Time series cross-validation__
+- __Ensembling__ Multiple Machine Learning & Univariate Modeling Techniques (Competition Winner)
+- __Scalable Forecasting__ - Forecast 1000+ time series in parallel
+- and more.
+
+<p class="text-center" style="font-size:24px;">
+Become the Time Series Expert for your organization.
+</p>
+<br>
+<p class="text-center" style="font-size:30px;">
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+</p>
 
 

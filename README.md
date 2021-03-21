@@ -116,6 +116,20 @@ packages.
 -   [Timetk (Feature Engineering, Data Wrangling, Time Series
     Visualization)](https://business-science.github.io/timetk/)
 
+## Summary
+
+Modeltime is an amazing ecosystem for time series forecasting. But it
+can take a long time to learn:
+
+-   Many algorithms
+-   Ensembling and Resampling
+-   Machine Learning
+-   Deep Learning
+-   Scalable Modeling: 10,000+ time series
+
+Your probably thinking how am I ever going to learn time series
+forecasting. Here’s the solution that will save you years of struggling.
+
 ## Take the High-Performance Forecasting Course
 
 > Become the forecasting expert for your organization
