@@ -176,9 +176,11 @@ model_fit_lm_recursive <- linear_reg() \%>\%
 modeltime_table(
     model_fit_lm_recursive
 ) \%>\%
-    modeltime_forecast(new_data = future_data,
-                       actual_data = m4_monthly,
-                       keep_data = TRUE) \%>\%
+    modeltime_forecast(
+        new_data    = future_data,
+        actual_data = m4_monthly,
+        keep_data   = TRUE
+    ) \%>\%
     group_by(id) \%>\%
     plot_modeltime_forecast(
         .interactive = FALSE,

@@ -164,7 +164,7 @@
     <p>Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>recursive</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>transform</span>, <span class='va'>train_tail</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>recursive</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>transform</span>, <span class='va'>train_tail</span>, id <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,6 +186,11 @@ each step of recursive algorithm. It can be an object of types:</p><ul>
       <td><p>A tibble with tail of training data set.
 In most cases it'll be required to create some variables
 based on dependent variable.</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>(Optional) An identifier that can be provided to perform a panel forecast.
+A single quoted column name (e.g. <code>id = "id"</code>).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -224,6 +229,8 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/DavisVaughan/slider'>slider</a></span><span class='op'>)</span>
 
+<span class='co'># ---- SINGLE TIME SERIES (NON-PANEL) -----</span>
+
 <span class='va'>m750</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span><span>
 #&gt;    id    date       value
@@ -249,102 +256,8 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>.date_var is missing. Using: date</span></div><div class='input'>
-<span class='co'># METHOD 1: RECIPE ----</span>
-<span class='co'># - Used for recursive transformations via recipe prepeocessing steps</span>
-
-<span class='co'># Lag Recipe</span>
-<span class='va'>recipe_lag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/recipe.html'>recipe</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, <span class='va'>m750_extended</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://recipes.tidymodels.org/reference/step_lag.html'>step_lag</a></span><span class='op'>(</span><span class='va'>value</span>, lag <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
-
-<span class='co'># Data Preparation</span>
-<span class='va'>m750_lagged</span> <span class='op'>&lt;-</span> <span class='va'>recipe_lag</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/prep.html'>prep</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/juice.html'>juice</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='va'>m750_lagged</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 330 x 26</span><span>
-#&gt;    date       value lag_1_value lag_2_value lag_3_value lag_4_value lag_5_value
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1990-01-01  </span><span style='text-decoration: underline;'>6</span><span>370          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 1990-02-01  </span><span style='text-decoration: underline;'>6</span><span>430        </span><span style='text-decoration: underline;'>6</span><span>370          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 1990-03-01  </span><span style='text-decoration: underline;'>6</span><span>520        </span><span style='text-decoration: underline;'>6</span><span>430        </span><span style='text-decoration: underline;'>6</span><span>370          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 1990-04-01  </span><span style='text-decoration: underline;'>6</span><span>580        </span><span style='text-decoration: underline;'>6</span><span>520        </span><span style='text-decoration: underline;'>6</span><span>430        </span><span style='text-decoration: underline;'>6</span><span>370          </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1990-05-01  </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580        </span><span style='text-decoration: underline;'>6</span><span>520        </span><span style='text-decoration: underline;'>6</span><span>430        </span><span style='text-decoration: underline;'>6</span><span>370          </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1990-06-01  </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580        </span><span style='text-decoration: underline;'>6</span><span>520        </span><span style='text-decoration: underline;'>6</span><span>430        </span><span style='text-decoration: underline;'>6</span><span>370
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 1990-07-01  </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580        </span><span style='text-decoration: underline;'>6</span><span>520        </span><span style='text-decoration: underline;'>6</span><span>430
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450        </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580        </span><span style='text-decoration: underline;'>6</span><span>520
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480        </span><span style='text-decoration: underline;'>5</span><span>450        </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620        </span><span style='text-decoration: underline;'>6</span><span>580
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820        </span><span style='text-decoration: underline;'>6</span><span>480        </span><span style='text-decoration: underline;'>5</span><span>450        </span><span style='text-decoration: underline;'>6</span><span>000        </span><span style='text-decoration: underline;'>6</span><span>690        </span><span style='text-decoration: underline;'>6</span><span>620
-#&gt; </span><span style='color: #949494;'># … with 320 more rows, and 19 more variables: lag_6_value &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lag_7_value &lt;dbl&gt;, lag_8_value &lt;dbl&gt;, lag_9_value &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lag_10_value &lt;dbl&gt;, lag_11_value &lt;dbl&gt;, lag_12_value &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lag_13_value &lt;dbl&gt;, lag_14_value &lt;dbl&gt;, lag_15_value &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lag_16_value &lt;dbl&gt;, lag_17_value &lt;dbl&gt;, lag_18_value &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lag_19_value &lt;dbl&gt;, lag_20_value &lt;dbl&gt;, lag_21_value &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   lag_22_value &lt;dbl&gt;, lag_23_value &lt;dbl&gt;, lag_24_value &lt;dbl&gt;</span><span></div><div class='input'>
-<span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_lagged</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='va'>future_data</span> <span class='op'>&lt;-</span> <span class='va'>m750_lagged</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Modeling</span>
-<span class='va'>model_fit_lm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span>
-
-<span class='va'>model_fit_lm_recursive</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>recursive</span><span class='op'>(</span>
-        transform  <span class='op'>=</span> <span class='va'>recipe_lag</span>,
-        train_tail <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
-    <span class='op'>)</span>
-
-<span class='va'>model_fit_lm_recursive</span>
-</div><div class='output co'>#&gt; Recursive [parsnip model]
-#&gt; 
-#&gt; parsnip model object
-#&gt; 
-#&gt; Fit time:  4ms 
-#&gt; 
-#&gt; Call:
-#&gt; stats::lm(formula = value ~ ., data = data)
-#&gt; 
-#&gt; Coefficients:
-#&gt;  (Intercept)          date   lag_1_value   lag_2_value   lag_3_value  
-#&gt;    164.14732       0.00677       0.61244       0.18402      -0.07128  
-#&gt;  lag_4_value   lag_5_value   lag_6_value   lag_7_value   lag_8_value  
-#&gt;      0.12089      -0.01750       0.07095       0.09785      -0.08053  
-#&gt;  lag_9_value  lag_10_value  lag_11_value  lag_12_value  lag_13_value  
-#&gt;      0.04887       0.03030      -0.01755       0.73318      -0.52958  
-#&gt; lag_14_value  lag_15_value  lag_16_value  lag_17_value  lag_18_value  
-#&gt;     -0.21410       0.07734      -0.13879       0.04351      -0.08894  
-#&gt; lag_19_value  lag_20_value  lag_21_value  lag_22_value  lag_23_value  
-#&gt;     -0.08732       0.06641      -0.05737      -0.02331       0.05754  
-#&gt; lag_24_value  
-#&gt;      0.15960  
-#&gt; </div><div class='input'>
-<span class='co'># Forecasting</span>
-<span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
-    <span class='va'>model_fit_lm</span>,
-    <span class='va'>model_fit_lm_recursive</span>
-<span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='update_model_description.html'>update_model_description</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='st'>"LM - Lag Roll"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span><span class='op'>(</span>
-        new_data    <span class='op'>=</span> <span class='va'>future_data</span>,
-        actual_data <span class='op'>=</span> <span class='va'>m750</span>,
-        keep_data   <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
-        .interactive        <span class='op'>=</span> <span class='cn'>FALSE</span>,
-        .conf_interval_show <span class='op'>=</span> <span class='cn'>FALSE</span>
-    <span class='op'>)</span>
-</div><div class='img'><img src='recursive-1.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='co'># METHOD 2: TRANSFORM FUNCTION ----</span>
-<span class='co'># - Used for complex transformations via transformation function</span>
-
-<span class='co'># Function run recursively that updates the forecasted dataset</span>
+<span class='co'># TRANSFORM FUNCTION ----</span>
+<span class='co'># - Function runs recursively that updates the forecasted dataset</span>
 <span class='va'>lag_roll_transformer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span>
     <span class='va'>data</span> <span class='op'>%&gt;%</span>
         <span class='co'># Lags</span>
@@ -385,7 +298,7 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
 #&gt; 
 #&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  4ms 
+#&gt; Fit time:  2ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)
@@ -412,6 +325,79 @@ training data set) and <code>new_data</code> (which is an argument of predict fu
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
         .interactive        <span class='op'>=</span> <span class='cn'>FALSE</span>,
+        .conf_interval_show <span class='op'>=</span> <span class='cn'>FALSE</span>
+    <span class='op'>)</span>
+</div><div class='img'><img src='recursive-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># MULTIPLE TIME SERIES (PANEL DATA) -----</span>
+
+<span class='va'>m4_monthly</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1,574 x 3</span><span>
+#&gt;    id    date       value
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> M1    1976-06-01  </span><span style='text-decoration: underline;'>8</span><span>000
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> M1    1976-07-01  </span><span style='text-decoration: underline;'>8</span><span>350
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> M1    1976-08-01  </span><span style='text-decoration: underline;'>8</span><span>570
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> M1    1976-09-01  </span><span style='text-decoration: underline;'>7</span><span>700
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> M1    1976-10-01  </span><span style='text-decoration: underline;'>7</span><span>080
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> M1    1976-11-01  </span><span style='text-decoration: underline;'>6</span><span>520
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> M1    1976-12-01  </span><span style='text-decoration: underline;'>6</span><span>070
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M1    1977-01-01  </span><span style='text-decoration: underline;'>6</span><span>650
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M1    1977-02-01  </span><span style='text-decoration: underline;'>6</span><span>830
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> M1    1977-03-01  </span><span style='text-decoration: underline;'>5</span><span>710
+#&gt; </span><span style='color: #949494;'># … with 1,564 more rows</span><span></div><div class='input'>
+<span class='va'>FORECAST_HORIZON</span> <span class='op'>&lt;-</span> <span class='fl'>24</span>
+
+<span class='va'>m4_extended</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>id</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>future_frame</a></span><span class='op'>(</span>
+        .length_out <span class='op'>=</span> <span class='va'>FORECAST_HORIZON</span>,
+        .bind_data  <span class='op'>=</span> <span class='cn'>TRUE</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>.date_var is missing. Using: date</span></div><div class='input'>
+<span class='co'># TRANSFORM FUNCTION ----</span>
+<span class='co'># - NOTE - We create lags by group inside</span>
+<span class='va'>lag_transformer</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='va'>data</span> <span class='op'>%&gt;%</span>
+        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>id</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+        <span class='co'># Lags</span>
+        <span class='fu'><a href='https://rdrr.io/pkg/timetk/man/tk_augment_lags.html'>tk_augment_lags</a></span><span class='op'>(</span><span class='va'>value</span>, .lags <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>24</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+        <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='va'>m4_lags</span> <span class='op'>&lt;-</span> <span class='va'>m4_extended</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>lag_transformer</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='va'>m4_lags</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>drop_na</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>future_data</span> <span class='op'>&lt;-</span> <span class='va'>m4_lags</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># NOTES - recursive() for Panel Data</span>
+<span class='co'># - We add an id = "id" to specify the groups</span>
+<span class='co'># - We sue a panel_tail() function to grab tail by groups</span>
+<span class='va'>model_fit_lm_recursive</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>train_data</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>recursive</span><span class='op'>(</span>
+        id         <span class='op'>=</span> <span class='st'>"id"</span>,
+        transform  <span class='op'>=</span> <span class='va'>lag_transformer</span>,
+        train_tail <span class='op'>=</span> <span class='fu'><a href='panel_tail.html'>panel_tail</a></span><span class='op'>(</span><span class='va'>train_data</span>, <span class='va'>id</span>, <span class='va'>FORECAST_HORIZON</span><span class='op'>)</span>
+    <span class='op'>)</span>
+
+<span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
+    <span class='va'>model_fit_lm_recursive</span>
+<span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='modeltime_forecast.html'>modeltime_forecast</a></span><span class='op'>(</span>
+        new_data    <span class='op'>=</span> <span class='va'>future_data</span>,
+        actual_data <span class='op'>=</span> <span class='va'>m4_monthly</span>,
+        keep_data   <span class='op'>=</span> <span class='cn'>TRUE</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>id</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='plot_modeltime_forecast.html'>plot_modeltime_forecast</a></span><span class='op'>(</span>
+        .interactive <span class='op'>=</span> <span class='cn'>FALSE</span>,
         .conf_interval_show <span class='op'>=</span> <span class='cn'>FALSE</span>
     <span class='op'>)</span>
 </div><div class='img'><img src='recursive-2.png' alt='' width='700' height='433' /></div><div class='input'>
