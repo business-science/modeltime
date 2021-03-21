@@ -288,7 +288,7 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 
         object$spec$train_tail <- data %>%
             panel_tail(
-                id = object$spec$id,
+                id = !! object$spec$id,
                 n  = n
             )
 
@@ -308,6 +308,9 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
         # Create new train tail
         train_tail_old <- object$fit$fit$spec$train_tail
 
+        # print("Spec ID")
+        # print(object$fit$fit$spec$id)
+
         n <- object$fit$fit$spec$train_tail %>%
             dplyr::count(dplyr::all_of(object$fit$fit$spec$id)) %>%
             dplyr::pull(n) %>%
@@ -315,9 +318,11 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 
         train_tail_new <- data %>%
             panel_tail(
-                id = object$fit$fit$spec$id,
+                id = !! object$fit$fit$spec$id,
                 n  = n
             )
+
+        id_old <- object$fit$fit$spec$id
 
         # Refit
         object <- mdl_time_refit.workflow(object, data, ..., control = control)
@@ -327,7 +332,7 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
             object,
             transform  = transformer,
             train_tail = train_tail_new,
-            id         = object$fit$fit$spec$id
+            id         = id_old
         )
 
         # Need to overwrite transformer

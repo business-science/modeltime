@@ -32,10 +32,22 @@ An object with added \code{recursive} class
 Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model
 }
 \details{
-Recursive model can be used if some of the features used for training
-is based of dependent variable we already are trying to forecast.
-Typically, among these features we can find lags (e.g. created with \code{step_lag()})
-or variables crated with sliding window.
+\strong{What is a Recursive Model?}
+
+A \emph{recursive model} uses predictions to generate
+new values for independent features. These features are typically
+lags used in autoregressive models. It's important to understand that
+a recursive model is only needed when the \strong{Lag Size < Forecast Horizon.}
+
+\strong{Why is Recursive needed for Autoregressive Models with Lag Size < Forecast Horizon?}
+
+When the forecast horizon is less
+than the lag length, a problem exists were missing values are
+generated in the future data. A solution that \code{recursive()} implements
+is to iteratively fill these missing values in with values generated
+from predictions.
+
+\strong{Recursive Process}
 
 When producing forecast, the following steps are performed:
 \enumerate{
@@ -48,6 +60,15 @@ already calculated prediction. These features are computed
 with on a tibble object made from binded \code{train_tail} (i.e. tail of
 training data set) and \code{new_data} (which is an argument of predict function).
 \item Jumping into point 2., and repeating rest of steps till the for-loop is ended.
+}
+
+\strong{Recursion for Panel Data}
+
+Panel data is time series data with multiple groups identified by an ID column.
+The \code{recursive()} function can be used for Panel Data with the following modifications:
+\enumerate{
+\item Supply an \code{id} column as a quoted column name
+\item Replace \code{tail()} with \verb{[panel_tail()]} to use tails for each time series group.
 }
 }
 \examples{
@@ -190,4 +211,9 @@ modeltime_table(
     )
 
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=panel_tail]{panel_tail()}} - Used to generate tails for multiple time series groups.
+}
 }

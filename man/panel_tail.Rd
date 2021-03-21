@@ -27,3 +27,8 @@ m4_monthly \%>\%
     panel_tail(id = id, n = 6)
 
 }
+\seealso{
+\itemize{
+\item \code{\link[=recursive]{recursive()}} - used to generate recursive autoregressive models
+}
+}

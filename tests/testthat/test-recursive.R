@@ -267,8 +267,64 @@ test_that("recursive 3 - panel / function / parsnip + workflow", {
     )
 
   # forecast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
+  preds_1 <- forecast_tbl %>% filter(.model_id == 1) %>% pull(.value)
+  preds_2 <- forecast_tbl %>% filter(.model_id == 2) %>% pull(.value)
+  expect_equal(
+    length(future_data$value),
+    length(preds_1),
+    length(preds_2)
+  )
+
+  expect_equal(preds_1, preds_2)
+
+  expect_type(preds_1, "double")
 
   # * Modeltime Refit ----
+
+  retrain_tbl <- train_data %>% group_by(id) %>% dplyr::slice(1:200) %>% ungroup()
+  future_tbl  <- train_data %>% group_by(id) %>% dplyr::slice(201:224) %>% ungroup()
+
+  # wflw_fit_lm_recursive %>% mdl_time_refit(retrain_tbl)
+
+  refit_tbl <- modeltime_table(
+    model_fit_lm_recursive
+    ,
+    wflw_fit_lm_recursive
+  ) %>%
+    modeltime_refit(
+      data = retrain_tbl
+    )
+
+  model_fit_lm_recursive_refit <- refit_tbl$.model[[1]]
+  # model_fit_lm_recursive_refit %>% class()
+  expect_s3_class(model_fit_lm_recursive_refit, "recursive_panel")
+
+  wflw_fit_lm_recursive_refit <- refit_tbl$.model[[2]]
+  # wflw_fit_lm_recursive_refit %>% class()
+  expect_s3_class(wflw_fit_lm_recursive_refit, "recursive_panel")
+
+  forecast_refit_tbl <- refit_tbl %>%
+    # dplyr::slice(1) %>%
+    modeltime_forecast(
+      new_data    = future_tbl,
+      actual_data = retrain_tbl,
+      keep_data   = TRUE
+    )
+
+  # forecast_refit_tbl %>% group_by(id) %>% plot_modeltime_forecast()
+
+  preds_1 <- forecast_refit_tbl %>% filter(.model_id == 1) %>% pull(.value)
+  preds_2 <- forecast_refit_tbl %>% filter(.model_id == 2) %>% pull(.value)
+
+  expect_equal(
+    length(future_tbl$value),
+    length(preds_1),
+    length(preds_2)
+  )
+
+  expect_equal(preds_1, preds_2)
+
+  expect_type(preds_1, "double")
 
 })
 
