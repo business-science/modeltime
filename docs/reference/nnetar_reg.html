@@ -111,7 +111,7 @@ different packages. Currently the only package is forecast." />
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Documentation
+    Articles
      
     <span class="caret"></span>
   </a>
@@ -135,11 +135,27 @@ different packages. Currently the only package is forecast." />
     </li>
   </ul>
 </li>
-<li>
-  <a href="../reference/index.html">API Functions</a>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    API
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">API Functions</li>
+    <li>
+      <a href="../reference/index.html">
+        <span class="fas fa-home"></span>
+         
+        Function Reference
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Change History</li>
+    <li>
+      <a href="../news/index.html">News</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -148,12 +164,12 @@ different packages. Currently the only package is forecast." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Workflow</li>
+    <li class="dropdown-header">Forecast</li>
     <li>
-      <a href="https://business-science.github.io/modeltime/">Modeltime (Machine Learning)</a>
+      <a href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
     </li>
     <li>
-      <a href="https://business-science.github.io/timetk/">TimeTK (Data Transformation &amp; Visualization)</a>
+      <a href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Improve</li>
@@ -164,7 +180,7 @@ different packages. Currently the only package is forecast." />
       <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
     </li>
     <li class="divider"></li>
-    <li class="dropdown-header">More Power</li>
+    <li class="dropdown-header">Scale</li>
     <li>
       <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
     </li>
@@ -172,6 +188,13 @@ different packages. Currently the only package is forecast." />
       <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
+    <span class="fas fa-graduation-cap"></span>
+     
+    Learn
+  </a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -403,7 +426,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  282ms 
+#&gt; Fit time:  255ms 
 #&gt; Series: outcome 
 #&gt; Model:  NNAR(1,1,10)[12] 
 #&gt; Call:   forecast::nnetar(y = outcome, p = p, P = P, size = size, repeats = repeats, 
