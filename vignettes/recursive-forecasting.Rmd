@@ -234,10 +234,12 @@ We can see the benefit of autoregressive features.
 We can take this further by extending what we've learned here to panel data:
 
 __Panel Data:__
+   
    - Grouped transformation functions: `lag_roll_transformer_grouped()`
    - `recursive()`: Using `id` and the `panel_tail()` function
 
 __More sophisticated algorithms:__
+   
    - Instead of using a simple Linear Regression
    - We use `xgboost` to forecast multiple time series
 
@@ -289,7 +291,7 @@ future_data <- m4_lags %>%
 
 # Modeling Autoregressive Panel Data
 set.seed(123)
-model_fit_lm_recursive <- boost_tree(
+model_fit_xgb_recursive <- boost_tree(
         mode = "regression",
         learn_rate = 0.35
     ) %>%
@@ -310,7 +312,7 @@ model_fit_lm_recursive <- boost_tree(
 
 # Visualize with Modeltime
 modeltime_table(
-    model_fit_lm_recursive
+    model_fit_xgb_recursive
 ) %>%
     modeltime_forecast(
         new_data    = future_data,
