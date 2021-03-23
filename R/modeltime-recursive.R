@@ -468,12 +468,12 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     .preds <- tibble::tibble(.id = new_data %>% dplyr::select(!! .id) %>% purrr::as_vector(),
                              .pred = numeric(nrow(new_data))) %>%
         dplyr::group_by(.id) %>%
-        dplyr::mutate(rowid = dplyr::row_number()) %>%
+        dplyr::mutate(rowid.. = dplyr::row_number()) %>%
         dplyr::ungroup()
 
     new_data <- new_data %>%
         dplyr::group_by(!! .id) %>%
-        dplyr::mutate(rowid = dplyr::row_number()) %>%
+        dplyr::mutate(rowid.. = dplyr::row_number()) %>%
         dplyr::ungroup()
 
     .first_slice <- new_data %>%
@@ -489,11 +489,11 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         }
     }
 
-    if ("rowid" %in% names(.first_slice)) {
-        .first_slice <- .first_slice %>% dplyr::select(-rowid)
+    if ("rowid.." %in% names(.first_slice)) {
+        .first_slice <- .first_slice %>% dplyr::select(-rowid..)
     }
 
-    .preds[.preds$rowid == 1, 2] <- new_data[new_data$rowid == 1, y_var] <- pred_fun(object,
+    .preds[.preds$rowid.. == 1, 2] <- new_data[new_data$rowid.. == 1, y_var] <- pred_fun(object,
                                                                                      new_data = .first_slice,
                                                                                      type = type,
                                                                                      opts = opts,
@@ -521,14 +521,14 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
             }
         }
 
-        if ("rowid" %in% names(.nth_slice)) {
-            .nth_slice <- .nth_slice %>% dplyr::select(-rowid)
+        if ("rowid.." %in% names(.nth_slice)) {
+            .nth_slice <- .nth_slice %>% dplyr::select(-rowid..)
         }
 
         .nth_slice <- .nth_slice[names(.first_slice)]
 
 
-        .preds[.preds$rowid == i, 2] <- new_data[new_data$rowid == i, y_var] <- pred_fun(object,
+        .preds[.preds$rowid.. == i, 2] <- new_data[new_data$rowid.. == i, y_var] <- pred_fun(object,
                                                                                          new_data = .nth_slice,
                                                                                          type = type,
                                                                                          opts = opts,
