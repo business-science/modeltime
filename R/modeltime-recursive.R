@@ -453,6 +453,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     .id <- dplyr::ensym(id)
 
+    # obj <<- object
     # print({
     #     list(
     #         object,
@@ -462,7 +463,6 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     #         train_tail
     #     )
     # })
-
 
     # LOOP LOGIC ----
     .preds <- tibble::tibble(.id = new_data %>% dplyr::select(!! .id) %>% purrr::as_vector(),
@@ -481,6 +481,17 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         dplyr::slice_head(n = 1) %>%
         dplyr::ungroup()
 
+    # Fix - When ID is dummied
+    if (!is.null(object$spec$remove_id)) {
+        if (object$spec$remove_id) {
+            .first_slice <- .first_slice %>%
+                dplyr::select(-(!! .id))
+        }
+    }
+
+    if ("rowid" %in% names(.first_slice)) {
+        .first_slice <- .first_slice %>% dplyr::select(-rowid)
+    }
 
     .preds[.preds$rowid == 1, 2] <- new_data[new_data$rowid == 1, y_var] <- pred_fun(object,
                                                                                      new_data = .first_slice,
@@ -502,6 +513,21 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
         .nth_slice <- .transform(.temp_new_data, new_data_size, i, id)
 
+        # Fix - When ID is dummied
+        if (!is.null(object$spec$remove_id)) {
+            if (object$spec$remove_id) {
+                .nth_slice <- .nth_slice %>%
+                    dplyr::select(-(!! .id))
+            }
+        }
+
+        if ("rowid" %in% names(.nth_slice)) {
+            .nth_slice <- .nth_slice %>% dplyr::select(-rowid)
+        }
+
+        .nth_slice <- .nth_slice[names(.first_slice)]
+
+
         .preds[.preds$rowid == i, 2] <- new_data[new_data$rowid == i, y_var] <- pred_fun(object,
                                                                                          new_data = .nth_slice,
                                                                                          type = type,
@@ -516,6 +542,10 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts = list(), ...) {
     workflow <- object
 
+    # Fix - When ID is dummied
+    id <- workflow$fit$fit$spec$id
+    df_id = new_data %>% dplyr::select(dplyr::all_of(id))
+
     if (!workflow$trained) {
         rlang::abort("Workflow has not yet been trained. Do you need to call `fit()`?")
     }
@@ -523,6 +553,17 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
     blueprint <- workflow$pre$mold$blueprint
     forged    <- hardhat::forge(new_data, blueprint)
     new_data  <- forged$predictors
+
+    # Fix - When ID is dummied
+    if (!is.null(id)) {
+        if (!id %in% names(new_data)) {
+            new_data <- new_data %>%
+                dplyr::bind_cols(df_id)
+            workflow$fit$fit$spec$remove_id <- TRUE
+        }
+    }
+
+    # print(new_data)
 
     fit <- workflow$fit$fit
 

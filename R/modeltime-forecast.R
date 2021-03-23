@@ -745,15 +745,34 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
     # FORGE NEW DATA
 
+    # Fix - When ID is dummied
+    id <- object$fit$fit$spec$id
+    df_id <- NULL
+    if (!is.null(id)) {
+        df_id = new_data %>% dplyr::select(dplyr::all_of(id))
+    }
+
     # Issue - hardhat::forge defaults to outcomes = FALSE, which creates an error at predict.workflow()
     blueprint <- object$pre$mold$blueprint
     forged    <- hardhat::forge(new_data, blueprint, outcomes = TRUE)
     new_data  <- forged$predictors
     fit       <- object$fit$fit
 
+    # Fix - When ID is dummied
+    df <- new_data
+    if (!is.null(id)) {
+        if (!id %in% names(new_data)) {
+            df <- new_data %>%
+                dplyr::bind_cols(df_id)
+            fit$spec$remove_id <- TRUE
+        }
+    }
+
     # PREDICT
     data_formatted <- fit %>%
-        stats::predict(new_data = new_data) %>%
+        stats::predict(
+            new_data = df
+        ) %>%
         dplyr::bind_cols(time_stamp_predictors_tbl) %>%
         dplyr::mutate(.key = "prediction") %>%
         dplyr::select(.key, dplyr::everything())
