@@ -268,8 +268,8 @@ new values for independent features. These features are typically
 lags used in autoregressive models. It's important to understand that
 a recursive model is only needed when the <strong>Lag Size &lt; Forecast Horizon.</strong></p>
 <p><strong>Why is Recursive needed for Autoregressive Models with Lag Size &lt; Forecast Horizon?</strong></p>
-<p>When the forecast horizon is less
-than the lag length, a problem exists were missing values are
+<p>When the lag length is less than the forecast horizon,
+a problem exists were missing values (<code>NA</code>) are
 generated in the future data. A solution that <code>recursive()</code> implements
 is to iteratively fill these missing values in with values generated
 from predictions.</p>
@@ -384,7 +384,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 #&gt; 
 #&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  2ms 
+#&gt; Fit time:  3ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)

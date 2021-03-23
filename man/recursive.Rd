@@ -40,8 +40,8 @@ a recursive model is only needed when the \strong{Lag Size < Forecast Horizon.}
 
 \strong{Why is Recursive needed for Autoregressive Models with Lag Size < Forecast Horizon?}
 
-When the forecast horizon is less
-than the lag length, a problem exists were missing values are
+When the lag length is less than the forecast horizon,
+a problem exists were missing values (\code{NA}) are
 generated in the future data. A solution that \code{recursive()} implements
 is to iteratively fill these missing values in with values generated
 from predictions.

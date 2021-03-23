@@ -41,9 +41,9 @@ A *recursive model* uses predictions to generate new values for independent feat
 
 # Why is Recursive needed for Autoregressive Models?
 
-It's important to understand that a recursive model is only needed when using lagged features with a **Lag Size \< Forecast Horizon.** When the forecast horizon is less than the lag length, a problem exists were missing values are generated in the future data. 
+It's important to understand that a recursive model is only needed when using lagged features with a **Lag Size \< Forecast Horizon.** When the lag length is less than the forecast horizon, a problem exists were missing values (`NA`) are generated in the future data. 
 
-This solution that `recursive()` implements is to iteratively fill these missing values in with values generated from predictions. This technique can be used for:
+A solution that `recursive()` implements is to iteratively fill these missing values in with values generated from predictions. This technique can be used for:
 
 1. __Single time series predictions__ - Effectively turning any `tidymodels` model into an Autoregressive (AR) model
 
