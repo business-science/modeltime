@@ -453,6 +453,8 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     .id <- dplyr::ensym(id)
 
+    # #  Comment this out ----
+    # print("here")
     # obj <<- object
     # print({
     #     list(
