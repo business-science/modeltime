@@ -408,7 +408,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
         .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
 
         .preds[i,] <- new_data[i, y_var] <- pred_fun(
-            object, new_data = .nth_slice,
+            object, new_data = .nth_slice[names(.first_slice)],
             type = type, opts = opts, ...
         )
     }
