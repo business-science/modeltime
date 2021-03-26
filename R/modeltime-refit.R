@@ -191,22 +191,7 @@ mdl_time_refit.default <- function(object, data, ..., control = NULL) {
 #' @export
 mdl_time_refit.workflow <- function(object, data, ..., control = NULL) {
 
-    model_spec    <- object %>% workflows::pull_workflow_spec()
-    model_preproc <- object %>% workflows::pull_workflow_preprocessor()
-
-    if (inherits(model_preproc, "formula")) {
-        # Formula preprocessor
-        ret <- workflows::workflow() %>%
-            workflows::add_model(model_spec) %>%
-            workflows::add_formula(model_preproc) %>%
-            fit(data)
-    } else {
-        # Recipe preprocessor
-        ret <- workflows::workflow() %>%
-            workflows::add_model(model_spec) %>%
-            workflows::add_recipe(model_preproc) %>%
-            fit(data)
-    }
+    ret <- object %>% fit(data)
 
     return(ret)
 
