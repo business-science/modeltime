@@ -67,12 +67,14 @@ find_parsnip_formula_form <- function(object) {
             dplyr::filter(value)
 
         formula_found <- FALSE
-        if (nrow(check_formula_tbl) == 1) {
+        if (nrow(check_formula_tbl) >= 1) {
             formula_found <- TRUE
         }
 
+
+
         if (formula_found) {
-            form <- stats::formula(object[[check_formula_tbl$key]])
+            form <- stats::formula(object[[ check_formula_tbl$key[1] ]])
         }
     }
 
