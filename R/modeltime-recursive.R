@@ -206,13 +206,103 @@ recursive.workflow <- function(object, transform, train_tail, ...) {
     object
 }
 
+#' TODO: examples should be placed in some vignette
+#' @examples
+#' library(modeltime)
+#' library(tidymodels)
+#' library(tidyverse)
+#' library(lubridate)
+#' library(timetk)
+#' library(slider)
+#' library(dplyr)
+#' library(modeltime.ensemble)
+#'
+#' FORECAST_HORIZON <- 24
+#'
+#' m750_extended <-
+#'     m750 %>%
+#'     group_by(id) %>%
+#'     future_frame(
+#'         .length_out = FORECAST_HORIZON,
+#'         .bind_data  = TRUE
+#'     ) %>%
+#'     ungroup()
+#'
+#' recipe_lag <-
+#'     recipe(value ~ date, m750_extended) %>%
+#'     step_lag(value, lag = 1:FORECAST_HORIZON)
+#'
+#' # Data Preparation
+#' m750_lagged <- recipe_lag %>% prep() %>% juice()
+#'
+#' m750_lagged
+#'
+#' train_data <- m750_lagged %>%
+#'     filter(!is.na(value)) %>%
+#'     drop_na()
+#'
+#' future_data <- m750_lagged %>%
+#'     filter(is.na(value))
+#'
+#' ### Fitting models
+#'
+#' model_fit_lm <-
+#'     linear_reg() %>%
+#'     set_engine("lm") %>%
+#'     fit(value ~ ., data = train_data)
+#'
+#' model_fit_mars <-
+#'     mars("regression") %>%
+#'     set_engine("earth") %>%
+#'     fit(value ~ ., data = train_data)
+#'
+#' recursive_ensemble <-
+#'     modeltime_table(
+#'         model_fit_lm,
+#'         model_fit_mars
+#'     ) %>%
+#'     ensemble_average(type = "median") %>%
+#'     recursive(
+#'         transform  = recipe_lag,
+#'         train_tail = tail(train_data, FORECAST_HORIZON)
+#'     )
+#'
+#' fcast <-
+#'     recursive_ensemble %>%
+#'     modeltime_forecast(
+#'         new_data = future_data,
+#'         actual_data = m750
+#'     )
+#'
+#' fcast %>%
+#'     plot_modeltime_forecast(
+#'         .interactive = TRUE,
+#'         .conf_interval_show = FALSE,
+#'     )
+#' @export
+recursive.mdl_time_ensemble <- function(object, transform, train_tail, ...){
+
+    object$spec[["forecast"]]   <- "recursive"
+    object$spec[["transform"]]  <- .prepare_transform(transform)
+    object$spec[["train_tail"]] <- train_tail
+    object$spec[["y_var"]]      <- object$model_tbl$.model[[1]]$preproc$y_var
+
+    .class <- class(object)
+    class(object) <- c("recursive", .class)
+
+    #' Model silently wrapped with modeltime_table
+    modeltime_table(object)
+}
+
 #' @export
 print.recursive <- function(x, ...) {
 
     if (inherits(x, "model_fit")) {
-        cat("Recursive [parsnip model]\n\n")
+       cat("Recursive [parsnip model]\n\n")
+    } else if (inherits(x, "workflow")) {
+       cat("Recursive [workflow]\n\n")
     } else {
-        cat("Recursive [workflow]\n\n")
+       cat("Recursive [modeltime ensemble]\n\n")
     }
 
     y <- x

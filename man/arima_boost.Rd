@@ -163,15 +163,12 @@ Other options can be set using \code{set_engine()}.
 
 \strong{auto_arima_xgboost (default engine)}
 
-Model 1: Auto ARIMA (\code{forecast::auto.arima}):\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
-##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
-##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
-##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
-##         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
-##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
-##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
-##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
-##     num.cores = 2, x = y, ...)
+Model 1: Auto ARIMA (\code{forecast::auto.arima}):\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, max.order = 5, max.d = 2, max.D = 1, 
+##     start.p = 2, start.q = 2, start.P = 1, start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", 
+##         "aic", "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 150 | 
+##         frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, test = c("kpss", "adf", "pp"), 
+##     test.args = list(), seasonal.test = c("seas", "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
+##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, num.cores = 2, x = y, ...)
 }
 
 Parameter Notes:
@@ -181,9 +178,8 @@ The \code{auto.arima} will select a value using these as an upper limit.
 \item \code{xreg} - This should not be used since XGBoost will be doing the regression
 }
 
-Model 2: XGBoost (\code{xgboost::xgb.train}):\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
-##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
-##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
+Model 2: XGBoost (\code{xgboost::xgb.train}):\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, feval = NULL, verbose = 1, print_every_n = 1L, 
+##     early_stopping_rounds = NULL, maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
 ##     callbacks = list(), ...)
 }
 

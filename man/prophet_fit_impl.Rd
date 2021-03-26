@@ -30,8 +30,8 @@ prophet_fit_impl(
 
 \item{y}{A numeric vector of values to fit}
 
-\item{growth}{String 'linear', 'logistic', or 'flat' to specify a linear, logistic
-or flat trend.}
+\item{growth}{String 'linear' or 'logistic' to specify a linear or logistic
+trend.}
 
 \item{n.changepoints}{Number of potential changepoints to include. Not used
 if input `changepoints` is supplied. If `changepoints` is not supplied,
