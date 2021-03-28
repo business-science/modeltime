@@ -1,10 +1,13 @@
 # 0.4.2.9000
 
-## Recursive Predictions
+### Recursive Predictions
 
 - `recursive_panel()` (#71) - Amazing NEW function that enables __recursive prediction on Panel Data!__
+- New Vignette on Recursive Forecasting
 
+### Breaking Changes
 
+- Deprecating `modeltime::metric_tweak()` for `yardstick::metric_tweak()`. The `yardstick::metric_tweak()` has a required `.name` argument in addition to `.fn`, which is needed for tuning. 
 
 # modeltime 0.4.2
 

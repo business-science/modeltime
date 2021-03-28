@@ -39,5 +39,4 @@ predictions_tbl \%>\%
         metric_set = default_forecast_accuracy_metric_set()
     )
 
-
 }

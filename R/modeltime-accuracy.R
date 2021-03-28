@@ -159,7 +159,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' Adding additional metrics is possible via `...`.
 #'
 #' @seealso
-#' - [metric_tweak()] - For modifying `yardstick` metrics
+#' - [yardstick::metric_tweak()] - For modifying `yardstick` metrics
 #'
 #' @examples
 #' library(tibble)
@@ -186,7 +186,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #' # ---- ADD MORE PARAMETERS ----
 #'
 #' # Can create a version of mase() with seasonality = 12 (monthly)
-#' mase12 <- metric_tweak(mase, m = 12)
+#' mase12 <- metric_tweak(.name = "mase12", .fn = mase, m = 12)
 #'
 #' # Add it to the default metric set
 #' my_metric_set <- default_forecast_accuracy_metric_set(mase12)
@@ -197,7 +197,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 #'
 #'
 #' @export
-#' @importFrom yardstick mae mape mase smape rmse rsq
+#' @importFrom yardstick mae mape mase smape rmse rsq metric_tweak
 default_forecast_accuracy_metric_set <- function(...) {
     yardstick::metric_set(
         mae,
@@ -242,7 +242,6 @@ default_forecast_accuracy_metric_set <- function(...) {
 #'         metric_set = default_forecast_accuracy_metric_set()
 #'     )
 #'
-#'
 #' @export
 summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
@@ -270,67 +269,6 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
 }
 
-# METRIC TWEAK ----
-
-#' Modify Yardstick Metric Functions
-#'
-#' Used to modify `yardstick` functions, which have parameters that
-#' need to be adjusted.
-#'
-#' @param .f A yardstick function (e.g. `mase`)
-#' @param ... Parameters to overload (.e.g. `m = 1`)
-#'
-#' @details
-#'
-#' This function was created to help users quickly modify
-#' the [default_forecast_accuracy_metric_set()] using existing `yardstick`
-#' functions with parameters that require adjustment.
-#'
-#' An example is [yardstick::mase()], which has a parameter `m = 1`.
-#' The `m` parameter identifies the seasonality for the MASE calculation.
-#' Users often need to adjust this to the dominant seasonality. This can be
-#' quickly accomplished using code:
-#'
-#' ``` r
-#' mase12 <- metric_tweak(mase, m = 12)
-#' ```
-#'
-#' @examples
-#' library(modeltime)
-#' library(yardstick)
-#' library(tibble)
-#'
-#' fake_data <- tibble(
-#'     y    = c(1:12, 2*1:12),
-#'     yhat = c(1 + 1:12, 2*1:12 - 1)
-#' )
-#'
-#' # Make new mase12 metric
-#' mase12 <- metric_tweak(mase, m = 12)
-#'
-#' # Add to metric set
-#' my_metric_set <- default_forecast_accuracy_metric_set(
-#'     mase12
-#' )
-#' my_metric_set
-#'
-#' # Apply metric set to fake_data
-#' my_metric_set(fake_data, y, yhat)
-#'
-#'
-#'
-#' @export
-metric_tweak <- function(.f, ...) {
-
-    f_attrs <- attributes(.f)
-
-    ret <- purrr::partial(.f = .f, ...)
-
-    attributes(ret) <- f_attrs
-
-    return(ret)
-
-}
 
 # UTILITIES ----
 

@@ -86,7 +86,7 @@ test_that("Test Modeltime Accuracy", {
 test_that("Modifying Default Forecast Accuracy Metric Set", {
 
     my_metric_set <- default_forecast_accuracy_metric_set(
-        metric_tweak(mase, m = 12)
+        metric_tweak("mase12", mase, m = 12)
     )
 
     acc_tbl_6 <- calibration_tbl %>%
@@ -95,7 +95,7 @@ test_that("Modifying Default Forecast Accuracy Metric Set", {
         )
 
     nms_expected <- c(".model_id", ".model_desc", ".type",
-                      "mae", "mape", "mase", "smape", "rmse", "rsq", "mase_1")
+                      "mae", "mape", "mase", "smape", "rmse", "rsq", "mase12")
 
     expect_true(all(nms_expected %in% names(acc_tbl_6)))
 

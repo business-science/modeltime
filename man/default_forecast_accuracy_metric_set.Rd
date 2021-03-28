@@ -53,7 +53,7 @@ calc_default_metrics(fake_data, y, yhat)
 # ---- ADD MORE PARAMETERS ----
 
 # Can create a version of mase() with seasonality = 12 (monthly)
-mase12 <- metric_tweak(mase, m = 12)
+mase12 <- metric_tweak(.name = "mase12", .fn = mase, m = 12)
 
 # Add it to the default metric set
 my_metric_set <- default_forecast_accuracy_metric_set(mase12)
@@ -66,6 +66,6 @@ my_metric_set(fake_data, y, yhat)
 }
 \seealso{
 \itemize{
-\item \code{\link[=metric_tweak]{metric_tweak()}} - For modifying \code{yardstick} metrics
+\item \code{\link[yardstick:metric_tweak]{yardstick::metric_tweak()}} - For modifying \code{yardstick} metrics
 }
 }

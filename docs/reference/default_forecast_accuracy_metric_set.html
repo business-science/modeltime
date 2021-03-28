@@ -256,7 +256,7 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 
     <div class='dont-index'>
 <ul>
-<li><p><code><a href='metric_tweak.html'>metric_tweak()</a></code> - For modifying <code>yardstick</code> metrics</p></li>
+<li><p><code><a href='https://yardstick.tidymodels.org/reference/metric_tweak.html'>yardstick::metric_tweak()</a></code> - For modifying <code>yardstick</code> metrics</p></li>
 </ul>
 </div>
 
@@ -275,19 +275,21 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 
 <span class='co'># Default Forecast Accuracy Metric Specification</span>
 <span class='fu'>default_forecast_accuracy_metric_set</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   metric          class direction
-#&gt; 1    mae numeric_metric  minimize
-#&gt; 2   mape numeric_metric  minimize
-#&gt; 3   mase numeric_metric  minimize
-#&gt; 4  smape numeric_metric  minimize
-#&gt; 5   rmse numeric_metric  minimize
-#&gt; 6    rsq numeric_metric  maximize</div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 3</span><span>
+#&gt;   metric class          direction
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> mae    numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> mape   numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> mase   numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> smape  numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> rmse   numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> rsq    numeric_metric maximize </div><div class='input'>
 <span class='co'># Create a metric summarizer function from the metric set</span>
 <span class='va'>calc_default_metrics</span> <span class='op'>&lt;-</span> <span class='fu'>default_forecast_accuracy_metric_set</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Apply the metric summarizer to new data</span>
 <span class='fu'>calc_default_metrics</span><span class='op'>(</span><span class='va'>fake_data</span>, <span class='va'>y</span>, <span class='va'>yhat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 3</span><span>
 #&gt;   .metric .estimator .estimate
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> mae     standard       1    
@@ -299,19 +301,21 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 <span class='co'># ---- ADD MORE PARAMETERS ----</span>
 
 <span class='co'># Can create a version of mase() with seasonality = 12 (monthly)</span>
-<span class='va'>mase12</span> <span class='op'>&lt;-</span> <span class='fu'><a href='metric_tweak.html'>metric_tweak</a></span><span class='op'>(</span><span class='va'>mase</span>, m <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>
+<span class='va'>mase12</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://yardstick.tidymodels.org/reference/metric_tweak.html'>metric_tweak</a></span><span class='op'>(</span>.name <span class='op'>=</span> <span class='st'>"mase12"</span>, .fn <span class='op'>=</span> <span class='va'>mase</span>, m <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>
 
 <span class='co'># Add it to the default metric set</span>
 <span class='va'>my_metric_set</span> <span class='op'>&lt;-</span> <span class='fu'>default_forecast_accuracy_metric_set</span><span class='op'>(</span><span class='va'>mase12</span><span class='op'>)</span>
 <span class='va'>my_metric_set</span>
-</div><div class='output co'>#&gt;   metric          class direction
-#&gt; 1    mae numeric_metric  minimize
-#&gt; 2   mape numeric_metric  minimize
-#&gt; 3   mase numeric_metric  minimize
-#&gt; 4  smape numeric_metric  minimize
-#&gt; 5   rmse numeric_metric  minimize
-#&gt; 6    rsq numeric_metric  maximize
-#&gt; 7 mase12 numeric_metric  minimize</div><div class='input'>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 7 x 3</span><span>
+#&gt;   metric class          direction
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> mae    numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> mape   numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> mase   numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> smape  numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> rmse   numeric_metric minimize 
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> rsq    numeric_metric maximize 
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> mase12 numeric_metric minimize </div><div class='input'>
 <span class='co'># Apply the newly created metric set</span>
 <span class='fu'>my_metric_set</span><span class='op'>(</span><span class='va'>fake_data</span>, <span class='va'>y</span>, <span class='va'>yhat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 7 x 3</span><span>
@@ -323,7 +327,7 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span> smape   standard      18.0  
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span> rmse    standard       1    
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span> rsq     standard       0.979
-#&gt; </span><span style='color: #BCBCBC;'>7</span><span> mase    standard       0.154</div><div class='input'>
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> mase12  standard       0.154</div><div class='input'>
 
 </div></span></pre>
   </div>
