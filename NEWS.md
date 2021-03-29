@@ -1,9 +1,9 @@
-# 0.4.2.9000
+# 0.5.0
 
 ### Recursive Predictions
 
-- `recursive_panel()` (#71) - Amazing NEW function that enables __recursive prediction on Panel Data!__
-- New Vignette on Recursive Forecasting
+- `recursive()` (#71) - Received a full upgrade to work with Panel Data. 
+- __New Vignette__: "Recursive Forecasting" with Modeltime
 
 ### Breaking Changes
 
