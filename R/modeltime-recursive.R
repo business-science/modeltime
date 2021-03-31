@@ -266,6 +266,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
     object
 }
 
+
 recursive.mdl_time_ensemble <- function(object, transform, train_tail, ...){
 
     object$spec[["forecast"]]   <- "recursive"
@@ -288,7 +289,7 @@ print.recursive <- function(x, ...) {
     } else if (inherits(x, "workflow")) {
         cat("Recursive [workflow]\n\n")
     } else {
-        cat("Recursive [workflow]\n\n")
+       cat("Recursive [modeltime ensemble]\n\n")
     }
 
     y <- x
