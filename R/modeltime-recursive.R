@@ -266,7 +266,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
     object
 }
 
-
+#' @export
 recursive.mdl_time_ensemble <- function(object, transform, train_tail, ...){
 
     object$spec[["forecast"]]   <- "recursive"
@@ -277,7 +277,7 @@ recursive.mdl_time_ensemble <- function(object, transform, train_tail, ...){
     .class <- class(object)
     class(object) <- c("recursive_ensemble", .class)
 
-    #' Model silently wrapped with modeltime_table
+    # Model silently wrapped with modeltime_table
     modeltime_table(object)
 }
 

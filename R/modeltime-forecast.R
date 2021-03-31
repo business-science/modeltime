@@ -983,7 +983,7 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
             dplyr::filter(.key == "prediction") %>%
             .[1,]
 
-        .forecasts <- bind_rows(
+        .forecasts <- dplyr::bind_rows(
             .forecasts, .nth_forecast_from_model
         )
 
