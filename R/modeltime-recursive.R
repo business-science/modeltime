@@ -278,7 +278,9 @@ recursive.mdl_time_ensemble <- function(object, transform, train_tail, ...){
     class(object) <- c("recursive_ensemble", .class)
 
     # Model silently wrapped with modeltime_table
-    modeltime_table(object)
+    # modeltime_table(object)
+
+    return(object)
 }
 
 #' @export
