@@ -926,9 +926,8 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
 }
 
-#' For now, it's considered to be applied for ensemble objects
 #' @export
-mdl_time_forecast.recursive <- function(object, calibration_data,
+mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
                                         new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
                                         keep_data = FALSE, arrange_index = FALSE, ...){
     # SETUP ----

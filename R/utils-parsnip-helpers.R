@@ -43,7 +43,11 @@ pull_parsnip_preprocessor.model_fit <- function(object) {
 
 find_parsnip_formula_form <- function(object) {
 
-    object <- object$fit
+    if (is_modeltime_model(object)){
+        object <- object$fit$models$model_1
+    } else {
+        object <- object$fit
+    }
 
     form <- NULL
 
