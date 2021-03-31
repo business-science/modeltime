@@ -292,6 +292,9 @@ print.recursive <- function(x, ...) {
     }
 
     y <- x
+    class(y) <- class(y)[class(y) %>% stringr::str_detect("recursive", negate = TRUE)]
+    print(y)
+    invisible(x)
 }
 
 #' @export
