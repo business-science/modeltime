@@ -1,8 +1,12 @@
 # 0.5.0.9000 Development Version
 
+### Recursive Ensemble Predictions
+
+- Add support for `recursive()` for ensembles. 
+
 # 0.5.0
 
-### Recursive Predictions
+### Recursive Panel Predictions
 
 - `recursive()` (#71) - Received a full upgrade to work with Panel Data. 
 - __New Vignette__: "Recursive Forecasting" with Modeltime

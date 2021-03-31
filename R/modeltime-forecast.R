@@ -942,8 +942,7 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
     .first_slice <- new_data %>%
         dplyr::slice_head(n = 1)
 
-    .forecasts <-
-        modeltime::mdl_time_forecast(
+    .forecasts <- modeltime::mdl_time_forecast(
             object,
             new_data = .first_slice,
             h = h,
@@ -953,8 +952,7 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
             ...
         )
 
-    .forecast_from_model <-
-        .forecasts %>%
+    .forecast_from_model <- .forecasts %>%
         dplyr::filter(.key == "prediction")
 
     new_data[1, y_var] <- .forecast_from_model$.value
