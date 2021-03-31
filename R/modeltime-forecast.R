@@ -925,3 +925,70 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     return(ret)
 
 }
+
+#' @export
+mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
+                                        new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
+                                        keep_data = FALSE, arrange_index = FALSE, ...){
+    # SETUP ----
+    y_var <- object$spec$y_var
+
+    class(object) <- class(object)[-1]
+
+    .transform <- object$spec[["transform"]]
+    train_tail <- object$spec$train_tail
+
+    # LOOP LOGIC ----
+    .first_slice <- new_data %>%
+        dplyr::slice_head(n = 1)
+
+    .forecasts <-
+        modeltime::mdl_time_forecast(
+            object,
+            new_data = .first_slice,
+            h = h,
+            actual_data = actual_data,
+            keep_data = keep_data,
+            arrange_index = arrange_index,
+            ...
+        )
+
+    .forecast_from_model <-
+        .forecasts %>%
+        dplyr::filter(.key == "prediction")
+
+    new_data[1, y_var] <- .forecast_from_model$.value
+
+    for (i in 2:nrow(new_data)) {
+
+        .temp_new_data <- dplyr::bind_rows(
+            train_tail,
+            new_data
+        )
+
+        .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
+
+        .nth_forecast <- modeltime::mdl_time_forecast(
+            object,
+            new_data = .nth_slice,
+            h = h,
+            actual_data = actual_data,
+            keep_data = keep_data,
+            arrange_index = arrange_index,
+            ...
+        )
+
+        .nth_forecast_from_model <-
+            .nth_forecast %>%
+            dplyr::filter(.key == "prediction") %>%
+            .[1,]
+
+        .forecasts <- bind_rows(
+            .forecasts, .nth_forecast_from_model
+        )
+
+        new_data[i, y_var] <- .nth_forecast_from_model$.value
+    }
+
+    return(.forecasts)
+}

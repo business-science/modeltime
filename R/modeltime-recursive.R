@@ -266,19 +266,32 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
     object
 }
 
+recursive.mdl_time_ensemble <- function(object, transform, train_tail, ...){
+
+    object$spec[["forecast"]]   <- "recursive"
+    object$spec[["transform"]]  <- .prepare_transform(transform)
+    object$spec[["train_tail"]] <- train_tail
+    object$spec[["y_var"]]      <- object$model_tbl$.model[[1]]$preproc$y_var
+
+    .class <- class(object)
+    class(object) <- c("recursive_ensemble", .class)
+
+    #' Model silently wrapped with modeltime_table
+    modeltime_table(object)
+}
+
 #' @export
 print.recursive <- function(x, ...) {
 
     if (inherits(x, "model_fit")) {
         cat("Recursive [parsnip model]\n\n")
+    } else if (inherits(x, "workflow")) {
+        cat("Recursive [workflow]\n\n")
     } else {
         cat("Recursive [workflow]\n\n")
     }
 
     y <- x
-    class(y) <- class(y)[class(y) %>% stringr::str_detect("recursive", negate = TRUE)]
-    print(y)
-    invisible(x)
 }
 
 #' @export
