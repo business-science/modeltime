@@ -346,7 +346,7 @@ safe_modeltime_forecast_map <- function(data, new_data = NULL, h = NULL, actual_
 
     safe_modeltime_forecast <- purrr::safely(mdl_time_forecast, otherwise = NA, quiet = FALSE)
 
-data %>%
+    data %>%
         dplyr::mutate(.nested.col = purrr::map2(
             .x         = .model,
             .y         = .calibration_data,
