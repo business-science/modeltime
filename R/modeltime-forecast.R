@@ -930,10 +930,33 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
                                         new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
                                         keep_data = FALSE, arrange_index = FALSE, ...){
+
+    if (inherits(object, "recursive")){
+        ret <- mdl_time_forecast_resursive_ensemble(object = object, calibration_data = calibration_data,
+                                                           new_data = new_data, h = h, actual_data = actual_data,
+                                                           bind_actual = bind_actual, keep_data = keep_data,
+                                                           arrange_index = arrange_index, ...)
+    }
+
+    if (inherits(object, "recursive_panel")){
+        ret <- mdl_time_forecast_resursive_ensemble_panel(object = object, calibration_data = calibration_data,
+                                                                 new_data = new_data, h = h, actual_data = actual_data,
+                                                                 bind_actual = bind_actual, keep_data = keep_data,
+                                                                 arrange_index = arrange_index, ...)
+    }
+
+    return(ret)
+
+}
+
+#' @export
+mdl_time_forecast_resursive_ensemble <- function(object, calibration_data,
+                                                 new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
+                                                 keep_data = FALSE, arrange_index = FALSE, ...){
     # SETUP ----
     y_var <- object$spec$y_var
 
-    class(object) <- class(object)[-1]
+    class(object) <- class(object)[3:length(class(object))]
 
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
@@ -986,6 +1009,111 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
         )
 
         new_data[i, y_var] <- .nth_forecast_from_model$.value
+    }
+
+    return(.forecasts)
+}
+
+
+#' @export
+mdl_time_forecast_resursive_ensemble_panel <- function(object, calibration_data,
+                                                       new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
+                                                       keep_data = FALSE, arrange_index = FALSE, ...){
+    # SETUP ----
+    y_var <- object$spec$y_var
+
+    class(object) <- class(object)[3:length(class(object))]
+
+    .transform <- object$spec[["transform"]]
+    train_tail <- object$spec$train_tail
+    id         <- object$spec$id
+
+    .id <- dplyr::ensym(id)
+
+    # LOOP LOGIC ----
+
+    .preds <- tibble::tibble(.id = new_data %>% dplyr::select(!! .id) %>% purrr::as_vector(),
+                             .pred = numeric(nrow(new_data))) %>%
+        dplyr::group_by(.id) %>%
+        dplyr::mutate(rowid.. = dplyr::row_number()) %>%
+        dplyr::ungroup()
+
+    .first_slice <- new_data %>%
+        dplyr::group_by(!! .id) %>%
+        dplyr::slice_head(n = 1) %>%
+        dplyr::ungroup()
+
+    new_data <- new_data %>%
+        dplyr::group_by(!! .id) %>%
+        dplyr::mutate(rowid.. = dplyr::row_number()) %>%
+        dplyr::ungroup()
+
+    if ("rowid.." %in% names(.first_slice)) {
+        .first_slice <- .first_slice %>% dplyr::select(-rowid..)
+    }
+
+    .forecasts <-
+        modeltime::mdl_time_forecast(
+            object,
+            new_data = .first_slice,
+            h = h,
+            actual_data = actual_data,
+            keep_data = keep_data,
+            arrange_index = arrange_index,
+            ...
+        ) %>%
+        dplyr::filter(!is.na(.value))
+
+    .forecast_from_model <-
+        .forecasts %>%
+        dplyr::filter(.key == "prediction")
+
+    .preds[.preds$rowid.. == 1, 2] <- new_data[new_data$rowid.. == 1, y_var] <- .forecast_from_model$.value
+
+    .groups <- new_data %>%
+        dplyr::group_by(!! .id) %>%
+        dplyr::count(!! .id) %>%
+        dim() %>%
+        .[1]
+
+    new_data_size <- nrow(.preds)/.groups
+
+    for (i in 2:new_data_size) {
+
+        .temp_new_data <- dplyr::bind_rows(
+            train_tail,
+            new_data
+        )
+
+        .nth_slice <- .transform(.temp_new_data, new_data_size, i, id)
+
+        if ("rowid.." %in% names(.first_slice)) {
+            .first_slice <- .first_slice %>% dplyr::select(-rowid..)
+        }
+
+        .nth_slice <- .nth_slice[names(.first_slice)]
+
+        .nth_forecast <- modeltime::mdl_time_forecast(
+            object,
+            new_data = .nth_slice,
+            h = h,
+            actual_data = actual_data,
+            keep_data = keep_data,
+            arrange_index = arrange_index,
+            ...
+        ) %>%
+            dplyr::filter(!is.na(.value))
+
+        .nth_forecast_from_model <-
+            .nth_forecast %>%
+            dplyr::filter(.key == "prediction")
+
+        .forecasts <- dplyr::bind_rows(
+            .forecasts, .nth_forecast_from_model
+        )
+
+
+        .preds[.preds$rowid.. == i, 2] <- new_data[new_data$rowid.. == i, y_var] <- .nth_forecast_from_model$.value
     }
 
     return(.forecasts)
