@@ -276,7 +276,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
     ret_1 <- data %>%
         dplyr::ungroup() %>%
         dplyr::slice(1) %>%
-        modeltime:::safe_modeltime_forecast_map(
+        safe_modeltime_forecast_map(
             new_data      = new_data,
             h             = h,
             actual_data   = actual_data,
@@ -352,7 +352,7 @@ data %>%
             .y         = .calibration_data,
             .f         = function(obj, cal) {
 
-                ret <- mdl_time_forecast(
+                ret <- safe_modeltime_forecast(
                     obj, cal,
                     new_data      = new_data,
                     h             = h,
@@ -362,9 +362,9 @@ data %>%
                     arrange_index = arrange_index
                 )
 
-                #err <- ret$error
+                err <- ret$error
 
-                #ret <- ret$result
+                ret <- ret$result
 
                 # if (!is.null(error)) warning(err)
 
