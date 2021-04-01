@@ -308,8 +308,10 @@ print.recursive_panel <- function(x, ...) {
 
     if (inherits(x, "model_fit")) {
         cat("Recursive [parsnip model]\n\n")
-    } else {
+    } else if (inherits(x, "workflow")) {
         cat("Recursive [workflow]\n\n")
+    } else {
+        cat("Recursive [modeltime ensemble]\n\n")
     }
 
     y <- x

@@ -949,7 +949,7 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
 
 }
 
-#' @export
+
 mdl_time_forecast_resursive_ensemble <- function(object, calibration_data,
                                                  new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
                                                  keep_data = FALSE, arrange_index = FALSE, ...){
@@ -1015,7 +1015,7 @@ mdl_time_forecast_resursive_ensemble <- function(object, calibration_data,
 }
 
 
-#' @export
+
 mdl_time_forecast_resursive_ensemble_panel <- function(object, calibration_data,
                                                        new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
                                                        keep_data = FALSE, arrange_index = FALSE, ...){
