@@ -932,14 +932,14 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
                                         keep_data = FALSE, arrange_index = FALSE, ...){
 
     if (inherits(object, "recursive")){
-        ret <- mdl_time_forecast_resursive_ensemble(object = object, calibration_data = calibration_data,
+        ret <- mdl_time_forecast_recursive_ensemble(object = object, calibration_data = calibration_data,
                                                            new_data = new_data, h = h, actual_data = actual_data,
                                                            bind_actual = bind_actual, keep_data = keep_data,
                                                            arrange_index = arrange_index, ...)
     }
 
     if (inherits(object, "recursive_panel")){
-        ret <- mdl_time_forecast_resursive_ensemble_panel(object = object, calibration_data = calibration_data,
+        ret <- mdl_time_forecast_recursive_ensemble_panel(object = object, calibration_data = calibration_data,
                                                                  new_data = new_data, h = h, actual_data = actual_data,
                                                                  bind_actual = bind_actual, keep_data = keep_data,
                                                                  arrange_index = arrange_index, ...)
@@ -950,7 +950,7 @@ mdl_time_forecast.recursive_ensemble <- function(object, calibration_data,
 }
 
 
-mdl_time_forecast_resursive_ensemble <- function(object, calibration_data,
+mdl_time_forecast_recursive_ensemble <- function(object, calibration_data,
                                                  new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
                                                  keep_data = FALSE, arrange_index = FALSE, ...){
     # SETUP ----
@@ -1016,7 +1016,7 @@ mdl_time_forecast_resursive_ensemble <- function(object, calibration_data,
 
 
 
-mdl_time_forecast_resursive_ensemble_panel <- function(object, calibration_data,
+mdl_time_forecast_recursive_ensemble_panel <- function(object, calibration_data,
                                                        new_data = NULL, h = NULL, actual_data = NULL, bind_actual = TRUE,
                                                        keep_data = FALSE, arrange_index = FALSE, ...){
     # SETUP ----
@@ -1029,6 +1029,12 @@ mdl_time_forecast_resursive_ensemble_panel <- function(object, calibration_data,
     id         <- object$spec$id
 
     .id <- dplyr::ensym(id)
+
+    # print("Sym ID")
+    # print(.id)
+    #
+    # print("New Data")
+    # print(new_data)
 
     # LOOP LOGIC ----
 

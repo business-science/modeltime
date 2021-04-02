@@ -678,14 +678,16 @@ panel_tail <- function(data, id, n){
 
         .transform_fun <- function(temp_new_data, new_data_size, slice_idx, id) {
 
-            id <- as.character(id)
-            id <- dplyr::ensym(id)
+            id_chr <- as.character(id)
+            ..id   <- dplyr::ensym(id_chr)
+
+            # print(.transform(temp_new_data))
 
             .transform(temp_new_data) %>%
 
                 tibble::rowid_to_column(var = "..row_id") %>%
 
-                dplyr::group_by(!! id) %>%
+                dplyr::group_by(!! ..id) %>%
                 dplyr::group_split() %>%
                 purrr::map(function(x){
 
