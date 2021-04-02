@@ -345,7 +345,7 @@ mdl_time_refit.recursive_ensemble <- function(object, data, ..., control = NULL)
             dplyr::slice_tail(n = nrow(train_tail_old))
 
         # Refit as normal ensemble
-        object$spec   <- NULL
+        # object$spec   <- NULL
         class(object) <- class(object)[3:length(class(object))]
         object        <- mdl_time_refit(object, data, ..., control = control)
 
@@ -397,7 +397,7 @@ mdl_time_refit.recursive_ensemble <- function(object, data, ..., control = NULL)
         )
 
         # Need to overwrite transformer
-        # object$spec$transform <- transformer
+        object$spec$transform <- transformer
 
     }
 
