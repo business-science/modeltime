@@ -266,25 +266,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
     object
 }
 
-#' @export
-recursive.mdl_time_ensemble <- function(object, transform, train_tail, id = NULL, ...){
 
-    .class_obj <- if(!is.null(id)){"recursive_panel"} else {"recursive"}
-
-    object$spec[["forecast"]]   <- .class_obj
-    object$spec[["transform"]]  <- if(!is.null(id)){.prepare_panel_transform(transform)} else {.prepare_transform(transform)}
-    object$spec[["train_tail"]] <- train_tail
-    object$spec[["y_var"]]      <- object$model_tbl$.model[[1]]$preproc$y_var
-    object$spec[["id"]]         <- id
-
-    .class <- class(object)
-    class(object) <- c("recursive_ensemble", .class_obj,  .class)
-
-    # Model silently wrapped with modeltime_table
-    # modeltime_table(object)
-
-    return(object)
-}
 
 #' @export
 print.recursive <- function(x, ...) {
@@ -640,6 +622,14 @@ panel_tail <- function(data, id, n){
 
 # HELPERS ----
 
+#' Prepare Recursive Transformations
+#'
+#' @param .transform A transformation function
+#'
+#' @return A function that applies a recursive transformation
+#'
+#' @rdname dot_prepare_transform
+#' @export
 .prepare_transform <- function(.transform) {
 
     if (inherits(.transform, "recipe")) {
@@ -672,6 +662,8 @@ panel_tail <- function(data, id, n){
     .transform_fun
 }
 
+#' @rdname dot_prepare_transform
+#' @export
 .prepare_panel_transform <- function(.transform) {
 
     if (inherits(.transform, "function")) {
