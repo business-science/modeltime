@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
       </span>
     </div>
 
@@ -218,6 +218,45 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modeltime-0519000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.1.9000">
+<a href="#modeltime-0519000-development-version" class="anchor"></a>modeltime 0.5.1.9000 (Development Version)<small> Unreleased </small>
+</h1>
+</div>
+    <div id="modeltime-051" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.1">
+<a href="#modeltime-051" class="anchor"></a>modeltime 0.5.1<small> Unreleased </small>
+</h1>
+<div id="recursive-ensemble-predictions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#recursive-ensemble-predictions" class="anchor"></a>Recursive Ensemble Predictions</h3>
+<ul>
+<li>Add support for <code><a href="../reference/recursive.html">recursive()</a></code> for ensembles.</li>
+</ul>
+</div>
+</div>
+    <div id="modeltime-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#modeltime-050" class="anchor"></a>modeltime 0.5.0<small> 2021-03-29 </small>
+</h1>
+<div id="recursive-panel-predictions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#recursive-panel-predictions" class="anchor"></a>Recursive Panel Predictions</h3>
+<ul>
+<li>
+<code><a href="../reference/recursive.html">recursive()</a></code> (<a href='https://github.com/business-science/modeltime/issues/71'>#71</a>) - Received a full upgrade to work with Panel Data.</li>
+<li>
+<strong>New Vignette</strong>: “Recursive Forecasting” with Modeltime</li>
+</ul>
+</div>
+<div id="breaking-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking Changes</h3>
+<ul>
+<li>Deprecating <code>modeltime::metric_tweak()</code> for <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">yardstick::metric_tweak()</a></code>. The <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">yardstick::metric_tweak()</a></code> has a required <code>.name</code> argument in addition to <code>.fn</code>, which is needed for tuning.</li>
+</ul>
+</div>
+</div>
     <div id="modeltime-042" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.2">
 <a href="#modeltime-042" class="anchor"></a>modeltime 0.4.2<small> 2021-03-19 </small>

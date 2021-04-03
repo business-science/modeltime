@@ -1,12 +1,12 @@
-# 0.5.1.9000 Development Version
+# modeltime 0.5.1.9000 (Development Version)
 
-# 0.5.1 
+# modeltime 0.5.1 
 
 ### Recursive Ensemble Predictions
 
 - Add support for `recursive()` for ensembles. 
 
-# 0.5.0
+# modeltime 0.5.0
 
 ### Recursive Panel Predictions
 

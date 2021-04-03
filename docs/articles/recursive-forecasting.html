@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
       </span>
     </div>
 
@@ -263,12 +263,12 @@ Recursive Panel Forecast with XGBoost
 <code class="sourceCode R"><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
 
 <span class="va">m750_extended</span> <span class="op">&lt;-</span> <span class="va">m750</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span><span class="op">(</span>
         .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,
         .bind_data  <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="transform-function" class="section level2">
 <h2 class="hasAnchor">
@@ -279,7 +279,7 @@ Recursive Panel Forecast with XGBoost
     <span class="va">data</span> <span class="op">%&gt;%</span>
         <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op">%&gt;%</span>
         <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_slidify.html">tk_augment_slidify</a></span><span class="op">(</span>
-          <span class="fu">contains</span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
+          <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
           .f <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
           .period  <span class="op">=</span> <span class="fl">12</span>,
           .partial <span class="op">=</span> <span class="cn">TRUE</span>
@@ -293,7 +293,7 @@ Recursive Panel Forecast with XGBoost
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m750_rolling</span> <span class="op">&lt;-</span> <span class="va">m750_extended</span> <span class="op">%&gt;%</span>
     <span class="fu">lag_roll_transformer</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
 
 <span class="va">m750_rolling</span>
 <span class="co">#&gt; # A tibble: 330 x 27</span>
@@ -347,7 +347,7 @@ Recursive Panel Forecast with XGBoost
 <p>The <strong>future data</strong> has missing values in the “value” column. We isolate these. Our autoregressive algorithm will predict these. Notice that the lags have missing data, this is OK - and why we are going to use <code><a href="../reference/recursive.html">recursive()</a></code> to fill these missing values in with predictions.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">future_data</span>
 <span class="co">#&gt; # A tibble: 24 x 27</span>
@@ -385,9 +385,9 @@ Recursive Panel Forecast with XGBoost
 <a href="#model-1-baseline-straight-line-forecast-model" class="anchor"></a>Model 1 (Baseline): Straight-Line Forecast Model</h3>
 <p>A straight-line forecast is just to illustrate the effect of no autoregressive features. Consider this a NAIVE modeling approach. The only feature that is used as a dependent variable is the “date” column.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">fit</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span>
 
 <span class="va">model_fit_lm</span>
 <span class="co">#&gt; parsnip model object</span>
@@ -418,9 +418,9 @@ Recursive Panel Forecast with XGBoost
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Autoregressive Forecast</span>
-<span class="va">model_fit_lm_recursive</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">fit</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">model_fit_lm_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="co"># One additional step - use recursive()</span>
     <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span>
         transform  <span class="op">=</span> <span class="va">lag_roll_transformer</span>,
@@ -432,7 +432,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  4ms </span>
+<span class="co">#&gt; Fit time:  5ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span>
@@ -521,26 +521,26 @@ Recursive Panel Forecast with XGBoost
 <span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
 
 <span class="va">m4_extended</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span><span class="op">(</span>
         .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,
         .bind_data  <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># TRANSFORM FUNCTION ----</span>
 <span class="co"># - NOTE - We create lags by group</span>
 <span class="va">lag_roll_transformer_grouped</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span>
     <span class="va">data</span> <span class="op">%&gt;%</span>
-        <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
         <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op">%&gt;%</span>
         <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_slidify.html">tk_augment_slidify</a></span><span class="op">(</span>
-          .value   <span class="op">=</span> <span class="fu">contains</span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
+          .value   <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
           .f       <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
           .period  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,
           .partial <span class="op">=</span> <span class="cn">TRUE</span>
         <span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span>
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">m4_lags</span> <span class="op">&lt;-</span> <span class="va">m4_extended</span> <span class="op">%&gt;%</span>
@@ -550,16 +550,16 @@ Recursive Panel Forecast with XGBoost
     <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Modeling Autoregressive Panel Data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
-<span class="va">model_fit_xgb_recursive</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>
+<span class="va">model_fit_xgb_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>
         mode <span class="op">=</span> <span class="st">"regression"</span>,
         learn_rate <span class="op">=</span> <span class="fl">0.35</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">fit</span><span class="op">(</span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
         <span class="va">value</span> <span class="op">~</span> <span class="va">.</span> 
         <span class="op">+</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
         <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> 
@@ -582,7 +582,7 @@ Recursive Panel Forecast with XGBoost
         actual_data <span class="op">=</span> <span class="va">m4_monthly</span>,
         keep_data   <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
         .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,
         .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>,
