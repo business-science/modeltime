@@ -1,4 +1,4 @@
-# 0.5.1 Development Version
+# 0.5.1 
 
 ### Recursive Ensemble Predictions
 
