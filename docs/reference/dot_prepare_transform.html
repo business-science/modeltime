@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Modeltime Refit Helpers — mdl_time_refit • modeltime</title>
+<title>Prepare Recursive Transformations — .prepare_transform • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,9 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Modeltime Refit Helpers — mdl_time_refit" />
-<meta property="og:description" content="Used for low-level refitting of modeltime, parnsip and workflow models
-These functions are not intended for user use." />
+<meta property="og:title" content="Prepare Recursive Transformations — .prepare_transform" />
+<meta property="og:description" content="Prepare Recursive Transformations" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -216,42 +215,31 @@ These functions are not intended for user use." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Modeltime Refit Helpers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-refit.R'><code>R/modeltime-refit.R</code></a></small>
-    <div class="hidden name"><code>mdl_time_refit.Rd</code></div>
+    <h1>Prepare Recursive Transformations</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-recursive.R'><code>R/modeltime-recursive.R</code></a></small>
+    <div class="hidden name"><code>dot_prepare_transform.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Used for low-level refitting of modeltime, parnsip and workflow models
-These functions are not intended for user use.</p>
+    <p>Prepare Recursive Transformations</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mdl_time_refit</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>data</span>, <span class='va'>...</span>, control <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>.prepare_transform</span><span class='op'>(</span><span class='va'>.transform</span><span class='op'>)</span>
+
+<span class='fu'>.prepare_panel_transform</span><span class='op'>(</span><span class='va'>.transform</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>A Modeltime Table</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>A <code>tibble</code> that contains data to retrain the model(s) using.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Under construction. Additional arguments to control refitting.</p></td>
-    </tr>
-    <tr>
-      <th>control</th>
-      <td><p>Under construction. Will be used to control refitting.</p></td>
+      <th>.transform</th>
+      <td><p>A transformation function</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble with forecast features</p>
+    <p>A function that applies a recursive transformation</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

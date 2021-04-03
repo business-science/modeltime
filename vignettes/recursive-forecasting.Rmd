@@ -34,6 +34,9 @@ This short tutorial shows how you can use `recursive()` to:
 knitr::include_graphics("recursive_panel_forecast.png")
 ```
 
+__Forecasting with Recursive Ensembles__
+
+We have a separate `modeltime.ensemble` package that includes support for `recursive()`. Making recursive ensembles is covered in the ["Forecasting with Recursive Ensembles" article](https://business-science.github.io/modeltime.ensemble/articles/recursive-ensembles.html).
 
 # What is a Recursive Model?
 
@@ -48,6 +51,8 @@ A solution that `recursive()` implements is to iteratively fill these missing va
 1. __Single time series predictions__ - Effectively turning any `tidymodels` model into an Autoregressive (AR) model
 
 2. __Panel time series predictions__ - In many situations we need to forecast more than one time series. We can batch-process these with 1 model by processing time series groups as panels. This technique can be extended to recursive forecasting for scalable models (1 model that predicts many time series).
+
+
 
 # Libraries
 
