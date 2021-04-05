@@ -153,7 +153,43 @@ get_model_description.workflow <- function(object, indicate_training = FALSE, up
 }
 
 
+#' @export
+get_model_description.recursive <- function(object, indicate_training = FALSE, upper_case = TRUE) {
 
+    class(object) <- class(object)[3:length(class(object))]
+
+    desc <- get_model_description(object, indicate_training = FALSE, upper_case = TRUE)
+
+    desc <- paste("RECURSIVE", desc)
+
+    if (upper_case) {
+        desc <- toupper(desc)
+    } else {
+        desc <- tolower(desc)
+    }
+
+    return(desc)
+
+}
+
+#' @export
+get_model_description.recursive_panel <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+
+    class(object) <- class(object)[3:length(class(object))]
+
+    desc <- get_model_description(object, indicate_training = FALSE, upper_case = TRUE)
+
+    desc <- paste("RECURSIVE", desc)
+
+    if (upper_case) {
+        desc <- toupper(desc)
+    } else {
+        desc <- tolower(desc)
+    }
+
+    return(desc)
+
+}
 
 
 # ARIMA Model Descriptions ----
