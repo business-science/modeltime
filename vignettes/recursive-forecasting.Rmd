@@ -208,17 +208,22 @@ model_fit_lm_recursive
 
 Once we have our fitted model, we can follow the [Modeltime Workflow](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) (note we are skipping calibration and refitting, but this can be performed to get confidence intervals):
 
--   Add fitted models to a **Model Table** using `modeltime_table()`.
-
--   Perform **Forecast Evaluation** using `modeltime_forecast()` and `plot_modeltime_forecast()`.
+First, we add fitted models to a **Model Table** using `modeltime_table()`. (Note - If your model description says "LM", install the development version of `modeltime`, which has improved model descriptions for recursive models).
 
 ```{r}
-modeltime_table(
+model_tbl <- modeltime_table(
     model_fit_lm,
     model_fit_lm_recursive
-) %>%
-    update_model_description(2, "LM - Lag Roll") %>%
-    
+) 
+
+model_tbl
+```
+
+Next, we perform **Forecast Evaluation** using `modeltime_forecast()` and `plot_modeltime_forecast()`.
+
+```{r}
+model_tbl %>% 
+  
     # Forecast using future data
     modeltime_forecast(
         new_data    = future_data,
@@ -231,6 +236,7 @@ modeltime_table(
         .conf_interval_show = FALSE
     )
 ```
+
 
 We can see the benefit of autoregressive features. 
 
@@ -248,9 +254,12 @@ __More sophisticated algorithms:__
    - Instead of using a simple Linear Regression
    - We use `xgboost` to forecast multiple time series
 
+## Data Visualization
+
+Now we have 4 time series that we will forecast.
+
 ```{r}
-# M4 Monthly Dataset
-m4_monthly %>% 
+m4_monthly %>%  
   plot_time_series(
     .date_var    = date, 
     .value       = value, 
@@ -258,8 +267,14 @@ m4_monthly %>%
     .facet_ncol  = 2,
     .smooth      = F, 
     .interactive = F
-  )
+)
+```
 
+## Data Preparation
+
+We use `timetk::future_frame()` to project each series forward by the forecast horizon. This sets up an extended data set with each series extended by 24 time stamps. 
+
+```{r}
 FORECAST_HORIZON <- 24
 
 m4_extended <- m4_monthly %>%
@@ -269,9 +284,13 @@ m4_extended <- m4_monthly %>%
         .bind_data  = TRUE
     ) %>%
     ungroup()
+```
 
-# TRANSFORM FUNCTION ----
-# - NOTE - We create lags by group
+## Transform Function
+
+The only difference is that we are applying any lags by group. 
+
+```{r}
 lag_roll_transformer_grouped <- function(data){
     data %>%
         group_by(id) %>%
@@ -284,16 +303,36 @@ lag_roll_transformer_grouped <- function(data){
         ) %>%
         ungroup()
 }
+```
 
+## Apply the Transform Function
+
+We apply the groupwise lag transformation to the extended data set. This adds autoregressive features. 
+
+```{r}
 m4_lags <- m4_extended %>%
     lag_roll_transformer_grouped()
 
+m4_lags
+```
+
+## Split into Training and Future Data
+
+Just like the single case, we split into future and training data. 
+
+```{r}
 train_data <- m4_lags %>%
     drop_na()
 
 future_data <- m4_lags %>%
     filter(is.na(value))
+```
 
+## Modeling
+
+We'll use a more sophisticated algorithm `xgboost` to develop an autoregressive model. 
+
+```{r}
 # Modeling Autoregressive Panel Data
 set.seed(123)
 model_fit_xgb_recursive <- boost_tree(
@@ -315,10 +354,25 @@ model_fit_xgb_recursive <- boost_tree(
         train_tail = panel_tail(train_data, id, FORECAST_HORIZON)
     )
 
-# Visualize with Modeltime
-modeltime_table(
+model_fit_xgb_recursive
+```
+
+## Modeltime Forecasting Workflow
+
+First, create a Modeltime Table. Note - If your model description says "XGBOOST", install the development version of `modeltime`, which has improved model descriptions for recursive models).
+
+```{r}
+model_tbl <- modeltime_table(
     model_fit_xgb_recursive
-) %>%
+)
+
+model_tbl
+```
+
+Next, we can forecast the results. 
+
+```{r}
+model_tbl %>%
     modeltime_forecast(
         new_data    = future_data,
         actual_data = m4_monthly,
@@ -331,6 +385,7 @@ modeltime_table(
         .facet_ncol         = 2
     )
 ```
+
 
 ## Summary
 
