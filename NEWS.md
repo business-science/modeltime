@@ -1,17 +1,19 @@
 # modeltime 0.5.1.9000 (Development Version)
 
+- Improve Model Description of Recursive Models (#96)
+
 # modeltime 0.5.1 
 
 ### Recursive Ensemble Predictions
 
-- Add support for `recursive()` for ensembles. 
+- Add support for `recursive()` for ensembles. The new recursive ensemble functionality is in `modeltime.ensemble` >= 0.3.0.9000.
 
 # modeltime 0.5.0
 
 ### Recursive Panel Predictions
 
 - `recursive()` (#71) - Received a full upgrade to work with Panel Data. 
-- __New Vignette__: "Recursive Forecasting" with Modeltime
+- __New Vignette__: ["Autoregressive Forecasting with Recursive"](https://business-science.github.io/modeltime/articles/recursive-forecasting.html)
 
 ### Breaking Changes
 
