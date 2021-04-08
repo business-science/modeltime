@@ -193,6 +193,59 @@ make_exp_smoothing <- function() {
         )
     )
 
+
+    # THETA ----
+
+    # * Model ----
+    parsnip::set_model_engine("exp_smoothing", mode = "regression", eng = "theta")
+    parsnip::set_dependency("exp_smoothing", "theta", "forecast")
+    parsnip::set_dependency("exp_smoothing", "theta", "modeltime")
+
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "exp_smoothing",
+        eng     = "theta",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE,
+            allow_sparse_x       = FALSE
+        )
+    )
+
+    # * Fit ----
+    parsnip::set_fit(
+        model         = "exp_smoothing",
+        eng           = "theta",
+        mode          = "regression",
+        value         = list(
+            interface = "data.frame",
+            protect   = c("x", "y"),
+            func      = c(fun = "theta_fit_impl"),
+            defaults  = list()
+        )
+    )
+
+    # * Predict ----
+    parsnip::set_pred(
+        model         = "exp_smoothing",
+        eng           = "theta",
+        mode          = "regression",
+        type          = "numeric",
+        value         = list(
+            pre       = NULL,
+            post      = NULL,
+            func      = c(fun = "predict"),
+            args      =
+                list(
+                    object   = rlang::expr(object$fit),
+                    new_data = rlang::expr(new_data)
+                )
+        )
+    )
+
 }
 
 # nocov end

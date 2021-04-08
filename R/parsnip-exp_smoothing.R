@@ -34,6 +34,7 @@
 #'
 #'  - "ets" (default) - Connects to [forecast::ets()]
 #'  - "croston" - Connects to [forecast::croston()]
+#'  - "theta" - Connects to [forecast::thetaf()]
 #'
 #' @section Engine Details:
 #'
@@ -95,6 +96,13 @@
 #' - `xreg` - This model is not set up to use exogenous regressors. Only univariate
 #'   models will be fit.
 #'
+#' __theta__
+#'
+#' The engine uses [forecast::thetaf()]
+#'
+#' Parameter Notes:
+#' - `xreg` - This model is not set up to use exogenous regressors. Only univariate
+#'   models will be fit.
 #'
 #' @section Fit Details:
 #'
@@ -179,6 +187,18 @@
 #'         smooth_level = 0.2
 #'     ) %>%
 #'     set_engine("croston")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
+#'
+#'
+#' # ---- THETA ----
+#'
+#' #' # Model Spec
+#' model_spec <- exp_smoothing() %>%
+#'     set_engine("theta")
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
@@ -531,6 +551,94 @@ croston_predict_impl <- function(object, new_data, ...) {
 }
 
 
+# THETA ----
+
+#' Low-Level Exponential Smoothing function for translating modeltime to forecast
+#'
+#' @inheritParams exp_smoothing
+#' @inheritParams forecast::thetaf
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param ... Additional arguments passed to `forecast::ets`
+#'
+#' @export
+theta_fit_impl <- function(x, y, ...){
+
+    others <- list(...)
+
+    outcome    <- y # Comes in as a vector
+    predictors <- x # Comes in as a data.frame (dates and possible xregs)
+
+    fit_theta <- forecast::thetaf(y = outcome, h = length(outcome), ...)
+
+    # 2. Predictors - Handle Dates
+    index_tbl <- modeltime::parse_index_from_data(predictors)
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
+
+    modeltime::new_modeltime_bridge(
+
+        class  = "theta_fit_impl",
+
+        models = list(model_1 = fit_theta),
+
+        data   = tibble::tibble(
+            !! idx_col := idx,
+            .actual    = as.numeric(fit_theta$x),
+            .fitted    = as.numeric(fit_theta$fitted),
+            .residuals = as.numeric(fit_theta$residuals)
+        ),
+
+        extras = list(
+            outcome = outcome,
+            others  = others
+        ), # Can add xreg preprocessors here
+        desc   = stringr::str_c("Theta Method")
+    )
+}
+
+#' @export
+print.theta_fit_impl <- function(x, ...) {
+    if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
+    cat("---\n")
+    print(tibble::as_tibble(x$models$model_1))
+    invisible(x)
+}
+
+#' @export
+predict.theta_fit_impl <- function(object, new_data, ...) {
+    theta_predict_impl(object, new_data, ...)
+}
+
+#' Bridge prediction function for THETA models
+#'
+#' @inheritParams parsnip::predict.model_fit
+#' @param ... Additional arguments passed to `stats::predict()`
+#'
+#' @export
+theta_predict_impl <- function(object, new_data, ...) {
+    # PREPARE INPUTS
+    model         <- object$models$model_1
+    outcome       <- object$extras$outcome
+    others        <- object$extras$others
+
+    h_horizon      <- nrow(new_data)
+
+    preds <- tryCatch({
+
+        pred_forecast <- forecast::forecast(model, h = h_horizon)
+
+        as.numeric(pred_forecast$mean)
+
+    }, error = function(e) {
+        fit <- forecast::thetaf(y = outcome, h = h_horizon)
+
+        as.numeric(fit$mean)
+
+    })
+
+    return(preds)
+}
 
 
 

@@ -57,6 +57,7 @@ Models can be created using the following \emph{engines}:
 \itemize{
 \item "ets" (default) - Connects to \code{\link[forecast:ets]{forecast::ets()}}
 \item "croston" - Connects to \code{\link[forecast:croston]{forecast::croston()}}
+\item "theta" - Connects to \code{\link[forecast:thetaf]{forecast::thetaf()}}
 }
 }
 \section{Engine Details}{
@@ -80,13 +81,10 @@ Other options can be set using \code{set_engine()}.
 
 The engine uses \code{\link[forecast:ets]{forecast::ets()}}.
 
-Function Parameters:\preformatted{## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, 
-##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, 
-##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", 
-##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", 
-##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, 
-##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", 
-##         "na.fail"), ...)
+Function Parameters:\preformatted{## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, phi = NULL, additive.only = FALSE, lambda = NULL, 
+##     biasadj = FALSE, lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", "amse", "mse", "sigma", "mae"), 
+##     nmse = 3, bounds = c("both", "usual", "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, 
+##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", "na.fail"), ...)
 }
 
 The main arguments are \code{model} and \code{damped} are defined using:
@@ -121,6 +119,16 @@ The main arguments are defined using:
 \itemize{
 \item \code{smooth_level()}: The "alpha" parameter
 }
+
+Parameter Notes:
+\itemize{
+\item \code{xreg} - This model is not set up to use exogenous regressors. Only univariate
+models will be fit.
+}
+
+\strong{theta}
+
+The engine uses \code{\link[forecast:thetaf]{forecast::thetaf()}}
 
 Parameter Notes:
 \itemize{
@@ -213,6 +221,18 @@ model_spec <- exp_smoothing(
         smooth_level = 0.2
     ) \%>\%
     set_engine("croston")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(log(value) ~ date, data = training(splits))
+model_fit
+
+
+# ---- THETA ----
+
+#' # Model Spec
+model_spec <- exp_smoothing() \%>\%
+    set_engine("theta")
 
 # Fit Spec
 model_fit <- model_spec \%>\%
