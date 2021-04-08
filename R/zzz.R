@@ -34,6 +34,4 @@
     make_window_reg()
     make_naive_reg()
 
-    make_croston_reg()
-    make_croston_reg_croston()
 }

@@ -10,7 +10,10 @@ exp_smoothing(
   error = NULL,
   trend = NULL,
   season = NULL,
-  damping = NULL
+  damping = NULL,
+  smooth_level = NULL,
+  smooth_trend = NULL,
+  smooth_seasonal = NULL
 )
 }
 \arguments{
@@ -27,35 +30,47 @@ If the error is multiplicative, the data must be non-negative.}
 
 \item{trend}{The form of the trend term: "auto", "additive", "multiplicative" or "none".}
 
-\item{season}{The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..}
+\item{season}{The form of the seasonal term: "auto", "additive", "multiplicative" or "none".}
 
 \item{damping}{Apply damping to a trend: "auto", "damped", or "none".}
+
+\item{smooth_level}{This is often called the "alpha" parameter used as the base level smoothing
+factor for exponential smoothing models.}
+
+\item{smooth_trend}{This is often called the "beta" parameter used as the trend smoothing
+factor for exponential smoothing models.}
+
+\item{smooth_seasonal}{This is often called the "gamma" parameter used as the seasonal smoothing
+factor for exponential smoothing models.}
 }
 \description{
 \code{exp_smoothing()} is a way to generate a \emph{specification} of an Exponential Smoothing model
 before fitting and allows the model to be created using
-different packages. Currently the only package is \code{forecast}.
+different packages. Currently the only package is \code{forecast}. Several algorithms are implemented:
+\itemize{
+\item ETS - Automated Exponential Smoothing
+\item CROSTON - Croston's forecast for intermittent demand
+}
 }
 \details{
-The data given to the function are not saved and are only used
-to determine the \emph{mode} of the model. For \code{exp_smoothing()}, the
-mode will always be "regression".
-
-The model can be created using the \code{fit()} function using the
-following \emph{engines}:
+Models can be created using the following \emph{engines}:
 \itemize{
 \item "ets" (default) - Connects to \code{\link[forecast:ets]{forecast::ets()}}
+\item "croston" - Connects to \code{\link[forecast:croston]{forecast::croston()}}
 }
 }
 \section{Engine Details}{
 
 
 The standardized parameter names in \code{modeltime} can be mapped to their original
-names in each engine:\tabular{ll}{
-   modeltime \tab forecast::ets \cr
-   seasonal_period() \tab ts(frequency) \cr
-   error(), trend(), season() \tab model ('ZZZ') \cr
-   damping() \tab damped (NULL) \cr
+names in each engine:\tabular{lll}{
+   modeltime \tab forecast::ets \tab forecast::croston() \cr
+   seasonal_period() \tab ts(frequency) \tab ts(frequency) \cr
+   error(), trend(), season() \tab model ('ZZZ') \tab NA \cr
+   damping() \tab damped (NULL) \tab NA \cr
+   smooth_level() \tab alpha (NULL) \tab alpha (0.1) \cr
+   smooth_trend() \tab beta (NULL) \tab NA \cr
+   smooth_seasonal() \tab gamma (NULL) \tab NA \cr
 }
 
 
@@ -80,12 +95,32 @@ The main arguments are \code{model} and \code{damped} are defined using:
 \item \code{trend()} = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"
 \item \code{season()} = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"
 \item \code{damping()} - "auto", "damped", "none" are converted to NULL, TRUE, FALSE
+\item \code{smooth_level()}, \code{smooth_trend()}, and \code{smooth_seasonal()} are
+automatically determined if not provided. They are mapped to "alpha", "beta" and "gamma", respectively.
 }
 
 By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
 \emph{in-sample data} following the underlying \code{forecast::ets()} automation routine.
 
 Other options and argument can be set using \code{set_engine()}.
+
+Parameter Notes:
+\itemize{
+\item \code{xreg} - This model is not set up to use exogenous regressors. Only univariate
+models will be fit.
+}
+
+\strong{croston}
+
+The engine uses \code{\link[forecast:croston]{forecast::croston()}}.
+
+Function Parameters:\preformatted{## function (y, h = 10, alpha = 0.1, x = y)
+}
+
+The main arguments are defined using:
+\itemize{
+\item \code{smooth_level()}: The "alpha" parameter
+}
 
 Parameter Notes:
 \itemize{
@@ -165,6 +200,19 @@ model_spec <- exp_smoothing(
         season           = "multiplicative"
     ) \%>\%
     set_engine("ets")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(log(value) ~ date, data = training(splits))
+model_fit
+
+# ---- CROSTON ----
+
+# Model Spec
+model_spec <- exp_smoothing(
+        smooth_level = 0.2
+    ) \%>\%
+    set_engine("croston")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

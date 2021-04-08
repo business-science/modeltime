@@ -11,7 +11,7 @@ make_exp_smoothing <- function() {
     parsnip::set_new_model("exp_smoothing")
     parsnip::set_model_mode("exp_smoothing", "regression")
 
-    # ets ----
+    # ETS ----
 
     # * Model ----
     parsnip::set_model_engine("exp_smoothing", mode = "regression", eng = "ets")
@@ -59,6 +59,30 @@ make_exp_smoothing <- function() {
         func         = list(pkg = "modeltime", fun = "damping"),
         has_submodel = FALSE
     )
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "ets",
+        parsnip      = "smooth_level",
+        original     = "alpha",
+        func         = list(pkg = "modeltime", fun = "smooth_level"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "ets",
+        parsnip      = "smooth_trend",
+        original     = "beta",
+        func         = list(pkg = "modeltime", fun = "smooth_trend"),
+        has_submodel = FALSE
+    )
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "ets",
+        parsnip      = "smooth_seasonal",
+        original     = "gamma",
+        func         = list(pkg = "modeltime", fun = "smooth_seasonal"),
+        has_submodel = FALSE
+    )
 
 
 
@@ -92,6 +116,69 @@ make_exp_smoothing <- function() {
     parsnip::set_pred(
         model         = "exp_smoothing",
         eng           = "ets",
+        mode          = "regression",
+        type          = "numeric",
+        value         = list(
+            pre       = NULL,
+            post      = NULL,
+            func      = c(fun = "predict"),
+            args      =
+                list(
+                    object   = rlang::expr(object$fit),
+                    new_data = rlang::expr(new_data)
+                )
+        )
+    )
+
+    # CROSTON ----
+
+    # * Model ----
+    parsnip::set_model_engine("exp_smoothing", mode = "regression", eng = "croston")
+    parsnip::set_dependency("exp_smoothing", "croston", "forecast")
+    parsnip::set_dependency("exp_smoothing", "croston", "modeltime")
+
+    # * Args ----
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "croston",
+        parsnip      = "smooth_level",
+        original     = "alpha",
+        func         = list(pkg = "modeltime", fun = "smooth_level"),
+        has_submodel = FALSE
+    )
+
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "exp_smoothing",
+        eng     = "croston",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE,
+            allow_sparse_x       = FALSE
+        )
+    )
+
+    # * Fit ----
+    parsnip::set_fit(
+        model         = "exp_smoothing",
+        eng           = "croston",
+        mode          = "regression",
+        value         = list(
+            interface = "data.frame",
+            protect   = c("x", "y"),
+            func      = c(fun = "croston_fit_impl"),
+            defaults  = list()
+        )
+    )
+
+    # * Predict ----
+    parsnip::set_pred(
+        model         = "exp_smoothing",
+        eng           = "croston",
         mode          = "regression",
         type          = "numeric",
         value         = list(

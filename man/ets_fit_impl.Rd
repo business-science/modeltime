@@ -12,6 +12,9 @@ ets_fit_impl(
   trend = "auto",
   season = "auto",
   damping = "auto",
+  alpha = NULL,
+  beta = NULL,
+  gamma = NULL,
   ...
 )
 }
@@ -28,9 +31,15 @@ If the error is multiplicative, the data must be non-negative.}
 
 \item{trend}{The form of the trend term: "auto", "additive", "multiplicative" or "none".}
 
-\item{season}{The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..}
+\item{season}{The form of the seasonal term: "auto", "additive", "multiplicative" or "none".}
 
 \item{damping}{Apply damping to a trend: "auto", "damped", or "none".}
+
+\item{alpha}{Value of alpha. If NULL, it is estimated.}
+
+\item{beta}{Value of beta. If NULL, it is estimated.}
+
+\item{gamma}{Value of gamma. If NULL, it is estimated.}
 
 \item{...}{Additional arguments passed to \code{forecast::ets}}
 }

@@ -2,9 +2,13 @@
 
 #' General Interface for Exponential Smoothing State Space Models
 #'
+#' @description
 #' `exp_smoothing()` is a way to generate a _specification_ of an Exponential Smoothing model
 #'  before fitting and allows the model to be created using
-#'  different packages. Currently the only package is `forecast`.
+#'  different packages. Currently the only package is `forecast`. Several algorithms are implemented:
+#'
+#'  - ETS - Automated Exponential Smoothing
+#'  - CROSTON - Croston's forecast for intermittent demand
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
@@ -15,18 +19,21 @@
 #' @param error The form of the error term: "auto", "additive", or "multiplicative".
 #'  If the error is multiplicative, the data must be non-negative.
 #' @param trend The form of the trend term: "auto", "additive", "multiplicative" or "none".
-#' @param season The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..
+#' @param season The form of the seasonal term: "auto", "additive", "multiplicative" or "none".
 #' @param damping Apply damping to a trend: "auto", "damped", or "none".
+#' @param smooth_level This is often called the "alpha" parameter used as the base level smoothing
+#'  factor for exponential smoothing models.
+#' @param smooth_trend This is often called the "beta" parameter used as the trend smoothing
+#'  factor for exponential smoothing models.
+#' @param smooth_seasonal This is often called the "gamma" parameter used as the seasonal smoothing
+#'  factor for exponential smoothing models.
 #'
 #' @details
-#' The data given to the function are not saved and are only used
-#'  to determine the _mode_ of the model. For `exp_smoothing()`, the
-#'  mode will always be "regression".
 #'
-#' The model can be created using the `fit()` function using the
-#'  following _engines_:
+#' Models can be created using the following _engines_:
 #'
 #'  - "ets" (default) - Connects to [forecast::ets()]
+#'  - "croston" - Connects to [forecast::croston()]
 #'
 #' @section Engine Details:
 #'
@@ -36,10 +43,13 @@
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("exp_smoothing")
 #' tibble::tribble(
-#'     ~ "modeltime", ~ "forecast::ets",
-#'     "seasonal_period()", "ts(frequency)",
-#'     "error(), trend(), season()", "model ('ZZZ')",
-#'     "damping()", "damped (NULL)"
+#'     ~ "modeltime", ~ "forecast::ets", ~ "forecast::croston()",
+#'     "seasonal_period()", "ts(frequency)", "ts(frequency)",
+#'     "error(), trend(), season()", "model ('ZZZ')", "NA",
+#'     "damping()", "damped (NULL)", "NA",
+#'     "smooth_level()", "alpha (NULL)", "alpha (0.1)",
+#'     "smooth_trend()", "beta (NULL)", "NA",
+#'     "smooth_seasonal()", "gamma (NULL)", "NA"
 #' ) %>% knitr::kable()
 #' ```
 #'
@@ -58,6 +68,8 @@
 #' - `trend()` = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"
 #' - `season()` = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"
 #' - `damping()` - "auto", "damped", "none" are converted to NULL, TRUE, FALSE
+#' - `smooth_level()`, `smooth_trend()`, and `smooth_seasonal()` are
+#'    automatically determined if not provided. They are mapped to "alpha", "beta" and "gamma", respectively.
 #'
 #' By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
 #' _in-sample data_ following the underlying `forecast::ets()` automation routine.
@@ -67,6 +79,21 @@
 #' Parameter Notes:
 #' - `xreg` - This model is not set up to use exogenous regressors. Only univariate
 #'  models will be fit.
+#'
+#' __croston__
+#'
+#' The engine uses [forecast::croston()].
+#'
+#' Function Parameters:
+#' ```{r echo = FALSE}
+#' str(forecast::croston)
+#' ```
+#' The main arguments are defined using:
+#' - `smooth_level()`: The "alpha" parameter
+#'
+#' Parameter Notes:
+#' - `xreg` - This model is not set up to use exogenous regressors. Only univariate
+#'   models will be fit.
 #'
 #'
 #' @section Fit Details:
@@ -145,16 +172,34 @@
 #'     fit(log(value) ~ date, data = training(splits))
 #' model_fit
 #'
+#' # ---- CROSTON ----
+#'
+#' # Model Spec
+#' model_spec <- exp_smoothing(
+#'         smooth_level = 0.2
+#'     ) %>%
+#'     set_engine("croston")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
+#'
 #' @export
 exp_smoothing <- function(mode = "regression", seasonal_period = NULL,
-                          error = NULL, trend = NULL, season = NULL, damping = NULL) {
+                          error = NULL, trend = NULL, season = NULL, damping = NULL,
+                          smooth_level = NULL, smooth_trend = NULL, smooth_seasonal = NULL
+                          ) {
 
     args <- list(
         seasonal_period   = rlang::enquo(seasonal_period),
         error             = rlang::enquo(error),
         trend             = rlang::enquo(trend),
         season            = rlang::enquo(season),
-        damping           = rlang::enquo(damping)
+        damping           = rlang::enquo(damping),
+        smooth_level      = rlang::enquo(smooth_level),
+        smooth_trend      = rlang::enquo(smooth_trend),
+        smooth_seasonal   = rlang::enquo(smooth_seasonal)
     )
 
     parsnip::new_model_spec(
@@ -186,6 +231,7 @@ print.exp_smoothing <- function(x, ...) {
 update.exp_smoothing <- function(object, parameters = NULL,
                                  seasonal_period = NULL,
                                  error = NULL, trend = NULL, season = NULL, damping = NULL,
+                                 smooth_level = NULL, smooth_trend = NULL, smooth_seasonal = NULL,
                                  fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
@@ -199,7 +245,10 @@ update.exp_smoothing <- function(object, parameters = NULL,
         error             = rlang::enquo(error),
         trend             = rlang::enquo(trend),
         season            = rlang::enquo(season),
-        damping           = rlang::enquo(damping)
+        damping           = rlang::enquo(damping),
+        smooth_level      = rlang::enquo(smooth_level),
+        smooth_trend      = rlang::enquo(smooth_trend),
+        smooth_seasonal   = rlang::enquo(smooth_seasonal)
     )
 
     args <- parsnip::update_main_parameters(args, parameters)
@@ -238,11 +287,12 @@ translate.exp_smoothing <- function(x, engine = x$engine, ...) {
 }
 
 
-# FIT - ets -----
+# ETS -----
 
 #' Low-Level Exponential Smoothing function for translating modeltime to forecast
 #'
 #' @inheritParams exp_smoothing
+#' @inheritParams forecast::ets
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
 #' @param period A seasonal frequency. Uses "auto" by default. A character phrase
@@ -252,7 +302,8 @@ translate.exp_smoothing <- function(x, engine = x$engine, ...) {
 #' @export
 ets_fit_impl <- function(x, y, period = "auto",
                          error = "auto", trend = "auto",
-                         season = "auto", damping = "auto", ...) {
+                         season = "auto", damping = "auto",
+                         alpha = NULL, beta = NULL, gamma = NULL, ...) {
 
     # X & Y
     # Expect outcomes  = vector
@@ -320,7 +371,8 @@ ets_fit_impl <- function(x, y, period = "auto",
     # XREGS - NOT USED FOR forecast::ets()
 
     # FIT
-    fit_ets <- forecast::ets(outcome, model = model_ets, damped = damping_ets, ...)
+    fit_ets <- forecast::ets(outcome, model = model_ets, damped = damping_ets,
+                             alpha = alpha, beta = beta, gamma = gamma, ...)
 
     # RETURN
     new_modeltime_bridge(
@@ -355,8 +407,6 @@ print.ets_fit_impl <- function(x, ...) {
 }
 
 
-# PREDICT ----
-
 #' @export
 predict.ets_fit_impl <- function(object, new_data, ...) {
     ets_predict_impl(object, new_data, ...)
@@ -389,8 +439,96 @@ ets_predict_impl <- function(object, new_data, ...) {
 }
 
 
+# CROSTON ----
 
+#' Low-Level Exponential Smoothing function for translating modeltime to forecast
+#'
+#' @inheritParams exp_smoothing
+#' @inheritParams forecast::croston
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param ... Additional arguments passed to `forecast::ets`
+#'
+#' @export
+croston_fit_impl <- function(x, y, alpha = 0.1, ...){
 
+    others <- list(...)
+
+    outcome    <- y # Comes in as a vector
+    predictors <- x # Comes in as a data.frame (dates and possible xregs)
+
+    fit_croston <- forecast::croston(y = outcome, h = length(outcome), alpha = alpha, ...)
+
+    # 2. Predictors - Handle Dates
+    index_tbl <- modeltime::parse_index_from_data(predictors)
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
+
+    modeltime::new_modeltime_bridge(
+
+        class  = "croston_fit_impl",
+
+        models = list(model_1 = fit_croston),
+
+        data   = tibble::tibble(
+            !! idx_col := idx,
+            .actual    = as.numeric(fit_croston$x),
+            .fitted    = as.numeric(fit_croston$fitted),
+            .residuals = as.numeric(fit_croston$residuals)
+        ),
+
+        extras = list(
+            outcome = outcome,
+            alpha   = alpha,
+            others  = others
+        ), # Can add xreg preprocessors here
+        desc   = stringr::str_c("Croston Method")
+    )
+}
+
+#' @export
+print.croston_fit_impl <- function(x, ...) {
+    if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
+    cat("---\n")
+    print(tibble::as_tibble(x$models$model_1))
+    invisible(x)
+}
+
+#' @export
+predict.croston_fit_impl <- function(object, new_data, ...) {
+    croston_predict_impl(object, new_data, ...)
+}
+
+#' Bridge prediction function for CROSTON models
+#'
+#' @inheritParams parsnip::predict.model_fit
+#' @param ... Additional arguments passed to `stats::predict()`
+#'
+#' @export
+croston_predict_impl <- function(object, new_data, ...) {
+    # PREPARE INPUTS
+    model         <- object$models$model_1
+    outcome       <- object$extras$outcome
+    alpha         <- object$extras$alpha
+    others        <- object$extras$others
+
+    h_horizon      <- nrow(new_data)
+
+    preds <- tryCatch({
+
+        pred_forecast <- forecast::forecast(model, h = h_horizon)
+
+        as.numeric(pred_forecast$mean)
+
+    }, error = function(e) {
+        fit <- forecast::croston(y = outcome, h = h_horizon, alpha = alpha)
+
+        as.numeric(fit$mean)
+
+    })
+
+    return(preds)
+}
 
 
 

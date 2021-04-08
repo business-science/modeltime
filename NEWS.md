@@ -1,6 +1,25 @@
 # modeltime 0.5.1.9000 (Development Version)
 
+### New Algorithms
+
+- CROSTON (#5, #98) - This is a new engige that has been added to `exp_smoothing()`. 
+
+### New Dials Parameters
+
+`exp_smoothing()` gained 3 new tunable parameters:
+
+- `smooth_level()`: This is often called the "alpha" parameter used as the base level smoothing factor for exponential smoothing models.
+- `smooth_trend`: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.
+- `smooth_seasonal`: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.
+
+### General Improvements
+
+
 - Improve Model Description of Recursive Models (#96)
+
+### Potential Breaking Changes
+
+- We've added new parameters to Exponential Smoothing Models. `exp_smoothing()` models produced in prior versions may require refitting with `modeltime_refit()` to upgrade their internals with the new parameters. 
 
 # modeltime 0.5.1 
 

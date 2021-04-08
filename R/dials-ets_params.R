@@ -1,6 +1,8 @@
 #' Tuning Parameters for Exponential Smoothing Models
 #'
+#' @inheritParams dials::Laplace
 #' @param values A character string of possible values.
+#'
 #'
 #' @details
 #' The main parameters for Exponential Smoothing models are:
@@ -10,6 +12,9 @@
 #' - `trend`: The form of the trend term: "additive", "multiplicative" or "none".
 #' - `season`: The form of the seasonal term: "additive", "multiplicative" or "none"..
 #' - `damping`: Apply damping to a trend: "damped", or "none".
+#' - `smooth_level`: This is often called the "alpha" parameter used as the base level smoothing factor for exponential smoothing models.
+#' - `smooth_trend`: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.
+#' - `smooth_seasonal`: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.
 #'
 #'
 #' @examples
@@ -68,6 +73,45 @@ damping <- function(values = c("damped", "none")) {
         default  = "none",
         label    = c(damping = "Damping Term"),
         finalize = NULL
+    )
+}
+
+#' @export
+#' @rdname exp_smoothing_params
+smooth_level <- function(range = c(0, 1), trans = NULL) {
+    dials::new_quant_param(
+        type      = "double",
+        range     = range,
+        inclusive = c(TRUE, TRUE),
+        trans     = trans,
+        label     = c(smooth_level = "The smoothing factor for the base level (alpha) in exponential models"),
+        finalize  = NULL
+    )
+}
+
+#' @export
+#' @rdname exp_smoothing_params
+smooth_trend <- function(range = c(0, 1), trans = NULL) {
+    dials::new_quant_param(
+        type      = "double",
+        range     = range,
+        inclusive = c(TRUE, TRUE),
+        trans     = trans,
+        label     = c(smooth_trend = "The smoothing factor for the trend level (beta) in exponential models"),
+        finalize  = NULL
+    )
+}
+
+#' @export
+#' @rdname exp_smoothing_params
+smooth_seasonal <- function(range = c(0, 1), trans = NULL) {
+    dials::new_quant_param(
+        type      = "double",
+        range     = range,
+        inclusive = c(TRUE, TRUE),
+        trans     = trans,
+        label     = c(smooth_seasonal = "The smoothing factor for the seasonal level (gamma) in exponential models"),
+        finalize  = NULL
     )
 }
 

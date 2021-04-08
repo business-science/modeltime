@@ -6,6 +6,9 @@
 \alias{trend}
 \alias{season}
 \alias{damping}
+\alias{smooth_level}
+\alias{smooth_trend}
+\alias{smooth_seasonal}
 \title{Tuning Parameters for Exponential Smoothing Models}
 \usage{
 error(values = c("additive", "multiplicative"))
@@ -15,9 +18,23 @@ trend(values = c("additive", "multiplicative", "none"))
 season(values = c("additive", "multiplicative", "none"))
 
 damping(values = c("damped", "none"))
+
+smooth_level(range = c(0, 1), trans = NULL)
+
+smooth_trend(range = c(0, 1), trans = NULL)
+
+smooth_seasonal(range = c(0, 1), trans = NULL)
 }
 \arguments{
 \item{values}{A character string of possible values.}
+
+\item{range}{A two-element vector holding the \emph{defaults} for the smallest and
+largest possible values, respectively.}
+
+\item{trans}{A \code{trans} object from the \code{scales} package, such as
+\code{scales::log10_trans()} or \code{scales::reciprocal_trans()}. If not provided,
+the default is used which matches the units used in \code{range}. If no
+transformation, \code{NULL}.}
 }
 \description{
 Tuning Parameters for Exponential Smoothing Models
@@ -30,6 +47,9 @@ If the error is multiplicative, the data must be non-negative.
 \item \code{trend}: The form of the trend term: "additive", "multiplicative" or "none".
 \item \code{season}: The form of the seasonal term: "additive", "multiplicative" or "none"..
 \item \code{damping}: Apply damping to a trend: "damped", or "none".
+\item \code{smooth_level}: This is often called the "alpha" parameter used as the base level smoothing factor for exponential smoothing models.
+\item \code{smooth_trend}: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.
+\item \code{smooth_seasonal}: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.
 }
 }
 \examples{
