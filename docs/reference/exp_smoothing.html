@@ -51,7 +51,11 @@
 <meta property="og:title" content="General Interface for Exponential Smoothing State Space Models — exp_smoothing" />
 <meta property="og:description" content="exp_smoothing() is a way to generate a specification of an Exponential Smoothing model
 before fitting and allows the model to be created using
-different packages. Currently the only package is forecast." />
+different packages. Currently the only package is forecast. Several algorithms are implemented:
+ETS - Automated Exponential Smoothing
+CROSTON - Croston's forecast for intermittent demand
+
+" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -126,7 +130,7 @@ different packages. Currently the only package is forecast." />
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Base Algorithms</a>
+      <a href="../articles/modeltime-model-list.html">Modeltime Development Roadmap</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Developers</li>
@@ -225,7 +229,11 @@ different packages. Currently the only package is forecast." />
     <div class="ref-description">
     <p><code>exp_smoothing()</code> is a way to generate a <em>specification</em> of an Exponential Smoothing model
 before fitting and allows the model to be created using
-different packages. Currently the only package is <code>forecast</code>.</p>
+different packages. Currently the only package is <code>forecast</code>. Several algorithms are implemented:</p><ul>
+<li><p>ETS - Automated Exponential Smoothing</p></li>
+<li><p>CROSTON - Croston's forecast for intermittent demand</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>exp_smoothing</span><span class='op'>(</span>
@@ -234,7 +242,10 @@ different packages. Currently the only package is <code>forecast</code>.</p>
   error <span class='op'>=</span> <span class='cn'>NULL</span>,
   trend <span class='op'>=</span> <span class='cn'>NULL</span>,
   season <span class='op'>=</span> <span class='cn'>NULL</span>,
-  damping <span class='op'>=</span> <span class='cn'>NULL</span>
+  damping <span class='op'>=</span> <span class='cn'>NULL</span>,
+  smooth_level <span class='op'>=</span> <span class='cn'>NULL</span>,
+  smooth_trend <span class='op'>=</span> <span class='cn'>NULL</span>,
+  smooth_seasonal <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -263,22 +274,34 @@ If the error is multiplicative, the data must be non-negative.</p></td>
     </tr>
     <tr>
       <th>season</th>
-      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..</p></td>
+      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none".</p></td>
     </tr>
     <tr>
       <th>damping</th>
       <td><p>Apply damping to a trend: "auto", "damped", or "none".</p></td>
     </tr>
+    <tr>
+      <th>smooth_level</th>
+      <td><p>This is often called the "alpha" parameter used as the base level smoothing
+factor for exponential smoothing models.</p></td>
+    </tr>
+    <tr>
+      <th>smooth_trend</th>
+      <td><p>This is often called the "beta" parameter used as the trend smoothing
+factor for exponential smoothing models.</p></td>
+    </tr>
+    <tr>
+      <th>smooth_seasonal</th>
+      <td><p>This is often called the "gamma" parameter used as the seasonal smoothing
+factor for exponential smoothing models.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The data given to the function are not saved and are only used
-to determine the <em>mode</em> of the model. For <code>exp_smoothing()</code>, the
-mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
-following <em>engines</em>:</p><ul>
+    <p>Models can be created using the following <em>engines</em>:</p><ul>
 <li><p>"ets" (default) - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/ets.html'>forecast::ets()</a></code></p></li>
+<li><p>"croston" - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/croston.html'>forecast::croston()</a></code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
@@ -288,10 +311,13 @@ following <em>engines</em>:</p><ul>
 
 <p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
 names in each engine:</p><table class='table'>
-<tr><td>modeltime</td><td>forecast::ets</td></tr>
-<tr><td>seasonal_period()</td><td>ts(frequency)</td></tr>
-<tr><td>error(), trend(), season()</td><td>model ('ZZZ')</td></tr>
-<tr><td>damping()</td><td>damped (NULL)</td></tr>
+<tr><td>modeltime</td><td>forecast::ets</td><td>forecast::croston()</td></tr>
+<tr><td>seasonal_period()</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
+<tr><td>error(), trend(), season()</td><td>model ('ZZZ')</td><td>NA</td></tr>
+<tr><td>damping()</td><td>damped (NULL)</td><td>NA</td></tr>
+<tr><td>smooth_level()</td><td>alpha (NULL)</td><td>alpha (0.1)</td></tr>
+<tr><td>smooth_trend()</td><td>beta (NULL)</td><td>NA</td></tr>
+<tr><td>smooth_seasonal()</td><td>gamma (NULL)</td><td>NA</td></tr>
 </table>
 
 
@@ -313,11 +339,27 @@ names in each engine:</p><table class='table'>
 <li><p><code><a href='exp_smoothing_params.html'>trend()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
 <li><p><code><a href='exp_smoothing_params.html'>season()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
 <li><p><code><a href='exp_smoothing_params.html'>damping()</a></code> - "auto", "damped", "none" are converted to NULL, TRUE, FALSE</p></li>
+<li><p><code><a href='exp_smoothing_params.html'>smooth_level()</a></code>, <code><a href='exp_smoothing_params.html'>smooth_trend()</a></code>, and <code><a href='exp_smoothing_params.html'>smooth_seasonal()</a></code> are
+automatically determined if not provided. They are mapped to "alpha", "beta" and "gamma", respectively.</p></li>
 </ul>
 
 <p>By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
 <em>in-sample data</em> following the underlying <code><a href='https://pkg.robjhyndman.com/forecast/reference/ets.html'>forecast::ets()</a></code> automation routine.</p>
 <p>Other options and argument can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
+<p>Parameter Notes:</p><ul>
+<li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
+models will be fit.</p></li>
+</ul>
+
+<p><strong>croston</strong></p>
+<p>The engine uses <code><a href='https://pkg.robjhyndman.com/forecast/reference/croston.html'>forecast::croston()</a></code>.</p>
+<p>Function Parameters:</p><pre><span class='co'>## function (y, h = 10, alpha = 0.1, x = y)</span>
+</pre>
+
+<p>The main arguments are defined using:</p><ul>
+<li><p><code><a href='exp_smoothing_params.html'>smooth_level()</a></code>: The "alpha" parameter</p></li>
+</ul>
+
 <p>Parameter Notes:</p><ul>
 <li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.</p></li>
@@ -394,11 +436,14 @@ There are 3 ways to specify:</p><ol>
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  683ms 
+#&gt; Fit time:  693ms 
 #&gt; ETS(A,A,A) 
 #&gt; 
 #&gt; Call:
-#&gt;  forecast::ets(y = outcome, model = model_ets, damped = damping_ets) 
+#&gt;  forecast::ets(y = outcome, model = model_ets, damped = damping_ets,  
+#&gt; 
+#&gt;  Call:
+#&gt;      alpha = alpha, beta = beta, gamma = gamma) 
 #&gt; 
 #&gt;   Smoothing parameters:
 #&gt;     alpha = 0.5893 
@@ -433,11 +478,14 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  173ms 
+#&gt; Fit time:  163ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:
-#&gt;  forecast::ets(y = outcome, model = model_ets, damped = damping_ets) 
+#&gt;  forecast::ets(y = outcome, model = model_ets, damped = damping_ets,  
+#&gt; 
+#&gt;  Call:
+#&gt;      alpha = alpha, beta = beta, gamma = gamma) 
 #&gt; 
 #&gt;   Smoothing parameters:
 #&gt;     alpha = 0.5889 
@@ -455,6 +503,37 @@ There are 3 ways to specify:</p><ol>
 #&gt; 
 #&gt;       AIC      AICc       BIC 
 #&gt; -576.9488 -573.9088 -513.9998 </div><div class='input'>
+<span class='co'># ---- CROSTON ----</span>
+
+<span class='co'># Model Spec</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>exp_smoothing</span><span class='op'>(</span>
+        smooth_level <span class='op'>=</span> <span class='fl'>0.2</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"croston"</span><span class='op'>)</span>
+
+<span class='co'># Fit Spec</span>
+<span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; parsnip model object
+#&gt; 
+#&gt; Fit time:  924ms 
+#&gt; Croston Method
+#&gt; ---
+#&gt; </span><span style='color: #949494;'># A tibble: 244 x 1</span><span>
+#&gt;    `Point Forecast`
+#&gt;               </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>             9.26
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>             9.26
+#&gt; </span><span style='color: #949494;'># … with 234 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

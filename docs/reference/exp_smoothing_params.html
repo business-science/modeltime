@@ -124,7 +124,7 @@
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Base Algorithms</a>
+      <a href="../articles/modeltime-model-list.html">Modeltime Development Roadmap</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Developers</li>
@@ -230,7 +230,13 @@
 
 <span class='fu'>season</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>damping</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"damped"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>damping</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"damped"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>smooth_level</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>smooth_trend</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>smooth_seasonal</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,6 +244,18 @@
     <tr>
       <th>values</th>
       <td><p>A character string of possible values.</p></td>
+    </tr>
+    <tr>
+      <th>range</th>
+      <td><p>A two-element vector holding the <em>defaults</em> for the smallest and
+largest possible values, respectively.</p></td>
+    </tr>
+    <tr>
+      <th>trans</th>
+      <td><p>A <code>trans</code> object from the <code>scales</code> package, such as
+<code><a href='https://scales.r-lib.org/reference/log_trans.html'>scales::log10_trans()</a></code> or <code><a href='https://scales.r-lib.org/reference/reciprocal_trans.html'>scales::reciprocal_trans()</a></code>. If not provided,
+the default is used which matches the units used in <code>range</code>. If no
+transformation, <code>NULL</code>.</p></td>
     </tr>
     </table>
 
@@ -249,6 +267,9 @@ If the error is multiplicative, the data must be non-negative.</p></li>
 <li><p><code>trend</code>: The form of the trend term: "additive", "multiplicative" or "none".</p></li>
 <li><p><code>season</code>: The form of the seasonal term: "additive", "multiplicative" or "none"..</p></li>
 <li><p><code>damping</code>: Apply damping to a trend: "damped", or "none".</p></li>
+<li><p><code>smooth_level</code>: This is often called the "alpha" parameter used as the base level smoothing factor for exponential smoothing models.</p></li>
+<li><p><code>smooth_trend</code>: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.</p></li>
+<li><p><code>smooth_seasonal</code>: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.</p></li>
 </ul>
 
 

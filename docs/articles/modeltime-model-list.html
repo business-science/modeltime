@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Model List • modeltime</title>
+<title>Modeltime Ecosystem Roadmap • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Model List">
+<meta property="og:title" content="Modeltime Ecosystem Roadmap">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -77,7 +77,7 @@
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Base Algorithms</a>
+      <a href="../articles/modeltime-model-list.html">Modeltime Development Roadmap</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Developers</li>
@@ -165,10 +165,10 @@
 
       
 
-      </header><script src="modeltime-model-list_files/header-attrs-2.7/header-attrs.js"></script><script src="modeltime-model-list_files/core-js-2.5.3/shim.min.js"></script><script src="modeltime-model-list_files/react-17.0.0/react.min.js"></script><script src="modeltime-model-list_files/react-17.0.0/react-dom.min.js"></script><script src="modeltime-model-list_files/reactwidget-1.0.0/react-tools.js"></script><script src="modeltime-model-list_files/htmlwidgets-1.5.3/htmlwidgets.js"></script><script src="modeltime-model-list_files/reactable-binding-0.2.3/reactable.js"></script><div class="row">
+      </header><script src="modeltime-model-list_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Model List</h1>
+      <h1 data-toc-skip>Modeltime Ecosystem Roadmap</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/modeltime-model-list.Rmd"><code>vignettes/modeltime-model-list.Rmd</code></a></small>
@@ -178,35 +178,186 @@
 
     
     
-<p>The <code>modeltime</code> package provides an interface to a number of forecasting algorithms:</p>
-<ul>
-<li>
-<strong>Classical Algorithms:</strong> ARIMA, Expeonential Smoothing</li>
-<li>
-<strong>New Algorithms:</strong> Prophet</li>
-<li>
-<strong>Machine Learning Algorithms:</strong> Boosted ARIMA, Boosted Prophet, or any <code>parnsip</code> algorithm</li>
-</ul>
-<p>See <a href="https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html"><em>“Getting Started with Modeltime”</em></a> for an example of how to use the time series algorithms to make a forecast.</p>
-<div id="model-search" class="section level2">
+<p>The <strong><code>modeltime</code> project roadmap</strong> (<a href="https://github.com/business-science/modeltime/issues/5">GitHub Issue #5</a>) tracks the overall development of the Modeltime Ecosystem of forecasting packages.</p>
+<div id="learning-modeltime" class="section level2">
 <h2 class="hasAnchor">
-<a href="#model-search" class="anchor"></a>Model Search</h2>
-<p><strong>The full model list.</strong> Use the table below to find model functions and engines for forecasting.</p>
+<a href="#learning-modeltime" class="anchor"></a>Learning Modeltime</h2>
 <blockquote>
-<p>Try searching “arima”.</p>
+<p>Modeltime is a cutting-edge ecosystem for forecasting using strategies and best practices that won or placed highly in major forecasting competitions.</p>
 </blockquote>
-<div id="htmlwidget-68b33b65730b34108c26" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-68b33b65730b34108c26">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Model Category":["Prophet","Boosted Prophet","ARIMA","ARIMA","Boosted ARIMA","Boosted ARIMA","Exponential Smoothing","TBATS","NNETAR","Seasonal Decomposition","Seasonal Decomposition","NAIVE Forecasting","NAIVE Forecasting"],"Model Function":["prophet_reg()","prophet_boost","arima_reg()","arima_reg()","arima_boost()","arima_boost()","exp_smoothing()","seasonal_reg()","nnetar_reg()","seasonal_reg()","seasonal_reg()","naive_reg","naive_reg"],"Engine":["prophet","prophet_xgboost","auto_arima","arima","auto_arima_xgboost","arima_xgboost","ets","tbats","nnetar","stlm_ets","stlm_arima","naive","snaive"],"Packages":["prophet","prophet, xgboost","forecast","forecast","forecast, xgboost","forecast, xgboost","forecast","forecast","forecast","forecast","forecast","modeltime","modeltime"],"Mode":["regression","regression","regression","regression","regression","regression","regression","regression","regression","regression","regression","regression","regression"]},"columns":[{"accessor":"Model Category","name":"Model Category","type":"character"},{"accessor":"Model Function","name":"Model Function","type":"character"},{"accessor":"Engine","name":"Engine","type":"character"},{"accessor":"Packages","name":"Packages","type":"character"},{"accessor":"Mode","name":"Mode","type":"character"}],"pivotBy":["Model Category"],"resizable":true,"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"defaultExpanded":true,"highlight":true,"bordered":true,"striped":true,"theme":{"color":"hsl(233, 9%, 87%)","backgroundColor":"hsl(210, 29%, 24%)","borderColor":"hsl(210, 29%, 27%)","stripedColor":"hsl(210, 32%, 27%)","highlightColor":"hsl(210, 32%, 30%)","inputStyle":{"backgroundColor":"hsl(210, 29%, 30%)"}},"dataKey":"02125b9445acc4ef4402ca56f827c69f","key":"02125b9445acc4ef4402ca56f827c69f"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>We have a state-of-the-art <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Forecasting Course (DS4B 203-R)</a> that teaches the <code>modeltime</code> ecosystem and <code>timetk</code> (Machine Learning, Deep Learning, and Feature Engineering for Time Series). Take this course to become the forecasting expert for your organization.</p>
 </div>
-<div id="parameter-search" class="section level2">
+<div id="forecast-algorithms" class="section level2">
 <h2 class="hasAnchor">
-<a href="#parameter-search" class="anchor"></a>Parameter Search</h2>
-<p>Parameters define the key arguments to the modeling algorithms. If a parameter is not found, additional parameter can be supplied to the “Original Function” via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine()</a></code>.</p>
-<blockquote>
-<p>Try searching, “prophet”. Then expand the engine drop-down.</p>
-</blockquote>
-<div id="htmlwidget-c00b813050e18784d319" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c00b813050e18784d319">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Model Function":["prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_reg","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","prophet_boost","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_reg","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","arima_boost","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","exp_smoothing","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","seasonal_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg","nnetar_reg"],"Engine":["prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","prophet_xgboost","auto_arima","auto_arima","auto_arima","auto_arima","auto_arima","auto_arima","auto_arima","arima","arima","arima","arima","arima","arima","arima","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","auto_arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","arima_xgboost","ets","ets","ets","ets","ets","tbats","tbats","tbats","stlm_ets","stlm_ets","stlm_ets","stlm_arima","stlm_arima","stlm_arima","nnetar","nnetar","nnetar","nnetar","nnetar","nnetar","nnetar"],"Parameter":["growth","changepoint_num","changepoint_range","seasonality_yearly","seasonality_weekly","seasonality_daily","season","prior_scale_changepoints","prior_scale_seasonality","prior_scale_holidays","growth","num_changepoints","changepoint_range","seasonality_yearly","seasonality_weekly","seasonality_daily","season","prior_scale_changepoints","prior_scale_seasonality","prior_scale_holidays","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","seasonal_period","non_seasonal_ar","non_seasonal_differences","non_seasonal_ma","seasonal_ar","seasonal_differences","seasonal_ma","tree_depth","trees","learn_rate","mtry","min_n","loss_reduction","sample_size","seasonal_period","error","trend","season","damping","seasonal_period_1","seasonal_period_2","seasonal_period_3","seasonal_period_1","seasonal_period_2","seasonal_period_3","seasonal_period_1","seasonal_period_2","seasonal_period_3","seasonal_period","non_seasonal_ar","seasonal_ar","hidden_units","num_networks","epochs","penalty"],"Original Param":["growth","n.changepoints","changepoints.range","yearly.seasonality","weekly.seasonality","daily.seasonality","seasonality.mode","changepoint.prior.scale","seasonality.prior.scale","holiday.prior.scale","growth","n.changepoints","changepoints.range","yearly.seasonality","weekly.seasonality","daily.seasonality","seasonality.mode","changepoint.prior.scale","seasonality.prior.scale","holiday.prior.scale","max_depth","nrounds","eta","colsample_bytree","min_child_weight","gamma","subsample","ts(frequency)","max.p","max.d","max.q","max.P","max.D","max.Q","ts(frequency)","p","d","q","P","D","Q","ts(frequency)","max.p","max.d","max.q","max.P","max.D","max.Q","max_depth","nrounds","eta","colsample_bytree","min_child_weight","gamma","subsample","ts(frequency)","p","d","q","P","D","Q","max_depth","nrounds","eta","colsample_bytree","min_child_weight","gamma","subsample","ts(frequency)","model = c(error, trend, season)","model = c(error, trend, season)","model = c(error, trend, season)","damped","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","msts(seasonal.periods)","ts(frequency)","p","P","size","repeats","maxit","decay"],"Original Func":["prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","prophet::prophet","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","forecast::auto.arima","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","forecast::Arima","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","xgboost::xgb.train","forecast::ets","forecast::ets","forecast::ets","forecast::ets","forecast::ets","forecast::stlm","forecast::stlm","forecast::stlm","forecast::stlm","forecast::stlm","forecast::stlm","forecast::stlm","forecast::stlm","forecast::stlm","forecast::nnetar","forecast::nnetar","forecast::nnetar","forecast::nnetar","forecast::nnetar","nnet::nnet","nnet::nnet"]},"columns":[{"accessor":"Model Function","name":"Model Function","type":"character","aggregate":"frequency"},{"accessor":"Engine","name":"Engine","type":"character"},{"accessor":"Parameter","name":"Parameter","type":"character"},{"accessor":"Original Param","name":"Original Param","type":"character"},{"accessor":"Original Func","name":"Original Func","type":"character"}],"pivotBy":["Engine"],"resizable":true,"filterable":true,"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"striped":true,"theme":{"color":"hsl(233, 9%, 87%)","backgroundColor":"hsl(210, 29%, 24%)","borderColor":"hsl(210, 29%, 27%)","stripedColor":"hsl(210, 32%, 27%)","highlightColor":"hsl(210, 32%, 30%)","inputStyle":{"backgroundColor":"hsl(210, 29%, 30%)"}},"dataKey":"159143944c41ea8c59b4a0ca1d1b4151","key":"159143944c41ea8c59b4a0ca1d1b4151"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<a href="#forecast-algorithms" class="anchor"></a>Forecast Algorithms</h2>
+<p>These algorithms are provided in the base <code>modeltime</code> package. Refer to the <a href="https://business-science.github.io/modeltime/reference/index.html#section-algorithms">API Function Reference.</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>ARIMA</strong> - See <code><a href="../reference/arima_reg.html">arima_reg()</a></code>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Exponential Smoothing (ETS)</strong>: See <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>STLM</strong> - Decomposition Models - <a href="https://business-science.github.io/modeltime/reference/seasonal_reg.html">See <code>seasonal_reg()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>TBATS</strong> - <a href="https://business-science.github.io/modeltime/reference/seasonal_reg.html">See <code>seasonal_reg()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>NNETAR</strong> - <a href="https://business-science.github.io/modeltime/reference/nnetar_reg.html">See <code>nnetar_reg()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled>
+Theta Method (#93)</li>
+<li>
+<input type="checkbox" disabled>
+CROSTON (#98)</li>
+</ul>
+</div>
+<div id="prophet-algorithm" class="section level2">
+<h2 class="hasAnchor">
+<a href="#prophet-algorithm" class="anchor"></a>Prophet Algorithm</h2>
+<p>These algorithms are provided in the base <code>modeltime</code> package. Refer to the <a href="https://business-science.github.io/modeltime/reference/index.html#section-algorithms">API Function Reference.</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>Prophet</strong> - See <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>
+</li>
+</ul>
+</div>
+<div id="boosted-algorithms" class="section level2">
+<h2 class="hasAnchor">
+<a href="#boosted-algorithms" class="anchor"></a>Boosted Algorithms</h2>
+<p>These algorithms use <code>xgboost</code> to improve performance on detecting seasonality while using the base model (e.g. prophet) for trend. These algorithms are provided in the base <code>modeltime</code> package. Refer to the <a href="https://business-science.github.io/modeltime/reference/index.html#section-algorithms">API Function Reference.</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>Prophet Boost</strong> - See <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Arima Boost</strong> - See <code><a href="../reference/arima_boost.html">arima_boost()</a></code>
+</li>
+</ul>
+</div>
+<div id="ensembles-stacking-averaging" class="section level2">
+<h2 class="hasAnchor">
+<a href="#ensembles-stacking-averaging" class="anchor"></a>Ensembles (Stacking, Averaging)</h2>
+<p>Please refer to <code>modeltime.ensemble</code> R package: <a href="https://business-science.github.io/modeltime.ensemble/" class="uri">https://business-science.github.io/modeltime.ensemble/</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>Stacking</strong> - <a href="https://business-science.github.io/modeltime.ensemble/reference/ensemble_model_spec.html">See <code>modeltime.ensemble::ensemble_model_spec()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Averaging</strong> - <a href="https://business-science.github.io/modeltime.ensemble/reference/ensemble_average.html">See <code>modeltime.ensemble::ensemble_average()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Weighted Averaging</strong> - <a href="https://business-science.github.io/modeltime.ensemble/reference/ensemble_weighted.html">See <code>modeltime.ensemble::ensemble_weighted()</code></a>
+</li>
+</ul>
+</div>
+<div id="autoregressive-recursive-forecasting" class="section level2">
+<h2 class="hasAnchor">
+<a href="#autoregressive-recursive-forecasting" class="anchor"></a>Autoregressive (Recursive) Forecasting</h2>
+<p>Recursive forecasting is required when <strong>Lags of Features &lt; Forecast Horizon</strong>. Please refer to the <strong><code><a href="../reference/recursive.html">recursive()</a></code></strong> function that allows any model to be converted into a recursive prediction model: <a href="https://business-science.github.io/modeltime/reference/recursive.html" class="uri">https://business-science.github.io/modeltime/reference/recursive.html</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>Recursive for Single Time Series</strong> - <a href="https://business-science.github.io/modeltime/reference/recursive.html">Can be implemented using <code>recursive()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Recursive for Panel Data (Multiple Time Series)</strong> - Follow #67</li>
+<li>
+<input type="checkbox" disabled checked><strong>Recursive Ensembles</strong> - Tracked with #86. Refer to <code>modeltime.ensemble</code> for development efforts. <a href="https://business-science.github.io/modeltime.ensemble/" class="uri">https://business-science.github.io/modeltime.ensemble/</a>
+</li>
+</ul>
+</div>
+<div id="resampling-backtesting" class="section level2">
+<h2 class="hasAnchor">
+<a href="#resampling-backtesting" class="anchor"></a>Resampling &amp; Backtesting</h2>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked>
+Please refer to <code>modeltime.resample</code> for backtesting and resampling time series: <a href="https://business-science.github.io/modeltime.resample/index.html" class="uri">https://business-science.github.io/modeltime.resample/index.html</a>
+</li>
+</ul>
+</div>
+<div id="gluonts-deep-learning" class="section level2">
+<h2 class="hasAnchor">
+<a href="#gluonts-deep-learning" class="anchor"></a>GluonTS (Deep Learning)</h2>
+<p>Please refer to <code>modeltime.gluonts</code> R package: <a href="https://github.com/business-science/modeltime.gluonts" class="uri">https://github.com/business-science/modeltime.gluonts</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>DeepAR</strong> - <a href="https://business-science.github.io/modeltime.gluonts/reference/deep_ar.html">See <code>modeltime.gluonts::deep_ar()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>N-BEATS</strong> - <a href="https://business-science.github.io/modeltime.gluonts/reference/nbeats.html">See <code>modeltime.gluonts::nbeats()</code></a>
+</li>
+</ul>
+</div>
+<div id="h2o-automl-automatic-machine-learning" class="section level2">
+<h2 class="hasAnchor">
+<a href="#h2o-automl-automatic-machine-learning" class="anchor"></a>H2O AutoML (Automatic Machine Learning)</h2>
+<p>This project is being managed via <code>modeltime.h2o</code>: <a href="https://github.com/business-science/modeltime.h2o" class="uri">https://github.com/business-science/modeltime.h2o</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked>
+H2O AutoML Backend (business-science/modeltime.h2o#1)</li>
+</ul>
+</div>
+<div id="baseline-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#baseline-models" class="anchor"></a>Baseline Models</h2>
+<p>Refer to baseline algorithms #37</p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked>
+Naive &amp; Seasonal Naive - <a href="https://business-science.github.io/modeltime/reference/naive_reg.html">See <code>naive_reg()</code></a>
+</li>
+<li>
+<input type="checkbox" disabled checked>
+Mean &amp; Median Window Forecasts - <a href="https://business-science.github.io/modeltime/reference/window_reg.html">See <code>window_reg()</code></a>
+</li>
+</ul>
+</div>
+<div id="general-additive-models-gams" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-additive-models-gams" class="anchor"></a>General Additive Models (GAMs)</h2>
+<p>This project is being managed via <code>gammodels</code>: <a href="https://github.com/business-science/gammodels" class="uri">https://github.com/business-science/gammodels</a></p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled>
+GAMs (<code>mgcv</code>)</li>
+</ul>
+</div>
+<div id="structural-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#structural-models" class="anchor"></a>Structural Models</h2>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled>
+StructTS</li>
+<li>
+<input type="checkbox" disabled>
+BSTS</li>
+</ul>
+</div>
+<div id="garch-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#garch-models" class="anchor"></a>GARCH Models</h2>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled>
+GARCH</li>
+<li>
+<input type="checkbox" disabled>
+RUGARCH</li>
+<li>
+<input type="checkbox" disabled>
+RMGARCH</li>
+</ul>
+</div>
+<div id="vector-autoregression-var" class="section level2">
+<h2 class="hasAnchor">
+<a href="#vector-autoregression-var" class="anchor"></a>Vector Autoregression (VAR)</h2>
+<p>Investigate whether or not tools are needed to support VAR modeling. It’s unclear whether or not a separate toolset is required beyond the core system. User input required. Follow GH Issue #77.</p>
 </div>
   </div>
 

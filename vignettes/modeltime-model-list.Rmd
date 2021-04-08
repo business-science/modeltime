@@ -1,8 +1,8 @@
 ---
-title: "Model List"
+title: "Modeltime Algorithm Roadmap"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Modeltime Model List}
+  %\VignetteIndexEntry{Modeltime Algorithm Roadmap}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,222 +17,96 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `modeltime` package provides an interface to a number of forecasting algorithms:
+The __`modeltime` project roadmap__ ([GitHub Issue #5](https://github.com/business-science/modeltime/issues/5)) tracks the overall development of the Modeltime Ecosystem of forecasting packages.  
 
-- __Classical Algorithms:__ ARIMA, Expeonential Smoothing
-- __New Algorithms:__ Prophet
-- __Machine Learning Algorithms:__ Boosted ARIMA, Boosted Prophet, or any `parnsip` algorithm
+## Learning Modeltime
 
-See [_"Getting Started with Modeltime"_](https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html) for an example of how to use the time series algorithms to make a forecast. 
+> Modeltime is a cutting-edge ecosystem for forecasting using strategies and best practices that won or placed highly in major forecasting competitions. 
 
-```{r setup, echo = F}
-library(modeltime)
-library(tidyverse)
-library(reactable)
+We have a state-of-the-art [Time Series Forecasting Course (DS4B 203-R)](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/) that teaches the `modeltime` ecosystem and `timetk` (Machine Learning, Deep Learning, and Feature Engineering for Time Series). Take this course to become the forecasting expert for your organization. 
 
-interactive <- TRUE
+## Forecast Algorithms
 
-# Model List
-model_list_tbl <- tribble(
-  ~ `Model Category`, ~ `Model Function`, ~ `Engine`, ~ `Packages`,
-  "Prophet", "prophet_reg()", "prophet", "prophet",
-  "Boosted Prophet", "prophet_boost", "prophet_xgboost", "prophet, xgboost",
-  "ARIMA", "arima_reg()", "auto_arima", "forecast",
-  "ARIMA", "arima_reg()", "arima", "forecast",
-  "Boosted ARIMA", "arima_boost()", "auto_arima_xgboost", "forecast, xgboost",
-  "Boosted ARIMA", "arima_boost()", "arima_xgboost", "forecast, xgboost",
-  "Exponential Smoothing", "exp_smoothing()", "ets", "forecast",
-  "TBATS", "seasonal_reg()", "tbats", "forecast",
-  "NNETAR", "nnetar_reg()", "nnetar", "forecast",
-  "Seasonal Decomposition", "seasonal_reg()", "stlm_ets", "forecast",
-  "Seasonal Decomposition", "seasonal_reg()", "stlm_arima", "forecast",
-  "NAIVE Forecasting", "naive_reg", "naive", "modeltime",
-  "NAIVE Forecasting", "naive_reg", "snaive", "modeltime",
-) %>% 
-  mutate(Mode = "regression")
+These algorithms are provided in the base `modeltime` package. Refer to the [API Function Reference.](https://business-science.github.io/modeltime/reference/index.html#section-algorithms)  
 
-param_list_tbl <- tribble(
-  ~ `Model Function`, ~ `Engine`, ~ `Parameter`, ~ `Original Param`, ~ `Original Func`,
-  # prophet_reg: prophet
-  "prophet_reg", "prophet", "growth", "growth", "prophet::prophet",
-  "prophet_reg", "prophet", "changepoint_num", "n.changepoints", "prophet::prophet",
-  "prophet_reg", "prophet", "changepoint_range", "changepoints.range", "prophet::prophet",
-  "prophet_reg", "prophet", "seasonality_yearly", "yearly.seasonality", "prophet::prophet",
-  "prophet_reg", "prophet", "seasonality_weekly", "weekly.seasonality", "prophet::prophet",
-  "prophet_reg", "prophet", "seasonality_daily", "daily.seasonality", "prophet::prophet",
-  "prophet_reg", "prophet", "season", "seasonality.mode", "prophet::prophet",
-  "prophet_reg", "prophet", "prior_scale_changepoints", "changepoint.prior.scale", "prophet::prophet",
-  "prophet_reg", "prophet", "prior_scale_seasonality", "seasonality.prior.scale", "prophet::prophet",
-  "prophet_reg", "prophet", "prior_scale_holidays", "holiday.prior.scale", "prophet::prophet",
-  # prophet_boost: prophet_xgboost
-  "prophet_boost", "prophet_xgboost", "growth", "growth", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "num_changepoints", "n.changepoints", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "changepoint_range", "changepoints.range", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "seasonality_yearly", "yearly.seasonality", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "seasonality_weekly", "weekly.seasonality", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "seasonality_daily", "daily.seasonality", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "season", "seasonality.mode", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "prior_scale_changepoints", "changepoint.prior.scale", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "prior_scale_seasonality", "seasonality.prior.scale", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "prior_scale_holidays", "holiday.prior.scale", "prophet::prophet",
-  "prophet_boost", "prophet_xgboost", "tree_depth", "max_depth", "xgboost::xgb.train",
-  "prophet_boost", "prophet_xgboost", "trees", "nrounds", "xgboost::xgb.train",
-  "prophet_boost", "prophet_xgboost", "learn_rate", "eta", "xgboost::xgb.train",
-  "prophet_boost", "prophet_xgboost", "mtry", "colsample_bytree", "xgboost::xgb.train",
-  "prophet_boost", "prophet_xgboost", "min_n", "min_child_weight", "xgboost::xgb.train",
-  "prophet_boost", "prophet_xgboost", "loss_reduction", "gamma", "xgboost::xgb.train",
-  "prophet_boost", "prophet_xgboost", "sample_size", "subsample", "xgboost::xgb.train",
-  # arima_reg: auto_arima
-  "arima_reg", "auto_arima", "seasonal_period", "ts(frequency)", "forecast::auto.arima",
-  "arima_reg", "auto_arima", "non_seasonal_ar", "max.p", "forecast::auto.arima",
-  "arima_reg", "auto_arima", "non_seasonal_differences", "max.d", "forecast::auto.arima",
-  "arima_reg", "auto_arima", "non_seasonal_ma", "max.q", "forecast::auto.arima",
-  "arima_reg", "auto_arima", "seasonal_ar", "max.P", "forecast::auto.arima",
-  "arima_reg", "auto_arima", "seasonal_differences", "max.D", "forecast::auto.arima",
-  "arima_reg", "auto_arima", "seasonal_ma", "max.Q", "forecast::auto.arima",
-  # arima_reg: arima
-  "arima_reg", "arima", "seasonal_period", "ts(frequency)", "forecast::Arima",
-  "arima_reg", "arima", "non_seasonal_ar", "p", "forecast::Arima",
-  "arima_reg", "arima", "non_seasonal_differences", "d", "forecast::Arima",
-  "arima_reg", "arima", "non_seasonal_ma", "q", "forecast::Arima",
-  "arima_reg", "arima", "seasonal_ar", "P", "forecast::Arima",
-  "arima_reg", "arima", "seasonal_differences", "D", "forecast::Arima",
-  "arima_reg", "arima", "seasonal_ma", "Q", "forecast::Arima",
-  # arima_reg: auto_arima_xgboost
-  "arima_boost", "auto_arima_xgboost", "seasonal_period", "ts(frequency)", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "non_seasonal_ar", "max.p", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "non_seasonal_differences", "max.d", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "non_seasonal_ma", "max.q", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "seasonal_ar", "max.P", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "seasonal_differences", "max.D", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "seasonal_ma", "max.Q", "forecast::auto.arima",
-  "arima_boost", "auto_arima_xgboost", "tree_depth", "max_depth", "xgboost::xgb.train",
-  "arima_boost", "auto_arima_xgboost", "trees", "nrounds", "xgboost::xgb.train",
-  "arima_boost", "auto_arima_xgboost", "learn_rate", "eta", "xgboost::xgb.train",
-  "arima_boost", "auto_arima_xgboost", "mtry", "colsample_bytree", "xgboost::xgb.train",
-  "arima_boost", "auto_arima_xgboost", "min_n", "min_child_weight", "xgboost::xgb.train",
-  "arima_boost", "auto_arima_xgboost", "loss_reduction", "gamma", "xgboost::xgb.train",
-  "arima_boost", "auto_arima_xgboost", "sample_size", "subsample", "xgboost::xgb.train",
-  # arima_boost: arima
-  "arima_boost", "arima_xgboost", "seasonal_period", "ts(frequency)", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "non_seasonal_ar", "p", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "non_seasonal_differences", "d", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "non_seasonal_ma", "q", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "seasonal_ar", "P", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "seasonal_differences", "D", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "seasonal_ma", "Q", "forecast::Arima",
-  "arima_boost", "arima_xgboost", "tree_depth", "max_depth", "xgboost::xgb.train",
-  "arima_boost", "arima_xgboost", "trees", "nrounds", "xgboost::xgb.train",
-  "arima_boost", "arima_xgboost", "learn_rate", "eta", "xgboost::xgb.train",
-  "arima_boost", "arima_xgboost", "mtry", "colsample_bytree", "xgboost::xgb.train",
-  "arima_boost", "arima_xgboost", "min_n", "min_child_weight", "xgboost::xgb.train",
-  "arima_boost", "arima_xgboost", "loss_reduction", "gamma", "xgboost::xgb.train",
-  "arima_boost", "arima_xgboost", "sample_size", "subsample", "xgboost::xgb.train",
-  # exp_smoothing: ets
-  "exp_smoothing", "ets", "seasonal_period", "ts(frequency)", "forecast::ets",
-  "exp_smoothing", "ets", "error", "model = c(error, trend, season)", "forecast::ets",
-  "exp_smoothing", "ets", "trend", "model = c(error, trend, season)", "forecast::ets",
-  "exp_smoothing", "ets", "season", "model = c(error, trend, season)", "forecast::ets",
-  "exp_smoothing", "ets", "damping", "damped", "forecast::ets",
-  # seasonal_reg: tbats
-  "seasonal_reg", "tbats", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "tbats", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "tbats", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
-  # seasonal_reg: ets
-  "seasonal_reg", "stlm_ets", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "stlm_ets", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "stlm_ets", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
-  # seasonal_reg: arima
-  "seasonal_reg", "stlm_arima", "seasonal_period_1", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "stlm_arima", "seasonal_period_2", "msts(seasonal.periods)", "forecast::stlm",
-  "seasonal_reg", "stlm_arima", "seasonal_period_3", "msts(seasonal.periods)", "forecast::stlm",
-  # nnetar_reg: nnetar
-  "nnetar_reg", "nnetar", "seasonal_period", "ts(frequency)", "forecast::nnetar",
-  "nnetar_reg", "nnetar", "non_seasonal_ar", "p", "forecast::nnetar",
-  "nnetar_reg", "nnetar", "seasonal_ar", "P", "forecast::nnetar",
-  "nnetar_reg", "nnetar", "hidden_units", "size", "forecast::nnetar",
-  "nnetar_reg", "nnetar", "num_networks", "repeats", "forecast::nnetar",
-  "nnetar_reg", "nnetar", "epochs", "maxit", "nnet::nnet",
-  "nnetar_reg", "nnetar", "penalty", "decay", "nnet::nnet"
-)
+- [x] __ARIMA__ - See `arima_reg()`
+- [x] __Exponential Smoothing (ETS)__: See `exp_smoothing()`
+- [x] __STLM__ - Decomposition Models - [See `seasonal_reg()`](https://business-science.github.io/modeltime/reference/seasonal_reg.html)
+- [x] __TBATS__ - [See `seasonal_reg()`](https://business-science.github.io/modeltime/reference/seasonal_reg.html)
+- [x] __NNETAR__ - [See `nnetar_reg()`](https://business-science.github.io/modeltime/reference/nnetar_reg.html)
+- [ ] Theta Method (#93)
+- [ ] CROSTON (#98)
 
-```
+## Prophet Algorithm
 
-## Model Search
+These algorithms are provided in the base `modeltime` package. Refer to the [API Function Reference.](https://business-science.github.io/modeltime/reference/index.html#section-algorithms)
 
-__The full model list.__ Use the table below to find model functions and engines for forecasting. 
+- [x] __Prophet__ - See `prophet_reg()`
 
-> Try searching "arima".
+## Boosted Algorithms
 
-```{r, echo=F}
-model_list_tbl %>%
-  reactable(
-    groupBy = "Model Category", 
-    searchable = TRUE, 
-    defaultExpanded = TRUE, 
-    resizable = TRUE, 
-    filterable = FALSE, 
-    striped = TRUE,
-    highlight = TRUE,
-    bordered = TRUE,
-    theme = reactableTheme(
-      color = "hsl(233, 9%, 87%)",
-      # backgroundColor = "hsl(233, 9%, 19%)",
-      backgroundColor = "hsl(210, 29%, 24%)",
-      # borderColor = "hsl(233, 9%, 22%)",
-      borderColor = "hsl(210, 29%, 27%)",
-      # stripedColor = "hsl(233, 12%, 22%)",
-      stripedColor = "hsl(210, 32%, 27%)",
-      # highlightColor = "hsl(233, 12%, 24%)",
-      highlightColor = "hsl(210, 32%, 30%)",
-      
-      # inputStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-      # selectStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-      # pageButtonHoverStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-      # pageButtonActiveStyle = list(backgroundColor = "hsl(233, 9%, 28%)")
-      inputStyle = list(backgroundColor = "hsl(210, 29%, 30%)")
-    )
-  )
-```
+These algorithms use `xgboost` to improve performance on detecting seasonality while using the base model (e.g. prophet) for trend. These algorithms are provided in the base `modeltime` package. Refer to the [API Function Reference.](https://business-science.github.io/modeltime/reference/index.html#section-algorithms)
 
-## Parameter Search
+- [x] __Prophet Boost__ - See `prophet_boost()`
+- [x] __Arima Boost__ - See `arima_boost()`
 
-Parameters define the key arguments to the modeling algorithms. If a parameter is not found, additional parameter can be supplied to the "Original Function" via `set_engine()`. 
+## Ensembles (Stacking, Averaging)
 
-> Try searching, "prophet". Then expand the engine drop-down.
+Please refer to `modeltime.ensemble` R package: https://business-science.github.io/modeltime.ensemble/
 
-```{r}
-param_list_tbl %>%
-  reactable(
-    groupBy = "Engine", 
-    searchable = TRUE, 
-    defaultExpanded = FALSE, 
-    resizable = TRUE, 
-    filterable = TRUE, 
-    striped = TRUE,
-    highlight = TRUE,
-    bordered = TRUE,
-    defaultPageSize = 10,
-    columns = list(
-      `Model Function` = colDef(aggregate = "frequency")
-    ),
-    theme = reactableTheme(
-      color = "hsl(233, 9%, 87%)",
-      # backgroundColor = "hsl(233, 9%, 19%)",
-      backgroundColor = "hsl(210, 29%, 24%)",
-      # borderColor = "hsl(233, 9%, 22%)",
-      borderColor = "hsl(210, 29%, 27%)",
-      # stripedColor = "hsl(233, 12%, 22%)",
-      stripedColor = "hsl(210, 32%, 27%)",
-      # highlightColor = "hsl(233, 12%, 24%)",
-      highlightColor = "hsl(210, 32%, 30%)",
-      
-      # inputStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-      # selectStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-      # pageButtonHoverStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-      # pageButtonActiveStyle = list(backgroundColor = "hsl(233, 9%, 28%)")
-      inputStyle = list(backgroundColor = "hsl(210, 29%, 30%)")
-    )
-  )
-```
+- [x] __Stacking__ - [See `modeltime.ensemble::ensemble_model_spec()`](https://business-science.github.io/modeltime.ensemble/reference/ensemble_model_spec.html)
+- [x] __Averaging__ - [See `modeltime.ensemble::ensemble_average()`](https://business-science.github.io/modeltime.ensemble/reference/ensemble_average.html)
+- [x] __Weighted Averaging__ - [See `modeltime.ensemble::ensemble_weighted()`](https://business-science.github.io/modeltime.ensemble/reference/ensemble_weighted.html)
 
+## Autoregressive (Recursive) Forecasting 
+
+Recursive forecasting is required when __Lags of Features < Forecast Horizon__. Please refer to the __`recursive()`__ function that allows any model to be converted into a recursive prediction model: https://business-science.github.io/modeltime/reference/recursive.html
+
+- [x] __Recursive for Single Time Series__ - [Can be implemented using `recursive()`](https://business-science.github.io/modeltime/reference/recursive.html)
+- [x] __Recursive for Panel Data (Multiple Time Series)__ - Follow #67 
+- [x] __Recursive Ensembles__ - Tracked with #86. Refer to `modeltime.ensemble` for development efforts.  https://business-science.github.io/modeltime.ensemble/
+
+## Resampling & Backtesting
+
+- [x] Please refer to `modeltime.resample` for backtesting and resampling time series: https://business-science.github.io/modeltime.resample/index.html
+
+## GluonTS (Deep Learning)
+
+Please refer to `modeltime.gluonts` R package: https://github.com/business-science/modeltime.gluonts
+
+- [x] __DeepAR__ - [See `modeltime.gluonts::deep_ar()`](https://business-science.github.io/modeltime.gluonts/reference/deep_ar.html)
+- [x] __N-BEATS__ - [See `modeltime.gluonts::nbeats()`](https://business-science.github.io/modeltime.gluonts/reference/nbeats.html)
+
+## H2O AutoML (Automatic Machine Learning)
+
+This project is being managed via `modeltime.h2o`: https://github.com/business-science/modeltime.h2o
+
+- [x] H2O AutoML Backend (business-science/modeltime.h2o#1)
+
+## Baseline Models
+
+Refer to baseline algorithms #37 
+
+- [x] Naive & Seasonal Naive - [See `naive_reg()`](https://business-science.github.io/modeltime/reference/naive_reg.html)
+- [x] Mean & Median Window Forecasts - [See `window_reg()`](https://business-science.github.io/modeltime/reference/window_reg.html)
+
+## General Additive Models (GAMs)
+
+This project is being managed via `gammodels`: https://github.com/business-science/gammodels
+
+- [ ] GAMs (`mgcv`)
+
+## Structural Models
+
+- [ ] StructTS
+- [ ] BSTS
+
+## GARCH Models
+
+- [ ] GARCH
+- [ ] RUGARCH
+- [ ] RMGARCH
+
+## Vector Autoregression (VAR)
+
+Investigate whether or not tools are needed to support VAR modeling. It's unclear whether or not a separate toolset is required beyond the core system. User input required. Follow GH Issue #77.

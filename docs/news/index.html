@@ -123,7 +123,7 @@
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Base Algorithms</a>
+      <a href="../articles/modeltime-model-list.html">Modeltime Development Roadmap</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Developers</li>
@@ -222,9 +222,40 @@
 <h1 class="page-header" data-toc-text="0.5.1.9000">
 <a href="#modeltime-0519000-development-version" class="anchor"></a>modeltime 0.5.1.9000 (Development Version)<small> Unreleased </small>
 </h1>
+<div id="new-algorithms" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
+<ul>
+<li>CROSTON (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/98'>#98</a>) - This is a new engige that has been added to <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</li>
+</ul>
+</div>
+<div id="new-dials-parameters" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-dials-parameters" class="anchor"></a>New Dials Parameters</h3>
+<p><code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code> gained 3 new tunable parameters:</p>
+<ul>
+<li>
+<code><a href="../reference/exp_smoothing_params.html">smooth_level()</a></code>: This is often called the “alpha” parameter used as the base level smoothing factor for exponential smoothing models.</li>
+<li>
+<code>smooth_trend</code>: This is often called the “beta” parameter used as the trend smoothing factor for exponential smoothing models.</li>
+<li>
+<code>smooth_seasonal</code>: This is often called the “gamma” parameter used as the seasonal smoothing factor for exponential smoothing models.</li>
+</ul>
+</div>
+<div id="general-improvements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#general-improvements" class="anchor"></a>General Improvements</h3>
 <ul>
 <li>Improve Model Description of Recursive Models (<a href='https://github.com/business-science/modeltime/issues/96'>#96</a>)</li>
 </ul>
+</div>
+<div id="potential-breaking-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#potential-breaking-changes" class="anchor"></a>Potential Breaking Changes</h3>
+<ul>
+<li>We’ve added new parameters to Exponential Smoothing Models. <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code> models produced in prior versions may require refitting with <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> to upgrade their internals with the new parameters.</li>
+</ul>
+</div>
 </div>
     <div id="modeltime-051" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.1">
@@ -257,7 +288,7 @@
 <h3 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking Changes</h3>
 <ul>
-<li>Deprecating <code>modeltime::metric_tweak()</code> for <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">yardstick::metric_tweak()</a></code>. The <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">yardstick::metric_tweak()</a></code> has a required <code>.name</code> argument in addition to <code>.fn</code>, which is needed for tuning.</li>
+<li>Deprecating <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">modeltime::metric_tweak()</a></code> for <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">yardstick::metric_tweak()</a></code>. The <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">yardstick::metric_tweak()</a></code> has a required <code>.name</code> argument in addition to <code>.fn</code>, which is needed for tuning.</li>
 </ul>
 </div>
 </div>
@@ -265,9 +296,9 @@
 <h1 class="page-header" data-toc-text="0.4.2">
 <a href="#modeltime-042" class="anchor"></a>modeltime 0.4.2<small> 2021-03-19 </small>
 </h1>
-<div id="new-algorithms" class="section level3">
+<div id="new-algorithms-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
+<a href="#new-algorithms-1" class="anchor"></a>New Algorithms</h3>
 <p>Baseline algorithms (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/37'>#37</a>) have been created for comparing high-performance methods with simple forecasting methods.</p>
 <ul>
 <li>
@@ -282,7 +313,7 @@
 <a href="#yardstick-helpers" class="anchor"></a>Yardstick Helpers</h3>
 <ul>
 <li>
-<code>metric_tweak()</code> - Can modify <code>yardstick</code> metrics like <code>mase()</code>, which have seasonal parameters.</li>
+<code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">metric_tweak()</a></code> - Can modify <code>yardstick</code> metrics like <code><a href="https://yardstick.tidymodels.org/reference/mase.html">mase()</a></code>, which have seasonal parameters.</li>
 <li>
 <code><a href="../reference/default_forecast_accuracy_metric_set.html">default_forecast_accuracy_metric_set()</a></code> - Gets a <code>...</code> parameter that allows us to add more metrics beyond the defaults.</li>
 </ul>
@@ -396,7 +427,7 @@
 <li>Documentation - Algorithms now identify default parameter values in the “Engine Details” Section in their respective documentation. E.g. <code><a href="../reference/prophet_boost.html">?prophet_boost</a></code>
 </li>
 <li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code>set_engine()</code> using the following parameters:
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine()</a></code> using the following parameters:
 <ul>
 <li>
 <code>regressors.mode</code> - Set to <code>seasonality.mode</code> by default.</li>
@@ -417,7 +448,7 @@
 <li>
 <code>m750_splits</code> - An <code>rsplit</code> object containing Train/test splits of the M750 data</li>
 <li>
-<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code>training(m750_splits)</code>
+<code>m750_training_resamples</code> - A Time Series Cross Validation <code>time_series_cv</code> object made from the <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(m750_splits)</a></code>
 </li>
 </ul>
 <p><strong>Bug Fix</strong></p>
@@ -477,13 +508,13 @@
     seasonal_period_1 <span class="op">=</span> <span class="st">"1 day"</span>,
     seasonal_period_2 <span class="op">=</span> <span class="st">"1 week"</span>
 <span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></code></pre></div>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"tbats"</span><span class="op">)</span></code></pre></div>
 <p><strong>NNETAR Model</strong></p>
 <p>Use <code><a href="../reference/nnetar_reg.html">nnetar_reg()</a></code> and set engine to “nnetar”.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">model_fit_nnetar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nnetar_reg.html">nnetar_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </code></pre></div>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </code></pre></div>
 <p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul>
 <li>
@@ -511,7 +542,7 @@
 <a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
 <li><p><code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. “UPDATE: ARIMA(0,1,1)(1,1,1)[12]”).</p></li>
-<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code>training(splits)</code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
+<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(splits)</a></code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">

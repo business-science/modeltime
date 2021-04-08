@@ -124,7 +124,7 @@
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Base Algorithms</a>
+      <a href="../articles/modeltime-model-list.html">Modeltime Development Roadmap</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Developers</li>
@@ -232,6 +232,9 @@
   trend <span class='op'>=</span> <span class='st'>"auto"</span>,
   season <span class='op'>=</span> <span class='st'>"auto"</span>,
   damping <span class='op'>=</span> <span class='st'>"auto"</span>,
+  alpha <span class='op'>=</span> <span class='cn'>NULL</span>,
+  beta <span class='op'>=</span> <span class='cn'>NULL</span>,
+  gamma <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -262,11 +265,23 @@ If the error is multiplicative, the data must be non-negative.</p></td>
     </tr>
     <tr>
       <th>season</th>
-      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none"..</p></td>
+      <td><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none".</p></td>
     </tr>
     <tr>
       <th>damping</th>
       <td><p>Apply damping to a trend: "auto", "damped", or "none".</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>Value of alpha. If NULL, it is estimated.</p></td>
+    </tr>
+    <tr>
+      <th>beta</th>
+      <td><p>Value of beta. If NULL, it is estimated.</p></td>
+    </tr>
+    <tr>
+      <th>gamma</th>
+      <td><p>Value of gamma. If NULL, it is estimated.</p></td>
     </tr>
     <tr>
       <th>...</th>

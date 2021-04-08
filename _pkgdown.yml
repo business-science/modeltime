@@ -20,7 +20,7 @@ navbar:
           href: articles/recursive-forecasting.html
         - text: "---"
         - text: 'Algorithms'
-        - text: 'Modeltime Base Algorithms'
+        - text: 'Modeltime Algorithm Roadmap'
           href: articles/modeltime-model-list.html
         - text: "---"
         - text: 'Developers'
