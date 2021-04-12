@@ -41,6 +41,8 @@ Imports:
     scales,
     janitor,
     progressr,
+    doParallel,
+    foreach,
     magrittr,
     forecast,
     xgboost (>= 1.2.0.1),

@@ -8,6 +8,8 @@
 #'
 #' @param object A Modeltime Table
 #' @param data A `tibble` that contains data to retrain the model(s) using.
+#' @param .cores The number of cores to use in the computation. If cores > 1, parallel computation
+#' will be used. Default is 1.
 #' @param control Under construction. Will be used to control refitting.
 #' @param ... Under construction. Additional arguments to control refitting.
 #'
@@ -91,7 +93,7 @@ modeltime_refit <- function(object, data, .cores = parallel::detectCores()-1, ..
 }
 
 #' @export
-modeltime_refit.mdl_time_tbl <- function(object, data, .cores = parallel::detectCores()-1, ..., control = NULL) {
+modeltime_refit.mdl_time_tbl <- function(object, data, .cores = 1, ..., control = NULL) {
 
     new_data <- data
     data     <- object # object is a Modeltime Table
@@ -106,8 +108,10 @@ modeltime_refit.mdl_time_tbl <- function(object, data, .cores = parallel::detect
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
 
-    cl <- parallel::makeCluster(.cores)
-    doParallel::registerDoParallel(cl)
+    if (.cores > 1){
+        cl <- parallel::makeCluster(.cores)
+        doParallel::registerDoParallel(cl)
+    }
 
     get_operator <- function(allow = TRUE) {
         is_par <- foreach::getDoParWorkers() > 1
@@ -143,8 +147,7 @@ modeltime_refit.mdl_time_tbl <- function(object, data, .cores = parallel::detect
 
 
                                }
-
-    doParallel::stopImplicitCluster()
+    if (.cores > 1) {doParallel::stopImplicitCluster()}
 
     ret <- ret %>%
            dplyr::mutate(.model = models)
