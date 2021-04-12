@@ -86,12 +86,12 @@ NULL
 
 #' @export
 #' @rdname modeltime_refit
-modeltime_refit <- function(object, data, ..., control = NULL) {
+modeltime_refit <- function(object, data, .cores = parallel::detectCores()-1, ..., control = NULL) {
     UseMethod("modeltime_refit", object)
 }
 
 #' @export
-modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = NULL) {
+modeltime_refit.mdl_time_tbl <- function(object, data, .cores = parallel::detectCores()-1, ..., control = NULL) {
 
     new_data <- data
     data     <- object # object is a Modeltime Table
@@ -106,27 +106,48 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = NULL) {
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
 
+    cl <- parallel::makeCluster(.cores)
+    doParallel::registerDoParallel(cl)
+
+    get_operator <- function(allow = TRUE) {
+        is_par <- foreach::getDoParWorkers() > 1
+
+        cond <- allow && is_par
+        if (cond) {
+            res <- foreach::`%dopar%`
+        } else {
+            res <- foreach::`%do%`
+        }
+        return(res)
+    }
+
+    `%op%` <- get_operator()
+
     ret <- data %>%
-        dplyr::ungroup() %>%
-        dplyr::mutate(.model = purrr::map2(
-            .x         = .model,
-            .y         = .model_id,
-            .f         = function(obj, id) {
+        dplyr::ungroup()
 
-                p(stringr::str_glue("Model ID = {id} / {max(data$.model_id)}"))
+    models <- foreach::foreach(id = seq_len(nrow(ret)),
+                               .inorder = FALSE,
+                               #.export = c("safe_modeltime_refit"),
+                               .packages = c("modeltime", "parsnip", "dplyr", "stats", "lubridate", "tidymodels")) %op% {
 
-                ret <- safe_modeltime_refit(
-                    obj,
-                    data    = new_data,
-                    control = control,
-                    ...
-                )
 
-                ret <- ret %>% purrr::pluck("result")
+                                   model <- ret %>%
+                                       dplyr::filter(.model_id == id) %>%
+                                       dplyr::select(.model) %>%
+                                       dplyr::pull()
 
-                return(ret)
-            })
-        )
+                                   res <- safe_modeltime_refit(model[[1]], new_data, control) %>% purrr::pluck("result")
+
+                                   return(res)
+
+
+                               }
+
+    doParallel::stopImplicitCluster()
+
+    ret <- ret %>%
+           dplyr::mutate(.model = models)
 
     validate_models_are_not_null(ret)
 
