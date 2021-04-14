@@ -649,13 +649,13 @@ panel_tail <- function(data, id, n){
                 dplyr::select(-!!.derived_features)
 
             recipes::bake(.recipe, new_data = temp_new_data) %>%
-                dplyr::slice_tail(n = new_data_size) %>%
+                dplyr::slice_tail(n = as.integer(new_data_size)) %>%
                 .[slice_idx, ]
         }
     } else if (inherits(.transform, "function")){
         .transform_fun <- function(temp_new_data, new_data_size, slice_idx){
             .transform(temp_new_data) %>%
-                dplyr::slice_tail(n = new_data_size) %>%
+                dplyr::slice_tail(n = as.integer(new_data_size)) %>%
                 .[slice_idx, ]
         }
     }
@@ -683,7 +683,7 @@ panel_tail <- function(data, id, n){
                 dplyr::group_split() %>%
                 purrr::map(function(x){
 
-                    dplyr::slice_tail(x, n = new_data_size) %>%
+                    dplyr::slice_tail(x, n = as.integer(round(new_data_size))) %>%
                         .[slice_idx, ]
 
                 }) %>%
