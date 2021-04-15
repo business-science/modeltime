@@ -34,8 +34,8 @@ These algorithms are provided in the base `modeltime` package. Refer to the [API
 - [x] __STLM__ - Decomposition Models - [See `seasonal_reg()`](https://business-science.github.io/modeltime/reference/seasonal_reg.html)
 - [x] __TBATS__ - [See `seasonal_reg()`](https://business-science.github.io/modeltime/reference/seasonal_reg.html)
 - [x] __NNETAR__ - [See `nnetar_reg()`](https://business-science.github.io/modeltime/reference/nnetar_reg.html)
-- [ ] Theta Method (#93)
-- [ ] CROSTON (#98)
+- [x] __Theta Method__ [See `exp_smoothing()`] (#93)
+- [x] __CROSTON__ [See `exp_smoothing()`] (#98)
 
 ## Prophet Algorithm
 

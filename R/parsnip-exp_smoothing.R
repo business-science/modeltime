@@ -555,8 +555,6 @@ croston_predict_impl <- function(object, new_data, ...) {
 
 #' Low-Level Exponential Smoothing function for translating modeltime to forecast
 #'
-#' @inheritParams exp_smoothing
-#' @inheritParams forecast::thetaf
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
 #' @param ... Additional arguments passed to `forecast::ets`

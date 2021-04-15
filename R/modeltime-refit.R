@@ -88,12 +88,12 @@ NULL
 
 #' @export
 #' @rdname modeltime_refit
-modeltime_refit <- function(object, data, .cores = parallel::detectCores()-1, ..., control = NULL) {
+modeltime_refit <- function(object, data, ..., .cores = 1, control = NULL) {
     UseMethod("modeltime_refit", object)
 }
 
 #' @export
-modeltime_refit.mdl_time_tbl <- function(object, data, .cores = 1, ..., control = NULL) {
+modeltime_refit.mdl_time_tbl <- function(object, data, ..., .cores = 1, control = NULL) {
 
     new_data <- data
     data     <- object # object is a Modeltime Table

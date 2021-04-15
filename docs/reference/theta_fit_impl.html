@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bridge prediction function for ARIMA models — Arima_predict_impl • modeltime</title>
+<title>Low-Level Exponential Smoothing function for translating modeltime to forecast — theta_fit_impl • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Bridge prediction function for ARIMA models — Arima_predict_impl" />
-<meta property="og:description" content="Bridge prediction function for ARIMA models" />
+<meta property="og:title" content="Low-Level Exponential Smoothing function for translating modeltime to forecast — theta_fit_impl" />
+<meta property="og:description" content="Low-Level Exponential Smoothing function for translating modeltime to forecast" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -215,31 +215,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bridge prediction function for ARIMA models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-arima_reg.R'><code>R/parsnip-arima_reg.R</code></a></small>
-    <div class="hidden name"><code>Arima_predict_impl.Rd</code></div>
+    <h1>Low-Level Exponential Smoothing function for translating modeltime to forecast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-exp_smoothing.R'><code>R/parsnip-exp_smoothing.R</code></a></small>
+    <div class="hidden name"><code>theta_fit_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Bridge prediction function for ARIMA models</p>
+    <p>Low-Level Exponential Smoothing function for translating modeltime to forecast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Arima_predict_impl</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>theta_fit_impl</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>An object of class <code>model_fit</code></p></td>
+      <th>x</th>
+      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
     </tr>
     <tr>
-      <th>new_data</th>
-      <td><p>A rectangular data object, such as a data frame.</p></td>
+      <th>y</th>
+      <td><p>A numeric vector of values to fit</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://pkg.robjhyndman.com/forecast/reference/Arima.html'>forecast::Arima()</a></code></p></td>
+      <td><p>Additional arguments passed to <code><a href='https://pkg.robjhyndman.com/forecast/reference/ets.html'>forecast::ets</a></code></p></td>
     </tr>
     </table>
 

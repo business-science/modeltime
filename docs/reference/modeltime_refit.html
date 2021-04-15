@@ -126,7 +126,7 @@ and preprocessing steps used during the training process." />
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Development Roadmap</a>
+      <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Developers</li>
@@ -228,7 +228,7 @@ Modeltime Table and retrains each model on <em>new data</em> re-using the parame
 and preprocessing steps used during the training process.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>modeltime_refit</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>data</span>, <span class='va'>...</span>, control <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>modeltime_refit</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>data</span>, <span class='va'>...</span>, .cores <span class='op'>=</span> <span class='fl'>1</span>, control <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -244,6 +244,11 @@ and preprocessing steps used during the training process.</p>
     <tr>
       <th>...</th>
       <td><p>Under construction. Additional arguments to control refitting.</p></td>
+    </tr>
+    <tr>
+      <th>.cores</th>
+      <td><p>The number of cores to use in the computation. If cores &gt; 1, parallel computation
+will be used. Default is 1.</p></td>
     </tr>
     <tr>
       <th>control</th>
