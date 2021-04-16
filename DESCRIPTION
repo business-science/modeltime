@@ -42,6 +42,7 @@ Imports:
     janitor,
     progressr,
     doParallel,
+    doSNOW,
     foreach,
     magrittr,
     forecast,
