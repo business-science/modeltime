@@ -88,12 +88,12 @@ NULL
 
 #' @export
 #' @rdname modeltime_refit
-modeltime_refit <- function(object, data, ..., .cores = 1, control = NULL) {
+modeltime_refit <- function(object, data, ..., control = control_refit()) {
     UseMethod("modeltime_refit", object)
 }
 
 #' @export
-modeltime_refit.mdl_time_tbl <- function(object, data, ..., .cores = 1, control = NULL) {
+modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_refit()) {
 
     new_data <- data
     data     <- object # object is a Modeltime Table
@@ -108,15 +108,16 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., .cores = 1, control 
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
 
-    if (.cores > 1){
-        cl <- parallel::makeCluster(.cores)
-        doParallel::registerDoParallel(cl)
+    if (control$cores > 1){
+        message("Starting parallel backend...")
+        cl <- parallel::makeCluster(control$cores)
+        doSNOW::registerDoSNOW(cl)
     }
 
-    get_operator <- function(allow = TRUE) {
+    get_operator <- function(allow_par = TRUE) {
         is_par <- foreach::getDoParWorkers() > 1
 
-        cond <- allow && is_par
+        cond <- allow_par && is_par
         if (cond) {
             res <- foreach::`%dopar%`
         } else {
@@ -125,13 +126,23 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., .cores = 1, control 
         return(res)
     }
 
-    `%op%` <- get_operator()
+    `%op%` <- get_operator(allow_par = control$allow_par)
 
     ret <- data %>%
         dplyr::ungroup()
 
+    progress <- function(n) {
+        message(stringr::str_glue("Refitting model id {n} - {ret %>%
+                                       dplyr::filter(.model_id == n) %>%
+                                       dplyr::select(.model_desc) %>%
+                                       dplyr::pull()}"))
+    }
+
+    opts <- list(progress=progress)
+
     models <- foreach::foreach(id = seq_len(nrow(ret)),
                                .inorder = FALSE,
+                               .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
                                #.export = c("safe_modeltime_refit"),
                                .packages = c("modeltime", "parsnip", "dplyr", "stats", "lubridate", "tidymodels")) %op% {
 
@@ -141,13 +152,28 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., .cores = 1, control 
                                        dplyr::select(.model) %>%
                                        dplyr::pull()
 
+                                   #Sequential Printing
+
+                                   if (control$verbose){
+                                       message(stringr::str_glue("Refitting model id {id} - {ret %>%
+                                       dplyr::filter(.model_id == id) %>%
+                                       dplyr::select(.model_desc) %>%
+                                       dplyr::pull()}"))
+                                   }
+
                                    res <- safe_modeltime_refit(model[[1]], new_data, control) %>% purrr::pluck("result")
 
                                    return(res)
 
 
                                }
-    if (.cores > 1) {doParallel::stopImplicitCluster()}
+
+
+    if (control$cores > 1) {doParallel::stopImplicitCluster()
+                            parallel::stopCluster(cl)
+                            message("Finishing parallel backend")}
+
+    message("Done. Have a good day.")
 
     ret <- ret %>%
            dplyr::mutate(.model = models)
@@ -354,7 +380,58 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 
 }
 
+#' @export
+control_refit <- function(allow_par = TRUE,
+                          cores = 1,
+                          verbose = FALSE) {
+    # add options for  seeds per resample
 
+    val_class_and_single(verbose, "logical", "control_refit()")
+    val_class_and_single(allow_par, "logical", "control_refit()")
+    val_class_and_single(cores, "numeric", "control_refit()")
+
+    class_cores <- check_class_integer(cores)
+
+    if (class_cores == F) {rlang::abort("Argument 'cores' should be a single integer value in `control_refit()`")}
+
+    res <- list(allow_par = allow_par,
+                cores = cores,
+                verbose = verbose)
+
+    class(res) <- c("control_refit")
+    res
+}
+
+#' @export
+print.control_refit <- function(x, ...) {
+    cat("refit control object\n")
+    invisible(x)
+}
+
+#' @export
+val_class_and_single <- function (x, cls = "numeric", where = NULL) {
+    cl <- match.call()
+    fine <- check_class_and_single(x, cls)
+    cls <- paste(cls, collapse = " or ")
+    if (!fine) {
+        msg <- glue::glue("Argument '{deparse(cl$x)}' should be a single {cls} value")
+        if (!is.null(where)) {
+            msg <- glue::glue(msg, " in `{where}`")
+        }
+        rlang::abort(msg)
+    }
+    invisible(NULL)
+}
+
+#' @export
+check_class_and_single <- function (x, cls = "numeric") {
+    isTRUE(inherits(x, cls) & length(x) == 1)
+}
+
+#' @export
+check_class_integer <- function(x){
+    if (x %% 1 == 0) TRUE else FALSE
+}
 
 # # REFIT XY ----
 #

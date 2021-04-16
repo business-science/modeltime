@@ -4,7 +4,7 @@
 \alias{modeltime_refit}
 \title{Refit one or more trained models to new data}
 \usage{
-modeltime_refit(object, data, ..., .cores = 1, control = NULL)
+modeltime_refit(object, data, ..., control = control_refit())
 }
 \arguments{
 \item{object}{A Modeltime Table}
@@ -13,10 +13,10 @@ modeltime_refit(object, data, ..., .cores = 1, control = NULL)
 
 \item{...}{Under construction. Additional arguments to control refitting.}
 
+\item{control}{Under construction. Will be used to control refitting.}
+
 \item{.cores}{The number of cores to use in the computation. If cores > 1, parallel computation
 will be used. Default is 1.}
-
-\item{control}{Under construction. Will be used to control refitting.}
 }
 \value{
 A Modeltime Table containing one or more re-trained models.
