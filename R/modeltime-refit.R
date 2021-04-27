@@ -8,8 +8,6 @@
 #'
 #' @param object A Modeltime Table
 #' @param data A `tibble` that contains data to retrain the model(s) using.
-#' @param .cores The number of cores to use in the computation. If cores > 1, parallel computation
-#' will be used. Default is 1.
 #' @param control Under construction. Will be used to control refitting.
 #' @param ... Under construction. Additional arguments to control refitting.
 #'
@@ -112,6 +110,8 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
         message("Starting parallel backend...")
         cl <- parallel::makeCluster(control$cores)
         doSNOW::registerDoSNOW(cl)
+    } else {
+        foreach::registerDoSEQ()
     }
 
     get_operator <- function(allow_par = TRUE) {
@@ -144,7 +144,7 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
                                .inorder = FALSE,
                                .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
                                #.export = c("safe_modeltime_refit"),
-                               .packages = c("modeltime", "parsnip", "dplyr", "stats", "lubridate", "tidymodels")) %op% {
+                               .packages = control$packages) %op% {
 
 
                                    model <- ret %>%
@@ -380,9 +380,25 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 
 }
 
+
+
+# Control Refit
+#
+#' Control aspects of the modeltime_refit process.
+#'
+#' @param allow_par Logical to allow parallel computation
+#' @param cores Number of cores for computation
+#' @param packages Packages that the user wants to send to the workers during parallelization.
+#' @param verbose Logical to control printing.
+#'
+#' @return
+#' A List with the information.
+
 #' @export
 control_refit <- function(allow_par = TRUE,
                           cores = 1,
+                          packages = c("modeltime", "parsnip", "dplyr", "stats",
+                                       "lubridate", "tidymodels", "timetk"),
                           verbose = FALSE) {
     # add options for  seeds per resample
 
@@ -391,6 +407,8 @@ control_refit <- function(allow_par = TRUE,
     val_class_and_single(cores, "numeric", "control_refit()")
 
     class_cores <- check_class_integer(cores)
+
+    load_namespace(packages, full_load = packages)
 
     if (class_cores == F) {rlang::abort("Argument 'cores' should be a single integer value in `control_refit()`")}
 
@@ -408,6 +426,18 @@ print.control_refit <- function(x, ...) {
     invisible(x)
 }
 
+
+# val_class_and_single
+#
+#' These are not intended for use by the general public.
+#'
+#' @param x An object
+#' @param cls A character vector of possible classes
+#' @param where A character string for the calling function
+#'
+#' @return
+#' Control information
+
 #' @export
 val_class_and_single <- function (x, cls = "numeric", where = NULL) {
     cl <- match.call()
@@ -423,14 +453,72 @@ val_class_and_single <- function (x, cls = "numeric", where = NULL) {
     invisible(NULL)
 }
 
+# check_class_and_single
+#
+#' These are not intended for use by the general public.
+#'
+#' @param x An object
+#' @param cls A character vector of possible classes
+#'
+#' @return
+#' Control information
+
 #' @export
 check_class_and_single <- function (x, cls = "numeric") {
     isTRUE(inherits(x, cls) & length(x) == 1)
 }
 
+# check_class_integer
+#
+#' These are not intended for use by the general public.
+#'
+#' @param x A number
+#'
+#' @return
+#' A logical value
+
 #' @export
 check_class_integer <- function(x){
     if (x %% 1 == 0) TRUE else FALSE
+}
+
+# load_namespace
+#
+#' These are not intended for use by the general public.
+#'
+#' @param x A vector
+#' @param full_load A vector
+#'
+#' @return
+#' Control information
+
+#' @export
+load_namespace <- function(x, full_load) {
+    if (length(x) == 0) {
+        return(invisible(TRUE))
+    }
+
+    x_full <- x[x %in% full_load]
+    x <- x[!(x %in% full_load)]
+
+    loaded <- purrr::map_lgl(x, isNamespaceLoaded)
+    x <- x[!loaded]
+
+    if (length(x) > 0) {
+        did_load <- purrr::map_lgl(x, requireNamespace, quietly = TRUE)
+        if (any(!did_load)) {
+            bad <- x[!did_load]
+            msg <- paste0("'", bad, "'", collapse = ", ")
+            stop(paste("These packages could not be loaded:", msg), call. = FALSE)
+        }
+    }
+
+    if (length(x_full) > 0) {
+        purrr::map(x_full,
+                   ~ try(suppressPackageStartupMessages(attachNamespace(.x)), silent = TRUE))
+    }
+
+    invisible(TRUE)
 }
 
 # # REFIT XY ----
