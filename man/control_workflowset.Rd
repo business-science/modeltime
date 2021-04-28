@@ -27,3 +27,6 @@ A List with the information.
 \description{
 Control aspects of the modeltime_fit_workflowset process.
 }
+\seealso{
+\code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
+}

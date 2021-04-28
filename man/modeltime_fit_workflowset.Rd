@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-fit-workflowset.R
 \name{modeltime_fit_workflowset}
 \alias{modeltime_fit_workflowset}
-\title{Fit a workflowset object to one or multiple time series}
+\title{Fit a \code{workflowset} object to one or multiple time series}
 \usage{
 modeltime_fit_workflowset(workflowset, series, control = control_workflowset())
 }
@@ -18,6 +18,9 @@ A Modeltime Table containing one or more fitted models.
 }
 \description{
 This is a wrapper for \code{fit()} that takes a
-Workflowset object and fits each model on one or multiple
+\code{workflowset} object and fits each model on one or multiple
 time series either sequentially or in parallel.
+}
+\seealso{
+\code{\link[=control_workflowset]{control_workflowset()}}
 }

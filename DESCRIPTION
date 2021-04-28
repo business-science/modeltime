@@ -54,6 +54,7 @@ Suggests:
     rstan,
     slider, 
     tidymodels,
+    workflowsets,
     recipes,
     rsample,
     tune,

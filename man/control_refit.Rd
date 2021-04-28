@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-refit.R
 \name{control_refit}
 \alias{control_refit}
-\title{Control aspects of the modeltime_refit process.}
+\title{Control Refit}
 \usage{
 control_refit(
   allow_par = TRUE,
@@ -25,5 +25,8 @@ control_refit(
 A List with the information.
 }
 \description{
-Control aspects of the modeltime_refit process.
+Control aspects of the \code{modeltime_refit()} process.
+}
+\seealso{
+\code{\link[=modeltime_refit]{modeltime_refit()}}
 }

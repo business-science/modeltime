@@ -1,15 +1,17 @@
 # MODELTIME FIT WORKFLOWSET ----
 
-#' Fit a workflowset object to one or multiple time series
+#' Fit a `workflowset` object to one or multiple time series
 #'
 #' This is a wrapper for `fit()` that takes a
-#' Workflowset object and fits each model on one or multiple
+#' `workflowset` object and fits each model on one or multiple
 #' time series either sequentially or in parallel.
 #'
 #' @param workflowset A workflow_set object, generated with the workflowsets::workflow_set function.
 #' @param series A `tibble` that contains data to fit the models.
 #' @param control An object used to modify the fitting process.
 #'
+#' @seealso
+#' [control_workflowset()]
 #'
 #' @return
 #' A Modeltime Table containing one or more fitted models.
@@ -93,9 +95,11 @@ modeltime_fit_workflowset <- function(workflowset, series, control = control_wor
 #' @param packages Packages that the user wants to send to the workers during parallelization.
 #' @param verbose Logical to control printing.
 #'
+#' @seealso
+#' [modeltime_fit_workflowset()]
+#'
 #' @return
 #' A List with the information.
-
 #' @export
 control_workflowset <- function(allow_par = TRUE,
                           cores = 1,

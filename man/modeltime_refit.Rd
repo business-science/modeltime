@@ -86,3 +86,6 @@ refit_tbl <- calibration_tbl \%>\%
 
 
 }
+\seealso{
+\code{\link[=control_refit]{control_refit()}}
+}

@@ -37,7 +37,8 @@
 #'
 #' The XY format is not supported at this time.
 #'
-#'
+#' @seealso
+#' [control_refit()]
 #'
 #'
 #' @examples
@@ -380,11 +381,11 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 
 }
 
+# CONTROL REFIT ----
 
-
-# Control Refit
-#
-#' Control aspects of the modeltime_refit process.
+#' Control Refit
+#'
+#' Control aspects of the `modeltime_refit()` process.
 #'
 #' @param allow_par Logical to allow parallel computation
 #' @param cores Number of cores for computation
@@ -393,7 +394,10 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #'
 #' @return
 #' A List with the information.
-
+#'
+#' @seealso
+#' [modeltime_refit()]
+#'
 #' @export
 control_refit <- function(allow_par = TRUE,
                           cores = 1,
