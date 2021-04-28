@@ -222,11 +222,17 @@
 <h1 class="page-header" data-toc-text="0.5.1.9000">
 <a href="#modeltime-0519000-development-version" class="anchor"></a>modeltime 0.5.1.9000 (Development Version)<small> Unreleased </small>
 </h1>
+<div id="workflowset-integration" class="section level3">
+<h3 class="hasAnchor">
+<a href="#workflowset-integration" class="anchor"></a>Workflowset Integration</h3>
+<p><code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> (<a href='https://github.com/business-science/modeltime/issues/85'>#85</a>) makes it easy to convert <code>workflow_set</code> objects to Modeltime Tables (<code>mdl_time_tbl</code>). Requires a refitting process that can now be performed in parallel or in sequence.</p>
+</div>
 <div id="new-algorithms" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
 <ul>
-<li>CROSTON (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/98'>#98</a>) - This is a new engige that has been added to <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</li>
+<li>CROSTON (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/98'>#98</a>) - This is a new engine that has been added to <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</li>
+<li>THETA (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/93'>#93</a>) - This is a new engine that has been added to <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</li>
 </ul>
 </div>
 <div id="new-dials-parameters" class="section level3">
@@ -240,6 +246,18 @@
 <code>smooth_trend</code>: This is often called the “beta” parameter used as the trend smoothing factor for exponential smoothing models.</li>
 <li>
 <code>smooth_seasonal</code>: This is often called the “gamma” parameter used as the seasonal smoothing factor for exponential smoothing models.</li>
+</ul>
+</div>
+<div id="parallel-processing" class="section level3">
+<h3 class="hasAnchor">
+<a href="#parallel-processing" class="anchor"></a>Parallel Processing</h3>
+<ul>
+<li>
+<code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: supports parallel processing. See <code><a href="../reference/control_refit.html">control_refit()</a></code>
+</li>
+<li>
+<code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code>: supports parallel processing. See <code><a href="../reference/control_workflowset.html">control_workflowset()</a></code>
+</li>
 </ul>
 </div>
 <div id="general-improvements" class="section level3">

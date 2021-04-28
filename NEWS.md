@@ -1,8 +1,14 @@
 # modeltime 0.5.1.9000 (Development Version)
 
+### Workflowset Integration
+
+`modeltime_fit_workflowset()` (#85) makes it easy to convert `workflow_set` objects to Modeltime Tables (`mdl_time_tbl`). Requires a refitting process that can now be performed in parallel or in sequence. 
+
+
 ### New Algorithms
 
-- CROSTON (#5, #98) - This is a new engige that has been added to `exp_smoothing()`. 
+- CROSTON (#5, #98) - This is a new engine that has been added to `exp_smoothing()`. 
+- THETA (#5, #93) - This is a new engine that has been added to `exp_smoothing()`.
 
 ### New Dials Parameters
 
@@ -12,8 +18,12 @@
 - `smooth_trend`: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.
 - `smooth_seasonal`: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.
 
-### General Improvements
+### Parallel Processing
 
+- `modeltime_refit()`: supports parallel processing. See `control_refit()` 
+- `modeltime_fit_workflowset()`: supports parallel processing. See `control_workflowset()` 
+
+### General Improvements
 
 - Improve Model Description of Recursive Models (#96)
 

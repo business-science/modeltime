@@ -74,6 +74,7 @@ reference:
     - modeltime_forecast
     - modeltime_accuracy
     - modeltime_refit
+    - modeltime_fit_workflowset
   - subtitle: Recursive Forecast Prediction
     contents:
     - recursive
