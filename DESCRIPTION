@@ -70,6 +70,7 @@ Suggests:
     knitr,
     rmarkdown,
     webshot,
+    qpdf,
     covr
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

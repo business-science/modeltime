@@ -144,40 +144,43 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
 
     opts <- list(progress=progress)
 
-    models <- foreach::foreach(id = seq_len(nrow(ret)),
-                               .inorder = FALSE,
-                               .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
-                               #.export = c("safe_modeltime_refit"),
-                               .packages = control$packages) %op% {
+    models <- foreach::foreach(
+        # id = seq_len(nrow(ret)),
+        id = ret$.model_id,
+        .inorder = FALSE,
+        .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
+        #.export = c("safe_modeltime_refit"),
+        .packages = control$packages) %op% {
 
 
-                                   model <- ret %>%
-                                       dplyr::filter(.model_id == id) %>%
-                                       dplyr::select(.model) %>%
-                                       dplyr::pull()
-
-                                   #Sequential Printing
-
-                                   if (control$verbose){
-                                       message(stringr::str_glue("Refitting model id {id} - {ret %>%
-                                       dplyr::filter(.model_id == id) %>%
-                                       dplyr::select(.model_desc) %>%
-                                       dplyr::pull()}"))
-                                   }
-
-                                   res <- safe_modeltime_refit(model[[1]], new_data, control) %>% purrr::pluck("result")
-
-                                   return(res)
+           model <- ret %>%
+               dplyr::filter(.model_id == id) %>%
+               dplyr::select(.model) %>%
+               dplyr::pull()
 
 
-                               }
+           #Sequential Printing
+
+           if (control$verbose){
+               message(stringr::str_glue("Refitting model id {id} - {ret %>%
+               dplyr::filter(.model_id == id) %>%
+               dplyr::select(.model_desc) %>%
+               dplyr::pull()}"))
+           }
+
+           res <- safe_modeltime_refit(model[[1]], new_data, control) %>% purrr::pluck("result")
+
+           return(res)
+
+
+       }
 
 
     if (control$cores > 1) {doParallel::stopImplicitCluster()
                             parallel::stopCluster(cl)
                             message("Finishing parallel backend")}
 
-    message("Done. Have a good day.")
+    # message("Done. Have a good day.")
 
     ret <- ret %>%
            dplyr::mutate(.model = models)
