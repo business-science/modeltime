@@ -111,11 +111,48 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
     model_desc_user_vec          <- object$.model_desc
     model_desc_modeltime_old_vec <- object$.model %>% purrr::map_chr(get_model_description)
 
-    # Safely refit
-    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
-
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
+
+
+    # Parallel or Sequential
+    if ((control$cores > 1) && control$allow_par) {
+        ret <- modeltime_refit_parallel(object, data = new_data, control = control, ...)
+    } else {
+        ret <- modeltime_refit_sequential(object, data = new_data, control = control, ...)
+    }
+
+    validate_models_are_not_null(ret)
+
+    # Get new Model Descriptions
+    ret <- ret %>%
+        dplyr::mutate(.model_desc_user = model_desc_user_vec) %>%
+        dplyr::mutate(.model_desc_old  = model_desc_modeltime_old_vec) %>%
+        dplyr::mutate(.model_desc_new  = purrr::map_chr(.model, .f = get_model_description)) %>%
+
+        # Description Logic
+        dplyr::mutate(.model_desc = ifelse(
+            .model_desc_old == .model_desc_new,
+            # TRUE - Let User Choice Alone
+            .model_desc_user,
+            # FALSE - Model Algorithm Parameters Have Changed
+            # - Reflect Updated Model Params in Description
+            paste0("UPDATE: ", .model_desc_new)
+            )
+        ) %>%
+
+        # Clean up columns
+        dplyr::select(-.model_desc_user, -.model_desc_old, -.model_desc_new)
+
+
+    return(ret)
+
+}
+
+modeltime_refit_parallel <- function(object, data, ..., control) {
+
+    new_data <- data
+    data     <- object # object is a Modeltime Table
 
     if ((control$cores > 1) && control$allow_par){
         if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} cores..."))
@@ -151,6 +188,9 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
 
     opts <- list(progress=progress)
 
+    # Safely refit
+    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
+
     models <- foreach::foreach(
         # id = seq_len(nrow(ret)),
         id = ret$.model_id,
@@ -160,30 +200,33 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
         .packages = control$packages) %op% {
 
 
-           model <- ret %>%
-               dplyr::filter(.model_id == id) %>%
-               dplyr::select(.model) %>%
-               dplyr::pull()
+            model <- ret %>%
+                dplyr::filter(.model_id == id) %>%
+                dplyr::select(.model) %>%
+                dplyr::pull()
 
 
-           #Sequential Printing
+            #Sequential Printing
 
-           if (control$verbose){
-               message(stringr::str_glue("Refitting model id {id} - {ret %>%
+            if (control$verbose){
+                message(stringr::str_glue("Refitting model id {id} - {ret %>%
                dplyr::filter(.model_id == id) %>%
                dplyr::select(.model_desc) %>%
                dplyr::pull()}"))
-           }
+            }
 
-           # Prevent issues with recursive parallelization
-           # control$allow_par <- FALSE
+            # Prevent issues with recursive parallelization
+            # control$allow_par <- FALSE
 
-           res <- safe_modeltime_refit(model[[1]], new_data, control = control) %>% purrr::pluck("result")
+            res <- safe_modeltime_refit(model[[1]], new_data, control = control) %>% purrr::pluck("result")
 
-           return(res)
+            return(res)
 
 
-       }
+        }
+
+    ret <- ret %>%
+        dplyr::mutate(.model = models)
 
 
     if (control$cores > 1) {
@@ -192,43 +235,47 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
         if (control$verbose) message("Finishing parallel backend")
     }
 
+    return(ret)
+
     # message("Done. Have a good day.")
 
-    ret <- ret %>%
-           dplyr::mutate(.model = models)
+}
 
-    validate_models_are_not_null(ret)
+modeltime_refit_sequential <- function(object, data, ..., control) {
+
+    new_data <- data
+    data     <- object # object is a Modeltime Table
 
     # Safely refit
-    # safe_get_model_description <- purrr::safely(get_model_description, otherwise = "TODO", quiet = FALSE)
+    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
+    ret <- data %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(.model = purrr::map2(
+            .x         = .model,
+            .y         = .model_id,
+            .f         = function(obj, id) {
 
-    # Get new Model Descriptions
-    ret <- ret %>%
-        dplyr::mutate(.model_desc_user = model_desc_user_vec) %>%
-        dplyr::mutate(.model_desc_old  = model_desc_modeltime_old_vec) %>%
-        dplyr::mutate(.model_desc_new  = purrr::map_chr(.model, .f = get_model_description)) %>%
+                if (control$verbose) message(stringr::str_glue("Refitting Model ID {id}"))
 
-        # Description Logic
-        dplyr::mutate(.model_desc = ifelse(
-            .model_desc_old == .model_desc_new,
-            # TRUE - Let User Choice Alone
-            .model_desc_user,
-            # FALSE - Model Algorithm Parameters Have Changed
-            # - Reflect Updated Model Params in Description
-            paste0("UPDATE: ", .model_desc_new)
-            )
-        ) %>%
+                ret <- safe_modeltime_refit(
+                    obj,
+                    data    = new_data,
+                    control = control,
+                    ...
+                )
 
-        # Clean up columns
-        dplyr::select(-.model_desc_user, -.model_desc_old, -.model_desc_new)
+                ret <- ret %>% purrr::pluck("result")
+
+                return(ret)
+            })
+        )
+
 
 
     return(ret)
 
 }
-
-
 
 
 
