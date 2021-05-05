@@ -11,9 +11,16 @@ mdl_time_refit(object, data, ..., control = NULL)
 
 \item{data}{A \code{tibble} that contains data to retrain the model(s) using.}
 
-\item{...}{Under construction. Additional arguments to control refitting.}
+\item{...}{Additional arguments to control refitting.
 
-\item{control}{Under construction. Will be used to control refitting.}
+\strong{Ensemble Model Spec (\code{modeltime.ensemble}):}
+
+When making a meta-learner with \code{modeltime.ensemble::ensemble_model_spec()},
+used to pass \code{resamples} argument containing results
+from \code{modeltime.resample::modeltime_fit_resamples()}.}
+
+\item{control}{Used to control verbosity and parallel processing.
+See \code{\link[=control_refit]{control_refit()}}.}
 }
 \value{
 A tibble with forecast features

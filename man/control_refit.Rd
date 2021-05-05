@@ -4,14 +4,15 @@
 \alias{control_refit}
 \title{Control Refit}
 \usage{
-control_refit(verbose = FALSE, allow_par = TRUE, cores = 1, packages = NULL)
+control_refit(verbose = FALSE, allow_par = FALSE, cores = -1, packages = NULL)
 }
 \arguments{
 \item{verbose}{Logical to control printing.}
 
-\item{allow_par}{Logical to allow parallel computation}
+\item{allow_par}{Logical to allow parallel computation. Default: \code{FALSE} (single threaded).}
 
-\item{cores}{Number of cores for computation}
+\item{cores}{Number of cores for computation. If -1, uses all available physical cores.
+Default: \code{-1}.}
 
 \item{packages}{An optional character string of R package names that should be loaded
 (by namespace) during parallel processing.}

@@ -8,9 +8,16 @@
 #'
 #' @param object A Modeltime Table
 #' @param data A `tibble` that contains data to retrain the model(s) using.
-#' @param control Under construction. Will be used to control refitting.
-#' @param ... Under construction. Additional arguments to control refitting.
+#' @param ... Additional arguments to control refitting.
 #'
+#'  __Ensemble Model Spec (`modeltime.ensemble`):__
+#'
+#'    When making a meta-learner with `modeltime.ensemble::ensemble_model_spec()`,
+#'    used to pass `resamples` argument containing results
+#'    from `modeltime.resample::modeltime_fit_resamples()`.
+#'
+#' @param control Used to control verbosity and parallel processing.
+#'  See [control_refit()].
 #'
 #' @return
 #' A Modeltime Table containing one or more re-trained models.
@@ -110,8 +117,8 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
     # Implement progressr for progress reporting
     p <- progressr::progressor(steps = nrow(data))
 
-    if (control$cores > 1){
-        message("Starting parallel backend...")
+    if ((control$cores > 1) && control$allow_par){
+        if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} cores..."))
         cl <- parallel::makeCluster(control$cores)
         doSNOW::registerDoSNOW(cl)
     } else {
@@ -147,7 +154,7 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
     models <- foreach::foreach(
         # id = seq_len(nrow(ret)),
         id = ret$.model_id,
-        .inorder = FALSE,
+        .inorder = TRUE,
         .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
         #.export = c("safe_modeltime_refit"),
         .packages = control$packages) %op% {
@@ -168,7 +175,10 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
                dplyr::pull()}"))
            }
 
-           res <- safe_modeltime_refit(model[[1]], new_data, control) %>% purrr::pluck("result")
+           # Prevent issues with recursive parallelization
+           # control$allow_par <- FALSE
+
+           res <- safe_modeltime_refit(model[[1]], new_data, control = control) %>% purrr::pluck("result")
 
            return(res)
 
@@ -176,9 +186,11 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
        }
 
 
-    if (control$cores > 1) {doParallel::stopImplicitCluster()
-                            parallel::stopCluster(cl)
-                            message("Finishing parallel backend")}
+    if (control$cores > 1) {
+        doParallel::stopImplicitCluster()
+        parallel::stopCluster(cl)
+        if (control$verbose) message("Finishing parallel backend")
+    }
 
     # message("Done. Have a good day.")
 
@@ -215,6 +227,10 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
     return(ret)
 
 }
+
+
+
+
 
 # #' @export
 # modeltime_refit_xy.mdl_time_tbl <- function(object, x, y, ..., control = NULL) {
@@ -393,8 +409,9 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #'
 #' Control aspects of the `modeltime_refit()` process.
 #'
-#' @param allow_par Logical to allow parallel computation
-#' @param cores Number of cores for computation
+#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
+#' @param cores Number of cores for computation. If -1, uses all available physical cores.
+#'  Default: `-1`.
 #' @param packages An optional character string of R package names that should be loaded
 #'  (by namespace) during parallel processing.
 #' @param verbose Logical to control printing.
@@ -407,8 +424,8 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #'
 #' @export
 control_refit <- function(verbose = FALSE,
-                          allow_par = TRUE,
-                          cores = 1,
+                          allow_par = FALSE,
+                          cores = -1,
                           packages = NULL) {
     # add options for  seeds per resample
 
@@ -416,19 +433,26 @@ control_refit <- function(verbose = FALSE,
                        "lubridate", "tidymodels", "timetk")
     packages <- c(required_pkgs, packages) %>% unique()
 
+    load_namespace(packages, full_load = packages)
+
+
     val_class_and_single(verbose, "logical", "control_refit()")
     val_class_and_single(allow_par, "logical", "control_refit()")
     val_class_and_single(cores, "numeric", "control_refit()")
 
+    if (!allow_par) cores <- 1
     class_cores <- check_class_integer(cores)
 
-    load_namespace(packages, full_load = packages)
+    cores_available <- parallel::detectCores(logical = FALSE) # Detect Physical Cores
+    if (cores < 1) cores <- cores_available
+    if (cores > cores_available) cores <- cores_available
 
     if (class_cores == F) {rlang::abort("Argument 'cores' should be a single integer value in `control_refit()`")}
 
     res <- list(allow_par = allow_par,
                 cores = cores,
-                verbose = verbose)
+                verbose = verbose,
+                packages = packages)
 
     class(res) <- c("control_refit")
     res
