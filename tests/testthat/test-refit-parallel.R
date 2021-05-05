@@ -43,7 +43,8 @@ testthat::test_that("refit works in parallel", {
             data = m4_monthly_jumbled,
             control = control_refit(
                 verbose   = TRUE,
-                allow_par = TRUE
+                allow_par = TRUE,
+                cores     = 2 # R CMD CHECK ONLY ALLOWS 2
             )
         )
 
