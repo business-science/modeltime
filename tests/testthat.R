@@ -18,7 +18,7 @@ library(yardstick)
 library(slider)
 
 library(timetk)
-# library(modeltime)
+library(modeltime)
 
 library(progressr)
 
