@@ -97,6 +97,9 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
     new_data <- data
     data     <- object # object is a Modeltime Table
 
+    # Backwards compatibility
+    if (is.null(control)) control <- control_refit()
+
     # Save current model descriptions
     model_desc_user_vec          <- object$.model_desc
     model_desc_modeltime_old_vec <- object$.model %>% purrr::map_chr(get_model_description)
