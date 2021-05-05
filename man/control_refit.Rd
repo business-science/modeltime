@@ -4,22 +4,17 @@
 \alias{control_refit}
 \title{Control Refit}
 \usage{
-control_refit(
-  allow_par = TRUE,
-  cores = 1,
-  packages = c("modeltime", "parsnip", "dplyr", "stats", "lubridate", "tidymodels",
-    "timetk"),
-  verbose = FALSE
-)
+control_refit(verbose = FALSE, allow_par = TRUE, cores = 1, packages = NULL)
 }
 \arguments{
+\item{verbose}{Logical to control printing.}
+
 \item{allow_par}{Logical to allow parallel computation}
 
 \item{cores}{Number of cores for computation}
 
-\item{packages}{Packages that the user wants to send to the workers during parallelization.}
-
-\item{verbose}{Logical to control printing.}
+\item{packages}{An optional character string of R package names that should be loaded
+(by namespace) during parallel processing.}
 }
 \value{
 A List with the information.

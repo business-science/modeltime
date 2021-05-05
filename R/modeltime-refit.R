@@ -395,7 +395,8 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #'
 #' @param allow_par Logical to allow parallel computation
 #' @param cores Number of cores for computation
-#' @param packages Packages that the user wants to send to the workers during parallelization.
+#' @param packages An optional character string of R package names that should be loaded
+#'  (by namespace) during parallel processing.
 #' @param verbose Logical to control printing.
 #'
 #' @return
@@ -405,12 +406,15 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #' [modeltime_refit()]
 #'
 #' @export
-control_refit <- function(allow_par = TRUE,
+control_refit <- function(verbose = FALSE,
+                          allow_par = TRUE,
                           cores = 1,
-                          packages = c("modeltime", "parsnip", "dplyr", "stats",
-                                       "lubridate", "tidymodels", "timetk"),
-                          verbose = FALSE) {
+                          packages = NULL) {
     # add options for  seeds per resample
+
+    required_pkgs <- c("modeltime", "parsnip", "dplyr", "stats",
+                       "lubridate", "tidymodels", "timetk")
+    packages <- c(required_pkgs, packages) %>% unique()
 
     val_class_and_single(verbose, "logical", "control_refit()")
     val_class_and_single(allow_par, "logical", "control_refit()")
