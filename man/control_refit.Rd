@@ -14,8 +14,12 @@ control_refit(verbose = FALSE, allow_par = FALSE, cores = -1, packages = NULL)
 \item{cores}{Number of cores for computation. If -1, uses all available physical cores.
 Default: \code{-1}.}
 
-\item{packages}{An optional character string of R package names that should be loaded
-(by namespace) during parallel processing.}
+\item{packages}{An optional character string of additional R package names that should be loaded
+during parallel processing.
+\itemize{
+\item Packages in your namespace are loaded by default
+\item Key Packages are loaded by default: \code{tidymodels}, \code{parsnip}, \code{modeltime}, \code{dplyr}, \code{stats}, \code{lubridate} and \code{timetk}.
+}}
 }
 \value{
 A List with the information.

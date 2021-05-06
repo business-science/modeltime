@@ -158,6 +158,7 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
         if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} cores..."))
         cl <- parallel::makeCluster(control$cores)
         doSNOW::registerDoSNOW(cl)
+        parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
     } else {
         foreach::registerDoSEQ()
     }
@@ -459,8 +460,13 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
 #' @param cores Number of cores for computation. If -1, uses all available physical cores.
 #'  Default: `-1`.
-#' @param packages An optional character string of R package names that should be loaded
-#'  (by namespace) during parallel processing.
+#' @param packages An optional character string of additional R package names that should be loaded
+#'  during parallel processing.
+#'
+#'  - Packages in your namespace are loaded by default
+#'
+#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
+#'
 #' @param verbose Logical to control printing.
 #'
 #' @return
@@ -478,7 +484,12 @@ control_refit <- function(verbose = FALSE,
 
     required_pkgs <- c("modeltime", "parsnip", "dplyr", "stats",
                        "lubridate", "tidymodels", "timetk")
-    packages <- c(required_pkgs, packages) %>% unique()
+
+    namespace_pkgs <- search() %>%
+        stringr::str_subset(pattern = "^package") %>%
+        stringr::str_remove("package:")
+
+    packages <- c(required_pkgs, namespace_pkgs, packages) %>% unique()
 
     load_namespace(packages, full_load = packages)
 
