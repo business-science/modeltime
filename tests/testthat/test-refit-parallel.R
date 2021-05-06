@@ -44,7 +44,7 @@ testthat::test_that("refit works in parallel", {
             control = control_refit(
                 verbose   = TRUE,
                 allow_par = TRUE,
-                cores     = 2 # R CMD CHECK ONLY ALLOWS 2
+                cores     = 2 # R CMD CHECK ONLY ALLOWS 2 CORES MAX
             )
         )
 

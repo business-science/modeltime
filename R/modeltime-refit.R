@@ -230,9 +230,10 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
         dplyr::mutate(.model = models)
 
 
-    if (control$cores > 1) {
+    if ((control$cores > 1) && control$allow_par) {
         doParallel::stopImplicitCluster()
         parallel::stopCluster(cl)
+        foreach::registerDoSEQ()
         if (control$verbose) message("Finishing parallel backend")
     }
 

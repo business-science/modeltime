@@ -56,7 +56,7 @@ test_that("Tuning, arima_boost", {
             resamples = resample_spec,
             grid      = grid_spec,
             metrics   = metric_set(mae, mape, smape, mase, rmse, rsq),
-            control   = control_grid(verbose = FALSE)
+            control   = control_grid(verbose = FALSE, allow_par = TRUE)
         )
 
     # structure
