@@ -71,11 +71,28 @@ find_parsnip_formula_form <- function(object) {
             dplyr::filter(value)
 
         formula_found <- FALSE
+
         if (nrow(check_formula_tbl) >= 1) {
             formula_found <- TRUE
         }
 
+        if (formula_found == FALSE){
+            check_formula_second_level <- object %>%
+                purrr::map_dfr(~ rlang::is_formula(.)) %>%
+                tidyr::gather() %>%
+                dplyr::filter(key == "formula")
 
+            if (length(check_formula_second_level) > 1){
+                check_formula_tbl <- object$formula %>%
+                    purrr::map_dfr(~ rlang::is_formula(.)) %>%
+                    tidyr::gather() %>%
+                    dplyr::filter(value)
+            }
+        }
+
+        if (nrow(check_formula_tbl) >= 1) {
+            formula_found <- TRUE
+        }
 
         if (formula_found) {
             form <- stats::formula(object[[ check_formula_tbl$key[1] ]])
