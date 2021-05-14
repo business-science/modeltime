@@ -154,13 +154,21 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     new_data <- data
     data     <- object # object is a Modeltime Table
 
-    if ((control$cores > 1) && control$allow_par){
-        if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} cores..."))
+    is_par_setup <- foreach::getDoParWorkers() > 1
+
+    # If parallel processing is not set up, set up parallel backend
+    if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
+        if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} clusters (cores)..."))
         cl <- parallel::makeCluster(control$cores)
         doSNOW::registerDoSNOW(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-    } else {
+    } else if (!is_par_setup) {
+        # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
+        if (control$verbose) message(stringr::str_glue("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`."))
         foreach::registerDoSEQ()
+    } else {
+        # Parallel was set up externally by user - Do nothing.
+        if (control$verbose) message(stringr::str_glue("Using existing parallel backend with {foreach::getDoParWorkers()} clusters (cores)..."))
     }
 
     get_operator <- function(allow_par = TRUE) {
@@ -193,12 +201,11 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
     models <- foreach::foreach(
-        # id = seq_len(nrow(ret)),
-        id = ret$.model_id,
-        .inorder = TRUE,
-        .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
-        #.export = c("safe_modeltime_refit"),
-        .packages = control$packages) %op% {
+            id = ret$.model_id,
+            .inorder = TRUE,
+            .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
+            .packages = control$packages
+        ) %op% {
 
 
             model <- ret %>%
@@ -230,16 +237,27 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
         dplyr::mutate(.model = models)
 
 
-    if ((control$cores > 1) && control$allow_par) {
+    # Finish Parallel Backend. Close clusters if we set up internally.
+    if ((control$cores > 1) && control$allow_par && (!is_par_setup)) {
+        # We set up parallel processing internally. We should close.
         doParallel::stopImplicitCluster()
         parallel::stopCluster(cl)
         foreach::registerDoSEQ()
-        if (control$verbose) message("Finishing parallel backend")
+        if (control$verbose) {
+            message("Finishing parallel backend. Closing clusters.")
+
+        }
+    } else if ((control$cores > 1) && control$allow_par) {
+        if (control$verbose) {
+            message("Finishing parallel backend. Clusters are remaining open. Close clusters by running: `foreach::registerDoSEQ()`")
+        }
+    } else {
+        if (control$verbose) {
+            message("Finishing sequential backend.")
+        }
     }
 
     return(ret)
-
-    # message("Done. Have a good day.")
 
 }
 
