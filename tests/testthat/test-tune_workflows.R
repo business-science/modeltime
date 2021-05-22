@@ -16,7 +16,7 @@ resample_spec <- time_series_cv(data = m750,
 # 1. ARIMA BOOST ----
 test_that("Tuning, arima_boost", {
 
-    # skip_on_cran()
+    skip_on_cran()
 
     # Recipe
     recipe_spec <- recipe(value ~ date, data = m750) %>%
