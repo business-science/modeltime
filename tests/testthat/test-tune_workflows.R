@@ -36,15 +36,14 @@ test_that("Tuning, arima_boost", {
         seasonal_ma              = 0,
 
         # XGBoost Tuning Params
-        min_n      = tune(),
-        learn_rate = tune()
+        min_n      = tune()
     ) %>%
         set_engine("arima_xgboost")
 
     # Grid
     set.seed(3)
     grid_spec <- grid_latin_hypercube(
-        parameters(min_n(), learn_rate()),
+        parameters(min_n()),
         size = 3
     )
 
