@@ -318,44 +318,93 @@ Mean &amp; Median Window Forecasts - <a href="https://business-science.github.io
 <div id="general-additive-models-gams" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-additive-models-gams" class="anchor"></a>General Additive Models (GAMs)</h2>
-<p>This project is being managed via <code>gammodels</code>: <a href="https://github.com/business-science/gammodels" class="uri">https://github.com/business-science/gammodels</a></p>
+<p>We are currently working with the <code>parsnip</code> team to reach a solution.</p>
 <ul class="task-list">
 <li>
 <input type="checkbox" disabled>
 GAMs (<code>mgcv</code>)</li>
 </ul>
 </div>
-<div id="structural-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#structural-models" class="anchor"></a>Structural Models</h2>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled>
-StructTS</li>
-<li>
-<input type="checkbox" disabled>
-BSTS</li>
-</ul>
-</div>
 <div id="garch-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#garch-models" class="anchor"></a>GARCH Models</h2>
+<p>Refer to <code>garchmodels</code> (<a href="https://albertoalmuinha.github.io/garchmodels/">Website</a>, <a href="https://github.com/AlbertoAlmuinha/garchmodels">GitHub</a>).</p>
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled>
+<input type="checkbox" disabled checked>
 GARCH</li>
 <li>
-<input type="checkbox" disabled>
+<input type="checkbox" disabled checked>
 RUGARCH</li>
 <li>
-<input type="checkbox" disabled>
+<input type="checkbox" disabled checked>
 RMGARCH</li>
+</ul>
+</div>
+<div id="bayesian-models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bayesian-models" class="anchor"></a>Bayesian Models</h2>
+<p>Refer to <code>bayesmodels</code> (<a href="https://albertoalmuinha.github.io/bayesmodels/">Website</a>, <a href="https://github.com/AlbertoAlmuinha/bayesmodels">GitHub</a>)</p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked><strong>Sarima</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
+<li>
+<input type="checkbox" disabled checked><strong>Garch</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
+<li>
+<input type="checkbox" disabled checked><strong>Random Walk (Naive)</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
+<li>
+<input type="checkbox" disabled checked><strong>State Space Model</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> and <code>bsts</code> packages.</li>
+<li>
+<input type="checkbox" disabled checked><strong>Stochastic Volatility Model</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
+<li>
+<input type="checkbox" disabled checked><strong>Generalized Additive Models (GAMS)</strong>: <code>bayesmodels</code> connects to the <code>brms</code> package.</li>
+<li>
+<input type="checkbox" disabled checked><strong>Adaptive Splines Surface</strong>: <code>bayesmodels</code> connects to the <code>BASS</code> package.</li>
+<li>
+<input type="checkbox" disabled checked><strong>Exponential Smoothing</strong>: <code>bayesmodels</code> connects to the <code>Rglt</code> package.</li>
+</ul>
+</div>
+<div id="boosted-models-catboost-lightgbm" class="section level2">
+<h2 class="hasAnchor">
+<a href="#boosted-models-catboost-lightgbm" class="anchor"></a>Boosted Models: CatBoost, LightGBM</h2>
+<p>Refer to <code>boostime</code> (<a href="https://github.com/AlbertoAlmuinha/boostime">GitHub</a>).</p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled checked>
+ARIMA + Catboost</li>
+<li>
+<input type="checkbox" disabled checked>
+ARIMA + LightGBM</li>
+<li>
+<input type="checkbox" disabled checked>
+Prophet + Catboost</li>
+<li>
+<input type="checkbox" disabled checked>
+Prophet + LightGBM</li>
 </ul>
 </div>
 <div id="vector-autoregression-var" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vector-autoregression-var" class="anchor"></a>Vector Autoregression (VAR)</h2>
 <p>Investigate whether or not tools are needed to support VAR modeling. It’s unclear whether or not a separate toolset is required beyond the core system. User input required. Follow GH Issue #77.</p>
+</div>
+<div id="spark-dask-scalable-compute" class="section level2">
+<h2 class="hasAnchor">
+<a href="#spark-dask-scalable-compute" class="anchor"></a>Spark &amp; Dask: Scalable Compute</h2>
+<p>Investigate the possibility of adding Spark and Dask backends to improve scalability of modeltime.</p>
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled>
+Spark Backend #105</li>
+<li>
+<input type="checkbox" disabled>
+Dask Backend #106</li>
+</ul>
+</div>
+<div id="linkedin-greykite" class="section level2">
+<h2 class="hasAnchor">
+<a href="#linkedin-greykite" class="anchor"></a>LinkedIn Greykite</h2>
+<p>Investigate algorithm. Determine if backend has value. <a href="https://linkedin.github.io/greykite/docs/0.1.0/html/index.html" class="uri">https://linkedin.github.io/greykite/docs/0.1.0/html/index.html</a></p>
 </div>
   </div>
 

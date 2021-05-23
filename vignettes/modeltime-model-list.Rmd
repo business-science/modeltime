@@ -92,21 +92,52 @@ Refer to baseline algorithms #37
 
 ## General Additive Models (GAMs)
 
-This project is being managed via `gammodels`: https://github.com/business-science/gammodels
+We are currently working with the `parsnip` team to reach a solution. 
 
 - [ ] GAMs (`mgcv`)
 
-## Structural Models
-
-- [ ] StructTS
-- [ ] BSTS
 
 ## GARCH Models
 
-- [ ] GARCH
-- [ ] RUGARCH
-- [ ] RMGARCH
+Refer to `garchmodels` ([Website](https://albertoalmuinha.github.io/garchmodels/), [GitHub](https://github.com/AlbertoAlmuinha/garchmodels)).
+
+- [x] GARCH
+- [x] RUGARCH
+- [x] RMGARCH
+
+## Bayesian Models
+
+Refer to `bayesmodels` ([Website](https://albertoalmuinha.github.io/bayesmodels/), [GitHub](https://github.com/AlbertoAlmuinha/bayesmodels))
+
+- [x] __Sarima__: `bayesmodels` connects to the `bayesforecast` package.
+- [x] __Garch__: `bayesmodels` connects to the `bayesforecast` package.
+- [x] __Random Walk (Naive)__: `bayesmodels` connects to the `bayesforecast` package.
+- [x] __State Space Model__: `bayesmodels` connects to the `bayesforecast` and `bsts` packages.
+- [x] __Stochastic Volatility Model__: `bayesmodels` connects to the `bayesforecast` package.
+- [x] __Generalized Additive Models (GAMS)__: `bayesmodels` connects to the `brms` package.
+- [x] __Adaptive Splines Surface__: `bayesmodels` connects to the `BASS` package.
+- [x] __Exponential Smoothing__: `bayesmodels` connects to the `Rglt` package.
+
+## Boosted Models: CatBoost, LightGBM
+
+Refer to `boostime` ([GitHub](https://github.com/AlbertoAlmuinha/boostime)).
+
+- [x] ARIMA + Catboost
+- [x] ARIMA + LightGBM
+- [x] Prophet + Catboost
+- [x] Prophet + LightGBM
 
 ## Vector Autoregression (VAR)
 
 Investigate whether or not tools are needed to support VAR modeling. It's unclear whether or not a separate toolset is required beyond the core system. User input required. Follow GH Issue #77.
+
+## Spark & Dask: Scalable Compute
+
+Investigate the possibility of adding Spark and Dask backends to improve scalability of modeltime. 
+
+- [ ] Spark Backend #105 
+- [ ] Dask Backend #106 
+
+## LinkedIn Greykite
+
+Investigate algorithm. Determine if backend has value. https://linkedin.github.io/greykite/docs/0.1.0/html/index.html
