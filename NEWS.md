@@ -1,4 +1,6 @@
-# modeltime 0.5.1.9000 (Development Version)
+# modeltime 0.6.9000 (Development Version)
+
+# modeltime 0.6.0 
 
 ### Workflowset Integration
 
