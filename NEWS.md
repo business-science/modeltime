@@ -17,8 +17,8 @@
 `exp_smoothing()` gained 3 new tunable parameters:
 
 - `smooth_level()`: This is often called the "alpha" parameter used as the base level smoothing factor for exponential smoothing models.
-- `smooth_trend`: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.
-- `smooth_seasonal`: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.
+- `smooth_trend()`: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.
+- `smooth_seasonal()`: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.
 
 ### Parallel Processing
 

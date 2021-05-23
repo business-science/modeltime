@@ -127,6 +127,7 @@ reference:
   - subtitle: Exponential Smoothing
     contents:
     - error
+    - smooth_level
   - subtitle: Prophet
     contents:
     - changepoint_num
