@@ -4,12 +4,14 @@
 \alias{modeltime_fit_workflowset}
 \title{Fit a \code{workflowset} object to one or multiple time series}
 \usage{
-modeltime_fit_workflowset(workflowset, series, control = control_workflowset())
+modeltime_fit_workflowset(object, data, ..., control = control_workflowset())
 }
 \arguments{
-\item{workflowset}{A workflow_set object, generated with the workflowsets::workflow_set function.}
+\item{object}{A workflow_set object, generated with the workflowsets::workflow_set function.}
 
-\item{series}{A \code{tibble} that contains data to fit the models.}
+\item{data}{A \code{tibble} that contains data to fit the models.}
+
+\item{...}{Not currently used}
 
 \item{control}{An object used to modify the fitting process.}
 }
@@ -20,6 +22,42 @@ A Modeltime Table containing one or more fitted models.
 This is a wrapper for \code{fit()} that takes a
 \code{workflowset} object and fits each model on one or multiple
 time series either sequentially or in parallel.
+}
+\examples{
+library(tidymodels)
+library(modeltime)
+library(workflowsets)
+library(tidyverse)
+library(lubridate)
+library(timetk)
+
+data_set <- m4_monthly
+
+# SETUP WORKFLOWSETS
+
+rec1 <- recipe(value ~ date + id, data_set) \%>\%
+    step_mutate(date_num = as.numeric(date)) \%>\%
+    step_mutate(month_lbl = lubridate::month(date, label = TRUE)) \%>\%
+    step_dummy(all_nominal(), one_hot = TRUE)
+
+mod1 <- linear_reg() \%>\% set_engine("lm")
+
+mod2 <- prophet_reg() \%>\% set_engine("prophet")
+
+wfsets <- workflowsets::workflow_set(
+    preproc = list(rec1 = rec1),
+    models  = list(
+        mod1 = mod1,
+        mod2 = mod2
+    ),
+    cross   = TRUE
+)
+
+# FIT WORKFLOWSETS
+# - Returns a Modeltime Table with fitted workflowsets
+
+wfsets \%>\% modeltime_fit_workflowset(data_set)
+
 }
 \seealso{
 \code{\link[=control_workflowset]{control_workflowset()}}

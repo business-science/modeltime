@@ -22,7 +22,7 @@ during parallel processing.
 }}
 }
 \value{
-A List with the information.
+A List with the control settings.
 }
 \description{
 Control aspects of the \code{modeltime_refit()} process.

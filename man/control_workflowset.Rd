@@ -2,31 +2,38 @@
 % Please edit documentation in R/modeltime-fit-workflowset.R
 \name{control_workflowset}
 \alias{control_workflowset}
-\title{Control aspects of the modeltime_fit_workflowset process.}
+\title{Control aspects of the \code{modeltime_fit_workflowset()} process.}
 \usage{
 control_workflowset(
-  allow_par = TRUE,
-  cores = 1,
-  packages = c("modeltime", "parsnip", "dplyr", "stats", "lubridate", "tidymodels",
-    "timetk"),
-  verbose = FALSE
+  verbose = FALSE,
+  allow_par = FALSE,
+  cores = -1,
+  packages = NULL
 )
 }
 \arguments{
-\item{allow_par}{Logical to allow parallel computation}
-
-\item{cores}{Number of cores for computation}
-
-\item{packages}{Packages that the user wants to send to the workers during parallelization.}
-
 \item{verbose}{Logical to control printing.}
+
+\item{allow_par}{Logical to allow parallel computation. Default: \code{FALSE} (single threaded).}
+
+\item{cores}{Number of cores for computation. If -1, uses all available physical cores.
+Default: \code{-1}.}
+
+\item{packages}{An optional character string of additional R package names that should be loaded
+during parallel processing.
+\itemize{
+\item Packages in your namespace are loaded by default
+\item Key Packages are loaded by default: \code{tidymodels}, \code{parsnip}, \code{modeltime}, \code{dplyr}, \code{stats}, \code{lubridate} and \code{timetk}.
+}}
 }
 \value{
-A List with the information.
+A List with the control settings.
 }
 \description{
-Control aspects of the modeltime_fit_workflowset process.
+Control aspects of the \code{modeltime_fit_workflowset()} process.
 }
 \seealso{
+\code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
+
 \code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
 }
