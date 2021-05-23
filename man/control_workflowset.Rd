@@ -34,6 +34,4 @@ Control aspects of the \code{modeltime_fit_workflowset()} process.
 }
 \seealso{
 \code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
-
-\code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
 }

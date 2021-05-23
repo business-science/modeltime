@@ -309,7 +309,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/DavisVaughan/slider'>slider</a></span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'slider' was built under R version 4.0.5</span></div><div class='input'>
 <span class='co'># ---- SINGLE TIME SERIES (NON-PANEL) -----</span>
 
 <span class='va'>m750</span>
@@ -326,7 +326,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M750  1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M750  1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750  1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820
-#&gt; </span><span style='color: #949494;'># … with 296 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># ... with 296 more rows</span><span></div><div class='input'>
 <span class='va'>FORECAST_HORIZON</span> <span class='op'>&lt;-</span> <span class='fl'>24</span>
 
 <span class='va'>m750_extended</span> <span class='op'>&lt;-</span> <span class='va'>m750</span> <span class='op'>%&gt;%</span>
@@ -384,7 +384,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 #&gt; 
 #&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  3ms 
+#&gt; Fit time:  0ms 
 #&gt; 
 #&gt; Call:
 #&gt; stats::lm(formula = value ~ ., data = data)
@@ -430,7 +430,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M1    1977-01-01  </span><span style='text-decoration: underline;'>6</span><span>650
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M1    1977-02-01  </span><span style='text-decoration: underline;'>6</span><span>830
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> M1    1977-03-01  </span><span style='text-decoration: underline;'>5</span><span>710
-#&gt; </span><span style='color: #949494;'># … with 1,564 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># ... with 1,564 more rows</span><span></div><div class='input'>
 <span class='va'>FORECAST_HORIZON</span> <span class='op'>&lt;-</span> <span class='fl'>24</span>
 
 <span class='va'>m4_extended</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span>

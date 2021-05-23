@@ -189,8 +189,6 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 #'
 #' @inheritParams control_refit
 #'
-#' @seealso
-#' [modeltime_fit_workflowset()]
 #'
 #' @return
 #' A List with the control settings.

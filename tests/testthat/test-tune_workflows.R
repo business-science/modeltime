@@ -49,15 +49,18 @@ test_that("Tuning, arima_boost", {
     )
 
     # Tune
-    tune_results_boosted <- workflow() %>%
-        add_recipe(recipe_spec) %>%
-        add_model(model_spec) %>%
-        tune_grid(
-            resamples = resample_spec,
-            grid      = grid_spec,
-            metrics   = metric_set(mae, mape, smape, mase, rmse, rsq),
-            control   = control_grid(verbose = FALSE, allow_par = TRUE)
-        )
+    suppressWarnings({
+        tune_results_boosted <- workflow() %>%
+            add_recipe(recipe_spec) %>%
+            add_model(model_spec) %>%
+            tune_grid(
+                resamples = resample_spec,
+                grid      = grid_spec,
+                metrics   = metric_set(mae, mape, smape, mase, rmse, rsq),
+                control   = control_grid(verbose = FALSE, allow_par = TRUE)
+            )
+    })
+
 
     # structure
     expect_equal(ncol(tune_results_boosted), 4)

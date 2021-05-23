@@ -110,6 +110,7 @@ reference:
     - update_modeltime_model
     - update_modeltime_description
     - pluck_modeltime_model
+    - starts_with("control_")
   - title: Accuracy Metrics (Yardstick)
     contents:
     - default_forecast_accuracy_metric_set

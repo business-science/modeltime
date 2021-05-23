@@ -302,7 +302,7 @@ one column for each feature or one less column than each feature. Default is <co
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M750  1990-08-01 Aug  
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M750  1990-09-01 Sep  
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750  1990-10-01 Oct  
-#&gt; </span><span style='color: #949494;'># … with 296 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># ... with 296 more rows</span><span></div><div class='input'>
 <span class='co'># Create default recipe</span>
 <span class='va'>xreg_recipe_spec</span> <span class='op'>&lt;-</span> <span class='fu'>create_xreg_recipe</span><span class='op'>(</span><span class='va'>predictors</span>, prepare <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
@@ -321,8 +321,8 @@ one column for each feature or one less column than each feature. Default is <co
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         0         0         0         0         0         0         1
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         0         0         0         0         0         0         0
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #949494;'># … with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;, month_Oct &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># ... with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   month_Oct &lt;dbl&gt;, month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span><span></div><div class='input'>
 <span class='co'># Applies the prepared recipe to new data (used in your predict function)</span>
 <span class='fu'><a href='recipe_helpers.html'>bake_xreg_recipe</a></span><span class='op'>(</span><span class='va'>xreg_recipe_spec</span>, new_data <span class='op'>=</span> <span class='va'>predictors</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 306 x 11</span><span>
@@ -338,8 +338,8 @@ one column for each feature or one less column than each feature. Default is <co
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         0         0         0         0         0         0         1
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         0         0         0         0         0         0         0
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #949494;'># … with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;, month_Oct &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># ... with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   month_Oct &lt;dbl&gt;, month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
