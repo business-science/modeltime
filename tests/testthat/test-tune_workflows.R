@@ -48,17 +48,17 @@ test_that("Tuning, arima_boost", {
     )
 
     # Tune
-    suppressWarnings({
-        tune_results_boosted <- workflow() %>%
-            add_recipe(recipe_spec) %>%
-            add_model(model_spec) %>%
-            tune_grid(
-                resamples = resample_spec,
-                grid      = grid_spec,
-                metrics   = metric_set(mae, mape, smape, mase, rmse, rsq),
-                control   = control_grid(verbose = FALSE, allow_par = TRUE)
-            )
-    })
+    tune_results_boosted <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec) %>%
+        tune_grid(
+            resamples = resample_spec,
+            grid      = grid_spec,
+            metrics   = metric_set(mae, mape, smape, mase, rmse, rsq),
+            control   = control_grid(verbose = FALSE, allow_par = TRUE)
+        )
+
+    print(tune_results_boosted)
 
 
     # structure
@@ -67,6 +67,8 @@ test_that("Tuning, arima_boost", {
     tune_results_boosted_metrics <- tune_results_boosted %>%
         select(.metrics) %>%
         unnest(.metrics)
+
+    print(tune_results_boosted_metrics)
 
     expect_equal(nrow(tune_results_boosted_metrics), 36)
 
