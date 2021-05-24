@@ -111,10 +111,6 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
     model_desc_user_vec          <- object$.model_desc
     model_desc_modeltime_old_vec <- object$.model %>% purrr::map_chr(get_model_description)
 
-    # Implement progressr for progress reporting
-    p <- progressr::progressor(steps = nrow(data))
-
-
     # Parallel or Sequential
     if ((control$cores > 1) && control$allow_par) {
         ret <- modeltime_refit_parallel(object, data = new_data, control = control, ...)
@@ -200,10 +196,12 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     # Safely refit
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
+    # Setup progress
+    p <- progressr::progressor(along = ret$.model_id)
+
     models <- foreach::foreach(
             id                  = ret$.model_id,
             .inorder            = TRUE,
-            # .options.snow       = if (control$verbose) opts else NULL, #Parallel Printing
             .packages           = control$packages
         ) %op% {
 
@@ -229,7 +227,6 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
             res <- safe_modeltime_refit(model[[1]], new_data, control = control) %>% purrr::pluck("result")
 
             return(res)
-
 
         }
 

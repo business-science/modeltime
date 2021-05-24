@@ -16,7 +16,6 @@ library(tune)
 library(dials)
 library(yardstick)
 library(timetk)
-library(progressr)
 library(tidyverse)
 library(lubridate)
 

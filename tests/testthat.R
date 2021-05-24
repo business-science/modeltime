@@ -20,8 +20,6 @@ library(slider)
 library(timetk)
 library(modeltime)
 
-library(progressr)
-
 library(tidyverse)
 library(lubridate)
 

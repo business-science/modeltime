@@ -444,14 +444,11 @@ test_that("Models for Mega Test", {
 
     # REFITTING ----
 
-    handlers("progress")
-    with_progress({
-        model_table_refit <- model_table %>%
-            # filter(.model_id %in% c(10)) %>%
-            # filter(.model_id %in% c(1,3,4,6,8,10,12,14)) %>%
-            modeltime_calibrate(testing(splits)) %>%
-            modeltime_refit(data = m750)
-    })
+    model_table_refit <- model_table %>%
+        # filter(.model_id %in% c(10)) %>%
+        # filter(.model_id %in% c(1,3,4,6,8,10,12,14)) %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_refit(data = m750)
 
     # Refit Structure
     expect_s3_class(model_table_refit, "mdl_time_tbl")

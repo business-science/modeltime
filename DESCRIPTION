@@ -40,7 +40,6 @@ Imports:
     forcats,
     scales,
     janitor,
-    progressr,
     parallel, 
     doParallel,
     foreach,
