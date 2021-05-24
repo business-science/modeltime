@@ -178,7 +178,7 @@
 
     
     
-<p><img src="../../../../R%20Projects/Courses/modeltime/vignettes/forecast_plot.jpg" width="100%" style="display: block; margin: auto;"><br><img src="../../../../R%20Projects/Courses/modeltime/vignettes/logo-modeltime.png" width="147" height="170" align="right"></p>
+<p><img src="forecast_plot.jpg" width="100%" style="display: block; margin: auto;"><br><img src="logo-modeltime.png" width="147" height="170" align="right"></p>
 <p>Forecasting with <code>tidymodels</code> made easy! This short tutorial shows how you can use:</p>
 <ul>
 <li>
@@ -192,7 +192,7 @@
 <a href="#the-modeltime-workflow" class="anchor"></a>The Modeltime Workflow</h2>
 <p>Here’s the general process and where the functions fit.</p>
 <div class="figure" style="text-align: center">
-<img src="../../../../R%20Projects/Courses/modeltime/vignettes/modeltime_workflow.jpg" alt="The Modeltime Workflow" width="100%"><p class="caption">
+<img src="modeltime_workflow.jpg" alt="The Modeltime Workflow" width="100%"><p class="caption">
 The Modeltime Workflow
 </p>
 </div>
@@ -393,14 +393,14 @@ The Modeltime Workflow
 <span class="va">calibration_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
 <span class="co">#&gt; # A tibble: 6 x 5</span>
-<span class="co">#&gt;   .model_id .model     .model_desc                        .type .calibration_da~</span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;                              &lt;chr&gt; &lt;list&gt;          </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt;   ARIMA(0,1,1)(0,1,1)[12]            Test  &lt;tibble [31 x 4~</span>
-<span class="co">#&gt; 2         2 &lt;fit[+]&gt;   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOS~ Test  &lt;tibble [31 x 4~</span>
-<span class="co">#&gt; 3         3 &lt;fit[+]&gt;   ETS(M,A,A)                         Test  &lt;tibble [31 x 4~</span>
-<span class="co">#&gt; 4         4 &lt;fit[+]&gt;   PROPHET                            Test  &lt;tibble [31 x 4~</span>
-<span class="co">#&gt; 5         5 &lt;fit[+]&gt;   LM                                 Test  &lt;tibble [31 x 4~</span>
-<span class="co">#&gt; 6         6 &lt;workflow&gt; EARTH                              Test  &lt;tibble [31 x 4~</span></code></pre></div>
+<span class="co">#&gt;   .model_id .model    .model_desc                      .type .calibration_data  </span>
+<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;    &lt;chr&gt;                            &lt;chr&gt; &lt;list&gt;             </span>
+<span class="co">#&gt; 1         1 &lt;fit[+]&gt;  ARIMA(0,1,1)(0,1,1)[12]          Test  &lt;tibble[,4] [31 × …</span>
+<span class="co">#&gt; 2         2 &lt;fit[+]&gt;  ARIMA(0,1,1)(0,1,1)[12] W/ XGBO… Test  &lt;tibble[,4] [31 × …</span>
+<span class="co">#&gt; 3         3 &lt;fit[+]&gt;  ETS(M,A,A)                       Test  &lt;tibble[,4] [31 × …</span>
+<span class="co">#&gt; 4         4 &lt;fit[+]&gt;  PROPHET                          Test  &lt;tibble[,4] [31 × …</span>
+<span class="co">#&gt; 5         5 &lt;fit[+]&gt;  LM                               Test  &lt;tibble[,4] [31 × …</span>
+<span class="co">#&gt; 6         6 &lt;workflo… EARTH                            Test  &lt;tibble[,4] [31 × …</span></code></pre></div>
 </div>
 <div id="step-5---testing-set-forecast-accuracy-evaluation" class="section level3">
 <h3 class="hasAnchor">
@@ -471,12 +471,11 @@ The Modeltime Workflow
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>
         .interactive <span class="op">=</span> <span class="va">interactive</span>
     <span class="op">)</span></code></pre></div>
-<div id="rqromzqvgv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rqromzqvgv .gt_table {
+#ajpizexyzs .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -501,7 +500,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_heading {
+#ajpizexyzs .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -513,7 +512,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_title {
+#ajpizexyzs .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -523,7 +522,7 @@ The Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#rqromzqvgv .gt_subtitle {
+#ajpizexyzs .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -533,13 +532,13 @@ The Modeltime Workflow
   border-top-width: 0;
 }
 
-#rqromzqvgv .gt_bottom_border {
+#ajpizexyzs .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_col_headings {
+#ajpizexyzs .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -554,7 +553,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_col_heading {
+#ajpizexyzs .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -574,7 +573,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#rqromzqvgv .gt_column_spanner_outer {
+#ajpizexyzs .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -586,15 +585,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#rqromzqvgv .gt_column_spanner_outer:first-child {
+#ajpizexyzs .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rqromzqvgv .gt_column_spanner_outer:last-child {
+#ajpizexyzs .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rqromzqvgv .gt_column_spanner {
+#ajpizexyzs .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -606,7 +605,7 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#rqromzqvgv .gt_group_heading {
+#ajpizexyzs .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -628,7 +627,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#rqromzqvgv .gt_empty_group_heading {
+#ajpizexyzs .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -643,15 +642,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#rqromzqvgv .gt_from_md > :first-child {
+#ajpizexyzs .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rqromzqvgv .gt_from_md > :last-child {
+#ajpizexyzs .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rqromzqvgv .gt_row {
+#ajpizexyzs .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -670,7 +669,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#rqromzqvgv .gt_stub {
+#ajpizexyzs .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -682,7 +681,7 @@ The Modeltime Workflow
   padding-left: 12px;
 }
 
-#rqromzqvgv .gt_summary_row {
+#ajpizexyzs .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -692,7 +691,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#rqromzqvgv .gt_first_summary_row {
+#ajpizexyzs .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -702,7 +701,7 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_grand_summary_row {
+#ajpizexyzs .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -712,7 +711,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#rqromzqvgv .gt_first_grand_summary_row {
+#ajpizexyzs .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -722,11 +721,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_striped {
+#ajpizexyzs .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rqromzqvgv .gt_table_body {
+#ajpizexyzs .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -735,7 +734,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_footnotes {
+#ajpizexyzs .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -749,13 +748,13 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_footnote {
+#ajpizexyzs .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#rqromzqvgv .gt_sourcenotes {
+#ajpizexyzs .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -769,52 +768,56 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#rqromzqvgv .gt_sourcenote {
+#ajpizexyzs .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#rqromzqvgv .gt_left {
+#ajpizexyzs .gt_left {
   text-align: left;
 }
 
-#rqromzqvgv .gt_center {
+#ajpizexyzs .gt_center {
   text-align: center;
 }
 
-#rqromzqvgv .gt_right {
+#ajpizexyzs .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rqromzqvgv .gt_font_normal {
+#ajpizexyzs .gt_font_normal {
   font-weight: normal;
 }
 
-#rqromzqvgv .gt_font_bold {
+#ajpizexyzs .gt_font_bold {
   font-weight: bold;
 }
 
-#rqromzqvgv .gt_font_italic {
+#ajpizexyzs .gt_font_italic {
   font-style: italic;
 }
 
-#rqromzqvgv .gt_super {
+#ajpizexyzs .gt_super {
   font-size: 65%;
 }
 
-#rqromzqvgv .gt_footnote_marks {
+#ajpizexyzs .gt_footnote_marks {
   font-style: italic;
-  font-weight: normal;
   font-size: 65%;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_header"><tr>
-<th colspan="9" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</th>
-    </tr></thead>
+<div id="ajpizexyzs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="table gt_table">
+<thead class="gt_header">
+<tr>
+<th colspan="9" class="gt_heading gt_title gt_font_normal" style>Accuracy Table</th>
+    </tr>
+<tr>
+<th colspan="9" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+</thead>
 <thead class="gt_col_headings"><tr>
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">.model_id</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">.model_id</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.model_desc</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.type</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mae</th>
@@ -826,74 +829,73 @@ The Modeltime Workflow
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">ARIMA(0,1,1)(0,1,1)[12]</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">151.33</td>
-<td class="gt_row gt_right">1.41</td>
-<td class="gt_row gt_right">0.52</td>
-<td class="gt_row gt_right">1.43</td>
-<td class="gt_row gt_right">197.71</td>
-<td class="gt_row gt_right">0.93</td>
-</tr>
+<td class="gt_row gt_center">1</td>
+      <td class="gt_row gt_left">ARIMA(0,1,1)(0,1,1)[12]</td>
+      <td class="gt_row gt_left">Test</td>
+      <td class="gt_row gt_right">151.33</td>
+      <td class="gt_row gt_right">1.41</td>
+      <td class="gt_row gt_right">0.52</td>
+      <td class="gt_row gt_right">1.43</td>
+      <td class="gt_row gt_right">197.71</td>
+      <td class="gt_row gt_right">0.93</td>
+    </tr>
 <tr>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">147.04</td>
-<td class="gt_row gt_right">1.37</td>
-<td class="gt_row gt_right">0.50</td>
-<td class="gt_row gt_right">1.39</td>
-<td class="gt_row gt_right">191.84</td>
-<td class="gt_row gt_right">0.93</td>
-</tr>
+<td class="gt_row gt_center">2</td>
+      <td class="gt_row gt_left">ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</td>
+      <td class="gt_row gt_left">Test</td>
+      <td class="gt_row gt_right">147.04</td>
+      <td class="gt_row gt_right">1.37</td>
+      <td class="gt_row gt_right">0.50</td>
+      <td class="gt_row gt_right">1.39</td>
+      <td class="gt_row gt_right">191.84</td>
+      <td class="gt_row gt_right">0.93</td>
+    </tr>
 <tr>
-<td class="gt_row gt_right">3</td>
-<td class="gt_row gt_left">ETS(M,A,A)</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">77.00</td>
-<td class="gt_row gt_right">0.73</td>
-<td class="gt_row gt_right">0.26</td>
-<td class="gt_row gt_right">0.73</td>
-<td class="gt_row gt_right">90.27</td>
-<td class="gt_row gt_right">0.98</td>
-</tr>
+<td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_left">ETS(M,A,A)</td>
+      <td class="gt_row gt_left">Test</td>
+      <td class="gt_row gt_right">77.00</td>
+      <td class="gt_row gt_right">0.73</td>
+      <td class="gt_row gt_right">0.26</td>
+      <td class="gt_row gt_right">0.73</td>
+      <td class="gt_row gt_right">90.27</td>
+      <td class="gt_row gt_right">0.98</td>
+    </tr>
 <tr>
-<td class="gt_row gt_right">4</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">177.31</td>
-<td class="gt_row gt_right">1.70</td>
-<td class="gt_row gt_right">0.61</td>
-<td class="gt_row gt_right">1.70</td>
-<td class="gt_row gt_right">234.51</td>
-<td class="gt_row gt_right">0.88</td>
-</tr>
+<td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_left">PROPHET</td>
+      <td class="gt_row gt_left">Test</td>
+      <td class="gt_row gt_right">172.05</td>
+      <td class="gt_row gt_right">1.65</td>
+      <td class="gt_row gt_right">0.59</td>
+      <td class="gt_row gt_right">1.65</td>
+      <td class="gt_row gt_right">230.06</td>
+      <td class="gt_row gt_right">0.88</td>
+    </tr>
 <tr>
-<td class="gt_row gt_right">5</td>
-<td class="gt_row gt_left">LM</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">629.12</td>
-<td class="gt_row gt_right">6.01</td>
-<td class="gt_row gt_right">2.15</td>
-<td class="gt_row gt_right">5.81</td>
-<td class="gt_row gt_right">657.19</td>
-<td class="gt_row gt_right">0.91</td>
-</tr>
+<td class="gt_row gt_center">5</td>
+      <td class="gt_row gt_left">LM</td>
+      <td class="gt_row gt_left">Test</td>
+      <td class="gt_row gt_right">629.12</td>
+      <td class="gt_row gt_right">6.01</td>
+      <td class="gt_row gt_right">2.15</td>
+      <td class="gt_row gt_right">5.81</td>
+      <td class="gt_row gt_right">657.19</td>
+      <td class="gt_row gt_right">0.91</td>
+    </tr>
 <tr>
-<td class="gt_row gt_right">6</td>
-<td class="gt_row gt_left">EARTH</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">709.83</td>
-<td class="gt_row gt_right">6.59</td>
-<td class="gt_row gt_right">2.42</td>
-<td class="gt_row gt_right">6.86</td>
-<td class="gt_row gt_right">782.82</td>
-<td class="gt_row gt_right">0.55</td>
-</tr>
+<td class="gt_row gt_center">6</td>
+      <td class="gt_row gt_left">EARTH</td>
+      <td class="gt_row gt_left">Test</td>
+      <td class="gt_row gt_right">709.83</td>
+      <td class="gt_row gt_right">6.59</td>
+      <td class="gt_row gt_right">2.42</td>
+      <td class="gt_row gt_right">6.86</td>
+      <td class="gt_row gt_right">782.82</td>
+      <td class="gt_row gt_right">0.55</td>
+    </tr>
 </tbody>
-</table>
-</div>
+</table></div>
 <p>From the accuracy metrics:</p>
 <ul>
 <li><strong>Model 3: ETS is clearly the winner here with MAE of 77</strong></li>

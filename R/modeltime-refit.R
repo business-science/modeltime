@@ -474,8 +474,7 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 
 # CONTROL REFIT ----
 
-#' Control Refit
-#'
+
 #' Control aspects of the `modeltime_refit()` process.
 #'
 #' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).

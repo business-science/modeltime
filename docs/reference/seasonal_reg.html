@@ -397,7 +397,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2000-06-05 </span><span style='color: #949494;'>03:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>860
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2000-06-05 </span><span style='color: #949494;'>04:00:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>751
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> 2000-06-05 </span><span style='color: #949494;'>04:30:00</span><span> </span><span style='text-decoration: underline;'>21</span><span>336
-#&gt; </span><span style='color: #949494;'># ... with 4,022 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># … with 4,022 more rows</span><span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>taylor_30_min</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
@@ -413,7 +413,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  440ms 
+#&gt; Fit time:  339ms 
 #&gt; SEASONAL DECOMP: ETS(A,Ad,N)
 #&gt; 
 #&gt; </span><span style='color: #949494;'># A tibble: 1 x 5</span><span>
@@ -433,7 +433,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  550ms 
+#&gt; Fit time:  614ms 
 #&gt; SEASONAL DECOMP: ARIMA(3,1,2)
 #&gt; 
 #&gt; Series: x 

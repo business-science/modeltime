@@ -2,7 +2,7 @@
 % Please edit documentation in R/modeltime-refit.R
 \name{control_refit}
 \alias{control_refit}
-\title{Control Refit}
+\title{Control aspects of the \code{modeltime_refit()} process.}
 \usage{
 control_refit(verbose = FALSE, allow_par = FALSE, cores = -1, packages = NULL)
 }
