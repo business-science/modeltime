@@ -108,7 +108,7 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
     if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
         if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} clusters (cores)..."))
         cl <- parallel::makeCluster(control$cores)
-        doSNOW::registerDoSNOW(cl)
+        doParallel::registerDoParallel(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
     } else if (!is_par_setup) {
         # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
@@ -133,20 +133,20 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 
     `%op%` <- get_operator(allow_par = control$allow_par)
 
-    progress <- function(n) {
-        message(stringr::str_glue("Fitting Model: {n}"))
-    }
-
-    opts <- list(progress=progress)
+    # progress <- function(n) {
+    #     message(stringr::str_glue("Fitting Model: {n}"))
+    # }
+    #
+    # opts <- list(progress=progress)
 
     safe_fit <- purrr::safely(parsnip::fit, otherwise = NULL, quiet = FALSE)
 
     models <- foreach::foreach(
-        this_model    = .models,
-        # nm            = object$wflow_id,
-        .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
-        .inorder      = TRUE,
-        .packages     = control$packages
+        this_model          = .models,
+        # nm                  = object$wflow_id,
+        # .options.snow       = if (control$verbose) opts else NULL, #Parallel Printing
+        .inorder            = TRUE,
+        .packages           = control$packages
     ) %op% {
 
         mod <- this_model %>%

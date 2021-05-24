@@ -160,7 +160,7 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
         if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} clusters (cores)..."))
         cl <- parallel::makeCluster(control$cores)
-        doSNOW::registerDoSNOW(cl)
+        doParallel::registerDoParallel(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
     } else if (!is_par_setup) {
         # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
@@ -188,23 +188,23 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     ret <- data %>%
         dplyr::ungroup()
 
-    progress <- function(n) {
-        message(stringr::str_glue("Refitting model id {n} - {ret %>%
-                                       dplyr::filter(.model_id == n) %>%
-                                       dplyr::select(.model_desc) %>%
-                                       dplyr::pull()}"))
-    }
-
-    opts <- list(progress=progress)
+    # progress <- function(n) {
+    #     message(stringr::str_glue("Refitting model id {n} - {ret %>%
+    #                                    dplyr::filter(.model_id == n) %>%
+    #                                    dplyr::select(.model_desc) %>%
+    #                                    dplyr::pull()}"))
+    # }
+    #
+    # opts <- list(progress=progress)
 
     # Safely refit
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
     models <- foreach::foreach(
-            id = ret$.model_id,
-            .inorder = TRUE,
-            .options.snow = if (control$verbose) opts else NULL, #Parallel Printing
-            .packages = control$packages
+            id                  = ret$.model_id,
+            .inorder            = TRUE,
+            # .options.snow       = if (control$verbose) opts else NULL, #Parallel Printing
+            .packages           = control$packages
         ) %op% {
 
 

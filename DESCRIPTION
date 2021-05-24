@@ -43,7 +43,6 @@ Imports:
     progressr,
     parallel, 
     doParallel,
-    doSNOW,
     foreach,
     magrittr,
     forecast,
