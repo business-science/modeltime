@@ -118,7 +118,7 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
         ret <- modeltime_refit_sequential(object, data = new_data, control = control, ...)
     }
 
-    validate_models_are_not_null(ret)
+    validate_models_are_not_null(ret, msg_main = "Some models failed during fitting: modeltime_refit()")
 
     # Get new Model Descriptions
     ret <- ret %>%
@@ -140,6 +140,52 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
         # Clean up columns
         dplyr::select(-.model_desc_user, -.model_desc_old, -.model_desc_new)
 
+
+    return(ret)
+
+}
+
+modeltime_refit_sequential <- function(object, data, ..., control) {
+
+    new_data <- data
+    data     <- object # object is a Modeltime Table
+
+    # Safely refit
+    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
+
+    ret <- data %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(.model = purrr::map2(
+            .x         = .model,
+            .y         = .model_id,
+            .f         = function(obj, id) {
+
+                if (control$verbose) {
+                    cli::cli_alert_info(cli::col_grey("Refitting Model: Model ID {id}"))
+                }
+
+                ret <- safe_modeltime_refit(
+                    obj,
+                    data    = new_data,
+                    control = control,
+                    ...
+                )
+
+                res <- ret %>% purrr::pluck("result")
+
+                if (!is.null(ret$error)) message(stringr::str_glue("Model {id} Error: {ret$error}"))
+
+                if (control$verbose) {
+                    if (is.null(res)) {
+                        cli::cli_alert_danger(cli::col_grey("Model Failed Refitting: Model ID {id}"))
+                    } else {
+                        cli::cli_alert_success(cli::col_grey("Model Successfully Refitted: Model ID {id}"))
+                    }
+                }
+
+                return(res)
+            })
+        )
 
     return(ret)
 
@@ -181,55 +227,48 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
 
     `%op%` <- get_operator(allow_par = control$allow_par)
 
-    ret <- data %>%
-        dplyr::ungroup()
-
-    # progress <- function(n) {
-    #     message(stringr::str_glue("Refitting model id {n} - {ret %>%
-    #                                    dplyr::filter(.model_id == n) %>%
-    #                                    dplyr::select(.model_desc) %>%
-    #                                    dplyr::pull()}"))
-    # }
-    #
-    # opts <- list(progress=progress)
-
     # Safely refit
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
-    # Setup progress
-    p <- progressr::progressor(along = ret$.model_id)
+    ret <- data %>% dplyr::ungroup()
 
-    models <- foreach::foreach(
+    mod_list <- foreach::foreach(
             id                  = ret$.model_id,
             .inorder            = TRUE,
-            .packages           = control$packages
+            .packages           = control$packages,
+            .verbose            = FALSE
         ) %op% {
-
 
             model <- ret %>%
                 dplyr::filter(.model_id == id) %>%
                 dplyr::select(.model) %>%
                 dplyr::pull()
 
+            mod <- safe_modeltime_refit(model[[1]], new_data, control = control)
 
-            #Sequential Printing
+            res <- mod %>%
+                purrr::pluck("result")
 
-            if (control$verbose){
-                message(stringr::str_glue("Refitting model id {id} - {ret %>%
-               dplyr::filter(.model_id == id) %>%
-               dplyr::select(.model_desc) %>%
-               dplyr::pull()}"))
-            }
+            err <- mod %>%
+                purrr::pluck("error")
 
-            # Prevent issues with recursive parallelization
-            # control$allow_par <- FALSE
-
-            res <- safe_modeltime_refit(model[[1]], new_data, control = control) %>% purrr::pluck("result")
-
-            return(res)
+            return(list(res = res, err = err))
 
         }
 
+    # Collect models
+    models <- mod_list %>% purrr::map(~ .x$res)
+
+    # Collect errors
+    error_messages <- mod_list %>% purrr::map(~ .x$err)
+    purrr::iwalk(
+        error_messages,
+        function (e, id) {
+            if (!is.null(e)) message(stringr::str_glue("Model {id} Error: {e}"))
+        }
+    )
+
+    # Recombine models with modeltime table
     ret <- ret %>%
         dplyr::mutate(.model = models)
 
@@ -258,39 +297,7 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
 
 }
 
-modeltime_refit_sequential <- function(object, data, ..., control) {
 
-    new_data <- data
-    data     <- object # object is a Modeltime Table
-
-    # Safely refit
-    safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
-
-    ret <- data %>%
-        dplyr::ungroup() %>%
-        dplyr::mutate(.model = purrr::map2(
-            .x         = .model,
-            .y         = .model_id,
-            .f         = function(obj, id) {
-
-                if (control$verbose) message(stringr::str_glue("Refitting Model ID {id}"))
-
-                ret <- safe_modeltime_refit(
-                    obj,
-                    data    = new_data,
-                    control = control,
-                    ...
-                )
-
-                ret <- ret %>% purrr::pluck("result")
-
-                return(ret)
-            })
-        )
-
-    return(ret)
-
-}
 
 
 

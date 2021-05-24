@@ -4,16 +4,21 @@
 \alias{modeltime_fit_workflowset}
 \title{Fit a \code{workflowset} object to one or multiple time series}
 \usage{
-modeltime_fit_workflowset(object, data, ..., control = control_workflowset())
+modeltime_fit_workflowset(
+  object,
+  data,
+  ...,
+  control = control_fit_workflowset()
+)
 }
 \arguments{
 \item{object}{A workflow_set object, generated with the workflowsets::workflow_set function.}
 
 \item{data}{A \code{tibble} that contains data to fit the models.}
 
-\item{...}{Not currently used}
+\item{...}{Not currently used.}
 
-\item{control}{An object used to modify the fitting process.}
+\item{control}{An object used to modify the fitting process. See \code{\link[=control_fit_workflowset]{control_fit_workflowset()}}.}
 }
 \value{
 A Modeltime Table containing one or more fitted models.
@@ -60,5 +65,5 @@ wfsets \%>\% modeltime_fit_workflowset(data_set)
 
 }
 \seealso{
-\code{\link[=control_workflowset]{control_workflowset()}}
+\code{\link[=control_fit_workflowset]{control_fit_workflowset()}}
 }

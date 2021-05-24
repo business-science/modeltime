@@ -211,7 +211,9 @@ validate_models_are_trained <- function(data) {
 
 }
 
-validate_models_are_not_null <- function(data) {
+validate_models_are_not_null <- function(data, type = c("none", "warn", "error"), msg_main = "Models failed Modeltime Refit") {
+
+    type <- type[1]
 
     result_tbl <- check_models_are_not_null(data) %>%
         dplyr::filter(fail_check)
@@ -222,19 +224,33 @@ validate_models_are_not_null <- function(data) {
         bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
 
         message("\n")
-        message(cli::rule("Model Refit Failure Report", width = 60))
-        print(data)
+        message(cli::rule("Model Failure Report", width = 60))
+
+        bad_data <- data %>%
+            dplyr::right_join(
+                result_tbl %>% dplyr::select(.model_id),
+                by = ".model_id"
+            )
+        print(bad_data)
+
         msg <- stringr::str_glue(
-            "\nModels failed Modeltime Refit:",
+            "\n\n{msg_main}:",
             "\n",
             "{bad_msg}",
             "\n\n",
-            "Potential Solution: Make sure required modeling packages are loaded.\n",
-            "{cli::rule('End Model Refit Failure Report', width = 60)}",
+            "Action: Review any error messages.\n",
+            "{cli::rule('End Model Failure Report', width = 60)}",
             "\n\n"
         )
         message(msg)
-        rlang::abort("Models failed Modeltime Refitting.")
+
+
+        if (type == "warn") {
+            rlang::warn(msg_main)
+        } else if (type == "error") {
+            rlang::abort(msg_main)
+        }
+
     }
 
 }

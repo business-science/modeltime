@@ -191,6 +191,13 @@ get_model_description.recursive_panel <- function(object, indicate_training = FA
 
 }
 
+#' @export
+get_model_description.NULL <- function(object, indicate_training = FALSE, upper_case = TRUE) {
+
+    "NULL"
+
+}
+
 
 # ARIMA Model Descriptions ----
 
