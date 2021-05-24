@@ -510,7 +510,6 @@ croston_fit_impl <- function(x, y, alpha = 0.1, ...){
 print.croston_fit_impl <- function(x, ...) {
     if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
     cat("---\n")
-    print(tibble::as_tibble(x$models$model_1))
     invisible(x)
 }
 
@@ -599,7 +598,7 @@ theta_fit_impl <- function(x, y, ...){
 print.theta_fit_impl <- function(x, ...) {
     if (!is.null(x$desc)) cat(paste0(x$desc,"\n"))
     cat("---\n")
-    print(tibble::as_tibble(x$models$model_1))
+    # print(tibble::as_tibble(x$models$model_1))
     invisible(x)
 }
 
