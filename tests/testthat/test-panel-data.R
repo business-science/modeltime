@@ -20,7 +20,12 @@ wflw_fit_prophet <- workflow() %>%
             seasonality_weekly = F,
             seasonality_daily  = F
         ) %>%
-            set_engine("prophet_xgboost")) %>%
+            set_engine(
+                "prophet_xgboost"
+                # ,
+                # colsample_bytree = 1
+            )
+    ) %>%
     add_recipe(recipe_spec) %>%
     fit(data_set)
 

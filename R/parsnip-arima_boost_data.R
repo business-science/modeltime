@@ -106,7 +106,7 @@ make_arima_boost <- function() {
         model        = "arima_boost",
         eng          = "auto_arima_xgboost",
         parsnip      = "mtry",
-        original     = "colsample_bytree",
+        original     = "colsample_bynode",
         func         = list(pkg = "dials", fun = "mtry"),
         has_submodel = FALSE
     )
@@ -284,7 +284,7 @@ make_arima_boost <- function() {
         model        = "arima_boost",
         eng          = "arima_xgboost",
         parsnip      = "mtry",
-        original     = "colsample_bytree",
+        original     = "colsample_bynode",
         func         = list(pkg = "dials", fun = "mtry"),
         has_submodel = FALSE
     )

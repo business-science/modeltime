@@ -181,7 +181,7 @@ Model 2: XGBoost:\tabular{ll}{
    tree_depth \tab max_depth (6) \cr
    trees \tab nrounds (15) \cr
    learn_rate \tab eta (0.3) \cr
-   mtry \tab colsample_bytree (1) \cr
+   mtry \tab colsample_bynode (1) \cr
    min_n \tab min_child_weight (1) \cr
    loss_reduction \tab gamma (0) \cr
    sample_size \tab subsample (1) \cr

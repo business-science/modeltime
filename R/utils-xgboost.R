@@ -16,15 +16,43 @@
 #'
 #' @export
 xgboost_impl <- function(x, y,
-                         max_depth = 6, nrounds = 15, eta  = 0.3, colsample_bytree = 1,
-                         min_child_weight = 1, gamma = 0, subsample = 1, validation = 0,
-                         early_stop = NULL, ...) {
+                         max_depth = 6, nrounds = 15, eta  = 0.3, colsample_bynode = NULL,
+                         colsample_bytree = NULL, min_child_weight = 1, gamma = 0, subsample = 1,
+                         validation = 0, early_stop = NULL, objective = NULL, counts = TRUE,
+                         event_level = c("first", "second"), ...) {
+
+    if (!is.null(colsample_bytree)) {
+        if (colsample_bytree == 1) {
+            if (counts == TRUE) {
+                rlang::warn("`colsample_bytree = 1` with `counts = TRUE` will only sample a single column.
+                            Set `counts = FALSE` to use a proportion (100% of columns).")
+            }
+        }
+    }
+    if (!is.null(colsample_bynode)) {
+        if (colsample_bynode == 1) {
+            if (counts == TRUE) {
+                rlang::warn("`colsample_bynode = 1` with `counts = TRUE` will only sample a single column.
+                            Set `counts = FALSE` to use a proportion (100% of columns).")
+            }
+        }
+    }
 
     parsnip::xgb_train(x, y,
-                       max_depth = max_depth, nrounds = nrounds, eta  = eta, colsample_bytree = colsample_bytree,
-                       min_child_weight = min_child_weight, gamma = gamma, subsample = subsample,
+                       max_depth = max_depth,
+                       nrounds = nrounds,
+                       eta  = eta,
+                       colsample_bynode = colsample_bynode,
+                       colsample_bytree = colsample_bytree,
+                       min_child_weight = min_child_weight,
+                       gamma = gamma,
+                       subsample = subsample,
                        validation = validation,
-                       early_stop = early_stop, ...)
+                       early_stop = early_stop,
+                       objective = objective,
+                       counts = counts,
+                       event_level = event_level,
+                       ...)
 
 }
 

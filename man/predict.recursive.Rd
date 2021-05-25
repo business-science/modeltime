@@ -12,9 +12,9 @@
 \item{new_data}{A rectangular data object, such as a data frame.}
 
 \item{type}{A single character value or \code{NULL}. Possible values
-are "numeric", "class", "prob", "conf_int", "pred_int", "quantile",
-or "raw". When \code{NULL}, \code{predict()} will choose an appropriate value
-based on the model's mode.}
+are "numeric", "class", "prob", "conf_int", "pred_int", "quantile", "time",
+"hazard", "survival", or "raw". When \code{NULL}, \code{predict()} will choose an
+appropriate value based on the model's mode.}
 
 \item{opts}{A list of optional arguments to the underlying
 predict function that will be used when \code{type = "raw"}. The
@@ -35,8 +35,7 @@ the scale of the linear predictors) for \code{type}s of "conf_int"
 and "pred_int". Default value is \code{FALSE}.
 \item \code{quantile}: the quantile(s) for quantile regression
 (not implemented yet)
-\item \code{time}: the time(s) for hazard probability estimates
-(not implemented yet)
+\item \code{time}: the time(s) for hazard and survival probability estimates.
 }}
 }
 \value{

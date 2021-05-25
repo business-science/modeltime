@@ -10,12 +10,16 @@ xgboost_impl(
   max_depth = 6,
   nrounds = 15,
   eta = 0.3,
-  colsample_bytree = 1,
+  colsample_bynode = NULL,
+  colsample_bytree = NULL,
   min_child_weight = 1,
   gamma = 0,
   subsample = 1,
   validation = 0,
   early_stop = NULL,
+  objective = NULL,
+  counts = TRUE,
+  event_level = c("first", "second"),
   ...
 )
 }
@@ -30,7 +34,12 @@ xgboost_impl(
 
 \item{eta}{A numeric value between zero and one to control the learning rate.}
 
-\item{colsample_bytree}{Subsampling proportion of columns.}
+\item{colsample_bynode}{Subsampling proportion of columns for each node
+within each tree. See the \code{counts} argument below. The default uses all
+columns.}
+
+\item{colsample_bytree}{Subsampling proportion of columns for each tree.
+See the \code{counts} argument below. The default uses all columns.}
 
 \item{min_child_weight}{A numeric value for the minimum sum of instance
 weights needed in a child to continue to split.}
@@ -38,7 +47,8 @@ weights needed in a child to continue to split.}
 \item{gamma}{A number for the minimum loss reduction required to make a
 further partition on a leaf node of the tree}
 
-\item{subsample}{Subsampling proportion of rows.}
+\item{subsample}{Subsampling proportion of rows. By default, all of the
+training data are used.}
 
 \item{validation}{A positive number. If on \verb{[0, 1)} the value, \code{validation}
 is a random proportion of data in \code{x} and \code{y} that are used for performance
@@ -49,6 +59,18 @@ of training set samples use for these purposes.}
 training iterations without improvement before stopping. If \code{validation} is
 used, performance is base on the validation set; otherwise the training set
 is used.}
+
+\item{objective}{A single string (or NULL) that defines the loss function that
+\code{xgboost} uses to create trees. See \code{\link[xgboost:xgb.train]{xgboost::xgb.train()}} for options. If left
+NULL, an appropriate loss function is chosen.}
+
+\item{counts}{A logical. If \code{FALSE}, \code{colsample_bynode} and
+\code{colsample_bytree} are both assumed to be \emph{proportions} of the proportion of
+columns affects (instead of counts).}
+
+\item{event_level}{For binary classification, this is a single string of either
+\code{"first"} or \code{"second"} to pass along describing which level of the outcome
+should be considered the "event".}
 
 \item{...}{Other options to pass to \code{xgb.train}.}
 }

@@ -101,7 +101,7 @@
 #'     "tree_depth", "max_depth (6)",
 #'     "trees", "nrounds (15)",
 #'     "learn_rate", "eta (0.3)",
-#'     "mtry", "colsample_bytree (1)",
+#'     "mtry", "colsample_bynode (1)",
 #'     "min_n", "min_child_weight (1)",
 #'     "loss_reduction", "gamma (0)",
 #'     "sample_size", "subsample (1)",
@@ -380,6 +380,7 @@ translate.prophet_boost <- function(x, engine = x$engine, ...) {
 #'
 #' @inheritParams prophet::prophet
 #' @inheritParams prophet_boost
+#' @inheritParams parsnip::xgb_train
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
 #' @param max_depth An integer for the maximum depth of the tree.
@@ -424,10 +425,16 @@ prophet_xgboost_fit_impl <- function(x, y,
                                      fit = TRUE,
 
                                      # xgboost params
-                                     max_depth = 6, nrounds = 15, eta  = 0.3,
-                                     colsample_bytree = 1, min_child_weight = 1,
-                                     gamma = 0, subsample = 1,
-                                     validation = 0, early_stop = NULL,
+                                     max_depth = 6,
+                                     nrounds = 15,
+                                     eta  = 0.3,
+                                     colsample_bytree = NULL,
+                                     colsample_bynode = NULL,
+                                     min_child_weight = 1,
+                                     gamma = 0,
+                                     subsample = 1,
+                                     validation = 0,
+                                     early_stop = NULL,
                                      ...) {
 
     # X & Y
@@ -511,12 +518,21 @@ prophet_xgboost_fit_impl <- function(x, y,
     # Add regressors
     # xgboost
     if (!is.null(xreg_tbl)) {
-        fit_xgboost <- xgboost_impl(x = xreg_tbl, y = prophet_residuals,
-                                    max_depth = max_depth, nrounds = nrounds, eta  = eta,
-                                    colsample_bytree = colsample_bytree,
-                                    min_child_weight = min_child_weight, gamma = gamma,
-                                    subsample = subsample, validation = validation,
-                                    early_stop = early_stop, ...)
+        fit_xgboost <- xgboost_impl(
+            x = xreg_tbl,
+            y = prophet_residuals,
+            max_depth = max_depth,
+            nrounds = nrounds,
+            eta  = eta,
+            colsample_bytree = colsample_bytree,
+            colsample_bynode = colsample_bynode,
+            min_child_weight = min_child_weight,
+            gamma = gamma,
+            subsample = subsample,
+            validation = validation,
+            early_stop = early_stop,
+            ...
+        )
         xgboost_fitted    <- xgboost_predict(fit_xgboost, newdata = xreg_tbl)
     } else {
         fit_xgboost       <- NULL

@@ -107,7 +107,7 @@
 #'     "tree_depth", "max_depth (6)",
 #'     "trees", "nrounds (15)",
 #'     "learn_rate", "eta (0.3)",
-#'     "mtry", "colsample_bytree (1)",
+#'     "mtry", "colsample_bynode (1)",
 #'     "min_n", "min_child_weight (1)",
 #'     "loss_reduction", "gamma (0)",
 #'     "sample_size", "subsample (1)",
@@ -380,6 +380,7 @@ translate.arima_boost <- function(x, engine = x$engine, ...) {
 #' Bridge ARIMA-XGBoost Modeling function
 #'
 #' @inheritParams forecast::auto.arima
+#' @inheritParams parsnip::xgb_train
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
 #' @param period A seasonal frequency. Uses "auto" by default. A character phrase
@@ -445,10 +446,16 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
                                         # optim.control = list(), kappa = 1e6,
 
                                         # xgboost params
-                                        max_depth = 6, nrounds = 15, eta  = 0.3,
-                                        colsample_bytree = 1, min_child_weight = 1,
-                                        gamma = 0, subsample = 1,
-                                        validation = 0, early_stop = NULL,
+                                        max_depth = 6,
+                                        nrounds = 15,
+                                        eta  = 0.3,
+                                        colsample_bytree = NULL,
+                                        colsample_bynode = NULL,
+                                        min_child_weight = 1,
+                                        gamma = 0,
+                                        subsample = 1,
+                                        validation = 0,
+                                        early_stop = NULL,
                                         ...) {
 
     # X & Y
@@ -495,12 +502,21 @@ auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
 
     # xgboost
     if (!is.null(xreg_tbl)) {
-        fit_xgboost <- xgboost_impl(x = xreg_tbl, y = arima_residuals,
-                                    max_depth = max_depth, nrounds = nrounds, eta  = eta,
-                                    colsample_bytree = colsample_bytree,
-                                    min_child_weight = min_child_weight, gamma = gamma,
-                                    subsample = subsample, validation = validation,
-                                    early_stop = early_stop, ...)
+        fit_xgboost <- xgboost_impl(
+            x = xreg_tbl,
+            y = arima_residuals,
+            max_depth = max_depth,
+            nrounds = nrounds,
+            eta  = eta,
+            colsample_bytree = colsample_bytree,
+            colsample_bynode = colsample_bynode,
+            min_child_weight = min_child_weight,
+            gamma = gamma,
+            subsample = subsample,
+            validation = validation,
+            early_stop = early_stop,
+            ...
+        )
         xgboost_fitted    <- xgboost_predict(fit_xgboost, newdata = xreg_tbl)
     } else {
         fit_xgboost       <- NULL
@@ -564,6 +580,7 @@ print.auto_arima_xgboost_fit_impl <- function(x, ...) {
 #' Bridge ARIMA-XGBoost Modeling function
 #'
 #' @inheritParams forecast::Arima
+#' @inheritParams parsnip::xgb_train
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
 #' @param period A seasonal frequency. Uses "auto" by default. A character phrase
@@ -608,10 +625,17 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
                                    model = NULL,
 
                                    # xgboost params
-                                   max_depth = 6, nrounds = 15, eta  = 0.3,
-                                   colsample_bytree = 1, min_child_weight = 1,
-                                   gamma = 0, subsample = 1,
-                                   validation = 0, early_stop = NULL,
+                                   # xgboost params
+                                   max_depth = 6,
+                                   nrounds = 15,
+                                   eta  = 0.3,
+                                   colsample_bytree = NULL,
+                                   colsample_bynode = NULL,
+                                   min_child_weight = 1,
+                                   gamma = 0,
+                                   subsample = 1,
+                                   validation = 0,
+                                   early_stop = NULL,
                                    ...) {
 
     # X & Y
@@ -653,12 +677,21 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
 
     # xgboost
     if (!is.null(xreg_tbl)) {
-        fit_xgboost <- xgboost_impl(x = xreg_tbl, y = arima_residuals,
-                                    max_depth = max_depth, nrounds = nrounds, eta  = eta,
-                                    colsample_bytree = colsample_bytree,
-                                    min_child_weight = min_child_weight, gamma = gamma,
-                                    subsample = subsample, validation = validation,
-                                    early_stop = early_stop, ...)
+        fit_xgboost <- xgboost_impl(
+            x = xreg_tbl,
+            y = arima_residuals,
+            max_depth = max_depth,
+            nrounds = nrounds,
+            eta  = eta,
+            colsample_bytree = colsample_bytree,
+            colsample_bynode = colsample_bynode,
+            min_child_weight = min_child_weight,
+            gamma = gamma,
+            subsample = subsample,
+            validation = validation,
+            early_stop = early_stop,
+            ...
+        )
         xgboost_fitted    <- xgboost_predict(fit_xgboost, newdata = xreg_tbl)
     } else {
         fit_xgboost       <- NULL

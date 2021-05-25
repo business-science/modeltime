@@ -24,7 +24,8 @@ arima_xgboost_fit_impl(
   max_depth = 6,
   nrounds = 15,
   eta = 0.3,
-  colsample_bytree = 1,
+  colsample_bytree = NULL,
+  colsample_bynode = NULL,
   min_child_weight = 1,
   gamma = 0,
   subsample = 1,
@@ -93,6 +94,10 @@ parameters.}
 \item{eta}{A numeric value between zero and one to control the learning rate.}
 
 \item{colsample_bytree}{Subsampling proportion of columns.}
+
+\item{colsample_bynode}{Subsampling proportion of columns for each node
+within each tree. See the \code{counts} argument below. The default uses all
+columns.}
 
 \item{min_child_weight}{A numeric value for the minimum sum of instance
 weights needed in a child to continue to split.}

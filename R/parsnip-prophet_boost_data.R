@@ -158,7 +158,7 @@ make_prophet_boost <- function() {
         model        = "prophet_boost",
         eng          = "prophet_xgboost",
         parsnip      = "mtry",
-        original     = "colsample_bytree",
+        original     = "colsample_bynode",
         func         = list(pkg = "dials", fun = "mtry"),
         has_submodel = FALSE
     )
