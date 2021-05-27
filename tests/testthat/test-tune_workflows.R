@@ -58,8 +58,6 @@ test_that("Tuning, arima_boost", {
             control   = control_grid(verbose = FALSE, allow_par = TRUE)
         )
 
-    print(tune_results_boosted)
-
 
     # structure
     expect_equal(ncol(tune_results_boosted), 4)
@@ -67,8 +65,6 @@ test_that("Tuning, arima_boost", {
     tune_results_boosted_metrics <- tune_results_boosted %>%
         select(.metrics) %>%
         unnest(.metrics)
-
-    print(tune_results_boosted_metrics)
 
     expect_equal(nrow(tune_results_boosted_metrics), 36)
 
