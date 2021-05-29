@@ -62,6 +62,8 @@
 #' - [panel_tail()] - Used to generate tails for multiple time series groups.
 #'
 #' @examples
+#'
+#' \donttest{
 #' # Libraries & Setup ----
 #' library(modeltime)
 #' library(tidymodels)
@@ -200,6 +202,7 @@
 #'         .conf_interval_show = FALSE
 #'     )
 #'
+#' }
 #'
 #' @export
 recursive <- function(object, transform, train_tail, id = NULL, ...){

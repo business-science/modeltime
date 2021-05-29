@@ -71,6 +71,8 @@ The \code{recursive()} function can be used for Panel Data with the following mo
 }
 }
 \examples{
+
+\donttest{
 # Libraries & Setup ----
 library(modeltime)
 library(tidymodels)
@@ -209,6 +211,7 @@ modeltime_table(
         .conf_interval_show = FALSE
     )
 
+}
 
 }
 \seealso{
