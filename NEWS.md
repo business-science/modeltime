@@ -25,7 +25,7 @@
 - `modeltime_refit()`: supports parallel processing. See `control_refit()` 
 - `modeltime_fit_workflowset()`: supports parallel processing. See `control_workflowset()` 
 
-### Updates for parsnip >= 0.1.5.9003
+### Updates for parsnip >= 0.1.6
 
 - `boost_tree(mtry)`: Mapping switched from `colsample_bytree` to `colsample_bynode`. `prophet_boost()` and `arima_boost()` have been updated to reflect this change.  https://github.com/tidymodels/parsnip/pull/499
 
