@@ -66,8 +66,8 @@ Other options can be set using \code{set_engine()}.
 
 The engines use \code{forecast::stlm()}.
 
-Function Parameters:\preformatted{## function (y, s.window = 13, robust = FALSE, method = c("ets", "arima"), 
-##     modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL, 
+Function Parameters:\preformatted{## function (y, s.window = 7 + 4 * seq(6), robust = FALSE, method = c("ets", 
+##     "arima"), modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL, 
 ##     biasadj = FALSE, xreg = NULL, allow.multiplicative.trend = FALSE, x = y, 
 ##     ...)
 }

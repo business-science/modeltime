@@ -1,4 +1,8 @@
-# modeltime 0.6.9000 (Development Version)
+# modeltime 0.6.0.9000 (Development Version)
+
+__Bug Fixes__
+
+- Issue #110: Fix bug with `cores > cores_available`.
 
 # modeltime 0.6.0 
 
