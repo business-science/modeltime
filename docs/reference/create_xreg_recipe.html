@@ -94,7 +94,7 @@ of raw un-encoded features to machine-learning ready features." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -289,58 +289,58 @@ one column for each feature or one less column than each feature. Default is <co
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>month <span class='op'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span><span class='op'>(</span><span class='va'>date</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>predictors</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
 #&gt;    id    date       month
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;ord&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> M750  1990-01-01 Jan  
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> M750  1990-02-01 Feb  
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> M750  1990-03-01 Mar  
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> M750  1990-04-01 Apr  
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> M750  1990-05-01 May  
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> M750  1990-06-01 Jun  
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> M750  1990-07-01 Jul  
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M750  1990-08-01 Aug  
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M750  1990-09-01 Sep  
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750  1990-10-01 Oct  
-#&gt; </span><span style='color: #949494;'># … with 296 more rows</span><span></div><div class='input'>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;ord&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01 Jan  
+#&gt; <span style='color: #BCBCBC;'> 2</span> M750  1990-02-01 Feb  
+#&gt; <span style='color: #BCBCBC;'> 3</span> M750  1990-03-01 Mar  
+#&gt; <span style='color: #BCBCBC;'> 4</span> M750  1990-04-01 Apr  
+#&gt; <span style='color: #BCBCBC;'> 5</span> M750  1990-05-01 May  
+#&gt; <span style='color: #BCBCBC;'> 6</span> M750  1990-06-01 Jun  
+#&gt; <span style='color: #BCBCBC;'> 7</span> M750  1990-07-01 Jul  
+#&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01 Aug  
+#&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01 Sep  
+#&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01 Oct  
+#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
 <span class='co'># Create default recipe</span>
 <span class='va'>xreg_recipe_spec</span> <span class='op'>&lt;-</span> <span class='fu'>create_xreg_recipe</span><span class='op'>(</span><span class='va'>predictors</span>, prepare <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># Extracts the preprocessed training data from the recipe (used in your fit function)</span>
 <span class='fu'><a href='recipe_helpers.html'>juice_xreg_recipe</a></span><span class='op'>(</span><span class='va'>xreg_recipe_spec</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 306 x 11</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 11</span>
 #&gt;    month_Feb month_Mar month_Apr month_May month_Jun month_Jul month_Aug
-#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         1         0         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         0         1         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         0         0         1         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         0         0         0         1         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         0         0         0         0         1         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         0         0         0         0         0         1         0
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         0         0         0         0         0         0         1
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #949494;'># … with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;, month_Oct &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span><span></div><div class='input'>
+#&gt;        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span>         0         0         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 2</span>         1         0         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 3</span>         0         1         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 4</span>         0         0         1         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 5</span>         0         0         0         1         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 6</span>         0         0         0         0         1         0         0
+#&gt; <span style='color: #BCBCBC;'> 7</span>         0         0         0         0         0         1         0
+#&gt; <span style='color: #BCBCBC;'> 8</span>         0         0         0         0         0         0         1
+#&gt; <span style='color: #BCBCBC;'> 9</span>         0         0         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'>10</span>         0         0         0         0         0         0         0
+#&gt; <span style='color: #949494;'># … with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;, month_Oct &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span></div><div class='input'>
 <span class='co'># Applies the prepared recipe to new data (used in your predict function)</span>
 <span class='fu'><a href='recipe_helpers.html'>bake_xreg_recipe</a></span><span class='op'>(</span><span class='va'>xreg_recipe_spec</span>, new_data <span class='op'>=</span> <span class='va'>predictors</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 306 x 11</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 11</span>
 #&gt;    month_Feb month_Mar month_Apr month_May month_Jun month_Jul month_Aug
-#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         1         0         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         0         1         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         0         0         1         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         0         0         0         1         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         0         0         0         0         1         0         0
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         0         0         0         0         0         1         0
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         0         0         0         0         0         0         1
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>         0         0         0         0         0         0         0
-#&gt; </span><span style='color: #949494;'># … with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;, month_Oct &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span><span></div><div class='input'>
-</div></span></pre>
+#&gt;        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span>         0         0         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 2</span>         1         0         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 3</span>         0         1         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 4</span>         0         0         1         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 5</span>         0         0         0         1         0         0         0
+#&gt; <span style='color: #BCBCBC;'> 6</span>         0         0         0         0         1         0         0
+#&gt; <span style='color: #BCBCBC;'> 7</span>         0         0         0         0         0         1         0
+#&gt; <span style='color: #BCBCBC;'> 8</span>         0         0         0         0         0         0         1
+#&gt; <span style='color: #BCBCBC;'> 9</span>         0         0         0         0         0         0         0
+#&gt; <span style='color: #BCBCBC;'>10</span>         0         0         0         0         0         0         0
+#&gt; <span style='color: #949494;'># … with 296 more rows, and 4 more variables: month_Sep &lt;dbl&gt;, month_Oct &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   month_Nov &lt;dbl&gt;, month_Dec &lt;dbl&gt;</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

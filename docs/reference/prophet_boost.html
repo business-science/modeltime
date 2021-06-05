@@ -94,7 +94,7 @@ different packages. Currently the only package is prophet." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -441,7 +441,7 @@ names in each engine:</p>
 <tr><td>tree_depth</td><td>max_depth (6)</td></tr>
 <tr><td>trees</td><td>nrounds (15)</td></tr>
 <tr><td>learn_rate</td><td>eta (0.3)</td></tr>
-<tr><td>mtry</td><td>colsample_bytree (1)</td></tr>
+<tr><td>mtry</td><td>colsample_bynode (1)</td></tr>
 <tr><td>min_n</td><td>min_child_weight (1)</td></tr>
 <tr><td>loss_reduction</td><td>gamma (0)</td></tr>
 <tr><td>sample_size</td><td>subsample (1)</td></tr>
@@ -546,20 +546,20 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
 #&gt;    id    date       value
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> M750  1990-01-01  </span><span style='text-decoration: underline;'>6</span><span>370
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> M750  1990-02-01  </span><span style='text-decoration: underline;'>6</span><span>430
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> M750  1990-03-01  </span><span style='text-decoration: underline;'>6</span><span>520
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> M750  1990-04-01  </span><span style='text-decoration: underline;'>6</span><span>580
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> M750  1990-05-01  </span><span style='text-decoration: underline;'>6</span><span>620
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> M750  1990-06-01  </span><span style='text-decoration: underline;'>6</span><span>690
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> M750  1990-07-01  </span><span style='text-decoration: underline;'>6</span><span>000
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> M750  1990-08-01  </span><span style='text-decoration: underline;'>5</span><span>450
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> M750  1990-09-01  </span><span style='text-decoration: underline;'>6</span><span>480
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> M750  1990-10-01  </span><span style='text-decoration: underline;'>6</span><span>820
-#&gt; </span><span style='color: #949494;'># … with 296 more rows</span><span></div><div class='input'>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
+#&gt; <span style='color: #BCBCBC;'> 2</span> M750  1990-02-01  <span style='text-decoration: underline;'>6</span>430
+#&gt; <span style='color: #BCBCBC;'> 3</span> M750  1990-03-01  <span style='text-decoration: underline;'>6</span>520
+#&gt; <span style='color: #BCBCBC;'> 4</span> M750  1990-04-01  <span style='text-decoration: underline;'>6</span>580
+#&gt; <span style='color: #BCBCBC;'> 5</span> M750  1990-05-01  <span style='text-decoration: underline;'>6</span>620
+#&gt; <span style='color: #BCBCBC;'> 6</span> M750  1990-06-01  <span style='text-decoration: underline;'>6</span>690
+#&gt; <span style='color: #BCBCBC;'> 7</span> M750  1990-07-01  <span style='text-decoration: underline;'>6</span>000
+#&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
+#&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
+#&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
+#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
@@ -581,7 +581,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 
 
 
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

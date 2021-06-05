@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -491,7 +491,7 @@
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;      aic    bic   aicc  loglik   mse</span>
 <span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 70492. 70510. 70492. -35243. 9733.</span></code></pre></div>
+<span class="co">#&gt; 1 70395. 70414. 70395. -35194. 9501.</span></code></pre></div>
 <p>The bridge looks good.</p>
 </div>
 <div id="step-3b-create-a-fit-module" class="section level4">
@@ -670,9 +670,9 @@
 <span class="va">calibration_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
 <span class="co">#&gt; # A tibble: 1 x 5</span>
-<span class="co">#&gt;   .model_id .model   .model_desc            .type .calibration_data     </span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;                  &lt;chr&gt; &lt;list&gt;                </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt; STLM MODEL: ETS(M,N,N) Test  &lt;tibble[,4] [404 × 4]&gt;</span></code></pre></div>
+<span class="co">#&gt;   .model_id .model   .model_desc            .type .calibration_data </span>
+<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;                  &lt;chr&gt; &lt;list&gt;            </span>
+<span class="co">#&gt; 1         1 &lt;fit[+]&gt; STLM MODEL: ETS(M,N,N) Test  &lt;tibble [404 × 4]&gt;</span></code></pre></div>
 </div>
 <div id="refit-on-the-full-dataset" class="section level3">
 <h3 class="hasAnchor">

@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -241,9 +241,9 @@
     <tr>
       <th>type</th>
       <td><p>A single character value or <code>NULL</code>. Possible values
-are "numeric", "class", "prob", "conf_int", "pred_int", "quantile",
-or "raw". When <code>NULL</code>, <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code> will choose an appropriate value
-based on the model's mode.</p></td>
+are "numeric", "class", "prob", "conf_int", "pred_int", "quantile", "time",
+"hazard", "survival", or "raw". When <code>NULL</code>, <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code> will choose an
+appropriate value based on the model's mode.</p></td>
     </tr>
     <tr>
       <th>opts</th>
@@ -267,8 +267,7 @@ the scale of the linear predictors) for <code>type</code>s of "conf_int"
 and "pred_int". Default value is <code>FALSE</code>.</p></li>
 <li><p><code>quantile</code>: the quantile(s) for quantile regression
 (not implemented yet)</p></li>
-<li><p><code>time</code>: the time(s) for hazard probability estimates
-(not implemented yet)</p></li>
+<li><p><code>time</code>: the time(s) for hazard and survival probability estimates.</p></li>
 </ul></td>
     </tr>
     </table>

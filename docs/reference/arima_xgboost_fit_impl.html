@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -244,7 +244,8 @@
   max_depth <span class='op'>=</span> <span class='fl'>6</span>,
   nrounds <span class='op'>=</span> <span class='fl'>15</span>,
   eta <span class='op'>=</span> <span class='fl'>0.3</span>,
-  colsample_bytree <span class='op'>=</span> <span class='fl'>1</span>,
+  colsample_bytree <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colsample_bynode <span class='op'>=</span> <span class='cn'>NULL</span>,
   min_child_weight <span class='op'>=</span> <span class='fl'>1</span>,
   gamma <span class='op'>=</span> <span class='fl'>0</span>,
   subsample <span class='op'>=</span> <span class='fl'>1</span>,
@@ -355,6 +356,12 @@ parameters.</p></td>
     <tr>
       <th>colsample_bytree</th>
       <td><p>Subsampling proportion of columns.</p></td>
+    </tr>
+    <tr>
+      <th>colsample_bynode</th>
+      <td><p>Subsampling proportion of columns for each node
+within each tree. See the <code>counts</code> argument below. The default uses all
+columns.</p></td>
     </tr>
     <tr>
       <th>min_child_weight</th>

@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -230,12 +230,16 @@
   max_depth <span class='op'>=</span> <span class='fl'>6</span>,
   nrounds <span class='op'>=</span> <span class='fl'>15</span>,
   eta <span class='op'>=</span> <span class='fl'>0.3</span>,
-  colsample_bytree <span class='op'>=</span> <span class='fl'>1</span>,
+  colsample_bynode <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colsample_bytree <span class='op'>=</span> <span class='cn'>NULL</span>,
   min_child_weight <span class='op'>=</span> <span class='fl'>1</span>,
   gamma <span class='op'>=</span> <span class='fl'>0</span>,
   subsample <span class='op'>=</span> <span class='fl'>1</span>,
   validation <span class='op'>=</span> <span class='fl'>0</span>,
   early_stop <span class='op'>=</span> <span class='cn'>NULL</span>,
+  objective <span class='op'>=</span> <span class='cn'>NULL</span>,
+  counts <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  event_level <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"first"</span>, <span class='st'>"second"</span><span class='op'>)</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -263,8 +267,15 @@
       <td><p>A numeric value between zero and one to control the learning rate.</p></td>
     </tr>
     <tr>
+      <th>colsample_bynode</th>
+      <td><p>Subsampling proportion of columns for each node
+within each tree. See the <code>counts</code> argument below. The default uses all
+columns.</p></td>
+    </tr>
+    <tr>
       <th>colsample_bytree</th>
-      <td><p>Subsampling proportion of columns.</p></td>
+      <td><p>Subsampling proportion of columns for each tree.
+See the <code>counts</code> argument below. The default uses all columns.</p></td>
     </tr>
     <tr>
       <th>min_child_weight</th>
@@ -278,7 +289,8 @@ further partition on a leaf node of the tree</p></td>
     </tr>
     <tr>
       <th>subsample</th>
-      <td><p>Subsampling proportion of rows.</p></td>
+      <td><p>Subsampling proportion of rows. By default, all of the
+training data are used.</p></td>
     </tr>
     <tr>
       <th>validation</th>
@@ -293,6 +305,24 @@ of training set samples use for these purposes.</p></td>
 training iterations without improvement before stopping. If <code>validation</code> is
 used, performance is base on the validation set; otherwise the training set
 is used.</p></td>
+    </tr>
+    <tr>
+      <th>objective</th>
+      <td><p>A single string (or NULL) that defines the loss function that
+<code>xgboost</code> uses to create trees. See <code><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgboost::xgb.train()</a></code> for options. If left
+NULL, an appropriate loss function is chosen.</p></td>
+    </tr>
+    <tr>
+      <th>counts</th>
+      <td><p>A logical. If <code>FALSE</code>, <code>colsample_bynode</code> and
+<code>colsample_bytree</code> are both assumed to be <em>proportions</em> of the proportion of
+columns affects (instead of counts).</p></td>
+    </tr>
+    <tr>
+      <th>event_level</th>
+      <td><p>For binary classification, this is a single string of either
+<code>"first"</code> or <code>"second"</code> to pass along describing which level of the outcome
+should be considered the "event".</p></td>
     </tr>
     <tr>
       <th>...</th>

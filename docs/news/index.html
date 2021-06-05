@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -218,14 +218,22 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="modeltime-069000-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="0.6.9000">
-<a href="#modeltime-069000-development-version" class="anchor"></a>modeltime 0.6.9000 (Development Version)<small> Unreleased </small>
+    <div id="modeltime-0609000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.0.9000">
+<a href="#modeltime-0609000-development-version" class="anchor"></a>modeltime 0.6.0.9000 (Development Version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>
+<code><a href="../reference/control_refit.html">control_refit()</a></code> and <code><a href="../reference/control_fit_workflowset.html">control_fit_workflowset()</a></code>: Better printing.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+<li>Issue <a href='https://github.com/business-science/modeltime/issues/110'>#110</a>: Fix bug with <code>cores &gt; cores_available</code>.</li>
+</ul>
 </div>
     <div id="modeltime-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
-<a href="#modeltime-060" class="anchor"></a>modeltime 0.6.0<small> Unreleased </small>
+<a href="#modeltime-060" class="anchor"></a>modeltime 0.6.0<small> 2021-05-30 </small>
 </h1>
 <div id="workflowset-integration" class="section level3">
 <h3 class="hasAnchor">
@@ -262,6 +270,15 @@
 </li>
 <li>
 <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code>: supports parallel processing. See <code>control_workflowset()</code>
+</li>
+</ul>
+</div>
+<div id="updates-for-parsnip--016" class="section level3">
+<h3 class="hasAnchor">
+<a href="#updates-for-parsnip--016" class="anchor"></a>Updates for parsnip &gt;= 0.1.6</h3>
+<ul>
+<li>
+<code><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree(mtry)</a></code>: Mapping switched from <code>colsample_bytree</code> to <code>colsample_bynode</code>. <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code> and <code><a href="../reference/arima_boost.html">arima_boost()</a></code> have been updated to reflect this change. <a href="https://github.com/tidymodels/parsnip/pull/499" class="uri">https://github.com/tidymodels/parsnip/pull/499</a>
 </li>
 </ul>
 </div>

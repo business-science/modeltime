@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
       </span>
     </div>
 
@@ -392,7 +392,7 @@ Recursive Panel Forecast with XGBoost
 <span class="va">model_fit_lm</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  5ms </span>
+<span class="co">#&gt; Fit time:  4ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span>
@@ -631,16 +631,16 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  125ms </span>
+<span class="co">#&gt; Fit time:  122ms </span>
 <span class="co">#&gt; ##### xgb.Booster</span>
 <span class="co">#&gt; raw: 69.2 Kb </span>
 <span class="co">#&gt; call:</span>
 <span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.35, max_depth = 6, gamma = 0, </span>
-<span class="co">#&gt;     colsample_bytree = 1, min_child_weight = 1, subsample = 1, </span>
-<span class="co">#&gt;     objective = "reg:squarederror"), data = x$data, nrounds = 15, </span>
-<span class="co">#&gt;     watchlist = x$watchlist, verbose = 0, nthread = 1)</span>
+<span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span>
+<span class="co">#&gt;     subsample = 1, objective = "reg:squarederror"), data = x$data, </span>
+<span class="co">#&gt;     nrounds = 15, watchlist = x$watchlist, verbose = 0, nthread = 1)</span>
 <span class="co">#&gt; params (as set within xgb.train):</span>
-<span class="co">#&gt;   eta = "0.35", max_depth = "6", gamma = "0", colsample_bytree = "1", min_child_weight = "1", subsample = "1", objective = "reg:squarederror", nthread = "1", validate_parameters = "TRUE"</span>
+<span class="co">#&gt;   eta = "0.35", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "1", min_child_weight = "1", subsample = "1", objective = "reg:squarederror", nthread = "1", validate_parameters = "TRUE"</span>
 <span class="co">#&gt; xgb.attributes:</span>
 <span class="co">#&gt;   niter</span>
 <span class="co">#&gt; callbacks:</span>
