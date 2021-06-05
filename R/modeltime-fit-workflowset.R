@@ -244,7 +244,8 @@ control_fit_workflowset <- function(verbose = FALSE,
         verbose   = verbose,
         allow_par = allow_par,
         cores     = cores,
-        packages  = packages
+        packages  = packages,
+        func      = "control_fit_workflowset"
     )
 
     class(ret) <- c("control_fit_workflowset")
@@ -255,7 +256,7 @@ control_fit_workflowset <- function(verbose = FALSE,
 
 #' @export
 print.control_fit_workflowset <- function(x, ...) {
-    cat("workflowset control object\n")
+    pretty_print_list(x, header = "workflowset control object")
     invisible(x)
 }
 

@@ -505,7 +505,8 @@ control_refit <- function(verbose = FALSE,
         verbose   = verbose,
         allow_par = allow_par,
         cores     = cores,
-        packages  = packages
+        packages  = packages,
+        func      = "control_refit"
     )
 
     class(ret) <- c("control_refit")
@@ -515,7 +516,7 @@ control_refit <- function(verbose = FALSE,
 
 #' @export
 print.control_refit <- function(x, ...) {
-    cat("refit control object\n")
+    pretty_print_list(x, header = "refit control object")
     invisible(x)
 }
 

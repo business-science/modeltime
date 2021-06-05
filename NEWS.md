@@ -1,5 +1,7 @@
 # modeltime 0.6.0.9000 (Development Version)
 
+- `control_refit()` and `control_fit_workflowset()`: Better printing. 
+
 __Bug Fixes__
 
 - Issue #110: Fix bug with `cores > cores_available`.
