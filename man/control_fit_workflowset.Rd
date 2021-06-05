@@ -32,6 +32,14 @@ A List with the control settings.
 \description{
 Control aspects of the \code{modeltime_fit_workflowset()} process.
 }
+\examples{
+#' # No parallel processing
+control_fit_workflowset()
+
+# With parallel processing
+control_fit_workflowset(allow_par = TRUE)
+
+}
 \seealso{
 \code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
 }

@@ -27,6 +27,15 @@ A List with the control settings.
 \description{
 Control aspects of the \code{modeltime_refit()} process.
 }
+\examples{
+
+# No parallel processing
+control_refit()
+
+# With parallel processing
+control_refit(allow_par = TRUE)
+
+}
 \seealso{
 \code{\link[=modeltime_refit]{modeltime_refit()}}
 }

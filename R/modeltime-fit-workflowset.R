@@ -234,6 +234,13 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 #' @seealso
 #' [modeltime_fit_workflowset()]
 #'
+#' @examples
+#' #' # No parallel processing
+#' control_fit_workflowset()
+#'
+#' # With parallel processing
+#' control_fit_workflowset(allow_par = TRUE)
+#'
 #' @export
 control_fit_workflowset <- function(verbose = FALSE,
                                 allow_par = FALSE,

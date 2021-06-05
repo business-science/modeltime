@@ -492,8 +492,17 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
 #' @return
 #' A List with the control settings.
 #'
+#'
 #' @seealso
 #' [modeltime_refit()]
+#'
+#' @examples
+#'
+#' # No parallel processing
+#' control_refit()
+#'
+#' # With parallel processing
+#' control_refit(allow_par = TRUE)
 #'
 #' @export
 control_refit <- function(verbose = FALSE,

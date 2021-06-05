@@ -1,5 +1,7 @@
 # modeltime 0.6.0.9000 (Development Version)
 
+__Parallel Processing__
+
 - `control_refit()` and `control_fit_workflowset()`: Better printing. 
 
 __Bug Fixes__
