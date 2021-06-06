@@ -214,12 +214,15 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
 
     is_par_setup <- foreach::getDoParWorkers() > 1
 
+    clusters_made <- FALSE
+
     # If parallel processing is not set up, set up parallel backend
     if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
         if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} clusters (cores)..."))
         cl <- parallel::makeCluster(control$cores)
         doParallel::registerDoParallel(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+        clusters_made <- TRUE
 
         if (control$verbose) {
             t <- Sys.time()
