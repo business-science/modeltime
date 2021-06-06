@@ -61,10 +61,10 @@ library(timetk)
 
 ## Setup Parallel Backend
 
-I have six (6) available cores on my machine. I'll set up this tutorial to use all 6 cores. 
+I'll set up this tutorial to use two (2) cores. To detect how many physical cores you have, you can run `parallel::detectCores(logical = FALSE)`. 
 
 ```{r, message=F, warning=FALSE}
-cl <- parallel::makeCluster(6)
+cl <- parallel::makeCluster(2)
 doParallel::registerDoParallel(cl)
 ```
 
@@ -185,7 +185,7 @@ The control functions help the user control the verbosity (adding remarks while 
 
 - __verbose:__ Will return important messages showing the progress of the fitting operation. 
 
-- __cores:__ The cores that the user has set up. Since we've already set up `doParallel` to use 6 cores, the control recognizes this. 
+- __cores:__ The cores that the user has set up. Since we've already set up `doParallel` to use 2 cores, the control recognizes this. 
 
 - __packages:__ The packages are packages that will be sent to each of the workers. 
 
