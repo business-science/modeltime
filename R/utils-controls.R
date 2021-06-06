@@ -30,19 +30,31 @@ control_modeltime_objects <- function(
         cores <- 1
     } else {
         cores_available <- parallel::detectCores(logical = FALSE) # Detect Physical Cores
-        if (!is.na(cores_available)) {
-            # NUMBER OF CORES DETERMINED
-            if (cores < 1) cores <- cores_available
-            # if (cores > cores_available) cores <- cores_available
-        } else {
-            # UNKNOWN NUMBER OF CORES
-            if (cores < 1) {
-                rlang::warn(
-                    stringr::str_glue("{if (!is.null(func)) paste0(func, ': ') }`allow_par` is TRUE but unknown number of `cores`. Setting `cores = 1`.")
-                )
-                cores <- 1
-            }
 
+        foreach_workers <- foreach::getDoParWorkers() # Detect how many workers currently set up
+
+        if (foreach_workers > 1) {
+            # WORKERS ALREADY SET UP
+            cores_requested <- cores
+            cores <- foreach_workers
+            if ((cores_requested > 1) && (cores != cores_requested)) {
+                rlang::warn(stringr::str_glue("Detected parallel backend with {cores} cores but user requested {cores_requested} cores. Using {cores} cores."))
+            }
+        } else {
+            if (!is.na(cores_available)) {
+                # NUMBER OF CORES DETERMINED
+                if (cores < 1) cores <- cores_available
+                # if (cores > cores_available) cores <- cores_available
+            } else {
+                # UNKNOWN NUMBER OF CORES
+                if (cores < 1) {
+                    rlang::warn(
+                        stringr::str_glue("{if (!is.null(func)) paste0(func, ': ') }`allow_par` is TRUE but unknown number of `cores`. Setting `cores = 1`.")
+                    )
+                    cores <- 1
+                }
+
+            }
         }
 
     }

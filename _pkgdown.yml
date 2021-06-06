@@ -18,6 +18,8 @@ navbar:
           href: articles/getting-started-with-modeltime.html
         - text: 'Autoregressive Forecasting (Recursive)'
           href: articles/recursive-forecasting.html
+        - text: 'Parallel Processing'
+          href: articles/parallel-processing.html
         - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Algorithm Roadmap'

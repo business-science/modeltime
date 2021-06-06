@@ -1,0 +1,314 @@
+---
+title: "Parallel Processing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Parallel Processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  
+  out.width='100%',
+  fig.align = "center",
+  fig.width = 7,
+  fig.height = 5,
+  
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+> Train `modeltime` models at scale with parallel processing
+
+Fitting many time series models can be an expensive process. To help speed up computation, `modeltime` now includes __parallel processing__, which is support for high-performance computing by spreading the model fitting steps across multiple CPUs or clusters. 
+
+# Out-of-the-Box<br><small>Parallel Processing Functionality Included</small>
+
+The following functions come with parallel processing functionality. 
+
+- Use of `modeltime_fit_workflowset()` for initial fitting many models in parallel using `workflowsets` from the `tidymodels` ecosystem.
+
+- Use of `modeltime_refit()` to refit models in parallel.
+
+- Use of `control_fit_workflowset()` and `control_refit()` for controlling the fitting and refitting of many models.
+
+# How to Use Parallel Processing
+
+Here's a short tutorial that showcases the use of parallel processing inside of `modeltime`. 
+
+## Libraries 
+
+Load the following libraries.
+
+```{r, message=FALSE, warning=FALSE}
+# Parallel Processing
+library(parallel)
+library(doParallel)
+
+# Machine Learning
+library(modeltime)
+library(tidymodels)
+library(workflowsets)
+
+# Core
+library(tidyverse)
+library(timetk)
+```
+
+## Setup Parallel Backend
+
+I have six (6) available cores on my machine. I'll set up this tutorial to use all 6 cores. 
+
+```{r, message=F, warning=FALSE}
+cl <- parallel::makeCluster(6)
+doParallel::registerDoParallel(cl)
+```
+
+## Load Data
+
+We'll use the `walmart_sales_weeekly` dataset from `timetk`. It has seven (7) time series that represent weekly sales demand by department. 
+
+```{r}
+dataset_tbl <- walmart_sales_weekly %>%
+  select(id, Date, Weekly_Sales)
+
+dataset_tbl %>% 
+  group_by(id) %>%
+  plot_time_series(
+    .date_var    = Date, 
+    .value       = Weekly_Sales, 
+    .facet_ncol  = 2, 
+    .interactive = FALSE
+  )
+```
+
+
+## Train / Test Splits
+
+Use `time_series_split()` to make a temporal split for all seven time series. 
+
+```{r}
+splits <- time_series_split(
+  dataset_tbl, 
+  assess     = "6 months", 
+  cumulative = TRUE
+)
+
+splits %>% 
+  tk_time_series_cv_plan() %>% 
+  plot_time_series_cv_plan(Date, Weekly_Sales, .interactive = F)
+```
+
+## Recipe
+
+Make a preprocessing recipe that generates time series features. 
+
+```{r}
+recipe_spec_1 <- recipe(Weekly_Sales ~ ., data = training(splits)) %>%
+  step_timeseries_signature(Date) %>%
+  step_rm(Date) %>%
+  step_normalize(Date_index.num) %>%
+  step_zv(all_predictors()) %>%
+  step_dummy(all_nominal_predictors(), one_hot = TRUE)
+
+```
+
+## Model Specifications
+
+Make 6 xgboost model specifications. We'll vary the `learn_rate` parameter.  
+
+```{r}
+# XGBOOST MODELS
+model_spec_xgb_1 <- boost_tree(learn_rate = 0.001) %>%
+  set_engine("xgboost")
+
+model_spec_xgb_2 <- boost_tree(learn_rate = 0.010) %>%
+  set_engine("xgboost")
+
+model_spec_xgb_3 <- boost_tree(learn_rate = 0.100) %>%
+  set_engine("xgboost")
+
+model_spec_xgb_4 <- boost_tree(learn_rate = 0.350) %>%
+  set_engine("xgboost")
+
+model_spec_xgb_5 <- boost_tree(learn_rate = 0.500) %>%
+  set_engine("xgboost")
+
+model_spec_xgb_6 <- boost_tree(learn_rate = 0.650) %>%
+  set_engine("xgboost")
+```
+
+## Workflowsets
+
+With the `workflow_set()` function, we can combine the 6 xgboost models with the 1 recipe to return six (6) combinations of recipe and model specifications. These are currently untrained (unfitted).
+
+```{r}
+model_wfset <- workflow_set(
+  preproc = list(
+    recipe_spec_1
+  ),
+  models = list(
+    model_spec_xgb_1,
+    model_spec_xgb_2,
+    model_spec_xgb_3,
+    model_spec_xgb_4,
+    model_spec_xgb_5,
+    model_spec_xgb_6
+  ), 
+  cross = TRUE
+)
+
+model_wfset
+```
+## Parallel Training (Fitting)
+
+We can train each of the combinations in parallel. 
+
+### Controlling the Fitting Proces
+
+Each fitting function in `modeltime` has a "control" function:
+
+ - `control_fit_workflowset()` for `modeltime_fit_workflowset()`
+ - `control_refit()` for `modeltime_refit()`
+ 
+The control functions help the user control the verbosity (adding remarks while training) and set up parallel processing. We can see the output when `verbose = TRUE` and `allow_par = TRUE`. 
+
+- __allow_par:__ Whether or not the user has indicated that parallel processing should be used. 
+
+    - If the user has set up parallel processing externally, the clusters will be reused.
+  
+    - If the user has not set up parallel processing, the fitting (training) process will set up parallel processing internally and shutdown. Note that this is more expensive, and usually costs around 10-15 seconds to set up. 
+
+- __verbose:__ Will return important messages showing the progress of the fitting operation. 
+
+- __cores:__ The cores that the user has set up. Since we've already set up `doParallel` to use 6 cores, the control recognizes this. 
+
+- __packages:__ The packages are packages that will be sent to each of the workers. 
+
+```{r}
+control_fit_workflowset(
+  verbose   = TRUE,
+  allow_par = TRUE
+)
+```
+
+### Fitting Using Parallel Backend
+
+We use the `modeltime_fit_workflowset()` and `control_fit_workflowset()` together to train the unfitted workflowset in parallel. 
+
+```{r, message = TRUE}
+model_parallel_tbl <- model_wfset %>%
+  modeltime_fit_workflowset(
+    data    = training(splits),
+    control = control_fit_workflowset(
+      verbose   = TRUE,
+      allow_par = TRUE
+    )
+  )
+```
+
+This returns a modeltime table. 
+
+```{r}
+model_parallel_tbl
+```
+
+
+### Comparison to Sequential Backend
+
+We can compare to a sequential backend. We have a slight perfomance boost. Note that this performance benefit increases with the size of the training task. 
+
+```{r, message = TRUE}
+model_sequential_tbl <- model_wfset %>%
+  modeltime_fit_workflowset(
+    data    = training(splits),
+    control = control_fit_workflowset(
+      verbose   = TRUE,
+      allow_par = FALSE
+    )
+  )
+```
+
+## Accuracy Assessment
+
+We can review the forecast accuracy. We can see that Model 5 has the lowest MAE.
+
+```{r}
+model_parallel_tbl %>%
+  modeltime_calibrate(testing(splits)) %>%
+  modeltime_accuracy() %>%
+  table_modeltime_accuracy(.interactive = FALSE)
+```
+
+## Forecast Assessment
+
+We can visualize the forecast. 
+
+```{r}
+model_parallel_tbl %>%
+  modeltime_forecast(
+    new_data    = testing(splits),
+    actual_data = dataset_tbl,
+    keep_data   = TRUE
+  ) %>%
+  group_by(id) %>%
+  plot_modeltime_forecast(
+    .facet_ncol  = 3,
+    .interactive = FALSE
+  )
+```
+
+
+## Summary
+
+We just showcased Parallel Processing. But this is a simple problem. And, there's a lot more to learning time series. 
+
+- Many more algorithms
+- Ensembling
+- Machine Learning
+- Deep Learning
+- Scalable Modeling: 10,000+ time series
+
+Your probably thinking how am I ever going to learn time series forecasting. Here's the solution that will save you years of struggling. 
+
+## Take the High-Performance Forecasting Course
+
+> Become the forecasting expert for your organization
+
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"/></a>
+
+[_High-Performance Time Series Course_](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)
+
+### Time Series is Changing
+
+Time series is changing. __Businesses now need 10,000+ time series forecasts every day.__ This is what I call a _High-Performance Time Series Forecasting System (HPTSF)_ - Accurate, Robust, and Scalable Forecasting. 
+
+ __High-Performance Forecasting Systems will save companies by improving accuracy and scalability.__ Imagine what will happen to your career if you can provide your organization a "High-Performance Time Series Forecasting System" (HPTSF System).
+
+### How to Learn High-Performance Time Series Forecasting
+
+I teach how to build a HPTFS System in my [__High-Performance Time Series Forecasting Course__](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting). You will learn:
+
+- __Time Series Machine Learning__ (cutting-edge) with `Modeltime` - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, & many more)
+- __Deep Learning__ with `GluonTS` (Competition Winners)
+- __Time Series Preprocessing__, Noise Reduction, & Anomaly Detection
+- __Feature engineering__ using lagged variables & external regressors
+- __Hyperparameter Tuning__
+- __Time series cross-validation__
+- __Ensembling__ Multiple Machine Learning & Univariate Modeling Techniques (Competition Winner)
+- __Scalable Forecasting__ - Forecast 1000+ time series in parallel
+- and more.
+
+<p class="text-center" style="font-size:24px;">
+Become the Time Series Expert for your organization.
+</p>
+<br>
+<p class="text-center" style="font-size:30px;">
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+</p>
+
+

@@ -75,10 +75,19 @@ modeltime_fit_workflowset <- function(object, data, ..., control = control_fit_w
 
 modeltime_fit_workflowset_sequential <- function(object, data, control, ...) {
 
+    t1 <- Sys.time()
+
+
     .models  <- object %>% split(.$wflow_id)
     safe_fit <- purrr::safely(parsnip::fit, otherwise = NULL, quiet = TRUE)
 
     # Setup progress
+
+    # BEGIN LOOP
+    # if (control$verbose) {
+    #     t <- Sys.time()
+    #     message(stringr::str_glue("Beginning Sequential Loop | {round(t-t1, 3)} seconds"))
+    # }
 
     models <- .models %>%
         purrr::imap(
@@ -112,12 +121,20 @@ modeltime_fit_workflowset_sequential <- function(object, data, control, ...) {
             }
         )
 
+    # PRINT TOTAL TIME
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue("Total time | {round(t-t1, 3)} seconds"))
+    }
+
     return(models)
 
 
 }
 
 modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
+
+    t1 <- Sys.time()
 
     is_par_setup <- foreach::getDoParWorkers() > 1
 
@@ -132,6 +149,11 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
         doParallel::registerDoParallel(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
         clusters_made <- TRUE
+
+        if (control$verbose) {
+            t <- Sys.time()
+            message(stringr::str_glue(" Parallel Backend Setup | {round(t-t1, 3)} seconds"))
+        }
 
     } else if (!is_par_setup) {
         # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
@@ -160,7 +182,11 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
     # Setup Safe Modeling
     safe_fit <- purrr::safely(parsnip::fit, otherwise = NULL, quiet = FALSE)
 
-    # Setup progress
+    # BEGIN LOOP
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Beginning Parallel Loop | {round(t-t1, 3)} seconds"))
+    }
 
     ret <- foreach::foreach(
         this_model          = .models,
@@ -203,17 +229,24 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
         parallel::stopCluster(cl)
         foreach::registerDoSEQ()
         if (control$verbose) {
-            message("Finishing parallel backend. Closing clusters.")
+            message(stringr::str_glue(" Finishing parallel backend. Closing clusters. | {round(t-t1, 3)} seconds)"))
         }
     } else if ((control$cores > 1) && control$allow_par) {
         if (control$verbose) {
-            message("Finishing parallel backend. Clusters are remaining open. Close clusters by running: `foreach::registerDoSEQ()`")
+            message(stringr::str_glue(" Finishing parallel backend. Clusters are remaining open. | {round(t-t1, 3)} seconds"))
+            message(" Close clusters by running: `foreach::registerDoSEQ()`.")
         }
     } else {
         if (control$verbose) {
-            message("Finishing sequential backend.")
+            message(stringr::str_glue(" Finishing sequential backend. | {round(t-t1, 3)} seconds"))
         }
     }
+
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Total time | {round(t-t1, 3)} seconds"))
+    }
+
 
     return(models)
 

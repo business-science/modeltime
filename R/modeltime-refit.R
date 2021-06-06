@@ -147,11 +147,19 @@ modeltime_refit.mdl_time_tbl <- function(object, data, ..., control = control_re
 
 modeltime_refit_sequential <- function(object, data, ..., control) {
 
+    t1 <- Sys.time()
+
     new_data <- data
     data     <- object # object is a Modeltime Table
 
     # Safely refit
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
+
+    # BEGIN LOOP
+    # if (control$verbose) {
+    #     t <- Sys.time()
+    #     message(stringr::str_glue(" Beginning Sequential Loop | {round(t-t1, 3)} seconds"))
+    # }
 
     ret <- data %>%
         dplyr::ungroup() %>%
@@ -187,11 +195,19 @@ modeltime_refit_sequential <- function(object, data, ..., control) {
             })
         )
 
+    # PRINT TOTAL TIME
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue("Total time | {round(t-t1, 3)} seconds"))
+    }
+
     return(ret)
 
 }
 
 modeltime_refit_parallel <- function(object, data, ..., control) {
+
+    t1 <- Sys.time()
 
     new_data <- data
     data     <- object # object is a Modeltime Table
@@ -204,6 +220,12 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
         cl <- parallel::makeCluster(control$cores)
         doParallel::registerDoParallel(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+
+        if (control$verbose) {
+            t <- Sys.time()
+            message(stringr::str_glue(" Parallel Backend Setup | {round(t-t1, 3)} seconds"))
+        }
+
     } else if (!is_par_setup) {
         # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
         if (control$verbose) message(stringr::str_glue("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`."))
@@ -231,6 +253,12 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     safe_modeltime_refit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = FALSE)
 
     ret <- data %>% dplyr::ungroup()
+
+    # BEGIN LOOP
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Beginning Parallel Loop | {round(t-t1, 3)} seconds"))
+    }
 
     mod_list <- foreach::foreach(
             id                  = ret$.model_id,
@@ -274,23 +302,29 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
 
 
     # Finish Parallel Backend. Close clusters if we set up internally.
-    if ((control$cores > 1) && control$allow_par && (!is_par_setup)) {
+    if (clusters_made) {
         # We set up parallel processing internally. We should close.
         doParallel::stopImplicitCluster()
         parallel::stopCluster(cl)
         foreach::registerDoSEQ()
         if (control$verbose) {
-            message("Finishing parallel backend. Closing clusters.")
-
+            message(stringr::str_glue(" Finishing parallel backend. Closing clusters. | {round(t-t1, 3)} seconds)"))
         }
     } else if ((control$cores > 1) && control$allow_par) {
         if (control$verbose) {
-            message("Finishing parallel backend. Clusters are remaining open. Close clusters by running: `foreach::registerDoSEQ()`")
+            message(stringr::str_glue(" Finishing parallel backend. Clusters are remaining open. | {round(t-t1, 3)} seconds"))
+            message(" Close clusters by running: `foreach::registerDoSEQ()`.")
         }
     } else {
         if (control$verbose) {
-            message("Finishing sequential backend.")
+            message(stringr::str_glue(" Finishing sequential backend. | {round(t-t1, 3)} seconds"))
         }
+    }
+
+    # PRINT TOTAL TIME
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Total time | {round(t-t1, 3)} seconds"))
     }
 
     return(ret)
