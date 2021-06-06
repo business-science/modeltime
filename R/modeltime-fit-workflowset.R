@@ -223,6 +223,7 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
     )
 
     # Finish Parallel Backend. Close clusters if we set up internally.
+    t <- Sys.time()
     if (clusters_made) {
         # We set up parallel processing internally. We should close.
         doParallel::stopImplicitCluster()
