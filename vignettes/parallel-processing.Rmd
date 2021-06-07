@@ -66,6 +66,7 @@ I'll set up this tutorial to use two (2) cores. To detect how many physical core
 ```{r, message=F, warning=FALSE}
 cl <- parallel::makeCluster(2)
 doParallel::registerDoParallel(cl)
+parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
 ```
 
 ## Load Data
