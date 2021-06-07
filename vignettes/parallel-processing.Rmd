@@ -30,6 +30,8 @@ Fitting many time series models can be an expensive process. To help speed up co
 
 The following functions come with parallel processing functionality. 
 
+- Use of `parallel_start()` and `parallel_stop()` to simplify the parallel processing setup.
+
 - Use of `modeltime_fit_workflowset()` for initial fitting many models in parallel using `workflowsets` from the `tidymodels` ecosystem.
 
 - Use of `modeltime_refit()` to refit models in parallel.

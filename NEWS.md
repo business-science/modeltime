@@ -4,6 +4,8 @@ __Parallel Processing__
 
 - New Vignette: [Parallel Processing](https://business-science.github.io/modeltime/articles/parallel-processing.html)
 
+- `parallel_start()` and `parallel_stop()`: Helpers for setting up multicore processing. 
+
 - `control_refit()` and `control_fit_workflowset()`: Better printing. 
 
 __Bug Fixes__

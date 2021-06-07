@@ -191,6 +191,7 @@
 </h1>
 <p>The following functions come with parallel processing functionality.</p>
 <ul>
+<li><p>Use of <code><a href="../reference/parallel_start.html">parallel_start()</a></code> and <code><a href="../reference/parallel_start.html">parallel_stop()</a></code> to simplify the parallel processing setup.</p></li>
 <li><p>Use of <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> for initial fitting many models in parallel using <code>workflowsets</code> from the <code>tidymodels</code> ecosystem.</p></li>
 <li><p>Use of <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> to refit models in parallel.</p></li>
 <li><p>Use of <code><a href="../reference/control_fit_workflowset.html">control_fit_workflowset()</a></code> and <code><a href="../reference/control_refit.html">control_refit()</a></code> for controlling the fitting and refitting of many models.</p></li>
@@ -386,9 +387,9 @@
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.233 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.088 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 13.234 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.088 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -428,7 +429,7 @@
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_5</span>
 <span class="co">#&gt; ℹ Fitting Model: recipe_boost_tree_6</span>
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_6</span>
-<span class="co">#&gt; Total time | 17.023 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 16.466 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -440,12 +441,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="euaoybcbcm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ujokkfolpq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#euaoybcbcm .gt_table {
+#ujokkfolpq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -470,7 +471,7 @@
   border-left-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_heading {
+#ujokkfolpq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -482,7 +483,7 @@
   border-right-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_title {
+#ujokkfolpq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -492,7 +493,7 @@
   border-bottom-width: 0;
 }
 
-#euaoybcbcm .gt_subtitle {
+#ujokkfolpq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -502,13 +503,13 @@
   border-top-width: 0;
 }
 
-#euaoybcbcm .gt_bottom_border {
+#ujokkfolpq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_col_headings {
+#ujokkfolpq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -523,7 +524,7 @@
   border-right-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_col_heading {
+#ujokkfolpq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -543,7 +544,7 @@
   overflow-x: hidden;
 }
 
-#euaoybcbcm .gt_column_spanner_outer {
+#ujokkfolpq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -555,15 +556,15 @@
   padding-right: 4px;
 }
 
-#euaoybcbcm .gt_column_spanner_outer:first-child {
+#ujokkfolpq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#euaoybcbcm .gt_column_spanner_outer:last-child {
+#ujokkfolpq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#euaoybcbcm .gt_column_spanner {
+#ujokkfolpq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -575,7 +576,7 @@
   width: 100%;
 }
 
-#euaoybcbcm .gt_group_heading {
+#ujokkfolpq .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -597,7 +598,7 @@
   vertical-align: middle;
 }
 
-#euaoybcbcm .gt_empty_group_heading {
+#ujokkfolpq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -612,15 +613,15 @@
   vertical-align: middle;
 }
 
-#euaoybcbcm .gt_from_md > :first-child {
+#ujokkfolpq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#euaoybcbcm .gt_from_md > :last-child {
+#ujokkfolpq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#euaoybcbcm .gt_row {
+#ujokkfolpq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -639,7 +640,7 @@
   overflow-x: hidden;
 }
 
-#euaoybcbcm .gt_stub {
+#ujokkfolpq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -651,7 +652,7 @@
   padding-left: 12px;
 }
 
-#euaoybcbcm .gt_summary_row {
+#ujokkfolpq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -661,7 +662,7 @@
   padding-right: 5px;
 }
 
-#euaoybcbcm .gt_first_summary_row {
+#ujokkfolpq .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -671,7 +672,7 @@
   border-top-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_grand_summary_row {
+#ujokkfolpq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -681,7 +682,7 @@
   padding-right: 5px;
 }
 
-#euaoybcbcm .gt_first_grand_summary_row {
+#ujokkfolpq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -691,11 +692,11 @@
   border-top-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_striped {
+#ujokkfolpq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#euaoybcbcm .gt_table_body {
+#ujokkfolpq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -704,7 +705,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_footnotes {
+#ujokkfolpq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -718,13 +719,13 @@
   border-right-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_footnote {
+#ujokkfolpq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#euaoybcbcm .gt_sourcenotes {
+#ujokkfolpq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -738,41 +739,41 @@
   border-right-color: #D3D3D3;
 }
 
-#euaoybcbcm .gt_sourcenote {
+#ujokkfolpq .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#euaoybcbcm .gt_left {
+#ujokkfolpq .gt_left {
   text-align: left;
 }
 
-#euaoybcbcm .gt_center {
+#ujokkfolpq .gt_center {
   text-align: center;
 }
 
-#euaoybcbcm .gt_right {
+#ujokkfolpq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#euaoybcbcm .gt_font_normal {
+#ujokkfolpq .gt_font_normal {
   font-weight: normal;
 }
 
-#euaoybcbcm .gt_font_bold {
+#ujokkfolpq .gt_font_bold {
   font-weight: bold;
 }
 
-#euaoybcbcm .gt_font_italic {
+#ujokkfolpq .gt_font_italic {
   font-style: italic;
 }
 
-#euaoybcbcm .gt_super {
+#ujokkfolpq .gt_super {
   font-size: 65%;
 }
 
-#euaoybcbcm .gt_footnote_marks {
+#ujokkfolpq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
