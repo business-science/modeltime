@@ -274,7 +274,7 @@ parallel_stop()
 ```
 
 
-## Summary
+# Summary
 
 We just showcased Parallel Processing. But this is a simple problem. And, there's a lot more to learning time series. 
 
