@@ -235,7 +235,7 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
     } else if ((control$cores > 1) && control$allow_par) {
         if (control$verbose) {
             message(stringr::str_glue(" Finishing parallel backend. Clusters are remaining open. | {round(t-t1, 3)} seconds"))
-            message(" Close clusters by running: `foreach::registerDoSEQ()`.")
+            message(" Close clusters by running: `parallel_stop()`.")
         }
     } else {
         if (control$verbose) {
