@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>These are not intended for use by the general public. — load_namespace • modeltime</title>
+<title>Start parallel clusters using parallel package — parallel_start • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="These are not intended for use by the general public. — load_namespace" />
-<meta property="og:description" content="These are not intended for use by the general public." />
+<meta property="og:title" content="Start parallel clusters using parallel package — parallel_start" />
+<meta property="og:description" content="Start parallel clusters using parallel package" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -218,34 +218,48 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>These are not intended for use by the general public.</h1>
+    <h1>Start parallel clusters using <code>parallel</code> package</h1>
     <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/control-par.R'><code>R/control-par.R</code></a></small>
-    <div class="hidden name"><code>load_namespace.Rd</code></div>
+    <div class="hidden name"><code>parallel_start.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These are not intended for use by the general public.</p>
+    <p>Start parallel clusters using <code>parallel</code> package</p>
     </div>
 
-    <pre class="usage"><span class='fu'>load_namespace</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>full_load</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>parallel_start</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>parallel_stop</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A vector</p></td>
-    </tr>
-    <tr>
-      <th>full_load</th>
-      <td><p>A vector</p></td>
+      <th>...</th>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code></p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Control information</p>
+    <p>Performs 3 Steps:</p><ol>
+<li><p>Makes clusters using <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code></p></li>
+<li><p>Registers clusters using <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code></p></li>
+<li><p>Adds <code><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths()</a></code> using <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterCall()</a></code></p></li>
+</ol>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># Starts 2 clusters</span>
+<span class='fu'>parallel_start</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+
+<span class='co'># Returns to sequential processing</span>
+<span class='fu'>parallel_stop</span><span class='op'>(</span><span class='op'>)</span>
+
+
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

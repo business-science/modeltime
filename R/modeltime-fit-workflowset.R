@@ -253,53 +253,7 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 
 }
 
-# CONTROL -----
 
-# Control Workflowset
-#
-#' Control aspects of the `modeltime_fit_workflowset()` process.
-#'
-#' @inheritParams control_refit
-#'
-#'
-#' @return
-#' A List with the control settings.
-#'
-#' @seealso
-#' [modeltime_fit_workflowset()]
-#'
-#' @examples
-#' #' # No parallel processing
-#' control_fit_workflowset()
-#'
-#' # With parallel processing
-#' control_fit_workflowset(allow_par = TRUE)
-#'
-#' @export
-control_fit_workflowset <- function(verbose = FALSE,
-                                allow_par = FALSE,
-                                cores = -1,
-                                packages = NULL) {
-
-    ret <- control_modeltime_objects(
-        verbose   = verbose,
-        allow_par = allow_par,
-        cores     = cores,
-        packages  = packages,
-        func      = "control_fit_workflowset"
-    )
-
-    class(ret) <- c("control_fit_workflowset")
-
-    return(ret)
-
-}
-
-#' @export
-print.control_fit_workflowset <- function(x, ...) {
-    pretty_print_list(x, header = "workflowset control object")
-    invisible(x)
-}
 
 # HELPERS -----
 

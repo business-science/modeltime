@@ -221,10 +221,13 @@
 <div id="setup-parallel-backend" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setup-parallel-backend" class="anchor"></a>Setup Parallel Backend</h2>
-<p>I have six (6) available cores on my machine. I’ll set up this tutorial to use all 6 cores.</p>
+<p>I’ll set up this tutorial to use two (2) cores.</p>
+<ul>
+<li>To simplify creating clusters, <code>modeltime</code> includes <code><a href="../reference/parallel_start.html">parallel_start()</a></code>. We can simply supply the number of cores we’d like to use.</li>
+<li>To detect how many physical cores you have, you can run <code><a href="https://rdrr.io/r/parallel/detectCores.html">parallel::detectCores(logical = FALSE)</a></code>.</li>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span>
-<span class="fu">doParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_start</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="load-data" class="section level2">
 <h2 class="hasAnchor">
@@ -353,7 +356,7 @@
 </ul>
 </li>
 <li><p><strong>verbose:</strong> Will return important messages showing the progress of the fitting operation.</p></li>
-<li><p><strong>cores:</strong> The cores that the user has set up. Since we’ve already set up <code>doParallel</code> to use 6 cores, the control recognizes this.</p></li>
+<li><p><strong>cores:</strong> The cores that the user has set up. Since we’ve already set up <code>doParallel</code> to use 2 cores, the control recognizes this.</p></li>
 <li><p><strong>packages:</strong> The packages are packages that will be sent to each of the workers.</p></li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -364,7 +367,7 @@
 <span class="co">#&gt; workflowset control object</span>
 <span class="co">#&gt; --------------------------</span>
 <span class="co">#&gt; allow_par : TRUE </span>
-<span class="co">#&gt; cores     : 6 </span>
+<span class="co">#&gt; cores     : 2 </span>
 <span class="co">#&gt; verbose   : TRUE </span>
 <span class="co">#&gt; packages  : modeltime parsnip dplyr stats lubridate tidymodels timetk forcats stringr readr tidyverse yardstick workflowsets workflows tune tidyr tibble rsample recipes purrr modeldata infer ggplot2 dials scales broom doParallel iterators foreach parallel graphics grDevices utils datasets methods base</span></code></pre></div>
 </div>
@@ -381,11 +384,11 @@
       allow_par <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; Using existing parallel backend with 6 clusters (cores)...</span>
+<span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 0.004 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.336 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `foreach::registerDoSEQ()`.</span>
-<span class="co">#&gt;  Total time | 11.615 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.337 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -425,7 +428,7 @@
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_5</span>
 <span class="co">#&gt; ℹ Fitting Model: recipe_boost_tree_6</span>
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_6</span>
-<span class="co">#&gt; Total time | 16.705 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 17.059 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -437,12 +440,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="qfbptcpdun" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="yxntqslmlv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#qfbptcpdun .gt_table {
+#yxntqslmlv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -467,7 +470,7 @@
   border-left-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_heading {
+#yxntqslmlv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -479,7 +482,7 @@
   border-right-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_title {
+#yxntqslmlv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -489,7 +492,7 @@
   border-bottom-width: 0;
 }
 
-#qfbptcpdun .gt_subtitle {
+#yxntqslmlv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -499,13 +502,13 @@
   border-top-width: 0;
 }
 
-#qfbptcpdun .gt_bottom_border {
+#yxntqslmlv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_col_headings {
+#yxntqslmlv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -520,7 +523,7 @@
   border-right-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_col_heading {
+#yxntqslmlv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -540,7 +543,7 @@
   overflow-x: hidden;
 }
 
-#qfbptcpdun .gt_column_spanner_outer {
+#yxntqslmlv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -552,15 +555,15 @@
   padding-right: 4px;
 }
 
-#qfbptcpdun .gt_column_spanner_outer:first-child {
+#yxntqslmlv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qfbptcpdun .gt_column_spanner_outer:last-child {
+#yxntqslmlv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qfbptcpdun .gt_column_spanner {
+#yxntqslmlv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -572,7 +575,7 @@
   width: 100%;
 }
 
-#qfbptcpdun .gt_group_heading {
+#yxntqslmlv .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -594,7 +597,7 @@
   vertical-align: middle;
 }
 
-#qfbptcpdun .gt_empty_group_heading {
+#yxntqslmlv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -609,15 +612,15 @@
   vertical-align: middle;
 }
 
-#qfbptcpdun .gt_from_md > :first-child {
+#yxntqslmlv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qfbptcpdun .gt_from_md > :last-child {
+#yxntqslmlv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qfbptcpdun .gt_row {
+#yxntqslmlv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -636,7 +639,7 @@
   overflow-x: hidden;
 }
 
-#qfbptcpdun .gt_stub {
+#yxntqslmlv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -648,7 +651,7 @@
   padding-left: 12px;
 }
 
-#qfbptcpdun .gt_summary_row {
+#yxntqslmlv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -658,7 +661,7 @@
   padding-right: 5px;
 }
 
-#qfbptcpdun .gt_first_summary_row {
+#yxntqslmlv .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -668,7 +671,7 @@
   border-top-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_grand_summary_row {
+#yxntqslmlv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -678,7 +681,7 @@
   padding-right: 5px;
 }
 
-#qfbptcpdun .gt_first_grand_summary_row {
+#yxntqslmlv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -688,11 +691,11 @@
   border-top-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_striped {
+#yxntqslmlv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qfbptcpdun .gt_table_body {
+#yxntqslmlv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -701,7 +704,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_footnotes {
+#yxntqslmlv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -715,13 +718,13 @@
   border-right-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_footnote {
+#yxntqslmlv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#qfbptcpdun .gt_sourcenotes {
+#yxntqslmlv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -735,41 +738,41 @@
   border-right-color: #D3D3D3;
 }
 
-#qfbptcpdun .gt_sourcenote {
+#yxntqslmlv .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#qfbptcpdun .gt_left {
+#yxntqslmlv .gt_left {
   text-align: left;
 }
 
-#qfbptcpdun .gt_center {
+#yxntqslmlv .gt_center {
   text-align: center;
 }
 
-#qfbptcpdun .gt_right {
+#yxntqslmlv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qfbptcpdun .gt_font_normal {
+#yxntqslmlv .gt_font_normal {
   font-weight: normal;
 }
 
-#qfbptcpdun .gt_font_bold {
+#yxntqslmlv .gt_font_bold {
   font-weight: bold;
 }
 
-#qfbptcpdun .gt_font_italic {
+#yxntqslmlv .gt_font_italic {
   font-style: italic;
 }
 
-#qfbptcpdun .gt_super {
+#yxntqslmlv .gt_super {
   font-size: 65%;
 }
 
-#qfbptcpdun .gt_footnote_marks {
+#yxntqslmlv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -878,6 +881,13 @@
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="parallel-processing_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div id="closing-clusters" class="section level2">
+<h2 class="hasAnchor">
+<a href="#closing-clusters" class="anchor"></a>Closing Clusters</h2>
+<p>We can close the parallel clusters using <code><a href="../reference/parallel_start.html">parallel_stop()</a></code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_stop</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="summary" class="section level2">
 <h2 class="hasAnchor">

@@ -61,12 +61,13 @@ library(timetk)
 
 ## Setup Parallel Backend
 
-I'll set up this tutorial to use two (2) cores. To detect how many physical cores you have, you can run `parallel::detectCores(logical = FALSE)`. 
+I'll set up this tutorial to use two (2) cores. 
+
+- To simplify creating clusters, `modeltime` includes `parallel_start()`. We can simply supply the number of cores we'd like to use. 
+- To detect how many physical cores you have, you can run `parallel::detectCores(logical = FALSE)`. 
 
 ```{r, message=F, warning=FALSE}
-cl <- parallel::makeCluster(2)
-doParallel::registerDoParallel(cl)
-parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+parallel_start(2)
 ```
 
 ## Load Data
@@ -261,6 +262,15 @@ model_parallel_tbl %>%
     .facet_ncol  = 3,
     .interactive = FALSE
   )
+```
+
+
+## Closing Clusters
+
+We can close the parallel clusters using `parallel_stop()`.
+
+```{r}
+parallel_stop()
 ```
 
 
