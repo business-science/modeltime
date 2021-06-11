@@ -47,6 +47,63 @@ parallel_stop <- function() {
     foreach::registerDoSEQ()
 }
 
+# CREATE MODEL GRID ----
+
+#' Helper to fill model specs from a parameter grid
+#'
+#' @param grid A tibble that forms a grid of parameters to adjust
+#' @param f_model_spec A function name (quoted or unquoted) that
+#'  specifies a `parsnip` model specification function
+#' @param engine_name A name of an engine to use. Gets passed to `parsnip::set_engine()`.
+#' @param ... Static parameters that get passed to the f_model_spec
+#' @param engine_params A `list` of additional parameters that can be passed to the
+#'  engine via `parsnip::set_engine(...)`.
+#'
+#' @return
+#' Tibble with a new colum named `.models`
+#'
+#'
+#' @seealso
+#' - [dials::grid_regular()]: For making parameter grids.
+#' - [workflowsets::workflow_set()]: For creating a `workflowset` from the `.models` list stored in the ".models" column.
+#' - [modeltime_fit_workflowset()]: For fitting a `workflowset` to forecast data.
+#'
+#' @examples
+#'
+#' library(tidymodels)
+#' library(modeltime)
+#'
+#' grid_tbl <- grid_regular(
+#'     learn_rate(),
+#'     levels = 3
+#' )
+#'
+#' grid_tbl %>%
+#'     create_model_grid(f_model_spec = "boost_tree", "xgboost", mode = "regression")
+#'
+#' @export
+create_model_grid <- function(grid, f_model_spec, engine_name, ..., engine_params = list()) {
+
+    f_text <- rlang::as_name(substitute(f_model_spec))
+
+    model_list <- seq_len(nrow(grid)) %>%
+        purrr::map(.f = function(x) {
+
+            params <- grid %>%
+                dplyr::slice(x) %>%
+                as.list() %>%
+                append(list(...))
+
+            do.call(f_text, params)
+        }) %>%
+        purrr::map(.f = function(x) {
+            # TODO add engine_params
+            x %>% parsnip::set_engine(engine = engine_name)
+        })
+
+    dplyr::bind_cols(grid, tibble::tibble(.models = model_list))
+
+}
 
 # CONTROL REFIT ----
 
