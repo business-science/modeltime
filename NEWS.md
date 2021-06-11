@@ -6,6 +6,8 @@ __Parallel Processing__
 
 - `parallel_start()` and `parallel_stop()`: Helpers for setting up multicore processing. 
 
+- `create_model_grid()`: Helper to generate model specifications with filled-in parameters from a parameter grid (e.g. `dials::grid_regular()`).
+
 - `control_refit()` and `control_fit_workflowset()`: Better printing. 
 
 __Bug Fixes__

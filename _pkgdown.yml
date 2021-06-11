@@ -109,6 +109,7 @@ reference:
     contents:
     - starts_with("parallel_")
     - starts_with("control_")
+    - create_model_grid
   - title: Modeltime Workflow Helpers
     contents:
     - combine_modeltime_tables
