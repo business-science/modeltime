@@ -30,7 +30,7 @@ In this example, we go through a common __Hyperparameter Tuning__ workflow that 
 
 # Out-of-the-Box<br><small>Parallel Processing Functionality Included</small>
 
-The `modeltime` package (>= 0.6.0.9000) comes with __parallel processing functionality.__ 
+The `modeltime` package (>= 0.6.1) comes with __parallel processing functionality.__ 
 
 - Use of `parallel_start()` and `parallel_stop()` to simplify the parallel processing setup.
 
@@ -51,10 +51,6 @@ Let's go through a common __Hyperparameter Tuning__ workflow that shows off the 
 Load the following libraries.
 
 ```{r, message=FALSE, warning=FALSE}
-# Parallel Processing
-library(parallel)
-library(doParallel)
-
 # Machine Learning
 library(modeltime)
 library(tidymodels)

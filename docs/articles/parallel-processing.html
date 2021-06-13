@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -190,7 +190,7 @@
 <h1 class="hasAnchor">
 <a href="#out-of-the-box-parallel-processing-functionality-included" class="anchor"></a>Out-of-the-Box<br><small>Parallel Processing Functionality Included</small>
 </h1>
-<p>The <code>modeltime</code> package (&gt;= 0.6.0.9000) comes with <strong>parallel processing functionality.</strong></p>
+<p>The <code>modeltime</code> package (&gt;= 0.6.1) comes with <strong>parallel processing functionality.</strong></p>
 <ul>
 <li><p>Use of <code><a href="../reference/parallel_start.html">parallel_start()</a></code> and <code><a href="../reference/parallel_start.html">parallel_stop()</a></code> to simplify the parallel processing setup.</p></li>
 <li><p>Use of <code><a href="../reference/create_model_grid.html">create_model_grid()</a></code> to help generating <code>parsnip</code> model specs from <code>dials</code> parameter grids.</p></li>
@@ -208,11 +208,7 @@
 <a href="#libraries" class="anchor"></a>Libraries</h2>
 <p>Load the following libraries.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Parallel Processing</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span>
-
-<span class="co"># Machine Learning</span>
+<code class="sourceCode R"><span class="co"># Machine Learning</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/workflowsets">workflowsets</a></span><span class="op">)</span>
@@ -456,7 +452,7 @@
 <span class="co">#&gt; allow_par : TRUE </span>
 <span class="co">#&gt; cores     : 2 </span>
 <span class="co">#&gt; verbose   : TRUE </span>
-<span class="co">#&gt; packages  : modeltime parsnip dplyr stats lubridate tidymodels timetk forcats stringr readr tidyverse yardstick workflowsets workflows tune tidyr tibble rsample recipes purrr modeldata infer ggplot2 dials scales broom doParallel iterators foreach parallel graphics grDevices utils datasets methods base</span></code></pre></div>
+<span class="co">#&gt; packages  : modeltime parsnip dplyr stats lubridate tidymodels timetk forcats stringr readr tidyverse yardstick workflowsets workflows tune tidyr tibble rsample recipes purrr modeldata infer ggplot2 dials scales broom graphics grDevices utils datasets methods base</span></code></pre></div>
 </div>
 <div id="fitting-using-parallel-backend" class="section level3">
 <h3 class="hasAnchor">
@@ -472,10 +468,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.354 seconds</span>
+<span class="co">#&gt;  Beginning Parallel Loop | 0.005 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.282 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 13.355 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.283 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -515,7 +511,7 @@
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_5</span>
 <span class="co">#&gt; ℹ Fitting Model: recipe_boost_tree_6</span>
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_6</span>
-<span class="co">#&gt; Total time | 16.976 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 16.914 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -527,12 +523,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="srjoauycnr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="hvhrqycwwh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#srjoauycnr .gt_table {
+#hvhrqycwwh .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -557,7 +553,7 @@
   border-left-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_heading {
+#hvhrqycwwh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -569,7 +565,7 @@
   border-right-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_title {
+#hvhrqycwwh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -579,7 +575,7 @@
   border-bottom-width: 0;
 }
 
-#srjoauycnr .gt_subtitle {
+#hvhrqycwwh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -589,13 +585,13 @@
   border-top-width: 0;
 }
 
-#srjoauycnr .gt_bottom_border {
+#hvhrqycwwh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_col_headings {
+#hvhrqycwwh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -610,7 +606,7 @@
   border-right-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_col_heading {
+#hvhrqycwwh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -630,7 +626,7 @@
   overflow-x: hidden;
 }
 
-#srjoauycnr .gt_column_spanner_outer {
+#hvhrqycwwh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -642,15 +638,15 @@
   padding-right: 4px;
 }
 
-#srjoauycnr .gt_column_spanner_outer:first-child {
+#hvhrqycwwh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#srjoauycnr .gt_column_spanner_outer:last-child {
+#hvhrqycwwh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#srjoauycnr .gt_column_spanner {
+#hvhrqycwwh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -662,7 +658,7 @@
   width: 100%;
 }
 
-#srjoauycnr .gt_group_heading {
+#hvhrqycwwh .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -684,7 +680,7 @@
   vertical-align: middle;
 }
 
-#srjoauycnr .gt_empty_group_heading {
+#hvhrqycwwh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -699,15 +695,15 @@
   vertical-align: middle;
 }
 
-#srjoauycnr .gt_from_md > :first-child {
+#hvhrqycwwh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#srjoauycnr .gt_from_md > :last-child {
+#hvhrqycwwh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#srjoauycnr .gt_row {
+#hvhrqycwwh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -726,7 +722,7 @@
   overflow-x: hidden;
 }
 
-#srjoauycnr .gt_stub {
+#hvhrqycwwh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -738,7 +734,7 @@
   padding-left: 12px;
 }
 
-#srjoauycnr .gt_summary_row {
+#hvhrqycwwh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -748,7 +744,7 @@
   padding-right: 5px;
 }
 
-#srjoauycnr .gt_first_summary_row {
+#hvhrqycwwh .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -758,7 +754,7 @@
   border-top-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_grand_summary_row {
+#hvhrqycwwh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -768,7 +764,7 @@
   padding-right: 5px;
 }
 
-#srjoauycnr .gt_first_grand_summary_row {
+#hvhrqycwwh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -778,11 +774,11 @@
   border-top-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_striped {
+#hvhrqycwwh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#srjoauycnr .gt_table_body {
+#hvhrqycwwh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -791,7 +787,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_footnotes {
+#hvhrqycwwh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -805,13 +801,13 @@
   border-right-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_footnote {
+#hvhrqycwwh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#srjoauycnr .gt_sourcenotes {
+#hvhrqycwwh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -825,41 +821,41 @@
   border-right-color: #D3D3D3;
 }
 
-#srjoauycnr .gt_sourcenote {
+#hvhrqycwwh .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#srjoauycnr .gt_left {
+#hvhrqycwwh .gt_left {
   text-align: left;
 }
 
-#srjoauycnr .gt_center {
+#hvhrqycwwh .gt_center {
   text-align: center;
 }
 
-#srjoauycnr .gt_right {
+#hvhrqycwwh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#srjoauycnr .gt_font_normal {
+#hvhrqycwwh .gt_font_normal {
   font-weight: normal;
 }
 
-#srjoauycnr .gt_font_bold {
+#hvhrqycwwh .gt_font_bold {
   font-weight: bold;
 }
 
-#srjoauycnr .gt_font_italic {
+#hvhrqycwwh .gt_font_italic {
   font-style: italic;
 }
 
-#srjoauycnr .gt_super {
+#hvhrqycwwh .gt_super {
   font-size: 65%;
 }
 
-#srjoauycnr .gt_footnote_marks {
+#hvhrqycwwh .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
