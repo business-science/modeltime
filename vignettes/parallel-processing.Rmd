@@ -1,8 +1,8 @@
 ---
-title: "Parallel Processing"
+title: "Hyperparameter Tuning with Parallel Processing"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Parallel Processing}
+  %\VignetteIndexEntry{Hyperparameter Tuning with Parallel Processing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,11 +26,15 @@ knitr::opts_chunk$set(
 
 Fitting many time series models can be an expensive process. To help speed up computation, `modeltime` now includes __parallel processing__, which is support for high-performance computing by spreading the model fitting steps across multiple CPUs or clusters. 
 
+In this example, we go through a common __Hyperparameter Tuning__ workflow that shows off the `modeltime` parallel processing integration and support for `workflowsets` from the tidymodels ecosystem. 
+
 # Out-of-the-Box<br><small>Parallel Processing Functionality Included</small>
 
-The following functions come with parallel processing functionality. 
+The `modeltime` package (>= 0.6.0.9000) comes with __parallel processing functionality.__ 
 
 - Use of `parallel_start()` and `parallel_stop()` to simplify the parallel processing setup.
+
+- Use of `create_model_grid()` to help generating `parsnip` model specs from `dials` parameter grids.
 
 - Use of `modeltime_fit_workflowset()` for initial fitting many models in parallel using `workflowsets` from the `tidymodels` ecosystem.
 
@@ -40,7 +44,7 @@ The following functions come with parallel processing functionality.
 
 # How to Use Parallel Processing
 
-Here's a short tutorial that showcases the use of parallel processing inside of `modeltime`. 
+Let's go through a common __Hyperparameter Tuning__ workflow that shows off the `modeltime` __parallel processing integration__ and support for `workflowsets` from the tidymodels ecosystem.
 
 ## Libraries 
 
@@ -123,7 +127,11 @@ recipe_spec_1 <- recipe(Weekly_Sales ~ ., data = training(splits)) %>%
 
 ## Model Specifications
 
-Make 6 xgboost model specifications. We'll vary the `learn_rate` parameter.  
+We'll make 6 `xgboost` model specifications using `boost_tree()` and the "xgboost" engine. These will be combined with the `recipe` from the previous step using a `workflow_set()` in the next section. 
+
+### The general idea
+
+We can vary the `learn_rate` parameter to see it's effect on forecast error.  
 
 ```{r}
 # XGBOOST MODELS
@@ -146,6 +154,35 @@ model_spec_xgb_6 <- boost_tree(learn_rate = 0.650) %>%
   set_engine("xgboost")
 ```
 
+### A faster way
+
+You may notice that this is a lot of repeated code to adjust the `learn_rate`. To simplify this process, we can use `create_model_grid()`.
+
+```{r}
+model_tbl <- tibble(
+  learn_rate = c(0.001, 0.010, 0.100, 0.350, 0.500, 0.650)
+) %>%
+  create_model_grid(
+    f_model_spec = boost_tree,
+    engine_name  = "xgboost",
+    mode         = "regression"
+  )
+
+model_tbl
+```
+
+### Extracting the model list
+
+We can extract the model list for use with our `workflowset` next. This is the same result if we would have placed the manually generated 6 model specs into a `list()`.
+
+```{r}
+model_list <- model_tbl$.models
+
+model_list
+```
+
+
+
 ## Workflowsets
 
 With the `workflow_set()` function, we can combine the 6 xgboost models with the 1 recipe to return six (6) combinations of recipe and model specifications. These are currently untrained (unfitted).
@@ -155,14 +192,7 @@ model_wfset <- workflow_set(
   preproc = list(
     recipe_spec_1
   ),
-  models = list(
-    model_spec_xgb_1,
-    model_spec_xgb_2,
-    model_spec_xgb_3,
-    model_spec_xgb_4,
-    model_spec_xgb_5,
-    model_spec_xgb_6
-  ), 
+  models = model_list, 
   cross = TRUE
 )
 
@@ -278,7 +308,7 @@ parallel_stop()
 
 # Summary
 
-We just showcased Parallel Processing. But this is a simple problem. And, there's a lot more to learning time series. 
+We just showcased a simple Hyperparameter Tuning example using Parallel Processing. But this is a simple problem. And, there's a lot more to learning time series. 
 
 - Many more algorithms
 - Ensembling

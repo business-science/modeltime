@@ -49,7 +49,7 @@ parallel_stop <- function() {
 
 # CREATE MODEL GRID ----
 
-#' Helper to fill model specs from a parameter grid
+#' Helper to make `parsnip` model specs from a `dials` parameter grid
 #'
 #' @param grid A tibble that forms a grid of parameters to adjust
 #' @param f_model_spec A function name (quoted or unquoted) that
@@ -58,6 +58,22 @@ parallel_stop <- function() {
 #' @param ... Static parameters that get passed to the f_model_spec
 #' @param engine_params A `list` of additional parameters that can be passed to the
 #'  engine via `parsnip::set_engine(...)`.
+#'
+#' @details
+#'
+#' This is a helper function that combines `dials` grids with
+#' `parsnip` model specifications. The intent is to make it easier
+#' to generate `workflowset` objects for forecast evaluations
+#' with `modeltime_fit_workflowset()`.
+#'
+#' The process follows:
+#'
+#' 1. Generate a grid (hyperparemeter combination)
+#' 2. Use `create_model_grid()` to apply the parameter combinations to
+#'    a parsnip model spec and engine.
+#'
+#' The output contains ".model" column that can be used as a list
+#' of models inside the `workflow_set()` function.
 #'
 #' @return
 #' Tibble with a new colum named `.models`
@@ -73,13 +89,24 @@ parallel_stop <- function() {
 #' library(tidymodels)
 #' library(modeltime)
 #'
+#' # Parameters that get optimized
 #' grid_tbl <- grid_regular(
 #'     learn_rate(),
 #'     levels = 3
 #' )
 #'
+#' # Generate model specs
 #' grid_tbl %>%
-#'     create_model_grid(f_model_spec = "boost_tree", "xgboost", mode = "regression")
+#'     create_model_grid(
+#'         f_model_spec = boost_tree,
+#'         engine_name  = "xgboost",
+#'         # Static boost_tree() args
+#'         mode = "regression",
+#'         # Static set_engine() args
+#'         engine_params = list(
+#'             max_depth = 5
+#'         )
+#'     )
 #'
 #' @export
 create_model_grid <- function(grid, f_model_spec, engine_name, ..., engine_params = list()) {
@@ -98,7 +125,7 @@ create_model_grid <- function(grid, f_model_spec, engine_name, ..., engine_param
         }) %>%
         purrr::map(.f = function(x) {
             # TODO add engine_params
-            x %>% parsnip::set_engine(engine = engine_name)
+            x %>% parsnip::set_engine(engine = engine_name, !!! engine_params)
         })
 
     dplyr::bind_cols(grid, tibble::tibble(.models = model_list))

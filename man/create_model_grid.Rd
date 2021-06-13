@@ -2,7 +2,7 @@
 % Please edit documentation in R/control-par.R
 \name{create_model_grid}
 \alias{create_model_grid}
-\title{Helper to fill model specs from a parameter grid}
+\title{Helper to make \code{parsnip} model specs from a \code{dials} parameter grid}
 \usage{
 create_model_grid(grid, f_model_spec, engine_name, ..., engine_params = list())
 }
@@ -23,20 +23,47 @@ engine via \code{parsnip::set_engine(...)}.}
 Tibble with a new colum named \code{.models}
 }
 \description{
-Helper to fill model specs from a parameter grid
+Helper to make \code{parsnip} model specs from a \code{dials} parameter grid
+}
+\details{
+This is a helper function that combines \code{dials} grids with
+\code{parsnip} model specifications. The intent is to make it easier
+to generate \code{workflowset} objects for forecast evaluations
+with \code{modeltime_fit_workflowset()}.
+
+The process follows:
+\enumerate{
+\item Generate a grid (hyperparemeter combination)
+\item Use \code{create_model_grid()} to apply the parameter combinations to
+a parsnip model spec and engine.
+}
+
+The output contains ".model" column that can be used as a list
+of models inside the \code{workflow_set()} function.
 }
 \examples{
 
 library(tidymodels)
 library(modeltime)
 
+# Parameters that get optimized
 grid_tbl <- grid_regular(
     learn_rate(),
     levels = 3
 )
 
+# Generate model specs
 grid_tbl \%>\%
-    create_model_grid(f_model_spec = "boost_tree", "xgboost", mode = "regression")
+    create_model_grid(
+        f_model_spec = boost_tree,
+        engine_name  = "xgboost",
+        # Static boost_tree() args
+        mode = "regression",
+        # Static set_engine() args
+        engine_params = list(
+            max_depth = 5
+        )
+    )
 
 }
 \seealso{

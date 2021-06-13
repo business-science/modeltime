@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parallel Processing • modeltime</title>
+<title>Hyperparameter Tuning with Parallel Processing • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Parallel Processing">
+<meta property="og:title" content="Hyperparameter Tuning with Parallel Processing">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -75,7 +75,7 @@
       <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
     </li>
     <li>
-      <a href="../articles/parallel-processing.html">Parallel Processing</a>
+      <a href="../articles/parallel-processing.html">Tuning &amp; Parallel Processing</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -171,7 +171,7 @@
       </header><script src="parallel-processing_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Parallel Processing</h1>
+      <h1 data-toc-skip>Hyperparameter Tuning with Parallel Processing</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/parallel-processing.Rmd"><code>vignettes/parallel-processing.Rmd</code></a></small>
@@ -185,13 +185,15 @@
 <p>Train <code>modeltime</code> models at scale with parallel processing</p>
 </blockquote>
 <p>Fitting many time series models can be an expensive process. To help speed up computation, <code>modeltime</code> now includes <strong>parallel processing</strong>, which is support for high-performance computing by spreading the model fitting steps across multiple CPUs or clusters.</p>
+<p>In this example, we go through a common <strong>Hyperparameter Tuning</strong> workflow that shows off the <code>modeltime</code> parallel processing integration and support for <code>workflowsets</code> from the tidymodels ecosystem.</p>
 <div id="out-of-the-box-parallel-processing-functionality-included" class="section level1">
 <h1 class="hasAnchor">
 <a href="#out-of-the-box-parallel-processing-functionality-included" class="anchor"></a>Out-of-the-Box<br><small>Parallel Processing Functionality Included</small>
 </h1>
-<p>The following functions come with parallel processing functionality.</p>
+<p>The <code>modeltime</code> package (&gt;= 0.6.0.9000) comes with <strong>parallel processing functionality.</strong></p>
 <ul>
 <li><p>Use of <code><a href="../reference/parallel_start.html">parallel_start()</a></code> and <code><a href="../reference/parallel_start.html">parallel_stop()</a></code> to simplify the parallel processing setup.</p></li>
+<li><p>Use of <code><a href="../reference/create_model_grid.html">create_model_grid()</a></code> to help generating <code>parsnip</code> model specs from <code>dials</code> parameter grids.</p></li>
 <li><p>Use of <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> for initial fitting many models in parallel using <code>workflowsets</code> from the <code>tidymodels</code> ecosystem.</p></li>
 <li><p>Use of <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> to refit models in parallel.</p></li>
 <li><p>Use of <code><a href="../reference/control_fit_workflowset.html">control_fit_workflowset()</a></code> and <code><a href="../reference/control_refit.html">control_refit()</a></code> for controlling the fitting and refitting of many models.</p></li>
@@ -200,7 +202,7 @@
 <div id="how-to-use-parallel-processing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#how-to-use-parallel-processing" class="anchor"></a>How to Use Parallel Processing</h1>
-<p>Here’s a short tutorial that showcases the use of parallel processing inside of <code>modeltime</code>.</p>
+<p>Let’s go through a common <strong>Hyperparameter Tuning</strong> workflow that shows off the <code>modeltime</code> <strong>parallel processing integration</strong> and support for <code>workflowsets</code> from the tidymodels ecosystem.</p>
 <div id="libraries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#libraries" class="anchor"></a>Libraries</h2>
@@ -279,7 +281,11 @@
 <div id="model-specifications" class="section level2">
 <h2 class="hasAnchor">
 <a href="#model-specifications" class="anchor"></a>Model Specifications</h2>
-<p>Make 6 xgboost model specifications. We’ll vary the <code>learn_rate</code> parameter.</p>
+<p>We’ll make 6 <code>xgboost</code> model specifications using <code><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree()</a></code> and the “xgboost” engine. These will be combined with the <code>recipe</code> from the previous step using a <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code> in the next section.</p>
+<div id="the-general-idea" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-general-idea" class="anchor"></a>The general idea</h3>
+<p>We can vary the <code>learn_rate</code> parameter to see it’s effect on forecast error.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># XGBOOST MODELS</span>
 <span class="va">model_spec_xgb_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -300,23 +306,103 @@
 <span class="va">model_spec_xgb_6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.650</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></code></pre></div>
 </div>
+<div id="a-faster-way" class="section level3">
+<h3 class="hasAnchor">
+<a href="#a-faster-way" class="anchor"></a>A faster way</h3>
+<p>You may notice that this is a lot of repeated code to adjust the <code>learn_rate</code>. To simplify this process, we can use <code><a href="../reference/create_model_grid.html">create_model_grid()</a></code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  learn_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.010</span>, <span class="fl">0.100</span>, <span class="fl">0.350</span>, <span class="fl">0.500</span>, <span class="fl">0.650</span><span class="op">)</span>
+<span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/create_model_grid.html">create_model_grid</a></span><span class="op">(</span>
+    f_model_spec <span class="op">=</span> <span class="va">boost_tree</span>,
+    engine_name  <span class="op">=</span> <span class="st">"xgboost"</span>,
+    mode         <span class="op">=</span> <span class="st">"regression"</span>
+  <span class="op">)</span>
+
+<span class="va">model_tbl</span>
+<span class="co">#&gt; # A tibble: 6 x 2</span>
+<span class="co">#&gt;   learn_rate .models  </span>
+<span class="co">#&gt;        &lt;dbl&gt; &lt;list&gt;   </span>
+<span class="co">#&gt; 1      0.001 &lt;spec[+]&gt;</span>
+<span class="co">#&gt; 2      0.01  &lt;spec[+]&gt;</span>
+<span class="co">#&gt; 3      0.1   &lt;spec[+]&gt;</span>
+<span class="co">#&gt; 4      0.35  &lt;spec[+]&gt;</span>
+<span class="co">#&gt; 5      0.5   &lt;spec[+]&gt;</span>
+<span class="co">#&gt; 6      0.65  &lt;spec[+]&gt;</span></code></pre></div>
+</div>
+<div id="extracting-the-model-list" class="section level3">
+<h3 class="hasAnchor">
+<a href="#extracting-the-model-list" class="anchor"></a>Extracting the model list</h3>
+<p>We can extract the model list for use with our <code>workflowset</code> next. This is the same result if we would have placed the manually generated 6 model specs into a <code><a href="https://rdrr.io/r/base/list.html">list()</a></code>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_list</span> <span class="op">&lt;-</span> <span class="va">model_tbl</span><span class="op">$</span><span class="va">.models</span>
+
+<span class="va">model_list</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Main Arguments:</span>
+<span class="co">#&gt;   learn_rate = 0.001</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Computational engine: xgboost </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Main Arguments:</span>
+<span class="co">#&gt;   learn_rate = 0.01</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Computational engine: xgboost </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Main Arguments:</span>
+<span class="co">#&gt;   learn_rate = 0.1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Computational engine: xgboost </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[4]]</span>
+<span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Main Arguments:</span>
+<span class="co">#&gt;   learn_rate = 0.35</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Computational engine: xgboost </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[5]]</span>
+<span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Main Arguments:</span>
+<span class="co">#&gt;   learn_rate = 0.5</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Computational engine: xgboost </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[6]]</span>
+<span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Main Arguments:</span>
+<span class="co">#&gt;   learn_rate = 0.65</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Computational engine: xgboost</span></code></pre></div>
+</div>
+</div>
 <div id="workflowsets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#workflowsets" class="anchor"></a>Workflowsets</h2>
 <p>With the <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code> function, we can combine the 6 xgboost models with the 1 recipe to return six (6) combinations of recipe and model specifications. These are currently untrained (unfitted).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_wfset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set</a></span><span class="op">(</span>
   preproc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
     <span class="va">recipe_spec_1</span>
   <span class="op">)</span>,
-  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-    <span class="va">model_spec_xgb_1</span>,
-    <span class="va">model_spec_xgb_2</span>,
-    <span class="va">model_spec_xgb_3</span>,
-    <span class="va">model_spec_xgb_4</span>,
-    <span class="va">model_spec_xgb_5</span>,
-    <span class="va">model_spec_xgb_6</span>
-  <span class="op">)</span>, 
+  models <span class="op">=</span> <span class="va">model_list</span>, 
   cross <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 
@@ -360,7 +446,7 @@
 <li><p><strong>cores:</strong> The cores that the user has set up. Since we’ve already set up <code>doParallel</code> to use 2 cores, the control recognizes this.</p></li>
 <li><p><strong>packages:</strong> The packages are packages that will be sent to each of the workers.</p></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/control_fit_workflowset.html">control_fit_workflowset</a></span><span class="op">(</span>
   verbose   <span class="op">=</span> <span class="cn">TRUE</span>,
   allow_par <span class="op">=</span> <span class="cn">TRUE</span>
@@ -376,7 +462,7 @@
 <h3 class="hasAnchor">
 <a href="#fitting-using-parallel-backend" class="anchor"></a>Fitting Using Parallel Backend</h3>
 <p>We use the <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> and <code><a href="../reference/control_fit_workflowset.html">control_fit_workflowset()</a></code> together to train the unfitted workflowset in parallel.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span> <span class="op">&lt;-</span> <span class="va">model_wfset</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset</a></span><span class="op">(</span>
     data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
@@ -387,11 +473,11 @@
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.367 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.354 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 13.368 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.355 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
 <span class="co">#&gt; # A tibble: 6 x 3</span>
@@ -408,7 +494,7 @@
 <h3 class="hasAnchor">
 <a href="#comparison-to-sequential-backend" class="anchor"></a>Comparison to Sequential Backend</h3>
 <p>We can compare to a sequential backend. We have a slight perfomance boost. Note that this performance benefit increases with the size of the training task.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_sequential_tbl</span> <span class="op">&lt;-</span> <span class="va">model_wfset</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset</a></span><span class="op">(</span>
     data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
@@ -429,24 +515,24 @@
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_5</span>
 <span class="co">#&gt; ℹ Fitting Model: recipe_boost_tree_6</span>
 <span class="co">#&gt; ✓ Model Successfully Fitted: recipe_boost_tree_6</span>
-<span class="co">#&gt; Total time | 17.579 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 16.976 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
 <h2 class="hasAnchor">
 <a href="#accuracy-assessment" class="anchor"></a>Accuracy Assessment</h2>
 <p>We can review the forecast accuracy. We can see that Model 5 has the lowest MAE.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="ccajeqpedi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="srjoauycnr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ccajeqpedi .gt_table {
+#srjoauycnr .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -471,7 +557,7 @@
   border-left-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_heading {
+#srjoauycnr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -483,7 +569,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_title {
+#srjoauycnr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -493,7 +579,7 @@
   border-bottom-width: 0;
 }
 
-#ccajeqpedi .gt_subtitle {
+#srjoauycnr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -503,13 +589,13 @@
   border-top-width: 0;
 }
 
-#ccajeqpedi .gt_bottom_border {
+#srjoauycnr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_col_headings {
+#srjoauycnr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -524,7 +610,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_col_heading {
+#srjoauycnr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -544,7 +630,7 @@
   overflow-x: hidden;
 }
 
-#ccajeqpedi .gt_column_spanner_outer {
+#srjoauycnr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -556,15 +642,15 @@
   padding-right: 4px;
 }
 
-#ccajeqpedi .gt_column_spanner_outer:first-child {
+#srjoauycnr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ccajeqpedi .gt_column_spanner_outer:last-child {
+#srjoauycnr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ccajeqpedi .gt_column_spanner {
+#srjoauycnr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -576,7 +662,7 @@
   width: 100%;
 }
 
-#ccajeqpedi .gt_group_heading {
+#srjoauycnr .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -598,7 +684,7 @@
   vertical-align: middle;
 }
 
-#ccajeqpedi .gt_empty_group_heading {
+#srjoauycnr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -613,15 +699,15 @@
   vertical-align: middle;
 }
 
-#ccajeqpedi .gt_from_md > :first-child {
+#srjoauycnr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ccajeqpedi .gt_from_md > :last-child {
+#srjoauycnr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ccajeqpedi .gt_row {
+#srjoauycnr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -640,7 +726,7 @@
   overflow-x: hidden;
 }
 
-#ccajeqpedi .gt_stub {
+#srjoauycnr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -652,7 +738,7 @@
   padding-left: 12px;
 }
 
-#ccajeqpedi .gt_summary_row {
+#srjoauycnr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -662,7 +748,7 @@
   padding-right: 5px;
 }
 
-#ccajeqpedi .gt_first_summary_row {
+#srjoauycnr .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -672,7 +758,7 @@
   border-top-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_grand_summary_row {
+#srjoauycnr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -682,7 +768,7 @@
   padding-right: 5px;
 }
 
-#ccajeqpedi .gt_first_grand_summary_row {
+#srjoauycnr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -692,11 +778,11 @@
   border-top-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_striped {
+#srjoauycnr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ccajeqpedi .gt_table_body {
+#srjoauycnr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -705,7 +791,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_footnotes {
+#srjoauycnr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -719,13 +805,13 @@
   border-right-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_footnote {
+#srjoauycnr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ccajeqpedi .gt_sourcenotes {
+#srjoauycnr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -739,41 +825,41 @@
   border-right-color: #D3D3D3;
 }
 
-#ccajeqpedi .gt_sourcenote {
+#srjoauycnr .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ccajeqpedi .gt_left {
+#srjoauycnr .gt_left {
   text-align: left;
 }
 
-#ccajeqpedi .gt_center {
+#srjoauycnr .gt_center {
   text-align: center;
 }
 
-#ccajeqpedi .gt_right {
+#srjoauycnr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ccajeqpedi .gt_font_normal {
+#srjoauycnr .gt_font_normal {
   font-weight: normal;
 }
 
-#ccajeqpedi .gt_font_bold {
+#srjoauycnr .gt_font_bold {
   font-weight: bold;
 }
 
-#ccajeqpedi .gt_font_italic {
+#srjoauycnr .gt_font_italic {
   font-style: italic;
 }
 
-#ccajeqpedi .gt_super {
+#srjoauycnr .gt_super {
   font-size: 65%;
 }
 
-#ccajeqpedi .gt_footnote_marks {
+#srjoauycnr .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -869,7 +955,7 @@
 <h2 class="hasAnchor">
 <a href="#forecast-assessment" class="anchor"></a>Forecast Assessment</h2>
 <p>We can visualize the forecast.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
     new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
@@ -881,20 +967,20 @@
     .facet_ncol  <span class="op">=</span> <span class="fl">3</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="closing-clusters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#closing-clusters" class="anchor"></a>Closing Clusters</h2>
 <p>We can close the parallel clusters using <code><a href="../reference/parallel_start.html">parallel_stop()</a></code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_stop</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="summary" class="section level1">
 <h1 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h1>
-<p>We just showcased Parallel Processing. But this is a simple problem. And, there’s a lot more to learning time series.</p>
+<p>We just showcased a simple Hyperparameter Tuning example using Parallel Processing. But this is a simple problem. And, there’s a lot more to learning time series.</p>
 <ul>
 <li>Many more algorithms</li>
 <li>Ensembling</li>

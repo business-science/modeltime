@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Helper to fill model specs from a parameter grid — create_model_grid • modeltime</title>
+<title>Helper to make parsnip model specs from a dials parameter grid — create_model_grid • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Helper to fill model specs from a parameter grid — create_model_grid" />
-<meta property="og:description" content="Helper to fill model specs from a parameter grid" />
+<meta property="og:title" content="Helper to make parsnip model specs from a dials parameter grid — create_model_grid" />
+<meta property="og:description" content="Helper to make parsnip model specs from a dials parameter grid" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,7 +122,7 @@
       <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
     </li>
     <li>
-      <a href="../articles/parallel-processing.html">Parallel Processing</a>
+      <a href="../articles/parallel-processing.html">Tuning &amp; Parallel Processing</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -218,13 +218,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Helper to fill model specs from a parameter grid</h1>
+    <h1>Helper to make <code>parsnip</code> model specs from a <code>dials</code> parameter grid</h1>
     <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/control-par.R'><code>R/control-par.R</code></a></small>
     <div class="hidden name"><code>create_model_grid.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Helper to fill model specs from a parameter grid</p>
+    <p>Helper to make <code>parsnip</code> model specs from a <code>dials</code> parameter grid</p>
     </div>
 
     <pre class="usage"><span class='fu'>create_model_grid</span><span class='op'>(</span><span class='va'>grid</span>, <span class='va'>f_model_spec</span>, <span class='va'>engine_name</span>, <span class='va'>...</span>, engine_params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -259,6 +259,20 @@ engine via <code><a href='https://parsnip.tidymodels.org/reference/set_engine.ht
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Tibble with a new colum named <code>.models</code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This is a helper function that combines <code>dials</code> grids with
+<code>parsnip</code> model specifications. The intent is to make it easier
+to generate <code>workflowset</code> objects for forecast evaluations
+with <code><a href='modeltime_fit_workflowset.html'>modeltime_fit_workflowset()</a></code>.</p>
+<p>The process follows:</p><ol>
+<li><p>Generate a grid (hyperparemeter combination)</p></li>
+<li><p>Use <code>create_model_grid()</code> to apply the parameter combinations to
+a parsnip model spec and engine.</p></li>
+</ol>
+
+<p>The output contains ".model" column that can be used as a list
+of models inside the <code>workflow_set()</code> function.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -274,13 +288,24 @@ engine via <code><a href='https://parsnip.tidymodels.org/reference/set_engine.ht
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 
+<span class='co'># Parameters that get optimized</span>
 <span class='va'>grid_tbl</span> <span class='op'>&lt;-</span> <span class='fu'>grid_regular</span><span class='op'>(</span>
     <span class='fu'>learn_rate</span><span class='op'>(</span><span class='op'>)</span>,
     levels <span class='op'>=</span> <span class='fl'>3</span>
 <span class='op'>)</span>
 
+<span class='co'># Generate model specs</span>
 <span class='va'>grid_tbl</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>create_model_grid</span><span class='op'>(</span>f_model_spec <span class='op'>=</span> <span class='st'>"boost_tree"</span>, <span class='st'>"xgboost"</span>, mode <span class='op'>=</span> <span class='st'>"regression"</span><span class='op'>)</span>
+    <span class='fu'>create_model_grid</span><span class='op'>(</span>
+        f_model_spec <span class='op'>=</span> <span class='va'>boost_tree</span>,
+        engine_name  <span class='op'>=</span> <span class='st'>"xgboost"</span>,
+        <span class='co'># Static boost_tree() args</span>
+        mode <span class='op'>=</span> <span class='st'>"regression"</span>,
+        <span class='co'># Static set_engine() args</span>
+        engine_params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+            max_depth <span class='op'>=</span> <span class='fl'>5</span>
+        <span class='op'>)</span>
+    <span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 2</span>
 #&gt;     learn_rate .models  
 #&gt;          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>   
