@@ -1,5 +1,9 @@
 # modeltime 0.6.1.9000 (Development Version)
 
+__Bug FIXES__
+
+- Issue #111: Fix bug with `modeltime_fit_workflowset()` where the workflowset (wflw_id) order was not maintained. 
+
 # modeltime 0.6.1 
 
 __Parallel Processing__

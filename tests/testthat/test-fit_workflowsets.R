@@ -132,27 +132,31 @@ test_that("Parallel - workflowset is correct order", {
 
     skip_on_cran()
 
-    model_tbl <- wfsets %>% modeltime_fit_workflowset(
+    model_par_tbl <- wfsets %>% modeltime_fit_workflowset(
         data_set,
         control = control_fit_workflowset(allow_par = TRUE, cores = 2)
     )
+
+    # Note that environments will differ
+    # waldo::compare(
+    #     wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
+    #     model_par_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
+    # )
 
     # MODEL 1
     model_id <- 1
 
     # Check preprocessor
-    expect_true(
-        identical(
+    expect_equal(
             wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
-        )
+            model_par_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
     )
 
     # Check model spec
     expect_true(
         identical(
             wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_spec(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_spec()
+            model_par_tbl$.model[[model_id]] %>% pull_workflow_spec()
         )
     )
 
@@ -160,18 +164,16 @@ test_that("Parallel - workflowset is correct order", {
     model_id <- 2
 
     # Check preprocessor
-    expect_true(
-        identical(
-            wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
-        )
+    expect_equal(
+        wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
+        model_par_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
     )
 
     # Check model spec
     expect_true(
         identical(
             wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_spec(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_spec()
+            model_par_tbl$.model[[model_id]] %>% pull_workflow_spec()
         )
     )
 
@@ -179,18 +181,16 @@ test_that("Parallel - workflowset is correct order", {
     model_id <- 3
 
     # Check preprocessor
-    expect_true(
-        identical(
-            wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
-        )
+    expect_equal(
+        wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
+        model_par_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
     )
 
     # Check model spec
     expect_true(
         identical(
             wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_spec(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_spec()
+            model_par_tbl$.model[[model_id]] %>% pull_workflow_spec()
         )
     )
 
@@ -198,18 +198,16 @@ test_that("Parallel - workflowset is correct order", {
     model_id <- 4
 
     # Check preprocessor
-    expect_true(
-        identical(
-            wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
-        )
+    expect_equal(
+        wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_preprocessor(),
+        model_par_tbl$.model[[model_id]] %>% pull_workflow_preprocessor()
     )
 
     # Check model spec
     expect_true(
         identical(
             wfsets$info[[model_id]]$workflow[[1]] %>% pull_workflow_spec(),
-            model_tbl$.model[[model_id]] %>% pull_workflow_spec()
+            model_par_tbl$.model[[model_id]] %>% pull_workflow_spec()
         )
     )
 
