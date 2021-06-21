@@ -151,7 +151,14 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 
     # If parallel processing is not set up, set up parallel backend
     if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
-        if (control$verbose) message(stringr::str_glue("Starting parallel backend with {control$cores} clusters (cores)..."))
+        if (control$verbose) {
+            message(
+                stringr::str_glue(" It's more efficient to setup a Parallel Backend separately with `parallel_start()`...")
+            )
+            message(
+                stringr::str_glue(" Starting parallel backend with {control$cores} clusters (cores)...")
+            )
+        }
         cl <- parallel::makeCluster(control$cores)
         doParallel::registerDoParallel(cl)
         parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
