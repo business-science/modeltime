@@ -48,6 +48,7 @@ Imports:
     xgboost (>= 1.2.0.1),
     prophet,
     methods,
+    thief,
     cli
 Suggests:
     rstan,

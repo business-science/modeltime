@@ -34,4 +34,7 @@
     make_window_reg()
     make_naive_reg()
 
+    #HIERARCHICAL MODEL
+    make_hierarchical_reg()
+
 }
