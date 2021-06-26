@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.9000</span>
       </span>
     </div>
 
@@ -221,9 +221,26 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modeltime-0619000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.1.9000">
+<a href="#modeltime-0619000-development-version" class="anchor"></a>modeltime 0.6.1.9000 (Development Version)<small> Unreleased </small>
+</h1>
+<div id="new-algorithms" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
+<ul>
+<li>
+<code><a href="../reference/hierarchical_reg.html">hierarchical_reg()</a></code>: Implements the <code>thief</code> package by Hyndman for Temporal HIErarchical Forecasting. <a href='https://github.com/business-science/modeltime/issues/117'>#117</a></li>
+</ul>
+<p><strong>Bug FIXES</strong></p>
+<ul>
+<li>Issue <a href='https://github.com/business-science/modeltime/issues/111'>#111</a>: Fix bug with <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> where the workflowset (wflw_id) order was not maintained.</li>
+</ul>
+</div>
+</div>
     <div id="modeltime-061" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.1">
-<a href="#modeltime-061" class="anchor"></a>modeltime 0.6.1<small> Unreleased </small>
+<a href="#modeltime-061" class="anchor"></a>modeltime 0.6.1<small> 2021-06-13 </small>
 </h1>
 <p><strong>Parallel Processing</strong></p>
 <ul>
@@ -246,9 +263,9 @@
 <a href="#workflowset-integration" class="anchor"></a>Workflowset Integration</h3>
 <p><code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> (<a href='https://github.com/business-science/modeltime/issues/85'>#85</a>) makes it easy to convert <code>workflow_set</code> objects to Modeltime Tables (<code>mdl_time_tbl</code>). Requires a refitting process that can now be performed in parallel or in sequence.</p>
 </div>
-<div id="new-algorithms" class="section level3">
+<div id="new-algorithms-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
+<a href="#new-algorithms-1" class="anchor"></a>New Algorithms</h3>
 <ul>
 <li>CROSTON (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/98'>#98</a>) - This is a new engine that has been added to <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</li>
 <li>THETA (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/93'>#93</a>) - This is a new engine that has been added to <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</li>
@@ -342,9 +359,9 @@
 <h1 class="page-header" data-toc-text="0.4.2">
 <a href="#modeltime-042" class="anchor"></a>modeltime 0.4.2<small> 2021-03-19 </small>
 </h1>
-<div id="new-algorithms-1" class="section level3">
+<div id="new-algorithms-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-algorithms-1" class="anchor"></a>New Algorithms</h3>
+<a href="#new-algorithms-2" class="anchor"></a>New Algorithms</h3>
 <p>Baseline algorithms (<a href='https://github.com/business-science/modeltime/issues/5'>#5</a>, <a href='https://github.com/business-science/modeltime/issues/37'>#37</a>) have been created for comparing high-performance methods with simple forecasting methods.</p>
 <ul>
 <li>

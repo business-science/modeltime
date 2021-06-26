@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Succinct summary of Modeltime Tables — type_sum.mdl_time_tbl • modeltime</title>
+<title>Bridge prediction function for TEMPORAL HIERARCHICAL models — hierarchical_predict_impl • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,9 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Succinct summary of Modeltime Tables — type_sum.mdl_time_tbl" />
-<meta property="og:description" content="type_sum controls how objects are shown when inside tibble
-columns." />
+<meta property="og:title" content="Bridge prediction function for TEMPORAL HIERARCHICAL models — hierarchical_predict_impl" />
+<meta property="og:description" content="Bridge prediction function for TEMPORAL HIERARCHICAL models" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -219,31 +218,34 @@ columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Succinct summary of Modeltime Tables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/tibble-type_sum.R'><code>R/tibble-type_sum.R</code></a></small>
-    <div class="hidden name"><code>type_sum.mdl_time_tbl.Rd</code></div>
+    <h1>Bridge prediction function for TEMPORAL HIERARCHICAL models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-hierarchical_reg.R'><code>R/parsnip-hierarchical_reg.R</code></a></small>
+    <div class="hidden name"><code>hierarchical_predict_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>type_sum</code> controls how objects are shown when inside tibble
-columns.</p>
+    <p>Bridge prediction function for TEMPORAL HIERARCHICAL models</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for mdl_time_tbl</span>
-<span class='fu'><a href='https://pillar.r-lib.org/reference/type_sum.html'>type_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>hierarchical_predict_impl</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A <code>mdl_time_tbl</code> object to summarise.</p></td>
+      <th>object</th>
+      <td><p>An object of class <code>model_fit</code></p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>A rectangular data object, such as a data frame.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/r/stats/predict.html'>stats::predict()</a></code></p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A character value.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

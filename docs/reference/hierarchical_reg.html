@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General Interface for NAIVE Forecast Models — naive_reg • modeltime</title>
+<title>General Interface for Temporal Hierarchical Forecasting Models — hierarchical_reg • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,10 +48,11 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="General Interface for NAIVE Forecast Models — naive_reg" />
-<meta property="og:description" content="naive_reg() is a way to generate a specification of an NAIVE or SNAIVE model
+<meta property="og:title" content="General Interface for Temporal Hierarchical Forecasting Models — hierarchical_reg" />
+<meta property="og:description" content="hierarchical_reg() is a way to generate a specification of an Temporal Hierarchical Forecasting model
 before fitting and allows the model to be created using
-different packages." />
+different packages. Currently the only package is thief. Note this
+function requires the thief package to be installed." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -220,18 +221,23 @@ different packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General Interface for NAIVE Forecast Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-naive_reg.R'><code>R/parsnip-naive_reg.R</code></a></small>
-    <div class="hidden name"><code>naive_reg.Rd</code></div>
+    <h1>General Interface for Temporal Hierarchical Forecasting Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-hierarchical_reg.R'><code>R/parsnip-hierarchical_reg.R</code></a></small>
+    <div class="hidden name"><code>hierarchical_reg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>naive_reg()</code> is a way to generate a <em>specification</em> of an NAIVE or SNAIVE model
+    <p><code>hierarchical_reg()</code> is a way to generate a <em>specification</em> of an Temporal Hierarchical Forecasting model
 before fitting and allows the model to be created using
-different packages.</p>
+different packages. Currently the only package is <code>thief</code>. Note this
+function requires the <code>thief</code> package to be installed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>naive_reg</span><span class='op'>(</span>mode <span class='op'>=</span> <span class='st'>"regression"</span>, id <span class='op'>=</span> <span class='cn'>NULL</span>, seasonal_period <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>hierarchical_reg</span><span class='op'>(</span>
+  mode <span class='op'>=</span> <span class='st'>"regression"</span>,
+  combination_method <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use_model <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -242,28 +248,30 @@ different packages.</p>
 The only possible value for this model is "regression".</p></td>
     </tr>
     <tr>
-      <th>id</th>
-      <td><p>An optional quoted column name (e.g. "id") for
-identifying multiple time series (i.e. panel data).</p></td>
+      <th>combination_method</th>
+      <td><p>Combination method of temporal hierarchies, taking one of the following values:</p>
+<p>"struc" - Structural scaling: weights from temporal hierarchy
+"mse" - Variance scaling: weights from in-sample MSE
+"ols" - Unscaled OLS combination weights
+"bu" - Bottom-up combination – i.e., all aggregate forecasts are ignored.
+"shr" - GLS using a shrinkage (to block diagonal) estimate of residuals
+"sam" - GLS using sample covariance matrix of residuals</p></td>
     </tr>
     <tr>
-      <th>seasonal_period</th>
-      <td><p>SNAIVE only. A seasonal frequency. Uses "auto" by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.</p></td>
+      <th>use_model</th>
+      <td><p>Model used for forecasting each aggregation level:</p>
+<p>"ets" - exponential smoothing
+"arima" - arima
+"theta" - theta
+"naive" - random walk forecasts
+"snaive" - seasonal naive forecasts, based on the last year of observed data</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The data given to the function are not saved and are only used
-to determine the <em>mode</em> of the model. For <code>naive_reg()</code>, the
-mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
-following <em>engines</em>:</p><ul>
-<li><p>"naive" (default) - Performs a NAIVE forecast</p></li>
-<li><p>"snaive" - Performs a Seasonal NAIVE forecast</p></li>
+    <p>Models can be created using the following <em>engines</em>:</p><ul>
+<li><p>"thief" (default) - Connects to <code><a href='http://robjhyndman.github.io/thief/reference/thief.html'>thief::thief()</a></code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
@@ -271,23 +279,27 @@ following <em>engines</em>:</p><ul>
     
 
 
-<p><strong>naive (default engine)</strong></p><ul>
-<li><p>The engine uses <code><a href='naive_fit_impl.html'>naive_fit_impl()</a></code></p></li>
-<li><p>The NAIVE implementation uses the last observation and forecasts this value forward.</p></li>
-<li><p>The <code>id</code> can be used to distinguish multiple time series contained in
-the data</p></li>
-<li><p>The <code>seasonal_period</code> is not used but provided for consistency with the SNAIVE
-implementation</p></li>
-</ul>
+<p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
+names in each engine:</p><table class='table'>
+<tr><td>modeltime</td><td>thief::thief()</td></tr>
+<tr><td>combination_method</td><td>comb</td></tr>
+<tr><td>use_model</td><td>usemodel</td></tr>
+</table>
 
-<p><strong>snaive (default engine)</strong></p><ul>
-<li><p>The engine uses <code><a href='snaive_fit_impl.html'>snaive_fit_impl()</a></code></p></li>
-<li><p>The SNAIVE implementation uses the last seasonal series in the data
-and forecasts this sequence of observations forward</p></li>
-<li><p>The <code>id</code> can be used to distinguish multiple time series contained in
-the data</p></li>
-<li><p>The <code>seasonal_period</code> is used to determine how far back to define the repeated
-series. This can be a numeric value (e.g. 28) or a period (e.g. "1 month")</p></li>
+
+
+<p>Other options can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
+<p><strong>thief (default engine)</strong></p>
+<p>The engine uses <code><a href='http://robjhyndman.github.io/thief/reference/thief.html'>thief::thief()</a></code>.</p>
+<p>Function Parameters:</p><pre><span class='co'>## function (y, m = frequency(y), h = m * 2, comb = c("struc", "mse", "ols", </span>
+<span class='co'>##     "bu", "shr", "sam"), usemodel = c("ets", "arima", "theta", "naive", </span>
+<span class='co'>##     "snaive"), forecastfunction = NULL, aggregatelist = NULL, ...)</span>
+</pre>
+
+<p>Other options and argument can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
+<p>Parameter Notes:</p><ul>
+<li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
+models will be fit.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="fit-details"><a class="anchor" href="#fit-details"></a>Fit Details</h2>
@@ -301,33 +313,14 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 <li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
-<p><strong>ID features (Multiple Time Series, Panel Data)</strong></p>
-<p>The <code>id</code> parameter is populated using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> or <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy()</a></code> function:</p>
-<p><em>ID Example:</em> Suppose you have 3 features:</p><ol>
-<li><p><code>y</code> (target)</p></li>
-<li><p><code>date</code> (time stamp),</p></li>
-<li><p><code>series_id</code> (a unique identifer that identifies each time series in your data).</p></li>
-</ol>
-
-<p>The <code>series_id</code> can be passed to the <code>naive_reg()</code> using
-<code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code>:</p><ul>
-<li><p><code>naive_reg(id = "series_id")</code> specifes that the <code>series_id</code> column should be used
-to identify each time series.</p></li>
-<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date + series_id)</a></code> will pass <code>series_id</code> on to the underlying
-naive or snaive functions.</p></li>
+<p><strong>Univariate:</strong></p>
+<p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
+<li><p>Formula Interface (recommended): <code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
+<li><p>XY Interface: <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
-<p><strong>Seasonal Period Specification (snaive)</strong></p>
-<p>The period can be non-seasonal (<code>seasonal_period = 1 or "none"</code>) or
-yearly seasonal (e.g. For monthly time stamps, <code>seasonal_period = 12</code>, <code>seasonal_period = "12 months"</code>, or <code>seasonal_period = "yearly"</code>).
-There are 3 ways to specify:</p><ol>
-<li><p><code>seasonal_period = "auto"</code>: A seasonal period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
-<li><p><code>seasonal_period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
-<li><p><code>seasonal_period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
-</ol>
-
-<p><strong>External Regressors (Xregs)</strong></p>
-<p>These models are univariate. No xregs are used in the modeling process.</p>
+<p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
+<p>This model is not set up for use with exogenous regressors.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://parsnip.tidymodels.org/reference/fit.html'>fit.model_spec()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
@@ -338,6 +331,7 @@ There are 3 ways to specify:</p><ol>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://pkg.robjhyndman.com/thief'>thief</a></span><span class='op'>)</span>
 
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
@@ -359,61 +353,31 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
-<span class='co'># ---- NAIVE ----</span>
+<span class='co'># ---- HIERARCHICAL ----</span>
 
-<span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>naive_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"naive"</span><span class='op'>)</span>
+<span class='co'># Model Spec - The default parameters are all set</span>
+<span class='co'># to "auto" if none are provided</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>hierarchical_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"thief"</span><span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  11ms 
-#&gt; NAIVE
-#&gt; --------
-#&gt; Model: 
-#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
-#&gt;   date       value
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> 2010-04-01  9.29</div><div class='input'>
+#&gt; Fit time:  1.5s 
+#&gt;         Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
+#&gt; 21                                     9.292876 9.278808 9.177530 9.161701
+#&gt; 22 9.292288 9.290665 9.310183 9.314852 9.318892 9.304824 9.203573 9.187635
+#&gt; 23 9.318275 9.316547 9.336091 9.340759                                    
+#&gt;         Sep      Oct      Nov      Dec
+#&gt; 21 9.210732 9.279095 9.292842 9.296845
+#&gt; 22 9.236714 9.305078 9.318782 9.322784
+#&gt; 23                                    </div><div class='input'>
 
-<span class='co'># ---- SEASONAL NAIVE ----</span>
 
-<span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>naive_reg</span><span class='op'>(</span>
-        id <span class='op'>=</span> <span class='st'>"id"</span>,
-        seasonal_period <span class='op'>=</span> <span class='fl'>12</span>
-    <span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"snaive"</span><span class='op'>)</span>
 
-<span class='co'># Fit Spec</span>
-<span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='va'>id</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>model_fit</span>
-</div><div class='output co'>#&gt; parsnip model object
-#&gt; 
-#&gt; Fit time:  14ms 
-#&gt; SNAIVE [12]
-#&gt; --------
-#&gt; Model: 
-#&gt; <span style='color: #949494;'># A tibble: 12 x 3</span>
-#&gt;    id    date       value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> M750  2009-05-01  9.27
-#&gt; <span style='color: #BCBCBC;'> 2</span> M750  2009-06-01  9.27
-#&gt; <span style='color: #BCBCBC;'> 3</span> M750  2009-07-01  9.15
-#&gt; <span style='color: #BCBCBC;'> 4</span> M750  2009-08-01  9.19
-#&gt; <span style='color: #BCBCBC;'> 5</span> M750  2009-09-01  9.18
-#&gt; <span style='color: #BCBCBC;'> 6</span> M750  2009-10-01  9.25
-#&gt; <span style='color: #BCBCBC;'> 7</span> M750  2009-11-01  9.26
-#&gt; <span style='color: #BCBCBC;'> 8</span> M750  2009-12-01  9.27
-#&gt; <span style='color: #BCBCBC;'> 9</span> M750  2010-01-01  9.26
-#&gt; <span style='color: #BCBCBC;'>10</span> M750  2010-02-01  9.26
-#&gt; <span style='color: #BCBCBC;'>11</span> M750  2010-03-01  9.29
-#&gt; <span style='color: #BCBCBC;'>12</span> M750  2010-04-01  9.29</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
