@@ -34,7 +34,8 @@ The only possible value for this model is "regression".}
 \description{
 \code{hierarchical_reg()} is a way to generate a \emph{specification} of an Temporal Hierarchical Forecasting model
 before fitting and allows the model to be created using
-different packages. Currently the only package is \code{thief}.
+different packages. Currently the only package is \code{thief}. Note this
+function requires the \code{thief} package to be installed.
 }
 \details{
 Models can be created using the following \emph{engines}:
@@ -103,6 +104,7 @@ library(parsnip)
 library(rsample)
 library(timetk)
 library(modeltime)
+library(thief)
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")

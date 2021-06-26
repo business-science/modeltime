@@ -1,7 +1,6 @@
 #' Tuning Parameters for TEMPORAL HIERARCHICAL Models
 #'
 #'
-#' @inheritParams dials::Laplace
 #'
 #' @details
 #' The main parameters for Temporal Hierarchical models are:

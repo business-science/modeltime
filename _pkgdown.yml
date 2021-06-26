@@ -101,6 +101,7 @@ reference:
     - exp_smoothing
     - seasonal_reg
     - nnetar_reg
+    - hierarchical_reg
   - subtitle: Baseline Algorithms (Simple Methods)
     contents:
     - window_reg

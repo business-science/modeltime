@@ -1,5 +1,9 @@
 # modeltime 0.6.1.9000 (Development Version)
 
+### New Algorithms
+
+- `hierarchical_reg()`: Implements the `thief` package by Hyndman for Temporal HIErarchical Forecasting. #117
+
 __Bug FIXES__
 
 - Issue #111: Fix bug with `modeltime_fit_workflowset()` where the workflowset (wflw_id) order was not maintained. 

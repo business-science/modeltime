@@ -5,7 +5,8 @@
 #' @description
 #' `hierarchical_reg()` is a way to generate a _specification_ of an Temporal Hierarchical Forecasting model
 #'  before fitting and allows the model to be created using
-#'  different packages. Currently the only package is `thief`.
+#'  different packages. Currently the only package is `thief`. Note this
+#'  function requires the `thief` package to be installed.
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
@@ -91,6 +92,7 @@
 #' library(rsample)
 #' library(timetk)
 #' library(modeltime)
+#' library(thief)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
@@ -244,7 +246,10 @@ hierarchical_fit_impl <- function(x, y,
               dplyr::inner_join(residuals, by = "index") %>%
               dplyr::rename(residuals = value)
 
-        idx <- idx %>% timetk::tk_tbl() %>% tibble::rowid_to_column() %>% dplyr::filter(rowid %in% val$rowid)
+        idx <- idx %>%
+            timetk::tk_tbl(preserve_index = FALSE) %>%
+            tibble::rowid_to_column() %>%
+            dplyr::filter(rowid %in% val$rowid)
 
         data <- tibble::tibble(
             !! idx_col := idx$data,

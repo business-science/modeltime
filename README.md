@@ -35,13 +35,13 @@ coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/b
 CRAN version:
 
 ``` r
-install.packages("modeltime")
+install.packages("modeltime", dependencies = TRUE)
 ```
 
 Development version:
 
 ``` r
-remotes::install_github("business-science/modeltime")
+remotes::install_github("business-science/modeltime", dependencies = TRUE)
 ```
 
 ## Why modeltime?
