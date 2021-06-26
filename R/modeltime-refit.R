@@ -220,7 +220,7 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
     if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
         if (control$verbose) {
             message(
-                stringr::str_glue(" It's more efficient to setup a Parallel Backend separately with `parallel_start()`...")
+                stringr::str_glue(" No existing backend detected. It's more efficient to setup a Parallel Backend with `parallel_start()`...")
             )
             message(
                 stringr::str_glue(" Starting parallel backend with {control$cores} clusters (cores)...")
