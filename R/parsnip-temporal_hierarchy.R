@@ -3,7 +3,7 @@
 #' General Interface for Temporal Hierarchical Forecasting Models
 #'
 #' @description
-#' `hierarchical_reg()` is a way to generate a _specification_ of an Temporal Hierarchical Forecasting model
+#' `temporal_hierarchy()` is a way to generate a _specification_ of an Temporal Hierarchical Forecasting model
 #'  before fitting and allows the model to be created using
 #'  different packages. Currently the only package is `thief`. Note this
 #'  function requires the `thief` package to be installed.
@@ -12,20 +12,26 @@
 #'  The only possible value for this model is "regression".
 #' @param combination_method Combination method of temporal hierarchies, taking one of the following values:
 #'
-#' "struc" - Structural scaling: weights from temporal hierarchy
-#' "mse" - Variance scaling: weights from in-sample MSE
-#' "ols" - Unscaled OLS combination weights
-#' "bu" - Bottom-up combination – i.e., all aggregate forecasts are ignored.
-#' "shr" - GLS using a shrinkage (to block diagonal) estimate of residuals
-#' "sam" - GLS using sample covariance matrix of residuals
+#'  * "struc" - Structural scaling: weights from temporal hierarchy
+#'  * "mse" - Variance scaling: weights from in-sample MSE
+#'  * "ols" - Unscaled OLS combination weights
+#'  * "bu" - Bottom-up combination – i.e., all aggregate forecasts are ignored.
+#'  * "shr" - GLS using a shrinkage (to block diagonal) estimate of residuals
+#'  * "sam" - GLS using sample covariance matrix of residuals
 #'
 #' @param use_model Model used for forecasting each aggregation level:
 #'
-#' "ets" - exponential smoothing
-#' "arima" - arima
-#' "theta" - theta
-#' "naive" - random walk forecasts
-#' "snaive" - seasonal naive forecasts, based on the last year of observed data
+#'  * "ets" - exponential smoothing
+#'  * "arima" - arima
+#'  * "theta" - theta
+#'  * "naive" - random walk forecasts
+#'  * "snaive" - seasonal naive forecasts, based on the last year of observed data
+#'
+#' @references
+#' \itemize{
+#'   \item{For forecasting with temporal hierarchies see: Athanasopoulos G., Hyndman R.J., Kourentzes N., Petropoulos F. (2017) \href{http://kourentzes.com/forecasting/2017/02/27/forecasting-with-temporal-hierarchies-3/}{Forecasting with Temporal Hierarchies}. \emph{European Journal of Operational research}, \bold{262}(\bold{1}), 60-74.}
+#'   \item{For combination operators see: Kourentzes N., Barrow B.K., Crone S.F. (2014) \href{http://kourentzes.com/forecasting/2014/04/19/neural-network-ensemble-operators-for-time-series-forecasting/}{Neural network ensemble operators for time series forecasting}. \emph{Expert Systems with Applications}, \bold{41}(\bold{9}), 4235-4244.}
+#' }
 #'
 #' @details
 #'
@@ -39,7 +45,7 @@
 #' names in each engine:
 #'
 #' ```{r echo = FALSE}
-#' # parsnip::convert_args("hierarchical_reg")
+#' # parsnip::convert_args("temporal_hierarchy")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "thief::thief()",
 #'     "combination_method", "comb",
@@ -105,7 +111,7 @@
 #'
 #' # Model Spec - The default parameters are all set
 #' # to "auto" if none are provided
-#' model_spec <- hierarchical_reg() %>%
+#' model_spec <- temporal_hierarchy() %>%
 #'     set_engine("thief")
 #'
 #' # Fit Spec
@@ -117,7 +123,7 @@
 #'
 #'
 #' @export
-hierarchical_reg <- function(mode = "regression", combination_method = NULL, use_model = NULL) {
+temporal_hierarchy <- function(mode = "regression", combination_method = NULL, use_model = NULL) {
 
     args <- list(
         combination_method = rlang::enquo(combination_method),
@@ -125,7 +131,7 @@ hierarchical_reg <- function(mode = "regression", combination_method = NULL, use
     )
 
     parsnip::new_model_spec(
-        "hierarchical_reg",
+        "temporal_hierarchy",
         args     = args,
         eng_args = NULL,
         mode     = mode,
@@ -136,7 +142,7 @@ hierarchical_reg <- function(mode = "regression", combination_method = NULL, use
 }
 
 #' @export
-print.hierarchical_reg <- function(x, ...) {
+print.temporal_hierarchy <- function(x, ...) {
     cat("Temporal Hierarchical Forecasting Model Specification (", x$mode, ")\n\n", sep = "")
     parsnip::model_printer(x, ...)
 
@@ -150,7 +156,7 @@ print.hierarchical_reg <- function(x, ...) {
 
 #' @export
 #' @importFrom stats update
-update.hierarchical_reg <- function(object, parameters = NULL, combination_method = NULL, use_model = NULL, fresh = FALSE, ...) {
+update.temporal_hierarchy <- function(object, parameters = NULL, combination_method = NULL, use_model = NULL, fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
 
@@ -176,7 +182,7 @@ update.hierarchical_reg <- function(object, parameters = NULL, combination_metho
     }
 
     parsnip::new_model_spec(
-        "hierarchical_reg",
+        "temporal_hierarchy",
         args     = object$args,
         eng_args = object$eng_args,
         mode     = object$mode,
@@ -188,7 +194,7 @@ update.hierarchical_reg <- function(object, parameters = NULL, combination_metho
 
 #' @export
 #' @importFrom parsnip translate
-translate.hierarchical_reg <- function(x, engine = x$engine, ...) {
+translate.temporal_hierarchy <- function(x, engine = x$engine, ...) {
     if (is.null(engine)) {
         message("Used `engine = 'thief'` for translation.")
         engine <- "thief"
@@ -199,7 +205,7 @@ translate.hierarchical_reg <- function(x, engine = x$engine, ...) {
 }
 
 
-# HIERARCHICAL_REG -----
+# temporal_hierarchy -----
 
 #' Low-Level Temporaral Hierarchical function for translating modeltime to forecast
 #'
@@ -210,9 +216,10 @@ translate.hierarchical_reg <- function(x, engine = x$engine, ...) {
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
 #' @export
-hierarchical_fit_impl <- function(x, y,
+temporal_hier_fit_impl <- function(x, y,
                                   comb = c("struc", "mse", "ols", "bu", "shr", "sam"),
-                                  usemodel = c("ets", "arima", "theta", "naive", "snaive"), ...) {
+                                  usemodel = c("ets", "arima", "theta", "naive", "snaive"),
+                                  ...) {
 
     others <- list(...)
 
@@ -271,7 +278,7 @@ hierarchical_fit_impl <- function(x, y,
 
     # RETURN
     new_modeltime_bridge(
-        class = "hierarchical_fit_impl",
+        class = "temporal_hier_fit_impl",
 
         # Models
         models = list(
@@ -296,7 +303,7 @@ hierarchical_fit_impl <- function(x, y,
 }
 
 #' @export
-print.hierarchical_fit_impl <- function(x, ...) {
+print.temporal_hier_fit_impl <- function(x, ...) {
     print(x$models$model_1)
     invisible(x)
 }
@@ -304,8 +311,8 @@ print.hierarchical_fit_impl <- function(x, ...) {
 
 
 #' @export
-predict.hierarchical_fit_impl <- function(object, new_data, ...) {
-    hierarchical_predict_impl(object, new_data, ...)
+predict.temporal_hier_fit_impl <- function(object, new_data, ...) {
+    temporal_hier_predict_impl(object, new_data, ...)
 }
 
 #' Bridge prediction function for TEMPORAL HIERARCHICAL models
@@ -314,7 +321,7 @@ predict.hierarchical_fit_impl <- function(object, new_data, ...) {
 #' @param ... Additional arguments passed to `stats::predict()`
 #'
 #' @export
-hierarchical_predict_impl <- function(object, new_data, ...) {
+temporal_hier_predict_impl <- function(object, new_data, ...) {
     # PREPARE INPUTS
     model         <- object$models$model_1
     outcome       <- object$extras$outcome

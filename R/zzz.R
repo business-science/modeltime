@@ -35,6 +35,6 @@
     make_naive_reg()
 
     #HIERARCHICAL MODEL
-    make_hierarchical_reg()
+    make_temporal_hierarchy()
 
 }

@@ -1,5 +1,5 @@
 # ---- HIERARCHICAL REG ----
-context("TEST hierarchical_reg: thief")
+context("TEST temporal_hierarchy: thief")
 
 
 # SETUP ----
@@ -11,7 +11,7 @@ m750 <- m4_monthly %>% filter(id == "M750")
 splits <- initial_time_split(m750, prop = 0.9)
 
 # Model Spec
-model_spec <- hierarchical_reg() %>%
+model_spec <- temporal_hierarchy() %>%
     set_engine("thief")
 
 
@@ -30,9 +30,9 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("hierarchical_reg: thief, Test Model Fit Object", {
+test_that("temporal_hierarchy: thief, Test Model Fit Object", {
 
-    testthat::expect_s3_class(model_fit$fit, "hierarchical_fit_impl")
+    testthat::expect_s3_class(model_fit$fit, "temporal_hier_fit_impl")
 
     # $fit
 
@@ -50,7 +50,7 @@ test_that("hierarchical_reg: thief, Test Model Fit Object", {
 
 })
 
-test_that("hierarchical_reg: thief, Test Predictions", {
+test_that("temporal_hierarchy: thief, Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -74,7 +74,7 @@ test_that("hierarchical_reg: thief, Test Predictions", {
 # ---- ETS WORKFLOWS ----
 
 # Model Spec
-model_spec <- hierarchical_reg() %>%
+model_spec <- temporal_hierarchy() %>%
     set_engine("thief")
 
 # Recipe spec
@@ -99,9 +99,9 @@ predictions_tbl <- wflw_fit %>%
 
 
 # TESTS
-test_that("hierarchical_reg: thief (workflow), Test Model Fit Object", {
+test_that("temporal_hierarchy: thief (workflow), Test Model Fit Object", {
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit, "hierarchical_fit_impl")
+    testthat::expect_s3_class(wflw_fit$fit$fit$fit, "temporal_hier_fit_impl")
 
     # $fit
 
@@ -119,7 +119,7 @@ test_that("hierarchical_reg: thief (workflow), Test Model Fit Object", {
 
 })
 
-test_that("hierarchical_reg: thief (workflow), Test Predictions", {
+test_that("temporal_hierarchy: thief (workflow), Test Predictions", {
 
     full_data <- bind_rows(training(splits), testing(splits))
 

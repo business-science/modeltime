@@ -2,7 +2,7 @@
 
 ### New Algorithms
 
-- `hierarchical_reg()`: Implements the `thief` package by Hyndman for Temporal HIErarchical Forecasting. #117
+- `temporal_hierarchy()`: Implements the `thief` package by Hyndman for Temporal HIErarchical Forecasting. #117
 
 ### Bug Fixes
 

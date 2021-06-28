@@ -230,9 +230,12 @@
 <a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
 <ul>
 <li>
-<code><a href="../reference/hierarchical_reg.html">hierarchical_reg()</a></code>: Implements the <code>thief</code> package by Hyndman for Temporal HIErarchical Forecasting. <a href='https://github.com/business-science/modeltime/issues/117'>#117</a></li>
+<code><a href="../reference/temporal_hierarchy.html">temporal_hierarchy()</a></code>: Implements the <code>thief</code> package by Hyndman for Temporal HIErarchical Forecasting. <a href='https://github.com/business-science/modeltime/issues/117'>#117</a></li>
 </ul>
-<p><strong>Bug FIXES</strong></p>
+</div>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Issue <a href='https://github.com/business-science/modeltime/issues/111'>#111</a>: Fix bug with <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> where the workflowset (wflw_id) order was not maintained.</li>
 </ul>
@@ -608,9 +611,9 @@
 <li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(splits)</a></code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level3">
+<div id="bug-fixes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>
 <p><code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>:</p>

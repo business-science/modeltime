@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General Interface for Multiple Seasonality Regression Models (TBATS, STLM) — seasonal_reg • modeltime</title>
+<title>General Interface for Temporal Hierarchical Forecasting Models — temporal_hierarchy • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,11 +48,11 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="General Interface for Multiple Seasonality Regression Models (TBATS, STLM) — seasonal_reg" />
-<meta property="og:description" content="seasonal_reg() is a way to generate a specification of an
-Seasonal Decomposition model
+<meta property="og:title" content="General Interface for Temporal Hierarchical Forecasting Models — temporal_hierarchy" />
+<meta property="og:description" content="temporal_hierarchy() is a way to generate a specification of an Temporal Hierarchical Forecasting model
 before fitting and allows the model to be created using
-different packages. Currently the only package is forecast." />
+different packages. Currently the only package is thief. Note this
+function requires the thief package to be installed." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -221,23 +221,22 @@ different packages. Currently the only package is forecast." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General Interface for Multiple Seasonality Regression Models (TBATS, STLM)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-seasonal_reg.R'><code>R/parsnip-seasonal_reg.R</code></a></small>
-    <div class="hidden name"><code>seasonal_reg.Rd</code></div>
+    <h1>General Interface for Temporal Hierarchical Forecasting Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-temporal_hierarchy.R'><code>R/parsnip-temporal_hierarchy.R</code></a></small>
+    <div class="hidden name"><code>temporal_hierarchy.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>seasonal_reg()</code> is a way to generate a <em>specification</em> of an
-Seasonal Decomposition model
+    <p><code>temporal_hierarchy()</code> is a way to generate a <em>specification</em> of an Temporal Hierarchical Forecasting model
 before fitting and allows the model to be created using
-different packages. Currently the only package is <code>forecast</code>.</p>
+different packages. Currently the only package is <code>thief</code>. Note this
+function requires the <code>thief</code> package to be installed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>seasonal_reg</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>temporal_hierarchy</span><span class='op'>(</span>
   mode <span class='op'>=</span> <span class='st'>"regression"</span>,
-  seasonal_period_1 <span class='op'>=</span> <span class='cn'>NULL</span>,
-  seasonal_period_2 <span class='op'>=</span> <span class='cn'>NULL</span>,
-  seasonal_period_3 <span class='op'>=</span> <span class='cn'>NULL</span>
+  combination_method <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use_model <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -249,41 +248,32 @@ different packages. Currently the only package is <code>forecast</code>.</p>
 The only possible value for this model is "regression".</p></td>
     </tr>
     <tr>
-      <th>seasonal_period_1</th>
-      <td><p>(required) The primary seasonal frequency.
-Uses <code>"auto"</code> by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.</p></td>
+      <th>combination_method</th>
+      <td><p>Combination method of temporal hierarchies, taking one of the following values:</p><ul>
+<li><p>"struc" - Structural scaling: weights from temporal hierarchy</p></li>
+<li><p>"mse" - Variance scaling: weights from in-sample MSE</p></li>
+<li><p>"ols" - Unscaled OLS combination weights</p></li>
+<li><p>"bu" - Bottom-up combination – i.e., all aggregate forecasts are ignored.</p></li>
+<li><p>"shr" - GLS using a shrinkage (to block diagonal) estimate of residuals</p></li>
+<li><p>"sam" - GLS using sample covariance matrix of residuals</p></li>
+</ul></td>
     </tr>
     <tr>
-      <th>seasonal_period_2</th>
-      <td><p>(optional) A second seasonal frequency.
-Is <code>NULL</code> by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.</p></td>
-    </tr>
-    <tr>
-      <th>seasonal_period_3</th>
-      <td><p>(optional) A third seasonal frequency.
-Is <code>NULL</code> by default.
-A character phrase of "auto" or time-based phrase of "2 weeks"
-can be used if a date or date-time variable is provided.
-See Fit Details below.</p></td>
+      <th>use_model</th>
+      <td><p>Model used for forecasting each aggregation level:</p><ul>
+<li><p>"ets" - exponential smoothing</p></li>
+<li><p>"arima" - arima</p></li>
+<li><p>"theta" - theta</p></li>
+<li><p>"naive" - random walk forecasts</p></li>
+<li><p>"snaive" - seasonal naive forecasts, based on the last year of observed data</p></li>
+</ul></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The data given to the function are not saved and are only used
-to determine the <em>mode</em> of the model. For <code>seasonal_reg()</code>, the
-mode will always be "regression".</p>
-<p>The model can be created using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> function using the
-following <em>engines</em>:</p><ul>
-<li><p>"tbats" - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/tbats.html'>forecast::tbats()</a></code></p></li>
-<li><p>"stlm_ets" - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html'>forecast::stlm()</a></code>, <code>method = "ets"</code></p></li>
-<li><p>"stlm_arima" - Connects to <code><a href='https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html'>forecast::stlm()</a></code>, <code>method = "arima"</code></p></li>
+    <p>Models can be created using the following <em>engines</em>:</p><ul>
+<li><p>"thief" (default) - Connects to <code><a href='http://robjhyndman.github.io/thief/reference/thief.html'>thief::thief()</a></code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="engine-details"><a class="anchor" href="#engine-details"></a>Engine Details</h2>
@@ -293,33 +283,25 @@ following <em>engines</em>:</p><ul>
 
 <p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
 names in each engine:</p><table class='table'>
-<tr><td>modeltime</td><td>forecast::stlm</td><td>forecast::tbats</td></tr>
-<tr><td>seasonal_period_1, seasonal_period_2, seasonal_period_3</td><td>msts(seasonal.periods)</td><td>msts(seasonal.periods)</td></tr>
+<tr><td>modeltime</td><td>thief::thief()</td></tr>
+<tr><td>combination_method</td><td>comb</td></tr>
+<tr><td>use_model</td><td>usemodel</td></tr>
 </table>
 
 
 
 <p>Other options can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
-<p>The engines use <code><a href='https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html'>forecast::stlm()</a></code>.</p>
-<p>Function Parameters:</p><pre><span class='co'>## function (y, s.window = 7 + 4 * seq(6), robust = FALSE, method = c("ets", </span>
-<span class='co'>##     "arima"), modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL, </span>
-<span class='co'>##     biasadj = FALSE, xreg = NULL, allow.multiplicative.trend = FALSE, x = y, </span>
-<span class='co'>##     ...)</span>
+<p><strong>thief (default engine)</strong></p>
+<p>The engine uses <code><a href='http://robjhyndman.github.io/thief/reference/thief.html'>thief::thief()</a></code>.</p>
+<p>Function Parameters:</p><pre><span class='co'>## function (y, m = frequency(y), h = m * 2, comb = c("struc", "mse", "ols", </span>
+<span class='co'>##     "bu", "shr", "sam"), usemodel = c("ets", "arima", "theta", "naive", </span>
+<span class='co'>##     "snaive"), forecastfunction = NULL, aggregatelist = NULL, ...)</span>
 </pre>
 
-<p><strong>tbats</strong></p><ul>
-<li><p><strong>Method:</strong> Uses <code>method = "tbats"</code>, which by default is auto-TBATS.</p></li>
-<li><p><strong>Xregs:</strong> Univariate. Cannot accept Exogenous Regressors (xregs). Xregs are ignored.</p></li>
-</ul>
-
-<p><strong>stlm_ets</strong></p><ul>
-<li><p><strong>Method:</strong> Uses <code>method = "stlm_ets"</code>, which by default is auto-ETS.</p></li>
-<li><p><strong>Xregs:</strong> Univariate. Cannot accept Exogenous Regressors (xregs). Xregs are ignored.</p></li>
-</ul>
-
-<p><strong>stlm_arima</strong></p><ul>
-<li><p><strong>Method:</strong> Uses <code>method = "stlm_arima"</code>, which by default is auto-ARIMA.</p></li>
-<li><p><strong>Xregs:</strong> Multivariate. Can accept Exogenous Regressors (xregs).</p></li>
+<p>Other options and argument can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
+<p>Parameter Notes:</p><ul>
+<li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
+models will be fit.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="fit-details"><a class="anchor" href="#fit-details"></a>Fit Details</h2>
@@ -333,47 +315,14 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 <li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code></p></li>
 </ul>
 
-<p><em>Seasonal Period Specification</em></p>
-<p>The period can be non-seasonal (<code>seasonal_period = 1 or "none"</code>) or
-yearly seasonal (e.g. For monthly time stamps, <code>seasonal_period = 12</code>, <code>seasonal_period = "12 months"</code>, or <code>seasonal_period = "yearly"</code>).
-There are 3 ways to specify:</p><ol>
-<li><p><code>seasonal_period = "auto"</code>: A seasonal period is selected based on the periodicity of the data (e.g. 12 if monthly)</p></li>
-<li><p><code>seasonal_period = 12</code>: A numeric frequency. For example, 12 is common for monthly data</p></li>
-<li><p><code>seasonal_period = "1 year"</code>: A time-based phrase. For example, "1 year" would convert to 12 for monthly data.</p></li>
-</ol>
-
-<p><strong>Univariate (No xregs, Exogenous Regressors):</strong></p>
+<p><strong>Univariate:</strong></p>
 <p>For univariate analysis, you must include a date or date-time feature. Simply use:</p><ul>
 <li><p>Formula Interface (recommended): <code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date)</a></code> will ignore xreg's.</p></li>
 <li><p>XY Interface: <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy(x = data[,"date"], y = data$y)</a></code> will ignore xreg's.</p></li>
 </ul>
 
-<p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p><ul>
-<li><p>The <code>tbats</code> engine <em>cannot</em> accept Xregs.</p></li>
-<li><p>The <code>stlm_ets</code> engine <em>cannot</em> accept Xregs.</p></li>
-<li><p>The <code>stlm_arima</code> engine <em>can</em> accept Xregs</p></li>
-</ul>
-
-<p>The <code>xreg</code> parameter is populated using the <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> or <code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy()</a></code> function:</p><ul>
-<li><p>Only <code>factor</code>, <code>ordered factor</code>, and <code>numeric</code> data will be used as xregs.</p></li>
-<li><p>Date and Date-time variables are not used as xregs</p></li>
-<li><p><code>character</code> data should be converted to factor.</p></li>
-</ul>
-
-<p><em>Xreg Example:</em> Suppose you have 3 features:</p><ol>
-<li><p><code>y</code> (target)</p></li>
-<li><p><code>date</code> (time stamp),</p></li>
-<li><p><code>month.lbl</code> (labeled month as a ordered factor).</p></li>
-</ol>
-
-<p>The <code>month.lbl</code> is an exogenous regressor that can be passed to the <code>seasonal_reg()</code> using
-<code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code>:</p><ul>
-<li><p><code><a href='https://generics.r-lib.org/reference/fit.html'>fit(y ~ date + month.lbl)</a></code> will pass <code>month.lbl</code> on as an exogenous regressor.</p></li>
-<li><p><code><a href='https://generics.r-lib.org/reference/fit_xy.html'>fit_xy(data[,c("date", "month.lbl")], y = data$y)</a></code> will pass x, where x is a data frame containing <code>month.lbl</code>
-and the <code>date</code> feature. Only <code>month.lbl</code> will be used as an exogenous regressor.</p></li>
-</ul>
-
-<p>Note that date or date-time class values are excluded from <code>xreg</code>.</p>
+<p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
+<p>This model is not set up for use with exogenous regressors.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://parsnip.tidymodels.org/reference/fit.html'>fit.model_spec()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>
@@ -384,71 +333,53 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://pkg.robjhyndman.com/thief'>thief</a></span><span class='op'>)</span>
 
 <span class='co'># Data</span>
-<span class='va'>taylor_30_min</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4,032 x 2</span>
-#&gt;    date                value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> 2000-06-05 <span style='color: #949494;'>00:00:00</span> <span style='text-decoration: underline;'>22</span>262
-#&gt; <span style='color: #BCBCBC;'> 2</span> 2000-06-05 <span style='color: #949494;'>00:30:00</span> <span style='text-decoration: underline;'>21</span>756
-#&gt; <span style='color: #BCBCBC;'> 3</span> 2000-06-05 <span style='color: #949494;'>01:00:00</span> <span style='text-decoration: underline;'>22</span>247
-#&gt; <span style='color: #BCBCBC;'> 4</span> 2000-06-05 <span style='color: #949494;'>01:30:00</span> <span style='text-decoration: underline;'>22</span>759
-#&gt; <span style='color: #BCBCBC;'> 5</span> 2000-06-05 <span style='color: #949494;'>02:00:00</span> <span style='text-decoration: underline;'>22</span>549
-#&gt; <span style='color: #BCBCBC;'> 6</span> 2000-06-05 <span style='color: #949494;'>02:30:00</span> <span style='text-decoration: underline;'>22</span>313
-#&gt; <span style='color: #BCBCBC;'> 7</span> 2000-06-05 <span style='color: #949494;'>03:00:00</span> <span style='text-decoration: underline;'>22</span>128
-#&gt; <span style='color: #BCBCBC;'> 8</span> 2000-06-05 <span style='color: #949494;'>03:30:00</span> <span style='text-decoration: underline;'>21</span>860
-#&gt; <span style='color: #BCBCBC;'> 9</span> 2000-06-05 <span style='color: #949494;'>04:00:00</span> <span style='text-decoration: underline;'>21</span>751
-#&gt; <span style='color: #BCBCBC;'>10</span> 2000-06-05 <span style='color: #949494;'>04:30:00</span> <span style='text-decoration: underline;'>21</span>336
-#&gt; <span style='color: #949494;'># … with 4,022 more rows</span></div><div class='input'>
+<span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
+<span class='va'>m750</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
+#&gt;    id    date       value
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
+#&gt; <span style='color: #BCBCBC;'> 2</span> M750  1990-02-01  <span style='text-decoration: underline;'>6</span>430
+#&gt; <span style='color: #BCBCBC;'> 3</span> M750  1990-03-01  <span style='text-decoration: underline;'>6</span>520
+#&gt; <span style='color: #BCBCBC;'> 4</span> M750  1990-04-01  <span style='text-decoration: underline;'>6</span>580
+#&gt; <span style='color: #BCBCBC;'> 5</span> M750  1990-05-01  <span style='text-decoration: underline;'>6</span>620
+#&gt; <span style='color: #BCBCBC;'> 6</span> M750  1990-06-01  <span style='text-decoration: underline;'>6</span>690
+#&gt; <span style='color: #BCBCBC;'> 7</span> M750  1990-07-01  <span style='text-decoration: underline;'>6</span>000
+#&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
+#&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
+#&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
+#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
-<span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>taylor_30_min</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
+<span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
-<span class='co'># ---- STLM ETS ----</span>
+<span class='co'># ---- HIERARCHICAL ----</span>
 
-<span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>seasonal_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"stlm_ets"</span><span class='op'>)</span>
-
-<span class='co'># Fit Spec</span>
-<span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
-</div><div class='output co'>#&gt; parsnip model object
-#&gt; 
-#&gt; Fit time:  421ms 
-#&gt; SEASONAL DECOMP: ETS(A,Ad,N)
-#&gt; 
-#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span>
-#&gt;      aic    bic   aicc loglik       mse
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> -<span style='color: #BB0000; text-decoration: underline;'>6</span><span style='color: #BB0000;'>473.</span> -<span style='color: #BB0000; text-decoration: underline;'>6</span><span style='color: #BB0000;'>437.</span> -<span style='color: #BB0000; text-decoration: underline;'>6</span><span style='color: #BB0000;'>473.</span>  <span style='text-decoration: underline;'>3</span>243. 0.000<span style='text-decoration: underline;'>041</span>5</div><div class='input'>
-
-<span class='co'># ---- STLM ARIMA ----</span>
-
-<span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>seasonal_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"stlm_arima"</span><span class='op'>)</span>
+<span class='co'># Model Spec - The default parameters are all set</span>
+<span class='co'># to "auto" if none are provided</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>temporal_hierarchy</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"thief"</span><span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  546ms 
-#&gt; SEASONAL DECOMP: ARIMA(3,1,2)
-#&gt; 
-#&gt; Series: x 
-#&gt; ARIMA(3,1,2) 
-#&gt; 
-#&gt; Coefficients:
-#&gt;          ar1     ar2      ar3      ma1      ma2
-#&gt;       1.0031  0.0782  -0.3096  -0.3203  -0.1378
-#&gt; s.e.  0.0838  0.1286   0.0575   0.0875   0.0817
-#&gt; 
-#&gt; sigma^2 estimated as 3.918e-05:  log likelihood=11786.32
-#&gt; AIC=-23560.65   AICc=-23560.62   BIC=-23524.18</div><div class='input'>
+#&gt; Fit time:  1.5s 
+#&gt;         Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
+#&gt; 21                                     9.292876 9.278808 9.177530 9.161701
+#&gt; 22 9.292288 9.290665 9.310183 9.314852 9.318892 9.304824 9.203573 9.187635
+#&gt; 23 9.318275 9.316547 9.336091 9.340759                                    
+#&gt;         Sep      Oct      Nov      Dec
+#&gt; 21 9.210732 9.279095 9.292842 9.296845
+#&gt; 22 9.236714 9.305078 9.318782 9.322784
+#&gt; 23                                    </div><div class='input'>
+
+
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
