@@ -141,6 +141,9 @@ reference:
   - subtitle: NNETAR
     contents:
     - num_networks
+  - subtitle: Temporal Hierachical Models
+    contents:
+    - combination_method
   - title: Developer Tools
     desc: Tools for extending `modeltime`.
     contents:

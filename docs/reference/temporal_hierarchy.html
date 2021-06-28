@@ -235,6 +235,7 @@ function requires the <code>thief</code> package to be installed.</p>
 
     <pre class="usage"><span class='fu'>temporal_hierarchy</span><span class='op'>(</span>
   mode <span class='op'>=</span> <span class='st'>"regression"</span>,
+  seasonal_period <span class='op'>=</span> <span class='cn'>NULL</span>,
   combination_method <span class='op'>=</span> <span class='cn'>NULL</span>,
   use_model <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
@@ -246,6 +247,13 @@ function requires the <code>thief</code> package to be installed.</p>
       <th>mode</th>
       <td><p>A single character string for the type of model.
 The only possible value for this model is "regression".</p></td>
+    </tr>
+    <tr>
+      <th>seasonal_period</th>
+      <td><p>A seasonal frequency. Uses "auto" by default.
+A character phrase of "auto" or time-based phrase of "2 weeks"
+can be used if a date or date-time variable is provided.
+See Fit Details below.</p></td>
     </tr>
     <tr>
       <th>combination_method</th>
@@ -323,6 +331,14 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 
 <p><strong>Multivariate (xregs, Exogenous Regressors)</strong></p>
 <p>This model is not set up for use with exogenous regressors.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p>For forecasting with temporal hierarchies see: Athanasopoulos G., Hyndman R.J., Kourentzes N., Petropoulos F. (2017) <a href='http://kourentzes.com/forecasting/2017/02/27/forecasting-with-temporal-hierarchies-3/'>Forecasting with Temporal Hierarchies</a>. <em>European Journal of Operational research</em>, <b>262</b>(<b>1</b>), 60-74.</p></li>
+<li><p>For combination operators see: Kourentzes N., Barrow B.K., Crone S.F. (2014) <a href='http://kourentzes.com/forecasting/2014/04/19/neural-network-ensemble-operators-for-time-series-forecasting/'>Neural network ensemble operators for time series forecasting</a>. <em>Expert Systems with Applications</em>, <b>41</b>(<b>9</b>), 4235-4244.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://parsnip.tidymodels.org/reference/fit.html'>fit.model_spec()</a></code>, <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code></p></div>

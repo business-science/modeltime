@@ -6,6 +6,7 @@
 \usage{
 temporal_hierarchy(
   mode = "regression",
+  seasonal_period = NULL,
   combination_method = NULL,
   use_model = NULL
 )
@@ -13,6 +14,11 @@ temporal_hierarchy(
 \arguments{
 \item{mode}{A single character string for the type of model.
 The only possible value for this model is "regression".}
+
+\item{seasonal_period}{A seasonal frequency. Uses "auto" by default.
+A character phrase of "auto" or time-based phrase of "2 weeks"
+can be used if a date or date-time variable is provided.
+See Fit Details below.}
 
 \item{combination_method}{Combination method of temporal hierarchies, taking one of the following values:
 \itemize{

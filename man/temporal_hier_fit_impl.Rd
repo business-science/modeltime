@@ -7,6 +7,7 @@
 temporal_hier_fit_impl(
   x,
   y,
+  period = "auto",
   comb = c("struc", "mse", "ols", "bu", "shr", "sam"),
   usemodel = c("ets", "arima", "theta", "naive", "snaive"),
   ...
@@ -16,6 +17,9 @@ temporal_hier_fit_impl(
 \item{x}{A dataframe of xreg (exogenous regressors)}
 
 \item{y}{A numeric vector of values to fit}
+
+\item{period}{A seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}
 
 \item{comb}{Combination method of temporal hierarchies}
 

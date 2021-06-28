@@ -10,6 +10,12 @@
 #'
 #' @param mode A single character string for the type of model.
 #'  The only possible value for this model is "regression".
+#'
+#' @param seasonal_period A seasonal frequency. Uses "auto" by default.
+#'  A character phrase of "auto" or time-based phrase of "2 weeks"
+#'  can be used if a date or date-time variable is provided.
+#'  See Fit Details below.
+#'
 #' @param combination_method Combination method of temporal hierarchies, taking one of the following values:
 #'
 #'  * "struc" - Structural scaling: weights from temporal hierarchy
@@ -123,9 +129,11 @@
 #'
 #'
 #' @export
-temporal_hierarchy <- function(mode = "regression", combination_method = NULL, use_model = NULL) {
+temporal_hierarchy <- function(mode = "regression", seasonal_period = NULL,
+                               combination_method = NULL, use_model = NULL) {
 
     args <- list(
+        seasonal_period    = rlang::enquo(seasonal_period),
         combination_method = rlang::enquo(combination_method),
         use_model          = rlang::enquo(use_model)
     )
@@ -156,7 +164,10 @@ print.temporal_hierarchy <- function(x, ...) {
 
 #' @export
 #' @importFrom stats update
-update.temporal_hierarchy <- function(object, parameters = NULL, combination_method = NULL, use_model = NULL, fresh = FALSE, ...) {
+update.temporal_hierarchy <- function(object, parameters = NULL,
+                                      seasonal_period = NULL,
+                                      combination_method = NULL, use_model = NULL,
+                                      fresh = FALSE, ...) {
 
     parsnip::update_dot_check(...)
 
@@ -165,6 +176,7 @@ update.temporal_hierarchy <- function(object, parameters = NULL, combination_met
     }
 
     args <- list(
+        seasonal_period    = rlang::enquo(seasonal_period),
         combination_method = rlang::enquo(combination_method),
         use_model          = rlang::enquo(use_model)
     )
@@ -211,15 +223,18 @@ translate.temporal_hierarchy <- function(x, engine = x$engine, ...) {
 #'
 #' @param x A dataframe of xreg (exogenous regressors)
 #' @param y A numeric vector of values to fit
+#' @param period A seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param comb Combination method of temporal hierarchies
 #' @param usemodel Model used for forecasting each aggregation level
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
 #' @export
 temporal_hier_fit_impl <- function(x, y,
-                                  comb = c("struc", "mse", "ols", "bu", "shr", "sam"),
-                                  usemodel = c("ets", "arima", "theta", "naive", "snaive"),
-                                  ...) {
+                                   period = "auto",
+                                   comb = c("struc", "mse", "ols", "bu", "shr", "sam"),
+                                   usemodel = c("ets", "arima", "theta", "naive", "snaive"),
+                                   ...) {
 
     others <- list(...)
 
@@ -232,7 +247,7 @@ temporal_hier_fit_impl <- function(x, y,
     # INDEX & PERIOD
     # Determine Period, Index Col, and Index
     index_tbl <- parse_index_from_data(predictor)
-    period    <- parse_period_from_index(index_tbl, "auto")
+    period    <- parse_period_from_index(index_tbl, period)
     idx_col   <- names(index_tbl)
     idx       <- timetk::tk_index(index_tbl)
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Low-Level Temporaral Hierarchical function for translating modeltime to forecast — temporal_hier_fit_impl • modeltime</title>
+<title>Tuning Parameters for TEMPORAL HIERARCHICAL Models — temporal_hierarchy_params • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Low-Level Temporaral Hierarchical function for translating modeltime to forecast — temporal_hier_fit_impl" />
-<meta property="og:description" content="Low-Level Temporaral Hierarchical function for translating modeltime to forecast" />
+<meta property="og:title" content="Tuning Parameters for TEMPORAL HIERARCHICAL Models — temporal_hierarchy_params" />
+<meta property="og:description" content="Tuning Parameters for TEMPORAL HIERARCHICAL Models" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -218,55 +218,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Low-Level Temporaral Hierarchical function for translating modeltime to forecast</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-temporal_hierarchy.R'><code>R/parsnip-temporal_hierarchy.R</code></a></small>
-    <div class="hidden name"><code>temporal_hier_fit_impl.Rd</code></div>
+    <h1>Tuning Parameters for TEMPORAL HIERARCHICAL Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dials-temporal_hierarchy_params.R'><code>R/dials-temporal_hierarchy_params.R</code></a></small>
+    <div class="hidden name"><code>temporal_hierarchy_params.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Low-Level Temporaral Hierarchical function for translating modeltime to forecast</p>
+    <p>Tuning Parameters for TEMPORAL HIERARCHICAL Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>temporal_hier_fit_impl</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  <span class='va'>y</span>,
-  period <span class='op'>=</span> <span class='st'>"auto"</span>,
-  comb <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"struc"</span>, <span class='st'>"mse"</span>, <span class='st'>"ols"</span>, <span class='st'>"bu"</span>, <span class='st'>"shr"</span>, <span class='st'>"sam"</span><span class='op'>)</span>,
-  usemodel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ets"</span>, <span class='st'>"arima"</span>, <span class='st'>"theta"</span>, <span class='st'>"naive"</span>, <span class='st'>"snaive"</span><span class='op'>)</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>combination_method</span><span class='op'>(</span><span class='op'>)</span>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>A dataframe of xreg (exogenous regressors)</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>A numeric vector of values to fit</p></td>
-    </tr>
-    <tr>
-      <th>period</th>
-      <td><p>A seasonal frequency. Uses "auto" by default. A character phrase
-of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
-    </tr>
-    <tr>
-      <th>comb</th>
-      <td><p>Combination method of temporal hierarchies</p></td>
-    </tr>
-    <tr>
-      <th>usemodel</th>
-      <td><p>Model used for forecasting each aggregation level</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://pkg.robjhyndman.com/forecast/reference/ets.html'>forecast::ets</a></code></p></td>
-    </tr>
-    </table>
+<span class='fu'>use_model</span><span class='op'>(</span><span class='op'>)</span></pre>
 
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The main parameters for Temporal Hierarchical models are:</p><ul>
+<li><p><code>combination_method</code>: Combination method of temporal hierarchies.</p></li>
+<li><p><code>use_model</code>: Model used for forecasting each aggregation level.</p></li>
+</ul>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>combination_method</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Combination method of temporal hierarchies.  (qualitative)
+#&gt; 6 possible value include:
+#&gt; 'struc', 'mse', 'ols', 'bu', 'shr' and 'sam' </div><div class='input'>
+<span class='fu'>use_model</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Model used for forecasting each aggregation level.  (qualitative)
+#&gt; 5 possible value include:
+#&gt; 'ets', 'arima', 'theta', 'naive' and 'snaive' </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

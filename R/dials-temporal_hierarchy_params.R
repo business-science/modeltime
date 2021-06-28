@@ -13,11 +13,11 @@
 #'
 #' use_model()
 #'
-#' @name hierarchical_params
+#' @name temporal_hierarchy_params
 
 
 #' @export
-#' @rdname hierarchical_params
+#' @rdname temporal_hierarchy_params
 combination_method <- function() {
     dials::new_qual_param(
         type      = "character",
@@ -29,7 +29,7 @@ combination_method <- function() {
 
 
 #' @export
-#' @rdname hierarchical_params
+#' @rdname temporal_hierarchy_params
 use_model <- function() {
     dials::new_qual_param(
         type      = "character",

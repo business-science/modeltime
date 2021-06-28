@@ -22,6 +22,15 @@ make_temporal_hierarchy <- function() {
     parsnip::set_model_arg(
         model        = "temporal_hierarchy",
         eng          = "thief",
+        parsnip      = "seasonal_period",
+        original     = "period",
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "temporal_hierarchy",
+        eng          = "thief",
         parsnip      = "combination_method",
         original     = "comb",
         func         = list(pkg = "modeltime", fun = "combination_method"),
