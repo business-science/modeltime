@@ -136,7 +136,7 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
 # UTILITIES ----
 
-calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...) {
+calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, by_id = FALSE, ...) {
 
     metrics <- metric_set
 
@@ -145,6 +145,18 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, ...
 
     # Testing Metrics
     test_metrics_tbl <- tibble::tibble()
+
+    # Check by_id
+    if (by_id) {
+        if (".id" %in% names(test_data)) {
+            test_data <- test_data %>%
+                dplyr::group_by(.id)
+        } else {
+            rlang::warn("The `.id` column in calibration data was not detected. Global accuracy is being returned.")
+        }
+
+    }
+
     if (!is.null(test_data)) {
 
         test_metrics_tbl <- test_data %>%

@@ -8,6 +8,7 @@ modeltime_accuracy(
   object,
   new_data = NULL,
   metric_set = default_forecast_accuracy_metric_set(),
+  by_id = FALSE,
   quiet = TRUE,
   ...
 )
@@ -21,9 +22,16 @@ If provided, overrides any calibration data.}
 \item{metric_set}{A \code{yardstick::metric_set()} that is used to summarize one or more
 forecast accuracy (regression) metrics.}
 
+\item{by_id}{Should a global or local model accuracy be produced? (Default: FALSE)
+\itemize{
+\item When \code{FALSE}, a global model accuracy is provided.
+\item If \code{TRUE}, a local accuracy is provided for each time series ID.
+To enable local accuracy, an \code{id} must be provided during \code{modeltime_calibrate()}.
+}}
+
 \item{quiet}{Hide errors (\code{TRUE}, the default), or display them as they occur?}
 
-\item{...}{Not currently used}
+\item{...}{If \code{new_data} is provided, these parameters are passed to \code{modeltime_calibrate()}}
 }
 \value{
 A tibble with accuracy estimates.

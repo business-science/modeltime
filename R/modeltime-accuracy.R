@@ -10,8 +10,15 @@
 #'  If provided, overrides any calibration data.
 #' @param metric_set A `yardstick::metric_set()` that is used to summarize one or more
 #'  forecast accuracy (regression) metrics.
+#' @param by_id Should a global or local model accuracy be produced? (Default: FALSE)
+#'
+#'  - When `FALSE`, a global model accuracy is provided.
+#'
+#'  - If `TRUE`, a local accuracy is provided group-wise for each time series ID.
+#'    To enable local accuracy, an `id` must be provided during `modeltime_calibrate()`.
+#'
 #' @param quiet Hide errors (`TRUE`, the default), or display them as they occur?
-#' @param ... Not currently used
+#' @param ... If `new_data` is provided, these parameters are passed to `modeltime_calibrate()`
 #'
 #'
 #' @return A tibble with accuracy estimates.
@@ -71,6 +78,7 @@ NULL
 #' @rdname modeltime_accuracy
 modeltime_accuracy <- function(object, new_data = NULL,
                                metric_set = default_forecast_accuracy_metric_set(),
+                               by_id = FALSE,
                                quiet = TRUE, ...) {
     if (!is_calibrated(object)) {
        if (is.null(new_data)) {
@@ -84,6 +92,7 @@ modeltime_accuracy <- function(object, new_data = NULL,
 #' @export
 modeltime_accuracy.default <- function(object, new_data = NULL,
                                        metric_set = default_forecast_accuracy_metric_set(),
+                                       by_id = FALSE,
                                        quiet = TRUE, ...) {
     rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'."))
 }
@@ -92,6 +101,7 @@ modeltime_accuracy.default <- function(object, new_data = NULL,
 #' @export
 modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                                             metric_set = default_forecast_accuracy_metric_set(),
+                                            by_id = FALSE,
                                             quiet = TRUE, ...) {
     data <- object
 
@@ -100,7 +110,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
     # Handle New Data ----
     if (!is.null(new_data)) {
         data <- data %>%
-            modeltime_calibrate(new_data = new_data)
+            modeltime_calibrate(new_data = new_data, ...)
     }
 
     # Accuracy Calculation ----
@@ -114,6 +124,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                 ret <- safe_calc_accuracy(
                     test_data  = .data,
                     metric_set = metrics,
+                    by_id      = by_id,
                     ...
                 )
 
