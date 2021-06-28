@@ -4,7 +4,7 @@
 \alias{modeltime_calibrate}
 \title{Preparation for forecasting}
 \usage{
-modeltime_calibrate(object, new_data, quiet = TRUE, ...)
+modeltime_calibrate(object, new_data, id = NULL, quiet = TRUE, ...)
 }
 \arguments{
 \item{object}{A fitted model object that is either:
@@ -15,6 +15,8 @@ modeltime_calibrate(object, new_data, quiet = TRUE, ...)
 }}
 
 \item{new_data}{A test data set \code{tibble} containing future information (timestamps and actual values).}
+
+\item{id}{A quoted column name containing an identifier column identifying time series that are grouped.}
 
 \item{quiet}{Hide errors (\code{TRUE}, the default), or display them as they occur?}
 
