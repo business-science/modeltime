@@ -25,7 +25,7 @@ forecast accuracy (regression) metrics.}
 \item{by_id}{Should a global or local model accuracy be produced? (Default: FALSE)
 \itemize{
 \item When \code{FALSE}, a global model accuracy is provided.
-\item If \code{TRUE}, a local accuracy is provided for each time series ID.
+\item If \code{TRUE}, a local accuracy is provided group-wise for each time series ID.
 To enable local accuracy, an \code{id} must be provided during \code{modeltime_calibrate()}.
 }}
 

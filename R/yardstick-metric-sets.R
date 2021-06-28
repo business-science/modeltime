@@ -148,11 +148,12 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, by_
 
     # Check by_id
     if (by_id) {
-        if (".id" %in% names(test_data)) {
+        if (length(names(test_data)) == 5) {
+            id_col_text <- names(test_data)[5]
             test_data <- test_data %>%
-                dplyr::group_by(.id)
+                dplyr::group_by(!! rlang::ensym(id_col_text))
         } else {
-            rlang::warn("The `.id` column in calibration data was not detected. Global accuracy is being returned.")
+            rlang::warn("The 'id' column in calibration data was not detected. Global accuracy is being returned.")
         }
 
     }

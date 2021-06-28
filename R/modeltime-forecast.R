@@ -14,6 +14,13 @@
 #' @param actual_data Reference data that is combined with the output tibble and given a `.key = "actual"`
 #' @param conf_interval An estimated confidence interval based on the calibration data.
 #'  This is designed to estimate future confidence from _out-of-sample prediction error_.
+#' @param conf_by_id Whether or not to produce confidence interval estimates by an ID feature.
+#'
+#' - When `FALSE`, a global model confidence interval is provided.
+#'
+#'  - If `TRUE`, a local confidence interval is provided group-wise for each time series ID.
+#'    To enable local confidence interval, an `id` must be provided during `modeltime_calibrate()`.
+#'
 #' @param keep_data Whether or not to keep the `new_data` and `actual_data` as extra columns in the results.
 #'  This can be useful if there is an important feature in the `new_data` and `actual_data` needed
 #'  when forecasting.
@@ -195,7 +202,9 @@ NULL
 
 #' @export
 #' @rdname modeltime_forecast
-modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_data = FALSE, arrange_index = FALSE, ...) {
+modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL,
+                               conf_interval = 0.95, conf_by_id = FALSE,
+                               keep_data = FALSE, arrange_index = FALSE, ...) {
 
     # Required arguments & messages
     if (is.null(new_data) && is.null(h)) {
@@ -245,12 +254,16 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
 }
 
 #' @export
-modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_data = FALSE, arrange_index = FALSE, ...) {
+modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL,
+                                       conf_interval = 0.95, conf_by_id = FALSE,
+                                       keep_data = FALSE, arrange_index = FALSE, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
 }
 
 #' @export
-modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL, conf_interval = 0.95, keep_data = FALSE, arrange_index = FALSE, ...) {
+modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL,
+                                            conf_interval = 0.95, conf_by_id = FALSE,
+                                            keep_data = FALSE, arrange_index = FALSE, ...) {
 
     data <- object
 
@@ -280,7 +293,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
             new_data      = new_data,
             h             = h,
             actual_data   = actual_data,
-            keep_data     = keep_data,
+            keep_data     = if (conf_by_id) TRUE else keep_data,
             arrange_index = arrange_index,
             bind_actual   = TRUE # Rowwise binds the actual data during the forecast
         )
@@ -303,7 +316,7 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
                 new_data      = new_data,
                 h             = h,
                 actual_data   = actual_data,
-                keep_data     = keep_data,
+                keep_data     = if (conf_by_id) TRUE else keep_data,
                 arrange_index = arrange_index,
                 bind_actual   = FALSE # Skips iterative rowwise binding of actual_data
             )
@@ -325,9 +338,48 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
 
     # ADD CONF INTERVALS ----
     if (!is.null(conf_interval)) {
-        ret <- ret %>%
-            safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
-            dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
+
+        if (conf_by_id) {
+
+            # Check 5th column exists
+            id_col_found <- data_calibration$.calibration_data[[1]] %>% names() %>% length() == 5
+
+            # Apply CI by ID if possible
+            if (id_col_found) {
+
+                id_col <- data_calibration$.calibration_data[[1]] %>% names() %>% purrr::pluck(5)
+
+                ret <- ret %>%
+                    safe_conf_interval_map_by_id(
+                        data_calibration,
+                        conf_interval = conf_interval,
+                        id            = !! id_col # deparse(substitute(id_col))
+                    ) %>%
+                    dplyr::select(.model_id, .model_desc, .key, .index, .value, .conf_lo, .conf_hi, dplyr::all_of(names(new_data)))
+                    # dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
+
+
+            } else {
+
+                rlang::warn("The 'id' column in calibration data was not detected. Global Confidence Interval is being returned.")
+
+                ret <- ret %>%
+                    safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
+                    dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
+            }
+
+            # Remove unnecessary columns if `keep_data = FALSE`
+            if (!keep_data) {
+                ret <- ret %>%
+                    dplyr::select(.model_id:.conf_hi)
+            }
+
+        } else {
+            ret <- ret %>%
+                safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
+                dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
+        }
+
     }
 
     # REMOVE ANY EXTRA-ACTUAL DATA ----
@@ -401,6 +453,51 @@ safe_conf_interval_map <- function(data, data_calibration, conf_interval) {
         dplyr::select(-.calibration_data) %>%
         tidyr::unnest(cols = c(data, .ci)) %>%
         dplyr::ungroup()
+}
+
+safe_conf_interval_map_by_id <- function(data, data_calibration, conf_interval, id) {
+
+    safe_ci <- purrr::safely(
+        centered_residuals,
+        otherwise = tibble::tibble(
+            .conf_lo = NA,
+            .conf_hi = NA
+        ),
+        quiet = FALSE)
+
+    forecast_nested_tbl <- data %>%
+        tibble::rowid_to_column(var = "..rowid") %>%
+        dplyr::group_by(.model_id, !! rlang::ensym(id)) %>%
+        tidyr::nest()
+
+    calibration_nested_tbl <- data_calibration %>%
+        tidyr::unnest(.calibration_data) %>%
+        dplyr::group_by(.model_id, !! rlang::ensym(id)) %>%
+        tidyr::nest() %>%
+        dplyr::rename(.calibration_data = data)
+
+    # print(forecast_nested_tbl)
+    # print(calibration_nested_tbl)
+
+    forecast_nested_tbl %>%
+        dplyr::left_join(
+            calibration_nested_tbl
+            ,
+            by = names(forecast_nested_tbl)[1:2]
+        ) %>%
+        dplyr::mutate(.ci = purrr::map2(data, .calibration_data, .f = function(data_1, data_2) {
+            res <- safe_ci(data_1, data_2, conf_interval = conf_interval)
+            res %>% purrr::pluck("result")
+        })
+        ) %>%
+        dplyr::select(-.calibration_data) %>%
+        tidyr::unnest(cols = c(data, .ci)) %>%
+        dplyr::ungroup() %>%
+        dplyr::arrange(..rowid) %>%
+        dplyr::select(
+            -..rowid
+            # , - !! rlang::ensym(id)
+        )
 }
 
 

@@ -10,6 +10,7 @@ modeltime_forecast(
   h = NULL,
   actual_data = NULL,
   conf_interval = 0.95,
+  conf_by_id = FALSE,
   keep_data = FALSE,
   arrange_index = FALSE,
   ...
@@ -29,6 +30,13 @@ Extends the calibration data \code{h} periods into the future.}
 
 \item{conf_interval}{An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
+
+\item{conf_by_id}{Whether or not to produce confidence interval estimates by an ID feature.
+\itemize{
+\item When \code{FALSE}, a global model confidence interval is provided.
+\item If \code{TRUE}, a local confidence interval is provided group-wise for each time series ID.
+To enable local confidence interval, an \code{id} must be provided during \code{modeltime_calibrate()}.
+}}
 
 \item{keep_data}{Whether or not to keep the \code{new_data} and \code{actual_data} as extra columns in the results.
 This can be useful if there is an important feature in the \code{new_data} and \code{actual_data} needed

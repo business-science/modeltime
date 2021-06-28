@@ -240,7 +240,9 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
 
     if (!is.null(id_var_text)) {
         ret <- ret %>%
-            mutate(.id = test_data %>% dplyr::pull(!! rlang::ensym(id_var_text)))
+            dplyr::mutate(
+                !! rlang::ensym(id_var_text) := test_data %>% dplyr::pull(!! rlang::ensym(id_var_text))
+            )
     }
 
     return(ret)
@@ -290,7 +292,7 @@ calc_residuals <- function(object, test_data = NULL, id = NULL, ...) {
 
                 if (!is.null(id)) {
                     residual_tbl <- residual_tbl %>%
-                        dplyr::mutate(.id = test_data %>% dplyr::pull(!! rlang::ensym(id)))
+                        dplyr::mutate(!! rlang::ensym(id) := test_data %>% dplyr::pull(!! rlang::ensym(id)))
                 }
 
                 test_metrics_tbl <- residual_tbl %>%
