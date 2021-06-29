@@ -43,7 +43,7 @@
 #'
 #' Models can be created using the following _engines_:
 #'
-#'  - "thief" (default) - Connects to [thief::thief()]
+#'  - "thief" (default) - Connects to `thief::thief()`
 #'
 #' @section Engine Details:
 #'
@@ -62,7 +62,7 @@
 #'
 #' __thief (default engine)__
 #'
-#' The engine uses [thief::thief()].
+#' The engine uses `thief::thief()`.
 #'
 #' Function Parameters:
 #' ```{r echo = FALSE}

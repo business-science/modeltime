@@ -48,7 +48,7 @@ function requires the \code{thief} package to be installed.
 \details{
 Models can be created using the following \emph{engines}:
 \itemize{
-\item "thief" (default) - Connects to \code{\link[thief:thief]{thief::thief()}}
+\item "thief" (default) - Connects to \code{thief::thief()}
 }
 }
 \section{Engine Details}{
@@ -66,7 +66,7 @@ Other options can be set using \code{set_engine()}.
 
 \strong{thief (default engine)}
 
-The engine uses \code{\link[thief:thief]{thief::thief()}}.
+The engine uses \code{thief::thief()}.
 
 Function Parameters:\preformatted{## function (y, m = frequency(y), h = m * 2, comb = c("struc", "mse", "ols", 
 ##     "bu", "shr", "sam"), usemodel = c("ets", "arima", "theta", "naive", 
