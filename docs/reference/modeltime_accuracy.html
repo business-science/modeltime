@@ -233,6 +233,7 @@ calculations from a fitted <code>workflow</code> (trained workflow) or <code>mod
   <span class='va'>object</span>,
   new_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   metric_set <span class='op'>=</span> <span class='fu'><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set</a></span><span class='op'>(</span><span class='op'>)</span>,
+  acc_by_id <span class='op'>=</span> <span class='cn'>FALSE</span>,
   quiet <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -255,12 +256,20 @@ If provided, overrides any calibration data.</p></td>
 forecast accuracy (regression) metrics.</p></td>
     </tr>
     <tr>
+      <th>acc_by_id</th>
+      <td><p>Should a global or local model accuracy be produced? (Default: FALSE)</p><ul>
+<li><p>When <code>FALSE</code>, a global model accuracy is provided.</p></li>
+<li><p>If <code>TRUE</code>, a local accuracy is provided group-wise for each time series ID.
+To enable local accuracy, an <code>id</code> must be provided during <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code>.</p></li>
+</ul></td>
+    </tr>
+    <tr>
       <th>quiet</th>
       <td><p>Hide errors (<code>TRUE</code>, the default), or display them as they occur?</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Not currently used</p></td>
+      <td><p>If <code>new_data</code> is provided, these parameters are passed to <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code></p></td>
     </tr>
     </table>
 

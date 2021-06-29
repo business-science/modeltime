@@ -235,6 +235,7 @@ forecasting future data.</p>
   h <span class='op'>=</span> <span class='cn'>NULL</span>,
   actual_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   conf_interval <span class='op'>=</span> <span class='fl'>0.95</span>,
+  conf_by_id <span class='op'>=</span> <span class='cn'>FALSE</span>,
   keep_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
   arrange_index <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
@@ -266,6 +267,14 @@ Extends the calibration data <code>h</code> periods into the future.</p></td>
       <th>conf_interval</th>
       <td><p>An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></td>
+    </tr>
+    <tr>
+      <th>conf_by_id</th>
+      <td><p>Whether or not to produce confidence interval estimates by an ID feature.</p><ul>
+<li><p>When <code>FALSE</code>, a global model confidence interval is provided.</p></li>
+<li><p>If <code>TRUE</code>, a local confidence interval is provided group-wise for each time series ID.
+To enable local confidence interval, an <code>id</code> must be provided during <code><a href='modeltime_calibrate.html'>modeltime_calibrate()</a></code>.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>keep_data</th>

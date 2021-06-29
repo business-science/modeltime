@@ -229,7 +229,7 @@ by computing predictions and residuals from out of sample data." />
 by computing predictions and residuals from out of sample data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>modeltime_calibrate</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>modeltime_calibrate</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, id <span class='op'>=</span> <span class='cn'>NULL</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -245,6 +245,10 @@ by computing predictions and residuals from out of sample data.</p>
     <tr>
       <th>new_data</th>
       <td><p>A test data set <code>tibble</code> containing future information (timestamps and actual values).</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>A quoted column name containing an identifier column identifying time series that are grouped.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -273,9 +277,15 @@ performance metrics. Refer to <code><a href='modeltime_accuracy.html'>modeltime_
 <li><p>Two Columns are added:</p></li>
 </ol>
 <ul>
-<li><p><code>.type</code>: Indicates the sample type. Only "Test" is currently available.</p></li>
-<li><p><code>.calibration_data</code>: Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
+<li><p><code>.type</code>: Indicates the sample type. This is:</p><ul>
+<li><p>"Test" if predicted, or</p></li>
+<li><p>"Fitted" if residuals were stored during modeling.</p></li>
+</ul></li>
+<li><p><code>.calibration_data</code>:</p><ul>
+<li><p>Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
 calculated from <code>new_data</code> (Test Data)</p></li>
+<li><p>If <code>id</code> is provided, will contain a 5th column that is the identifier variable.</p></li>
+</ul></li>
 </ul>
 
 
@@ -309,7 +319,9 @@ calculated from <code>new_data</code> (Test Data)</p></li>
 <span class='co'># ---- CALIBRATE ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>&lt;-</span> <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>modeltime_calibrate</span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'>modeltime_calibrate</span><span class='op'>(</span>
+        new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>
+    <span class='op'>)</span>
 
 <span class='co'># ---- ACCURACY ----</span>
 

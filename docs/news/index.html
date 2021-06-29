@@ -225,12 +225,22 @@
 <h1 class="page-header" data-toc-text="0.6.1.9000">
 <a href="#modeltime-0619000-development-version" class="anchor"></a>modeltime 0.6.1.9000 (Development Version)<small> Unreleased </small>
 </h1>
+<div id="group-wise-accuracy-and-confidence-interval-by-time-series-id" class="section level3">
+<h3 class="hasAnchor">
+<a href="#group-wise-accuracy-and-confidence-interval-by-time-series-id" class="anchor"></a>Group-Wise Accuracy and Confidence Interval by Time Series ID</h3>
+<p>We’ve expanded Panel Data functionality to produce model accuracy and confidence interval estimates by a Time Series ID (<a href='https://github.com/business-science/modeltime/issues/114'>#114</a>). This is useful when you have a Global Model that produces forecasts for more than one time series. You can more easily obtain grouped accuracy and confidence interval estimates.</p>
+<ul>
+<li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: Gains an <code>id</code> argument that is a quoted column name. This identifies that the residuals should be tracked by an time series identifier feature that indicates the time series groups.</p></li>
+<li><p><code><a href="../reference/modeltime_accuracy.html">modeltime_accuracy()</a></code>: Gains a <code>acc_by_id</code> argument that is <code>TRUE</code>/<code>FALSE</code>. If the data has been calibrated with <code>id</code>, then the user can return local model accuracy by the identifier column. The accuracy data frame will return a row for each combination of Model ID and Time Series ID.</p></li>
+<li><p><code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>: Gains a <code>conf_by_id</code> argument that is <code>TRUE</code>/<code>FALSE</code>. If the data has been calibrated with <code>id</code>, then the user can return local model confidence by the identifier column. The forecast data frame will return an extra column indicating the identifier column. The confidence intervals will be adjusted based on the local time series ID variance instead of the global model variance.</p></li>
+</ul>
+</div>
 <div id="new-algorithms" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-algorithms" class="anchor"></a>New Algorithms</h3>
 <ul>
 <li>
-<code><a href="../reference/temporal_hierarchy.html">temporal_hierarchy()</a></code>: Implements the <code>thief</code> package by Hyndman for Temporal HIErarchical Forecasting. <a href='https://github.com/business-science/modeltime/issues/117'>#117</a></li>
+<code><a href="../reference/temporal_hierarchy.html">temporal_hierarchy()</a></code>: Implements the <code>thief</code> package by Hyndman for “Temporal HIErarchical Forecasting”. <a href='https://github.com/business-science/modeltime/issues/117'>#117</a></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
