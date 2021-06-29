@@ -1,8 +1,19 @@
 # modeltime 0.6.1.9000 (Development Version)
 
+### Group-Wise Accuracy and Confidence Interval by Time Series ID
+
+We've expanded Panel Data functionality to produce model accuracy and confidence interval estimates by a Time Series ID (#114). This is useful when you have a Global Model that produces forecasts for more than one time series. You can more easily obtain grouped accuracy and confidence interval estimates. 
+
+* `modeltime_calibrate()`: Gains an `id` argument that is a quoted column name. This identifies that the residuals should be tracked by an time series identifier feature that indicates the time series groups. 
+
+* `modeltime_accuracy()`: Gains a `acc_by_id` argument that is `TRUE`/`FALSE`. If the data has been calibrated with `id`, then the user can return local model accuracy by the identifier column. The accuracy data frame will return a row for each combination of Model ID and Time Series ID. 
+
+* `modeltime_forecast()`: Gains a `conf_by_id` argument that is `TRUE`/`FALSE`. If the data has been calibrated with `id`, then the user can return local model confidence by the identifier column. The forecast data frame will return an extra column indicating the identifier column. The confidence intervals will be adjusted based on the local time series ID variance instead of the global model variance. 
+
+
 ### New Algorithms
 
-- `temporal_hierarchy()`: Implements the `thief` package by Hyndman for Temporal HIErarchical Forecasting. #117
+- `temporal_hierarchy()`: Implements the `thief` package by Hyndman for "Temporal HIErarchical Forecasting". #117
 
 ### Bug Fixes
 

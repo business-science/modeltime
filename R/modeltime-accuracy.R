@@ -10,7 +10,7 @@
 #'  If provided, overrides any calibration data.
 #' @param metric_set A `yardstick::metric_set()` that is used to summarize one or more
 #'  forecast accuracy (regression) metrics.
-#' @param by_id Should a global or local model accuracy be produced? (Default: FALSE)
+#' @param acc_by_id Should a global or local model accuracy be produced? (Default: FALSE)
 #'
 #'  - When `FALSE`, a global model accuracy is provided.
 #'
@@ -78,7 +78,7 @@ NULL
 #' @rdname modeltime_accuracy
 modeltime_accuracy <- function(object, new_data = NULL,
                                metric_set = default_forecast_accuracy_metric_set(),
-                               by_id = FALSE,
+                               acc_by_id = FALSE,
                                quiet = TRUE, ...) {
     if (!is_calibrated(object)) {
        if (is.null(new_data)) {
@@ -92,7 +92,7 @@ modeltime_accuracy <- function(object, new_data = NULL,
 #' @export
 modeltime_accuracy.default <- function(object, new_data = NULL,
                                        metric_set = default_forecast_accuracy_metric_set(),
-                                       by_id = FALSE,
+                                       acc_by_id = FALSE,
                                        quiet = TRUE, ...) {
     rlang::abort(stringr::str_glue("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'."))
 }
@@ -101,7 +101,7 @@ modeltime_accuracy.default <- function(object, new_data = NULL,
 #' @export
 modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                                             metric_set = default_forecast_accuracy_metric_set(),
-                                            by_id = FALSE,
+                                            acc_by_id = FALSE,
                                             quiet = TRUE, ...) {
     data <- object
 
@@ -124,7 +124,7 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
                 ret <- safe_calc_accuracy(
                     test_data  = .data,
                     metric_set = metrics,
-                    by_id      = by_id,
+                    by_id      = acc_by_id,
                     ...
                 )
 

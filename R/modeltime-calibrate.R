@@ -29,9 +29,13 @@
 #'
 #' 1. If not a Modeltime Table, objects are converted to Modeltime Tables internally
 #' 2. Two Columns are added:
-#'   - `.type`: Indicates the sample type. Only "Test" is currently available.
-#'   - `.calibration_data`: Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
-#'    calculated from `new_data` (Test Data)
+#'   - `.type`: Indicates the sample type. This is:
+#'      - "Test" if predicted, or
+#'      - "Fitted" if residuals were stored during modeling.
+#'   - `.calibration_data`:
+#'      - Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
+#'        calculated from `new_data` (Test Data)
+#'      - If `id` is provided, will contain a 5th column that is the identifier variable.
 #'
 #'
 #' @examples
@@ -64,7 +68,9 @@
 #' # ---- CALIBRATE ----
 #'
 #' calibration_tbl <- models_tbl %>%
-#'     modeltime_calibrate(new_data = testing(splits))
+#'     modeltime_calibrate(
+#'         new_data = testing(splits)
+#'     )
 #'
 #' # ---- ACCURACY ----
 #'

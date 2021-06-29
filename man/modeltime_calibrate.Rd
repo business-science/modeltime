@@ -44,9 +44,17 @@ The calibration steps include:
 \item Two Columns are added:
 }
 \itemize{
-\item \code{.type}: Indicates the sample type. Only "Test" is currently available.
-\item \code{.calibration_data}: Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
+\item \code{.type}: Indicates the sample type. This is:
+\itemize{
+\item "Test" if predicted, or
+\item "Fitted" if residuals were stored during modeling.
+}
+\item \code{.calibration_data}:
+\itemize{
+\item Contains a tibble with Timestamps, Actual Values, Predictions and Residuals
 calculated from \code{new_data} (Test Data)
+\item If \code{id} is provided, will contain a 5th column that is the identifier variable.
+}
 }
 }
 \examples{
@@ -79,7 +87,9 @@ models_tbl <- modeltime_table(
 # ---- CALIBRATE ----
 
 calibration_tbl <- models_tbl \%>\%
-    modeltime_calibrate(new_data = testing(splits))
+    modeltime_calibrate(
+        new_data = testing(splits)
+    )
 
 # ---- ACCURACY ----
 

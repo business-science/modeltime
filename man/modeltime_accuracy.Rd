@@ -8,7 +8,7 @@ modeltime_accuracy(
   object,
   new_data = NULL,
   metric_set = default_forecast_accuracy_metric_set(),
-  by_id = FALSE,
+  acc_by_id = FALSE,
   quiet = TRUE,
   ...
 )
@@ -22,7 +22,7 @@ If provided, overrides any calibration data.}
 \item{metric_set}{A \code{yardstick::metric_set()} that is used to summarize one or more
 forecast accuracy (regression) metrics.}
 
-\item{by_id}{Should a global or local model accuracy be produced? (Default: FALSE)
+\item{acc_by_id}{Should a global or local model accuracy be produced? (Default: FALSE)
 \itemize{
 \item When \code{FALSE}, a global model accuracy is provided.
 \item If \code{TRUE}, a local accuracy is provided group-wise for each time series ID.

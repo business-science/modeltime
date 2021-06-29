@@ -9,5 +9,6 @@ utils::globalVariables(
       "yhat", ".model_desc_new", ".model_desc_old", ".model_desc_user",
       ".model_table", ".model_table_clean", ".residuals", ".is_null", ".",
       ".final_values", ".idx_values", ".pred_values", ".row_id", "..row_id", "rowid..",
-      "id", ".id", "this_model", "wflow_id", "rowid", "value.x", "value.y")
+      "id", ".id", "this_model", "wflow_id", "rowid", "value.x", "value.y",
+      "..rowid")
 )
