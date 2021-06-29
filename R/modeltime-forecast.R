@@ -247,7 +247,6 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
                 abort_message = abort_msg
             )
         }
-
     }
 
     UseMethod("modeltime_forecast")
@@ -353,11 +352,15 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
                     safe_conf_interval_map_by_id(
                         data_calibration,
                         conf_interval = conf_interval,
-                        id            = !! id_col # deparse(substitute(id_col))
+                        id            = !! id_col
                     ) %>%
                     dplyr::select(.model_id, .model_desc, .key, .index, .value, .conf_lo, .conf_hi, dplyr::all_of(names(new_data)))
-                    # dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
 
+                # Remove unnecessary columns if `keep_data = FALSE`. Required to keep the id column.
+                if (!keep_data) {
+                    ret <- ret %>%
+                        dplyr::select(.model_id:.conf_hi, dplyr::all_of(id_col))
+                }
 
             } else {
 
@@ -366,18 +369,26 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
                 ret <- ret %>%
                     safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
                     dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
+
+                # Remove unnecessary columns if `keep_data = FALSE`
+                if (!keep_data) {
+                    ret <- ret %>%
+                        dplyr::select(.model_id:.conf_hi)
+                }
             }
+
+
+
+        } else {
+            ret <- ret %>%
+                safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
+                dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
 
             # Remove unnecessary columns if `keep_data = FALSE`
             if (!keep_data) {
                 ret <- ret %>%
                     dplyr::select(.model_id:.conf_hi)
             }
-
-        } else {
-            ret <- ret %>%
-                safe_conf_interval_map(data_calibration, conf_interval = conf_interval) %>%
-                dplyr::relocate(dplyr::starts_with(".conf_"), .after = .value)
         }
 
     }

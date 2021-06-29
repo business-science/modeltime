@@ -93,6 +93,21 @@ modeltime_calibrate <- function(object, new_data, id = NULL,
         glubort("Missing 'new_data'. Try adding a test data set using rsample::testing(splits). See help for more info: ?modeltime_calibrate ")
     }
 
+    # Check `id` is in `new_data` names
+    if (!is.null(id)) {
+
+        tryCatch({
+            id
+        }, error = function(e) {
+            rlang::abort("`id` must be a quoted character string that is the name of an identifier column. ")
+        })
+
+        if (!is.character(id)) rlang::abort("`id` must be a quoted character string that is the name of an identifier column. ")
+
+        if (!id %in% names(new_data)) glubort("`id` is not a valid column name in `new_data`. Please review column names: {stringr::str_c(names(new_data), collapse = ', ')}")
+
+    }
+
     UseMethod("modeltime_calibrate")
 }
 
