@@ -13,7 +13,10 @@ We've expanded Panel Data functionality to produce model accuracy and confidence
 
 ### New Algorithms
 
-- `temporal_hierarchy()`: Implements the `thief` package by Hyndman for "Temporal HIErarchical Forecasting". #117
+#### THIEF: Temporal Hierarchical Forecasting
+
+- `temporal_hierarchy()`: Implements the `thief` package by Rob Hyndman and
+Nikolaos Kourentzes for "Temporal HIErarchical Forecasting". #117
 
 ### Bug Fixes
 
