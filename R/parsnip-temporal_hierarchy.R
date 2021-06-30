@@ -1,6 +1,6 @@
 # HIERARCHICAL REGRESSION ----
 
-#' General Interface for Temporal Hierarchical Forecasting Models
+#' General Interface for Temporal Hierarchical Forecasting (THIEF) Models
 #'
 #' @description
 #' `temporal_hierarchy()` is a way to generate a _specification_ of an Temporal Hierarchical Forecasting model
