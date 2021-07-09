@@ -75,7 +75,7 @@
       <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
     </li>
     <li>
-      <a href="../articles/parallel-processing.html">Tuning &amp; Parallel Processing</a>
+      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -181,7 +181,16 @@
 
     
     
-<p>The <strong><code>modeltime</code> project roadmap</strong> (<a href="https://github.com/business-science/modeltime/issues/5">GitHub Issue #5</a>) tracks the overall development of the Modeltime Ecosystem of forecasting packages.</p>
+<p>The <strong><code>modeltime</code> project roadmap</strong> (<a href="https://github.com/business-science/modeltime/issues/5">Follow GitHub Issue #5</a>) tracks the overall development of the Modeltime Ecosystem of forecasting packages.</p>
+<div id="modeltime-roadmap" class="section level2">
+<h2 class="hasAnchor">
+<a href="#modeltime-roadmap" class="anchor"></a>Modeltime Roadmap</h2>
+<p><strong>Modeltime is a growing ecosystem.</strong> Learn about what’s been incorporated and what’s coming soon by <a href="https://github.com/business-science/modeltime/issues/5">following GitHub Issue #5</a>.</p>
+<a href="https://github.com/business-science/modeltime/issues/5" target="_blank"> <img src="modeltime_roadmap.jpg" alt="Modeltime Roadmap" style="width:100%"><p style="text-align:center">
+(Click to View on GitHub)
+</p>
+<p></p></a>
+</div>
 <div id="learning-modeltime" class="section level2">
 <h2 class="hasAnchor">
 <a href="#learning-modeltime" class="anchor"></a>Learning Modeltime</h2>
@@ -189,225 +198,6 @@
 <p>Modeltime is a cutting-edge ecosystem for forecasting using strategies and best practices that won or placed highly in major forecasting competitions.</p>
 </blockquote>
 <p>We have a state-of-the-art <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Forecasting Course (DS4B 203-R)</a> that teaches the <code>modeltime</code> ecosystem and <code>timetk</code> (Machine Learning, Deep Learning, and Feature Engineering for Time Series). Take this course to become the forecasting expert for your organization.</p>
-</div>
-<div id="forecast-algorithms" class="section level2">
-<h2 class="hasAnchor">
-<a href="#forecast-algorithms" class="anchor"></a>Forecast Algorithms</h2>
-<p>These algorithms are provided in the base <code>modeltime</code> package. Refer to the <a href="https://business-science.github.io/modeltime/reference/index.html#section-algorithms">API Function Reference.</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>ARIMA</strong> - See <code><a href="../reference/arima_reg.html">arima_reg()</a></code>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>Exponential Smoothing (ETS)</strong>: See <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>STLM</strong> - Decomposition Models - <a href="https://business-science.github.io/modeltime/reference/seasonal_reg.html">See <code>seasonal_reg()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>TBATS</strong> - <a href="https://business-science.github.io/modeltime/reference/seasonal_reg.html">See <code>seasonal_reg()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>NNETAR</strong> - <a href="https://business-science.github.io/modeltime/reference/nnetar_reg.html">See <code>nnetar_reg()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>Theta Method</strong> [See <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>] (#93)</li>
-<li>
-<input type="checkbox" disabled checked><strong>CROSTON</strong> [See <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>] (#98)</li>
-</ul>
-</div>
-<div id="prophet-algorithm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#prophet-algorithm" class="anchor"></a>Prophet Algorithm</h2>
-<p>These algorithms are provided in the base <code>modeltime</code> package. Refer to the <a href="https://business-science.github.io/modeltime/reference/index.html#section-algorithms">API Function Reference.</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>Prophet</strong> - See <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>
-</li>
-</ul>
-</div>
-<div id="boosted-algorithms" class="section level2">
-<h2 class="hasAnchor">
-<a href="#boosted-algorithms" class="anchor"></a>Boosted Algorithms</h2>
-<p>These algorithms use <code>xgboost</code> to improve performance on detecting seasonality while using the base model (e.g. prophet) for trend. These algorithms are provided in the base <code>modeltime</code> package. Refer to the <a href="https://business-science.github.io/modeltime/reference/index.html#section-algorithms">API Function Reference.</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>Prophet Boost</strong> - See <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>Arima Boost</strong> - See <code><a href="../reference/arima_boost.html">arima_boost()</a></code>
-</li>
-</ul>
-</div>
-<div id="ensembles-stacking-averaging" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ensembles-stacking-averaging" class="anchor"></a>Ensembles (Stacking, Averaging)</h2>
-<p>Please refer to <code>modeltime.ensemble</code> R package: <a href="https://business-science.github.io/modeltime.ensemble/" class="uri">https://business-science.github.io/modeltime.ensemble/</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>Stacking</strong> - <a href="https://business-science.github.io/modeltime.ensemble/reference/ensemble_model_spec.html">See <code>modeltime.ensemble::ensemble_model_spec()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>Averaging</strong> - <a href="https://business-science.github.io/modeltime.ensemble/reference/ensemble_average.html">See <code>modeltime.ensemble::ensemble_average()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>Weighted Averaging</strong> - <a href="https://business-science.github.io/modeltime.ensemble/reference/ensemble_weighted.html">See <code>modeltime.ensemble::ensemble_weighted()</code></a>
-</li>
-</ul>
-</div>
-<div id="autoregressive-recursive-forecasting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#autoregressive-recursive-forecasting" class="anchor"></a>Autoregressive (Recursive) Forecasting</h2>
-<p>Recursive forecasting is required when <strong>Lags of Features &lt; Forecast Horizon</strong>. Please refer to the <strong><code><a href="../reference/recursive.html">recursive()</a></code></strong> function that allows any model to be converted into a recursive prediction model: <a href="https://business-science.github.io/modeltime/reference/recursive.html" class="uri">https://business-science.github.io/modeltime/reference/recursive.html</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>Recursive for Single Time Series</strong> - <a href="https://business-science.github.io/modeltime/reference/recursive.html">Can be implemented using <code>recursive()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>Recursive for Panel Data (Multiple Time Series)</strong> - Follow #67</li>
-<li>
-<input type="checkbox" disabled checked><strong>Recursive Ensembles</strong> - Tracked with #86. Refer to <code>modeltime.ensemble</code> for development efforts. <a href="https://business-science.github.io/modeltime.ensemble/" class="uri">https://business-science.github.io/modeltime.ensemble/</a>
-</li>
-</ul>
-</div>
-<div id="resampling-backtesting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#resampling-backtesting" class="anchor"></a>Resampling &amp; Backtesting</h2>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked>
-Please refer to <code>modeltime.resample</code> for backtesting and resampling time series: <a href="https://business-science.github.io/modeltime.resample/index.html" class="uri">https://business-science.github.io/modeltime.resample/index.html</a>
-</li>
-</ul>
-</div>
-<div id="gluonts-deep-learning" class="section level2">
-<h2 class="hasAnchor">
-<a href="#gluonts-deep-learning" class="anchor"></a>GluonTS (Deep Learning)</h2>
-<p>Please refer to <code>modeltime.gluonts</code> R package: <a href="https://github.com/business-science/modeltime.gluonts" class="uri">https://github.com/business-science/modeltime.gluonts</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>DeepAR</strong> - <a href="https://business-science.github.io/modeltime.gluonts/reference/deep_ar.html">See <code>modeltime.gluonts::deep_ar()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked><strong>N-BEATS</strong> - <a href="https://business-science.github.io/modeltime.gluonts/reference/nbeats.html">See <code>modeltime.gluonts::nbeats()</code></a>
-</li>
-</ul>
-</div>
-<div id="h2o-automl-automatic-machine-learning" class="section level2">
-<h2 class="hasAnchor">
-<a href="#h2o-automl-automatic-machine-learning" class="anchor"></a>H2O AutoML (Automatic Machine Learning)</h2>
-<p>This project is being managed via <code>modeltime.h2o</code>: <a href="https://github.com/business-science/modeltime.h2o" class="uri">https://github.com/business-science/modeltime.h2o</a></p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked>
-H2O AutoML Backend (business-science/modeltime.h2o#1)</li>
-</ul>
-</div>
-<div id="baseline-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#baseline-models" class="anchor"></a>Baseline Models</h2>
-<p>Refer to baseline algorithms #37</p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked>
-Naive &amp; Seasonal Naive - <a href="https://business-science.github.io/modeltime/reference/naive_reg.html">See <code>naive_reg()</code></a>
-</li>
-<li>
-<input type="checkbox" disabled checked>
-Mean &amp; Median Window Forecasts - <a href="https://business-science.github.io/modeltime/reference/window_reg.html">See <code>window_reg()</code></a>
-</li>
-</ul>
-</div>
-<div id="general-additive-models-gams" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-additive-models-gams" class="anchor"></a>General Additive Models (GAMs)</h2>
-<p>We are currently working with the <code>parsnip</code> team to reach a solution.</p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled>
-GAMs (<code>mgcv</code>)</li>
-</ul>
-</div>
-<div id="garch-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#garch-models" class="anchor"></a>GARCH Models</h2>
-<p>Refer to <code>garchmodels</code> (<a href="https://albertoalmuinha.github.io/garchmodels/">Website</a>, <a href="https://github.com/AlbertoAlmuinha/garchmodels">GitHub</a>).</p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked>
-GARCH</li>
-<li>
-<input type="checkbox" disabled checked>
-RUGARCH</li>
-<li>
-<input type="checkbox" disabled checked>
-RMGARCH</li>
-</ul>
-</div>
-<div id="bayesian-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bayesian-models" class="anchor"></a>Bayesian Models</h2>
-<p>Refer to <code>bayesmodels</code> (<a href="https://albertoalmuinha.github.io/bayesmodels/">Website</a>, <a href="https://github.com/AlbertoAlmuinha/bayesmodels">GitHub</a>)</p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked><strong>Sarima</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
-<li>
-<input type="checkbox" disabled checked><strong>Garch</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
-<li>
-<input type="checkbox" disabled checked><strong>Random Walk (Naive)</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
-<li>
-<input type="checkbox" disabled checked><strong>State Space Model</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> and <code>bsts</code> packages.</li>
-<li>
-<input type="checkbox" disabled checked><strong>Stochastic Volatility Model</strong>: <code>bayesmodels</code> connects to the <code>bayesforecast</code> package.</li>
-<li>
-<input type="checkbox" disabled checked><strong>Generalized Additive Models (GAMS)</strong>: <code>bayesmodels</code> connects to the <code>brms</code> package.</li>
-<li>
-<input type="checkbox" disabled checked><strong>Adaptive Splines Surface</strong>: <code>bayesmodels</code> connects to the <code>BASS</code> package.</li>
-<li>
-<input type="checkbox" disabled checked><strong>Exponential Smoothing</strong>: <code>bayesmodels</code> connects to the <code>Rglt</code> package.</li>
-</ul>
-</div>
-<div id="boosted-models-catboost-lightgbm" class="section level2">
-<h2 class="hasAnchor">
-<a href="#boosted-models-catboost-lightgbm" class="anchor"></a>Boosted Models: CatBoost, LightGBM</h2>
-<p>Refer to <code>boostime</code> (<a href="https://github.com/AlbertoAlmuinha/boostime">GitHub</a>).</p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled checked>
-ARIMA + Catboost</li>
-<li>
-<input type="checkbox" disabled checked>
-ARIMA + LightGBM</li>
-<li>
-<input type="checkbox" disabled checked>
-Prophet + Catboost</li>
-<li>
-<input type="checkbox" disabled checked>
-Prophet + LightGBM</li>
-</ul>
-</div>
-<div id="vector-autoregression-var" class="section level2">
-<h2 class="hasAnchor">
-<a href="#vector-autoregression-var" class="anchor"></a>Vector Autoregression (VAR)</h2>
-<p>Investigate whether or not tools are needed to support VAR modeling. It’s unclear whether or not a separate toolset is required beyond the core system. User input required. Follow GH Issue #77.</p>
-</div>
-<div id="spark-dask-scalable-compute" class="section level2">
-<h2 class="hasAnchor">
-<a href="#spark-dask-scalable-compute" class="anchor"></a>Spark &amp; Dask: Scalable Compute</h2>
-<p>Investigate the possibility of adding Spark and Dask backends to improve scalability of modeltime.</p>
-<ul class="task-list">
-<li>
-<input type="checkbox" disabled>
-Spark Backend #105</li>
-<li>
-<input type="checkbox" disabled>
-Dask Backend #106</li>
-</ul>
-</div>
-<div id="linkedin-greykite" class="section level2">
-<h2 class="hasAnchor">
-<a href="#linkedin-greykite" class="anchor"></a>LinkedIn Greykite</h2>
-<p>Investigate algorithm. Determine if backend has value. <a href="https://linkedin.github.io/greykite/docs/0.1.0/html/index.html" class="uri">https://linkedin.github.io/greykite/docs/0.1.0/html/index.html</a></p>
 </div>
   </div>
 

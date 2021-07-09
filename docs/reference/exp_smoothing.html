@@ -53,7 +53,10 @@
 before fitting and allows the model to be created using
 different packages. Currently the only package is forecast. Several algorithms are implemented:
 ETS - Automated Exponential Smoothing
-CROSTON - Croston's forecast for intermittent demand
+CROSTON - Croston's forecast is a special case
+of Exponential Smoothing for intermittent demand
+Theta - A special case of Exponential Smoothing with Drift that
+performed well in the M3 Competition
 
 " />
 <meta property="og:image" content="/logo.png" />
@@ -128,7 +131,7 @@ CROSTON - Croston's forecast for intermittent demand
       <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
     </li>
     <li>
-      <a href="../articles/parallel-processing.html">Tuning &amp; Parallel Processing</a>
+      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -234,7 +237,10 @@ CROSTON - Croston's forecast for intermittent demand
 before fitting and allows the model to be created using
 different packages. Currently the only package is <code>forecast</code>. Several algorithms are implemented:</p><ul>
 <li><p>ETS - Automated Exponential Smoothing</p></li>
-<li><p>CROSTON - Croston's forecast for intermittent demand</p></li>
+<li><p>CROSTON - Croston's forecast is a special case
+of Exponential Smoothing for intermittent demand</p></li>
+<li><p>Theta - A special case of Exponential Smoothing with Drift that
+performed well in the M3 Competition</p></li>
 </ul>
 
     </div>
@@ -447,7 +453,7 @@ There are 3 ways to specify:</p><ol>
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  725ms 
+#&gt; Fit time:  668ms 
 #&gt; ETS(A,A,A) 
 #&gt; 
 #&gt; Call:
@@ -489,7 +495,7 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  177ms 
+#&gt; Fit time:  167ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:
@@ -528,7 +534,7 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  975ms 
+#&gt; Fit time:  926ms 
 #&gt; Croston Method
 #&gt; ---</div><div class='input'>
 
@@ -544,7 +550,7 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  8ms 
+#&gt; Fit time:  7ms 
 #&gt; Theta Method
 #&gt; ---</div><div class='input'>
 </div></pre>
