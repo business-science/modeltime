@@ -2,7 +2,7 @@
 % Please edit documentation in R/parsnip-temporal_hierarchy.R
 \name{temporal_hierarchy}
 \alias{temporal_hierarchy}
-\title{General Interface for Temporal Hierarchical Forecasting Models}
+\title{General Interface for Temporal Hierarchical Forecasting (THIEF) Models}
 \usage{
 temporal_hierarchy(
   mode = "regression",
