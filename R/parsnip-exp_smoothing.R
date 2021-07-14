@@ -183,8 +183,9 @@
 #'     fit(log(value) ~ date, data = training(splits))
 #' model_fit
 #'
-#' # ---- CROSTON ----
 #'
+#' # ---- CROSTON ----
+#' \donttest{
 #' # Model Spec
 #' model_spec <- exp_smoothing(
 #'         smooth_level = 0.2
@@ -195,10 +196,12 @@
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
 #' model_fit
+#' }
+#'
 #'
 #'
 #' # ---- THETA ----
-#'
+#' \donttest{
 #' #' # Model Spec
 #' model_spec <- exp_smoothing() %>%
 #'     set_engine("theta")
@@ -207,6 +210,7 @@
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
 #' model_fit
+#' }
 #'
 #' @export
 exp_smoothing <- function(mode = "regression", seasonal_period = NULL,
