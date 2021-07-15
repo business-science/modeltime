@@ -256,11 +256,11 @@ calib_tbl %>%
     )
 ```
 
-The model looks fairly accurate. 
+
 
 # Summary
 
-We just showcased the Modeltime Workflow for Panel Data using a Global XGBOOST Model. But, this is a simple problem. And, there's a lot more to learning time series. 
+We just showcased the __Modeltime Workflow for Panel Data using a Global XGBOOST Model__. But, this is a simple problem. And, __there's a lot more to learning time series:__ 
 
 - Many more algorithms
 - Feature Engineering for Time Series

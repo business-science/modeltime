@@ -10,6 +10,9 @@ We've expanded Panel Data functionality to produce model accuracy and confidence
 
 * `modeltime_forecast()`: Gains a `conf_by_id` argument that is `TRUE`/`FALSE`. If the data has been calibrated with `id`, then the user can return local model confidence by the identifier column. The forecast data frame will return an extra column indicating the identifier column. The confidence intervals will be adjusted based on the local time series ID variance instead of the global model variance. 
 
+### New Vignette
+
+[Modeling Panel Data](https://business-science.github.io/modeltime/articles/modeling-panel-data.html) 
 
 ### New Algorithms
 
