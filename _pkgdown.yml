@@ -20,6 +20,8 @@ navbar:
           href: articles/recursive-forecasting.html
         - text: 'Hyperparameter Tuning & Parallel Processing'
           href: articles/parallel-processing.html
+        - text: 'Modeling Panel Data'
+          href: articles/modeling-panel-data.html
         - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Algorithm Roadmap'
@@ -93,6 +95,7 @@ reference:
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
   - subtitle: Core Forecasting Methods
+    desc: These models come with modeltime.
     contents:
     - prophet_reg
     - prophet_boost
@@ -101,6 +104,9 @@ reference:
     - exp_smoothing
     - seasonal_reg
     - nnetar_reg
+  - subtitle: Additional Algorithms
+    desc: These algorithms have additional dependencies that can be installed with `dependencies = TRUE`
+    contents:
     - temporal_hierarchy
   - subtitle: Baseline Algorithms (Simple Methods)
     contents:
