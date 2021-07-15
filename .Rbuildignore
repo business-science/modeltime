@@ -12,3 +12,4 @@
 ^cran-comments\.md$
 ^\.github$
 ^codecov\.yml$
+vignettes/temp

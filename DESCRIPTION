@@ -68,7 +68,7 @@ Suggests:
     randomForest,
     tidyquant,
     knitr,
-    rmarkdown,
+    rmarkdown (>= 2.9),
     webshot,
     qpdf,
     covr
