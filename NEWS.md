@@ -1,4 +1,6 @@
-# modeltime 0.7.0 (Development Version)
+# modeltime 0.7.0.9000 (Development Version)
+
+# modeltime 0.7.0 
 
 ### Group-Wise Accuracy and Confidence Interval by Time Series ID
 
