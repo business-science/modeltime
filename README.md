@@ -19,6 +19,10 @@ coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/b
 
 ## Modeltime in Minutes (YouTube)
 
+Try Modeltime with this
+<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">10-minute
+YouTube video</a>.
+
 <a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">
 <img src="http://img.youtube.com/vi/-bCelif-ENY/0.jpg"
 alt="Introduction to Modeltime" width="100%" height="350"/>
