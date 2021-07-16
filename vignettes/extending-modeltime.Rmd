@@ -2,7 +2,7 @@
 title: "Extending Modeltime (Developer Tools)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Extending Modeltime}
+  %\VignetteIndexEntry{Extending Modeltime (Developer Tools)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
