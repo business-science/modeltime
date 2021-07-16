@@ -1,5 +1,5 @@
 ---
-title: "Modeling Panel Data"
+title: "Forecasting Panel Data"
 output: rmarkdown::html_vignette
 resource_files:
   - articles/logo-modeltime.png
@@ -7,7 +7,7 @@ resource_files:
   - articles/modeltime_workflow.jpg
   - articles/time_series_course.jpg
 vignette: >
-  %\VignetteIndexEntry{Modeling Panel Data}
+  %\VignetteIndexEntry{Forecasting Panel Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -240,7 +240,7 @@ calib_tbl %>%
 
 ## Forecast the Data
 
-The last step we'll cover is forecasting the test dataset. This is useful to evaluate the model using a sampling of the time series within the panel dataset. In `modeltime` 0.7.0, we now have `modeltime_forecast(conf_by_id  = TRUE)` to allow the confidence intervals (prediction intervals) to be calculated by time series identifier. Note, that the `modeltime_calibration()` must have been performed with an `id` specified. 
+The last step we'll cover is forecasting the test dataset. This is useful to evaluate the model using a sampling of the time series within the panel dataset. In `modeltime` 0.7.0, we now have `modeltime_forecast(conf_by_id  = TRUE)` to allow the confidence intervals (prediction intervals) to be calculated by time series identifier. Note, that the `modeltime_calibrate()` must have been performed with an `id` specified. 
 
 ```{r}
 calib_tbl %>%

@@ -20,7 +20,7 @@ navbar:
           href: articles/recursive-forecasting.html
         - text: 'Hyperparameter Tuning & Parallel Processing'
           href: articles/parallel-processing.html
-        - text: 'Modeling Panel Data'
+        - text: 'Forecasting Panel Data'
           href: articles/modeling-panel-data.html
         - text: "---"
         - text: 'Algorithms'

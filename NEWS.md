@@ -12,7 +12,7 @@ We've expanded Panel Data functionality to produce model accuracy and confidence
 
 ### New Vignette
 
-[Modeling Panel Data](https://business-science.github.io/modeltime/articles/modeling-panel-data.html) 
+[Forecasting Panel Data](https://business-science.github.io/modeltime/articles/modeling-panel-data.html) 
 
 ### New Algorithms
 
