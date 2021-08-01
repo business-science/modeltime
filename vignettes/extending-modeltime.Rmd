@@ -404,7 +404,7 @@ show_model_info("decomposition_reg")
 We need to modify how `parnsip` handles features because date and date-time information cannot be processed by `model.frame()` (default behavior). We use `set_encoding()` to ensure the predictors are processed without any preprocessing. We'll handle all preprocessing in our fit model bridge, `bridge_stlm_ets_fit_impl()` (shown next).
 
 
-```{r, eval = F}
+```{r}
 parsnip::set_encoding(
   model   = "decomposition_reg",
   eng     = "stlm_ets",
@@ -432,7 +432,7 @@ splits <- initial_time_split(taylor_30_min, prop = 0.9)
 
 Then create a model on the training set. 
 
-```{r, paged.print = FALSE, eval=F}
+```{r, paged.print = FALSE}
 model_fit <- decomposition_reg(
     period_seasonal_1 = 24*2, 
     period_seasonal_2 = 24*2*7
@@ -443,10 +443,7 @@ model_fit <- decomposition_reg(
 model_fit
 ```
 
-```{r echo=F}
-model_fit <- read_rds("model_fit.rds")
-model_fit
-```
+
 
 
 ### Make a Calibrated Modeltime Table
@@ -465,14 +462,12 @@ calibration_tbl
 
 We'll refit on the full dataset.
 
-```{r eval=F}
+```{r }
 refit_tbl <- calibration_tbl %>%
   modeltime_refit(data = taylor_30_min)
 ```
 
-```{r echo=F}
-refit_tbl <- read_rds("refit_tbl.rds")
-```
+
 
 Then forecast forward 1 week. 
 
