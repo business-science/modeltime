@@ -67,7 +67,9 @@ modeltime_fit_workflowset <- function(object, data, ..., control = control_fit_w
 
     names(models) <- NULL
 
-    modeltime_tbl <- models %>% as_modeltime_table_from_workflowset()
+    .model_desc <- object %>% dplyr::pull(1) %>% stringr::str_to_upper()
+
+    modeltime_tbl <- models %>% as_modeltime_table_from_workflowset(.model_desc = .model_desc)
 
     return(modeltime_tbl)
 
@@ -271,7 +273,7 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 
 # HELPERS -----
 
-as_modeltime_table_from_workflowset <- function(.l) {
+as_modeltime_table_from_workflowset <- function(.l, .model_desc) {
 
     ret <- tibble::tibble(
         .model = .l
@@ -285,7 +287,7 @@ as_modeltime_table_from_workflowset <- function(.l) {
 
     # CREATE MODELTIME OBJECT
     ret <- ret %>%
-        dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description))
+        dplyr::mutate(.model_desc = .model_desc)
 
     class(ret) <- c("mdl_time_tbl", class(ret))
 
