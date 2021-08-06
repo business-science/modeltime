@@ -1,8 +1,39 @@
 # modeltime 0.7.0.9000 (Development Version)
 
+### Nested (Iterative) Forecasting
+
+__Nested (Iterative) Forecasting__ is aimed at making it easier to perform forecasting that is traditionally done in a _for-loop_ with models like ARIMA, Prophet, and Exponential Smoothing. Functionality has been added to:
+
+#### Format data in a Nested Time Series structure
+
+- __Data Preparation Utilities:__ `extend_timeseries()`, `nest_timeseries()`, and `split_nested_timeseris()`.
+
+#### Nested Model Fitting (Train/Test)
+
+- __`modeltime_nested_fit()`:__ Fits many models to nested time series data and organizes in a "Nested Modeltime Table". Logs Accuracy, Errors, and Test Forecasts. 
+
+- __`control_nested_fit()`:__ Used to control the fitting process including verbosity and parallel processing. 
+
+- __Logging Extractors:__ Functions that retrieve logged information from the initial fitting process. `modeltime_nested_accuracy()`, `modeltime_nested_error_report()`, and `modeltime_nested_test_forecast()`.
+
+#### Nested Model Selection
+
+- __`modeltime_nested_select_best()`__: Selects the best model for each time series ID. 
+
+- __Logging Extractors:__ Functions that retrieve logged information from the initial fitting process. `modeltime_nested_accuracy()`, `modeltime_nested_error_report()`
+
+
+#### Nested Model Refitting (Actual Data)
+
+- __`modeltime_nested_refit()`:__ Refits to the `.future_data`. Logs Future Forecasts. 
+
+- __`control_nested_refit()`:__ Used to control the re-fitting process including verbosity and parallel processing. 
+
+- __Logging Extractors:__ Functions that retrieve logged information from the re-fitting process. `modeltime_nested_future_forecast()`.
+
 ### Workflowsets Integration
 
-- `modeltime_fit_workflowset()`: Improved handling of Workflowset Descriptions
+- `modeltime_fit_workflowset()`: Improved handling of Workflowset Descriptions, which now match the `wflow_id`. 
 
 # modeltime 0.7.0 
 
