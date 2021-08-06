@@ -1,5 +1,9 @@
 # modeltime 0.7.0.9000 (Development Version)
 
+### Workflowsets Integration
+
+- `modeltime_fit_workflowset()`: Improved handling of Workflowset Descriptions
+
 # modeltime 0.7.0 
 
 ### Group-Wise Accuracy and Confidence Interval by Time Series ID
