@@ -1,6 +1,6 @@
 # modeltime 0.7.0.9000 (Development Version)
 
-### Nested (Iterative) Forecasting
+### New Feature: Nested (Iterative) Forecasting
 
 __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forecasting that is traditionally done in a _for-loop_ with models like ARIMA, Prophet, and Exponential Smoothing. Functionality has been added to:
 
@@ -20,7 +20,7 @@ __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forec
 
 - __`modeltime_nested_select_best()`__: Selects the best model for each time series ID. 
 
-- __Logging Extractors:__ Functions that retrieve logged information from the initial fitting process. `modeltime_nested_accuracy()`, `modeltime_nested_error_report()`
+- __Logging Extractors:__ Functions that retrieve logged information from the model selection process. `modeltime_nested_best_model_report()`
 
 
 #### Nested Model Refitting (Actual Data)
