@@ -67,7 +67,7 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
         tidyr::unnest(.modeltime_tables) %>%
         dplyr::right_join(best_model_by_id_tbl, by = c(id_text, ".model_id")) %>%
 
-        tidyr::est(.modeltime_tables = -(!! id_expr) ) %>%
+        tidyr::nest(.modeltime_tables = -(!! id_expr) ) %>%
         dplyr::mutate(.modeltime_tables = purrr::map(.modeltime_tables, function(x) {
             class(x) <- c("mdl_time_tbl", class(x))
             x
@@ -103,7 +103,7 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
 
         # Updated Test Forecast
         future_forecast_tbl <- object %>%
-            modeltime_nested_future_forecast()
+            extract_nested_future_forecast()
 
         if (!is.null(future_forecast_tbl)) {
 
