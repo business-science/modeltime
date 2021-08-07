@@ -26,11 +26,14 @@ This is designed to estimate future confidence from \emph{out-of-sample predicti
 \item{control}{Used to control verbosity and parallel processing. See \code{\link[=control_nested_fit]{control_nested_fit()}}.}
 }
 \description{
-Fits one or more \code{tidymodels} workflow objects to nested time series data.
+Fits one or more \code{tidymodels} workflow objects to nested time series data using the following process:
 \enumerate{
 \item Models are iteratively fit to training splits.
 \item Accuracy is calculated on testing splits and is logged.
+Accuracy results can be retrieved with \code{\link[=extract_nested_test_accuracy]{extract_nested_test_accuracy()}}
 \item Any model that returns an error is logged.
+Error logs can be retrieved with \code{\link[=extract_nested_error_report]{extract_nested_error_report()}}
 \item Forecast is predicted on testing splits and is logged.
+Forecast results can be retrieved with \code{\link[=extract_nested_test_forecast]{extract_nested_test_forecast()}}
 }
 }
