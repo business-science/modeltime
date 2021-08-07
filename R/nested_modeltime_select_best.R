@@ -46,7 +46,7 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
     # Select best from accuracy
     best_model_by_id_tbl <- object %>%
 
-        modeltime_nested_accuracy() %>%
+        extract_nested_test_accuracy() %>%
         dplyr::group_by(!! id_expr) %>%
 
         dplyr::filter( (!! metric_expr) == metric_fun((!! metric_expr), na.rm = TRUE)) %>%
@@ -82,7 +82,7 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
 
         # Updated Test Forecast
         test_forecast_tbl <- object %>%
-            modeltime_nested_test_forecast()
+            extract_nested_test_forecast()
 
         if (!is.null(test_forecast_tbl)) {
 

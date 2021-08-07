@@ -14,13 +14,13 @@ __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forec
 
 - __`control_nested_fit()`:__ Used to control the fitting process including verbosity and parallel processing. 
 
-- __Logging Extractors:__ Functions that retrieve logged information from the initial fitting process. `modeltime_nested_accuracy()`, `modeltime_nested_error_report()`, and `modeltime_nested_test_forecast()`.
+- __Logging Extractors:__ Functions that retrieve logged information from the initial fitting process. `extract_nested_test_accuracy()`, `extract_nested_error_report()`, and `extract_nested_test_forecast()`.
 
 #### Nested Model Selection
 
 - __`modeltime_nested_select_best()`__: Selects the best model for each time series ID. 
 
-- __Logging Extractors:__ Functions that retrieve logged information from the model selection process. `modeltime_nested_best_model_report()`
+- __Logging Extractors:__ Functions that retrieve logged information from the model selection process. `extract_nested_best_model_report()`
 
 
 #### Nested Model Refitting (Actual Data)
@@ -29,7 +29,7 @@ __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forec
 
 - __`control_nested_refit()`:__ Used to control the re-fitting process including verbosity and parallel processing. 
 
-- __Logging Extractors:__ Functions that retrieve logged information from the re-fitting process. `modeltime_nested_future_forecast()`.
+- __Logging Extractors:__ Functions that retrieve logged information from the re-fitting process. `extract_nested_future_forecast()`.
 
 ### Workflowsets Integration
 

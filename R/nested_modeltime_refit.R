@@ -48,8 +48,8 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 
     # SETUP LOGGING ENV ----
     logging_env <- rlang::env(
-        fcast_tbl = tibble(),
-        error_tbl = tibble()
+        fcast_tbl = tibble::tibble(),
+        error_tbl = tibble::tibble()
 
     )
 
@@ -223,7 +223,7 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 
 
     if (nrow(attr(nested_modeltime, "error_tbl")) > 0) {
-        rlang::warn("Some models had errors during fitting. Use `modeltime_nested_error_report()` to review errors.")
+        rlang::warn("Some models had errors during fitting. Use `extract_nested_error_report()` to review errors.")
     }
 
 
