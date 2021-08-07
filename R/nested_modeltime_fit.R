@@ -48,9 +48,9 @@ modeltime_nested_fit <- function(nested_data, ...,
 
     # SETUP LOGGING ENV ----
     logging_env <- rlang::env(
-        acc_tbl   = tibble(),
-        fcast_tbl = tibble(),
-        error_tbl = tibble()
+        acc_tbl   = tibble::tibble(),
+        fcast_tbl = tibble::tibble(),
+        error_tbl = tibble::tibble()
 
     )
 
