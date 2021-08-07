@@ -329,34 +329,34 @@ print.control_nested_fit <- function(x, ...) {
 #'
 #' @param object A nested modeltime table
 #'
-#' @name modeltime_nested_tables
+#' @name modeltime_nested_log_accessors
 
 #' @export
-#' @rdname modeltime_nested_tables
+#' @rdname modeltime_nested_log_accessors
 modeltime_nested_accuracy <- function(object) {
     attr(object, "accuracy_tbl")
 }
 
 #' @export
-#' @rdname modeltime_nested_tables
+#' @rdname modeltime_nested_log_accessors
 modeltime_nested_test_forecast <- function(object) {
     attr(object, "test_forecast_tbl")
 }
 
 #' @export
-#' @rdname modeltime_nested_tables
+#' @rdname modeltime_nested_log_accessors
 modeltime_nested_error_report <- function(object) {
     attr(object, "error_tbl")
 }
 
 #' @export
-#' @rdname modeltime_nested_tables
+#' @rdname modeltime_nested_log_accessors
 modeltime_nested_future_forecast <- function(object) {
     attr(object, "future_forecast_tbl")
 }
 
 #' @export
-#' @rdname modeltime_nested_tables
+#' @rdname modeltime_nested_log_accessors
 modeltime_nested_best_model_report <- function(object) {
     attr(object, "best_selection_tbl")
 }
