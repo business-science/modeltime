@@ -154,6 +154,19 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
         }
 
     }
+    
+    # MAPE/MAAPE Check: Intermittent Series
+    
+     if (is.na(ret$mape) | is.infinite(ret$mape)){
+         
+         ret <- ret %>%
+             dplyr::mutate(mape = maape) %>%
+             dplyr::select(-maape) %>%
+             dplyr::rename(maape = mape)
+         
+     } else {
+         ret <- ret %>% dplyr::select(-maape)
+     }
 
     return(ret)
 }
