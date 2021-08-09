@@ -39,11 +39,11 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 
     n_ids   <- nrow(object)
 
-    x_expr <- rlang::sym(".modeltime_tables")
+    x_expr  <- rlang::sym(".modeltime_tables")
 
-    d_expr <- rlang::sym(".actual_data")
+    d_expr  <- rlang::sym(".actual_data")
 
-    f_expr <- rlang::sym(".future_data")
+    f_expr  <- rlang::sym(".future_data")
 
 
     # SETUP LOGGING ENV ----
@@ -96,6 +96,13 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
                             .error_desc = ifelse(is.null(err), NA_character_, err)
                         )
 
+                        # print(id)
+                        # print(mod_id)
+                        # print(get_model_description(mod))
+                        # print(err)
+                        #
+                        # print(error_tbl)
+
                         if (control$verbose) {
                             if (!is.null(err)) {
                                 cli::cli_alert_danger("Model {mod_id} Failed {error_tbl$.model_desc}: {err}")
@@ -122,8 +129,14 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
                     dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
 
                 # Add calibration
-                ret <- ret %>%
-                    dplyr::bind_cols(x[c(".type", ".calibration_data")])
+                tryCatch({
+                    ret <- ret %>%
+                        dplyr::bind_cols(x[c(".type", ".calibration_data")])
+                }, error = function(e) {
+                    # If calibration does not exist, do nothing
+                })
+
+
 
                 # Update class
                 class(ret) <- c("mdl_time_tbl", class(ret))
@@ -183,7 +196,7 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
     # attr(nested_modeltime, "id")                  <- id_text
-    attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na()
+    attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
     # attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
     # attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
     # attr(nested_modeltime, "best_selection_tbl")  <- NULL

@@ -160,9 +160,19 @@ modeltime_nested_fit <- function(nested_data, ...,
 
                             logging_env$acc_tbl <- dplyr::bind_rows(logging_env$acc_tbl, acc_tbl)
 
-                        }, error=function(e){
+                        }, error=function(e) {
 
-                            # Return Nothing
+                            # Return just the id
+
+                            acc_tbl <- tibble::tibble(
+                                !! id_text := id,
+                                .model_id   = ret$.model_id,
+                                .model_desc = "NULL"
+                            )
+
+                            logging_env$acc_tbl <- dplyr::bind_rows(logging_env$acc_tbl, acc_tbl)
+
+
                         })
 
 
@@ -221,7 +231,7 @@ modeltime_nested_fit <- function(nested_data, ...,
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
     attr(nested_modeltime, "id")                  <- id_text
-    attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na()
+    attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
     attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
     attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
     attr(nested_modeltime, "best_selection_tbl")  <- NULL
