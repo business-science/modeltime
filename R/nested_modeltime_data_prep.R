@@ -209,9 +209,12 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
                         cumulative = cum,
                         ...
                     )
+
                 }, error = function(e) {
                     # rlang::warn("Problem with: {as.character(i)}")
-                    rlang::warn(stringr::str_glue("Problem with ID: {i} | {as.character(e)}"))
+                    error_msg = stringr::str_c(as.character(e), collapse = '. ')
+
+                    rlang::warn(stringr::str_glue("Problem Splitting ID: {i} | Returing <NULL> split | {error_msg}"))
                     NULL
                 })
 
