@@ -70,91 +70,71 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 
                 ..model_id <- x$.model_id
 
+                if (control$verbose) cli::cli_alert_info(stringr::str_glue("[{i}/{n_ids}] Starting Modeltime Table: ID {id}..."))
 
-                tryCatch({
+                model_list <- x$.model
 
-                    if (control$verbose) cli::cli_alert_info(stringr::str_glue("[{i}/{n_ids}] Starting Modeltime Table: ID {id}..."))
+                safe_fit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
 
-                    model_list <- x$.model
+                # Safe fitting for each workflow in model_list ----
+                .l <- purrr::map2(model_list, ..model_id, .f = function (mod, mod_id) {
 
-                    safe_fit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
-
-                    # Safe fitting for each workflow in model_list ----
-                    .l <- model_list %>%
-                        purrr::imap(.f = function (mod, i) {
-
-                            suppressMessages({
-                                suppressWarnings({
-                                    fit_list <- safe_fit(mod, data = d)
-                                })
+                        suppressMessages({
+                            suppressWarnings({
+                                fit_list <- safe_fit(mod, data = d)
                             })
-
-                            res <- fit_list %>% purrr::pluck("result")
-
-                            err <- fit_list %>% purrr::pluck("error", 1)
-
-                            error_tbl <- tibble::tibble(
-                                !! id_text := id,
-                                .model_id   = ..model_id,
-                                .model_desc = get_model_description(mod),
-                                .error_desc = ifelse(is.null(err), NA_character_, err)
-                            )
-
-                            if (control$verbose) {
-                                if (!is.null(err)) {
-                                    cli::cli_alert_danger("Model {i} Failed {error_tbl$.model_desc}: {err}")
-                                } else {
-                                    cli::cli_alert_success("Model {i} Passed {error_tbl$.model_desc}.")
-                                }
-                            }
-
-
-                            logging_env$error_tbl <- dplyr::bind_rows(logging_env$error_tbl, error_tbl)
-
-                            return(res)
                         })
 
-                    # Convert to Modeltime Table -----
-                    ret <- tibble::tibble(
-                        .model = .l
-                    ) %>%
-                        dplyr::mutate(.model_id = ..model_id) %>%
-                        dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
+                        res <- fit_list %>% purrr::pluck("result")
 
-                        # Simplify Naming
-                        dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
-                        dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
+                        err <- fit_list %>% purrr::pluck("error", 1)
 
-                    # Add calibration
-                    ret <- ret %>%
-                        dplyr::bind_cols(x[c(".type", ".calibration_data")])
+                        error_tbl <- tibble::tibble(
+                            !! id_text := id,
+                            .model_id   = mod_id,
+                            .model_desc = get_model_description(mod),
+                            .error_desc = ifelse(is.null(err), NA_character_, err)
+                        )
 
-                    # Update class
-                    class(ret) <- c("mdl_time_tbl", class(ret))
+                        if (control$verbose) {
+                            if (!is.null(err)) {
+                                cli::cli_alert_danger("Model {mod_id} Failed {error_tbl$.model_desc}: {err}")
+                            } else {
+                                cli::cli_alert_success("Model {mod_id} Passed {error_tbl$.model_desc}.")
+                            }
+                        }
 
-                    # ret <- ret %>%
-                    #     dplyr::mutate(.model_desc_user = model_desc_user_vec) %>%
-                    #     dplyr::mutate(.model_desc_old  = model_desc_modeltime_old_vec) %>%
-                    #     dplyr::mutate(.model_desc_new  = purrr::map_chr(.model, .f = get_model_description)) %>%
-                    #
-                    #     # Description Logic
-                    #     dplyr::mutate(.model_desc = ifelse(
-                    #         .model_desc_old == .model_desc_new,
-                    #         # TRUE - Let User Choice Alone
-                    #         .model_desc_user,
-                    #         # FALSE - Model Algorithm Parameters Have Changed
-                    #         # - Reflect Updated Model Params in Description
-                    #         paste0("UPDATE: ", .model_desc_new)
-                    #         )
-                    #     ) %>%
-                    #
-                    #     # Clean up columns
-                    #     dplyr::select(-.model_desc_user, -.model_desc_old, -.model_desc_new)
 
-                    # Future Forecast ----
+                        logging_env$error_tbl <- dplyr::bind_rows(logging_env$error_tbl, error_tbl)
 
-                    suppressMessages({
-                        suppressWarnings({
+                        return(res)
+                    })
+
+                # Convert to Modeltime Table -----
+                ret <- tibble::tibble(
+                    .model = .l
+                ) %>%
+                    dplyr::mutate(.model_id = ..model_id) %>%
+                    dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
+
+                    # Simplify Naming
+                    dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
+                    dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
+
+                # Add calibration
+                ret <- ret %>%
+                    dplyr::bind_cols(x[c(".type", ".calibration_data")])
+
+                # Update class
+                class(ret) <- c("mdl_time_tbl", class(ret))
+
+                # Future Forecast ----
+
+                suppressMessages({
+                    suppressWarnings({
+
+                        tryCatch({
+
                             fcast_tbl <- modeltime_forecast(
                                 object        = ret,
                                 new_data      = f,
@@ -164,32 +144,22 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
                                 tibble::add_column(!! id_text := id, .before = 1)
 
                             logging_env$fcast_tbl <- dplyr::bind_rows(logging_env$fcast_tbl, fcast_tbl)
+
+                        }, error=function(e){
+
+                            # Return nothing
                         })
+
+
                     })
-
-                    # Finish ----
-
-                    if (control$verbose) cli::cli_alert_success(stringr::str_glue("[{i}/{n_ids}] Finished Modeltime Table: ID {id}"))
-                    if (control$verbose) cat("\n")
-
-                }, error = function(e) {
-
-                    cli::cli_alert_danger(stringr::str_glue("Modeltime Table (Failed): ID {id}"))
-                    cli::cli_inform(e)
-                    cat("\n")
-
-                    error_tbl <- tibble::tibble(
-                        !! id_text := id,
-                        .model_id   = "ALL MODELS",
-                        .model_desc = "ALL MODELS FAILED",
-                        .error_desc = as.character(e)
-                    )
-
-                    logging_env$error_tbl <- dplyr::bind_rows(logging_env$error_tbl, error_tbl)
-
-                    ret <- NULL
-
                 })
+
+                # Finish ----
+
+                if (control$verbose) cli::cli_alert_success(stringr::str_glue("[{i}/{n_ids}] Finished Modeltime Table: ID {id}"))
+                if (control$verbose) cat("\n")
+
+
 
                 if (!control$verbose) cli::cli_progress_update(.envir = logging_env)
 
