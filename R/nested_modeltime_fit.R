@@ -317,44 +317,4 @@ print.control_nested_fit <- function(x, ...) {
 
 
 
-# NESTED TEST ACCURACY / TEST FORECAST / ERROR REPORTING ----
 
-#' Log Extractor Functions for Modeltime Nested Tables
-#'
-#' @description
-#' Extract logged information calculated during the `modeltime_nested_fit()`,
-#' `modeltime_nested_select_best()`, and `modeltime_nested_refit()` processes.
-#'
-#' @param object A nested modeltime table
-#'
-#' @name log_extractors
-
-#' @export
-#' @rdname log_extractors
-extract_nested_test_accuracy <- function(object) {
-    attr(object, "accuracy_tbl")
-}
-
-#' @export
-#' @rdname log_extractors
-extract_nested_test_forecast <- function(object) {
-    attr(object, "test_forecast_tbl")
-}
-
-#' @export
-#' @rdname log_extractors
-extract_nested_error_report <- function(object) {
-    attr(object, "error_tbl")
-}
-
-#' @export
-#' @rdname log_extractors
-extract_nested_best_model_report <- function(object) {
-    attr(object, "best_selection_tbl")
-}
-
-#' @export
-#' @rdname log_extractors
-extract_nested_future_forecast <- function(object) {
-    attr(object, "future_forecast_tbl")
-}
