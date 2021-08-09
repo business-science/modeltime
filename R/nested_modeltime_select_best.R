@@ -59,13 +59,12 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
     best_model_by_id_tbl <- best_model_by_id_tbl %>%
         dplyr::select(!! id_expr, .model_id)
 
-
     # Update Modeltime Tables
     modeltime_tables_tbl <- object %>%
 
         dplyr::select(!! id_expr, .modeltime_tables) %>%
         tidyr::unnest(.modeltime_tables) %>%
-        dplyr::right_join(best_model_by_id_tbl, by = c(id_text, ".model_id")) %>%
+        dplyr::left_join(best_model_by_id_tbl, by = c(id_text, ".model_id")) %>%
 
         tidyr::nest(.modeltime_tables = -(!! id_expr) ) %>%
         dplyr::mutate(.modeltime_tables = purrr::map(.modeltime_tables, function(x) {
@@ -127,3 +126,4 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
     return(object)
 
 }
+
