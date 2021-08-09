@@ -19,7 +19,6 @@
 #' - SMAPE - Symmetric mean absolute percentage error, [smape()]
 #' - RMSE  - Root mean squared error, [rmse()]
 #' - RSQ   - R-squared, [rsq()]
-#' - MAAPE - Mean Arctangent Absolute Percentage Error, [maape()] (Only for intermittent series, in substitution of MAPE)
 #'
 #' Adding additional metrics is possible via `...`.
 #'
@@ -71,7 +70,86 @@ default_forecast_accuracy_metric_set <- function(...) {
         yardstick::smape,
         yardstick::rmse,
         yardstick::rsq,
+        ...
+    )
+}
+
+
+# EXTENDED FORECAST ACCURACY METRIC SET ----
+
+#' Forecast Accuracy Metrics Sets
+#'
+#'
+#' This is a wrapper for [metric_set()] with several common forecast / regression
+#' accuracy metrics included. These are the default time series accuracy
+#' metrics used with [modeltime_accuracy()]. This metric set is applied when
+#' the MAPE metric returns Inf.
+#'
+#' @param ... Add additional `yardstick` metrics
+#'
+#' @details
+#'
+#' The primary purpose is to use the default accuracy metrics to calculate the following
+#' forecast accuracy metrics using [modeltime_accuracy()]:
+#' - MAE   - Mean absolute error, [mae()]
+#' - MAPE  - Mean absolute percentage error, [mape()]
+#' - MAAPE - Mean Arctangent Absolute Percentage Error, [maape()]
+#' - MASE  - Mean absolute scaled error, [mase()]
+#' - SMAPE - Symmetric mean absolute percentage error, [smape()]
+#' - RMSE  - Root mean squared error, [rmse()]
+#' - RSQ   - R-squared, [rsq()]
+#'
+#' Adding additional metrics is possible via `...`.
+#'
+#' @seealso
+#' - [yardstick::metric_tweak()] - For modifying `yardstick` metrics
+#'
+#' @examples
+#' library(tibble)
+#' library(dplyr)
+#' library(timetk)
+#' library(yardstick)
+#'
+#' fake_data <- tibble(
+#'     y    = c(1:12, 2*1:12),
+#'     yhat = c(1 + 1:12, 2*1:12 - 1)
+#' )
+#'
+#' # ---- HOW IT WORKS ----
+#'
+#' # Extended Forecast Accuracy Metric Specification
+#' extended_forecast_accuracy_metric_set()
+#'
+#' # Create a metric summarizer function from the metric set
+#' calc_default_metrics <- extended_forecast_accuracy_metric_set()
+#'
+#' # Apply the metric summarizer to new data
+#' calc_default_metrics(fake_data, y, yhat)
+#'
+#' # ---- ADD MORE PARAMETERS ----
+#'
+#' # Can create a version of mase() with seasonality = 12 (monthly)
+#' mase12 <- metric_tweak(.name = "mase12", .fn = mase, m = 12)
+#'
+#' # Add it to the default metric set
+#' my_metric_set <- extended_forecast_accuracy_metric_set(mase12)
+#' my_metric_set
+#'
+#' # Apply the newly created metric set
+#' my_metric_set(fake_data, y, yhat)
+#'
+#'
+#' @export
+#' @importFrom yardstick mae mape mase smape rmse rsq metric_tweak
+extended_forecast_accuracy_metric_set <- function(...) {
+    yardstick::metric_set(
+        yardstick::mae,
+        yardstick::mape,
         maape,
+        yardstick::mase,
+        yardstick::smape,
+        yardstick::rmse,
+        yardstick::rsq,
         ...
     )
 }
@@ -183,26 +261,28 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, by_
 #' Mean Arctangent Absolute Percentage Error
 #'
 #' This is basically a wrapper to the function of `TSrepr::maape()`.
-#' 
+#'
 #' @param truth The column identifier for the true results (that is numeric).
 #' @param estimate The column identifier for the predicted results (that is also numeric).
+#' @param na_rm Not in use...NA values managed by TSrepr::maape
+#' @param ... Not currently in use
 #'
 #' @export
 maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
-    
+
     maape_impl <- function(truth, estimate) {
         TSrepr::maape(truth, estimate)
     }
-    
+
     yardstick::metric_vec_template(
         metric_impl = maape_impl,
-        truth = truth, 
+        truth = truth,
         estimate = estimate,
         na_rm = na_rm,
         cls = "numeric",
         ...
     )
-    
+
 }
 
 
@@ -213,8 +293,7 @@ maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
 #' This is basically a wrapper to the function of `TSrepr::maape()`.
 #'
 #' @param data  A `data.frame` containing the truth and estimate columns.
-#' @param truth The column identifier for the true results (that is numeric).
-#' @param estimate The column identifier for the predicted results (that is also numeric).
+#' @param ... Not currently in use.
 #'
 #' @export
 
@@ -233,18 +312,20 @@ maape <- yardstick::new_numeric_metric(maape, direction = "minimize")
 #' @param data  A `data.frame` containing the truth and estimate columns.
 #' @param truth The column identifier for the true results (that is numeric).
 #' @param estimate The column identifier for the predicted results (that is also numeric).
+#' @param na_rm Not in use...NA values managed by TSrepr::maape
+#' @param ... Not currently in use
 #'
 #' @export
 maape.data.frame <- function(data, truth, estimate, na_rm = TRUE, ...) {
-    
+
     yardstick::metric_summarizer(
         metric_nm = "maape",
         metric_fn = maape_vec,
         data = data,
         truth = !! enquo(truth),
-        estimate = !! enquo(estimate), 
+        estimate = !! enquo(estimate),
         na_rm = na_rm,
         ...
     )
-    
+
 }

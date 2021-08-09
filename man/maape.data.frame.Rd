@@ -12,6 +12,10 @@
 \item{truth}{The column identifier for the true results (that is numeric).}
 
 \item{estimate}{The column identifier for the predicted results (that is also numeric).}
+
+\item{na_rm}{Not in use...NA values managed by TSrepr::maape}
+
+\item{...}{Not currently in use}
 }
 \description{
 This is basically a wrapper to the function of \code{TSrepr::maape()}.

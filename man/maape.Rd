@@ -9,9 +9,7 @@ maape(data, ...)
 \arguments{
 \item{data}{A \code{data.frame} containing the truth and estimate columns.}
 
-\item{truth}{The column identifier for the true results (that is numeric).}
-
-\item{estimate}{The column identifier for the predicted results (that is also numeric).}
+\item{...}{Not currently in use.}
 }
 \description{
 This is basically a wrapper to the function of \code{TSrepr::maape()}.

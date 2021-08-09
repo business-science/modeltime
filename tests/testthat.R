@@ -16,6 +16,7 @@ library(recipes)
 library(tune)
 library(dials)
 library(yardstick)
+library(TSrepr)
 library(slider)
 
 library(timetk)

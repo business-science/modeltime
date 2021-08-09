@@ -136,6 +136,34 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
         dplyr::select(-.model, -.calibration_data) %>%
         tidyr::unnest(cols = .nested.col)
 
+    # MAPE/MAAPE Check: Intermittent Series
+
+    if (any(is.na(ret$mape) | is.infinite(ret$mape))){
+
+        ret <- data %>%
+            dplyr::ungroup() %>%
+            dplyr::mutate(.nested.col = purrr::map(
+                .x         = .calibration_data,
+                .f         = function(.data) {
+                    ret <- safe_calc_accuracy(
+                        test_data  = .data,
+                        metric_set = extended_forecast_accuracy_metric_set(),
+                        by_id      = acc_by_id,
+                        ...
+                    )
+
+                    ret <- ret %>% purrr::pluck("result")
+
+                    return(ret)
+                })
+            ) %>%
+            dplyr::select(-.model, -.calibration_data) %>%
+            tidyr::unnest(cols = .nested.col)
+
+        cli::cli_alert_info(cli::col_yellow("We have detected a possible intermittent series, so we have changed the default metric set to one containing the MAAPE metric, which is more appropriate for this type of series."))
+
+    }
+
     if (".nested.col" %in% names(ret)) {
         ret <- ret %>%
             dplyr::select(-.nested.col)
@@ -154,19 +182,6 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
         }
 
     }
-    
-    # MAPE/MAAPE Check: Intermittent Series
-    
-     if (is.na(ret$mape) | is.infinite(ret$mape)){
-         
-         ret <- ret %>%
-             dplyr::mutate(mape = maape) %>%
-             dplyr::select(-maape) %>%
-             dplyr::rename(maape = mape)
-         
-     } else {
-         ret <- ret %>% dplyr::select(-maape)
-     }
 
     return(ret)
 }
