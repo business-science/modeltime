@@ -11,16 +11,26 @@
 \usage{
 extract_nested_test_accuracy(object)
 
-extract_nested_test_forecast(object)
+extract_nested_test_forecast(object, .include_actual = TRUE, .id_subset = NULL)
 
 extract_nested_error_report(object)
 
 extract_nested_best_model_report(object)
 
-extract_nested_future_forecast(object)
+extract_nested_future_forecast(
+  object,
+  .include_actual = TRUE,
+  .id_subset = NULL
+)
 }
 \arguments{
 \item{object}{A nested modeltime table}
+
+\item{.include_actual}{Whether or not to include the actual data in the extracted forecast.
+Default: TRUE.}
+
+\item{.id_subset}{Can supply a vector of id's to extract forcasts for one or more id's,
+rather than extracting all forecasts. If \code{NULL}, extracts forecasts for all id's.}
 }
 \description{
 Extract logged information calculated during the \code{modeltime_nested_fit()},
