@@ -187,6 +187,8 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
 
     if (!".actual_data" %in% names(.data)) rlang::abort("`.actual_data` column is not found. Try using `nest_timeseries()` to create a nested data frame with columns `.actual_data` and `.future_data`.")
 
+    id_text <- names(.data)[1]
+
     cum <- FALSE
     if (is.null(.length_train)) {
         cum <- TRUE
@@ -195,14 +197,25 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
 
     suppressMessages({
         .data %>%
-            dplyr::mutate(.splits = purrr::map(.actual_data, .f = function(x) {
-                timetk::time_series_split(
-                    x,
-                    initial    = .length_train,
-                    assess     = .length_test,
-                    cumulative = cum,
-                    ...
-                )
+            dplyr::mutate(.splits = purrr::map2(.actual_data, !!rlang::ensym(id_text), .f = function(x, i) {
+
+                # print(i)
+
+                tryCatch({
+                    timetk::time_series_split(
+                        x,
+                        initial    = .length_train,
+                        assess     = .length_test,
+                        cumulative = cum,
+                        ...
+                    )
+                }, error = function(e) {
+                    # rlang::warn("Problem with: {as.character(i)}")
+                    rlang::warn(stringr::str_glue("Problem with ID: {i} | {as.character(e)}"))
+                    NULL
+                })
+
+
             }))
     })
 
