@@ -29,7 +29,7 @@
 #'
 #' @export
 modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRUE,
-                                         filter_forecasts = TRUE) {
+                                         filter_forecasts = TRUE, on_error_use_overall_best = TRUE) {
 
     # Handle inputs
     id_text <- attr(object, "id")
@@ -54,17 +54,25 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
         dplyr::slice(1) %>%
         dplyr::ungroup()
 
+    best_model_by_id_tbl <- object %>%
+        dplyr::select(!! id_expr) %>%
+        dplyr::left_join(
+            best_model_by_id_tbl,
+            by = c(id_text)
+        )
+
     attr(object, "best_selection_tbl")  <- best_model_by_id_tbl
 
     best_model_by_id_tbl <- best_model_by_id_tbl %>%
         dplyr::select(!! id_expr, .model_id)
+
 
     # Update Modeltime Tables
     modeltime_tables_tbl <- object %>%
 
         dplyr::select(!! id_expr, .modeltime_tables) %>%
         tidyr::unnest(.modeltime_tables) %>%
-        dplyr::left_join(best_model_by_id_tbl, by = c(id_text, ".model_id")) %>%
+        dplyr::right_join(best_model_by_id_tbl, by = c(id_text, ".model_id")) %>%
 
         tidyr::nest(.modeltime_tables = -(!! id_expr) ) %>%
         dplyr::mutate(.modeltime_tables = purrr::map(.modeltime_tables, function(x) {
