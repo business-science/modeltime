@@ -29,27 +29,40 @@
 #'
 #' @export
 modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRUE,
-                                         filter_forecasts = TRUE, on_error_use_overall_best = TRUE) {
+                                         filter_forecasts = TRUE) {
 
-    # Handle inputs
+    # CHECKS ----
+
+    if (!inherits(object, "nested_mdl_time")) rlang::abort("object must be a Nested Modeltime Table. Try using `modeltime_nested_fit()`.")
+
+    acc_tbl <- object %>%
+        extract_nested_test_accuracy()
+
+    if (is.null(acc_tbl)) {
+        rlang::abort("Accuracy table is not found. Try using `modeltime_nested_fit()`.")
+    }
+
+    if (!metric[[1]] %in% names(acc_tbl)) {
+        rlang::abort(stringr::str_glue("metric: {metric[[1]]} is not detected. Please review the accuracy table with `extract_nested_test_accuracy()`."))
+    }
+
+    # Handle inputs ----
     id_text <- attr(object, "id")
     id_expr <- rlang::sym(id_text)
 
-    metric_expr <- rlang::sym(metric)
+    metric_expr <- rlang::sym(metric[[1]])
 
     metric_fun <- ifelse(
         minimize,
-        min,
-        max
+        function(x) {suppressWarnings(min(x, na.rm = TRUE))},
+        function(x) {suppressWarnings(max(x, na.rm = TRUE))}
     )
 
-    # Select best from accuracy
-    best_model_by_id_tbl <- object %>%
-
-        extract_nested_test_accuracy() %>%
+    # Select best from accuracy ----
+    best_model_by_id_tbl <- acc_tbl %>%
         dplyr::group_by(!! id_expr) %>%
 
-        dplyr::filter( (!! metric_expr) == metric_fun((!! metric_expr), na.rm = TRUE)) %>%
+        dplyr::filter( (!! metric_expr) == metric_fun(!! metric_expr) ) %>%
 
         dplyr::slice(1) %>%
         dplyr::ungroup()
@@ -61,13 +74,19 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
             by = c(id_text)
         )
 
+    # Warn if objects could not find best model
+
     attr(object, "best_selection_tbl")  <- best_model_by_id_tbl
+
+
+
+
 
     best_model_by_id_tbl <- best_model_by_id_tbl %>%
         dplyr::select(!! id_expr, .model_id)
 
 
-    # Update Modeltime Tables
+    # Update Modeltime Tables ----
     modeltime_tables_tbl <- object %>%
 
         dplyr::select(!! id_expr, .modeltime_tables) %>%
@@ -83,7 +102,7 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
     object$.modeltime_tables <- modeltime_tables_tbl$.modeltime_tables
 
 
-    # Filter Forecasts
+    # Filter Forecasts ----
 
     if (filter_forecasts) {
 
@@ -130,6 +149,9 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
         }
 
     }
+
+
+
 
     return(object)
 

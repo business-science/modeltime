@@ -76,16 +76,22 @@ fcast_extract <- function(fcast_tbl, .include_actual = TRUE, .id_subset = NULL, 
 
     ret <- fcast_tbl
 
-    actual_tbl <- NULL
-    if (!.include_actual) {
-        ret <- ret %>%
-            dplyr::filter(.key != "actual")
+    if (all(c(".key", .id_text) %in% names(ret))) {
+
+        actual_tbl <- NULL
+        if (!.include_actual) {
+            ret <- ret %>%
+                dplyr::filter(.key != "actual")
+        }
+
+        if (!is.null(.id_subset)) {
+            ret <- ret %>%
+                dplyr::filter(!! rlang::sym(.id_text) %in% .id_subset)
+        }
+
     }
 
-    if (!is.null(.id_subset)) {
-        ret <- ret %>%
-            dplyr::filter(!! rlang::sym(.id_text) %in% .id_subset)
-    }
+
 
     return(ret)
 }

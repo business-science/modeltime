@@ -195,11 +195,7 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
-    # attr(nested_modeltime, "id")                  <- id_text
     attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
-    # attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
-    # attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
-    # attr(nested_modeltime, "best_selection_tbl")  <- NULL
     attr(nested_modeltime, "future_forecast_tbl") <- logging_env$fcast_tbl
     attr(nested_modeltime, "fit_column")          <- ".actual_data"
     attr(nested_modeltime, "time_elapsed")        <- time_elapsed
