@@ -7,9 +7,9 @@
 \alias{split_nested_timeseries}
 \title{Prepared Nested Modeltime Data}
 \usage{
-extend_timeseries(.data, .id_var, .date_var, .length_out)
+extend_timeseries(.data, .id_var, .date_var, .length_future)
 
-nest_timeseries(.data, .id_var, .length_out)
+nest_timeseries(.data, .id_var, .length_future, .length_actual = NULL)
 
 split_nested_timeseries(.data, .length_test, .length_train = NULL, ...)
 }
@@ -25,12 +25,14 @@ split_nested_timeseries(.data, .length_test, .length_train = NULL, ...)
 
 \item{.date_var}{A date or datetime column}
 
-\item{.length_out}{Varies based on the function:
+\item{.length_future}{Varies based on the function:
 \itemize{
 \item \code{extend_timeseries()}: Defines how far into the future to extend the
 time series by each time series group.
 \item \code{nest_timeseries()}: Defines which observations should be split into the \code{.future_data}.
 }}
+
+\item{.length_actual}{Can be used to slice the \code{.actual_data} to a most recent number of observations.}
 
 \item{.length_test}{Defines the length of the test split for evaluation.}
 
@@ -51,7 +53,7 @@ group-wise into the future.
 \itemize{
 \item The group column is specified by \code{.id_var}.
 \item The date column is specified by \code{.date_var}.
-\item The length into the future is specified with \code{.length_out}.
+\item The length into the future is specified with \code{.length_future}.
 }
 }
 
@@ -60,8 +62,9 @@ group-wise into the future.
 \code{nest_timeseries()}: A helper for nesting your data into \code{.actual_data} and \code{.future_data}.
 \itemize{
 \item The group column is specified by \code{.id_var}
-\item The \code{.length_out} defines the length of the \code{.future_data}. The remaining data is
-converted to the \code{.actual_data}
+\item The \code{.length_future} defines the length of the \code{.future_data}.
+\item The remaining data is converted to the \code{.actual_data}.
+\item The \code{.length_actual} can be used to slice the \code{.actual_data} to a most recent number of observations.
 }
 
 The result is a "nested data frame".
@@ -93,13 +96,13 @@ walmart_sales_weekly \%>\%
     extend_timeseries(
         .id_var     = id,
         .date_var   = date,
-        .length_out = 52
+        .length_future = 52
     ) \%>\%
 
     # Nests the time series into .actual_data and .future_data
     nest_timeseries(
         .id_var     = id,
-        .length_out = 52
+        .length_future = 52
     ) \%>\%
 
     # Adds a column .splits that contains training/testing samples

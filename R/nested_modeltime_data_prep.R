@@ -15,12 +15,13 @@
 #'
 #' @param .id_var An id column
 #' @param .date_var A date or datetime column
-#' @param .length_out Varies based on the function:
+#' @param .length_future Varies based on the function:
 #'
 #' - `extend_timeseries()`: Defines how far into the future to extend the
 #'   time series by each time series group.
 #' - `nest_timeseries()`: Defines which observations should be split into the `.future_data`.
 #'
+#' @param .length_actual Can be used to slice the `.actual_data` to a most recent number of observations.
 #' @param .length_test Defines the length of the test split for evaluation.
 #' @param .length_train Defines the length of the training split for evaluation.
 #' @param ... Additional arguments passed to the helper function. See details.
@@ -36,15 +37,17 @@
 #'
 #'   - The group column is specified by `.id_var`.
 #'   - The date column is specified by `.date_var`.
-#'   - The length into the future is specified with `.length_out`.
+#'   - The length into the future is specified with `.length_future`.
 #'
 #' ### Step 2: Nest the Time Series
 #'
 #' `nest_timeseries()`: A helper for nesting your data into `.actual_data` and `.future_data`.
 #'
 #'   - The group column is specified by `.id_var`
-#'   - The `.length_out` defines the length of the `.future_data`. The remaining data is
-#'     converted to the `.actual_data`
+#'   - The `.length_future` defines the length of the `.future_data`.
+#'   - The remaining data is converted to the `.actual_data`.
+#'   - The `.length_actual` can be used to slice the `.actual_data` to a most recent number of observations.
+#'
 #'
 #'   The result is a "nested data frame".
 #'
@@ -72,13 +75,13 @@
 #'     extend_timeseries(
 #'         .id_var     = id,
 #'         .date_var   = date,
-#'         .length_out = 52
+#'         .length_future = 52
 #'     ) %>%
 #'
 #'     # Nests the time series into .actual_data and .future_data
 #'     nest_timeseries(
 #'         .id_var     = id,
-#'         .length_out = 52
+#'         .length_future = 52
 #'     ) %>%
 #'
 #'     # Adds a column .splits that contains training/testing samples
@@ -93,13 +96,15 @@
 
 #' @export
 #' @rdname prep_nested
-extend_timeseries <- function(.data, .id_var, .date_var, .length_out) {
+extend_timeseries <- function(.data, .id_var, .date_var, .length_future) {
 
     # val_expr <- rlang::enquo(.value)
-    id_expr  <- rlang::enquo(.id_var)
+    id_expr   <- rlang::enquo(.id_var)
+    date_expr <- rlang::enquo(.date_var)
 
     # if (rlang::quo_is_missing(val_expr)) rlang::abort("`.value` is missing with no default. This should be a target variable.")
     if (rlang::quo_is_missing(id_expr)) rlang::abort("`.id_var` is missing with no default. This should be a column that identifies time series groupings.")
+    if (rlang::quo_is_missing(date_expr)) rlang::abort("`.date_var` is missing with no default. This should be a column that identifies time series date or datetime column.")
 
     # CHECKS
 
@@ -120,10 +125,11 @@ extend_timeseries <- function(.data, .id_var, .date_var, .length_out) {
 
     .data %>%
         dplyr::group_by(!! enquo(.id_var)) %>%
+        dplyr::arrange(!! date_expr) %>%
         timetk::future_frame(
-            .date_var   = !! rlang::enquo(.date_var),
-            .length_out = .length_out,
-            .bind_data  = TRUE
+            .date_var      = !! date_expr,
+            .length_out    = .length_future,
+            .bind_data     = TRUE
         ) %>%
         dplyr::ungroup()
 }
@@ -132,14 +138,14 @@ extend_timeseries <- function(.data, .id_var, .date_var, .length_out) {
 
 #' @export
 #' @rdname prep_nested
-nest_timeseries <- function(.data, .id_var, .length_out) {
+nest_timeseries <- function(.data, .id_var, .length_future, .length_actual = NULL) {
 
     id_var_expr    <- rlang::enquo(.id_var)
 
     # SPLIT FUTURE AND ACTUAL DATA
 
     future_data_tbl <- .data %>%
-        panel_tail(id = !!id_var_expr, n = .length_out)
+        panel_tail(id = !!id_var_expr, n = .length_future)
 
     groups <- future_data_tbl$id %>% unique() %>% length()
 
@@ -153,6 +159,13 @@ nest_timeseries <- function(.data, .id_var, .length_out) {
         dplyr::slice(seq(dplyr::first(n))) %>%
         dplyr::ungroup() %>%
         dplyr::select(-n)
+
+    if (!is.null(.length_actual)) {
+        actual_data_tbl <- actual_data_tbl %>%
+            dplyr::group_by(!! id_var_expr) %>%
+            dplyr::slice_tail(n = .length_actual) %>%
+            dplyr::ungroup()
+    }
 
 
     # CHECKS

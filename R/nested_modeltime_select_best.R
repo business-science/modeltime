@@ -74,13 +74,42 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
             by = c(id_text)
         )
 
-    # Warn if objects could not find best model
+    # Check for NA's
+    any_missing <- any(is.na(best_model_by_id_tbl$.model_id))
+
+    if (any_missing) {
+        rlang::warn(
+            stringr::str_glue("Best Model Selection: Some time series did not have a best local model. Review with `extract_nested_best_model_report()`.")
+        )
+    }
+
+    # # Use best overall ----
+    #
+    # if (any_missing && use_best_overall_on_error) {
+    #
+    #     best_overall_tbl <- best_model_by_id_tbl %>%
+    #         dplyr::count(.model_id, .model_desc, sort = TRUE) %>%
+    #         dplyr::slice(1)
+    #
+    #     model_id_best_overall <- best_overall_tbl %>%
+    #         dplyr::pull(.model_id)
+    #
+    #     model_desc_best_overall <- best_overall_tbl %>%
+    #         dplyr::pull(.model_desc)
+    #
+    #     if (!is.na(model_id_best_overall)) {
+    #         best_model_by_id_tbl <- best_model_by_id_tbl %>%
+    #             replace_na(replace = list(
+    #                 .model_id   = model_id_best_overall,
+    #                 .model_desc = model_desc_best_overall
+    #             ))
+    #     }
+    #
+    # }
+
+    # Log best selections ----
 
     attr(object, "best_selection_tbl")  <- best_model_by_id_tbl
-
-
-
-
 
     best_model_by_id_tbl <- best_model_by_id_tbl %>%
         dplyr::select(!! id_expr, .model_id)
