@@ -15,7 +15,6 @@ library(timetk)
 
 # DATA PREP FUNCTIONS ----
 
-
 data_prep_tbl <- walmart_sales_weekly %>%
     select(id, Date, Weekly_Sales) %>%
     set_names(c("id", "date", "value"))
@@ -35,18 +34,18 @@ data_start_tbl <- bind_rows(tib_1, tib_2)
 
 nested_data_tbl <- data_start_tbl %>%
 
-
     extend_timeseries(
-        .id_var     = id,
-        .date_var   = date,
-        .length_out = 52
+        .id_var        = id,
+        .date_var      = date,
+        .length_future = 52
     ) %>%
 
     # >> Can add xregs in here <<
 
     nest_timeseries(
-        .id_var     = id,
-        .length_out = 52
+        .id_var        = id,
+        .length_future = 52,
+        .length_actual = 52*2
     ) %>%
 
     split_nested_timeseries(
@@ -115,7 +114,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
 
     # fcast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
 
-    expect_equal(nrow(fcast_tbl), 390)
+    expect_equal(nrow(fcast_tbl), 312)
     expect_equal(ncol(fcast_tbl), 8)
 
     fcast_tbl <- nested_modeltime_tbl %>%
@@ -132,9 +131,11 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
 
     # ** Select Best ----
 
+    expect_warning(
+        best_nested_modeltime_tbl <- nested_modeltime_tbl %>%
+            modeltime_nested_select_best(metric = "rsq", minimize = FALSE)
+    )
 
-    best_nested_modeltime_tbl <- nested_modeltime_tbl %>%
-        modeltime_nested_select_best(metric = "rsq", minimize = FALSE)
 
     best_model_report <- best_nested_modeltime_tbl %>%
         extract_nested_best_model_report()
@@ -147,7 +148,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
 
     # fcast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
 
-    expect_equal(nrow(fcast_tbl), 391)
+    expect_equal(nrow(fcast_tbl), 313)
     expect_equal(ncol(fcast_tbl), 8)
 
     # ** Refit ----
@@ -164,12 +165,10 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
     fcast_tbl <- nested_modeltime_refit_tbl %>%
         extract_nested_future_forecast()
 
-    expect_equal(nrow(fcast_tbl), 390)
+    expect_equal(nrow(fcast_tbl), 312)
     expect_equal(ncol(fcast_tbl), 8)
 
-    # fcast_tbl %>%
-    #     group_by(id) %>%
-    #     plot_modeltime_forecast()
+    # fcast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
 
 
 })

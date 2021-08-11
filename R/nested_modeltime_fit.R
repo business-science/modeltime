@@ -152,7 +152,7 @@ modeltime_nested_fit <- function(nested_data, ...,
                     suppressWarnings({
 
                         tryCatch({
-                            co <- capture.output({
+                            co <- utils::capture.output({
                                 # Use invisible to suppress print when model fails
                                 acc_tbl <- modeltime_accuracy(ret, metric_set = metric_set) %>%
                                     tibble::add_column(!! id_text := id, .before = 1)
