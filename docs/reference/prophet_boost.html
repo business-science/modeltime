@@ -326,8 +326,8 @@ unless overridden in the holidays input.</p></td>
     <tr>
       <th>mtry</th>
       <td><p>A number for the number (or proportion) of predictors that will
-be randomly sampled at each split when creating the tree models (<code>xgboost</code>
-only).</p></td>
+be randomly sampled at each split when creating the tree models
+(specific engines only)</p></td>
     </tr>
     <tr>
       <th>trees</th>
@@ -342,17 +342,17 @@ in a node that is required for the node to be split further.</p></td>
     <tr>
       <th>tree_depth</th>
       <td><p>An integer for the maximum depth of the tree (i.e. number
-of splits) (<code>xgboost</code> only).</p></td>
+of splits) (specific engines only).</p></td>
     </tr>
     <tr>
       <th>learn_rate</th>
       <td><p>A number for the rate at which the boosting algorithm adapts
-from iteration-to-iteration (<code>xgboost</code> only).</p></td>
+from iteration-to-iteration (specific engines only).</p></td>
     </tr>
     <tr>
       <th>loss_reduction</th>
       <td><p>A number for the reduction in the loss function required
-to split further (<code>xgboost</code> only).</p></td>
+to split further (specific engines only).</p></td>
     </tr>
     <tr>
       <th>sample_size</th>
@@ -565,7 +565,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 #&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
 #&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
 #&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
-#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># ... with 296 more rows</span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 

@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0.9000</span>
       </span>
     </div>
 
@@ -407,14 +407,14 @@
 
 <span class="va">model_wfset</span>
 <span class="co">#&gt; # A workflow set/tibble: 6 x 4</span>
-<span class="co">#&gt;   wflow_id            info             option      result    </span>
-<span class="co">#&gt;   &lt;chr&gt;               &lt;list&gt;           &lt;list&gt;      &lt;list&gt;    </span>
-<span class="co">#&gt; 1 recipe_boost_tree_1 &lt;tibble [1 × 4]&gt; &lt;wrkflw__ &gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 2 recipe_boost_tree_2 &lt;tibble [1 × 4]&gt; &lt;wrkflw__ &gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 3 recipe_boost_tree_3 &lt;tibble [1 × 4]&gt; &lt;wrkflw__ &gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 4 recipe_boost_tree_4 &lt;tibble [1 × 4]&gt; &lt;wrkflw__ &gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 5 recipe_boost_tree_5 &lt;tibble [1 × 4]&gt; &lt;wrkflw__ &gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 6 recipe_boost_tree_6 &lt;tibble [1 × 4]&gt; &lt;wrkflw__ &gt; &lt;list [0]&gt;</span></code></pre></div>
+<span class="co">#&gt;   wflow_id            info             option    result    </span>
+<span class="co">#&gt;   &lt;chr&gt;               &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span>
+<span class="co">#&gt; 1 recipe_boost_tree_1 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 2 recipe_boost_tree_2 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 3 recipe_boost_tree_3 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 4 recipe_boost_tree_4 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 5 recipe_boost_tree_5 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 6 recipe_boost_tree_6 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></code></pre></div>
 </div>
 <div id="parallel-training-fitting" class="section level2">
 <h2 class="hasAnchor">
@@ -472,22 +472,22 @@
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.31 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.114 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 13.31 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 12.114 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
 <span class="co">#&gt; # A tibble: 6 x 3</span>
-<span class="co">#&gt;   .model_id .model     .model_desc</span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;      </span>
-<span class="co">#&gt; 1         1 &lt;workflow&gt; XGBOOST    </span>
-<span class="co">#&gt; 2         2 &lt;workflow&gt; XGBOOST    </span>
-<span class="co">#&gt; 3         3 &lt;workflow&gt; XGBOOST    </span>
-<span class="co">#&gt; 4         4 &lt;workflow&gt; XGBOOST    </span>
-<span class="co">#&gt; 5         5 &lt;workflow&gt; XGBOOST    </span>
-<span class="co">#&gt; 6         6 &lt;workflow&gt; XGBOOST</span></code></pre></div>
+<span class="co">#&gt;   .model_id .model     .model_desc        </span>
+<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;              </span>
+<span class="co">#&gt; 1         1 &lt;workflow&gt; RECIPE_BOOST_TREE_1</span>
+<span class="co">#&gt; 2         2 &lt;workflow&gt; RECIPE_BOOST_TREE_2</span>
+<span class="co">#&gt; 3         3 &lt;workflow&gt; RECIPE_BOOST_TREE_3</span>
+<span class="co">#&gt; 4         4 &lt;workflow&gt; RECIPE_BOOST_TREE_4</span>
+<span class="co">#&gt; 5         5 &lt;workflow&gt; RECIPE_BOOST_TREE_5</span>
+<span class="co">#&gt; 6         6 &lt;workflow&gt; RECIPE_BOOST_TREE_6</span></code></pre></div>
 </div>
 <div id="comparison-to-sequential-backend" class="section level3">
 <h3 class="hasAnchor">
@@ -502,19 +502,19 @@
       allow_par <span class="op">=</span> <span class="cn">FALSE</span>
     <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; ℹ Fitting Model: 1</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 1</span>
-<span class="co">#&gt; ℹ Fitting Model: 2</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 2</span>
-<span class="co">#&gt; ℹ Fitting Model: 3</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 3</span>
-<span class="co">#&gt; ℹ Fitting Model: 4</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 4</span>
-<span class="co">#&gt; ℹ Fitting Model: 5</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 5</span>
-<span class="co">#&gt; ℹ Fitting Model: 6</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 6</span>
-<span class="co">#&gt; Total time | 16.547 seconds</span></code></pre></div>
+<span class="co">#&gt; i Fitting Model: 1</span>
+<span class="co">#&gt; v Model Successfully Fitted: 1</span>
+<span class="co">#&gt; i Fitting Model: 2</span>
+<span class="co">#&gt; v Model Successfully Fitted: 2</span>
+<span class="co">#&gt; i Fitting Model: 3</span>
+<span class="co">#&gt; v Model Successfully Fitted: 3</span>
+<span class="co">#&gt; i Fitting Model: 4</span>
+<span class="co">#&gt; v Model Successfully Fitted: 4</span>
+<span class="co">#&gt; i Fitting Model: 5</span>
+<span class="co">#&gt; v Model Successfully Fitted: 5</span>
+<span class="co">#&gt; i Fitting Model: 6</span>
+<span class="co">#&gt; v Model Successfully Fitted: 6</span>
+<span class="co">#&gt; Total time | 12.285 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -526,12 +526,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="eumpnkkgxy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="qjrpahozcn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#eumpnkkgxy .gt_table {
+#qjrpahozcn .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -556,7 +556,7 @@
   border-left-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_heading {
+#qjrpahozcn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -568,7 +568,7 @@
   border-right-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_title {
+#qjrpahozcn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -578,7 +578,7 @@
   border-bottom-width: 0;
 }
 
-#eumpnkkgxy .gt_subtitle {
+#qjrpahozcn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -588,13 +588,13 @@
   border-top-width: 0;
 }
 
-#eumpnkkgxy .gt_bottom_border {
+#qjrpahozcn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_col_headings {
+#qjrpahozcn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -609,7 +609,7 @@
   border-right-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_col_heading {
+#qjrpahozcn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -629,7 +629,7 @@
   overflow-x: hidden;
 }
 
-#eumpnkkgxy .gt_column_spanner_outer {
+#qjrpahozcn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -641,15 +641,15 @@
   padding-right: 4px;
 }
 
-#eumpnkkgxy .gt_column_spanner_outer:first-child {
+#qjrpahozcn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eumpnkkgxy .gt_column_spanner_outer:last-child {
+#qjrpahozcn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eumpnkkgxy .gt_column_spanner {
+#qjrpahozcn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -661,7 +661,7 @@
   width: 100%;
 }
 
-#eumpnkkgxy .gt_group_heading {
+#qjrpahozcn .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -683,7 +683,7 @@
   vertical-align: middle;
 }
 
-#eumpnkkgxy .gt_empty_group_heading {
+#qjrpahozcn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -698,15 +698,15 @@
   vertical-align: middle;
 }
 
-#eumpnkkgxy .gt_from_md > :first-child {
+#qjrpahozcn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#eumpnkkgxy .gt_from_md > :last-child {
+#qjrpahozcn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#eumpnkkgxy .gt_row {
+#qjrpahozcn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -725,7 +725,7 @@
   overflow-x: hidden;
 }
 
-#eumpnkkgxy .gt_stub {
+#qjrpahozcn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -737,7 +737,7 @@
   padding-left: 12px;
 }
 
-#eumpnkkgxy .gt_summary_row {
+#qjrpahozcn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -747,7 +747,7 @@
   padding-right: 5px;
 }
 
-#eumpnkkgxy .gt_first_summary_row {
+#qjrpahozcn .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -757,7 +757,7 @@
   border-top-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_grand_summary_row {
+#qjrpahozcn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -767,7 +767,7 @@
   padding-right: 5px;
 }
 
-#eumpnkkgxy .gt_first_grand_summary_row {
+#qjrpahozcn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -777,11 +777,11 @@
   border-top-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_striped {
+#qjrpahozcn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eumpnkkgxy .gt_table_body {
+#qjrpahozcn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -790,7 +790,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_footnotes {
+#qjrpahozcn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -804,13 +804,13 @@
   border-right-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_footnote {
+#qjrpahozcn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#eumpnkkgxy .gt_sourcenotes {
+#qjrpahozcn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -824,41 +824,41 @@
   border-right-color: #D3D3D3;
 }
 
-#eumpnkkgxy .gt_sourcenote {
+#qjrpahozcn .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#eumpnkkgxy .gt_left {
+#qjrpahozcn .gt_left {
   text-align: left;
 }
 
-#eumpnkkgxy .gt_center {
+#qjrpahozcn .gt_center {
   text-align: center;
 }
 
-#eumpnkkgxy .gt_right {
+#qjrpahozcn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eumpnkkgxy .gt_font_normal {
+#qjrpahozcn .gt_font_normal {
   font-weight: normal;
 }
 
-#eumpnkkgxy .gt_font_bold {
+#qjrpahozcn .gt_font_bold {
   font-weight: bold;
 }
 
-#eumpnkkgxy .gt_font_italic {
+#qjrpahozcn .gt_font_italic {
   font-style: italic;
 }
 
-#eumpnkkgxy .gt_super {
+#qjrpahozcn .gt_super {
   font-size: 65%;
 }
 
-#eumpnkkgxy .gt_footnote_marks {
+#qjrpahozcn .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -882,7 +882,7 @@
 <tbody class="gt_table_body">
 <tr>
 <td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">RECIPE_BOOST_TREE_1</td>
 <td class="gt_row gt_left">Test</td>
 <td class="gt_row gt_right">55572.50</td>
 <td class="gt_row gt_right">98.52</td>
@@ -893,7 +893,7 @@
 </tr>
 <tr>
 <td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">RECIPE_BOOST_TREE_2</td>
 <td class="gt_row gt_left">Test</td>
 <td class="gt_row gt_right">48819.23</td>
 <td class="gt_row gt_right">86.15</td>
@@ -904,7 +904,7 @@
 </tr>
 <tr>
 <td class="gt_row gt_right">3</td>
-<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">RECIPE_BOOST_TREE_3</td>
 <td class="gt_row gt_left">Test</td>
 <td class="gt_row gt_right">13426.89</td>
 <td class="gt_row gt_right">21.69</td>
@@ -915,7 +915,7 @@
 </tr>
 <tr>
 <td class="gt_row gt_right">4</td>
-<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">RECIPE_BOOST_TREE_4</td>
 <td class="gt_row gt_left">Test</td>
 <td class="gt_row gt_right">3699.94</td>
 <td class="gt_row gt_right">8.94</td>
@@ -926,7 +926,7 @@
 </tr>
 <tr>
 <td class="gt_row gt_right">5</td>
-<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">RECIPE_BOOST_TREE_5</td>
 <td class="gt_row gt_left">Test</td>
 <td class="gt_row gt_right">3296.74</td>
 <td class="gt_row gt_right">7.30</td>
@@ -937,7 +937,7 @@
 </tr>
 <tr>
 <td class="gt_row gt_right">6</td>
-<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">RECIPE_BOOST_TREE_6</td>
 <td class="gt_row gt_left">Test</td>
 <td class="gt_row gt_right">3612.70</td>
 <td class="gt_row gt_right">8.15</td>

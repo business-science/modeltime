@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The 750th Monthly Time Series used in the M4 Competition — m750 • modeltime</title>
+<title>Fit Tidymodels Workflows to Nested Time Series — modeltime_nested_fit • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,17 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="The 750th Monthly Time Series used in the M4 Competition — m750" />
-<meta property="og:description" content="The 750th Monthly Time Series used in the M4 Competition" />
+<meta property="og:title" content="Fit Tidymodels Workflows to Nested Time Series — modeltime_nested_fit" />
+<meta property="og:description" content="Fits one or more tidymodels workflow objects to nested time series data using the following process:
+Models are iteratively fit to training splits.
+Accuracy is calculated on testing splits and is logged.
+Accuracy results can be retrieved with extract_nested_test_accuracy()
+Any model that returns an error is logged.
+Error logs can be retrieved with extract_nested_error_report()
+Forecast is predicted on testing splits and is logged.
+Forecast results can be retrieved with extract_nested_test_forecast()
+
+" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -221,51 +230,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The 750th Monthly Time Series used in the M4 Competition</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>m750.Rd</code></div>
+    <h1>Fit Tidymodels Workflows to Nested Time Series</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_fit.R'><code>R/nested_modeltime_fit.R</code></a></small>
+    <div class="hidden name"><code>modeltime_nested_fit.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The 750th Monthly Time Series used in the M4 Competition</p>
+    <p>Fits one or more <code>tidymodels</code> workflow objects to nested time series data using the following process:</p><ol>
+<li><p>Models are iteratively fit to training splits.</p></li>
+<li><p>Accuracy is calculated on testing splits and is logged.
+Accuracy results can be retrieved with <code><a href='log_extractors.html'>extract_nested_test_accuracy()</a></code></p></li>
+<li><p>Any model that returns an error is logged.
+Error logs can be retrieved with <code><a href='log_extractors.html'>extract_nested_error_report()</a></code></p></li>
+<li><p>Forecast is predicted on testing splits and is logged.
+Forecast results can be retrieved with <code><a href='log_extractors.html'>extract_nested_test_forecast()</a></code></p></li>
+</ol>
+
     </div>
 
-    <pre class="usage"><span class='va'>m750</span></pre>
+    <pre class="usage"><span class='fu'>modeltime_nested_fit</span><span class='op'>(</span>
+  <span class='va'>nested_data</span>,
+  <span class='va'>...</span>,
+  metric_set <span class='op'>=</span> <span class='fu'><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set</a></span><span class='op'>(</span><span class='op'>)</span>,
+  conf_interval <span class='op'>=</span> <span class='fl'>0.95</span>,
+  control <span class='op'>=</span> <span class='fu'><a href='control_nested_fit.html'>control_nested_fit</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>nested_data</th>
+      <td><p>Nested time series data</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Tidymodels <code>workflow</code> objects that will be fit to the nested time series data.</p></td>
+    </tr>
+    <tr>
+      <th>metric_set</th>
+      <td><p>A <code><a href='https://yardstick.tidymodels.org/reference/metric_set.html'>yardstick::metric_set()</a></code> that is used to summarize one or more
+forecast accuracy (regression) metrics.</p></td>
+    </tr>
+    <tr>
+      <th>conf_interval</th>
+      <td><p>An estimated confidence interval based on the calibration data.
+This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></td>
+    </tr>
+    <tr>
+      <th>control</th>
+      <td><p>Used to control verbosity and parallel processing. See <code><a href='control_nested_fit.html'>control_nested_fit()</a></code>.</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A <code>tibble</code> with 306 rows and 3 variables:</p><ul>
-<li><p><code>id</code> Factor. Unique series identifier</p></li>
-<li><p><code>date</code> Date. Timestamp information. Monthly format.</p></li>
-<li><p><code>value</code> Numeric. Value at the corresponding timestamp.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    
-<ul>
-<li><p><a href='https://mofc.unic.ac.cy/m4/'>M4 Competition Website</a></p></li>
-</ul>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
-#&gt;    id    date       value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
-#&gt; <span style='color: #BCBCBC;'> 2</span> M750  1990-02-01  <span style='text-decoration: underline;'>6</span>430
-#&gt; <span style='color: #BCBCBC;'> 3</span> M750  1990-03-01  <span style='text-decoration: underline;'>6</span>520
-#&gt; <span style='color: #BCBCBC;'> 4</span> M750  1990-04-01  <span style='text-decoration: underline;'>6</span>580
-#&gt; <span style='color: #BCBCBC;'> 5</span> M750  1990-05-01  <span style='text-decoration: underline;'>6</span>620
-#&gt; <span style='color: #BCBCBC;'> 6</span> M750  1990-06-01  <span style='text-decoration: underline;'>6</span>690
-#&gt; <span style='color: #BCBCBC;'> 7</span> M750  1990-07-01  <span style='text-decoration: underline;'>6</span>000
-#&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
-#&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
-#&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
-#&gt; <span style='color: #949494;'># ... with 296 more rows</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

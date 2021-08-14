@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0.9000</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@
 <li><p><strong>Perform Recursive Panel Forecasting</strong>, which is when you have a single autoregressive model that predicts forecasts for multiple time series.</p></li>
 </ul>
 <div class="figure" style="text-align: center">
-<img src="recursive_panel_forecast.png" alt="Recursive Panel Forecast with XGBoost" width="100%"><p class="caption">
+<img src="../../../../R%20Projects/Courses/modeltime/vignettes/recursive_panel_forecast.png" alt="Recursive Panel Forecast with XGBoost" width="100%"><p class="caption">
 Recursive Panel Forecast with XGBoost
 </p>
 </div>
@@ -248,7 +248,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;  8 M750  1990-08-01  5450</span>
 <span class="co">#&gt;  9 M750  1990-09-01  6480</span>
 <span class="co">#&gt; 10 M750  1990-10-01  6820</span>
-<span class="co">#&gt; # … with 296 more rows</span></code></pre></div>
+<span class="co">#&gt; # ... with 296 more rows</span></code></pre></div>
 <p>We can visualize the data with <code><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m750</span> <span class="op">%&gt;%</span> 
@@ -315,7 +315,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;  8 1990-08-01  5450       6000       6690       6620       6580       6520</span>
 <span class="co">#&gt;  9 1990-09-01  6480       5450       6000       6690       6620       6580</span>
 <span class="co">#&gt; 10 1990-10-01  6820       6480       5450       6000       6690       6620</span>
-<span class="co">#&gt; # … with 320 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
+<span class="co">#&gt; # ... with 320 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
@@ -344,7 +344,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;  8 1992-08-01  6060       6490       7100       7140       7180       7150</span>
 <span class="co">#&gt;  9 1992-09-01  6870       6060       6490       7100       7140       7180</span>
 <span class="co">#&gt; 10 1992-10-01  6880       6870       6060       6490       7100       7140</span>
-<span class="co">#&gt; # … with 272 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
+<span class="co">#&gt; # ... with 272 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
@@ -369,7 +369,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;  8 2016-02-01    NA         NA         NA         NA         NA         NA</span>
 <span class="co">#&gt;  9 2016-03-01    NA         NA         NA         NA         NA         NA</span>
 <span class="co">#&gt; 10 2016-04-01    NA         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt; # … with 14 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
+<span class="co">#&gt; # ... with 14 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
@@ -398,7 +398,7 @@ Recursive Panel Forecast with XGBoost
 <span class="va">model_fit_lm</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  4ms </span>
+<span class="co">#&gt; Fit time:  10ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span>
@@ -438,7 +438,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  5ms </span>
+<span class="co">#&gt; Fit time:  0ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span>
@@ -588,7 +588,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;  8 M1    1977-01-01  6650       6070       6520       7080       7700       8570</span>
 <span class="co">#&gt;  9 M1    1977-02-01  6830       6650       6070       6520       7080       7700</span>
 <span class="co">#&gt; 10 M1    1977-03-01  5710       6830       6650       6070       6520       7080</span>
-<span class="co">#&gt; # … with 1,660 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
+<span class="co">#&gt; # ... with 1,660 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
@@ -637,7 +637,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  132ms </span>
+<span class="co">#&gt; Fit time:  100ms </span>
 <span class="co">#&gt; ##### xgb.Booster</span>
 <span class="co">#&gt; raw: 69.2 Kb </span>
 <span class="co">#&gt; call:</span>

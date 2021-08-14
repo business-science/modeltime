@@ -305,8 +305,8 @@ See Fit Details below.</p></td>
     <tr>
       <th>mtry</th>
       <td><p>A number for the number (or proportion) of predictors that will
-be randomly sampled at each split when creating the tree models (<code>xgboost</code>
-only).</p></td>
+be randomly sampled at each split when creating the tree models
+(specific engines only)</p></td>
     </tr>
     <tr>
       <th>trees</th>
@@ -321,17 +321,17 @@ in a node that is required for the node to be split further.</p></td>
     <tr>
       <th>tree_depth</th>
       <td><p>An integer for the maximum depth of the tree (i.e. number
-of splits) (<code>xgboost</code> only).</p></td>
+of splits) (specific engines only).</p></td>
     </tr>
     <tr>
       <th>learn_rate</th>
       <td><p>A number for the rate at which the boosting algorithm adapts
-from iteration-to-iteration (<code>xgboost</code> only).</p></td>
+from iteration-to-iteration (specific engines only).</p></td>
     </tr>
     <tr>
       <th>loss_reduction</th>
       <td><p>A number for the reduction in the loss function required
-to split further (<code>xgboost</code> only).</p></td>
+to split further (specific engines only).</p></td>
     </tr>
     <tr>
       <th>sample_size</th>
@@ -504,16 +504,16 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Attaching packages</span> ─────────────────────────────────────── tidyverse 1.3.1 ──</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #00BB00;'>✓</span> <span style='color: #0000BB;'>readr  </span> 1.4.0     <span style='color: #00BB00;'>✓</span> <span style='color: #0000BB;'>forcats</span> 0.5.1</span>
-#&gt; <span class='message'><span style='color: #00BB00;'>✓</span> <span style='color: #0000BB;'>stringr</span> 1.4.0     </span></div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>Conflicts</span> ────────────────────────────────────────── tidyverse_conflicts() ──</span>
+</div><div class='output co'>#&gt; <span class='message'>-- <span style='font-weight: bold;'>Attaching packages</span> --------------------------------------- tidyverse 1.3.1 --</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #00BB00;'>v</span> <span style='color: #0000BB;'>readr  </span> 2.0.0     <span style='color: #00BB00;'>v</span> <span style='color: #0000BB;'>forcats</span> 0.5.1</span>
+#&gt; <span class='message'><span style='color: #00BB00;'>v</span> <span style='color: #0000BB;'>stringr</span> 1.4.0     </span></div><div class='output co'>#&gt; <span class='warning'>Warning: package 'readr' was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package 'forcats' was built under R version 4.0.3</span></div><div class='output co'>#&gt; <span class='message'>-- <span style='font-weight: bold;'>Conflicts</span> ------------------------------------------ tidyverse_conflicts() --</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>readr</span>::<span style='color: #00BB00;'>col_factor()</span> masks <span style='color: #0000BB;'>scales</span>::col_factor()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>purrr</span>::<span style='color: #00BB00;'>discard()</span>    masks <span style='color: #0000BB;'>scales</span>::discard()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>dplyr</span>::<span style='color: #00BB00;'>filter()</span>     masks <span style='color: #0000BB;'>stats</span>::filter()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>stringr</span>::<span style='color: #00BB00;'>fixed()</span>    masks <span style='color: #0000BB;'>recipes</span>::fixed()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>dplyr</span>::<span style='color: #00BB00;'>lag()</span>        masks <span style='color: #0000BB;'>stats</span>::lag()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>readr</span>::<span style='color: #00BB00;'>spec()</span>       masks <span style='color: #0000BB;'>yardstick</span>::spec()</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'lubridate' was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'lubridate'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    date, intersect, setdiff, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://parsnip.tidymodels.org'>parsnip</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The 750th Monthly Time Series used in the M4 Competition — m750 • modeltime</title>
+<title>Log Extractor Functions for Modeltime Nested Tables — log_extractors • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="The 750th Monthly Time Series used in the M4 Competition — m750" />
-<meta property="og:description" content="The 750th Monthly Time Series used in the M4 Competition" />
+<meta property="og:title" content="Log Extractor Functions for Modeltime Nested Tables — log_extractors" />
+<meta property="og:description" content="Extract logged information calculated during the modeltime_nested_fit(),
+modeltime_nested_select_best(), and modeltime_nested_refit() processes." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -221,51 +222,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The 750th Monthly Time Series used in the M4 Competition</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>m750.Rd</code></div>
+    <h1>Log Extractor Functions for Modeltime Nested Tables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_extractors.R'><code>R/nested_modeltime_extractors.R</code></a></small>
+    <div class="hidden name"><code>log_extractors.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The 750th Monthly Time Series used in the M4 Competition</p>
+    <p>Extract logged information calculated during the <code><a href='modeltime_nested_fit.html'>modeltime_nested_fit()</a></code>,
+<code><a href='modeltime_nested_select_best.html'>modeltime_nested_select_best()</a></code>, and <code><a href='modeltime_nested_refit.html'>modeltime_nested_refit()</a></code> processes.</p>
     </div>
 
-    <pre class="usage"><span class='va'>m750</span></pre>
+    <pre class="usage"><span class='fu'>extract_nested_test_accuracy</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_test_forecast</span><span class='op'>(</span><span class='va'>object</span>, .include_actual <span class='op'>=</span> <span class='cn'>TRUE</span>, .id_subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_error_report</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_best_model_report</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_future_forecast</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  .include_actual <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .id_subset <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>A nested modeltime table</p></td>
+    </tr>
+    <tr>
+      <th>.include_actual</th>
+      <td><p>Whether or not to include the actual data in the extracted forecast.
+Default: TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>.id_subset</th>
+      <td><p>Can supply a vector of id's to extract forcasts for one or more id's,
+rather than extracting all forecasts. If <code>NULL</code>, extracts forecasts for all id's.</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A <code>tibble</code> with 306 rows and 3 variables:</p><ul>
-<li><p><code>id</code> Factor. Unique series identifier</p></li>
-<li><p><code>date</code> Date. Timestamp information. Monthly format.</p></li>
-<li><p><code>value</code> Numeric. Value at the corresponding timestamp.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    
-<ul>
-<li><p><a href='https://mofc.unic.ac.cy/m4/'>M4 Competition Website</a></p></li>
-</ul>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
-#&gt;    id    date       value
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
-#&gt; <span style='color: #BCBCBC;'> 2</span> M750  1990-02-01  <span style='text-decoration: underline;'>6</span>430
-#&gt; <span style='color: #BCBCBC;'> 3</span> M750  1990-03-01  <span style='text-decoration: underline;'>6</span>520
-#&gt; <span style='color: #BCBCBC;'> 4</span> M750  1990-04-01  <span style='text-decoration: underline;'>6</span>580
-#&gt; <span style='color: #BCBCBC;'> 5</span> M750  1990-05-01  <span style='text-decoration: underline;'>6</span>620
-#&gt; <span style='color: #BCBCBC;'> 6</span> M750  1990-06-01  <span style='text-decoration: underline;'>6</span>690
-#&gt; <span style='color: #BCBCBC;'> 7</span> M750  1990-07-01  <span style='text-decoration: underline;'>6</span>000
-#&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
-#&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
-#&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
-#&gt; <span style='color: #949494;'># ... with 296 more rows</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

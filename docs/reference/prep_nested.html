@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit a workflowset object to one or multiple time series — modeltime_fit_workflowset • modeltime</title>
+<title>Prepared Nested Modeltime Data — prep_nested • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,10 +48,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Fit a workflowset object to one or multiple time series — modeltime_fit_workflowset" />
-<meta property="og:description" content="This is a wrapper for fit() that takes a
-workflowset object and fits each model on one or multiple
-time series either sequentially or in parallel." />
+<meta property="og:title" content="Prepared Nested Modeltime Data — prep_nested" />
+<meta property="og:description" content="A set of functions to simplify preparation of nested data for
+iterative (nested) forecasting with Nested Modeltime Tables." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -223,92 +222,144 @@ time series either sequentially or in parallel." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit a <code>workflowset</code> object to one or multiple time series</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/modeltime-fit-workflowset.R'><code>R/modeltime-fit-workflowset.R</code></a></small>
-    <div class="hidden name"><code>modeltime_fit_workflowset.Rd</code></div>
+    <h1>Prepared Nested Modeltime Data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_data_prep.R'><code>R/nested_modeltime_data_prep.R</code></a></small>
+    <div class="hidden name"><code>prep_nested.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is a wrapper for <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> that takes a
-<code>workflowset</code> object and fits each model on one or multiple
-time series either sequentially or in parallel.</p>
+    <p>A set of functions to simplify preparation of nested data for
+iterative (nested) forecasting with Nested Modeltime Tables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>modeltime_fit_workflowset</span><span class='op'>(</span>
-  <span class='va'>object</span>,
-  <span class='va'>data</span>,
-  <span class='va'>...</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_fit_workflowset.html'>control_fit_workflowset</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>extend_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.date_var</span>, <span class='va'>.length_future</span><span class='op'>)</span>
+
+<span class='fu'>nest_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.length_future</span>, .length_actual <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>split_nested_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.length_test</span>, .length_train <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>A workflow_set object, generated with the workflowsets::workflow_set function.</p></td>
+      <th>.data</th>
+      <td><p>A data frame or tibble containing time series data. The data should have:</p><ul>
+<li><p>identifier (.id_var): Identifying one or more time series groups</p></li>
+<li><p>date variable (.date_var): A date or date time column</p></li>
+<li><p>target variable (.value): A column containing numeric values that is to be forecasted</p></li>
+</ul></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>A <code>tibble</code> that contains data to fit the models.</p></td>
+      <th>.id_var</th>
+      <td><p>An id column</p></td>
+    </tr>
+    <tr>
+      <th>.date_var</th>
+      <td><p>A date or datetime column</p></td>
+    </tr>
+    <tr>
+      <th>.length_future</th>
+      <td><p>Varies based on the function:</p><ul>
+<li><p><code>extend_timeseries()</code>: Defines how far into the future to extend the
+time series by each time series group.</p></li>
+<li><p><code>nest_timeseries()</code>: Defines which observations should be split into the <code>.future_data</code>.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>.length_actual</th>
+      <td><p>Can be used to slice the <code>.actual_data</code> to a most recent number of observations.</p></td>
+    </tr>
+    <tr>
+      <th>.length_test</th>
+      <td><p>Defines the length of the test split for evaluation.</p></td>
+    </tr>
+    <tr>
+      <th>.length_train</th>
+      <td><p>Defines the length of the training split for evaluation.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Not currently used.</p></td>
-    </tr>
-    <tr>
-      <th>control</th>
-      <td><p>An object used to modify the fitting process. See <code><a href='control_fit_workflowset.html'>control_fit_workflowset()</a></code>.</p></td>
+      <td><p>Additional arguments passed to the helper function. See details.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A Modeltime Table containing one or more fitted models.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>Preparation of nested time series follows a 3-Step Process:</p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Step 1: Extend the Time Series</h3>
 
-    <div class='dont-index'><p><code><a href='control_fit_workflowset.html'>control_fit_workflowset()</a></code></p></div>
+
+<p><code>extend_timeseries()</code>: A wrapper for <code><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>timetk::future_frame()</a></code> that extends a time series
+group-wise into the future.</p><ul>
+<li><p>The group column is specified by <code>.id_var</code>.</p></li>
+<li><p>The date column is specified by <code>.date_var</code>.</p></li>
+<li><p>The length into the future is specified with <code>.length_future</code>.</p></li>
+</ul>
+
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Step 2: Nest the Time Series</h3>
+
+
+<p><code>nest_timeseries()</code>: A helper for nesting your data into <code>.actual_data</code> and <code>.future_data</code>.</p><ul>
+<li><p>The group column is specified by <code>.id_var</code></p></li>
+<li><p>The <code>.length_future</code> defines the length of the <code>.future_data</code>.</p></li>
+<li><p>The remaining data is converted to the <code>.actual_data</code>.</p></li>
+<li><p>The <code>.length_actual</code> can be used to slice the <code>.actual_data</code> to a most recent number of observations.</p></li>
+</ul>
+
+<p>The result is a "nested data frame".</p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Step 3: Split the Actual Data into Train/Test Splits</h3>
+
+
+<p><code>split_nested_timeseries()</code>: A wrapper for <code><a href='https://rdrr.io/pkg/timetk/man/time_series_split.html'>timetk::time_series_split()</a></code> that generates
+training/testing splits from the <code>.actual_data</code> column.</p><ul>
+<li><p>The <code>.length_test</code> is the primary argument that identifies the size of the
+testing sample. This is typically the same size as the <code>.future_data</code>.</p></li>
+<li><p>The <code>.length_train</code> is an optional size of the training data.</p></li>
+<li><p>The <code>...</code> (dots) are additional arguments that can be passed to <code><a href='https://rdrr.io/pkg/timetk/man/time_series_split.html'>timetk::time_series_split()</a></code>.</p></li>
+</ul>
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidymodels/workflowsets'>workflowsets</a></span><span class='op'>)</span>
+    <pre class="examples"><div class='input'>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 
-<span class='va'>data_set</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span>
+<span class='va'>walmart_sales_weekly</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>id</span>, <span class='va'>Date</span>, <span class='va'>Weekly_Sales</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>set_names</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"id"</span>, <span class='st'>"date"</span>, <span class='st'>"value"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 
-<span class='co'># SETUP WORKFLOWSETS</span>
+    <span class='co'># Extends the time series by id</span>
+    <span class='fu'>extend_timeseries</span><span class='op'>(</span>
+        .id_var     <span class='op'>=</span> <span class='va'>id</span>,
+        .date_var   <span class='op'>=</span> <span class='va'>date</span>,
+        .length_future <span class='op'>=</span> <span class='fl'>52</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
 
-<span class='va'>rec1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/recipe.html'>recipe</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='va'>id</span>, <span class='va'>data_set</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://recipes.tidymodels.org/reference/step_mutate.html'>step_mutate</a></span><span class='op'>(</span>date_num <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://recipes.tidymodels.org/reference/step_mutate.html'>step_mutate</a></span><span class='op'>(</span>month_lbl <span class='op'>=</span> <span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span><span class='op'>(</span><span class='va'>date</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://recipes.tidymodels.org/reference/step_dummy.html'>step_dummy</a></span><span class='op'>(</span><span class='fu'><a href='https://recipes.tidymodels.org/reference/has_role.html'>all_nominal</a></span><span class='op'>(</span><span class='op'>)</span>, one_hot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <span class='co'># Nests the time series into .actual_data and .future_data</span>
+    <span class='fu'>nest_timeseries</span><span class='op'>(</span>
+        .id_var     <span class='op'>=</span> <span class='va'>id</span>,
+        .length_future <span class='op'>=</span> <span class='fl'>52</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span>
 
-<span class='va'>mod1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/linear_reg.html'>linear_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"lm"</span><span class='op'>)</span>
+    <span class='co'># Adds a column .splits that contains training/testing samples</span>
+    <span class='fu'>split_nested_timeseries</span><span class='op'>(</span>
+        .length_test <span class='op'>=</span> <span class='fl'>52</span>
+    <span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 4</span>
+#&gt;   id    .actual_data       .future_data      .splits        
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>         
+#&gt; <span style='color: #BCBCBC;'>1</span> 1_1   <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>2</span> 1_3   <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>3</span> 1_8   <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>4</span> 1_13  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>5</span> 1_38  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>6</span> 1_93  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>7</span> 1_95  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span></div><div class='input'>
 
-<span class='va'>mod2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prophet_reg.html'>prophet_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"prophet"</span><span class='op'>)</span>
 
-<span class='va'>wfsets</span> <span class='op'>&lt;-</span> <span class='fu'>workflowsets</span><span class='fu'>::</span><span class='fu'><a href='https://workflowsets.tidymodels.org/reference/workflow_set.html'>workflow_set</a></span><span class='op'>(</span>
-    preproc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>rec1 <span class='op'>=</span> <span class='va'>rec1</span><span class='op'>)</span>,
-    models  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-        mod1 <span class='op'>=</span> <span class='va'>mod1</span>,
-        mod2 <span class='op'>=</span> <span class='va'>mod2</span>
-    <span class='op'>)</span>,
-    cross   <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='co'># FIT WORKFLOWSETS</span>
-<span class='co'># - Returns a Modeltime Table with fitted workflowsets</span>
-
-<span class='va'>wfsets</span> <span class='op'>%&gt;%</span> <span class='fu'>modeltime_fit_workflowset</span><span class='op'>(</span><span class='va'>data_set</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span></div><div class='output co'>#&gt; <span class='message'>Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></div><div class='output co'>#&gt; # Modeltime Table
-#&gt; <span style='color: #949494;'># A tibble: 2 x 3</span>
-#&gt;   .model_id .model     .model_desc
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 <span style='color: #949494;'>&lt;workflow&gt;</span> REC1_MOD1  
-#&gt; <span style='color: #BCBCBC;'>2</span>         2 <span style='color: #949494;'>&lt;workflow&gt;</span> REC1_MOD2  </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

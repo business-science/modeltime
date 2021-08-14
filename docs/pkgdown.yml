@@ -1,4 +1,4 @@
-pandoc: '2.13'
+pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -8,5 +8,5 @@ articles:
   modeltime-model-list: modeltime-model-list.html
   parallel-processing: parallel-processing.html
   recursive-forecasting: recursive-forecasting.html
-last_built: 2021-07-16T12:19Z
+last_built: 2021-08-14T19:10Z
 

@@ -124,7 +124,6 @@ create_model_grid <- function(grid, f_model_spec, engine_name, ..., engine_param
             do.call(f_text, params)
         }) %>%
         purrr::map(.f = function(x) {
-            # TODO add engine_params
             x %>% parsnip::set_engine(engine = engine_name, !!! engine_params)
         })
 

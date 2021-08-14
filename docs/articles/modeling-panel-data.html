@@ -184,8 +184,8 @@
 
     
     
-<p><img src="panel_data_success.jpg" width="100%" style="display: block; margin: auto;"></p>
-<p><br><img src="logo-modeltime.png" width="147" height="170" align="right"></p>
+<p><img src="../../../../R%20Projects/Courses/modeltime/vignettes/panel_data_success.jpg" width="100%" style="display: block; margin: auto;"></p>
+<p><br><img src="../../../../R%20Projects/Courses/modeltime/vignettes/logo-modeltime.png" width="147" height="170" align="right"></p>
 <p>Modeltime is designed for modeling <strong>Panel Data</strong>. In this short tutorial, we will explain what Panel Data Modeling is and demonstrate how to use the Modeltime Forecasting Workflow for multi-time series datasets (Panel Data).</p>
 <div id="problem-forecast-iteration-is-not-scalable" class="section level1">
 <h1 class="hasAnchor">
@@ -199,25 +199,25 @@
 <a href="#what-are-panel-data-and-global-models" class="anchor"></a>What are Panel Data and Global Models?</h1>
 <p>In it’s simplest form, <strong>Panel Data</strong> is a time series dataset that has more than one series. Each time series is stacked row-wise (on-top) of each other.</p>
 <div class="figure" style="text-align: center">
-<img src="panel_data.jpg" alt="Panel Data Structure" width="100%"><p class="caption">
+<img src="../../../../R%20Projects/Courses/modeltime/vignettes/panel_data.jpg" alt="Panel Data Structure" width="100%"><p class="caption">
 Panel Data Structure
 </p>
 </div>
 <p><strong>Traditional modeling techniques like ARIMA</strong> can only be used on one time series at a time. The widely accepted forecasting approach is to iterate through each time series producing a unique model and forecast for each time series identifier. The downside with this approach is that it’s expensive when you have many time series. Think of the number of products in a database. As the number of time series approaches the range of 1000-10,000, <strong>the iterative approach becomes unscalable.</strong></p>
 <div class="figure" style="text-align: center">
-<img src="panel_data_arima.jpg" alt="Problem: 1000 ARIMA Models Needed for 1000 Time Series" width="100%"><p class="caption">
+<img src="../../../../R%20Projects/Courses/modeltime/vignettes/panel_data_arima.jpg" alt="Problem: 1000 ARIMA Models Needed for 1000 Time Series" width="100%"><p class="caption">
 Problem: 1000 ARIMA Models Needed for 1000 Time Series
 </p>
 </div>
 <p><strong>Global Models</strong> are alternatives to the iterative approach. A Global Model is a single model that forecasts all time series at once. Global Models are highly scalable, which solves the problem of 1-10,000 time series. An example is an XGBoost Model, which can determine relationships for all 1000 time series panels with a single model.</p>
 <div class="figure" style="text-align: center">
-<img src="panel_data_xgboost.jpg" alt="Solution: A Single XGBOOST Model can Model 1000 Time Series" width="100%"><p class="caption">
+<img src="../../../../R%20Projects/Courses/modeltime/vignettes/panel_data_xgboost.jpg" alt="Solution: A Single XGBOOST Model can Model 1000 Time Series" width="100%"><p class="caption">
 Solution: A Single XGBOOST Model can Model 1000 Time Series
 </p>
 </div>
 <p>The downside is that an iterative approach can be more accurate. To improve accuracy, <strong>feature engineering and localized model selection</strong> by time series identifier become critical to large-scale forecasting success. If interested, I teach proven feature engineering techniques in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Forecasting Course</a>.</p>
 <div class="figure" style="text-align: center">
-<img src="panel_data_success.jpg" alt="Modeling Panel Data" width="100%"><p class="caption">
+<img src="../../../../R%20Projects/Courses/modeltime/vignettes/panel_data_success.jpg" alt="Modeling Panel Data" width="100%"><p class="caption">
 Modeling Panel Data
 </p>
 </div>
@@ -278,7 +278,7 @@ Modeling Panel Data
 <span class="co">#&gt;  8 1_1   2010-03-26 26229.</span>
 <span class="co">#&gt;  9 1_1   2010-04-02 57258.</span>
 <span class="co">#&gt; 10 1_1   2010-04-09 42961.</span>
-<span class="co">#&gt; # … with 991 more rows</span></code></pre></div>
+<span class="co">#&gt; # ... with 991 more rows</span></code></pre></div>
 </div>
 <div id="visualize-the-data" class="section level2">
 <h2 class="hasAnchor">
@@ -335,7 +335,7 @@ Modeling Panel Data
 <span class="co">#&gt;  8 date_month.xts numeric predictor derived </span>
 <span class="co">#&gt;  9 date_day       numeric predictor derived </span>
 <span class="co">#&gt; 10 date_mday      numeric predictor derived </span>
-<span class="co">#&gt; # … with 28 more rows</span></code></pre></div>
+<span class="co">#&gt; # ... with 28 more rows</span></code></pre></div>
 </div>
 <div id="machine-learning" class="section level2">
 <h2 class="hasAnchor">
@@ -355,20 +355,20 @@ Modeling Panel Data
     <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span>
-<span class="co">#&gt; ══ Workflow [trained] ══════════════════════════════════════════════════════════</span>
+<span class="co">#&gt; == Workflow [trained] ==========================================================</span>
 <span class="co">#&gt; Preprocessor: Recipe</span>
 <span class="co">#&gt; Model: boost_tree()</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; -- Preprocessor ----------------------------------------------------------------</span>
 <span class="co">#&gt; 5 Recipe Steps</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; • step_mutate()</span>
-<span class="co">#&gt; • step_timeseries_signature()</span>
-<span class="co">#&gt; • step_rm()</span>
-<span class="co">#&gt; • step_zv()</span>
-<span class="co">#&gt; • step_dummy()</span>
+<span class="co">#&gt; * step_mutate()</span>
+<span class="co">#&gt; * step_timeseries_signature()</span>
+<span class="co">#&gt; * step_rm()</span>
+<span class="co">#&gt; * step_zv()</span>
+<span class="co">#&gt; * step_dummy()</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; -- Model -----------------------------------------------------------------------</span>
 <span class="co">#&gt; ##### xgb.Booster</span>
 <span class="co">#&gt; raw: 58.3 Kb </span>
 <span class="co">#&gt; call:</span>
@@ -398,7 +398,7 @@ Modeling Panel Data
 <a href="#modeltime-workflow" class="anchor"></a>Modeltime Workflow</h2>
 <p>We’ll step through the modeltime workflow, which is used to test many different models on the time series and organize the entire process.</p>
 <div class="figure" style="text-align: center">
-<img src="modeltime_workflow.jpg" alt="Modeltime Workflow" width="100%"><p class="caption">
+<img src="../../../../R%20Projects/Courses/modeltime/vignettes/modeltime_workflow.jpg" alt="Modeltime Workflow" width="100%"><p class="caption">
 Modeltime Workflow
 </p>
 </div>
@@ -433,7 +433,7 @@ Modeltime Workflow
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;   .model_id .model     .model_desc .type .calibration_data</span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;       &lt;chr&gt; &lt;list&gt;           </span>
-<span class="co">#&gt; 1         1 &lt;workflow&gt; XGBOOST     Test  &lt;tibble [84 × 5]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1         1 &lt;workflow&gt; XGBOOST     Test  &lt;tibble [84 x 5]&gt;</span></code></pre></div>
 </div>
 </div>
 <div id="measure-accuracy" class="section level2">
@@ -448,12 +448,12 @@ Modeltime Workflow
 <code class="sourceCode R"><span class="va">calib_tbl</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="pxyxtzimfc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="hqmdlddeij" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#pxyxtzimfc .gt_table {
+#hqmdlddeij .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -478,7 +478,7 @@ Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_heading {
+#hqmdlddeij .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -490,7 +490,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_title {
+#hqmdlddeij .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -500,7 +500,7 @@ Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#pxyxtzimfc .gt_subtitle {
+#hqmdlddeij .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -510,13 +510,13 @@ Modeltime Workflow
   border-top-width: 0;
 }
 
-#pxyxtzimfc .gt_bottom_border {
+#hqmdlddeij .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_col_headings {
+#hqmdlddeij .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -531,7 +531,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_col_heading {
+#hqmdlddeij .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -551,7 +551,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#pxyxtzimfc .gt_column_spanner_outer {
+#hqmdlddeij .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -563,15 +563,15 @@ Modeltime Workflow
   padding-right: 4px;
 }
 
-#pxyxtzimfc .gt_column_spanner_outer:first-child {
+#hqmdlddeij .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pxyxtzimfc .gt_column_spanner_outer:last-child {
+#hqmdlddeij .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pxyxtzimfc .gt_column_spanner {
+#hqmdlddeij .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -583,7 +583,7 @@ Modeltime Workflow
   width: 100%;
 }
 
-#pxyxtzimfc .gt_group_heading {
+#hqmdlddeij .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -605,7 +605,7 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#pxyxtzimfc .gt_empty_group_heading {
+#hqmdlddeij .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -620,15 +620,15 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#pxyxtzimfc .gt_from_md > :first-child {
+#hqmdlddeij .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pxyxtzimfc .gt_from_md > :last-child {
+#hqmdlddeij .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pxyxtzimfc .gt_row {
+#hqmdlddeij .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -647,7 +647,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#pxyxtzimfc .gt_stub {
+#hqmdlddeij .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -659,7 +659,7 @@ Modeltime Workflow
   padding-left: 12px;
 }
 
-#pxyxtzimfc .gt_summary_row {
+#hqmdlddeij .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -669,7 +669,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#pxyxtzimfc .gt_first_summary_row {
+#hqmdlddeij .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -679,7 +679,7 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_grand_summary_row {
+#hqmdlddeij .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -689,7 +689,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#pxyxtzimfc .gt_first_grand_summary_row {
+#hqmdlddeij .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -699,11 +699,11 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_striped {
+#hqmdlddeij .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pxyxtzimfc .gt_table_body {
+#hqmdlddeij .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -712,7 +712,7 @@ Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_footnotes {
+#hqmdlddeij .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -726,13 +726,13 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_footnote {
+#hqmdlddeij .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#pxyxtzimfc .gt_sourcenotes {
+#hqmdlddeij .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -746,41 +746,41 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#pxyxtzimfc .gt_sourcenote {
+#hqmdlddeij .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#pxyxtzimfc .gt_left {
+#hqmdlddeij .gt_left {
   text-align: left;
 }
 
-#pxyxtzimfc .gt_center {
+#hqmdlddeij .gt_center {
   text-align: center;
 }
 
-#pxyxtzimfc .gt_right {
+#hqmdlddeij .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pxyxtzimfc .gt_font_normal {
+#hqmdlddeij .gt_font_normal {
   font-weight: normal;
 }
 
-#pxyxtzimfc .gt_font_bold {
+#hqmdlddeij .gt_font_bold {
   font-weight: bold;
 }
 
-#pxyxtzimfc .gt_font_italic {
+#hqmdlddeij .gt_font_italic {
   font-style: italic;
 }
 
-#pxyxtzimfc .gt_super {
+#hqmdlddeij .gt_super {
   font-size: 65%;
 }
 
-#pxyxtzimfc .gt_footnote_marks {
+#hqmdlddeij .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -823,12 +823,12 @@ Modeltime Workflow
 <code class="sourceCode R"><span class="va">calib_tbl</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="mqvkvasbqf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="bakkzyedsf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mqvkvasbqf .gt_table {
+#bakkzyedsf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -853,7 +853,7 @@ Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_heading {
+#bakkzyedsf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -865,7 +865,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_title {
+#bakkzyedsf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -875,7 +875,7 @@ Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#mqvkvasbqf .gt_subtitle {
+#bakkzyedsf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -885,13 +885,13 @@ Modeltime Workflow
   border-top-width: 0;
 }
 
-#mqvkvasbqf .gt_bottom_border {
+#bakkzyedsf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_col_headings {
+#bakkzyedsf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -906,7 +906,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_col_heading {
+#bakkzyedsf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -926,7 +926,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#mqvkvasbqf .gt_column_spanner_outer {
+#bakkzyedsf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -938,15 +938,15 @@ Modeltime Workflow
   padding-right: 4px;
 }
 
-#mqvkvasbqf .gt_column_spanner_outer:first-child {
+#bakkzyedsf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mqvkvasbqf .gt_column_spanner_outer:last-child {
+#bakkzyedsf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mqvkvasbqf .gt_column_spanner {
+#bakkzyedsf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -958,7 +958,7 @@ Modeltime Workflow
   width: 100%;
 }
 
-#mqvkvasbqf .gt_group_heading {
+#bakkzyedsf .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -980,7 +980,7 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#mqvkvasbqf .gt_empty_group_heading {
+#bakkzyedsf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -995,15 +995,15 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#mqvkvasbqf .gt_from_md > :first-child {
+#bakkzyedsf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mqvkvasbqf .gt_from_md > :last-child {
+#bakkzyedsf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mqvkvasbqf .gt_row {
+#bakkzyedsf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1022,7 +1022,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#mqvkvasbqf .gt_stub {
+#bakkzyedsf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1034,7 +1034,7 @@ Modeltime Workflow
   padding-left: 12px;
 }
 
-#mqvkvasbqf .gt_summary_row {
+#bakkzyedsf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1044,7 +1044,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#mqvkvasbqf .gt_first_summary_row {
+#bakkzyedsf .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1054,7 +1054,7 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_grand_summary_row {
+#bakkzyedsf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1064,7 +1064,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#mqvkvasbqf .gt_first_grand_summary_row {
+#bakkzyedsf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1074,11 +1074,11 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_striped {
+#bakkzyedsf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mqvkvasbqf .gt_table_body {
+#bakkzyedsf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1087,7 +1087,7 @@ Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_footnotes {
+#bakkzyedsf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1101,13 +1101,13 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_footnote {
+#bakkzyedsf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mqvkvasbqf .gt_sourcenotes {
+#bakkzyedsf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1121,41 +1121,41 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#mqvkvasbqf .gt_sourcenote {
+#bakkzyedsf .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mqvkvasbqf .gt_left {
+#bakkzyedsf .gt_left {
   text-align: left;
 }
 
-#mqvkvasbqf .gt_center {
+#bakkzyedsf .gt_center {
   text-align: center;
 }
 
-#mqvkvasbqf .gt_right {
+#bakkzyedsf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mqvkvasbqf .gt_font_normal {
+#bakkzyedsf .gt_font_normal {
   font-weight: normal;
 }
 
-#mqvkvasbqf .gt_font_bold {
+#bakkzyedsf .gt_font_bold {
   font-weight: bold;
 }
 
-#mqvkvasbqf .gt_font_italic {
+#bakkzyedsf .gt_font_italic {
   font-style: italic;
 }
 
-#mqvkvasbqf .gt_super {
+#bakkzyedsf .gt_super {
   font-size: 65%;
 }
 
-#mqvkvasbqf .gt_footnote_marks {
+#bakkzyedsf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
