@@ -242,4 +242,28 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 #' control_nested_refit(allow_par = TRUE)
 #'
 #' @export
-control_nested_refit <- control_nested_fit
+control_nested_refit <- function(verbose = FALSE,
+            allow_par = FALSE,
+            cores = -1,
+            packages = NULL) {
+
+    ret <- control_modeltime_objects(
+        verbose   = verbose,
+        allow_par = allow_par,
+        cores     = cores,
+        packages  = packages,
+        func      = "control_nested_refit"
+    )
+
+    class(ret) <- c("control_nested_refit")
+
+    return(ret)
+}
+
+
+
+#' @export
+print.control_nested_refit <- function(x, ...) {
+    pretty_print_list(x, header = "nested refit control object")
+    invisible(x)
+}

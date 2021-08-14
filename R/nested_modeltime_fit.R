@@ -309,7 +309,7 @@ control_nested_fit <- function(verbose = FALSE,
         allow_par = allow_par,
         cores     = cores,
         packages  = packages,
-        func      = "control_refit"
+        func      = "control_nested_fit"
     )
 
     class(ret) <- c("control_nested_fit")
