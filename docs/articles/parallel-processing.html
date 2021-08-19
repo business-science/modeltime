@@ -81,6 +81,12 @@
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider">
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
+    <li>
+      <a href="..//"></a>
+    </li>
+    <li class="divider">
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -472,9 +478,9 @@
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.114 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.274 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 12.114 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.276 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -514,7 +520,7 @@
 <span class="co">#&gt; v Model Successfully Fitted: 5</span>
 <span class="co">#&gt; i Fitting Model: 6</span>
 <span class="co">#&gt; v Model Successfully Fitted: 6</span>
-<span class="co">#&gt; Total time | 12.285 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 12.015 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -526,12 +532,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="qjrpahozcn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="oxuqqolgaz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#qjrpahozcn .gt_table {
+#oxuqqolgaz .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -556,7 +562,7 @@
   border-left-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_heading {
+#oxuqqolgaz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -568,7 +574,7 @@
   border-right-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_title {
+#oxuqqolgaz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -578,7 +584,7 @@
   border-bottom-width: 0;
 }
 
-#qjrpahozcn .gt_subtitle {
+#oxuqqolgaz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -588,13 +594,13 @@
   border-top-width: 0;
 }
 
-#qjrpahozcn .gt_bottom_border {
+#oxuqqolgaz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_col_headings {
+#oxuqqolgaz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -609,7 +615,7 @@
   border-right-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_col_heading {
+#oxuqqolgaz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -629,7 +635,7 @@
   overflow-x: hidden;
 }
 
-#qjrpahozcn .gt_column_spanner_outer {
+#oxuqqolgaz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -641,15 +647,15 @@
   padding-right: 4px;
 }
 
-#qjrpahozcn .gt_column_spanner_outer:first-child {
+#oxuqqolgaz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qjrpahozcn .gt_column_spanner_outer:last-child {
+#oxuqqolgaz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qjrpahozcn .gt_column_spanner {
+#oxuqqolgaz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -661,7 +667,7 @@
   width: 100%;
 }
 
-#qjrpahozcn .gt_group_heading {
+#oxuqqolgaz .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -683,7 +689,7 @@
   vertical-align: middle;
 }
 
-#qjrpahozcn .gt_empty_group_heading {
+#oxuqqolgaz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -698,15 +704,15 @@
   vertical-align: middle;
 }
 
-#qjrpahozcn .gt_from_md > :first-child {
+#oxuqqolgaz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qjrpahozcn .gt_from_md > :last-child {
+#oxuqqolgaz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qjrpahozcn .gt_row {
+#oxuqqolgaz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -725,7 +731,7 @@
   overflow-x: hidden;
 }
 
-#qjrpahozcn .gt_stub {
+#oxuqqolgaz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -737,7 +743,7 @@
   padding-left: 12px;
 }
 
-#qjrpahozcn .gt_summary_row {
+#oxuqqolgaz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -747,7 +753,7 @@
   padding-right: 5px;
 }
 
-#qjrpahozcn .gt_first_summary_row {
+#oxuqqolgaz .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -757,7 +763,7 @@
   border-top-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_grand_summary_row {
+#oxuqqolgaz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -767,7 +773,7 @@
   padding-right: 5px;
 }
 
-#qjrpahozcn .gt_first_grand_summary_row {
+#oxuqqolgaz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -777,11 +783,11 @@
   border-top-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_striped {
+#oxuqqolgaz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qjrpahozcn .gt_table_body {
+#oxuqqolgaz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -790,7 +796,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_footnotes {
+#oxuqqolgaz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -804,13 +810,13 @@
   border-right-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_footnote {
+#oxuqqolgaz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#qjrpahozcn .gt_sourcenotes {
+#oxuqqolgaz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -824,41 +830,41 @@
   border-right-color: #D3D3D3;
 }
 
-#qjrpahozcn .gt_sourcenote {
+#oxuqqolgaz .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#qjrpahozcn .gt_left {
+#oxuqqolgaz .gt_left {
   text-align: left;
 }
 
-#qjrpahozcn .gt_center {
+#oxuqqolgaz .gt_center {
   text-align: center;
 }
 
-#qjrpahozcn .gt_right {
+#oxuqqolgaz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qjrpahozcn .gt_font_normal {
+#oxuqqolgaz .gt_font_normal {
   font-weight: normal;
 }
 
-#qjrpahozcn .gt_font_bold {
+#oxuqqolgaz .gt_font_bold {
   font-weight: bold;
 }
 
-#qjrpahozcn .gt_font_italic {
+#oxuqqolgaz .gt_font_italic {
   font-style: italic;
 }
 
-#qjrpahozcn .gt_super {
+#oxuqqolgaz .gt_super {
   font-size: 65%;
 }
 
-#qjrpahozcn .gt_footnote_marks {
+#oxuqqolgaz .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

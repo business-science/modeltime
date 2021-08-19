@@ -17,10 +17,10 @@ coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/b
 
 > Tidy time series forecasting with `tidymodels`.
 
-## Modeltime in Minutes (YouTube)
+## Modeltime Quick Start (YouTube)
 
-Try Modeltime with this
-<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">10-minute
+Learn the basics of Modeltime with this
+<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">Introductory
 YouTube video</a>.
 
 <a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">

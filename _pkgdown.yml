@@ -23,6 +23,10 @@ navbar:
         - text: 'Forecasting Panel Data'
           href: articles/modeling-panel-data.html
         - text: "---"
+        - text: 'Nested Forecasting'
+        - text: 'Getting Started with Nested Forecasting'
+          href: /
+        - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Algorithm Roadmap'
           href: articles/modeltime-model-list.html
