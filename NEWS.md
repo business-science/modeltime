@@ -31,6 +31,11 @@ __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forec
 
 - __Logging Extractors:__ Functions that retrieve logged information from the re-fitting process. `extract_nested_future_forecast()`.
 
+### New Vignette
+
+[Nested Forecasting](https://business-science.github.io/modeltime/articles/nested-forecasting.html) 
+
+
 ### Workflowsets Integration
 
 - `modeltime_fit_workflowset()`: Improved handling of Workflowset Descriptions, which now match the `wflow_id`. 

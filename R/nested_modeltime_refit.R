@@ -96,13 +96,6 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
                             .error_desc = ifelse(is.null(err), NA_character_, err)
                         )
 
-                        # print(id)
-                        # print(mod_id)
-                        # print(get_model_description(mod))
-                        # print(err)
-                        #
-                        # print(error_tbl)
-
                         if (control$verbose) {
                             if (!is.null(err)) {
                                 cli::cli_alert_danger("Model {mod_id} Failed {error_tbl$.model_desc}: {err}")
@@ -171,8 +164,6 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
 
                 if (control$verbose) cli::cli_alert_success(stringr::str_glue("[{i}/{n_ids}] Finished Modeltime Table: ID {id}"))
                 if (control$verbose) cat("\n")
-
-
 
                 if (!control$verbose) cli::cli_progress_update(.envir = logging_env)
 
