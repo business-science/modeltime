@@ -201,7 +201,7 @@
 <div id="nested-forecasting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nested-forecasting" class="anchor"></a>Nested Forecasting</h2>
-<p>The core idea of <strong>nested forecasting</strong> is to convert a dataset containing may time series groups into a nested data set, then apply many models to each of the datasets. This allows for selection of the best models for the unique time series groups, rather than a single global model that performs best on average.</p>
+<p>The core idea of <strong>nested forecasting</strong> is to convert a dataset containing <strong>many time series groups</strong> into a nested data set, then fit <strong>many models</strong> to each of the nested datasets. The result is an iterative forecasting process that generates Nested Modeltime Tables with all of the forecast attributes needed to make decisions.</p>
 <p><img src="modeltime-nested.jpg" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div id="important-concepts-logging-attributes" class="section level2">
@@ -226,6 +226,7 @@
 </li>
 </ul>
 <p>While this deviates from the traditional Modeltime Workflow, we find that <strong>logging vastly speeds up experimentation and information retrieval</strong> especially when the number of time series increases.</p>
+<p><img src="nested-logs.jpg" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
@@ -274,7 +275,7 @@
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
     <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">F</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We can clearly see that there are 7 time series groups with different weekly sales patterns.</p>
 </div>
 <div id="data-preparation" class="section level3">
@@ -414,24 +415,534 @@
 <p>Using the <code><a href="../reference/log_extractors.html">extract_nested_test_accuracy()</a></code>, we can get the accuracy measures by time series and model. This allows us to see which model performs best on which time series.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 14 × 10</span>
-<span class="co">#&gt;    id    .model_id .model_desc .type    mae  mape  mase smape   rmse     rsq</span>
-<span class="co">#&gt;    &lt;fct&gt;     &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1_1           1 PROPHET     Test  10071. 45.9  1.99  60.0  11777. 0.383  </span>
-<span class="co">#&gt;  2 1_1           2 XGBOOST     Test   6237. 25.3  1.23  24.6   9017. 0.191  </span>
-<span class="co">#&gt;  3 1_3           1 PROPHET     Test   3540. 29.9  1.37  25.5   4708. 0.796  </span>
-<span class="co">#&gt;  4 1_3           2 XGBOOST     Test   3086. 18.8  1.20  20.4   5086. 0.787  </span>
-<span class="co">#&gt;  5 1_8           1 PROPHET     Test   4283. 11.2  1.82  12.0   4845. 0.00141</span>
-<span class="co">#&gt;  6 1_8           2 XGBOOST     Test   3586.  9.33 1.53   9.89  4009. 0.297  </span>
-<span class="co">#&gt;  7 1_13          1 PROPHET     Test   6861. 17.0  2.53  18.8   7310. 0.151  </span>
-<span class="co">#&gt;  8 1_13          2 XGBOOST     Test   2338.  5.83 0.861  6.02  2721. 0.536  </span>
-<span class="co">#&gt;  9 1_38          1 PROPHET     Test  26007. 32.6  2.22  39.6  27939. 0.0769 </span>
-<span class="co">#&gt; 10 1_38          2 XGBOOST     Test   6847.  8.47 0.585  8.75  8825. 0.402  </span>
-<span class="co">#&gt; 11 1_93          1 PROPHET     Test  17165. 21.4  1.73  24.5  19123. 0.0345 </span>
-<span class="co">#&gt; 12 1_93          2 XGBOOST     Test   7234.  9.11 0.728  9.66  8879. 0.488  </span>
-<span class="co">#&gt; 13 1_95          1 PROPHET     Test  22836. 18.3  2.75  20.4  24094. 0.478  </span>
-<span class="co">#&gt; 14 1_95          2 XGBOOST     Test  10784.  8.54 1.30   8.96 12843. 0.139</span></code></pre></div>
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+<div id="ieenbbnmup" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ieenbbnmup .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ieenbbnmup .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ieenbbnmup .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ieenbbnmup .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ieenbbnmup .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ieenbbnmup .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ieenbbnmup .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ieenbbnmup .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ieenbbnmup .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ieenbbnmup .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ieenbbnmup .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ieenbbnmup .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ieenbbnmup .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#ieenbbnmup .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ieenbbnmup .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ieenbbnmup .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ieenbbnmup .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ieenbbnmup .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ieenbbnmup .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ieenbbnmup .gt_left {
+  text-align: left;
+}
+
+#ieenbbnmup .gt_center {
+  text-align: center;
+}
+
+#ieenbbnmup .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ieenbbnmup .gt_font_normal {
+  font-weight: normal;
+}
+
+#ieenbbnmup .gt_font_bold {
+  font-weight: bold;
+}
+
+#ieenbbnmup .gt_font_italic {
+  font-style: italic;
+}
+
+#ieenbbnmup .gt_super {
+  font-size: 65%;
+}
+
+#ieenbbnmup .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="table gt_table">
+<thead class="gt_header"><tr>
+<th colspan="10" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</th>
+    </tr></thead>
+<thead class="gt_col_headings"><tr>
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">.model_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.model_desc</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.type</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mae</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mase</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">smape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">rmse</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">rsq</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td class="gt_row gt_center">1_1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">10071.47</td>
+<td class="gt_row gt_right">45.88</td>
+<td class="gt_row gt_right">1.99</td>
+<td class="gt_row gt_right">59.97</td>
+<td class="gt_row gt_right">11776.87</td>
+<td class="gt_row gt_right">0.38</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_1</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">6236.79</td>
+<td class="gt_row gt_right">25.31</td>
+<td class="gt_row gt_right">1.23</td>
+<td class="gt_row gt_right">24.57</td>
+<td class="gt_row gt_right">9017.22</td>
+<td class="gt_row gt_right">0.19</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_3</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">3539.80</td>
+<td class="gt_row gt_right">29.87</td>
+<td class="gt_row gt_right">1.37</td>
+<td class="gt_row gt_right">25.46</td>
+<td class="gt_row gt_right">4707.77</td>
+<td class="gt_row gt_right">0.80</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_3</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">3085.78</td>
+<td class="gt_row gt_right">18.81</td>
+<td class="gt_row gt_right">1.20</td>
+<td class="gt_row gt_right">20.40</td>
+<td class="gt_row gt_right">5085.81</td>
+<td class="gt_row gt_right">0.79</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_8</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">4282.96</td>
+<td class="gt_row gt_right">11.15</td>
+<td class="gt_row gt_right">1.82</td>
+<td class="gt_row gt_right">11.96</td>
+<td class="gt_row gt_right">4845.08</td>
+<td class="gt_row gt_right">0.00</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_8</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">3585.77</td>
+<td class="gt_row gt_right">9.33</td>
+<td class="gt_row gt_right">1.53</td>
+<td class="gt_row gt_right">9.89</td>
+<td class="gt_row gt_right">4009.47</td>
+<td class="gt_row gt_right">0.30</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_13</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">6861.13</td>
+<td class="gt_row gt_right">17.02</td>
+<td class="gt_row gt_right">2.53</td>
+<td class="gt_row gt_right">18.78</td>
+<td class="gt_row gt_right">7309.61</td>
+<td class="gt_row gt_right">0.15</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_13</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">2338.42</td>
+<td class="gt_row gt_right">5.83</td>
+<td class="gt_row gt_right">0.86</td>
+<td class="gt_row gt_right">6.02</td>
+<td class="gt_row gt_right">2721.47</td>
+<td class="gt_row gt_right">0.54</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_38</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">26007.21</td>
+<td class="gt_row gt_right">32.57</td>
+<td class="gt_row gt_right">2.22</td>
+<td class="gt_row gt_right">39.60</td>
+<td class="gt_row gt_right">27938.83</td>
+<td class="gt_row gt_right">0.08</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_38</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">6847.04</td>
+<td class="gt_row gt_right">8.47</td>
+<td class="gt_row gt_right">0.58</td>
+<td class="gt_row gt_right">8.75</td>
+<td class="gt_row gt_right">8825.28</td>
+<td class="gt_row gt_right">0.40</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_93</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">17165.30</td>
+<td class="gt_row gt_right">21.37</td>
+<td class="gt_row gt_right">1.73</td>
+<td class="gt_row gt_right">24.46</td>
+<td class="gt_row gt_right">19123.17</td>
+<td class="gt_row gt_right">0.03</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_93</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">7233.95</td>
+<td class="gt_row gt_right">9.11</td>
+<td class="gt_row gt_right">0.73</td>
+<td class="gt_row gt_right">9.66</td>
+<td class="gt_row gt_right">8879.21</td>
+<td class="gt_row gt_right">0.49</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_95</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PROPHET</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">22836.06</td>
+<td class="gt_row gt_right">18.30</td>
+<td class="gt_row gt_right">2.75</td>
+<td class="gt_row gt_right">20.37</td>
+<td class="gt_row gt_right">24094.49</td>
+<td class="gt_row gt_right">0.48</td>
+</tr>
+<tr>
+<td class="gt_row gt_center">1_95</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_left">XGBOOST</td>
+<td class="gt_row gt_left">Test</td>
+<td class="gt_row gt_right">10783.75</td>
+<td class="gt_row gt_right">8.54</td>
+<td class="gt_row gt_right">1.30</td>
+<td class="gt_row gt_right">8.96</td>
+<td class="gt_row gt_right">12843.50</td>
+<td class="gt_row gt_right">0.14</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="extract-nested-test-forecast" class="section level4">
 <h4 class="hasAnchor">
@@ -445,7 +956,7 @@
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="extract-nested-error-logs" class="section level4">
 <h4 class="hasAnchor">
@@ -502,7 +1013,7 @@
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="step-5-refitting-and-future-forecast" class="section level3">
@@ -541,7 +1052,7 @@
 <span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
 <span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 3.53834 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 3.613067 secs.</span></code></pre></div>
 <p>Note that we used <code><a href="../reference/control_nested_refit.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -571,7 +1082,7 @@
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>,
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>

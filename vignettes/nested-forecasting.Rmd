@@ -34,7 +34,7 @@ We've incorporated a new approach called ___"nested forecasting"___ to help perf
 
 ## Nested Forecasting
 
-The core idea of __nested forecasting__ is to convert a dataset containing may time series groups into a nested data set, then apply many models to each of the datasets. This allows for selection of the best models for the unique time series groups, rather than a single global model that performs best on average.
+The core idea of __nested forecasting__ is to convert a dataset containing __many time series groups__ into a nested data set, then fit __many models__ to each of the nested datasets. The result is an iterative forecasting process that generates Nested Modeltime Tables with all of the forecast attributes needed to make decisions. 
 
 ```{r, echo=F,  out.width="80%", fig.align='center'}
 knitr::include_graphics("modeltime-nested.jpg")
@@ -53,6 +53,10 @@ A new feature to nested forecasting workflow is __logged attributes__, which is 
 - __Future Forecasts:__ `extract_nested_future_forecast()`
 
 While this deviates from the traditional Modeltime Workflow, we find that __logging vastly speeds up experimentation and information retrieval__ especially when the number of time series increases. 
+
+```{r, echo=F,  out.width="80%", fig.align='center'}
+knitr::include_graphics("nested-logs.jpg")
+```
 
 
 
@@ -219,7 +223,8 @@ Using the `extract_nested_test_accuracy()`, we can get the accuracy measures by 
 
 ```{r}
 nested_modeltime_tbl %>% 
-  extract_nested_test_accuracy()
+  extract_nested_test_accuracy() %>%
+  table_modeltime_accuracy(.interactive = F)
 ```
 
 #### Extract Nested Test Forecast
