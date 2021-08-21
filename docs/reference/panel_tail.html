@@ -128,6 +128,11 @@
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -266,7 +271,7 @@
 <span class='co'># Get the last 6 observations from each group</span>
 <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span>
     <span class='fu'>panel_tail</span><span class='op'>(</span>id <span class='op'>=</span> <span class='va'>id</span>, n <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 24 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 24 × 3</span>
 #&gt;    id    date       value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M1    2015-01-01  <span style='text-decoration: underline;'>6</span>040

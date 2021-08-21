@@ -131,6 +131,11 @@ different packages. Currently the only package is forecast." />
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -390,7 +395,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 
 <span class='co'># Data</span>
 <span class='va'>taylor_30_min</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4,032 x 2</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4,032 × 2</span>
 #&gt;    date                value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> 2000-06-05 <span style='color: #949494;'>00:00:00</span> <span style='text-decoration: underline;'>22</span>262
@@ -419,10 +424,10 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  391ms 
+#&gt; Fit time:  394ms 
 #&gt; SEASONAL DECOMP: ETS(A,Ad,N)
 #&gt; 
-#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span>
+#&gt; <span style='color: #949494;'># A tibble: 1 × 5</span>
 #&gt;      aic    bic   aicc loglik       mse
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> -<span style='color: #BB0000; text-decoration: underline;'>6</span><span style='color: #BB0000;'>473.</span> -<span style='color: #BB0000; text-decoration: underline;'>6</span><span style='color: #BB0000;'>437.</span> -<span style='color: #BB0000; text-decoration: underline;'>6</span><span style='color: #BB0000;'>473.</span>  <span style='text-decoration: underline;'>3</span>243. 0.000<span style='text-decoration: underline;'>041</span>5</div><div class='input'>
@@ -439,7 +444,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  558ms 
+#&gt; Fit time:  568ms 
 #&gt; SEASONAL DECOMP: ARIMA(3,1,2)
 #&gt; 
 #&gt; Series: x 

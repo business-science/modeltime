@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0.9000</span>
       </span>
     </div>
 
@@ -79,6 +79,11 @@
     </li>
     <li>
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
+    </li>
+    <li class="divider">
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -235,7 +240,7 @@ Recursive Panel Forecast with XGBoost
 <p>Let’s start with the <code>m750</code> dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m750</span>
-<span class="co">#&gt; # A tibble: 306 x 3</span>
+<span class="co">#&gt; # A tibble: 306 × 3</span>
 <span class="co">#&gt;    id    date       value</span>
 <span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;     &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 M750  1990-01-01  6370</span>
@@ -302,7 +307,7 @@ Recursive Panel Forecast with XGBoost
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
 
 <span class="va">m750_rolling</span>
-<span class="co">#&gt; # A tibble: 330 x 27</span>
+<span class="co">#&gt; # A tibble: 330 × 27</span>
 <span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
 <span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 1990-01-01  6370         NA         NA         NA         NA         NA</span>
@@ -331,7 +336,7 @@ Recursive Panel Forecast with XGBoost
     <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">train_data</span>
-<span class="co">#&gt; # A tibble: 282 x 27</span>
+<span class="co">#&gt; # A tibble: 282 × 27</span>
 <span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
 <span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 1992-01-01  7030       7040       7000       6980       6550       5780</span>
@@ -356,7 +361,7 @@ Recursive Panel Forecast with XGBoost
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">future_data</span>
-<span class="co">#&gt; # A tibble: 24 x 27</span>
+<span class="co">#&gt; # A tibble: 24 × 27</span>
 <span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
 <span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 2015-07-01    NA      11000      11310      11290      11250      11010</span>
@@ -438,7 +443,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  5ms </span>
+<span class="co">#&gt; Fit time:  4ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span>
@@ -477,7 +482,7 @@ Recursive Panel Forecast with XGBoost
 
 <span class="va">model_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 2 x 3</span>
+<span class="co">#&gt; # A tibble: 2 × 3</span>
 <span class="co">#&gt;   .model_id .model   .model_desc </span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;       </span>
 <span class="co">#&gt; 1         1 &lt;fit[+]&gt; LM          </span>
@@ -575,7 +580,7 @@ Recursive Panel Forecast with XGBoost
     <span class="fu">lag_roll_transformer_grouped</span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">m4_lags</span>
-<span class="co">#&gt; # A tibble: 1,670 x 28</span>
+<span class="co">#&gt; # A tibble: 1,670 × 28</span>
 <span class="co">#&gt;    id    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
 <span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 M1    1976-06-01  8000         NA         NA         NA         NA         NA</span>
@@ -637,7 +642,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  132ms </span>
+<span class="co">#&gt; Fit time:  148ms </span>
 <span class="co">#&gt; ##### xgb.Booster</span>
 <span class="co">#&gt; raw: 69.2 Kb </span>
 <span class="co">#&gt; call:</span>
@@ -673,7 +678,7 @@ Recursive Panel Forecast with XGBoost
 
 <span class="va">model_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 1 x 3</span>
+<span class="co">#&gt; # A tibble: 1 × 3</span>
 <span class="co">#&gt;   .model_id .model   .model_desc      </span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;            </span>
 <span class="co">#&gt; 1         1 &lt;fit[+]&gt; RECURSIVE XGBOOST</span></code></pre></div>

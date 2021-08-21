@@ -23,6 +23,10 @@ navbar:
         - text: 'Forecasting Panel Data'
           href: articles/modeling-panel-data.html
         - text: "---"
+        - text: 'Nested Forecasting'
+        - text: 'Getting Started with Nested Forecasting'
+          href: articles/nested-forecasting.html
+        - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Algorithm Roadmap'
           href: articles/modeltime-model-list.html
@@ -70,7 +74,7 @@ navbar:
 
 reference:
   - title: Modeltime Workflow
-    desc: The main workflow functions for scalable time series modeling.
+    desc: The main workflow functions for time series modeling.
   - subtitle: Core Functions
     contents:
     - modeltime_table
@@ -92,6 +96,16 @@ reference:
     - modeltime_residuals
     - modeltime_residuals_test
     - plot_modeltime_residuals
+  - title: Nested Forecasting
+    desc: Forecast many time series iteratively using "nested modeltime tables". Used to apply models to each time series panel independently.
+  - subtitle: Core functions
+    contents:
+    - modeltime_nested_fit
+    - modeltime_nested_select_best
+    - modeltime_nested_refit
+  - subtitle: Extractors
+    contents:
+    - starts_with("extract_")
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
   - subtitle: Core Forecasting Methods

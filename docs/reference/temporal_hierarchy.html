@@ -131,6 +131,11 @@ function requires the thief package to be installed." />
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -357,7 +362,7 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 × 3</span>
 #&gt;    id    date       value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
@@ -384,7 +389,10 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `type_convert()` only converts columns of type 'character'.</span>
+#&gt; <span class='warning'>- `df` has no columns of type 'character'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `type_convert()` only converts columns of type 'character'.</span>
+#&gt; <span class='warning'>- `df` has no columns of type 'character'</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `type_convert()` only converts columns of type 'character'.</span>
+#&gt; <span class='warning'>- `df` has no columns of type 'character'</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
 #&gt; Fit time:  1.5s 

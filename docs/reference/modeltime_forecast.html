@@ -129,6 +129,11 @@ forecasting future data." />
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -424,7 +429,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 9</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 9</span>
 #&gt;   .model_id .model_desc             .type   mae  mape  mase smape  rmse   rsq
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  1.41 0.516  1.43  198. 0.930</div><div class='input'>
@@ -435,7 +440,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 x 7</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 × 7</span>
 #&gt;    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
@@ -457,7 +462,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 x 5</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 × 5</span>
 #&gt;    .model_id .model_desc .key   .index     .value
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370
@@ -480,7 +485,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
         new_data      <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         keep_data     <span class='op'>=</span> <span class='cn'>TRUE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 31 x 10</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 31 × 10</span>
 #&gt;    .model_id .model_desc       .key    .index     .value .conf_lo .conf_hi id   
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>         1 ARIMA(0,1,1)(0,1… predic… 2012-12-01 <span style='text-decoration: underline;'>10</span>449.   <span style='text-decoration: underline;'>10</span>058.   <span style='text-decoration: underline;'>10</span>839. M750 

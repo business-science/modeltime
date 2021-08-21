@@ -129,6 +129,11 @@ calculations from a fitted workflow (trained workflow) or model_fit (trained par
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -324,7 +329,7 @@ To enable local accuracy, an <code>id</code> must be provided during <code><a hr
     <span class='fu'>modeltime_accuracy</span><span class='op'>(</span>
         metric_set <span class='op'>=</span> <span class='fu'><a href='https://yardstick.tidymodels.org/reference/metric_set.html'>metric_set</a></span><span class='op'>(</span><span class='va'>mae</span>, <span class='va'>rmse</span>, <span class='va'>rsq</span><span class='op'>)</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 6</span>
 #&gt;   .model_id .model_desc             .type   mae  rmse   rsq
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  198. 0.930</div><div class='input'>

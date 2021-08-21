@@ -130,6 +130,11 @@ different packages. Currently the only package is prophet." />
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -326,8 +331,8 @@ unless overridden in the holidays input.</p></td>
     <tr>
       <th>mtry</th>
       <td><p>A number for the number (or proportion) of predictors that will
-be randomly sampled at each split when creating the tree models (<code>xgboost</code>
-only).</p></td>
+be randomly sampled at each split when creating the tree models
+(specific engines only)</p></td>
     </tr>
     <tr>
       <th>trees</th>
@@ -342,17 +347,17 @@ in a node that is required for the node to be split further.</p></td>
     <tr>
       <th>tree_depth</th>
       <td><p>An integer for the maximum depth of the tree (i.e. number
-of splits) (<code>xgboost</code> only).</p></td>
+of splits) (specific engines only).</p></td>
     </tr>
     <tr>
       <th>learn_rate</th>
       <td><p>A number for the rate at which the boosting algorithm adapts
-from iteration-to-iteration (<code>xgboost</code> only).</p></td>
+from iteration-to-iteration (specific engines only).</p></td>
     </tr>
     <tr>
       <th>loss_reduction</th>
       <td><p>A number for the reduction in the loss function required
-to split further (<code>xgboost</code> only).</p></td>
+to split further (specific engines only).</p></td>
     </tr>
     <tr>
       <th>sample_size</th>
@@ -552,7 +557,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 × 3</span>
 #&gt;    id    date       value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370

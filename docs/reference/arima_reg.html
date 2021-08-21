@@ -130,6 +130,11 @@ different packages. Currently the only package is forecast." />
       <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
     </li>
     <li class="divider"></li>
+    <li class="dropdown-header">Nested Forecasting</li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+    </li>
+    <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
       <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
@@ -434,7 +439,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 × 3</span>
 #&gt;    id    date       value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
@@ -463,7 +468,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  330ms 
+#&gt; Fit time:  340ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(0,1,1)(1,1,1)[12] 
 #&gt; 
@@ -495,7 +500,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  516ms 
+#&gt; Fit time:  542ms 
 #&gt; Series: outcome 
 #&gt; ARIMA(3,1,3)(1,0,1)[12] 
 #&gt; 

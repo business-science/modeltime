@@ -6,7 +6,8 @@ articles:
   getting-started-with-modeltime: getting-started-with-modeltime.html
   modeling-panel-data: modeling-panel-data.html
   modeltime-model-list: modeltime-model-list.html
+  nested-forecasting: nested-forecasting.html
   parallel-processing: parallel-processing.html
   recursive-forecasting: recursive-forecasting.html
-last_built: 2021-07-16T12:19Z
+last_built: 2021-08-21T14:28Z
 
