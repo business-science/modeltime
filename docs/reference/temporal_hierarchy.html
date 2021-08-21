@@ -132,9 +132,8 @@ function requires the thief package to be installed." />
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Nested Forecasting</li>
-    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
     <li>
-      <a href="..//"></a>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -359,11 +358,11 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://pkg.robjhyndman.com/thief'>thief</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'thief' was built under R version 4.0.5</span></div><div class='input'>
+
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 × 3</span>
 #&gt;    id    date       value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
@@ -376,7 +375,7 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 #&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
 #&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
 #&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
-#&gt; <span style='color: #949494;'># ... with 296 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
@@ -396,7 +395,7 @@ The <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></cod
 #&gt; <span class='warning'>- `df` has no columns of type 'character'</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  2.1s 
+#&gt; Fit time:  1.5s 
 #&gt;         Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
 #&gt; 21                                     9.292876 9.278808 9.177530 9.161701
 #&gt; 22 9.292288 9.290665 9.310183 9.314852 9.318892 9.304824 9.203573 9.187635

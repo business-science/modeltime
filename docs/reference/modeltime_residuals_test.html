@@ -132,9 +132,8 @@ the p-values are returned." />
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Nested Forecasting</li>
-    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
     <li>
-      <a href="..//"></a>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -339,19 +338,19 @@ The Durbin Watson test reports a test statistic, with a value from 0 to 4, where
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_residuals.html'>modeltime_residuals</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>modeltime_residuals_test</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
-#&gt;   .model_id .model_desc              shapiro_wilk box_pierce ljung_box durbin_watson
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)[12] 0.000<span style='text-decoration: underline;'>000</span>002<span style='text-decoration: underline;'>70</span>      0.762     0.761          1.96</div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 6</span>
+#&gt;   .model_id .model_desc          shapiro_wilk box_pierce ljung_box durbin_watson
+#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)…      2.70<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-9</span>      0.762     0.761          1.96</div><div class='input'>
 <span class='co'># Out-of-Sample</span>
 <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_residuals.html'>modeltime_residuals</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>modeltime_residuals_test</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
-#&gt;   .model_id .model_desc             shapiro_wilk box_pierce  ljung_box durbin_watson
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)[12]       0.025<span style='text-decoration: underline;'>7</span> 0.000<span style='text-decoration: underline;'>006</span>45 0.000<span style='text-decoration: underline;'>002</span>23         0.163</div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 6</span>
+#&gt;   .model_id .model_desc          shapiro_wilk box_pierce ljung_box durbin_watson
+#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)…       0.025<span style='text-decoration: underline;'>7</span> 0.000<span style='text-decoration: underline;'>006</span>45   2.23<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-6</span>         0.163</div><div class='input'>
 
 </div></pre>
   </div>

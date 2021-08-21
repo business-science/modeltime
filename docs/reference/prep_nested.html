@@ -130,9 +130,8 @@ iterative (nested) forecasting with Nested Modeltime Tables." />
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Nested Forecasting</li>
-    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
     <li>
-      <a href="..//"></a>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -354,16 +353,16 @@ testing sample. This is typically the same size as the <code>.future_data</code>
     <span class='fu'>split_nested_timeseries</span><span class='op'>(</span>
         .length_test <span class='op'>=</span> <span class='fl'>52</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 4</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 × 4</span>
 #&gt;   id    .actual_data       .future_data      .splits        
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>         
-#&gt; <span style='color: #BCBCBC;'>1</span> 1_1   <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>2</span> 1_3   <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>3</span> 1_8   <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>4</span> 1_13  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>5</span> 1_38  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>6</span> 1_93  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>7</span> 1_95  <span style='color: #949494;'>&lt;tibble [143 x 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 x 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span></div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'>1</span> 1_1   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>2</span> 1_3   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>3</span> 1_8   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>4</span> 1_13  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>5</span> 1_38  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>6</span> 1_93  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>7</span> 1_95  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span></div><div class='input'>
 
 
 </div></pre>

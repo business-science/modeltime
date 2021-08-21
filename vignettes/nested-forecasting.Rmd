@@ -36,7 +36,11 @@ We've incorporated a new approach called ___"nested forecasting"___ to help perf
 
 The core idea of __nested forecasting__ is to convert a dataset containing may time series groups into a nested data set, then apply many models to each of the datasets. This allows for selection of the best models for the unique time series groups, rather than a single global model that performs best on average.
 
-![Nested Modeltime Forecasting](modeltime-nested.jpg)
+```{r, echo=F,  out.width="80%", fig.align='center'}
+knitr::include_graphics("modeltime-nested.jpg")
+```
+
+
 
 ## Important Concepts: Logging & Attributes
 

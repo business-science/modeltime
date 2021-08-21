@@ -130,9 +130,8 @@ package." />
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Nested Forecasting</li>
-    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
     <li>
-      <a href="..//"></a>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -276,7 +275,7 @@ the number of timestamps that typically occur within the time-based phrase.</p><
 
 <span class='va'>index_tbl</span> <span class='op'>&lt;-</span> <span class='fu'>parse_index_from_data</span><span class='op'>(</span><span class='va'>predictors</span><span class='op'>)</span>
 <span class='va'>index_tbl</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 1</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 × 1</span>
 #&gt;    date      
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>    
 #&gt; <span style='color: #BCBCBC;'> 1</span> 1990-01-01
@@ -289,7 +288,7 @@ the number of timestamps that typically occur within the time-based phrase.</p><
 #&gt; <span style='color: #BCBCBC;'> 8</span> 1990-08-01
 #&gt; <span style='color: #BCBCBC;'> 9</span> 1990-09-01
 #&gt; <span style='color: #BCBCBC;'>10</span> 1990-10-01
-#&gt; <span style='color: #949494;'># ... with 296 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
 <span class='va'>period</span> <span class='op'>&lt;-</span> <span class='fu'>parse_period_from_index</span><span class='op'>(</span><span class='va'>index_tbl</span>, period <span class='op'>=</span> <span class='st'>"1 year"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>period</span>
 </div><div class='output co'>#&gt; [1] 12</div><div class='input'>

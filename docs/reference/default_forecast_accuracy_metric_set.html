@@ -131,9 +131,8 @@ metrics used with modeltime_accuracy()." />
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Nested Forecasting</li>
-    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
     <li>
-      <a href="..//"></a>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -287,7 +286,7 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 
 <span class='co'># Default Forecast Accuracy Metric Specification</span>
 <span class='fu'>default_forecast_accuracy_metric_set</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 3</span>
 #&gt;   metric class          direction
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
 #&gt; <span style='color: #BCBCBC;'>1</span> mae    numeric_metric minimize 
@@ -301,7 +300,7 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 
 <span class='co'># Apply the metric summarizer to new data</span>
 <span class='fu'>calc_default_metrics</span><span class='op'>(</span><span class='va'>fake_data</span>, <span class='va'>y</span>, <span class='va'>yhat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 3</span>
 #&gt;   .metric .estimator .estimate
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> mae     standard       1    
@@ -318,7 +317,7 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 <span class='co'># Add it to the default metric set</span>
 <span class='va'>my_metric_set</span> <span class='op'>&lt;-</span> <span class='fu'>default_forecast_accuracy_metric_set</span><span class='op'>(</span><span class='va'>mase12</span><span class='op'>)</span>
 <span class='va'>my_metric_set</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 × 3</span>
 #&gt;   metric class          direction
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
 #&gt; <span style='color: #BCBCBC;'>1</span> mae    numeric_metric minimize 
@@ -330,7 +329,7 @@ forecast accuracy metrics using <code><a href='modeltime_accuracy.html'>modeltim
 #&gt; <span style='color: #BCBCBC;'>7</span> mase12 numeric_metric minimize </div><div class='input'>
 <span class='co'># Apply the newly created metric set</span>
 <span class='fu'>my_metric_set</span><span class='op'>(</span><span class='va'>fake_data</span>, <span class='va'>y</span>, <span class='va'>yhat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 × 3</span>
 #&gt;   .metric .estimator .estimate
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> mae     standard       1    

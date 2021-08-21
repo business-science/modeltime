@@ -131,9 +131,8 @@ in the tidymodels ecosystem." />
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Nested Forecasting</li>
-    <li class="dropdown-header">Getting Started with Nested Forecasting</li>
     <li>
-      <a href="..//"></a>
+      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -302,7 +301,7 @@ Modeltime Tables from models stored in a <code>list</code>.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>model_fit_arima</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>as_modeltime_table</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # Modeltime Table
-#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
+#&gt; <span style='color: #949494;'># A tibble: 1 × 3</span>
 #&gt;   .model_id .model   .model_desc            
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  
 #&gt; <span style='color: #BCBCBC;'>1</span>         1 <span style='color: #949494;'>&lt;fit[+]&gt;</span> ARIMA(0,1,1)(0,1,1)[12]</div><div class='input'>
@@ -315,7 +314,7 @@ Modeltime Tables from models stored in a <code>list</code>.</p>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 9</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 9</span>
 #&gt;   .model_id .model_desc             .type   mae  mape  mase smape  rmse   rsq
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  1.41 0.516  1.43  198. 0.930</div><div class='input'>
@@ -326,7 +325,7 @@ Modeltime Tables from models stored in a <code>list</code>.</p>
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 x 7</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 × 7</span>
 #&gt;    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
@@ -339,7 +338,7 @@ Modeltime Tables from models stored in a <code>list</code>.</p>
 #&gt; <span style='color: #BCBCBC;'> 8</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-08-01   <span style='text-decoration: underline;'>5</span>450       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
 #&gt; <span style='color: #BCBCBC;'> 9</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-09-01   <span style='text-decoration: underline;'>6</span>480       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
 #&gt; <span style='color: #BCBCBC;'>10</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-10-01   <span style='text-decoration: underline;'>6</span>820       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #949494;'># ... with 327 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 327 more rows</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
