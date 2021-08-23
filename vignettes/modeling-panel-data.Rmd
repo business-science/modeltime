@@ -1,5 +1,5 @@
 ---
-title: "Forecasting Panel Data"
+title: "Forecasting with Global Models"
 output: rmarkdown::html_vignette
 resource_files:
   - articles/logo-modeltime.png
@@ -7,7 +7,7 @@ resource_files:
   - articles/modeltime_workflow.jpg
   - articles/time_series_course.jpg
 vignette: >
-  %\VignetteIndexEntry{Forecasting Panel Data}
+  %\VignetteIndexEntry{Forecasting with Global Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -36,19 +36,37 @@ knitr::include_graphics("panel_data_success.jpg")
 <br>
 <img src="logo-modeltime.png" width="147" height="170" align="right" />
 
-Modeltime is designed for modeling __Panel Data__. In this short tutorial, we will explain what Panel Data Modeling is and demonstrate how to use the Modeltime Forecasting Workflow for multi-time series datasets (Panel Data).
+Modeltime is designed for modeling many time series using __Panel Data with Global Models__. 
+
+# Why Global Modeling?
+
+__Why is global modeling important for time series?__ The ability to _forecast_ time series with a single model that is trained on many time series groups was a winning strategy in recent Kaggle M5 Forecasting Competition. How did this help the winning solution? 
+
+The global approach __enabled both speed of training (they are fast and scalable) while also being accurate__ provided the model is exposed to good features. In fact, it's the solution we recommend in our [Time Series Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/) when forecasting many time series as part of a high-performance forecasting system. 
+
+# Scalable Forecasting Strategies
+
+__For forecasting _many_ times series__, two methods exist that get results: 
+
+1. __Iterative Forecasting:__ Best for accuracy using a Nested Data Structure. Takes longer than global model (more resources due to for-loop iteration), results in many models (more RAM required), and is often needed to be run in parallelized loops to scale to thousands of time series (otherwise it can take days to complete). But, iterative forecasting can yield great results. See [Nested Forecasting](https://business-science.github.io/modeltime/articles/nested-forecasting.html) for our Iterative Forecasting implementation.
+
+2. __Global Modeling:__ Best for scalability using a Panel Data structure. Can scale to 10,000+ time series easily because only a single model is made that generates predictions (forecasts) for all of the time series. Requires feature engineering and parameter tuning to get best performance, which can be challenging for beginners.  
+
+We cover Global Modeling with Panel Data in this tutorial. But first, let's dive deeper into why Global Modeling is a great solution for forecasting at scale. 
 
 # Problem: Forecast Iteration is Not Scalable
 
 __Time series are increasing at an exponential rate.__ Organization-wide forecasting demands have changed from top-level to bottom-level forecasting, which has increased the number of forecasts that need to be made from the range of 1-100 to the range of 1,000-10,000. 
 
-Think of forecasting by customer for an organization that has __10,000 customers__. It becomes a _challenge_ to make these forecasts one at a time in an iterative approach. As that organization grows, moving from 10,000 to 100,000 customers, __forecasting with an iterative approach is not scalable.__
+Think of forecasting by customer for an organization that has __10,000 customers__. It becomes a _challenge_ to make these forecasts one at a time in an iterative approach. Running forecasts can take days. As that organization grows, moving from 10,000 to 100,000 customers, __forecasting with an iterative approach is not scalable.__
+
+# Solution: Global Models
 
 __Modeltime__ has been designed to take a different approach using __Panel Data and Global Models__ (more on these concepts shortly). Using these approaches, we can dramatically increase the scale at which forecasts can be made. Prior limitations in the range of 1,000 to 10,000 forecasts become managable. Beyond is also possible with clustering techniques and making several panel models. __We are only limited by RAM, not modeling time.__ 
 
 
 
-# What are Panel Data and Global Models?
+## What are Panel Data and Global Models?
 
 In it's simplest form, __Panel Data__ is a time series dataset that has more than one series. Each time series is stacked row-wise (on-top) of each other. 
 
@@ -69,7 +87,7 @@ __Global Models__ are alternatives to the iterative approach. A Global Model is 
 knitr::include_graphics("panel_data_xgboost.jpg")
 ```
 
-The downside is that an iterative approach can be more accurate. To improve accuracy, __feature engineering and localized model selection__ by time series identifier become critical to large-scale forecasting success. If interested, I teach proven feature engineering techniques in my [Time Series Forecasting Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/). 
+The downside is that an global approach can be less accurate. To improve accuracy, __feature engineering and localized model selection__ by time series identifier become critical to large-scale forecasting success. If interested, I teach proven feature engineering techniques in my [Time Series Forecasting Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/). 
 
 ```{r, echo=F, fig.cap="Modeling Panel Data"}
 knitr::include_graphics("panel_data_success.jpg")
@@ -77,9 +95,7 @@ knitr::include_graphics("panel_data_success.jpg")
 
 # Modeltime is Designed for Panel Data
 
-
-
-While Modeltime can perform iterative modeling, __Modeltime has been designed for Panel Data__ using:
+While Modeltime can perform [Iterative Forecasting](https://business-science.github.io/modeltime/articles/nested-forecasting.html), __Modeltime has been designed for Panel Data__ using:
 
 - __Global Modeling:__ Global model Machine Learning and Deep Learning strategies using the Modeltime Ecosystem (e.g. `modeltime`, `modeltime.h2o`, and `modeltime.gluonts`). 
 
@@ -91,7 +107,7 @@ While Modeltime can perform iterative modeling, __Modeltime has been designed fo
 
 - __Global and Localized Confidence Intervals Reporting__: Generating out-of-sample confidence intervals both globally and at a local level by time series identifier (available in `modeltime` >= 0.7.0)
 
-# Short Tutorial on Panel Data
+# [Tutorial] Basics of Global Modeling and Panel Data
 
 We'll cover a short tutorial on modeling panel data with the `walmart_sales_weekly` dataset. 
 
@@ -142,7 +158,11 @@ data %>%
 We can split the data into training and testing sets using `time_series_split()`. We'll investigate the last 3-months of the year to test a global model on a 3-month forecast. The message on overlapping dates is to let us know that multiple time series are being processed using the last 3-month window for testing. 
 
 ```{r, message=TRUE, warning=TRUE}
-splits <- data %>% time_series_split(assess = "3 months", cumulative = TRUE)
+splits <- data %>% 
+  time_series_split(
+    assess     = "3 months", 
+    cumulative = TRUE
+  )
 
 splits
 ```
