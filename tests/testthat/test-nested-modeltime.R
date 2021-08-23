@@ -103,7 +103,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
     acc_tbl <- nested_modeltime_tbl %>% extract_nested_test_accuracy()
 
     expect_equal(nrow(acc_tbl), 6)
-    expect_equal(ncol(acc_tbl), 10)
+    expect_equal(ncol(acc_tbl), 11)
 
     err_tbl <- nested_modeltime_tbl %>% extract_nested_error_report()
 
@@ -141,7 +141,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
         extract_nested_best_model_report()
 
     expect_equal(nrow(best_model_report), 3)
-    expect_equal(ncol(best_model_report), 10)
+    expect_equal(ncol(best_model_report), 11)
 
     fcast_tbl <- best_nested_modeltime_tbl %>%
         extract_nested_test_forecast()
