@@ -21,10 +21,10 @@ navbar:
         - text: 'Hyperparameter Tuning & Parallel Processing'
           href: articles/parallel-processing.html
         - text: "---"
-        - text: 'Forecasting Many Time Series'
-        - text: 'Getting Started with Global Forecasting'
+        - text: 'Forecasting Many Time Series (Scale)'
+        - text: 'Global Model Forecasting'
           href: articles/modeling-panel-data.html
-        - text: 'Getting Started with Iterative (Nested) Forecasting'
+        - text: 'Iterative (Nested) Forecasting'
           href: articles/nested-forecasting.html
         - text: "---"
         - text: 'Algorithms'

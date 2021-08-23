@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forecasting Panel Data • modeltime</title>
+<title>Forecasting with Global Models • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Forecasting Panel Data">
+<meta property="og:title" content="Forecasting with Global Models">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -67,7 +67,7 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecasting</li>
+<li class="dropdown-header">Forecasting Basics</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
@@ -77,13 +77,13 @@
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
-    </li>
     <li class="divider">
-    <li class="dropdown-header">Nested Forecasting</li>
+    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
     <li>
-      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
+      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    </li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -179,7 +179,7 @@
       </header><script src="modeling-panel-data_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Forecasting Panel Data</h1>
+      <h1 data-toc-skip>Forecasting with Global Models</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/modeling-panel-data.Rmd"><code>vignettes/modeling-panel-data.Rmd</code></a></small>
@@ -191,87 +191,82 @@
     
 <p><img src="panel_data_success.jpg" width="100%" style="display: block; margin: auto;"></p>
 <p><br><img src="logo-modeltime.png" width="147" height="170" align="right"></p>
-<p>Modeltime is designed for modeling <strong>Panel Data</strong>. In this short tutorial, we will explain what Panel Data Modeling is and demonstrate how to use the Modeltime Forecasting Workflow for multi-time series datasets (Panel Data).</p>
-<div id="problem-forecast-iteration-is-not-scalable" class="section level1">
+<p><strong>Why is global modeling important for time series?</strong> For starters, the ability to forecast many time series with a single model that is trained on many time series groups was a winning strategy in recent Kaggle M5 Forecasting Competition. In fact, it’s the solution we recommend in our <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Course</a> when forecasting many time series as part of a high-performance forecasting system. Why? Because it speeds up forecasting, allowing the data scientist to more rapidly experiment and find good solutions.</p>
+<div id="global-forecasting" class="section level1">
 <h1 class="hasAnchor">
-<a href="#problem-forecast-iteration-is-not-scalable" class="anchor"></a>Problem: Forecast Iteration is Not Scalable</h1>
-<p><strong>Time series are increasing at an exponential rate.</strong> Organization-wide forecasting demands have changed from top-level to bottom-level forecasting, which has increased the number of forecasts that need to be made from the range of 1-100 to the range of 1,000-10,000.</p>
-<p>Think of forecasting by customer for an organization that has <strong>10,000 customers</strong>. It becomes a <em>challenge</em> to make these forecasts one at a time in an iterative approach. As that organization grows, moving from 10,000 to 100,000 customers, <strong>forecasting with an iterative approach is not scalable.</strong></p>
-<p><strong>Modeltime</strong> has been designed to take a different approach using <strong>Panel Data and Global Models</strong> (more on these concepts shortly). Using these approaches, we can dramatically increase the scale at which forecasts can be made. Prior limitations in the range of 1,000 to 10,000 forecasts become managable. Beyond is also possible with clustering techniques and making several panel models. <strong>We are only limited by RAM, not modeling time.</strong></p>
+<a href="#global-forecasting" class="anchor"></a>Global Forecasting</h1>
+<p>In general, there are two methods for forecasting at scale (a slow and accurate method and a fast and good method):</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Iterative Forecasting (Slow and Accurate):</strong> Best for accuracy but takes <em>much longer</em> than global model (due to for-loop iteration), results in many models (more memory required), and is often needed to be run in parallel to scale to thousands of time series (otherwise it can take days to complete). But, iterative forecasting can yield great results. See <a href="https://business-science.github.io/modeltime/articles/nested-forecasting.html">Nested Forecasting</a> for our Iterative Forecasting implementation.</p></li>
+<li><p><strong>Global Modeling (Fast and Good):</strong> Best for scalability to thousands of time series. Uses a Panel Data structure. Can scale to 10,000+ time series easily because only a single model is made that generates predictions (forecasts) for all of the time series. Requires feature engineering and parameter tuning to get best performance, which can be challenging for beginners.</p></li>
+</ol>
 </div>
-<div id="what-are-panel-data-and-global-models" class="section level1">
+<div id="important-concepts" class="section level1">
 <h1 class="hasAnchor">
-<a href="#what-are-panel-data-and-global-models" class="anchor"></a>What are Panel Data and Global Models?</h1>
-<p>In it’s simplest form, <strong>Panel Data</strong> is a time series dataset that has more than one series. Each time series is stacked row-wise (on-top) of each other.</p>
+<a href="#important-concepts" class="anchor"></a>Important Concepts</h1>
+<p>Students can struggle with global modeling. To help, I have a few terms to cover that will help you understand how global modeling works (and how it differs from iterative modeling).</p>
+<div id="panel-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#panel-data" class="anchor"></a>Panel Data</h2>
+<p><strong>The panel data structure</strong> is the format used for global modeling. In it’s simplest form, <em>Panel Data</em> is a time series dataset that has more than one series. Each time series is stacked row-wise (on-top) of each other.</p>
 <div class="figure" style="text-align: center">
 <img src="panel_data.jpg" alt="Panel Data Structure" width="100%"><p class="caption">
 Panel Data Structure
 </p>
 </div>
+</div>
+<div id="traditional-modeling-iteration" class="section level2">
+<h2 class="hasAnchor">
+<a href="#traditional-modeling-iteration" class="anchor"></a>Traditional Modeling (Iteration)</h2>
 <p><strong>Traditional modeling techniques like ARIMA</strong> can only be used on one time series at a time. The widely accepted forecasting approach is to iterate through each time series producing a unique model and forecast for each time series identifier. The downside with this approach is that it’s expensive when you have many time series. Think of the number of products in a database. As the number of time series approaches the range of 1000-10,000, <strong>the iterative approach becomes unscalable.</strong></p>
 <div class="figure" style="text-align: center">
 <img src="panel_data_arima.jpg" alt="Problem: 1000 ARIMA Models Needed for 1000 Time Series" width="100%"><p class="caption">
 Problem: 1000 ARIMA Models Needed for 1000 Time Series
 </p>
 </div>
+</div>
+<div id="global-modeling" class="section level2">
+<h2 class="hasAnchor">
+<a href="#global-modeling" class="anchor"></a>Global Modeling</h2>
 <p><strong>Global Models</strong> are alternatives to the iterative approach. A Global Model is a single model that forecasts all time series at once. Global Models are highly scalable, which solves the problem of 1-10,000 time series. An example is an XGBoost Model, which can determine relationships for all 1000 time series panels with a single model.</p>
 <div class="figure" style="text-align: center">
 <img src="panel_data_xgboost.jpg" alt="Solution: A Single XGBOOST Model can Model 1000 Time Series" width="100%"><p class="caption">
 Solution: A Single XGBOOST Model can Model 1000 Time Series
 </p>
 </div>
-<p>The downside is that an iterative approach can be more accurate. To improve accuracy, <strong>feature engineering and localized model selection</strong> by time series identifier become critical to large-scale forecasting success. If interested, I teach proven feature engineering techniques in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Forecasting Course</a>.</p>
+</div>
+<div id="importance-of-feature-engineering" class="section level2">
+<h2 class="hasAnchor">
+<a href="#importance-of-feature-engineering" class="anchor"></a>Importance of Feature Engineering</h2>
+<p>The downside is that an global approach can be less accurate. To improve accuracy, <strong>feature engineering and localized model selection</strong> by time series identifier become critical to large-scale forecasting success. We recommend learning feature engineering techniques that are proven to get results in our <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Forecasting Course</a>.</p>
 <div class="figure" style="text-align: center">
 <img src="panel_data_success.jpg" alt="Modeling Panel Data" width="100%"><p class="caption">
 Modeling Panel Data
 </p>
 </div>
 </div>
-<div id="modeltime-is-designed-for-panel-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#modeltime-is-designed-for-panel-data" class="anchor"></a>Modeltime is Designed for Panel Data</h1>
-<p>While Modeltime can perform iterative modeling, <strong>Modeltime has been designed for Panel Data</strong> using:</p>
-<ul>
-<li><p><strong>Global Modeling:</strong> Global model Machine Learning and Deep Learning strategies using the Modeltime Ecosystem (e.g. <code>modeltime</code>, <code>modeltime.h2o</code>, and <code>modeltime.gluonts</code>).</p></li>
-<li><p><strong>Feature Engineering</strong>: Developing calendar features, lagged features, and other time-based, window-based, and sequence-based features using <code>timetk</code>.</p></li>
-<li><p><strong>Local Forecast Visualization</strong>: Visualizing multiple local time series forecasts at once.</p></li>
-<li><p><strong>Global and Localized Accuracy Reporting</strong>: Generating out-of-sample accuracy both globally and at a local level by time series identifier (available in <code>modeltime</code> &gt;= 0.7.0)</p></li>
-<li><p><strong>Global and Localized Confidence Intervals Reporting</strong>: Generating out-of-sample confidence intervals both globally and at a local level by time series identifier (available in <code>modeltime</code> &gt;= 0.7.0)</p></li>
-</ul>
 </div>
-<div id="short-tutorial-on-panel-data" class="section level1">
+<div id="getting-started" class="section level1">
 <h1 class="hasAnchor">
-<a href="#short-tutorial-on-panel-data" class="anchor"></a>Short Tutorial on Panel Data</h1>
-<p>We’ll cover a short tutorial on modeling panel data with the <code>walmart_sales_weekly</code> dataset.</p>
-<div id="load-libraries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-libraries" class="anchor"></a>Load Libraries</h2>
-<p>First, load the following libraries.</p>
+<a href="#getting-started" class="anchor"></a>Getting Started</h1>
+<p>We’ll cover a short tutorial on global forecasting. The first thing to do is to load the following libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span></code></pre></div>
-</div>
-<div id="collect-data" class="section level2">
+<div id="dataset" class="section level2">
 <h2 class="hasAnchor">
-<a href="#collect-data" class="anchor"></a>Collect data</h2>
-<p>Next, collect the <code>walmart_sales_weekly</code> dataset. The dataset consists of 1001 observations of revenue generated by a store-department combination on any given week. It contains:</p>
-<ul>
-<li>
-<strong>7 Time Series Groups</strong> denoted by the “ID” column</li>
-<li>The data is structured in <strong>Panel Data</strong> format</li>
-<li>The time series groups will be modeled with a single <strong>Global Model</strong>
-</li>
-</ul>
+<a href="#dataset" class="anchor"></a>Dataset</h2>
+<p>Next, let’s use the <code>walmart_sales_weekly</code> dataset that comes with <code>timetk</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
+    <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">data</span>
+<span class="va">data_tbl</span>
 <span class="co">#&gt; # A tibble: 1,001 × 3</span>
-<span class="co">#&gt;    ID    date        value</span>
+<span class="co">#&gt;    id    date        value</span>
 <span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;      &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 1_1   2010-02-05 24924.</span>
 <span class="co">#&gt;  2 1_1   2010-02-12 46039.</span>
@@ -284,28 +279,32 @@ Modeling Panel Data
 <span class="co">#&gt;  9 1_1   2010-04-02 57258.</span>
 <span class="co">#&gt; 10 1_1   2010-04-09 42961.</span>
 <span class="co">#&gt; # … with 991 more rows</span></code></pre></div>
-</div>
-<div id="visualize-the-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualize-the-data" class="anchor"></a>Visualize the Data</h2>
-<p>From visualizing, the weekly department revenue patterns emerge. Most of the series have yearly seasonality and long-term trends.</p>
+<p>The dataset is that is already set up for panel data modeling. The important columns are:</p>
+<ul>
+<li><p>“id”: This separates the time series groups (in this case these represent sales from departments in a walmart store)</p></li>
+<li><p>“date”: This is the weekly sales period</p></li>
+<li><p>“value”: This is the value for sales during the week and store/department</p></li>
+</ul>
+<p>We can visualize this by time series group to expose the differences in sales by department.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
-    .date_var    <span class="op">=</span> <span class="va">date</span>, 
-    .value       <span class="op">=</span> <span class="va">value</span>,
-    .facet_ncol  <span class="op">=</span> <span class="fl">3</span>,
-    .interactive <span class="op">=</span> <span class="cn">FALSE</span>
+    <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">F</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p>We can clearly see that there are 7 time series groups with different weekly sales patterns.</p>
 </div>
 <div id="traintest-splitting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#traintest-splitting" class="anchor"></a>Train/Test Splitting</h2>
 <p>We can split the data into training and testing sets using <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html">time_series_split()</a></code>. We’ll investigate the last 3-months of the year to test a global model on a 3-month forecast. The message on overlapping dates is to let us know that multiple time series are being processed using the last 3-month window for testing.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html">time_series_split</a></span><span class="op">(</span>assess <span class="op">=</span> <span class="st">"3 months"</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="va">data_tbl</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html">time_series_split</a></span><span class="op">(</span>
+    assess     <span class="op">=</span> <span class="st">"3 months"</span>, 
+    cumulative <span class="op">=</span> <span class="cn">TRUE</span>
+  <span class="op">)</span>
 <span class="co">#&gt; Using date_var: date</span>
 <span class="co">#&gt; Data is not ordered by the 'date_var'. Resamples will be arranged by `date`.</span>
 <span class="co">#&gt; Overlapping Timestamps Detected. Processing overlapping time series together using sliding windows.</span>
@@ -317,16 +316,24 @@ Modeling Panel Data
 <div id="recipe" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recipe" class="anchor"></a>Recipe</h2>
-<p>We can move to preprocessing the data. We will use the <code>recipes</code> workflow for generating time series features. This results in 37 derived features for modeling. We can certainly include more features such as lags and rolling features, which are covered in the <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">High-Performance Time Series Course</a>.</p>
+<p><strong>Next, we need to preprocess the data.</strong> This is where we add good features to imporve our global model performance. We will use the <code>recipes</code> workflow for generating time series features.</p>
+<ul>
+<li><p><code>step_mutate_at()</code>: Applies a function to one or more columns. Used to remove extra unused levels in our categorical ID column.</p></li>
+<li><p><code><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature()</a></code>: Used to add calendar features based on our date column</p></li>
+<li><p><code>step_rm()</code>: Used to remove the date column. Machine Learning algorithms like XGBoost don’t handle date columns very well.</p></li>
+<li><p><code>step_zv()</code>: Used to remove any zero variance features. Features with no variance don’t add useful information to our model.</p></li>
+<li><p><code>step_dummy()</code>: Used to convert categorical features to binary one-hot encoded features that algorithms like XGBoost can model more effectively.</p></li>
+</ul>
+<p>This results in 37 derived features for modeling. We can certainly include more features such as lags and rolling features that are known to improve results. These concepts and more are covered in the <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">High-Performance Time Series Course</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html">step_mutate</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">rec_obj</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu">training</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">step_mutate_at</span><span class="op">(</span><span class="va">id</span>, fn <span class="op">=</span> <span class="va">droplevels</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="fu">step_rm</span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="va">rec_obj</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu">prep</span><span class="op">(</span><span class="va">rec_obj</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 38 × 4</span>
 <span class="co">#&gt;    variable       type    role      source  </span>
 <span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;   </span>
@@ -354,10 +361,10 @@ Modeling Panel Data
 <code class="sourceCode R"><span class="co"># Workflow</span>
 <span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_model</span><span class="op">(</span>
-        <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
+        <span class="fu">boost_tree</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_obj</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu">fit</span><span class="op">(</span><span class="fu">training</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span>
 <span class="co">#&gt; ══ Workflow [trained] ══════════════════════════════════════════════════════════</span>
@@ -367,7 +374,7 @@ Modeling Panel Data
 <span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; 5 Recipe Steps</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; • step_mutate()</span>
+<span class="co">#&gt; • step_mutate_at()</span>
 <span class="co">#&gt; • step_timeseries_signature()</span>
 <span class="co">#&gt; • step_rm()</span>
 <span class="co">#&gt; • step_zv()</span>
@@ -407,9 +414,10 @@ Modeling Panel Data
 Modeltime Workflow
 </p>
 </div>
-<div id="create-a-modeltime-table" class="section level3">
+<div id="step-1-create-a-modeltime-table" class="section level3">
 <h3 class="hasAnchor">
-<a href="#create-a-modeltime-table" class="anchor"></a>Create a Modeltime Table</h3>
+<a href="#step-1-create-a-modeltime-table" class="anchor"></a>Step 1: Create a Modeltime Table</h3>
+<p>The first step is to create a Modeltime Table with <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
     <span class="va">wflw_xgb</span>
@@ -422,15 +430,15 @@ Modeltime Workflow
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;      </span>
 <span class="co">#&gt; 1         1 &lt;workflow&gt; XGBOOST</span></code></pre></div>
 </div>
-<div id="calibrate-by-id" class="section level3">
+<div id="step-2-calibrate-by-id" class="section level3">
 <h3 class="hasAnchor">
-<a href="#calibrate-by-id" class="anchor"></a>Calibrate by ID</h3>
-<p>A new feature in <code>modeltime</code> 0.7.0 is the ability to calibrate by each time series. Calibration calculates the out of sample residual error.</p>
+<a href="#step-2-calibrate-by-id" class="anchor"></a>Step 2: Calibrate by ID</h3>
+<p>Next, we need to calibrate, which calculates the forecast error on our test set. Use <code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code> to perform calibration. Note that when we add the <code>id</code>, we are able to track the the out-of-sample residual error by the “id” column.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">calib_tbl</span> <span class="op">&lt;-</span> <span class="va">model_tbl</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>
-      new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>, 
-      id       <span class="op">=</span> <span class="st">"ID"</span>
+      new_data <span class="op">=</span> <span class="fu">testing</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>, 
+      id       <span class="op">=</span> <span class="st">"id"</span>
     <span class="op">)</span>
 
 <span class="va">calib_tbl</span>
@@ -440,25 +448,24 @@ Modeltime Workflow
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;       &lt;chr&gt; &lt;list&gt;           </span>
 <span class="co">#&gt; 1         1 &lt;workflow&gt; XGBOOST     Test  &lt;tibble [84 × 5]&gt;</span></code></pre></div>
 </div>
-</div>
-<div id="measure-accuracy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#measure-accuracy" class="anchor"></a>Measure Accuracy</h2>
-<p>Next, we measure the global and local accuracy on the global model.</p>
-<div id="global-accuracy" class="section level3">
+<div id="step-3-measure-test-accuracy" class="section level3">
 <h3 class="hasAnchor">
-<a href="#global-accuracy" class="anchor"></a>Global Accuracy</h3>
+<a href="#step-3-measure-test-accuracy" class="anchor"></a>Step 3: Measure Test Accuracy</h3>
+<p>Next, we measure the global and local accuracy on the global model.</p>
+<div id="global-accuracy" class="section level4">
+<h4 class="hasAnchor">
+<a href="#global-accuracy" class="anchor"></a>Global Accuracy</h4>
 <p>The default is <code><a href="../reference/modeltime_accuracy.html">modeltime_accuracy(acc_by_id = FALSE)</a></code>, which returns a global model accuracy.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">calib_tbl</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="cezagweudd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="bnncdrcaqv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#cezagweudd .gt_table {
+#bnncdrcaqv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -483,7 +490,7 @@ Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#cezagweudd .gt_heading {
+#bnncdrcaqv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -495,7 +502,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#cezagweudd .gt_title {
+#bnncdrcaqv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -505,7 +512,7 @@ Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#cezagweudd .gt_subtitle {
+#bnncdrcaqv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -515,13 +522,13 @@ Modeltime Workflow
   border-top-width: 0;
 }
 
-#cezagweudd .gt_bottom_border {
+#bnncdrcaqv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cezagweudd .gt_col_headings {
+#bnncdrcaqv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -536,7 +543,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#cezagweudd .gt_col_heading {
+#bnncdrcaqv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -556,7 +563,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#cezagweudd .gt_column_spanner_outer {
+#bnncdrcaqv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -568,15 +575,15 @@ Modeltime Workflow
   padding-right: 4px;
 }
 
-#cezagweudd .gt_column_spanner_outer:first-child {
+#bnncdrcaqv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cezagweudd .gt_column_spanner_outer:last-child {
+#bnncdrcaqv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cezagweudd .gt_column_spanner {
+#bnncdrcaqv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -588,7 +595,7 @@ Modeltime Workflow
   width: 100%;
 }
 
-#cezagweudd .gt_group_heading {
+#bnncdrcaqv .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -610,7 +617,7 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#cezagweudd .gt_empty_group_heading {
+#bnncdrcaqv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -625,15 +632,15 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#cezagweudd .gt_from_md > :first-child {
+#bnncdrcaqv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cezagweudd .gt_from_md > :last-child {
+#bnncdrcaqv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cezagweudd .gt_row {
+#bnncdrcaqv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -652,7 +659,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#cezagweudd .gt_stub {
+#bnncdrcaqv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -664,7 +671,7 @@ Modeltime Workflow
   padding-left: 12px;
 }
 
-#cezagweudd .gt_summary_row {
+#bnncdrcaqv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -674,7 +681,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#cezagweudd .gt_first_summary_row {
+#bnncdrcaqv .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -684,7 +691,7 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#cezagweudd .gt_grand_summary_row {
+#bnncdrcaqv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -694,7 +701,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#cezagweudd .gt_first_grand_summary_row {
+#bnncdrcaqv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -704,11 +711,11 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#cezagweudd .gt_striped {
+#bnncdrcaqv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cezagweudd .gt_table_body {
+#bnncdrcaqv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -717,7 +724,7 @@ Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#cezagweudd .gt_footnotes {
+#bnncdrcaqv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -731,13 +738,13 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#cezagweudd .gt_footnote {
+#bnncdrcaqv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#cezagweudd .gt_sourcenotes {
+#bnncdrcaqv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -751,41 +758,41 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#cezagweudd .gt_sourcenote {
+#bnncdrcaqv .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#cezagweudd .gt_left {
+#bnncdrcaqv .gt_left {
   text-align: left;
 }
 
-#cezagweudd .gt_center {
+#bnncdrcaqv .gt_center {
   text-align: center;
 }
 
-#cezagweudd .gt_right {
+#bnncdrcaqv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cezagweudd .gt_font_normal {
+#bnncdrcaqv .gt_font_normal {
   font-weight: normal;
 }
 
-#cezagweudd .gt_font_bold {
+#bnncdrcaqv .gt_font_bold {
   font-weight: bold;
 }
 
-#cezagweudd .gt_font_italic {
+#bnncdrcaqv .gt_font_italic {
   font-style: italic;
 }
 
-#cezagweudd .gt_super {
+#bnncdrcaqv .gt_super {
   font-size: 65%;
 }
 
-#cezagweudd .gt_footnote_marks {
+#bnncdrcaqv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -820,20 +827,20 @@ Modeltime Workflow
 </table>
 </div>
 </div>
-<div id="local-accuracy" class="section level3">
-<h3 class="hasAnchor">
-<a href="#local-accuracy" class="anchor"></a>Local Accuracy</h3>
+<div id="local-accuracy" class="section level4">
+<h4 class="hasAnchor">
+<a href="#local-accuracy" class="anchor"></a>Local Accuracy</h4>
 <p>By toggling <code><a href="../reference/modeltime_accuracy.html">modeltime_accuracy(acc_by_id = TRUE)</a></code>, we can obtain the local model accuracy. This can be useful for identifying specifically which time series the model does well on (and which it does poorly on). We can then <strong>apply model selection logic</strong> to select specific global models for specific IDs.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">calib_tbl</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="idcotrkkms" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="jceoxbuuta" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#idcotrkkms .gt_table {
+#jceoxbuuta .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -858,7 +865,7 @@ Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_heading {
+#jceoxbuuta .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -870,7 +877,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_title {
+#jceoxbuuta .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -880,7 +887,7 @@ Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#idcotrkkms .gt_subtitle {
+#jceoxbuuta .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -890,13 +897,13 @@ Modeltime Workflow
   border-top-width: 0;
 }
 
-#idcotrkkms .gt_bottom_border {
+#jceoxbuuta .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_col_headings {
+#jceoxbuuta .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -911,7 +918,7 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_col_heading {
+#jceoxbuuta .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -931,7 +938,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#idcotrkkms .gt_column_spanner_outer {
+#jceoxbuuta .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -943,15 +950,15 @@ Modeltime Workflow
   padding-right: 4px;
 }
 
-#idcotrkkms .gt_column_spanner_outer:first-child {
+#jceoxbuuta .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#idcotrkkms .gt_column_spanner_outer:last-child {
+#jceoxbuuta .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#idcotrkkms .gt_column_spanner {
+#jceoxbuuta .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -963,7 +970,7 @@ Modeltime Workflow
   width: 100%;
 }
 
-#idcotrkkms .gt_group_heading {
+#jceoxbuuta .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -985,7 +992,7 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#idcotrkkms .gt_empty_group_heading {
+#jceoxbuuta .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1000,15 +1007,15 @@ Modeltime Workflow
   vertical-align: middle;
 }
 
-#idcotrkkms .gt_from_md > :first-child {
+#jceoxbuuta .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#idcotrkkms .gt_from_md > :last-child {
+#jceoxbuuta .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#idcotrkkms .gt_row {
+#jceoxbuuta .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1027,7 +1034,7 @@ Modeltime Workflow
   overflow-x: hidden;
 }
 
-#idcotrkkms .gt_stub {
+#jceoxbuuta .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1039,7 +1046,7 @@ Modeltime Workflow
   padding-left: 12px;
 }
 
-#idcotrkkms .gt_summary_row {
+#jceoxbuuta .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1049,7 +1056,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#idcotrkkms .gt_first_summary_row {
+#jceoxbuuta .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1059,7 +1066,7 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_grand_summary_row {
+#jceoxbuuta .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1069,7 +1076,7 @@ Modeltime Workflow
   padding-right: 5px;
 }
 
-#idcotrkkms .gt_first_grand_summary_row {
+#jceoxbuuta .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1079,11 +1086,11 @@ Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_striped {
+#jceoxbuuta .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#idcotrkkms .gt_table_body {
+#jceoxbuuta .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1092,7 +1099,7 @@ Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_footnotes {
+#jceoxbuuta .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1106,13 +1113,13 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_footnote {
+#jceoxbuuta .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#idcotrkkms .gt_sourcenotes {
+#jceoxbuuta .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1126,41 +1133,41 @@ Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#idcotrkkms .gt_sourcenote {
+#jceoxbuuta .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#idcotrkkms .gt_left {
+#jceoxbuuta .gt_left {
   text-align: left;
 }
 
-#idcotrkkms .gt_center {
+#jceoxbuuta .gt_center {
   text-align: center;
 }
 
-#idcotrkkms .gt_right {
+#jceoxbuuta .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#idcotrkkms .gt_font_normal {
+#jceoxbuuta .gt_font_normal {
   font-weight: normal;
 }
 
-#idcotrkkms .gt_font_bold {
+#jceoxbuuta .gt_font_bold {
   font-weight: bold;
 }
 
-#idcotrkkms .gt_font_italic {
+#jceoxbuuta .gt_font_italic {
   font-style: italic;
 }
 
-#idcotrkkms .gt_super {
+#jceoxbuuta .gt_super {
   font-size: 65%;
 }
 
-#idcotrkkms .gt_footnote_marks {
+#jceoxbuuta .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1174,7 +1181,7 @@ Modeltime Workflow
 <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">.model_id</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.model_desc</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.type</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">id</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mae</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mape</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mase</th>
@@ -1272,42 +1279,97 @@ Modeltime Workflow
 </div>
 </div>
 </div>
-<div id="forecast-the-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#forecast-the-data" class="anchor"></a>Forecast the Data</h2>
-<p>The last step we’ll cover is forecasting the test dataset. This is useful to evaluate the model using a sampling of the time series within the panel dataset. In <code>modeltime</code> 0.7.0, we now have <code><a href="../reference/modeltime_forecast.html">modeltime_forecast(conf_by_id  = TRUE)</a></code> to allow the confidence intervals (prediction intervals) to be calculated by time series identifier. Note, that the <code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code> must have been performed with an <code>id</code> specified.</p>
+<div id="step-4-forecast-the-test-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-4-forecast-the-test-data" class="anchor"></a>Step 4: Forecast the Test Data</h3>
+<p>Next, we need to forecast the test dataset. This is useful to evaluate the model using a sampling of the time series within the panel dataset. We use <code><a href="../reference/modeltime_forecast.html">modeltime_forecast(conf_by_id  = TRUE)</a></code> to allow the confidence intervals (prediction intervals) to be calculated by time series identifier. Note, that the <code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code> must have been performed with an <code>id</code> specified.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">calib_tbl</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
-        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
-        actual_data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>,
+        new_data    <span class="op">=</span> <span class="fu">testing</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
+        actual_data <span class="op">=</span> <span class="va">data_tbl</span>,
         conf_by_id  <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">ID</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
         .facet_ncol  <span class="op">=</span> <span class="fl">3</span>,
         .interactive <span class="op">=</span> <span class="cn">FALSE</span>
     <span class="op">)</span></code></pre></div>
 <p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
+<div id="step-5-refit-and-forecast-the-future" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-5-refit-and-forecast-the-future" class="anchor"></a>Step 5: Refit and Forecast the Future</h3>
+<p>We see that our global model performs well on this dataset. Now, we will forecast the future.</p>
+<div id="refit-the-models" class="section level4">
+<h4 class="hasAnchor">
+<a href="#refit-the-models" class="anchor"></a>Refit the Models</h4>
+<p>The refitting step is needed to incorporate the most recent information into our models. We use <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> to update the model(s) in our modeltime tables.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calib_tbl</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_tbl</span><span class="op">)</span>
+
+<span class="va">refit_tbl</span>
+<span class="co">#&gt; # Modeltime Table</span>
+<span class="co">#&gt; # A tibble: 1 × 5</span>
+<span class="co">#&gt;   .model_id .model     .model_desc .type .calibration_data</span>
+<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;       &lt;chr&gt; &lt;list&gt;           </span>
+<span class="co">#&gt; 1         1 &lt;workflow&gt; XGBOOST     Test  &lt;tibble [84 × 5]&gt;</span></code></pre></div>
+</div>
+<div id="future-data" class="section level4">
+<h4 class="hasAnchor">
+<a href="#future-data" class="anchor"></a>Future Data</h4>
+<p>Next, make a future dataset using <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame()</a></code> from <code>timetk</code>, which creates future time stamps that extend 52-weeks into the future for each ID in the same panel structure needed for our global forecast model.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">future_tbl</span> <span class="op">&lt;-</span> <span class="va">data_tbl</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span><span class="op">(</span>.length_out <span class="op">=</span> <span class="fl">52</span>, .bind_data <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="va">future_tbl</span>
+<span class="co">#&gt; # A tibble: 364 × 2</span>
+<span class="co">#&gt; # Groups:   id [7]</span>
+<span class="co">#&gt;    id    date      </span>
+<span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;    </span>
+<span class="co">#&gt;  1 1_1   2012-11-02</span>
+<span class="co">#&gt;  2 1_1   2012-11-09</span>
+<span class="co">#&gt;  3 1_1   2012-11-16</span>
+<span class="co">#&gt;  4 1_1   2012-11-23</span>
+<span class="co">#&gt;  5 1_1   2012-11-30</span>
+<span class="co">#&gt;  6 1_1   2012-12-07</span>
+<span class="co">#&gt;  7 1_1   2012-12-14</span>
+<span class="co">#&gt;  8 1_1   2012-12-21</span>
+<span class="co">#&gt;  9 1_1   2012-12-28</span>
+<span class="co">#&gt; 10 1_1   2013-01-04</span>
+<span class="co">#&gt; # … with 354 more rows</span></code></pre></div>
+</div>
+<div id="future-predictions" class="section level4">
+<h4 class="hasAnchor">
+<a href="#future-predictions" class="anchor"></a>Future Predictions</h4>
+<p>Finally, we can forecast the future using our future data.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
+    new_data    <span class="op">=</span> <span class="va">future_tbl</span>,
+    actual_data <span class="op">=</span> <span class="va">data_tbl</span>, 
+    conf_by_id  <span class="op">=</span> <span class="cn">TRUE</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
+    .interactive <span class="op">=</span> <span class="cn">F</span>,
+    .facet_ncol  <span class="op">=</span> <span class="fl">2</span>
+  <span class="op">)</span></code></pre></div>
+<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-21-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
+</div>
+</div>
 </div>
 <div id="summary" class="section level1">
 <h1 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h1>
-<p>We just showcased the <strong>Modeltime Workflow for Panel Data using a Global XGBOOST Model</strong>. But, this is a simple problem. And, <strong>there’s a lot more to learning time series:</strong></p>
-<ul>
-<li>Many more algorithms</li>
-<li>Feature Engineering for Time Series</li>
-<li>Ensembling</li>
-<li>Machine Learning</li>
-<li>Deep Learning</li>
-<li>Scalable Modeling: 10,000+ time series</li>
-</ul>
-<p>Your probably thinking how am I ever going to learn time series forecasting. Here’s the solution that will save you years of struggling.</p>
-</div>
-<div id="take-the-high-performance-forecasting-course" class="section level1">
-<h1 class="hasAnchor">
-<a href="#take-the-high-performance-forecasting-course" class="anchor"></a>Take the High-Performance Forecasting Course</h1>
+<p>We’ve now successfully completed a <strong>Global Forecast.</strong> You may find this challenging, especially if you are not familiar with the Modeltime Workflow, terminology, or tidymodeling in R. If this is the case, we have a solution. Take our high-performance forecasting course.</p>
+<div id="take-the-high-performance-forecasting-course" class="section level2">
+<h2 class="hasAnchor">
+<a href="#take-the-high-performance-forecasting-course" class="anchor"></a>Take the High-Performance Forecasting Course</h2>
 <blockquote>
 <p>Become the forecasting expert for your organization</p>
 </blockquote>
@@ -1346,6 +1408,7 @@ Become the Time Series Expert for your organization.
 <br><p class="text-center" style="font-size:30px;">
 <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
 </p>
+</div>
 </div>
 </div>
   </div>

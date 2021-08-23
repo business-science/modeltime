@@ -33,7 +33,11 @@ __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forec
 
 ### New Vignette
 
-[Nested Forecasting](https://business-science.github.io/modeltime/articles/nested-forecasting.html) 
+- [Nested Forecasting](https://business-science.github.io/modeltime/articles/nested-forecasting.html) 
+
+### Vignette Improvements
+
+- [Forecasting with Global Models](https://business-science.github.io/modeltime/articles/modeling-panel-data.html): Added more complete steps in the forecasting process so now user can see how to forecast each step from start to finish including future forecasting.  
 
 
 ### Workflowsets Integration

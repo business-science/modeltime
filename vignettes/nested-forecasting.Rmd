@@ -65,7 +65,6 @@ knitr::include_graphics("nested-logs.jpg")
 We'll go through a short tutorial on __Nested Forecasting.__ The first thing to do is to load the following libraries:
 
 ```{r}
-library(testthat)
 library(tidymodels)
 library(modeltime)
 library(tidyverse)
