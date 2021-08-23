@@ -155,7 +155,7 @@ Next, we move into the __Nested Modeltime Workflow__ now that nested data has be
 
 2. __Model Evaluation and Selection:__ This is where we review model performance and select the best model by minimizing or maximizing an error metric. See `modeltime_nested_select_best()`.
 
-3. __Model Refitting:__ This is the final fitting stage where we fit to _actual data_. The _future forecast_ is generated from this step. 
+3. __Model Refitting:__ This is the final fitting stage where we fit to _actual data_. The _future forecast_ is generated from this step. See `modeltime_nested_refit()`.
 
 ### Step 1: Create Tidymodels Workflows
 
