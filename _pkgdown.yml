@@ -24,7 +24,7 @@ navbar:
           href: articles/nested-forecasting.html
         - text: "---"
         - text: 'Advanced Topics'
-        - text: 'Autoregressive Forecasting (Recursive)'
+        - text: 'Autoregressive (Recursive) Forecasting'
           href: articles/recursive-forecasting.html
         - text: 'Hyperparameter Tuning & Parallel Processing'
           href: articles/parallel-processing.html
