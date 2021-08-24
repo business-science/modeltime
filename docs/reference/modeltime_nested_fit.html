@@ -138,7 +138,7 @@ Forecast results can be retrieved with extract_nested_test_forecast()
     <li class="divider"></li>
     <li class="dropdown-header">Advanced Topics</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
@@ -238,7 +238,7 @@ Forecast results can be retrieved with extract_nested_test_forecast()
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Fit Tidymodels Workflows to Nested Time Series</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_fit.R'><code>R/nested_modeltime_fit.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested-modeltime_fit.R'><code>R/nested-modeltime_fit.R</code></a></small>
     <div class="hidden name"><code>modeltime_nested_fit.Rd</code></div>
     </div>
 
@@ -258,6 +258,7 @@ Forecast results can be retrieved with <code><a href='log_extractors.html'>extra
     <pre class="usage"><span class='fu'>modeltime_nested_fit</span><span class='op'>(</span>
   <span class='va'>nested_data</span>,
   <span class='va'>...</span>,
+  model_list <span class='op'>=</span> <span class='cn'>NULL</span>,
   metric_set <span class='op'>=</span> <span class='fu'><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set</a></span><span class='op'>(</span><span class='op'>)</span>,
   conf_interval <span class='op'>=</span> <span class='fl'>0.95</span>,
   control <span class='op'>=</span> <span class='fu'><a href='control_nested_fit.html'>control_nested_fit</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -275,6 +276,10 @@ Forecast results can be retrieved with <code><a href='log_extractors.html'>extra
       <td><p>Tidymodels <code>workflow</code> objects that will be fit to the nested time series data.</p></td>
     </tr>
     <tr>
+      <th>model_list</th>
+      <td><p>Optionally, a <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of Tidymodels <code>workflow</code> objects can be provided</p></td>
+    </tr>
+    <tr>
       <th>metric_set</th>
       <td><p>A <code><a href='https://yardstick.tidymodels.org/reference/metric_set.html'>yardstick::metric_set()</a></code> that is used to summarize one or more
 forecast accuracy (regression) metrics.</p></td>
@@ -289,6 +294,31 @@ This is designed to estimate future confidence from <em>out-of-sample prediction
       <td><p>Used to control verbosity and parallel processing. See <code><a href='control_nested_fit.html'>control_nested_fit()</a></code>.</p></td>
     </tr>
     </table>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Preparing Data for Nested Forecasting</h3>
+
+
+<p>Use <code><a href='prep_nested.html'>extend_timeseries()</a></code>, <code><a href='prep_nested.html'>nest_timeseries()</a></code>, and <code><a href='prep_nested.html'>split_nested_timeseries()</a></code> for preparing
+data for Nested Forecasting. The structure must be a nested data frame, which is suppplied in
+<code>modeltime_nested_fit(nested_data)</code>.</p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Fitting Models</h3>
+
+
+<p>Models must be in the form of <code>tidymodels workflow</code> objects. The models can be provided in two ways:</p><ol>
+<li><p>Using <code>...</code> (dots): The workflow objects can be provided as dots.</p></li>
+<li><p>Using <code>model_list</code> parameter: You can supply one or more workflow objects that are wrapped in a <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>.</p></li>
+</ol>
+
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Controlling the fitting process</h3>
+
+
+<p>A <code>control</code> object can be provided during fitting to adjust the verbosity and parallel processing.
+See <code><a href='control_nested_fit.html'>control_nested_fit()</a></code>.</p>
 
 
   </div>

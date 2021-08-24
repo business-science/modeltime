@@ -34,7 +34,7 @@ Finds the best models for each time series group in a Nested Modeltime Table usi
 a \code{metric} that the user specifies.
 \itemize{
 \item Logs the best results, which can be accessed with \code{\link[=extract_nested_best_model_report]{extract_nested_best_model_report()}}
-\item If \code{filter_forecasts = TRUE}, updates the test forecast log, which can be accessed
+\item If \code{filter_test_forecasts = TRUE}, updates the test forecast log, which can be accessed
 \code{\link[=extract_nested_test_forecast]{extract_nested_test_forecast()}}
 }
 }

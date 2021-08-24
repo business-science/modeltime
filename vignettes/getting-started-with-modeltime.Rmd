@@ -40,7 +40,19 @@ Forecasting with `tidymodels` made easy! This short tutorial shows how you can u
 - __Modeltime models__ like `arima_reg()`, `arima_boost()`, `exp_smoothing()`, `prophet_reg()`, `prophet_boost()`, and more
 - __Parsnip models__ like `linear_reg()`, `mars()`, `svm_rbf()`, `rand_forest()`, `boost_tree()` and more
 
-To perform classical time series analysis and machine learning ___in one framework!___  See [_"Model List"_](https://business-science.github.io/modeltime/articles/modeltime-model-list.html) for the full list of `modeltime` models. 
+...to perform classical time series analysis and machine learning ___in one framework!___  See [_"Model List"_](https://business-science.github.io/modeltime/articles/modeltime-model-list.html) for the full list of `modeltime` models. 
+
+## Quickstart Video
+
+For those that prefer video tutorials, we have an [11-minute YouTube Video](https://www.youtube.com/watch?v=-bCelif-ENY) that walks you through the Modeltime Workflow. 
+
+<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">
+<p style='text-align:center;'>
+<img src= "modeltime-video.jpg"
+alt="Introduction to Modeltime" width="60%"/>
+</p>
+<p style='text-align:center'>(Click to Watch on YouTube)</p>
+</a>
 
 
 ## The Modeltime Workflow

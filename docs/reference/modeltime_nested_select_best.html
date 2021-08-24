@@ -52,7 +52,7 @@
 <meta property="og:description" content="Finds the best models for each time series group in a Nested Modeltime Table using
 a metric that the user specifies.
 Logs the best results, which can be accessed with extract_nested_best_model_report()
-If filter_forecasts = TRUE, updates the test forecast log, which can be accessed
+If filter_test_forecasts = TRUE, updates the test forecast log, which can be accessed
 extract_nested_test_forecast()
 
 " />
@@ -135,7 +135,7 @@ extract_nested_test_forecast()
     <li class="divider"></li>
     <li class="dropdown-header">Advanced Topics</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
@@ -235,7 +235,7 @@ extract_nested_test_forecast()
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Select the Best Models from Nested Modeltime Table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_select_best.R'><code>R/nested_modeltime_select_best.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested-modeltime_select_best.R'><code>R/nested-modeltime_select_best.R</code></a></small>
     <div class="hidden name"><code>modeltime_nested_select_best.Rd</code></div>
     </div>
 
@@ -243,7 +243,7 @@ extract_nested_test_forecast()
     <p>Finds the best models for each time series group in a Nested Modeltime Table using
 a <code>metric</code> that the user specifies.</p><ul>
 <li><p>Logs the best results, which can be accessed with <code><a href='log_extractors.html'>extract_nested_best_model_report()</a></code></p></li>
-<li><p>If <code>filter_forecasts = TRUE</code>, updates the test forecast log, which can be accessed
+<li><p>If <code>filter_test_forecasts = TRUE</code>, updates the test forecast log, which can be accessed
 <code><a href='log_extractors.html'>extract_nested_test_forecast()</a></code></p></li>
 </ul>
 
@@ -253,7 +253,7 @@ a <code>metric</code> that the user specifies.</p><ul>
   <span class='va'>object</span>,
   metric <span class='op'>=</span> <span class='st'>"rmse"</span>,
   minimize <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  filter_forecasts <span class='op'>=</span> <span class='cn'>TRUE</span>
+  filter_test_forecasts <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -279,7 +279,7 @@ a <code>metric</code> that the user specifies.</p><ul>
       <td><p>Whether to minimize or maximize. Default: TRUE (minimize).</p></td>
     </tr>
     <tr>
-      <th>filter_forecasts</th>
+      <th>filter_test_forecasts</th>
       <td><p>Whether or not to update the test forecast log to
 filter only the best forecasts. Default: TRUE.</p></td>
     </tr>
