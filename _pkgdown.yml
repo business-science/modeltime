@@ -13,19 +13,21 @@ navbar:
     - text: "Articles"
       href: articles/index.html
       menu:
-        - text: 'Forecasting Basics'
+        - text: 'Getting Started'
         - text: 'Getting Started with Modeltime'
           href: articles/getting-started-with-modeltime.html
-        - text: 'Autoregressive Forecasting (Recursive)'
-          href: articles/recursive-forecasting.html
-        - text: 'Hyperparameter Tuning & Parallel Processing'
-          href: articles/parallel-processing.html
         - text: "---"
         - text: 'Forecasting Many Time Series (Scale)'
         - text: 'Global Model Forecasting'
           href: articles/modeling-panel-data.html
         - text: 'Iterative (Nested) Forecasting'
           href: articles/nested-forecasting.html
+        - text: "---"
+        - text: 'Advanced Topics'
+        - text: 'Autoregressive Forecasting (Recursive)'
+          href: articles/recursive-forecasting.html
+        - text: 'Hyperparameter Tuning & Parallel Processing'
+          href: articles/parallel-processing.html
         - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Algorithm Roadmap'

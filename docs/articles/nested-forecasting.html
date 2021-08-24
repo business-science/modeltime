@@ -67,15 +67,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecasting Basics</li>
+<li class="dropdown-header">Getting Started</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
-    </li>
-    <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
-    </li>
-    <li>
-      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
@@ -84,6 +78,14 @@
     </li>
     <li>
       <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    </li>
+    <li class="divider">
+    <li class="dropdown-header">Advanced Topics</li>
+    <li>
+      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+    </li>
+    <li>
+      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -416,12 +418,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="hhifczrdrt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dcriggvmgd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hhifczrdrt .gt_table {
+#dcriggvmgd .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -446,7 +448,7 @@
   border-left-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_heading {
+#dcriggvmgd .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -458,7 +460,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_title {
+#dcriggvmgd .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -468,7 +470,7 @@
   border-bottom-width: 0;
 }
 
-#hhifczrdrt .gt_subtitle {
+#dcriggvmgd .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -478,13 +480,13 @@
   border-top-width: 0;
 }
 
-#hhifczrdrt .gt_bottom_border {
+#dcriggvmgd .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_col_headings {
+#dcriggvmgd .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -499,7 +501,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_col_heading {
+#dcriggvmgd .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -519,7 +521,7 @@
   overflow-x: hidden;
 }
 
-#hhifczrdrt .gt_column_spanner_outer {
+#dcriggvmgd .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -531,15 +533,15 @@
   padding-right: 4px;
 }
 
-#hhifczrdrt .gt_column_spanner_outer:first-child {
+#dcriggvmgd .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hhifczrdrt .gt_column_spanner_outer:last-child {
+#dcriggvmgd .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hhifczrdrt .gt_column_spanner {
+#dcriggvmgd .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -551,7 +553,7 @@
   width: 100%;
 }
 
-#hhifczrdrt .gt_group_heading {
+#dcriggvmgd .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -573,7 +575,7 @@
   vertical-align: middle;
 }
 
-#hhifczrdrt .gt_empty_group_heading {
+#dcriggvmgd .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -588,15 +590,15 @@
   vertical-align: middle;
 }
 
-#hhifczrdrt .gt_from_md > :first-child {
+#dcriggvmgd .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hhifczrdrt .gt_from_md > :last-child {
+#dcriggvmgd .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hhifczrdrt .gt_row {
+#dcriggvmgd .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -615,7 +617,7 @@
   overflow-x: hidden;
 }
 
-#hhifczrdrt .gt_stub {
+#dcriggvmgd .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -627,7 +629,7 @@
   padding-left: 12px;
 }
 
-#hhifczrdrt .gt_summary_row {
+#dcriggvmgd .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -637,7 +639,7 @@
   padding-right: 5px;
 }
 
-#hhifczrdrt .gt_first_summary_row {
+#dcriggvmgd .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -647,7 +649,7 @@
   border-top-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_grand_summary_row {
+#dcriggvmgd .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -657,7 +659,7 @@
   padding-right: 5px;
 }
 
-#hhifczrdrt .gt_first_grand_summary_row {
+#dcriggvmgd .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -667,11 +669,11 @@
   border-top-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_striped {
+#dcriggvmgd .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hhifczrdrt .gt_table_body {
+#dcriggvmgd .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -680,7 +682,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_footnotes {
+#dcriggvmgd .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -694,13 +696,13 @@
   border-right-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_footnote {
+#dcriggvmgd .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#hhifczrdrt .gt_sourcenotes {
+#dcriggvmgd .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -714,41 +716,41 @@
   border-right-color: #D3D3D3;
 }
 
-#hhifczrdrt .gt_sourcenote {
+#dcriggvmgd .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#hhifczrdrt .gt_left {
+#dcriggvmgd .gt_left {
   text-align: left;
 }
 
-#hhifczrdrt .gt_center {
+#dcriggvmgd .gt_center {
   text-align: center;
 }
 
-#hhifczrdrt .gt_right {
+#dcriggvmgd .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hhifczrdrt .gt_font_normal {
+#dcriggvmgd .gt_font_normal {
   font-weight: normal;
 }
 
-#hhifczrdrt .gt_font_bold {
+#dcriggvmgd .gt_font_bold {
   font-weight: bold;
 }
 
-#hhifczrdrt .gt_font_italic {
+#dcriggvmgd .gt_font_italic {
   font-style: italic;
 }
 
-#hhifczrdrt .gt_super {
+#dcriggvmgd .gt_super {
   font-size: 65%;
 }
 
-#hhifczrdrt .gt_footnote_marks {
+#dcriggvmgd .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1051,7 +1053,7 @@
 <span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
 <span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 3.815144 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 3.887496 secs.</span></code></pre></div>
 <p>Note that we used <code><a href="../reference/control_nested_refit.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
