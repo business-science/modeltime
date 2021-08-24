@@ -82,7 +82,10 @@ modeltime_nested_fit <- function(nested_data, ...,
 
     model_list <- append(list(...), model_list)
 
-
+    model_list_tbl <- tibble::tibble(
+        .model_id = 1:length(model_list),
+        .model    = model_list
+    )
 
 
     # SETUP LOGGING ENV ----
@@ -105,10 +108,7 @@ modeltime_nested_fit <- function(nested_data, ...,
             .modeltime_tables = purrr::pmap(.l = list(x = !! x_expr, d = !! d_expr, id = !! id_expr, i = ..rowid), .f = function(x, d, id, i) {
 
 
-
                 if (control$verbose) cli::cli_alert_info(stringr::str_glue("[{i}/{n_ids}] Starting Modeltime Table: ID {id}..."))
-
-
 
                 safe_fit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
 
@@ -267,6 +267,8 @@ modeltime_nested_fit <- function(nested_data, ...,
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
     attr(nested_modeltime, "id")                  <- id_text
+    attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
+    attr(nested_modeltime, "conf_interval")       <- conf_interval
     attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
     attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
     attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl

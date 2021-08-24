@@ -251,14 +251,14 @@ nested_modeltime_tbl %>%
 
 ### Step 4: Select the Best
 
-Using the accuracy data, we can pick a metric and select the best model based on that metric. The available metrics are in the `default_forecast_accuracy_metric_set()`. Make sure to select `minimize` based on the metric. The `filter_forecasts` parameter tells the function to filter the logged forecasts to just the best. 
+Using the accuracy data, we can pick a metric and select the best model based on that metric. The available metrics are in the `default_forecast_accuracy_metric_set()`. Make sure to select `minimize` based on the metric. The `filter_test_forecasts` parameter tells the function to filter the logged test forecasts to just the best. 
 
 ```{r}
 best_nested_modeltime_tbl <- nested_modeltime_tbl %>%
             modeltime_nested_select_best(
-              metric           = "rmse", 
-              minimize         = TRUE, 
-              filter_forecasts = TRUE
+              metric                = "rmse", 
+              minimize              = TRUE, 
+              filter_test_forecasts = TRUE
             )
 ```
 
@@ -274,7 +274,7 @@ best_nested_modeltime_tbl %>%
 ```
 
 
-#### Extract Nested Best Forecasts
+#### Extract Nested Best Test Forecasts
 
 Once we've selected the best models, we can easily visualize the best forecasts by time series. Note that the nested test forecast logs have been modified to isolate the best models. 
 

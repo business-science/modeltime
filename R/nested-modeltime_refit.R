@@ -12,13 +12,11 @@
 #' 3. Forecast is predicted on future_data and is logged.
 #'  Forecast can be retrieved with [extract_nested_future_forecast()]
 #'
-#' @inheritParams modeltime_accuracy
-#' @inheritParams modeltime_forecast
 #' @param object A Nested Modeltime Table
 #' @param control Used to control verbosity and parallel processing. See [control_nested_refit()].
 #'
 #' @export
-modeltime_nested_refit <- function(object, conf_interval = 0.95, control = control_nested_refit()) {
+modeltime_nested_refit <- function(object, control = control_nested_refit()) {
 
     t1 <- Sys.time()
 
@@ -44,6 +42,8 @@ modeltime_nested_refit <- function(object, conf_interval = 0.95, control = contr
     d_expr  <- rlang::sym(".actual_data")
 
     f_expr  <- rlang::sym(".future_data")
+
+    conf_interval <- attr(object, "conf_interval")
 
 
     # SETUP LOGGING ENV ----

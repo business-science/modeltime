@@ -9,7 +9,7 @@
 #' a `metric` that the user specifies.
 #'
 #' - Logs the best results, which can be accessed with [extract_nested_best_model_report()]
-#' - If `filter_forecasts = TRUE`, updates the test forecast log, which can be accessed
+#' - If `filter_test_forecasts = TRUE`, updates the test forecast log, which can be accessed
 #'   [extract_nested_test_forecast()]
 #'
 #' @param object A Nested Modeltime Table
@@ -23,13 +23,13 @@
 #' - "rsq"
 #'
 #' @param minimize Whether to minimize or maximize. Default: TRUE (minimize).
-#' @param filter_forecasts Whether or not to update the test forecast log to
+#' @param filter_test_forecasts Whether or not to update the test forecast log to
 #'  filter only the best forecasts. Default: TRUE.
 #'
 #'
 #' @export
 modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRUE,
-                                         filter_forecasts = TRUE) {
+                                         filter_test_forecasts = TRUE) {
 
     # CHECKS ----
 
@@ -78,10 +78,27 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
     any_missing <- any(is.na(best_model_by_id_tbl$.model_id))
 
     if (any_missing) {
+
+        # Warn if any missing
         rlang::warn(
             stringr::str_glue("Best Model Selection: Some time series did not have a best local model. Review with `extract_nested_best_model_report()`.")
         )
+
+        # if Model ID provided, fill missing with models
+        # if (!is.null(fill_model_id)) {
+        #
+        #     fill_model_id
+        #
+        #     best_model_by_id_tbl <- best_model_by_id_tbl %>%
+        #         replace_na(replace = list(
+        #             .model_id   = fill_model_id[1],
+        #             .model_desc = "NULL"
+        #         ))
+        # }
+
     }
+
+
 
     # # Use best overall ----
     #
@@ -133,7 +150,7 @@ modeltime_nested_select_best <- function(object, metric = "rmse", minimize = TRU
 
     # Filter Forecasts ----
 
-    if (filter_forecasts) {
+    if (filter_test_forecasts) {
 
         # Updated Test Forecast
         test_forecast_tbl <- object %>%

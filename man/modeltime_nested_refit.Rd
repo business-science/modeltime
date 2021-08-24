@@ -4,17 +4,10 @@
 \alias{modeltime_nested_refit}
 \title{Refits a Nested Modeltime Table}
 \usage{
-modeltime_nested_refit(
-  object,
-  conf_interval = 0.95,
-  control = control_nested_refit()
-)
+modeltime_nested_refit(object, control = control_nested_refit())
 }
 \arguments{
 \item{object}{A Nested Modeltime Table}
-
-\item{conf_interval}{An estimated confidence interval based on the calibration data.
-This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
 
 \item{control}{Used to control verbosity and parallel processing. See \code{\link[=control_nested_refit]{control_nested_refit()}}.}
 }

@@ -8,7 +8,7 @@ modeltime_nested_select_best(
   object,
   metric = "rmse",
   minimize = TRUE,
-  filter_forecasts = TRUE
+  filter_test_forecasts = TRUE
 )
 }
 \arguments{
@@ -26,7 +26,7 @@ modeltime_nested_select_best(
 
 \item{minimize}{Whether to minimize or maximize. Default: TRUE (minimize).}
 
-\item{filter_forecasts}{Whether or not to update the test forecast log to
+\item{filter_test_forecasts}{Whether or not to update the test forecast log to
 filter only the best forecasts. Default: TRUE.}
 }
 \description{
