@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 __Why is nested forecasting important?__ For starters, the ability to _iteratively forecast_ time series with many models that are trained on many individual groups has been a huge request from students in our [Time Series Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/). Why? Because two methods exist that get results: 
 
-1. __Global Modeling:__ Best for scalability using a Panel Data structure. See [Forecasting Panel Data](https://business-science.github.io/modeltime/articles/modeling-panel-data.html). 
+1. __Global Modeling:__ Best for scalability using a Global Models and a Panel Data structure. See [Forecasting with Global Models](https://business-science.github.io/modeltime/articles/modeling-panel-data.html). 
 
 2. __Iterative Forecasting:__ Best for accuracy using a Nested Data Structure. Takes longer than global model (more resources due to for-loop iteration), but can yield great results. 
 
@@ -103,7 +103,21 @@ data_tbl %>%
 
 We can clearly see that there are 7 time series groups with different weekly sales patterns. 
 
-### Data Preparation
+### Nested Forecasting Preparation
+
+There are two key components that we need to prepare for:
+
+1. __Nested Data Structure:__ Most critical to ensure your data is prepared (covered next)
+
+2. __Nested Modeltime Workflow:__ This stage is where we create many models, fit the models to the data, and generate forecasts at scale
+
+Conceptually, the workflow looks like this where we combine nested data and tidymodels workflows using an upcoming function, `modeltime_nested_fit()`. 
+
+```{r, echo=F,  out.width="80%", fig.align='center'}
+knitr::include_graphics("modeltime_nested_fit.jpg")
+```
+
+## Data Preparation
 
 The most critical stage in __"Nested Forecasting"__ is data preparation, making sure that the input to the nested forecasting workflow is in the appropriate structure. We've included several functions to help that involve a bit of forethought that can be broken into 3 steps:
 
@@ -148,13 +162,18 @@ This creates a nested tibble with ".actual_data", ".future_data", and ".splits".
 
 ## Nested Modeltime Workflow
 
-Next, we move into the __Nested Modeltime Workflow__ now that nested data has been created. The Nested Modeltime Workflow includes 3 key functions:
+
+Next, we move into the __Nested Modeltime Workflow__ now that nested data has been created. The Nested Modeltime Workflow includes 3 core functions:
 
 1. __Modeling Fitting:__ This is the training stage where we fit to _training data_. The _test forecast_ is generated from this step. See `modeltime_nested_fit()`.
 
 2. __Model Evaluation and Selection:__ This is where we review model performance and select the best model by minimizing or maximizing an error metric. See `modeltime_nested_select_best()`.
 
 3. __Model Refitting:__ This is the final fitting stage where we fit to _actual data_. The _future forecast_ is generated from this step. See `modeltime_nested_refit()`.
+
+```{r, echo=F,  out.width="80%", fig.align='center'}
+knitr::include_graphics("nested-core-functions.jpg")
+```
 
 ### Step 1: Create Tidymodels Workflows
 
