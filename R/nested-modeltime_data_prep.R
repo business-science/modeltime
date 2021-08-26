@@ -38,6 +38,7 @@
 #'   - The group column is specified by `.id_var`.
 #'   - The date column is specified by `.date_var`.
 #'   - The length into the future is specified with `.length_future`.
+#'   - The `...` are additional parameters that can be passed to [timetk::future_frame()]
 #'
 #' ### Step 2: Nest the Time Series
 #'
@@ -96,7 +97,7 @@
 
 #' @export
 #' @rdname prep_nested
-extend_timeseries <- function(.data, .id_var, .date_var, .length_future) {
+extend_timeseries <- function(.data, .id_var, .date_var, .length_future, ...) {
 
     # val_expr <- rlang::enquo(.value)
     id_expr   <- rlang::enquo(.id_var)
@@ -129,7 +130,8 @@ extend_timeseries <- function(.data, .id_var, .date_var, .length_future) {
         timetk::future_frame(
             .date_var      = !! date_expr,
             .length_out    = .length_future,
-            .bind_data     = TRUE
+            .bind_data     = TRUE,
+            ...
         ) %>%
         dplyr::ungroup()
 }

@@ -108,6 +108,9 @@ reference:
   - subtitle: Extractors
     contents:
     - starts_with("extract_")
+  - subtitle: Workflow
+    contents:
+    - extend_timeseries
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
   - subtitle: Core Forecasting Methods

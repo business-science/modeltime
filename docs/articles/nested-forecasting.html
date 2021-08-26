@@ -245,8 +245,8 @@
 <p>Next, let’s use the <code>walmart_sales_weekly</code> dataset that comes with <code>timetk</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-    <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">data_tbl</span>
 <span class="co">#&gt; # A tibble: 1,001 × 3</span>
@@ -272,7 +272,7 @@
 <p>We can visualize this by time series group to expose the differences in sales by department.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
     <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">F</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
@@ -359,12 +359,12 @@
 <a href="#prophet" class="anchor"></a>Prophet</h4>
 <p>A common modeling method is prophet, that can be created using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>. We’ll create a workflow. Note that we use the first <code>nested_data_tbl$.splits[[1]])</code> to help us determine how to build features.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu">training</span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
 
 <span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_model</span><span class="op">(</span>
       <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu">set_engine</span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
+        <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_prophet</span><span class="op">)</span></code></pre></div>
 </div>
@@ -373,14 +373,14 @@
 <a href="#xgboost" class="anchor"></a>XGBoost</h4>
 <p>Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the first <code>nested_data_tbl$.splits[[1]])</code> to help us determine how to build features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu">training</span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">step_rm</span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="fu">boost_tree</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_xgb</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
@@ -399,8 +399,7 @@
 <span class="op">)</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■                             14% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■                        29% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■                57% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■            71% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:…</span>
 
 <span class="va">nested_modeltime_tbl</span>
@@ -431,12 +430,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="xrqbypjrmb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lmpsxehrgo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#xrqbypjrmb .gt_table {
+#lmpsxehrgo .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -461,7 +460,7 @@
   border-left-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_heading {
+#lmpsxehrgo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -473,7 +472,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_title {
+#lmpsxehrgo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -483,7 +482,7 @@
   border-bottom-width: 0;
 }
 
-#xrqbypjrmb .gt_subtitle {
+#lmpsxehrgo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -493,13 +492,13 @@
   border-top-width: 0;
 }
 
-#xrqbypjrmb .gt_bottom_border {
+#lmpsxehrgo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_col_headings {
+#lmpsxehrgo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -514,7 +513,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_col_heading {
+#lmpsxehrgo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -534,7 +533,7 @@
   overflow-x: hidden;
 }
 
-#xrqbypjrmb .gt_column_spanner_outer {
+#lmpsxehrgo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -546,15 +545,15 @@
   padding-right: 4px;
 }
 
-#xrqbypjrmb .gt_column_spanner_outer:first-child {
+#lmpsxehrgo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xrqbypjrmb .gt_column_spanner_outer:last-child {
+#lmpsxehrgo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xrqbypjrmb .gt_column_spanner {
+#lmpsxehrgo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -566,7 +565,7 @@
   width: 100%;
 }
 
-#xrqbypjrmb .gt_group_heading {
+#lmpsxehrgo .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -588,7 +587,7 @@
   vertical-align: middle;
 }
 
-#xrqbypjrmb .gt_empty_group_heading {
+#lmpsxehrgo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -603,15 +602,15 @@
   vertical-align: middle;
 }
 
-#xrqbypjrmb .gt_from_md > :first-child {
+#lmpsxehrgo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xrqbypjrmb .gt_from_md > :last-child {
+#lmpsxehrgo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xrqbypjrmb .gt_row {
+#lmpsxehrgo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -630,7 +629,7 @@
   overflow-x: hidden;
 }
 
-#xrqbypjrmb .gt_stub {
+#lmpsxehrgo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -642,7 +641,7 @@
   padding-left: 12px;
 }
 
-#xrqbypjrmb .gt_summary_row {
+#lmpsxehrgo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -652,7 +651,7 @@
   padding-right: 5px;
 }
 
-#xrqbypjrmb .gt_first_summary_row {
+#lmpsxehrgo .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -662,7 +661,7 @@
   border-top-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_grand_summary_row {
+#lmpsxehrgo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -672,7 +671,7 @@
   padding-right: 5px;
 }
 
-#xrqbypjrmb .gt_first_grand_summary_row {
+#lmpsxehrgo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -682,11 +681,11 @@
   border-top-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_striped {
+#lmpsxehrgo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xrqbypjrmb .gt_table_body {
+#lmpsxehrgo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -695,7 +694,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_footnotes {
+#lmpsxehrgo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -709,13 +708,13 @@
   border-right-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_footnote {
+#lmpsxehrgo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#xrqbypjrmb .gt_sourcenotes {
+#lmpsxehrgo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -729,41 +728,41 @@
   border-right-color: #D3D3D3;
 }
 
-#xrqbypjrmb .gt_sourcenote {
+#lmpsxehrgo .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#xrqbypjrmb .gt_left {
+#lmpsxehrgo .gt_left {
   text-align: left;
 }
 
-#xrqbypjrmb .gt_center {
+#lmpsxehrgo .gt_center {
   text-align: center;
 }
 
-#xrqbypjrmb .gt_right {
+#lmpsxehrgo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xrqbypjrmb .gt_font_normal {
+#lmpsxehrgo .gt_font_normal {
   font-weight: normal;
 }
 
-#xrqbypjrmb .gt_font_bold {
+#lmpsxehrgo .gt_font_bold {
   font-weight: bold;
 }
 
-#xrqbypjrmb .gt_font_italic {
+#lmpsxehrgo .gt_font_italic {
   font-style: italic;
 }
 
-#xrqbypjrmb .gt_super {
+#lmpsxehrgo .gt_super {
   font-size: 65%;
 }
 
-#xrqbypjrmb .gt_footnote_marks {
+#lmpsxehrgo .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -965,7 +964,7 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
@@ -1022,7 +1021,7 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
@@ -1066,7 +1065,7 @@
 <span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
 <span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 4.208699 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 3.616745 secs.</span></code></pre></div>
 <p>Note that we used <code><a href="../reference/control_nested_refit.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -1091,7 +1090,7 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_future_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>,
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>
