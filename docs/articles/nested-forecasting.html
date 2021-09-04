@@ -67,23 +67,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecasting</li>
+<li class="dropdown-header">Getting Started</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
+    <li class="divider">
+    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    </li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    </li>
+    <li class="divider">
+    <li class="dropdown-header">Advanced Topics</li>
+    <li>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Nested Forecasting</li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -194,7 +196,7 @@
 </blockquote>
 <p><strong>Why is nested forecasting important?</strong> For starters, the ability to <em>iteratively forecast</em> time series with many models that are trained on many individual groups has been a huge request from students in our <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Course</a>. Why? Because two methods exist that get results:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Global Modeling:</strong> Best for scalability using a Panel Data structure. See <a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html">Forecasting Panel Data</a>.</p></li>
+<li><p><strong>Global Modeling:</strong> Best for scalability using a Global Models and a Panel Data structure. See <a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html">Forecasting with Global Models</a>.</p></li>
 <li><p><strong>Iterative Forecasting:</strong> Best for accuracy using a Nested Data Structure. Takes longer than global model (more resources due to for-loop iteration), but can yield great results.</p></li>
 </ol>
 <p>We’ve incorporated a new approach called <strong><em>“nested forecasting”</em></strong> to help perform <em>Iterative Forecasting</em>.</p>
@@ -233,8 +235,7 @@
 <a href="#getting-started" class="anchor"></a>Getting Started</h2>
 <p>We’ll go through a short tutorial on <strong>Nested Forecasting.</strong> The first thing to do is to load the following libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span></code></pre></div>
@@ -244,8 +245,8 @@
 <p>Next, let’s use the <code>walmart_sales_weekly</code> dataset that comes with <code>timetk</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-    <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">data_tbl</span>
 <span class="co">#&gt; # A tibble: 1,001 × 3</span>
@@ -271,16 +272,28 @@
 <p>We can visualize this by time series group to expose the differences in sales by department.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
     <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">F</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="nested-forecasting_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We can clearly see that there are 7 time series groups with different weekly sales patterns.</p>
 </div>
-<div id="data-preparation" class="section level3">
+<div id="nested-forecasting-preparation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a>Data Preparation</h3>
+<a href="#nested-forecasting-preparation" class="anchor"></a>Nested Forecasting Preparation</h3>
+<p>There are two key components that we need to prepare for:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Nested Data Structure:</strong> Most critical to ensure your data is prepared (covered next)</p></li>
+<li><p><strong>Nested Modeltime Workflow:</strong> This stage is where we create many models, fit the models to the data, and generate forecasts at scale</p></li>
+</ol>
+<p>Conceptually, the workflow looks like this where we combine nested data and tidymodels workflows using an upcoming function, <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code>.</p>
+<p><img src="modeltime_nested_fit.jpg" width="80%" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div id="data-preparation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-preparation" class="anchor"></a>Data Preparation</h2>
 <p>The most critical stage in <strong>“Nested Forecasting”</strong> is data preparation, making sure that the input to the nested forecasting workflow is in the appropriate structure. We’ve included several functions to help that involve a bit of forethought that can be broken into 3 steps:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Extending each of the times series:</strong> How far into the future do you need to predict for each time series? See <code><a href="../reference/prep_nested.html">extend_timeseries()</a></code>.</p></li>
@@ -327,16 +340,16 @@
 <span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span></code></pre></div>
 <p>This creates a nested tibble with “.actual_data”, “.future_data”, and “.splits”. Each column will help in the nested modeltime workflow.</p>
 </div>
-</div>
 <div id="nested-modeltime-workflow" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nested-modeltime-workflow" class="anchor"></a>Nested Modeltime Workflow</h2>
-<p>Next, we move into the <strong>Nested Modeltime Workflow</strong> now that nested data has been created. The Nested Modeltime Workflow includes 3 key functions:</p>
+<p>Next, we move into the <strong>Nested Modeltime Workflow</strong> now that nested data has been created. The Nested Modeltime Workflow includes 3 core functions:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Modeling Fitting:</strong> This is the training stage where we fit to <em>training data</em>. The <em>test forecast</em> is generated from this step. See <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code>.</p></li>
 <li><p><strong>Model Evaluation and Selection:</strong> This is where we review model performance and select the best model by minimizing or maximizing an error metric. See <code><a href="../reference/modeltime_nested_select_best.html">modeltime_nested_select_best()</a></code>.</p></li>
 <li><p><strong>Model Refitting:</strong> This is the final fitting stage where we fit to <em>actual data</em>. The <em>future forecast</em> is generated from this step. See <code><a href="../reference/modeltime_nested_refit.html">modeltime_nested_refit()</a></code>.</p></li>
 </ol>
+<p><img src="nested-core-functions.jpg" width="80%" style="display: block; margin: auto;"></p>
 <div id="step-1-create-tidymodels-workflows" class="section level3">
 <h3 class="hasAnchor">
 <a href="#step-1-create-tidymodels-workflows" class="anchor"></a>Step 1: Create Tidymodels Workflows</h3>
@@ -346,12 +359,12 @@
 <a href="#prophet" class="anchor"></a>Prophet</h4>
 <p>A common modeling method is prophet, that can be created using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>. We’ll create a workflow. Note that we use the first <code>nested_data_tbl$.splits[[1]])</code> to help us determine how to build features.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu">training</span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
 
 <span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_model</span><span class="op">(</span>
       <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu">set_engine</span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
+        <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_prophet</span><span class="op">)</span></code></pre></div>
 </div>
@@ -360,14 +373,14 @@
 <a href="#xgboost" class="anchor"></a>XGBoost</h4>
 <p>Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the first <code>nested_data_tbl$.splits[[1]])</code> to help us determine how to build features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu">training</span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">step_rm</span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="fu">boost_tree</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_xgb</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
@@ -385,7 +398,7 @@
   <span class="va">wflw_xgb</span>
 <span class="op">)</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■                             14% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■                    43% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■                        29% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■            71% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:…</span>
 
@@ -417,12 +430,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="hywbdhjiye" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lmpsxehrgo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hywbdhjiye .gt_table {
+#lmpsxehrgo .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -447,7 +460,7 @@
   border-left-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_heading {
+#lmpsxehrgo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -459,7 +472,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_title {
+#lmpsxehrgo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -469,7 +482,7 @@
   border-bottom-width: 0;
 }
 
-#hywbdhjiye .gt_subtitle {
+#lmpsxehrgo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -479,13 +492,13 @@
   border-top-width: 0;
 }
 
-#hywbdhjiye .gt_bottom_border {
+#lmpsxehrgo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_col_headings {
+#lmpsxehrgo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -500,7 +513,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_col_heading {
+#lmpsxehrgo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -520,7 +533,7 @@
   overflow-x: hidden;
 }
 
-#hywbdhjiye .gt_column_spanner_outer {
+#lmpsxehrgo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -532,15 +545,15 @@
   padding-right: 4px;
 }
 
-#hywbdhjiye .gt_column_spanner_outer:first-child {
+#lmpsxehrgo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hywbdhjiye .gt_column_spanner_outer:last-child {
+#lmpsxehrgo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hywbdhjiye .gt_column_spanner {
+#lmpsxehrgo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -552,7 +565,7 @@
   width: 100%;
 }
 
-#hywbdhjiye .gt_group_heading {
+#lmpsxehrgo .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -574,7 +587,7 @@
   vertical-align: middle;
 }
 
-#hywbdhjiye .gt_empty_group_heading {
+#lmpsxehrgo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -589,15 +602,15 @@
   vertical-align: middle;
 }
 
-#hywbdhjiye .gt_from_md > :first-child {
+#lmpsxehrgo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hywbdhjiye .gt_from_md > :last-child {
+#lmpsxehrgo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hywbdhjiye .gt_row {
+#lmpsxehrgo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -616,7 +629,7 @@
   overflow-x: hidden;
 }
 
-#hywbdhjiye .gt_stub {
+#lmpsxehrgo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -628,7 +641,7 @@
   padding-left: 12px;
 }
 
-#hywbdhjiye .gt_summary_row {
+#lmpsxehrgo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -638,7 +651,7 @@
   padding-right: 5px;
 }
 
-#hywbdhjiye .gt_first_summary_row {
+#lmpsxehrgo .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -648,7 +661,7 @@
   border-top-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_grand_summary_row {
+#lmpsxehrgo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -658,7 +671,7 @@
   padding-right: 5px;
 }
 
-#hywbdhjiye .gt_first_grand_summary_row {
+#lmpsxehrgo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -668,11 +681,11 @@
   border-top-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_striped {
+#lmpsxehrgo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hywbdhjiye .gt_table_body {
+#lmpsxehrgo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -681,7 +694,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_footnotes {
+#lmpsxehrgo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -695,13 +708,13 @@
   border-right-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_footnote {
+#lmpsxehrgo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#hywbdhjiye .gt_sourcenotes {
+#lmpsxehrgo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -715,41 +728,41 @@
   border-right-color: #D3D3D3;
 }
 
-#hywbdhjiye .gt_sourcenote {
+#lmpsxehrgo .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#hywbdhjiye .gt_left {
+#lmpsxehrgo .gt_left {
   text-align: left;
 }
 
-#hywbdhjiye .gt_center {
+#lmpsxehrgo .gt_center {
   text-align: center;
 }
 
-#hywbdhjiye .gt_right {
+#lmpsxehrgo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hywbdhjiye .gt_font_normal {
+#lmpsxehrgo .gt_font_normal {
   font-weight: normal;
 }
 
-#hywbdhjiye .gt_font_bold {
+#lmpsxehrgo .gt_font_bold {
   font-weight: bold;
 }
 
-#hywbdhjiye .gt_font_italic {
+#lmpsxehrgo .gt_font_italic {
   font-style: italic;
 }
 
-#hywbdhjiye .gt_super {
+#lmpsxehrgo .gt_super {
   font-size: 65%;
 }
 
-#hywbdhjiye .gt_footnote_marks {
+#lmpsxehrgo .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -951,12 +964,12 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="extract-nested-error-logs" class="section level4">
 <h4 class="hasAnchor">
@@ -973,13 +986,13 @@
 <div id="step-4-select-the-best" class="section level3">
 <h3 class="hasAnchor">
 <a href="#step-4-select-the-best" class="anchor"></a>Step 4: Select the Best</h3>
-<p>Using the accuracy data, we can pick a metric and select the best model based on that metric. The available metrics are in the <code><a href="../reference/default_forecast_accuracy_metric_set.html">default_forecast_accuracy_metric_set()</a></code>. Make sure to select <code>minimize</code> based on the metric. The <code>filter_forecasts</code> parameter tells the function to filter the logged forecasts to just the best.</p>
+<p>Using the accuracy data, we can pick a metric and select the best model based on that metric. The available metrics are in the <code><a href="../reference/default_forecast_accuracy_metric_set.html">default_forecast_accuracy_metric_set()</a></code>. Make sure to select <code>minimize</code> based on the metric. The <code>filter_test_forecasts</code> parameter tells the function to filter the logged test forecasts to just the best.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
             <span class="fu"><a href="../reference/modeltime_nested_select_best.html">modeltime_nested_select_best</a></span><span class="op">(</span>
-              metric           <span class="op">=</span> <span class="st">"rmse"</span>, 
-              minimize         <span class="op">=</span> <span class="cn">TRUE</span>, 
-              filter_forecasts <span class="op">=</span> <span class="cn">TRUE</span>
+              metric                <span class="op">=</span> <span class="st">"rmse"</span>, 
+              minimize              <span class="op">=</span> <span class="cn">TRUE</span>, 
+              filter_test_forecasts <span class="op">=</span> <span class="cn">TRUE</span>
             <span class="op">)</span></code></pre></div>
 <p>This identifies which models should be used for the final forecast. With the models selected, we can make the future forecast.</p>
 <div id="extract-nested-best-model-report" class="section level4">
@@ -1001,19 +1014,19 @@
 <span class="co">#&gt; 6 1_93          2 XGBOOST     Test   7234.  9.11 0.728  9.66  8879. 0.488</span>
 <span class="co">#&gt; 7 1_95          2 XGBOOST     Test  10784.  8.54 1.30   8.96 12843. 0.139</span></code></pre></div>
 </div>
-<div id="extract-nested-best-forecasts" class="section level4">
+<div id="extract-nested-best-test-forecasts" class="section level4">
 <h4 class="hasAnchor">
-<a href="#extract-nested-best-forecasts" class="anchor"></a>Extract Nested Best Forecasts</h4>
+<a href="#extract-nested-best-test-forecasts" class="anchor"></a>Extract Nested Best Test Forecasts</h4>
 <p>Once we’ve selected the best models, we can easily visualize the best forecasts by time series. Note that the nested test forecast logs have been modified to isolate the best models.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="step-5-refitting-and-future-forecast" class="section level3">
@@ -1052,7 +1065,7 @@
 <span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
 <span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 3.720663 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 3.616745 secs.</span></code></pre></div>
 <p>Note that we used <code><a href="../reference/control_nested_refit.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -1077,12 +1090,12 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_future_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>,
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="nested-forecasting_files/figure-html/unnamed-chunk-21-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>

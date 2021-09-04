@@ -121,23 +121,25 @@ Forecast can be retrieved with extract_nested_future_forecast()
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Forecasting</li>
+    <li class="dropdown-header">Getting Started</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    </li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Advanced Topics</li>
+    <li>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Nested Forecasting</li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -234,7 +236,7 @@ Forecast can be retrieved with extract_nested_future_forecast()
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Refits a Nested Modeltime Table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_refit.R'><code>R/nested_modeltime_refit.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested-modeltime_refit.R'><code>R/nested-modeltime_refit.R</code></a></small>
     <div class="hidden name"><code>modeltime_nested_refit.Rd</code></div>
     </div>
 
@@ -249,11 +251,7 @@ Forecast can be retrieved with <code><a href='log_extractors.html'>extract_neste
 
     </div>
 
-    <pre class="usage"><span class='fu'>modeltime_nested_refit</span><span class='op'>(</span>
-  <span class='va'>object</span>,
-  conf_interval <span class='op'>=</span> <span class='fl'>0.95</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_nested_refit.html'>control_nested_refit</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>modeltime_nested_refit</span><span class='op'>(</span><span class='va'>object</span>, control <span class='op'>=</span> <span class='fu'><a href='control_nested_refit.html'>control_nested_refit</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -261,11 +259,6 @@ Forecast can be retrieved with <code><a href='log_extractors.html'>extract_neste
     <tr>
       <th>object</th>
       <td><p>A Nested Modeltime Table</p></td>
-    </tr>
-    <tr>
-      <th>conf_interval</th>
-      <td><p>An estimated confidence interval based on the calibration data.
-This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></td>
     </tr>
     <tr>
       <th>control</th>

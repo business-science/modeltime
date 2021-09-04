@@ -30,13 +30,15 @@ knitr::opts_chunk$set(
 > Tidy time series forecasting with `tidymodels`. 
 
 
-## Modeltime Quick Start (YouTube)
+## Quickstart Video
 
-Learn the basics of Modeltime with this <a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">Introductory YouTube video</a>. 
+For those that prefer video tutorials, we have an [11-minute YouTube Video](https://www.youtube.com/watch?v=-bCelif-ENY) that walks you through the Modeltime Workflow. 
 
 <a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">
-<img src="http://img.youtube.com/vi/-bCelif-ENY/0.jpg"
-alt="Introduction to Modeltime" width="100%" height="350"/>
+<p style='text-align:center;'>
+<img src= "vignettes/modeltime-video.jpg"
+alt="Introduction to Modeltime" width="60%"/>
+</p>
 <p style='text-align:center'>(Click to Watch on YouTube)</p>
 </a>
 

@@ -116,23 +116,25 @@ different packages. Currently the only package is prophet." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Forecasting</li>
+    <li class="dropdown-header">Getting Started</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    </li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Advanced Topics</li>
+    <li>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Nested Forecasting</li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -503,7 +505,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span></div><div class='output co'>#&gt; <span class='message'>Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  257ms 
+#&gt; Fit time:  267ms 
 #&gt; PROPHET Model
 #&gt; - growth: 'linear'
 #&gt; - n.changepoints: 25

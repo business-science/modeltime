@@ -17,10 +17,34 @@
 #' @inheritParams modeltime_forecast
 #' @param nested_data Nested time series data
 #' @param ... Tidymodels `workflow` objects that will be fit to the nested time series data.
+#' @param model_list Optionally, a `list()` of Tidymodels `workflow` objects can be provided
 #' @param control Used to control verbosity and parallel processing. See [control_nested_fit()].
+#'
+#' @details
+#'
+#'
+#' ## Preparing Data for Nested Forecasting
+#'
+#' Use [extend_timeseries()], [nest_timeseries()], and [split_nested_timeseries()] for preparing
+#' data for Nested Forecasting. The structure must be a nested data frame, which is suppplied in
+#' `modeltime_nested_fit(nested_data)`.
+#'
+#' ## Fitting Models
+#'
+#' Models must be in the form of `tidymodels workflow` objects. The models can be provided in two ways:
+#'
+#' 1. Using `...` (dots): The workflow objects can be provided as dots.
+#'
+#' 2. Using `model_list` parameter: You can supply one or more workflow objects that are wrapped in a `list()`.
+#'
+#' ## Controlling the fitting process
+#'
+#' A `control` object can be provided during fitting to adjust the verbosity and parallel processing.
+#' See [control_nested_fit()].
 #'
 #' @export
 modeltime_nested_fit <- function(nested_data, ...,
+                                 model_list = NULL,
                                  metric_set = default_forecast_accuracy_metric_set(),
                                  conf_interval = 0.95,
                                  control = control_nested_fit()) {
@@ -32,6 +56,14 @@ modeltime_nested_fit <- function(nested_data, ...,
     # - Nested Data Structure
     # - Requires .splits column
     # - dots ... are all workflows
+
+    # Check model_list
+    if (!is.null(model_list)) {
+        first_model_list_class <- class(model_list)[1]
+        if (!first_model_list_class == "list") {
+            rlang::abort("`model_list` must be a list. Try using a `list()` of tidymodels workflow objects.")
+        }
+    }
 
     # HANDLE INPUTS ----
 
@@ -47,6 +79,13 @@ modeltime_nested_fit <- function(nested_data, ...,
     x_expr  <- rlang::sym(".splits")
 
     d_expr  <- rlang::sym(".actual_data")
+
+    model_list <- append(list(...), model_list)
+
+    model_list_tbl <- tibble::tibble(
+        .model_id = 1:length(model_list),
+        .model    = model_list
+    )
 
 
     # SETUP LOGGING ENV ----
@@ -69,10 +108,7 @@ modeltime_nested_fit <- function(nested_data, ...,
             .modeltime_tables = purrr::pmap(.l = list(x = !! x_expr, d = !! d_expr, id = !! id_expr, i = ..rowid), .f = function(x, d, id, i) {
 
 
-
                 if (control$verbose) cli::cli_alert_info(stringr::str_glue("[{i}/{n_ids}] Starting Modeltime Table: ID {id}..."))
-
-                model_list <- list(...)
 
                 safe_fit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
 
@@ -231,6 +267,8 @@ modeltime_nested_fit <- function(nested_data, ...,
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
     attr(nested_modeltime, "id")                  <- id_text
+    attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
+    attr(nested_modeltime, "conf_interval")       <- conf_interval
     attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
     attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
     attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl

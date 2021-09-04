@@ -1,5 +1,5 @@
 ---
-title: "Forecasting Panel Data"
+title: "Forecasting with Global Models"
 output: rmarkdown::html_vignette
 resource_files:
   - articles/logo-modeltime.png
@@ -7,7 +7,7 @@ resource_files:
   - articles/modeltime_workflow.jpg
   - articles/time_series_course.jpg
 vignette: >
-  %\VignetteIndexEntry{Forecasting Panel Data}
+  %\VignetteIndexEntry{Forecasting with Global Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -36,26 +36,30 @@ knitr::include_graphics("panel_data_success.jpg")
 <br>
 <img src="logo-modeltime.png" width="147" height="170" align="right" />
 
-Modeltime is designed for modeling __Panel Data__. In this short tutorial, we will explain what Panel Data Modeling is and demonstrate how to use the Modeltime Forecasting Workflow for multi-time series datasets (Panel Data).
+__Why is global modeling important for time series?__ For starters, the ability to forecast many time series with a single model that is trained on many time series groups was a winning strategy in recent Kaggle M5 Forecasting Competition. In fact, it's the solution we recommend in our [Time Series Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/) when forecasting many time series as part of a high-performance forecasting system. Why? Because it speeds up forecasting, allowing the data scientist to more rapidly experiment and find good solutions. 
 
-# Problem: Forecast Iteration is Not Scalable
+# Global Forecasting
 
-__Time series are increasing at an exponential rate.__ Organization-wide forecasting demands have changed from top-level to bottom-level forecasting, which has increased the number of forecasts that need to be made from the range of 1-100 to the range of 1,000-10,000. 
+In general, there are two methods for forecasting at scale (a slow and accurate method and a fast and good method):
 
-Think of forecasting by customer for an organization that has __10,000 customers__. It becomes a _challenge_ to make these forecasts one at a time in an iterative approach. As that organization grows, moving from 10,000 to 100,000 customers, __forecasting with an iterative approach is not scalable.__
+1. __Iterative Forecasting (Slow and Accurate):__ Best for accuracy but takes _much longer_ than global model (due to for-loop iteration), results in many models (more memory required), and is often needed to be run in parallel to scale to thousands of time series (otherwise it can take days to complete). But, iterative forecasting can yield great results. See [Nested Forecasting](https://business-science.github.io/modeltime/articles/nested-forecasting.html) for our Iterative Forecasting implementation.
 
-__Modeltime__ has been designed to take a different approach using __Panel Data and Global Models__ (more on these concepts shortly). Using these approaches, we can dramatically increase the scale at which forecasts can be made. Prior limitations in the range of 1,000 to 10,000 forecasts become managable. Beyond is also possible with clustering techniques and making several panel models. __We are only limited by RAM, not modeling time.__ 
+2. __Global Modeling (Fast and Good):__ Best for scalability to thousands of time series. Uses a Panel Data structure. Can scale to 10,000+ time series easily because only a single model is made that generates predictions (forecasts) for all of the time series. Requires feature engineering and parameter tuning to get best performance, which can be challenging for beginners.  
 
 
+# Important Concepts
 
-# What are Panel Data and Global Models?
+Students can struggle with global modeling. To help, I have a few terms to cover that will help you understand how global modeling works (and how it differs from iterative modeling).
 
-In it's simplest form, __Panel Data__ is a time series dataset that has more than one series. Each time series is stacked row-wise (on-top) of each other. 
+## Panel Data
+
+__The panel data structure__ is the format used for global modeling. In it's simplest form, _Panel Data_ is a time series dataset that has more than one series. Each time series is stacked row-wise (on-top) of each other. 
 
 ```{r, echo=F, fig.cap="Panel Data Structure"}
 knitr::include_graphics("panel_data.jpg")
 ```
 
+## Traditional Modeling (Iteration)
 
 __Traditional modeling techniques like ARIMA__ can only be used on one time series at a time. The widely accepted forecasting approach is to iterate through each time series producing a unique model and forecast for each time series identifier. The downside with this approach is that it's expensive when you have many time series. Think of the number of products in a database. As the number of time series approaches the range of 1000-10,000, __the iterative approach becomes unscalable.__ 
 
@@ -63,41 +67,28 @@ __Traditional modeling techniques like ARIMA__ can only be used on one time seri
 knitr::include_graphics("panel_data_arima.jpg")
 ```
 
+## Global Modeling
+
 __Global Models__ are alternatives to the iterative approach. A Global Model is a single model that forecasts all time series at once. Global Models are highly scalable, which solves the problem of 1-10,000 time series. An example is an XGBoost Model, which can determine relationships for all 1000 time series panels with a single model. 
 
 ```{r, echo=F, fig.cap="Solution: A Single XGBOOST Model can Model 1000 Time Series"}
 knitr::include_graphics("panel_data_xgboost.jpg")
 ```
 
-The downside is that an iterative approach can be more accurate. To improve accuracy, __feature engineering and localized model selection__ by time series identifier become critical to large-scale forecasting success. If interested, I teach proven feature engineering techniques in my [Time Series Forecasting Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/). 
+## Importance of Feature Engineering
+
+The downside is that an global approach can be less accurate. To improve accuracy, __feature engineering and localized model selection__ by time series identifier become critical to large-scale forecasting success. We recommend learning feature engineering techniques that are proven to get results in our [Time Series Forecasting Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/). 
 
 ```{r, echo=F, fig.cap="Modeling Panel Data"}
 knitr::include_graphics("panel_data_success.jpg")
 ```
 
-# Modeltime is Designed for Panel Data
 
 
+# Getting Started
 
-While Modeltime can perform iterative modeling, __Modeltime has been designed for Panel Data__ using:
+We'll cover a short tutorial on global forecasting. The first thing to do is to load the following libraries:
 
-- __Global Modeling:__ Global model Machine Learning and Deep Learning strategies using the Modeltime Ecosystem (e.g. `modeltime`, `modeltime.h2o`, and `modeltime.gluonts`). 
-
-- __Feature Engineering__: Developing calendar features, lagged features, and other time-based, window-based, and sequence-based features using `timetk`. 
-
-- __Local Forecast Visualization__: Visualizing multiple local time series forecasts at once.
-
-- __Global and Localized Accuracy Reporting__: Generating out-of-sample accuracy both globally and at a local level by time series identifier (available in `modeltime` >= 0.7.0)
-
-- __Global and Localized Confidence Intervals Reporting__: Generating out-of-sample confidence intervals both globally and at a local level by time series identifier (available in `modeltime` >= 0.7.0)
-
-# Short Tutorial on Panel Data
-
-We'll cover a short tutorial on modeling panel data with the `walmart_sales_weekly` dataset. 
-
-## Load Libraries
-
-First, load the following libraries. 
 
 ```{r}
 library(tidymodels)
@@ -106,54 +97,71 @@ library(tidyverse)
 library(timetk)
 ```
 
-## Collect data
+## Dataset
 
-Next, collect the `walmart_sales_weekly` dataset. The dataset consists of 1001 observations of revenue generated by a store-department combination on any given week. It contains:
-
-- __7 Time Series Groups__ denoted by the "ID" column
-- The data is structured in __Panel Data__ format
-- The time series groups will be modeled with a single __Global Model__
+Next, let's use the `walmart_sales_weekly` dataset that comes with `timetk`. 
 
 ```{r}
-data <- walmart_sales_weekly %>% 
+data_tbl <- walmart_sales_weekly %>%
     select(id, Date, Weekly_Sales) %>%
-    set_names(c("ID", "date", "value"))
+    set_names(c("id", "date", "value"))
 
-data
+data_tbl
 ```
 
-## Visualize the Data
+The dataset is that is already set up for panel data modeling. The important columns are:
 
-From visualizing, the weekly department revenue patterns emerge. Most of the series have yearly seasonality and long-term trends. 
+- "id": This separates the time series groups (in this case these represent sales from departments in a walmart store)
+
+- "date": This is the weekly sales period
+
+- "value": This is the value for sales during the week and store/department
+
+We can visualize this by time series group to expose the differences in sales by department. 
 
 ```{r}
-data %>%
-  group_by(ID) %>%
+data_tbl %>%
+  group_by(id) %>%
   plot_time_series(
-    .date_var    = date, 
-    .value       = value,
-    .facet_ncol  = 3,
-    .interactive = FALSE
+    date, value, .interactive = F, .facet_ncol = 2
   )
 ```
+
+We can clearly see that there are 7 time series groups with different weekly sales patterns. 
 
 ## Train/Test Splitting
 
 We can split the data into training and testing sets using `time_series_split()`. We'll investigate the last 3-months of the year to test a global model on a 3-month forecast. The message on overlapping dates is to let us know that multiple time series are being processed using the last 3-month window for testing. 
 
-```{r, message=TRUE, warning=TRUE}
-splits <- data %>% time_series_split(assess = "3 months", cumulative = TRUE)
+```{r, message=TRUE}
+splits <- data_tbl %>% 
+  time_series_split(
+    assess     = "3 months", 
+    cumulative = TRUE
+  )
 
 splits
 ```
 
 ## Recipe
 
-We can move to preprocessing the data. We will use the `recipes` workflow for generating time series features. This results in 37 derived features for modeling. We can certainly include more features such as lags and rolling features, which are covered in the [High-Performance Time Series Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/).
+__Next, we need to preprocess the data.__ This is where we add good features to imporve our global model performance. We will use the `recipes` workflow for generating time series features. 
+
+- `step_mutate_at()`: Applies a function to one or more columns. Used to remove extra unused levels in our categorical ID column. 
+
+- `step_timeseries_signature()`: Used to add calendar features based on our date column
+
+- `step_rm()`: Used to remove the date column. Machine Learning algorithms like XGBoost don't handle date columns very well.
+
+- `step_zv()`: Used to remove any zero variance features. Features with no variance don't add useful information to our model. 
+
+- `step_dummy()`: Used to convert categorical features to binary one-hot encoded features that algorithms like XGBoost can model more effectively.
+
+This results in 37 derived features for modeling. We can certainly include more features such as lags and rolling features that are known to improve results. These concepts and more are covered in the [High-Performance Time Series Course](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/).
 
 ```{r}
 rec_obj <- recipe(value ~ ., training(splits)) %>%
-    step_mutate(ID = droplevels(ID)) %>%
+    step_mutate_at(id, fn = droplevels) %>%
     step_timeseries_signature(date) %>%
     step_rm(date) %>%
     step_zv(all_predictors()) %>%
@@ -190,7 +198,9 @@ We'll step through the modeltime workflow, which is used to test many different 
 knitr::include_graphics("modeltime_workflow.jpg")
 ```
 
-### Create a Modeltime Table
+### Step 1: Create a Modeltime Table
+
+The first step is to create a Modeltime Table with `modeltime_table()`.
 
 ```{r}
 model_tbl <- modeltime_table(
@@ -200,25 +210,25 @@ model_tbl <- modeltime_table(
 model_tbl
 ```
 
-### Calibrate by ID
+### Step 2: Calibrate by ID
 
-A new feature in `modeltime` 0.7.0 is the ability to calibrate by each time series. Calibration calculates the out of sample residual error. 
+Next, we need to calibrate, which calculates the forecast error on our test set. Use `modeltime_calibrate()` to perform calibration.  Note that when we add the `id`, we are able to track the the out-of-sample residual error by the "id" column. 
 
 ```{r}
 calib_tbl <- model_tbl %>%
     modeltime_calibrate(
       new_data = testing(splits), 
-      id       = "ID"
+      id       = "id"
     )
 
 calib_tbl
 ```
 
-## Measure Accuracy
+### Step 3: Measure Test Accuracy
 
 Next, we measure the global and local accuracy on the global model. 
 
-### Global Accuracy
+#### Global Accuracy
 
 The default is `modeltime_accuracy(acc_by_id = FALSE)`, which returns a global model accuracy. 
 
@@ -228,7 +238,7 @@ calib_tbl %>%
     table_modeltime_accuracy(.interactive = FALSE)
 ```
 
-### Local Accuracy
+#### Local Accuracy
 
 By toggling `modeltime_accuracy(acc_by_id = TRUE)`, we can obtain the local model accuracy. This can be useful for identifying specifically which time series the model does well on (and which it does poorly on). We can then __apply model selection logic__ to select specific global models for specific IDs. 
 
@@ -238,40 +248,79 @@ calib_tbl %>%
     table_modeltime_accuracy(.interactive = FALSE)
 ```
 
-## Forecast the Data
+### Step 4: Forecast the Test Data
 
-The last step we'll cover is forecasting the test dataset. This is useful to evaluate the model using a sampling of the time series within the panel dataset. In `modeltime` 0.7.0, we now have `modeltime_forecast(conf_by_id  = TRUE)` to allow the confidence intervals (prediction intervals) to be calculated by time series identifier. Note, that the `modeltime_calibrate()` must have been performed with an `id` specified. 
+Next, we need to forecast the test dataset. This is useful to evaluate the model using a sampling of the time series within the panel dataset. We use `modeltime_forecast(conf_by_id  = TRUE)` to allow the confidence intervals (prediction intervals) to be calculated by time series identifier. Note, that the `modeltime_calibrate()` must have been performed with an `id` specified. 
 
 ```{r}
 calib_tbl %>%
     modeltime_forecast(
         new_data    = testing(splits),
-        actual_data = bind_rows(training(splits), testing(splits)),
+        actual_data = data_tbl,
         conf_by_id  = TRUE
     ) %>%
-    group_by(ID) %>%
+    group_by(id) %>%
     plot_modeltime_forecast(
         .facet_ncol  = 3,
         .interactive = FALSE
     )
 ```
 
+### Step 5: Refit and Forecast the Future
+
+We see that our global model performs well on this dataset. Now, we will forecast the future. 
+
+#### Refit the Models
+
+The refitting step is needed to incorporate the most recent information into our models. We use `modeltime_refit()` to update the model(s) in our modeltime tables. 
+
+```{r}
+refit_tbl <- calib_tbl %>%
+  modeltime_refit(data = data_tbl)
+
+refit_tbl
+```
+
+
+#### Future Data
+
+Next, make a future dataset using `future_frame()` from `timetk`, which creates future time stamps that extend 52-weeks into the future for each ID in the same panel structure needed for our global forecast model. 
+
+```{r}
+future_tbl <- data_tbl %>%
+  group_by(id) %>%
+  future_frame(.length_out = 52, .bind_data = FALSE)
+
+future_tbl
+```
+
+
+#### Future Predictions
+
+Finally, we can forecast the future using our future data. 
+
+```{r}
+refit_tbl %>%
+  modeltime_forecast(
+    new_data    = future_tbl,
+    actual_data = data_tbl, 
+    conf_by_id  = TRUE
+  ) %>%
+  group_by(id) %>%
+  plot_modeltime_forecast(
+    .interactive = F,
+    .facet_ncol  = 2
+  )
+```
+
 
 
 # Summary
 
-We just showcased the __Modeltime Workflow for Panel Data using a Global XGBOOST Model__. But, this is a simple problem. And, __there's a lot more to learning time series:__ 
+We've now successfully completed a __Global Forecast.__ You may find this challenging, especially if you are not familiar with the Modeltime Workflow, terminology, or tidymodeling in R. If this is the case, we have a solution. Take our high-performance forecasting course. 
 
-- Many more algorithms
-- Feature Engineering for Time Series
-- Ensembling
-- Machine Learning
-- Deep Learning
-- Scalable Modeling: 10,000+ time series
 
-Your probably thinking how am I ever going to learn time series forecasting. Here's the solution that will save you years of struggling. 
-
-# Take the High-Performance Forecasting Course
+## Take the High-Performance Forecasting Course
 
 > Become the forecasting expert for your organization
 

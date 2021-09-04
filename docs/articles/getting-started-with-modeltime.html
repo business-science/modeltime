@@ -67,23 +67,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecasting</li>
+<li class="dropdown-header">Getting Started</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
+    <li class="divider">
+    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    </li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    </li>
+    <li class="divider">
+    <li class="dropdown-header">Advanced Topics</li>
+    <li>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Nested Forecasting</li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
@@ -197,7 +199,19 @@
 <li>
 <strong>Parsnip models</strong> like <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/mars.html">mars()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/svm_rbf.html">svm_rbf()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree()</a></code> and more</li>
 </ul>
-<p>To perform classical time series analysis and machine learning <strong><em>in one framework!</em></strong> See <a href="https://business-science.github.io/modeltime/articles/modeltime-model-list.html"><em>“Model List”</em></a> for the full list of <code>modeltime</code> models.</p>
+<p>…to perform classical time series analysis and machine learning <strong><em>in one framework!</em></strong> See <a href="https://business-science.github.io/modeltime/articles/modeltime-model-list.html"><em>“Model List”</em></a> for the full list of <code>modeltime</code> models.</p>
+<div id="quickstart-video" class="section level2">
+<h2 class="hasAnchor">
+<a href="#quickstart-video" class="anchor"></a>Quickstart Video</h2>
+<p>For those that prefer video tutorials, we have an <a href="https://www.youtube.com/watch?v=-bCelif-ENY">11-minute YouTube Video</a> that walks you through the Modeltime Workflow.</p>
+<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">
+<p style="text-align:center;">
+<img src="modeltime-video.jpg" alt="Introduction to Modeltime" width="60%"></p>
+<p style="text-align:center">
+(Click to Watch on YouTube)
+</p>
+<p></p></a>
+</div>
 <div id="the-modeltime-workflow" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-modeltime-workflow" class="anchor"></a>The Modeltime Workflow</h2>
@@ -482,12 +496,12 @@ The Modeltime Workflow
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>
         .interactive <span class="op">=</span> <span class="va">interactive</span>
     <span class="op">)</span></code></pre></div>
-<div id="lnhoouwwhh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="xhrxtjrirm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lnhoouwwhh .gt_table {
+#xhrxtjrirm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -512,7 +526,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_heading {
+#xhrxtjrirm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -524,7 +538,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_title {
+#xhrxtjrirm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -534,7 +548,7 @@ The Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#lnhoouwwhh .gt_subtitle {
+#xhrxtjrirm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -544,13 +558,13 @@ The Modeltime Workflow
   border-top-width: 0;
 }
 
-#lnhoouwwhh .gt_bottom_border {
+#xhrxtjrirm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_col_headings {
+#xhrxtjrirm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -565,7 +579,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_col_heading {
+#xhrxtjrirm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -585,7 +599,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#lnhoouwwhh .gt_column_spanner_outer {
+#xhrxtjrirm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -597,15 +611,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#lnhoouwwhh .gt_column_spanner_outer:first-child {
+#xhrxtjrirm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lnhoouwwhh .gt_column_spanner_outer:last-child {
+#xhrxtjrirm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lnhoouwwhh .gt_column_spanner {
+#xhrxtjrirm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -617,7 +631,7 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#lnhoouwwhh .gt_group_heading {
+#xhrxtjrirm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -639,7 +653,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#lnhoouwwhh .gt_empty_group_heading {
+#xhrxtjrirm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -654,15 +668,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#lnhoouwwhh .gt_from_md > :first-child {
+#xhrxtjrirm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lnhoouwwhh .gt_from_md > :last-child {
+#xhrxtjrirm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lnhoouwwhh .gt_row {
+#xhrxtjrirm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -681,7 +695,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#lnhoouwwhh .gt_stub {
+#xhrxtjrirm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -693,7 +707,7 @@ The Modeltime Workflow
   padding-left: 12px;
 }
 
-#lnhoouwwhh .gt_summary_row {
+#xhrxtjrirm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -703,7 +717,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#lnhoouwwhh .gt_first_summary_row {
+#xhrxtjrirm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -713,7 +727,7 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_grand_summary_row {
+#xhrxtjrirm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -723,7 +737,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#lnhoouwwhh .gt_first_grand_summary_row {
+#xhrxtjrirm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -733,11 +747,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_striped {
+#xhrxtjrirm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lnhoouwwhh .gt_table_body {
+#xhrxtjrirm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -746,7 +760,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_footnotes {
+#xhrxtjrirm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -760,13 +774,13 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_footnote {
+#xhrxtjrirm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#lnhoouwwhh .gt_sourcenotes {
+#xhrxtjrirm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -780,41 +794,41 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#lnhoouwwhh .gt_sourcenote {
+#xhrxtjrirm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#lnhoouwwhh .gt_left {
+#xhrxtjrirm .gt_left {
   text-align: left;
 }
 
-#lnhoouwwhh .gt_center {
+#xhrxtjrirm .gt_center {
   text-align: center;
 }
 
-#lnhoouwwhh .gt_right {
+#xhrxtjrirm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lnhoouwwhh .gt_font_normal {
+#xhrxtjrirm .gt_font_normal {
   font-weight: normal;
 }
 
-#lnhoouwwhh .gt_font_bold {
+#xhrxtjrirm .gt_font_bold {
   font-weight: bold;
 }
 
-#lnhoouwwhh .gt_font_italic {
+#xhrxtjrirm .gt_font_italic {
   font-style: italic;
 }
 
-#lnhoouwwhh .gt_super {
+#xhrxtjrirm .gt_super {
   font-size: 65%;
 }
 
-#lnhoouwwhh .gt_footnote_marks {
+#xhrxtjrirm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

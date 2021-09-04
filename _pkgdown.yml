@@ -13,19 +13,21 @@ navbar:
     - text: "Articles"
       href: articles/index.html
       menu:
-        - text: 'Forecasting'
+        - text: 'Getting Started'
         - text: 'Getting Started with Modeltime'
           href: articles/getting-started-with-modeltime.html
-        - text: 'Autoregressive Forecasting (Recursive)'
+        - text: "---"
+        - text: 'Forecasting Many Time Series (Scale)'
+        - text: 'Global Model Forecasting'
+          href: articles/modeling-panel-data.html
+        - text: 'Iterative (Nested) Forecasting'
+          href: articles/nested-forecasting.html
+        - text: "---"
+        - text: 'Advanced Topics'
+        - text: 'Autoregressive (Recursive) Forecasting'
           href: articles/recursive-forecasting.html
         - text: 'Hyperparameter Tuning & Parallel Processing'
           href: articles/parallel-processing.html
-        - text: 'Forecasting Panel Data'
-          href: articles/modeling-panel-data.html
-        - text: "---"
-        - text: 'Nested Forecasting'
-        - text: 'Getting Started with Nested Forecasting'
-          href: articles/nested-forecasting.html
         - text: "---"
         - text: 'Algorithms'
         - text: 'Modeltime Algorithm Roadmap'
@@ -106,6 +108,9 @@ reference:
   - subtitle: Extractors
     contents:
     - starts_with("extract_")
+  - subtitle: Workflow
+    contents:
+    - extend_timeseries
   - title: Algorithms
     desc: The `parsnip`-adjacent algorithms that implement time series models.
   - subtitle: Core Forecasting Methods

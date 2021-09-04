@@ -76,6 +76,16 @@ wflw_bad <- workflow() %>%
     add_model(boost_tree()) %>%
     add_recipe(recipe_bad)
 
+# * Prophet ----
+# rec_prophet <- recipe(value ~ date, training(nested_data_tbl$.splits[[1]]))
+#
+# wflw_prophet <- workflow() %>%
+#     add_model(
+#         prophet_reg("regression", seasonality_yearly = TRUE) %>%
+#             set_engine("prophet")
+#     ) %>%
+#     add_recipe(rec_prophet)
+
 
 # NESTED WORKFLOW ----
 
@@ -89,6 +99,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
             modeltime_nested_fit(
                 wflw_xgb,
                 wflw_bad,
+                # wflw_prophet,
 
                 control = control_nested_fit(verbose = TRUE)
             )

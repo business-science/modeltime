@@ -115,23 +115,25 @@ iterative (nested) forecasting with Nested Modeltime Tables." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Forecasting</li>
+    <li class="dropdown-header">Getting Started</li>
     <li>
       <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
     <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive Forecasting (Recursive)</a>
+      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    </li>
+    <li>
+      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Advanced Topics</li>
+    <li>
+      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
     </li>
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Forecasting Panel Data</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Nested Forecasting</li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Getting Started with Nested Forecasting</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
@@ -228,7 +230,7 @@ iterative (nested) forecasting with Nested Modeltime Tables." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Prepared Nested Modeltime Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested_modeltime_data_prep.R'><code>R/nested_modeltime_data_prep.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/nested-modeltime_data_prep.R'><code>R/nested-modeltime_data_prep.R</code></a></small>
     <div class="hidden name"><code>prep_nested.Rd</code></div>
     </div>
 
@@ -237,7 +239,7 @@ iterative (nested) forecasting with Nested Modeltime Tables." />
 iterative (nested) forecasting with Nested Modeltime Tables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extend_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.date_var</span>, <span class='va'>.length_future</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>extend_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.date_var</span>, <span class='va'>.length_future</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>nest_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.length_future</span>, .length_actual <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
@@ -271,6 +273,10 @@ time series by each time series group.</p></li>
 </ul></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to the helper function. See details.</p></td>
+    </tr>
+    <tr>
       <th>.length_actual</th>
       <td><p>Can be used to slice the <code>.actual_data</code> to a most recent number of observations.</p></td>
     </tr>
@@ -281,10 +287,6 @@ time series by each time series group.</p></li>
     <tr>
       <th>.length_train</th>
       <td><p>Defines the length of the training split for evaluation.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to the helper function. See details.</p></td>
     </tr>
     </table>
 
@@ -298,6 +300,7 @@ group-wise into the future.</p><ul>
 <li><p>The group column is specified by <code>.id_var</code>.</p></li>
 <li><p>The date column is specified by <code>.date_var</code>.</p></li>
 <li><p>The length into the future is specified with <code>.length_future</code>.</p></li>
+<li><p>The <code>...</code> are additional parameters that can be passed to <code><a href='https://rdrr.io/pkg/timetk/man/future_frame.html'>timetk::future_frame()</a></code></p></li>
 </ul>
 
 
