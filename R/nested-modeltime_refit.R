@@ -40,6 +40,8 @@ modeltime_nested_refit.nested_mdl_time <- function(object, control = control_nes
 
 }
 
+# *** PARALLEL *** ----
+
 modeltime_nested_refit_parallel <- function(object, control) {
 
     t1 <- Sys.time()
@@ -127,9 +129,103 @@ modeltime_nested_refit_parallel <- function(object, control) {
         model_list_trained <- sapply(.l, function(l) l[1])
         error_list         <- sapply(.l, function(l) l[2]) %>% dplyr::bind_rows()
 
-        return(list(model_list_trained = model_list_trained, error_list = error_list))
+        # Convert to Modeltime Table -----
+        ret <- tibble::tibble(
+            .model = model_list_trained
+        ) %>%
+            tibble::rowid_to_column(var = ".model_id") %>%
+            dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
 
+            # Simplify Naming
+            dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
+            dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
+
+        # Add calibration
+        tryCatch({
+            ret <- ret %>%
+                dplyr::bind_cols(x[c(".type", ".calibration_data")])
+        }, error = function(e) {
+            # If calibration does not exist, do nothing
+        })
+
+        # Update class
+        class(ret) <- c("mdl_time_tbl", class(ret))
+
+        # Future Forecast ----
+        fcast_tbl <- NULL
+        suppressMessages({
+            suppressWarnings({
+
+                tryCatch({
+
+                    fcast_tbl <- modeltime_forecast(
+                        object        = ret,
+                        new_data      = f,
+                        actual_data   = d,
+                        conf_interval = conf_interval
+                    ) %>%
+                        tibble::add_column(!! id_text := id, .before = 1)
+
+                }, error=function(e){
+
+                    # Return nothing
+                })
+
+
+            })
+        })
+
+        # return(list(model_list_trained = model_list_trained, error_list = error_list))
+        return(list(
+            mdl_time_tbl = ret,
+            error_list   = error_list,
+            fcast_tbl    = fcast_tbl
+        ))
+
+    } # END LOOP | returns ret
+
+    # CONSOLIDATE RESULTS
+
+    mdl_time_list <- ret %>% purrr::map(purrr::pluck("mdl_time_tbl"))
+    error_list    <- ret %>% purrr::map(purrr::pluck("error_list"))
+    fcast_list    <- ret %>% purrr::map(purrr::pluck("fcast_tbl"))
+
+    # FORMAT RESULTS ----
+
+    nested_modeltime <- object %>%
+        dplyr::mutate(.modeltime_tables = mdl_time_list)
+
+    error_tbl <- error_list %>%
+        dplyr::bind_rows() %>%
+        tidyr::drop_na(.error_desc)
+
+    fcast_tbl <- fcast_list %>% dplyr::bind_rows()
+
+    # FINISH TIMING ----
+    t2 <- Sys.time()
+
+    time_elapsed <- difftime(t2, t1, units = "auto") %>%
+        utils::capture.output() %>%
+        stringr::str_remove("Time difference of ")
+
+    if (control$verbose) cli::cli_inform(stringr::str_glue("Finished in: {time_elapsed}."))
+
+    # STRUCTURE ----
+
+    attr(nested_modeltime, "error_tbl")           <- error_tbl
+    attr(nested_modeltime, "future_forecast_tbl") <- fcast_tbl
+    attr(nested_modeltime, "fit_column")          <- ".actual_data"
+    attr(nested_modeltime, "time_elapsed")        <- time_elapsed
+
+
+    if (nrow(attr(nested_modeltime, "error_tbl")) > 0) {
+        rlang::warn("Some models had errors during fitting. Use `extract_nested_error_report()` to review errors.")
     }
+
+
+    return(nested_modeltime)
+
+
 
     return(ret)
 
@@ -139,6 +235,7 @@ modeltime_nested_refit_parallel <- function(object, control) {
 
 }
 
+# *** SEQUENTIAL *** ----
 modeltime_nested_refit_sequential <- function(object, control) {
 
     t1 <- Sys.time()
@@ -300,8 +397,6 @@ modeltime_nested_refit_sequential <- function(object, control) {
     if (control$verbose) cli::cli_inform(stringr::str_glue("Finished in: {time_elapsed}."))
 
     # STRUCTURE ----
-
-    class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
     attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
     attr(nested_modeltime, "future_forecast_tbl") <- logging_env$fcast_tbl
