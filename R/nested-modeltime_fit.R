@@ -134,10 +134,12 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
 
     splits_list = nested_data$.splits
 
+    actual_list = nested_data$.actual_data
+
     id_vec      = nested_data[[id_text]]
 
 
-    # BEGIN LOOP
+    # BEGIN LOOP -----
     if (control$verbose) {
         t <- Sys.time()
         message(stringr::str_glue(" Beginning Parallel Loop | {round(t-t1, 3)} seconds"))
@@ -145,14 +147,13 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
 
     ret <- foreach::foreach(
         x                   = splits_list,
+        d                   = actual_list,
         id                  = id_vec,
         .inorder            = TRUE,
         .packages           = control$packages,
         # .export             = c("id_text", "model_list", "n_ids", "safe_fit"),
         .verbose            = FALSE
     ) %op% {
-
-
 
         # Safe fitting for each workflow in model_list ----
         .l <- model_list %>%
@@ -214,8 +215,6 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                     # Return original modeltime table
                     ret <- ret0
                 })
-
-
             })
         })
 
@@ -236,9 +235,8 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                     # Do nothing
 
                 })
-
             })
-        }) # End acc_tbl
+        })
 
         if (is.null(acc_tbl)) {
             acc_tbl <- tibble::tibble(
@@ -248,10 +246,33 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
             )
         }
 
+        # Test Forecast ----
+        fcast_tbl <- NULL
+        suppressMessages({
+            suppressWarnings({
+
+                tryCatch({
+                    fcast_tbl <- modeltime_forecast(
+                        object        = ret,
+                        new_data      = rsample::testing(x),
+                        actual_data   = d,
+                        conf_interval = conf_interval
+                    ) %>%
+                        tibble::add_column(!! id_text := id, .before = 1)
+
+                }, error=function(e){
+
+                    # Return nothing
+                })
+
+            })
+        })
+
         return(list(
             mdl_time_tbl = ret,
             error_list   = error_list,
-            acc_tbl      = acc_tbl
+            acc_tbl      = acc_tbl,
+            fcast_tbl    = fcast_tbl
         ))
 
     } # END LOOP | returns ret
@@ -261,6 +282,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
     mdl_time_list <- ret %>% purrr::map(purrr::pluck("mdl_time_tbl"))
     error_list    <- ret %>% purrr::map(purrr::pluck("error_list"))
     acc_list      <- ret %>% purrr::map(purrr::pluck("acc_tbl"))
+    fcast_list    <- ret %>% purrr::map(purrr::pluck("fcast_tbl"))
 
     # FORMAT RESULTS ----
 
@@ -271,7 +293,17 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
         dplyr::bind_rows() %>%
         tidyr::drop_na(.error_desc)
 
-    acc_tbl <- acc_list %>% dplyr::bind_rows()
+    acc_tbl   <- acc_list %>% dplyr::bind_rows()
+    fcast_tbl <- fcast_list %>% dplyr::bind_rows()
+
+    # FINISH TIMING ----
+    t2 <- Sys.time()
+
+    time_elapsed <- difftime(t2, t1, units = "auto") %>%
+        utils::capture.output() %>%
+        stringr::str_remove("Time difference of ")
+
+    if (control$verbose) cli::cli_inform(stringr::str_glue("Finished in: {time_elapsed}."))
 
     # STRUCTURE ----
 
@@ -282,11 +314,11 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
     attr(nested_modeltime, "conf_interval")       <- conf_interval
     attr(nested_modeltime, "error_tbl")           <- error_tbl
     attr(nested_modeltime, "accuracy_tbl")        <- acc_tbl
-    # attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
+    attr(nested_modeltime, "test_forecast_tbl")   <- fcast_tbl
     attr(nested_modeltime, "best_selection_tbl")  <- NULL
     attr(nested_modeltime, "future_forecast_tbl") <- NULL
     attr(nested_modeltime, "fit_column")          <- ".splits"
-    # attr(nested_modeltime, "time_elapsed")        <- time_elapsed
+    attr(nested_modeltime, "time_elapsed")        <- time_elapsed
 
 
     if (nrow(attr(nested_modeltime, "error_tbl")) > 0) {
