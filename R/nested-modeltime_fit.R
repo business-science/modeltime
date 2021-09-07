@@ -148,7 +148,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
         id                  = id_vec,
         .inorder            = TRUE,
         .packages           = control$packages,
-        .export             = c("id_text", "model_list", "n_ids", "safe_fit"),
+        # .export             = c("id_text", "model_list", "n_ids", "safe_fit"),
         .verbose            = FALSE
     ) %op% {
 
@@ -175,8 +175,6 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                     .error_desc = ifelse(is.null(err), NA_character_, err)
                 )
 
-                # colnames(error_tbl)[1] <- id_text
-
                 # if (control$verbose) {
                 #     if (!is.null(err)) {
                 #         cli::cli_alert_danger("Model {i} Failed {error_tbl$.model_desc}: {err}")
@@ -186,31 +184,44 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                 # }
 
                 return(list(
-                    res,
-                    error_tbl
+                    res = res,
+                    err = error_tbl
                 ))
             })
 
-        # # Convert to Modeltime Table -----
-        # ret <- tibble::tibble(
-        #     .model = .l
-        # ) %>%
-        #     tibble::rowid_to_column(var = ".model_id") %>%
-        #     dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
-        #
-        #     # Simplify Naming
-        #     dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
-        #     dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
-        #
-        # class(ret) <- c("mdl_time_tbl", class(ret))
-        #
-        # return(list(res = res, err = err))
+        # * Extract models and errors ----
+        model_list_trained <- sapply(.l, function(l) l[[1]])
+        # errors             <- sapply(.l, function(l) l[[2]]) %>% dplyr::bind_rows()
 
-        return(.l)
+        # Convert to Modeltime Table -----
+        mdl_time_tbl <- tibble::tibble(
+            .model = model_list_trained
+        ) %>%
+            tibble::rowid_to_column(var = ".model_id") %>%
+            dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
 
-    } # END LOOP
+            # Simplify Naming
+            dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
+            dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
 
-    return(ret)
+        class(mdl_time_tbl) <- c("mdl_time_tbl", class(mdl_time_tbl))
+
+        # return(list(res = ret, err = errors))
+
+        return(list(
+            mdl_time_tbl = mdl_time_tbl
+        ))
+
+    } # END LOOP | returns ret
+
+    # CONSOLIDATE RESULTS
+    mdl_time_list <- ret %>% purrr::map(purrr::pluck("mdl_time_tbl"))
+
+
+
+
+
+    return(tibble(.modeltime_tables = mdl_time_list))
 
 }
 
