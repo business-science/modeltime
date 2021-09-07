@@ -141,58 +141,21 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 
     t1 <- Sys.time()
 
-    is_par_setup <- foreach::getDoParWorkers() > 1
-
-    # .models <- object %>% split(.$wflow_id)
+    # Model List
     .models  <- object %>%
         dplyr::mutate(wflow_id = forcats::as_factor(wflow_id)) %>%
         dplyr::group_by(wflow_id) %>%
         dplyr::group_split()
 
-    clusters_made <- FALSE
+    # Parallel Detection
+    is_par_setup <- foreach::getDoParWorkers() > 1
 
     # If parallel processing is not set up, set up parallel backend
-    if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
-        if (control$verbose) {
-            message(
-                stringr::str_glue(" No existing backend detected. It's more efficient to setup a Parallel Backend with `parallel_start()`...")
-            )
-            message(
-                stringr::str_glue(" Starting parallel backend with {control$cores} clusters (cores)...")
-            )
-        }
-        cl <- parallel::makeCluster(control$cores)
-        doParallel::registerDoParallel(cl)
-        parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        clusters_made <- TRUE
-
-        if (control$verbose) {
-            t <- Sys.time()
-            message(stringr::str_glue(" Parallel Backend Setup | {round(t-t1, 3)} seconds"))
-        }
-
-    } else if (!is_par_setup) {
-        # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
-        if (control$verbose) message(stringr::str_glue("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`."))
-        foreach::registerDoSEQ()
-    } else {
-        # Parallel was set up externally by user - Do nothing.
-        if (control$verbose) message(stringr::str_glue("Using existing parallel backend with {foreach::getDoParWorkers()} clusters (cores)..."))
-    }
+    par_setup_info <- setup_parallel_processing(control, is_par_setup, t1)
+    clusters_made  <- par_setup_info$clusters_made
+    cl             <- par_setup_info$cl
 
     # Setup Foreach
-    get_operator <- function(allow_par = TRUE) {
-        is_par <- foreach::getDoParWorkers() > 1
-
-        cond <- allow_par && is_par
-        if (cond) {
-            res <- foreach::`%dopar%`
-        } else {
-            res <- foreach::`%do%`
-        }
-        return(res)
-    }
-
     `%op%` <- get_operator(allow_par = control$allow_par)
 
     # Setup Safe Modeling
@@ -269,6 +232,89 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 
 }
 
+# CREATE MODEL GRID ----
+
+#' Helper to make `parsnip` model specs from a `dials` parameter grid
+#'
+#' @param grid A tibble that forms a grid of parameters to adjust
+#' @param f_model_spec A function name (quoted or unquoted) that
+#'  specifies a `parsnip` model specification function
+#' @param engine_name A name of an engine to use. Gets passed to `parsnip::set_engine()`.
+#' @param ... Static parameters that get passed to the f_model_spec
+#' @param engine_params A `list` of additional parameters that can be passed to the
+#'  engine via `parsnip::set_engine(...)`.
+#'
+#' @details
+#'
+#' This is a helper function that combines `dials` grids with
+#' `parsnip` model specifications. The intent is to make it easier
+#' to generate `workflowset` objects for forecast evaluations
+#' with `modeltime_fit_workflowset()`.
+#'
+#' The process follows:
+#'
+#' 1. Generate a grid (hyperparemeter combination)
+#' 2. Use `create_model_grid()` to apply the parameter combinations to
+#'    a parsnip model spec and engine.
+#'
+#' The output contains ".model" column that can be used as a list
+#' of models inside the `workflow_set()` function.
+#'
+#' @return
+#' Tibble with a new colum named `.models`
+#'
+#'
+#' @seealso
+#' - [dials::grid_regular()]: For making parameter grids.
+#' - [workflowsets::workflow_set()]: For creating a `workflowset` from the `.models` list stored in the ".models" column.
+#' - [modeltime_fit_workflowset()]: For fitting a `workflowset` to forecast data.
+#'
+#' @examples
+#'
+#' library(tidymodels)
+#' library(modeltime)
+#'
+#' # Parameters that get optimized
+#' grid_tbl <- grid_regular(
+#'     learn_rate(),
+#'     levels = 3
+#' )
+#'
+#' # Generate model specs
+#' grid_tbl %>%
+#'     create_model_grid(
+#'         f_model_spec = boost_tree,
+#'         engine_name  = "xgboost",
+#'         # Static boost_tree() args
+#'         mode = "regression",
+#'         # Static set_engine() args
+#'         engine_params = list(
+#'             max_depth = 5
+#'         )
+#'     )
+#'
+#' @export
+create_model_grid <- function(grid, f_model_spec, engine_name, ..., engine_params = list()) {
+
+    f_text <- rlang::as_name(substitute(f_model_spec))
+
+    model_list <- seq_len(nrow(grid)) %>%
+        purrr::map(.f = function(x) {
+
+            params <- grid %>%
+                dplyr::slice(x) %>%
+                as.list() %>%
+                append(list(...))
+
+            do.call(f_text, params)
+        }) %>%
+        purrr::map(.f = function(x) {
+            x %>% parsnip::set_engine(engine = engine_name, !!! engine_params)
+        })
+
+    dplyr::bind_cols(grid, tibble::tibble(.models = model_list))
+
+}
 
 
 # HELPERS -----

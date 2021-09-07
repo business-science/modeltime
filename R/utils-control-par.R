@@ -47,89 +47,60 @@ parallel_stop <- function() {
     foreach::registerDoSEQ()
 }
 
-# CREATE MODEL GRID ----
+# USED TO SET UP THE PARALLEL BACKENDS IF NOT SET UP ALREADY
+setup_parallel_processing <- function(control, is_par_setup, t1) {
 
-#' Helper to make `parsnip` model specs from a `dials` parameter grid
-#'
-#' @param grid A tibble that forms a grid of parameters to adjust
-#' @param f_model_spec A function name (quoted or unquoted) that
-#'  specifies a `parsnip` model specification function
-#' @param engine_name A name of an engine to use. Gets passed to `parsnip::set_engine()`.
-#' @param ... Static parameters that get passed to the f_model_spec
-#' @param engine_params A `list` of additional parameters that can be passed to the
-#'  engine via `parsnip::set_engine(...)`.
-#'
-#' @details
-#'
-#' This is a helper function that combines `dials` grids with
-#' `parsnip` model specifications. The intent is to make it easier
-#' to generate `workflowset` objects for forecast evaluations
-#' with `modeltime_fit_workflowset()`.
-#'
-#' The process follows:
-#'
-#' 1. Generate a grid (hyperparemeter combination)
-#' 2. Use `create_model_grid()` to apply the parameter combinations to
-#'    a parsnip model spec and engine.
-#'
-#' The output contains ".model" column that can be used as a list
-#' of models inside the `workflow_set()` function.
-#'
-#' @return
-#' Tibble with a new colum named `.models`
-#'
-#'
-#' @seealso
-#' - [dials::grid_regular()]: For making parameter grids.
-#' - [workflowsets::workflow_set()]: For creating a `workflowset` from the `.models` list stored in the ".models" column.
-#' - [modeltime_fit_workflowset()]: For fitting a `workflowset` to forecast data.
-#'
-#' @examples
-#'
-#' library(tidymodels)
-#' library(modeltime)
-#'
-#' # Parameters that get optimized
-#' grid_tbl <- grid_regular(
-#'     learn_rate(),
-#'     levels = 3
-#' )
-#'
-#' # Generate model specs
-#' grid_tbl %>%
-#'     create_model_grid(
-#'         f_model_spec = boost_tree,
-#'         engine_name  = "xgboost",
-#'         # Static boost_tree() args
-#'         mode = "regression",
-#'         # Static set_engine() args
-#'         engine_params = list(
-#'             max_depth = 5
-#'         )
-#'     )
-#'
-#' @export
-create_model_grid <- function(grid, f_model_spec, engine_name, ..., engine_params = list()) {
+    clusters_made <- FALSE
+    cl            <- NULL
 
-    f_text <- rlang::as_name(substitute(f_model_spec))
+    if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
+        if (control$verbose) {
+            message(
+                stringr::str_glue(" No existing backend detected. It's more efficient to setup a Parallel Backend with `parallel_start()`...")
+            )
+            message(
+                stringr::str_glue(" Starting parallel backend with {control$cores} clusters (cores)...")
+            )
+        }
+        cl <- parallel::makeCluster(control$cores)
+        doParallel::registerDoParallel(cl)
+        parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+        clusters_made <- TRUE
 
-    model_list <- seq_len(nrow(grid)) %>%
-        purrr::map(.f = function(x) {
+        if (control$verbose) {
+            t <- Sys.time()
+            message(stringr::str_glue(" Parallel Backend Setup | {round(t-t1, 3)} seconds"))
+        }
 
-            params <- grid %>%
-                dplyr::slice(x) %>%
-                as.list() %>%
-                append(list(...))
+    } else if (!is_par_setup) {
+        # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
+        if (control$verbose) message(stringr::str_glue("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`."))
+        foreach::registerDoSEQ()
+    } else {
+        # Parallel was set up externally by user - Do nothing.
+        if (control$verbose) message(stringr::str_glue("Using existing parallel backend with {foreach::getDoParWorkers()} clusters (cores)..."))
+    }
 
-            do.call(f_text, params)
-        }) %>%
-        purrr::map(.f = function(x) {
-            x %>% parsnip::set_engine(engine = engine_name, !!! engine_params)
-        })
-
-    dplyr::bind_cols(grid, tibble::tibble(.models = model_list))
+    return(list(
+        clusters_made = clusters_made,
+        cl            = cl
+    ))
 
 }
+
+# USED TO SELECT EITHER SEQ OR PAR FOREACH OPERATOR
+get_operator <- function(allow_par = TRUE) {
+    is_par <- foreach::getDoParWorkers() > 1
+
+    cond <- allow_par && is_par
+    if (cond) {
+        res <- foreach::`%dopar%`
+    } else {
+        res <- foreach::`%do%`
+    }
+    return(res)
+}
+
 
 # CONTROL REFIT ----
 
@@ -236,7 +207,65 @@ print.control_fit_workflowset <- function(x, ...) {
     invisible(x)
 }
 
-# CONTROL ----
+# CONTROL NESTED FIT ----
+
+#' Control aspects of the `modeltime_nested_fit()` process.
+#'
+#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
+#' @param cores Number of cores for computation. If -1, uses all available physical cores.
+#'  Default: `-1`.
+#' @param packages An optional character string of additional R package names that should be loaded
+#'  during parallel processing.
+#'
+#'  - Packages in your namespace are loaded by default
+#'
+#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
+#'
+#' @param verbose Logical to control printing.
+#'
+#' @return
+#' A List with the control settings.
+#'
+#'
+#' @seealso
+#' [modeltime_nested_fit()]
+#'
+#' @examples
+#'
+#' # No parallel processing
+#' control_nested_fit()
+#'
+#' # With parallel processing
+#' control_nested_fit(allow_par = TRUE)
+#'
+#' @export
+control_nested_fit <- function(verbose = FALSE,
+                               allow_par = FALSE,
+                               cores = -1,
+                               packages = NULL) {
+
+    ret <- control_modeltime_objects(
+        verbose   = verbose,
+        allow_par = allow_par,
+        cores     = cores,
+        packages  = packages,
+        func      = "control_nested_fit"
+    )
+
+    class(ret) <- c("control_nested_fit")
+
+    return(ret)
+}
+
+
+
+#' @export
+print.control_nested_fit <- function(x, ...) {
+    pretty_print_list(x, header = "nested fit control object")
+    invisible(x)
+}
+
+# CONTROL (generic) ----
 
 
 control_modeltime_objects <- function(

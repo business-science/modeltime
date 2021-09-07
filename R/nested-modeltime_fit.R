@@ -49,7 +49,6 @@ modeltime_nested_fit <- function(nested_data, ...,
                                  conf_interval = 0.95,
                                  control = control_nested_fit()) {
 
-    t1 <- Sys.time()
 
     # CHECKS ----
     # TODO:
@@ -64,6 +63,63 @@ modeltime_nested_fit <- function(nested_data, ...,
             rlang::abort("`model_list` must be a list. Try using a `list()` of tidymodels workflow objects.")
         }
     }
+
+    # Parallel or Sequential
+    if ((control$cores > 1) && control$allow_par) {
+        ret <- modeltime_nested_fit_parallel(
+            nested_data,
+            ...,
+            model_list    = model_list,
+            metric_set    = metric_set,
+            conf_interval = conf_interval,
+            control       = control
+        )
+    } else {
+        ret <- modeltime_nested_fit_sequential(
+            nested_data,
+            ...,
+            model_list    = model_list,
+            metric_set    = metric_set,
+            conf_interval = conf_interval,
+            control       = control
+        )
+    }
+
+    return(ret)
+
+}
+
+modeltime_nested_fit_parallel <- function(nested_data, ...,
+                                          model_list = NULL,
+                                          metric_set = default_forecast_accuracy_metric_set(),
+                                          conf_interval = 0.95,
+                                          control = control_nested_fit()) {
+
+
+    t1 <- Sys.time()
+
+    # Parallel Detection
+    is_par_setup <- foreach::getDoParWorkers() > 1
+
+    # If parallel processing is not set up, set up parallel backend
+    par_setup_info <- setup_parallel_processing(control, is_par_setup, t1)
+    clusters_made  <- par_setup_info$clusters_made
+    cl             <- par_setup_info$cl
+
+    # Setup Foreach
+    `%op%` <- get_operator(allow_par = control$allow_par)
+
+
+
+}
+
+modeltime_nested_fit_sequential <- function(nested_data, ...,
+                                            model_list = NULL,
+                                            metric_set = default_forecast_accuracy_metric_set(),
+                                            conf_interval = 0.95,
+                                            control = control_nested_fit()) {
+
+    t1 <- Sys.time()
 
     # HANDLE INPUTS ----
 
@@ -285,6 +341,7 @@ modeltime_nested_fit <- function(nested_data, ...,
 
     return(nested_modeltime)
 
+
 }
 
 #' @export
@@ -305,63 +362,7 @@ print.nested_mdl_time <- function(x, ...) {
     print(x, ...)
 }
 
-# CONTROL ----
 
-#' Control aspects of the `modeltime_nested_fit()` process.
-#'
-#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
-#' @param cores Number of cores for computation. If -1, uses all available physical cores.
-#'  Default: `-1`.
-#' @param packages An optional character string of additional R package names that should be loaded
-#'  during parallel processing.
-#'
-#'  - Packages in your namespace are loaded by default
-#'
-#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
-#'
-#' @param verbose Logical to control printing.
-#'
-#' @return
-#' A List with the control settings.
-#'
-#'
-#' @seealso
-#' [modeltime_nested_fit()]
-#'
-#' @examples
-#'
-#' # No parallel processing
-#' control_nested_fit()
-#'
-#' # With parallel processing
-#' control_nested_fit(allow_par = TRUE)
-#'
-#' @export
-control_nested_fit <- function(verbose = FALSE,
-                               allow_par = FALSE,
-                               cores = -1,
-                               packages = NULL) {
-
-    ret <- control_modeltime_objects(
-        verbose   = verbose,
-        allow_par = allow_par,
-        cores     = cores,
-        packages  = packages,
-        func      = "control_nested_fit"
-    )
-
-    class(ret) <- c("control_nested_fit")
-
-    return(ret)
-}
-
-
-
-#' @export
-print.control_nested_fit <- function(x, ...) {
-    pretty_print_list(x, header = "nested fit control object")
-    invisible(x)
-}
 
 
 
