@@ -277,25 +277,7 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
 
 
     # Finish Parallel Backend. Close clusters if we set up internally.
-    t <- Sys.time()
-    if (clusters_made) {
-        # We set up parallel processing internally. We should close.
-        doParallel::stopImplicitCluster()
-        parallel::stopCluster(cl)
-        foreach::registerDoSEQ()
-        if (control$verbose) {
-            message(stringr::str_glue(" Finishing parallel backend. Closing clusters. | {round(t-t1, 3)} seconds)"))
-        }
-    } else if ((control$cores > 1) && control$allow_par) {
-        if (control$verbose) {
-            message(stringr::str_glue(" Finishing parallel backend. Clusters are remaining open. | {round(t-t1, 3)} seconds"))
-            message(" Close clusters by running: `parallel_stop()`.")
-        }
-    } else {
-        if (control$verbose) {
-            message(stringr::str_glue(" Finishing sequential backend. | {round(t-t1, 3)} seconds"))
-        }
-    }
+    finish_parallel_processing(control, clusters_made, cl, t1)
 
     # PRINT TOTAL TIME
     if (control$verbose) {
