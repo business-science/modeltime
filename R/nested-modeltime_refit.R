@@ -18,6 +18,33 @@
 #' @export
 modeltime_nested_refit <- function(object, control = control_nested_refit()) {
 
+    UseMethod("modeltime_nested_refit", object)
+
+}
+
+#' @export
+modeltime_nested_refit.nested_mdl_time <- function(object, control = control_nested_refit()) {
+
+    # Parallel or Sequential
+    if ((control$cores > 1) && control$allow_par) {
+        ret <- modeltime_nested_refit_parallel(
+            object        = object,
+            control       = control
+        )
+    } else {
+        ret <- modeltime_nested_refit_sequential(
+            object        = object,
+            control       = control
+        )
+    }
+
+}
+
+modeltime_nested_refit_parallel <- function(object, control) {
+
+}
+
+modeltime_nested_refit_sequential <- function(object, control) {
     t1 <- Sys.time()
 
     # CHECKS ----
@@ -79,36 +106,36 @@ modeltime_nested_refit <- function(object, control = control_nested_refit()) {
                 # Safe fitting for each workflow in model_list ----
                 .l <- purrr::map2(model_list, ..model_id, .f = function (mod, mod_id) {
 
-                        suppressMessages({
-                            suppressWarnings({
-                                fit_list <- safe_fit(mod, data = d)
-                            })
+                    suppressMessages({
+                        suppressWarnings({
+                            fit_list <- safe_fit(mod, data = d)
                         })
-
-                        res <- fit_list %>% purrr::pluck("result")
-
-                        err <- fit_list %>% purrr::pluck("error", 1)
-
-                        error_tbl <- tibble::tibble(
-                            !! id_text := id,
-                            .model_id   = mod_id,
-                            .model_desc = get_model_description(mod),
-                            .error_desc = ifelse(is.null(err), NA_character_, err)
-                        )
-
-                        if (control$verbose) {
-                            if (!is.null(err)) {
-                                cli::cli_alert_danger("Model {mod_id} Failed {error_tbl$.model_desc}: {err}")
-                            } else {
-                                cli::cli_alert_success("Model {mod_id} Passed {error_tbl$.model_desc}.")
-                            }
-                        }
-
-
-                        logging_env$error_tbl <- dplyr::bind_rows(logging_env$error_tbl, error_tbl)
-
-                        return(res)
                     })
+
+                    res <- fit_list %>% purrr::pluck("result")
+
+                    err <- fit_list %>% purrr::pluck("error", 1)
+
+                    error_tbl <- tibble::tibble(
+                        !! id_text := id,
+                        .model_id   = mod_id,
+                        .model_desc = get_model_description(mod),
+                        .error_desc = ifelse(is.null(err), NA_character_, err)
+                    )
+
+                    if (control$verbose) {
+                        if (!is.null(err)) {
+                            cli::cli_alert_danger("Model {mod_id} Failed {error_tbl$.model_desc}: {err}")
+                        } else {
+                            cli::cli_alert_success("Model {mod_id} Passed {error_tbl$.model_desc}.")
+                        }
+                    }
+
+
+                    logging_env$error_tbl <- dplyr::bind_rows(logging_env$error_tbl, error_tbl)
+
+                    return(res)
+                })
 
                 # Convert to Modeltime Table -----
                 ret <- tibble::tibble(
@@ -198,7 +225,6 @@ modeltime_nested_refit <- function(object, control = control_nested_refit()) {
 
 
     return(nested_modeltime)
-
 }
 
 # CONTROL ----
