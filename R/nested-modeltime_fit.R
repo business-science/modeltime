@@ -109,7 +109,108 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
     # Setup Foreach
     `%op%` <- get_operator(allow_par = control$allow_par)
 
+    # HANDLE INPUTS ----
 
+    nested_data <- nested_data %>%
+        dplyr::select(1, ".actual_data", ".future_data", ".splits")
+
+
+    # SETUP EXPORTS ----
+
+    id_text <- names(nested_data)[[1]]
+
+    model_list <- append(list(...), model_list)
+    model_list_tbl <- tibble::tibble(
+        .model_id = 1:length(model_list),
+        .model    = model_list
+    )
+
+    n_ids   <- nrow(nested_data)
+
+    safe_fit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
+
+
+    # SETUP ITERABLES ----
+
+    splits_list = nested_data$.splits
+
+    id_vec      = nested_data[[id_text]]
+
+
+    # BEGIN LOOP
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Beginning Parallel Loop | {round(t-t1, 3)} seconds"))
+    }
+
+    ret <- foreach::foreach(
+        x                   = splits_list,
+        id                  = id_vec,
+        .inorder            = TRUE,
+        .packages           = control$packages,
+        .export             = c("id_text", "model_list", "n_ids", "safe_fit"),
+        .verbose            = FALSE
+    ) %op% {
+
+
+
+        # Safe fitting for each workflow in model_list ----
+        .l <- model_list %>%
+            purrr::imap(.f = function (mod, i) {
+
+                suppressMessages({
+                    suppressWarnings({
+                        fit_list <- safe_fit(mod, data = rsample::training(x))
+                    })
+                })
+
+                res <- fit_list %>% purrr::pluck("result")
+
+                err <- fit_list %>% purrr::pluck("error", 1)
+
+                error_tbl <- tibble::tibble(
+                    !! id_text := id,
+                    .model_id   = i,
+                    .model_desc = get_model_description(mod),
+                    .error_desc = ifelse(is.null(err), NA_character_, err)
+                )
+
+                # colnames(error_tbl)[1] <- id_text
+
+                # if (control$verbose) {
+                #     if (!is.null(err)) {
+                #         cli::cli_alert_danger("Model {i} Failed {error_tbl$.model_desc}: {err}")
+                #     } else {
+                #         cli::cli_alert_success("Model {i} Passed {error_tbl$.model_desc}.")
+                #     }
+                # }
+
+                return(list(
+                    res,
+                    error_tbl
+                ))
+            })
+
+        # # Convert to Modeltime Table -----
+        # ret <- tibble::tibble(
+        #     .model = .l
+        # ) %>%
+        #     tibble::rowid_to_column(var = ".model_id") %>%
+        #     dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
+        #
+        #     # Simplify Naming
+        #     dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
+        #     dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
+        #
+        # class(ret) <- c("mdl_time_tbl", class(ret))
+        #
+        # return(list(res = res, err = err))
+
+        return(.l)
+
+    } # END LOOP
+
+    return(ret)
 
 }
 
