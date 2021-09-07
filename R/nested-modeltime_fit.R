@@ -190,8 +190,8 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
             })
 
         # * Extract models and errors ----
-        model_list_trained <- sapply(.l, function(l) l[[1]])
-        # errors             <- sapply(.l, function(l) l[[2]]) %>% dplyr::bind_rows()
+        model_list_trained <- sapply(.l, function(l) l[1])
+        error_list         <- sapply(.l, function(l) l[2]) %>% dplyr::bind_rows()
 
         # Convert to Modeltime Table -----
         mdl_time_tbl <- tibble::tibble(
@@ -209,19 +209,48 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
         # return(list(res = ret, err = errors))
 
         return(list(
-            mdl_time_tbl = mdl_time_tbl
+            mdl_time_tbl = mdl_time_tbl,
+            error_list   = error_list
         ))
 
     } # END LOOP | returns ret
 
     # CONSOLIDATE RESULTS
+
     mdl_time_list <- ret %>% purrr::map(purrr::pluck("mdl_time_tbl"))
+    error_list    <- ret %>% purrr::map(purrr::pluck("error_list"))
+
+    # FORMAT RESULTS ----
+
+    modeltime_tbls   <- tibble::tibble(.modeltime_tables = mdl_time_list)
+    nested_modeltime <- nested_data %>% dplyr::bind_cols(modeltime_tbls)
+
+    error_tbl     <- error_list %>%
+        dplyr::bind_rows() %>%
+        tidyr::drop_na(.error_desc)
+
+    # STRUCTURE ----
+
+    class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
+
+    attr(nested_modeltime, "id")                  <- id_text
+    attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
+    attr(nested_modeltime, "conf_interval")       <- conf_interval
+    attr(nested_modeltime, "error_tbl")           <- error_tbl
+    # attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
+    # attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
+    attr(nested_modeltime, "best_selection_tbl")  <- NULL
+    attr(nested_modeltime, "future_forecast_tbl") <- NULL
+    attr(nested_modeltime, "fit_column")          <- ".splits"
+    # attr(nested_modeltime, "time_elapsed")        <- time_elapsed
 
 
+    if (nrow(attr(nested_modeltime, "error_tbl")) > 0) {
+        rlang::warn("Some models had errors during fitting. Use `extract_nested_error_report()` to review errors.")
+    }
 
 
-
-    return(tibble(.modeltime_tables = mdl_time_list))
+    return(nested_modeltime)
 
 }
 
