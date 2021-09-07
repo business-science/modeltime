@@ -175,14 +175,6 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                     .error_desc = ifelse(is.null(err), NA_character_, err)
                 )
 
-                # if (control$verbose) {
-                #     if (!is.null(err)) {
-                #         cli::cli_alert_danger("Model {i} Failed {error_tbl$.model_desc}: {err}")
-                #     } else {
-                #         cli::cli_alert_success("Model {i} Passed {error_tbl$.model_desc}.")
-                #     }
-                # }
-
                 return(list(
                     res = res,
                     err = error_tbl
@@ -227,11 +219,39 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
             })
         })
 
-        # return(list(res = ret, err = errors))
+        # Test Accuracy ----
+        acc_tbl <- NULL
+        suppressMessages({
+            suppressWarnings({
+
+                tryCatch({
+                    co <- utils::capture.output({
+                        # Use invisible to suppress print when model fails
+                        acc_tbl <- modeltime_accuracy(ret, metric_set = metric_set) %>%
+                            tibble::add_column(!! id_text := id, .before = 1)
+                    })
+
+                }, error=function(e) {
+
+                    # Do nothing
+
+                })
+
+            })
+        }) # End acc_tbl
+
+        if (is.null(acc_tbl)) {
+            acc_tbl <- tibble::tibble(
+                !! id_text := id,
+                .model_id   = ret$.model_id,
+                .model_desc = "NULL"
+            )
+        }
 
         return(list(
             mdl_time_tbl = ret,
-            error_list   = error_list
+            error_list   = error_list,
+            acc_tbl      = acc_tbl
         ))
 
     } # END LOOP | returns ret
@@ -240,6 +260,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
 
     mdl_time_list <- ret %>% purrr::map(purrr::pluck("mdl_time_tbl"))
     error_list    <- ret %>% purrr::map(purrr::pluck("error_list"))
+    acc_list      <- ret %>% purrr::map(purrr::pluck("acc_tbl"))
 
     # FORMAT RESULTS ----
 
@@ -250,6 +271,8 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
         dplyr::bind_rows() %>%
         tidyr::drop_na(.error_desc)
 
+    acc_tbl <- acc_list %>% dplyr::bind_rows()
+
     # STRUCTURE ----
 
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
@@ -258,7 +281,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
     attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
     attr(nested_modeltime, "conf_interval")       <- conf_interval
     attr(nested_modeltime, "error_tbl")           <- error_tbl
-    # attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
+    attr(nested_modeltime, "accuracy_tbl")        <- acc_tbl
     # attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
     attr(nested_modeltime, "best_selection_tbl")  <- NULL
     attr(nested_modeltime, "future_forecast_tbl") <- NULL
@@ -401,7 +424,7 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
                 })
 
 
-                # Accuracy ----
+                # Test Accuracy ----
                 suppressMessages({
                     suppressWarnings({
 
