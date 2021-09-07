@@ -42,16 +42,106 @@ modeltime_nested_refit.nested_mdl_time <- function(object, control = control_nes
 
 modeltime_nested_refit_parallel <- function(object, control) {
 
+    t1 <- Sys.time()
+
+    # Parallel Detection
+    is_par_setup <- foreach::getDoParWorkers() > 1
+
+    # If parallel processing is not set up, set up parallel backend
+    par_setup_info <- setup_parallel_processing(control, is_par_setup, t1)
+    clusters_made  <- par_setup_info$clusters_made
+    cl             <- par_setup_info$cl
+
+    # Setup Foreach
+    `%op%` <- get_operator(allow_par = control$allow_par)
+
+    # HANDLE INPUTS ----
+
+    id_text <- attr(object, "id")
+
+    object <- object %>%
+        dplyr::select(dplyr::one_of(id_text), ".actual_data", ".future_data", ".splits", ".modeltime_tables")
+
+    conf_interval <- attr(object, "conf_interval")
+
+    # SETUP ITERABLES ----
+
+    model_list  = object$.modeltime_tables
+
+    actual_list = object$.actual_data
+
+    future_list = object$.future_data
+
+    id_vec      = object[[id_text]]
+
+
+    # BEGIN LOOP -----
+    safe_fit <- purrr::safely(mdl_time_refit, otherwise = NULL, quiet = TRUE)
+
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Beginning Parallel Loop | {round(t-t1, 3)} seconds"))
+    }
+
+    ret <- foreach::foreach(
+        x                   = model_list,
+        d                   = actual_list,
+        f                   = future_list,
+        id                  = id_vec,
+        .inorder            = TRUE,
+        .packages           = control$packages,
+        .verbose            = FALSE
+    ) %op% {
+
+        ..model_id   <- x$.model_id
+        ..model_list <- x$.model
+
+        # Safe fitting for each workflow in model_list ----
+        .l <- purrr::map2(..model_list, ..model_id, .f = function (mod, mod_id) {
+
+            suppressMessages({
+                suppressWarnings({
+                    fit_list <- safe_fit(mod, data = d)
+                })
+            })
+
+            res <- fit_list %>% purrr::pluck("result")
+
+            err <- fit_list %>% purrr::pluck("error", 1)
+
+            error_tbl <- tibble::tibble(
+                !! id_text := id,
+                .model_id   = mod_id,
+                .model_desc = get_model_description(mod),
+                .error_desc = ifelse(is.null(err), NA_character_, err)
+            )
+
+            return(list(
+                res = res,
+                err = error_tbl
+            ))
+
+        })
+
+        # * Extract models and errors ----
+        model_list_trained <- sapply(.l, function(l) l[1])
+        error_list         <- sapply(.l, function(l) l[2]) %>% dplyr::bind_rows()
+
+        return(list(model_list_trained = model_list_trained, error_list = error_list))
+
+    }
+
+    return(ret)
+
+
+
+
+
 }
 
 modeltime_nested_refit_sequential <- function(object, control) {
-    t1 <- Sys.time()
 
-    # CHECKS ----
-    # TODO:
-    # - Nested Data Structure
-    # - Requires .splits column
-    # - dots ... are all workflows
+    t1 <- Sys.time()
 
     # HANDLE INPUTS ----
 
@@ -82,7 +172,7 @@ modeltime_nested_refit_sequential <- function(object, control) {
 
     # SETUP PROGRESS
 
-    if (!control$verbose) cli::cli_progress_bar("Fitting models on training data...", total = nrow(object), .envir = logging_env)
+    if (!control$verbose) cli::cli_progress_bar("Fitting models on actual data...", total = nrow(object), .envir = logging_env)
 
     # LOOP LOGIC ----
 
@@ -227,60 +317,4 @@ modeltime_nested_refit_sequential <- function(object, control) {
     return(nested_modeltime)
 }
 
-# CONTROL ----
 
-#' Control aspects of the `modeltime_nested_refit()` process.
-#'
-#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
-#' @param cores Number of cores for computation. If -1, uses all available physical cores.
-#'  Default: `-1`.
-#' @param packages An optional character string of additional R package names that should be loaded
-#'  during parallel processing.
-#'
-#'  - Packages in your namespace are loaded by default
-#'
-#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
-#'
-#' @param verbose Logical to control printing.
-#'
-#' @return
-#' A List with the control settings.
-#'
-#'
-#' @seealso
-#' [modeltime_nested_refit()]
-#'
-#' @examples
-#'
-#' # No parallel processing
-#' control_nested_refit()
-#'
-#' # With parallel processing
-#' control_nested_refit(allow_par = TRUE)
-#'
-#' @export
-control_nested_refit <- function(verbose = FALSE,
-            allow_par = FALSE,
-            cores = -1,
-            packages = NULL) {
-
-    ret <- control_modeltime_objects(
-        verbose   = verbose,
-        allow_par = allow_par,
-        cores     = cores,
-        packages  = packages,
-        func      = "control_nested_refit"
-    )
-
-    class(ret) <- c("control_nested_refit")
-
-    return(ret)
-}
-
-
-
-#' @export
-print.control_nested_refit <- function(x, ...) {
-    pretty_print_list(x, header = "nested refit control object")
-    invisible(x)
-}

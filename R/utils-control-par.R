@@ -291,6 +291,64 @@ print.control_nested_fit <- function(x, ...) {
     invisible(x)
 }
 
+# CONTROL NESTED REFIT ----
+
+#' Control aspects of the `modeltime_nested_refit()` process.
+#'
+#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
+#' @param cores Number of cores for computation. If -1, uses all available physical cores.
+#'  Default: `-1`.
+#' @param packages An optional character string of additional R package names that should be loaded
+#'  during parallel processing.
+#'
+#'  - Packages in your namespace are loaded by default
+#'
+#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
+#'
+#' @param verbose Logical to control printing.
+#'
+#' @return
+#' A List with the control settings.
+#'
+#'
+#' @seealso
+#' [modeltime_nested_refit()]
+#'
+#' @examples
+#'
+#' # No parallel processing
+#' control_nested_refit()
+#'
+#' # With parallel processing
+#' control_nested_refit(allow_par = TRUE)
+#'
+#' @export
+control_nested_refit <- function(verbose = FALSE,
+                                 allow_par = FALSE,
+                                 cores = -1,
+                                 packages = NULL) {
+
+    ret <- control_modeltime_objects(
+        verbose   = verbose,
+        allow_par = allow_par,
+        cores     = cores,
+        packages  = packages,
+        func      = "control_nested_refit"
+    )
+
+    class(ret) <- c("control_nested_refit")
+
+    return(ret)
+}
+
+
+
+#' @export
+print.control_nested_refit <- function(x, ...) {
+    pretty_print_list(x, header = "nested refit control object")
+    invisible(x)
+}
+
 # CONTROL (generic) ----
 
 
