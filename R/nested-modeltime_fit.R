@@ -194,7 +194,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
         error_list         <- sapply(.l, function(l) l[2]) %>% dplyr::bind_rows()
 
         # Convert to Modeltime Table -----
-        mdl_time_tbl <- tibble::tibble(
+        ret <- tibble::tibble(
             .model = model_list_trained
         ) %>%
             tibble::rowid_to_column(var = ".model_id") %>%
@@ -204,12 +204,33 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
             dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
             dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
 
-        class(mdl_time_tbl) <- c("mdl_time_tbl", class(mdl_time_tbl))
+        class(ret) <- c("mdl_time_tbl", class(ret))
+
+        # Calibration ----
+        suppressMessages({
+            suppressWarnings({
+                ret0 <- ret
+
+                tryCatch({
+                    co <- utils::capture.output({
+                        # Use invisible to suppress print when model fails
+                        ret <- ret %>%
+                            modeltime_calibrate(rsample::testing(x))
+                    })
+
+                }, error=function(e){
+                    # Return original modeltime table
+                    ret <- ret0
+                })
+
+
+            })
+        })
 
         # return(list(res = ret, err = errors))
 
         return(list(
-            mdl_time_tbl = mdl_time_tbl,
+            mdl_time_tbl = ret,
             error_list   = error_list
         ))
 
