@@ -11,5 +11,5 @@ utils::globalVariables(
       ".final_values", ".idx_values", ".pred_values", ".row_id", "..row_id", "rowid..",
       "id", ".id", "this_model", "wflow_id", "rowid", "value.x", "value.y",
       "..rowid", ".actual_data", "n", ".modeltime_tables", ".error_desc",
-      "x", "d")
+      "x", "d", "f", ".forecast")
 )

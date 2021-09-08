@@ -183,7 +183,7 @@ modeltime_nested_forecast_sequential <- function(object, h, include_actual, conf
 
                         }, error=function(e){
 
-                            err <- capture.output(e)
+                            err <- utils::capture.output(e)
 
                             error_tbl <- tibble::tibble(
                                 !! id_text := id,
