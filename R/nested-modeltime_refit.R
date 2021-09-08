@@ -195,9 +195,11 @@ modeltime_nested_refit_parallel <- function(object, control) {
     nested_modeltime <- object %>%
         dplyr::mutate(.modeltime_tables = mdl_time_list)
 
-    error_tbl <- error_list %>%
-        dplyr::bind_rows() %>%
-        tidyr::drop_na(.error_desc)
+    error_tbl <- error_list %>% dplyr::bind_rows()
+    if (nrow(error_tbl) > 0) {
+        error_tbl <- error_tbl %>%
+            tidyr::drop_na(.error_desc)
+    }
 
     fcast_tbl <- fcast_list %>% dplyr::bind_rows()
 

@@ -140,6 +140,7 @@ get_operator <- function(allow_par = TRUE) {
 #' - `control_fit_workflowset()`: Used with [modeltime_fit_workflowset()]
 #' - `control_nested_fit()`: Used with [modeltime_nested_fit()]
 #' - `control_nested_refit()`: Used with [modeltime_nested_refit()]
+#' - `control_nested_forecast()`: Used with [modeltime_nested_forecast()]
 #'
 #' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
 #' @param cores Number of cores for computation. If -1, uses all available physical cores.
@@ -287,6 +288,37 @@ control_nested_refit <- function(verbose = FALSE,
     )
 
     class(ret) <- c("control_nested_refit")
+
+    return(ret)
+}
+
+
+
+#' @export
+print.control_nested_refit <- function(x, ...) {
+    pretty_print_list(x, header = "nested refit control object")
+    invisible(x)
+}
+
+# CONTROL NESTED FORECAST ----
+
+
+#' @export
+#' @rdname control_modeltime
+control_nested_forecast <- function(verbose = FALSE,
+                                 allow_par = FALSE,
+                                 cores = -1,
+                                 packages = NULL) {
+
+    ret <- control_modeltime_objects(
+        verbose   = verbose,
+        allow_par = allow_par,
+        cores     = cores,
+        packages  = packages,
+        func      = "control_nested_forecast"
+    )
+
+    class(ret) <- c("control_nested_forecast")
 
     return(ret)
 }

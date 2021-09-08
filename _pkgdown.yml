@@ -105,6 +105,7 @@ reference:
     - modeltime_nested_fit
     - modeltime_nested_select_best
     - modeltime_nested_refit
+    - modeltime_nested_forecast
   - subtitle: Extractors
     contents:
     - starts_with("extract_")

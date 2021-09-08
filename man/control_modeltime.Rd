@@ -6,6 +6,7 @@
 \alias{control_fit_workflowset}
 \alias{control_nested_fit}
 \alias{control_nested_refit}
+\alias{control_nested_forecast}
 \title{Control aspects of the training process}
 \usage{
 control_refit(verbose = FALSE, allow_par = FALSE, cores = -1, packages = NULL)
@@ -25,6 +26,13 @@ control_nested_fit(
 )
 
 control_nested_refit(
+  verbose = FALSE,
+  allow_par = FALSE,
+  cores = -1,
+  packages = NULL
+)
+
+control_nested_forecast(
   verbose = FALSE,
   allow_par = FALSE,
   cores = -1,
@@ -57,6 +65,7 @@ training functions:
 \item \code{control_fit_workflowset()}: Used with \code{\link[=modeltime_fit_workflowset]{modeltime_fit_workflowset()}}
 \item \code{control_nested_fit()}: Used with \code{\link[=modeltime_nested_fit]{modeltime_nested_fit()}}
 \item \code{control_nested_refit()}: Used with \code{\link[=modeltime_nested_refit]{modeltime_nested_refit()}}
+\item \code{control_nested_forecast()}: Used with \code{\link[=modeltime_nested_forecast]{modeltime_nested_forecast()}}
 }
 }
 \examples{

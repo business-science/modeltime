@@ -289,9 +289,12 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
     modeltime_tbls   <- tibble::tibble(.modeltime_tables = mdl_time_list)
     nested_modeltime <- nested_data %>% dplyr::bind_cols(modeltime_tbls)
 
-    error_tbl     <- error_list %>%
-        dplyr::bind_rows() %>%
-        tidyr::drop_na(.error_desc)
+    error_tbl <- error_list %>% dplyr::bind_rows()
+
+    if (nrow(error_tbl) > 0) {
+        error_tbl <- error_tbl %>%
+            tidyr::drop_na(.error_desc)
+    }
 
     acc_tbl   <- acc_list %>% dplyr::bind_rows()
     fcast_tbl <- fcast_list %>% dplyr::bind_rows()
@@ -539,10 +542,16 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
 
     class(nested_modeltime) <- c("nested_mdl_time", class(nested_modeltime))
 
+    error_tbl <- logging_env$error_tbl
+    if (nrow(error_tbl) > 0) {
+        error_tbl <- error_tbl %>%
+            tidyr::drop_na(.error_desc)
+    }
+
     attr(nested_modeltime, "id")                  <- id_text
     attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
     attr(nested_modeltime, "conf_interval")       <- conf_interval
-    attr(nested_modeltime, "error_tbl")           <- logging_env$error_tbl %>% tidyr::drop_na(.error_desc)
+    attr(nested_modeltime, "error_tbl")           <- error_tbl
     attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
     attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl
     attr(nested_modeltime, "best_selection_tbl")  <- NULL
@@ -555,9 +564,7 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
         rlang::warn("Some models had errors during fitting. Use `extract_nested_error_report()` to review errors.")
     }
 
-
     return(nested_modeltime)
-
 
 }
 
