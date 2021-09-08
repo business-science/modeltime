@@ -9,9 +9,64 @@ modeltime_nested_forecast(
   h = NULL,
   include_actual = TRUE,
   conf_interval = 0.95,
+  id = NULL,
   control = control_nested_forecast()
 )
 }
+\arguments{
+\item{object}{A Nested Modeltime Table}
+
+\item{h}{The forecast horizon. Extends the "trained on" data "h" periods
+into the future.}
+
+\item{include_actual}{Whether or not to include the ".actual_data" as part of the forecast.
+If FALSE, just returns the forecast predictions.}
+
+\item{conf_interval}{An estimated confidence interval based on the calibration data.
+This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
+
+\item{id}{A sequence of ID's from the modeltime table to subset the forecasting process.
+This can speed forecasts up.}
+
+\item{control}{Used to control verbosity and parallel processing. See \code{\link[=control_nested_forecast]{control_nested_forecast()}}.}
+}
 \description{
 Make a new forecast from a Nested Modeltime Table.
+}
+\details{
+This function is designed to help users that want to make new forecasts other than those
+that are created during the logging process as part of the Nested Modeltime Workflow.
+\subsection{Logged Forecasts}{
+
+The logged forecasts can be extracted using:
+\itemize{
+\item \code{\link[=extract_nested_future_forecast]{extract_nested_future_forecast()}}: Extracts the future forecast created after refitting with \code{modeltime_nested_refit()}.
+\item \code{\link[=extract_nested_test_forecast]{extract_nested_test_forecast()}}: Extracts the test forecast created after initial fitting with \code{modeltime_nested_fit()}.
+}
+
+The problem is that these forecasts are static. The user would need to redo the fitting, model selection,
+and refitting process to obtain new forecasts. This is why \code{modeltime_nested_forecast()} exists. So you can create
+a new forecast without retraining any models.
+}
+
+\subsection{Nested Forecasts}{
+
+The main arguments is
+\code{h}, which is a horizon that specifies how far into the future to make the new forecast.
+\itemize{
+\item If \code{h = NULL}, a logged forecast will be returned
+\item If \code{h = 12}, a new forecast will be generated that extends each series 12-periods into the future.
+\item If \code{h = "2 years"}, a new forecast will be generated that extends each series 2-years into the future.
+}
+
+Use the \code{id} to filter the Nested Modeltime Table \code{object} to just the time series of interest.
+Note that this will have no effect if \code{h = NULL} as logged forecasts are returned.
+
+Use the \code{conf_interval} to override the logged confidence interval.
+Note that this will have no effect if \code{h = NULL} as logged forecasts are returned.
+So be sure to provide \code{h} if you want to update the confidence interval.
+
+Use the \code{control} argument to apply verbosity during the forecasting process and to run forecasts in parallel.
+Generally, parallel is better if many forecasts are being generated.
+}
 }
