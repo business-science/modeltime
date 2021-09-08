@@ -146,21 +146,31 @@ nest_timeseries <- function(.data, .id_var, .length_future, .length_actual = NUL
 
     # SPLIT FUTURE AND ACTUAL DATA
 
+    .data <- .data %>%
+        tibble::rowid_to_column(var = "..rowid")
+
     future_data_tbl <- .data %>%
         panel_tail(id = !!id_var_expr, n = .length_future)
 
-    groups <- future_data_tbl$id %>% unique() %>% length()
-
-    n_group <- .data %>%
-        dplyr::group_by(!!id_var_expr) %>%
-        dplyr::summarise(n = dplyr::n() - (dim(future_data_tbl)[1] / groups) )
-
     actual_data_tbl <- .data %>%
-        dplyr::inner_join(n_group, by = rlang::quo_name(id_var_expr)) %>%
-        dplyr::group_by(!!id_var_expr) %>%
-        dplyr::slice(seq(dplyr::first(n))) %>%
-        dplyr::ungroup() %>%
-        dplyr::select(-n)
+        dplyr::anti_join(future_data_tbl, by = "..rowid")
+
+    # REMOVE ROWID
+    future_data_tbl <- future_data_tbl %>% dplyr::select(-..rowid)
+    actual_data_tbl <- actual_data_tbl %>% dplyr::select(-..rowid)
+
+    # groups <- future_data_tbl$id %>% unique() %>% length()
+    #
+    # n_group <- .data %>%
+    #     dplyr::group_by(!!id_var_expr) %>%
+    #     dplyr::summarise(n = dplyr::n() - (dim(future_data_tbl)[1] / groups) )
+    #
+    # actual_data_tbl <- .data %>%
+    #     dplyr::inner_join(n_group, by = rlang::quo_name(id_var_expr)) %>%
+    #     dplyr::group_by(!!id_var_expr) %>%
+    #     dplyr::slice(seq(dplyr::first(n))) %>%
+    #     dplyr::ungroup() %>%
+    #     dplyr::select(-n)
 
     if (!is.null(.length_actual)) {
         actual_data_tbl <- actual_data_tbl %>%
