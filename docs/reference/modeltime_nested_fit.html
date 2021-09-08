@@ -261,7 +261,7 @@ Forecast results can be retrieved with <code><a href='log_extractors.html'>extra
   model_list <span class='op'>=</span> <span class='cn'>NULL</span>,
   metric_set <span class='op'>=</span> <span class='fu'><a href='default_forecast_accuracy_metric_set.html'>default_forecast_accuracy_metric_set</a></span><span class='op'>(</span><span class='op'>)</span>,
   conf_interval <span class='op'>=</span> <span class='fl'>0.95</span>,
-  control <span class='op'>=</span> <span class='fu'><a href='control_nested_fit.html'>control_nested_fit</a></span><span class='op'>(</span><span class='op'>)</span>
+  control <span class='op'>=</span> <span class='fu'><a href='control_modeltime.html'>control_nested_fit</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -291,7 +291,7 @@ This is designed to estimate future confidence from <em>out-of-sample prediction
     </tr>
     <tr>
       <th>control</th>
-      <td><p>Used to control verbosity and parallel processing. See <code><a href='control_nested_fit.html'>control_nested_fit()</a></code>.</p></td>
+      <td><p>Used to control verbosity and parallel processing. See <code><a href='control_modeltime.html'>control_nested_fit()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -318,7 +318,7 @@ data for Nested Forecasting. The structure must be a nested data frame, which is
 
 
 <p>A <code>control</code> object can be provided during fitting to adjust the verbosity and parallel processing.
-See <code><a href='control_nested_fit.html'>control_nested_fit()</a></code>.</p>
+See <code><a href='control_modeltime.html'>control_nested_fit()</a></code>.</p>
 
 
   </div>

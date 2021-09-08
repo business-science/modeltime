@@ -252,7 +252,7 @@
 <a href="#nested-model-fitting-traintest" class="anchor"></a>Nested Model Fitting (Train/Test)</h4>
 <ul>
 <li><p><strong><code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code>:</strong> Fits many models to nested time series data and organizes in a “Nested Modeltime Table”. Logs Accuracy, Errors, and Test Forecasts.</p></li>
-<li><p><strong><code><a href="../reference/control_nested_fit.html">control_nested_fit()</a></code>:</strong> Used to control the fitting process including verbosity and parallel processing.</p></li>
+<li><p><strong><code><a href="../reference/control_modeltime.html">control_nested_fit()</a></code>:</strong> Used to control the fitting process including verbosity and parallel processing.</p></li>
 <li><p><strong>Logging Extractors:</strong> Functions that retrieve logged information from the initial fitting process. <code><a href="../reference/log_extractors.html">extract_nested_test_accuracy()</a></code>, <code><a href="../reference/log_extractors.html">extract_nested_error_report()</a></code>, and <code><a href="../reference/log_extractors.html">extract_nested_test_forecast()</a></code>.</p></li>
 </ul>
 </div>
@@ -269,7 +269,7 @@
 <a href="#nested-model-refitting-actual-data" class="anchor"></a>Nested Model Refitting (Actual Data)</h4>
 <ul>
 <li><p><strong><code><a href="../reference/modeltime_nested_refit.html">modeltime_nested_refit()</a></code>:</strong> Refits to the <code>.future_data</code>. Logs Future Forecasts.</p></li>
-<li><p><strong><code><a href="../reference/control_nested_refit.html">control_nested_refit()</a></code>:</strong> Used to control the re-fitting process including verbosity and parallel processing.</p></li>
+<li><p><strong><code><a href="../reference/control_modeltime.html">control_nested_refit()</a></code>:</strong> Used to control the re-fitting process including verbosity and parallel processing.</p></li>
 <li><p><strong>Logging Extractors:</strong> Functions that retrieve logged information from the re-fitting process. <code><a href="../reference/log_extractors.html">extract_nested_future_forecast()</a></code>.</p></li>
 </ul>
 </div>
@@ -346,7 +346,7 @@
 <li><p>New Vignette: <a href="https://business-science.github.io/modeltime/articles/parallel-processing.html">Parallel Processing</a></p></li>
 <li><p><code><a href="../reference/parallel_start.html">parallel_start()</a></code> and <code><a href="../reference/parallel_start.html">parallel_stop()</a></code>: Helpers for setting up multicore processing.</p></li>
 <li><p><code><a href="../reference/create_model_grid.html">create_model_grid()</a></code>: Helper to generate model specifications with filled-in parameters from a parameter grid (e.g. <code><a href="https://dials.tidymodels.org/reference/grid_regular.html">dials::grid_regular()</a></code>).</p></li>
-<li><p><code><a href="../reference/control_refit.html">control_refit()</a></code> and <code><a href="../reference/control_fit_workflowset.html">control_fit_workflowset()</a></code>: Better printing.</p></li>
+<li><p><code><a href="../reference/control_modeltime.html">control_refit()</a></code> and <code><a href="../reference/control_modeltime.html">control_fit_workflowset()</a></code>: Better printing.</p></li>
 </ul>
 <p><strong>Bug Fixes</strong></p>
 <ul>
@@ -388,7 +388,7 @@
 <a href="#parallel-processing" class="anchor"></a>Parallel Processing</h3>
 <ul>
 <li>
-<code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: supports parallel processing. See <code><a href="../reference/control_refit.html">control_refit()</a></code>
+<code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: supports parallel processing. See <code><a href="../reference/control_modeltime.html">control_refit()</a></code>
 </li>
 <li>
 <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code>: supports parallel processing. See <code>control_workflowset()</code>

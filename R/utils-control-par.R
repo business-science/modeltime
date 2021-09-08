@@ -131,7 +131,15 @@ get_operator <- function(allow_par = TRUE) {
 # CONTROL REFIT ----
 
 
-#' Control aspects of the `modeltime_refit()` process.
+#' Control aspects of the training process
+#'
+#' @description These functions are matched to the associated
+#' training functions:
+#'
+#' - `control_refit()`: Used with [modeltime_refit()]
+#' - `control_fit_workflowset()`: Used with [modeltime_fit_workflowset()]
+#' - `control_nested_fit()`: Used with [modeltime_nested_fit()]
+#' - `control_nested_refit()`: Used with [modeltime_nested_refit()]
 #'
 #' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
 #' @param cores Number of cores for computation. If -1, uses all available physical cores.
@@ -150,17 +158,32 @@ get_operator <- function(allow_par = TRUE) {
 #'
 #'
 #' @seealso
-#' [modeltime_refit()]
+#' - Setting Up Parallel Processing: [parallel_start()], [parallel_stop())]
+#' - Training Functions: [modeltime_refit()], [modeltime_fit_workflowset()], [modeltime_nested_fit()], [modeltime_nested_refit()]
 #'
 #' @examples
 #'
-#' # No parallel processing
+#' # No parallel processing by default
 #' control_refit()
 #'
-#' # With parallel processing
+#' # Allow parallel processing
 #' control_refit(allow_par = TRUE)
 #'
+#' # Set verbosity to show additional training information
+#' control_refit(verbose = TRUE)
+#'
+#' # Add additional packages used during modeling in parallel processing
+#' # - This is useful if your namespace does not load all needed packages
+#' #   to run models.
+#' # - An example is if I use `temporal_hierarchy()`, which depends on the `thief` package
+#' control_refit(allow_par = TRUE, packages = "thief")
+#'
+#' @name control_modeltime
+
+
+
 #' @export
+#' @rdname control_modeltime
 control_refit <- function(verbose = FALSE,
                           allow_par = FALSE,
                           cores = -1,
@@ -187,27 +210,8 @@ print.control_refit <- function(x, ...) {
 
 # CONTROL  WORKFLOWSET -----
 
-# Control Workflowset
-#
-#' Control aspects of the `modeltime_fit_workflowset()` process.
-#'
-#' @inheritParams control_refit
-#'
-#'
-#' @return
-#' A List with the control settings.
-#'
-#' @seealso
-#' [modeltime_fit_workflowset()]
-#'
-#' @examples
-#' #' # No parallel processing
-#' control_fit_workflowset()
-#'
-#' # With parallel processing
-#' control_fit_workflowset(allow_par = TRUE)
-#'
 #' @export
+#' @rdname control_modeltime
 control_fit_workflowset <- function(verbose = FALSE,
                                     allow_par = FALSE,
                                     cores = -1,
@@ -235,36 +239,9 @@ print.control_fit_workflowset <- function(x, ...) {
 
 # CONTROL NESTED FIT ----
 
-#' Control aspects of the `modeltime_nested_fit()` process.
-#'
-#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
-#' @param cores Number of cores for computation. If -1, uses all available physical cores.
-#'  Default: `-1`.
-#' @param packages An optional character string of additional R package names that should be loaded
-#'  during parallel processing.
-#'
-#'  - Packages in your namespace are loaded by default
-#'
-#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
-#'
-#' @param verbose Logical to control printing.
-#'
-#' @return
-#' A List with the control settings.
-#'
-#'
-#' @seealso
-#' [modeltime_nested_fit()]
-#'
-#' @examples
-#'
-#' # No parallel processing
-#' control_nested_fit()
-#'
-#' # With parallel processing
-#' control_nested_fit(allow_par = TRUE)
-#'
+
 #' @export
+#' @rdname control_modeltime
 control_nested_fit <- function(verbose = FALSE,
                                allow_par = FALSE,
                                cores = -1,
@@ -293,36 +270,9 @@ print.control_nested_fit <- function(x, ...) {
 
 # CONTROL NESTED REFIT ----
 
-#' Control aspects of the `modeltime_nested_refit()` process.
-#'
-#' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
-#' @param cores Number of cores for computation. If -1, uses all available physical cores.
-#'  Default: `-1`.
-#' @param packages An optional character string of additional R package names that should be loaded
-#'  during parallel processing.
-#'
-#'  - Packages in your namespace are loaded by default
-#'
-#'  - Key Packages are loaded by default: `tidymodels`, `parsnip`, `modeltime`, `dplyr`, `stats`, `lubridate` and `timetk`.
-#'
-#' @param verbose Logical to control printing.
-#'
-#' @return
-#' A List with the control settings.
-#'
-#'
-#' @seealso
-#' [modeltime_nested_refit()]
-#'
-#' @examples
-#'
-#' # No parallel processing
-#' control_nested_refit()
-#'
-#' # With parallel processing
-#' control_nested_refit(allow_par = TRUE)
-#'
+
 #' @export
+#' @rdname control_modeltime
 control_nested_refit <- function(verbose = FALSE,
                                  allow_par = FALSE,
                                  cores = -1,
@@ -365,8 +315,9 @@ control_modeltime_objects <- function(
     val_class_and_single(cores, "numeric", "control_refit()")
 
     if (allow_par) {
-        required_pkgs <- c("modeltime", "parsnip", "dplyr", "stats",
-                           "lubridate", "tidymodels", "timetk")
+        required_pkgs <- c("modeltime", "parsnip", "workflows", "dplyr", "stats",
+                           "lubridate", "tidymodels", "timetk",
+                           "rsample", "recipes", "yardstick", "dials", "tune")
 
         namespace_pkgs <- search() %>%
             stringr::str_subset(pattern = "^package") %>%
