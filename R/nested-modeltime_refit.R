@@ -203,6 +203,10 @@ modeltime_nested_refit_parallel <- function(object, control) {
 
     fcast_tbl <- fcast_list %>% dplyr::bind_rows()
 
+    # Finish Parallel Backend ----
+    #   Close clusters if we set up internally.
+    finish_parallel_processing(control, clusters_made, cl, t1)
+
     # FINISH TIMING ----
     t2 <- Sys.time()
 

@@ -248,8 +248,8 @@ modeltime_nested_forecast_sequential <- function(object, h, include_actual, conf
     attr(ret, "error_tbl")           <- error_tbl
     attr(ret, "time_elapsed")        <- time_elapsed
 
-    if (nrow(attr(nested_modeltime, "error_tbl")) > 0) {
-        rlang::warn("Some modeltime tables had errors during forecasting. Use `extract_nested_error_report()` to review errors.")
+    if (nrow(attr(ret, "error_tbl")) > 0) {
+        rlang::warn("Some .modeltime_tables had errors during forecasting. Use `extract_nested_error_report()` to review errors.")
     }
 
     return(ret)
@@ -258,9 +258,21 @@ modeltime_nested_forecast_sequential <- function(object, h, include_actual, conf
 
 
 modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_interval,
-                                                 control) {
+                                               control) {
 
     t1 <- Sys.time()
+
+    # Parallel Detection
+    is_par_setup <- foreach::getDoParWorkers() > 1
+
+    # If parallel processing is not set up, set up parallel backend
+    par_setup_info <- setup_parallel_processing(control, is_par_setup, t1)
+    clusters_made  <- par_setup_info$clusters_made
+    cl             <- par_setup_info$cl
+
+    # Setup Foreach
+    `%op%` <- get_operator(allow_par = control$allow_par)
+
 
     # HANDLE INPUTS ----
 
@@ -269,96 +281,94 @@ modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_i
     object <- object %>%
         dplyr::select(dplyr::one_of(id_text), ".actual_data", ".future_data", ".splits", ".modeltime_tables")
 
-    id_expr <- rlang::sym(id_text)
-
     n_ids   <- nrow(object)
 
-    x_expr  <- rlang::sym(".modeltime_tables")
+    # SETUP ITERABLES ----
 
-    d_expr  <- rlang::sym(".actual_data")
+    model_list  = object$.modeltime_tables
 
-    f_expr  <- rlang::sym(".future_data")
+    splits_list = object$.splits
 
+    actual_list = object$.actual_data
 
-    # SETUP PROGRESS
+    id_vec      = object[[id_text]]
 
-    logging_env <- rlang::env(
-        error_tbl = tibble::tibble()
-    )
+    # BEGIN LOOP -----
+    if (control$verbose) {
+        t <- Sys.time()
+        message(stringr::str_glue(" Beginning Parallel Loop | {round(t-t1, 3)} seconds"))
+    }
 
-    if (!control$verbose) cli::cli_progress_bar("Forecast predictions...", total = nrow(object), .envir = logging_env)
+    ret <- foreach::foreach(
+        x                   = model_list,
+        d                   = actual_list,
+        id                  = id_vec,
+        .inorder            = TRUE,
+        .packages           = control$packages,
+        # .export             = c("id_text", "model_list", "n_ids", "safe_fit"),
+        .verbose            = FALSE
+    ) %op% {
 
-    # LOOP LOGIC ----
+        # Future Forecast ----
+        fcast_tbl <- NULL
+        error_tbl <- NULL
+        err       <- NULL
+        if (!include_actual) d <- NULL
 
-    nested_modeltime <- object %>%
-        tibble::rowid_to_column(var = '..rowid') %>%
-        dplyr::mutate(
-            .forecast = purrr::pmap(.l = list(x = !! x_expr, d = !! d_expr, f = !! f_expr, id = !! id_expr, i = ..rowid), .f = function(x, d, f, id, i) {
+        suppressMessages({
+            suppressWarnings({
 
+                tryCatch({
 
-                if (control$verbose) cli::cli_alert_info(stringr::str_glue("[{i}/{n_ids}] Starting Forecast: ID {id}..."))
+                    # print(conf_interval)
 
-                # Future Forecast ----
-                fcast_tbl <- NULL
-                if (!include_actual) d <- NULL
-                suppressMessages({
-                    suppressWarnings({
+                    fcast_tbl <- modeltime_forecast(
+                        object        = x,
+                        h             = h,
+                        # new_data      = f,
+                        actual_data   = d,
+                        conf_interval = conf_interval
+                    ) %>%
+                        tibble::add_column(!! id_text := id, .before = 1)
 
-                        tryCatch({
+                }, error=function(e){
 
-                            # print(conf_interval)
+                    err <- capture.output(e)
 
-                            fcast_tbl <- modeltime_forecast(
-                                object        = x,
-                                h             = h,
-                                # new_data      = f,
-                                actual_data   = d,
-                                conf_interval = conf_interval
-                            ) %>%
-                                tibble::add_column(!! id_text := id, .before = 1)
-
-                        }, error=function(e){
-
-                            err <- capture.output(e)
-
-                            error_tbl <- tibble::tibble(
-                                !! id_text := id,
-                                .error_desc = ifelse(is.null(err), NA_character_, err)
-                            )
-
-                            logging_env$error_tbl <- dplyr::bind_rows(logging_env$error_tbl, error_tbl)
-                        })
-
-
-                    })
                 })
-
-                # Finish ----
-
-                if (control$verbose) {
-                    if (!is.null(fcast_tbl)) {
-                        cli::cli_alert_success(stringr::str_glue("[{i}/{n_ids}] Finished Forecasting: ID {id}"))
-                    } else {
-                        cli::cli_alert_danger(stringr::str_glue("[{i}/{n_ids}] Forecasting Failed: ID {id}"))
-                    }
-
-                }
-                if (control$verbose) cat("\n")
-
-                if (!control$verbose) cli::cli_progress_update(.envir = logging_env)
-
-                return(fcast_tbl)
             })
-        ) %>%
-        dplyr::select(-..rowid)
+        })
 
-    if (!control$verbose) cli::cli_progress_done(.envir = logging_env)
+        if(is.null(fcast_tbl)) err <- "Forecast Failed" else err <- NA_character_
+
+        error_tbl <- tibble::tibble(
+            !! id_text := id,
+            .error_desc = err
+        )
+
+        return(list(fcast_tbl = fcast_tbl, error_list = error_tbl))
+
+    } # END LOOP | returns ret
+
+    # CONSOLIDATE RESULTS
+
+    fcast_list    <- ret %>% purrr::map(purrr::pluck("fcast_tbl"))
+    error_list    <- ret %>% purrr::map(purrr::pluck("error_list"))
+
 
     # FINALIZE RESULTS ----
+    fcast_tbl <- fcast_list %>% dplyr::bind_rows()
 
-    ret <- nested_modeltime %>%
-        dplyr::select(.forecast) %>%
-        tidyr::unnest(.forecast)
+    error_tbl <- error_list %>% dplyr::bind_rows()
+
+    if (nrow(error_tbl) > 0) {
+        error_tbl <- error_tbl %>%
+            tidyr::drop_na(.error_desc)
+    }
+
+    # Finish Parallel Backend ----
+    #   Close clusters if we set up internally.
+    finish_parallel_processing(control, clusters_made, cl, t1)
 
     # FINISH TIMING ----
 
@@ -372,11 +382,7 @@ modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_i
 
     # STRUCTURE ----
 
-    error_tbl <- logging_env$error_tbl
-    if (nrow(error_tbl) > 1) {
-        error_tbl <- error_tbl %>%
-            tidyr::drop_na(.error_desc)
-    }
+    ret <- fcast_tbl
 
     class(ret) <- c("mdl_forecast_tbl", class(ret))
 
@@ -384,10 +390,26 @@ modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_i
     attr(ret, "error_tbl")           <- error_tbl
     attr(ret, "time_elapsed")        <- time_elapsed
 
-    if (nrow(attr(nested_modeltime, "error_tbl")) > 0) {
-        rlang::warn("Some modeltime tables had errors during forecasting. Use `extract_nested_error_report()` to review errors.")
+    if (nrow(attr(ret, "error_tbl")) > 0) {
+        rlang::warn("Some .modeltime_tables had errors during forecasting. Use `extract_nested_error_report()` to review errors.")
     }
 
     return(ret)
 
+}
+
+#' @export
+print.mdl_forecast_tbl <- function(x, ...) {
+
+    # Collect inputs
+    fit_col <- attr(x, 'fit_column')
+    n_models_with_errors <- attr(x, "error_tbl") %>%
+        nrow()
+
+    cat("# Forecast Results\n")
+    cat("  ")
+    cli::cli_text(cli::col_grey("Trained on: {fit_col} | Forecast Errors: [{n_models_with_errors}]"))
+    # cli::cli_rule()
+    class(x) <- class(x)[!(class(x) %in% c("mdl_forecast_tbl"))]
+    print(x, ...)
 }
