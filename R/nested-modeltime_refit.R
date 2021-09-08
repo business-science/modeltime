@@ -133,12 +133,13 @@ modeltime_nested_refit_parallel <- function(object, control) {
         ret <- tibble::tibble(
             .model = model_list_trained
         ) %>%
-            tibble::rowid_to_column(var = ".model_id") %>%
+            dplyr::mutate(.model_id = ..model_id) %>%
             dplyr::mutate(.model_desc = purrr::map_chr(.model, .f = get_model_description)) %>%
 
             # Simplify Naming
             dplyr::mutate(.model_desc = gsub("[[:punct:][:digit:][:cntrl:]]", "", .model_desc)) %>%
             dplyr::mutate(.model_desc = gsub(" WITH.*$", "", .model_desc))
+
 
         # Add calibration
         tryCatch({
