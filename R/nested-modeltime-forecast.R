@@ -10,7 +10,7 @@
 #'  into the future.
 #' @param include_actual Whether or not to include the ".actual_data" as part of the forecast.
 #'  If FALSE, just returns the forecast predictions.
-#' @param id A sequence of ID's from the modeltime table to subset the forecasting process.
+#' @param id_subset A sequence of ID's from the modeltime table to subset the forecasting process.
 #'  This can speed forecasts up.
 #' @param control Used to control verbosity and parallel processing. See [control_nested_forecast()].
 #'
@@ -39,8 +39,7 @@
 #' - If `h = 12`, a new forecast will be generated that extends each series 12-periods into the future.
 #' - If `h = "2 years"`, a new forecast will be generated that extends each series 2-years into the future.
 #'
-#' Use the `id` to filter the Nested Modeltime Table `object` to just the time series of interest.
-#' Note that this will have no effect if `h = NULL` as logged forecasts are returned.
+#' Use the `id_subset` to filter the Nested Modeltime Table `object` to just the time series of interest.
 #'
 #' Use the `conf_interval` to override the logged confidence interval.
 #' Note that this will have no effect if `h = NULL` as logged forecasts are returned.
@@ -51,7 +50,7 @@
 #'
 #' @export
 modeltime_nested_forecast <- function(object, h = NULL, include_actual = TRUE, conf_interval = 0.95,
-                                      id = NULL,
+                                      id_subset = NULL,
                                       control = control_nested_forecast()) {
 
     # Checks
@@ -66,7 +65,7 @@ modeltime_nested_forecast <- function(object, h = NULL, include_actual = TRUE, c
 
 #' @export
 modeltime_nested_forecast.nested_mdl_time <- function(object, h = NULL, include_actual = TRUE, conf_interval = 0.95,
-                                                      id = NULL,
+                                                      id_subset = NULL,
                                                       control = control_nested_forecast()) {
 
 
@@ -74,7 +73,7 @@ modeltime_nested_forecast.nested_mdl_time <- function(object, h = NULL, include_
     if (is.null(h)) {
 
         if (control$verbose) message("Returning logged future forecast. If new predictions are needed, set `h` for horizon.")
-        return(extract_nested_future_forecast(object))
+        return(extract_nested_future_forecast(object, .include_actual = include_actual, .id_subset = id_subset))
 
         # fit_column <- attr(object, "fit_column")
         #
@@ -87,13 +86,13 @@ modeltime_nested_forecast.nested_mdl_time <- function(object, h = NULL, include_
         # }
     }
 
-    if (!is.null(id)) {
+    if (!is.null(id_subset)) {
 
         id_text <- attr(object, "id")
         id_expr <- rlang::sym(id_text)
 
         object <- object %>%
-            dplyr::filter(!! id_expr %in% id)
+            dplyr::filter(!! id_expr %in% id_subset)
     }
 
     # Parallel or Sequential
