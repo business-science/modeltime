@@ -9,7 +9,7 @@ modeltime_nested_forecast(
   h = NULL,
   include_actual = TRUE,
   conf_interval = 0.95,
-  id = NULL,
+  id_subset = NULL,
   control = control_nested_forecast()
 )
 }
@@ -25,7 +25,7 @@ If FALSE, just returns the forecast predictions.}
 \item{conf_interval}{An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
 
-\item{id}{A sequence of ID's from the modeltime table to subset the forecasting process.
+\item{id_subset}{A sequence of ID's from the modeltime table to subset the forecasting process.
 This can speed forecasts up.}
 
 \item{control}{Used to control verbosity and parallel processing. See \code{\link[=control_nested_forecast]{control_nested_forecast()}}.}
@@ -59,8 +59,7 @@ The main arguments is
 \item If \code{h = "2 years"}, a new forecast will be generated that extends each series 2-years into the future.
 }
 
-Use the \code{id} to filter the Nested Modeltime Table \code{object} to just the time series of interest.
-Note that this will have no effect if \code{h = NULL} as logged forecasts are returned.
+Use the \code{id_subset} to filter the Nested Modeltime Table \code{object} to just the time series of interest.
 
 Use the \code{conf_interval} to override the logged confidence interval.
 Note that this will have no effect if \code{h = NULL} as logged forecasts are returned.

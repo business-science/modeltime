@@ -161,7 +161,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
 
                 suppressMessages({
                     suppressWarnings({
-                        fit_list <- safe_fit(mod, data = rsample::training(x))
+                        fit_list <- safe_fit(mod, data = dplyr::slice(d, x$idx_train))
                     })
                 })
 
@@ -208,7 +208,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                     co <- utils::capture.output({
                         # Use invisible to suppress print when model fails
                         ret <- ret %>%
-                            modeltime_calibrate(rsample::testing(x))
+                            modeltime_calibrate(dplyr::slice(d, x$idx_test))
                     })
 
                 }, error=function(e){
@@ -254,7 +254,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
                 tryCatch({
                     fcast_tbl <- modeltime_forecast(
                         object        = ret,
-                        new_data      = rsample::testing(x),
+                        new_data      = dplyr::slice(d, x$idx_test),
                         actual_data   = d,
                         conf_interval = conf_interval
                     ) %>%
@@ -398,7 +398,7 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
 
                         suppressMessages({
                             suppressWarnings({
-                                fit_list <- safe_fit(mod, data = rsample::training(x))
+                                fit_list <- safe_fit(mod, data = dplyr::slice(d, x$idx_train))
                             })
                         })
 
@@ -450,7 +450,7 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
                             co <- utils::capture.output({
                                 # Use invisible to suppress print when model fails
                                 ret <- ret %>%
-                                    modeltime_calibrate(rsample::testing(x))
+                                    modeltime_calibrate(dplyr::slice(d, x$idx_test))
                             })
 
                         }, error=function(e){
@@ -502,7 +502,7 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
                         tryCatch({
                             fcast_tbl <- modeltime_forecast(
                                 object        = ret,
-                                new_data      = rsample::testing(x),
+                                new_data      = d %>% dplyr::slice(x$idx_test),
                                 actual_data   = d,
                                 conf_interval = conf_interval
                             ) %>%

@@ -23,3 +23,10 @@ type_sum.recursive_panel <- function(x) {
     class(x) <- class(x)[stringr::str_detect(class(x), "recursive", negate = TRUE)]
     type_sum(x)
 }
+
+#' @importFrom tibble type_sum
+#' @export
+type_sum.ts_split_indicies <- function(x) {
+
+    stringr::str_glue("split [{length(x$idx_train)}|{length(x$idx_test)}]")
+}

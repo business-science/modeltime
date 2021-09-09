@@ -2,7 +2,7 @@
 title: "Autoregressive Forecasting with Recursive"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Recursive Forecasting}
+  %\VignetteIndexEntry{Autoregressive Forecasting with Recursive}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

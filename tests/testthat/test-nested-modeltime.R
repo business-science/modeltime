@@ -57,7 +57,7 @@ nested_data_tbl <- data_start_tbl %>%
 
 # * XGBoost ----
 
-rec_xgb <- recipe(value ~ ., training(nested_data_tbl$.splits[[1]])) %>%
+rec_xgb <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl)) %>%
     step_timeseries_signature(date) %>%
     step_rm(date) %>%
     step_zv(all_predictors()) %>%
@@ -70,14 +70,14 @@ wflw_xgb <- workflow() %>%
 # * Bad Model ----
 #   - Xgboost can't handle dates
 
-recipe_bad <- recipe(value ~ ., training(nested_data_tbl$.splits[[1]]))
+recipe_bad <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl))
 
 wflw_bad <- workflow() %>%
     add_model(boost_tree()) %>%
     add_recipe(recipe_bad)
 
 # * Prophet ----
-# rec_prophet <- recipe(value ~ date, training(nested_data_tbl$.splits[[1]]))
+# rec_prophet <- recipe(value ~ date, extract_nested_train_split(nested_data_tbl))
 #
 # wflw_prophet <- workflow() %>%
 #     add_model(

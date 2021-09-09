@@ -243,7 +243,11 @@ iterative (nested) forecasting with Nested Modeltime Tables.</p>
 
 <span class='fu'>nest_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.length_future</span>, .length_actual <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>split_nested_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.length_test</span>, .length_train <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>split_nested_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.length_test</span>, .length_train <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_train_split</span><span class='op'>(</span><span class='va'>.data</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_test_split</span><span class='op'>(</span><span class='va'>.data</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -288,6 +292,10 @@ time series by each time series group.</p></li>
       <th>.length_train</th>
       <td><p>Defines the length of the training split for evaluation.</p></td>
     </tr>
+    <tr>
+      <th>.row_id</th>
+      <td><p>The row number to extract from the nested data.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -328,6 +336,13 @@ testing sample. This is typically the same size as the <code>.future_data</code>
 </ul>
 
 
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Helpers</h3>
+
+
+<p><code>extract_nested_train_split()</code> and <code>extract_nested_test_split()</code> are used to simplify extracting
+the training and testing data from the actual data. This can be helpful when making
+preprocessing recipes using the <code>recipes</code> package.</p>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -335,39 +350,56 @@ testing sample. This is typically the same size as the <code>.future_data</code>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 
-<span class='va'>walmart_sales_weekly</span> <span class='op'>%&gt;%</span>
+
+<span class='va'>nested_data_tbl</span> <span class='op'>&lt;-</span> <span class='va'>walmart_sales_weekly</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>id</span>, <span class='va'>Date</span>, <span class='va'>Weekly_Sales</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>set_names</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"id"</span>, <span class='st'>"date"</span>, <span class='st'>"value"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 
-    <span class='co'># Extends the time series by id</span>
+    <span class='co'># Step 1: Extends the time series by id</span>
     <span class='fu'>extend_timeseries</span><span class='op'>(</span>
         .id_var     <span class='op'>=</span> <span class='va'>id</span>,
         .date_var   <span class='op'>=</span> <span class='va'>date</span>,
         .length_future <span class='op'>=</span> <span class='fl'>52</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
 
-    <span class='co'># Nests the time series into .actual_data and .future_data</span>
+    <span class='co'># Step 2: Nests the time series into .actual_data and .future_data</span>
     <span class='fu'>nest_timeseries</span><span class='op'>(</span>
         .id_var     <span class='op'>=</span> <span class='va'>id</span>,
         .length_future <span class='op'>=</span> <span class='fl'>52</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
 
-    <span class='co'># Adds a column .splits that contains training/testing samples</span>
+    <span class='co'># Step 3: Adds a column .splits that contains training/testing indicies</span>
     <span class='fu'>split_nested_timeseries</span><span class='op'>(</span>
         .length_test <span class='op'>=</span> <span class='fl'>52</span>
     <span class='op'>)</span>
+
+<span class='va'>nested_data_tbl</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 × 4</span>
 #&gt;   id    .actual_data       .future_data      .splits        
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>         
-#&gt; <span style='color: #BCBCBC;'>1</span> 1_1   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>2</span> 1_3   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>3</span> 1_8   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>4</span> 1_13  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>5</span> 1_38  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>6</span> 1_93  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>7</span> 1_95  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91/52]&gt;</span></div><div class='input'>
-
-
+#&gt; <span style='color: #BCBCBC;'>1</span> 1_1   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>2</span> 1_3   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>3</span> 1_8   <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>4</span> 1_13  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>5</span> 1_38  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>6</span> 1_93  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>7</span> 1_95  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span></div><div class='input'>
+<span class='co'># Helpers: Getting the Train/Test Sets</span>
+<span class='fu'>extract_nested_train_split</span><span class='op'>(</span><span class='va'>nested_data_tbl</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 91 × 2</span>
+#&gt;    date        value
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> 2010-02-05 <span style='text-decoration: underline;'>24</span>924.
+#&gt; <span style='color: #BCBCBC;'> 2</span> 2010-02-12 <span style='text-decoration: underline;'>46</span>039.
+#&gt; <span style='color: #BCBCBC;'> 3</span> 2010-02-19 <span style='text-decoration: underline;'>41</span>596.
+#&gt; <span style='color: #BCBCBC;'> 4</span> 2010-02-26 <span style='text-decoration: underline;'>19</span>404.
+#&gt; <span style='color: #BCBCBC;'> 5</span> 2010-03-05 <span style='text-decoration: underline;'>21</span>828.
+#&gt; <span style='color: #BCBCBC;'> 6</span> 2010-03-12 <span style='text-decoration: underline;'>21</span>043.
+#&gt; <span style='color: #BCBCBC;'> 7</span> 2010-03-19 <span style='text-decoration: underline;'>22</span>137.
+#&gt; <span style='color: #BCBCBC;'> 8</span> 2010-03-26 <span style='text-decoration: underline;'>26</span>229.
+#&gt; <span style='color: #BCBCBC;'> 9</span> 2010-04-02 <span style='text-decoration: underline;'>57</span>258.
+#&gt; <span style='color: #BCBCBC;'>10</span> 2010-04-09 <span style='text-decoration: underline;'>42</span>961.
+#&gt; <span style='color: #949494;'># … with 81 more rows</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -332,7 +332,7 @@ modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_i
 
                 }, error=function(e){
 
-                    err <- capture.output(e)
+                    err <- utils::capture.output(e)
 
                 })
             })

@@ -25,6 +25,7 @@
 #' @param .length_test Defines the length of the test split for evaluation.
 #' @param .length_train Defines the length of the training split for evaluation.
 #' @param ... Additional arguments passed to the helper function. See details.
+#' @param .row_id The row number to extract from the nested data.
 #'
 #' @details
 #'
@@ -62,35 +63,45 @@
 #'   - The `.length_train` is an optional size of the training data.
 #'   - The `...` (dots) are additional arguments that can be passed to [timetk::time_series_split()].
 #'
+#' ### Helpers
+#'
+#' `extract_nested_train_split()` and `extract_nested_test_split()` are used to simplify extracting
+#' the training and testing data from the actual data. This can be helpful when making
+#' preprocessing recipes using the `recipes` package.
+#'
 #' @examples
 #'
 #' library(tidyverse)
 #' library(timetk)
 #' library(modeltime)
 #'
-#' walmart_sales_weekly %>%
+#'
+#' nested_data_tbl <- walmart_sales_weekly %>%
 #'     select(id, Date, Weekly_Sales) %>%
 #'     set_names(c("id", "date", "value")) %>%
 #'
-#'     # Extends the time series by id
+#'     # Step 1: Extends the time series by id
 #'     extend_timeseries(
 #'         .id_var     = id,
 #'         .date_var   = date,
 #'         .length_future = 52
 #'     ) %>%
 #'
-#'     # Nests the time series into .actual_data and .future_data
+#'     # Step 2: Nests the time series into .actual_data and .future_data
 #'     nest_timeseries(
 #'         .id_var     = id,
 #'         .length_future = 52
 #'     ) %>%
 #'
-#'     # Adds a column .splits that contains training/testing samples
+#'     # Step 3: Adds a column .splits that contains training/testing indicies
 #'     split_nested_timeseries(
 #'         .length_test = 52
 #'     )
 #'
+#' nested_data_tbl
 #'
+#' # Helpers: Getting the Train/Test Sets
+#' extract_nested_train_split(nested_data_tbl, .row_id = 1)
 #'
 #' @name prep_nested
 
@@ -214,11 +225,11 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
 
     id_text <- names(.data)[1]
 
-    cum <- FALSE
-    if (is.null(.length_train)) {
-        cum <- TRUE
-        .length_train <- 5
-    }
+    # cum <- FALSE
+    # if (is.null(.length_train)) {
+    #     cum <- TRUE
+    #     .length_train <- 5
+    # }
 
     suppressMessages({
         .data %>%
@@ -227,13 +238,8 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
                 # print(i)
 
                 tryCatch({
-                    timetk::time_series_split(
-                        x,
-                        initial    = .length_train,
-                        assess     = .length_test,
-                        cumulative = cum,
-                        ...
-                    )
+
+                    make_ts_splits(x, .length_test = .length_test, .length_train = .length_train)
 
                 }, error = function(e) {
                     # rlang::warn("Problem with: {as.character(i)}")
@@ -248,3 +254,86 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
     })
 
 }
+
+#' @export
+#' @rdname prep_nested
+extract_nested_train_split <- function(.data, .row_id = 1) {
+
+    actual_data <- .data$.actual_data[[.row_id]]
+    split_list  <- .data$.splits[[.row_id]]
+
+    actual_data %>% dplyr::slice(split_list$idx_train)
+}
+
+#' @rdname prep_nested
+extract_nested_test_split <- function(.data, .row_id = 1) {
+
+    actual_data <- .data$.actual_data[[.row_id]]
+    split_list  <- .data$.splits[[.row_id]]
+
+    actual_data %>% dplyr::slice(split_list$idx_test)
+}
+
+
+# Helpers ----
+
+#' Generate a Time Series Train/Test Split Indicies
+#'
+#' Makes fast train/test split indicies for time series.
+#'
+#' @param .data A data frame containing ordered time seried data (ascending)
+#' @param .length_test The number of rows to include in the test set
+#' @param .length_train Optional. The number of rows to include in the training set.
+#'  If NULL, returns all remaining row indicies.
+#'
+#' @return A list containing train_idx and test_idx
+#'
+#' @export
+#'
+make_ts_splits <- function(.data, .length_test, .length_train = NULL) {
+
+    idx <- seq(1, nrow(.data))
+
+    # print("idx")
+    # print(idx)
+
+    idx_test <- utils::tail(idx, n = .length_test)
+
+    # print("idx_test")
+    # print(idx_test)
+
+    idx_train <- seq_len(idx_test[1]-1)
+
+    # print("idx_train")
+    # print(idx_train)
+
+    if (!is.null(.length_train)) {
+        idx_train <- utils::tail(idx_train, n = .length_train)
+    }
+
+    ret <- list(
+        idx_train = idx_train,
+        idx_test  = idx_test
+    )
+
+    class(ret) <- c("ts_split_indicies")
+
+    return(ret)
+}
+
+#' @export
+print.ts_split_indicies <- function(x, ...) {
+    print(stringr::str_glue("split [{length(x$idx_train)}|{length(x$idx_test)}|{length(x$idx_test)+length(x$idx_train)}]"))
+}
+
+# Extract Train / Test Splits from Nested Modeltime Data
+#
+# These function simplify extracting training and testing data, which is
+# useful when developing preprocessing recipes for models using the `recipes` package.
+#
+# @param .data Data that has been nested and split with [nest_timeseries()] and [split_nested_timeseries()].
+# @param .row_id The row number to extract from the nested data.
+#
+# @name extract_split
+
+

@@ -181,10 +181,10 @@ First, we create `tidymodels` workflows for the various models that you intend t
 
 #### Prophet
 
-A common modeling method is prophet, that can be created using `prophet_reg()`. We'll create a workflow. Note that we use the first `nested_data_tbl$.splits[[1]])` to help us determine how to build features.
+A common modeling method is prophet, that can be created using `prophet_reg()`. We'll create a workflow. Note that we use the `extract_nested_train_split(nested_data_tbl)` to help us build preprocessing features.
 
 ```{r}
-rec_prophet <- recipe(value ~ date, training(nested_data_tbl$.splits[[1]])) 
+rec_prophet <- recipe(value ~ date, extract_nested_train_split(nested_data_tbl)) 
 
 wflw_prophet <- workflow() %>%
     add_model(
@@ -197,10 +197,10 @@ wflw_prophet <- workflow() %>%
 
 #### XGBoost
 
-Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the first `nested_data_tbl$.splits[[1]])` to help us determine how to build features.
+Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the `extract_nested_train_split(nested_data_tbl)` to help us build preprocessing features.
 
 ```{r}
-rec_xgb <- recipe(value ~ ., training(nested_data_tbl$.splits[[1]])) %>%
+rec_xgb <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl)) %>%
     step_timeseries_signature(date) %>%
     step_rm(date) %>%
     step_zv(all_predictors()) %>%
@@ -274,11 +274,11 @@ Using the accuracy data, we can pick a metric and select the best model based on
 
 ```{r}
 best_nested_modeltime_tbl <- nested_modeltime_tbl %>%
-            modeltime_nested_select_best(
-              metric                = "rmse", 
-              minimize              = TRUE, 
-              filter_test_forecasts = TRUE
-            )
+    modeltime_nested_select_best(
+      metric                = "rmse", 
+      minimize              = TRUE, 
+      filter_test_forecasts = TRUE
+    )
 ```
 
 This identifies which models should be used for the final forecast. With the models selected, we can make the future forecast. 

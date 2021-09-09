@@ -5,6 +5,8 @@
 \alias{extend_timeseries}
 \alias{nest_timeseries}
 \alias{split_nested_timeseries}
+\alias{extract_nested_train_split}
+\alias{extract_nested_test_split}
 \title{Prepared Nested Modeltime Data}
 \usage{
 extend_timeseries(.data, .id_var, .date_var, .length_future, ...)
@@ -12,6 +14,10 @@ extend_timeseries(.data, .id_var, .date_var, .length_future, ...)
 nest_timeseries(.data, .id_var, .length_future, .length_actual = NULL)
 
 split_nested_timeseries(.data, .length_test, .length_train = NULL, ...)
+
+extract_nested_train_split(.data, .row_id = 1)
+
+extract_nested_test_split(.data, .row_id = 1)
 }
 \arguments{
 \item{.data}{A data frame or tibble containing time series data. The data should have:
@@ -39,6 +45,8 @@ time series by each time series group.
 \item{.length_test}{Defines the length of the test split for evaluation.}
 
 \item{.length_train}{Defines the length of the training split for evaluation.}
+
+\item{.row_id}{The row number to extract from the nested data.}
 }
 \description{
 A set of functions to simplify preparation of nested data for
@@ -82,6 +90,13 @@ testing sample. This is typically the same size as the \code{.future_data}.
 \item The \code{...} (dots) are additional arguments that can be passed to \code{\link[timetk:time_series_split]{timetk::time_series_split()}}.
 }
 }
+
+\subsection{Helpers}{
+
+\code{extract_nested_train_split()} and \code{extract_nested_test_split()} are used to simplify extracting
+the training and testing data from the actual data. This can be helpful when making
+preprocessing recipes using the \code{recipes} package.
+}
 }
 \examples{
 
@@ -89,28 +104,32 @@ library(tidyverse)
 library(timetk)
 library(modeltime)
 
-walmart_sales_weekly \%>\%
+
+nested_data_tbl <- walmart_sales_weekly \%>\%
     select(id, Date, Weekly_Sales) \%>\%
     set_names(c("id", "date", "value")) \%>\%
 
-    # Extends the time series by id
+    # Step 1: Extends the time series by id
     extend_timeseries(
         .id_var     = id,
         .date_var   = date,
         .length_future = 52
     ) \%>\%
 
-    # Nests the time series into .actual_data and .future_data
+    # Step 2: Nests the time series into .actual_data and .future_data
     nest_timeseries(
         .id_var     = id,
         .length_future = 52
     ) \%>\%
 
-    # Adds a column .splits that contains training/testing samples
+    # Step 3: Adds a column .splits that contains training/testing indicies
     split_nested_timeseries(
         .length_test = 52
     )
 
+nested_data_tbl
 
+# Helpers: Getting the Train/Test Sets
+extract_nested_train_split(nested_data_tbl, .row_id = 1)
 
 }

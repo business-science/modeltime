@@ -178,7 +178,7 @@
 
       
 
-      </header><script src="parallel-processing_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="parallel-processing_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Hyperparameter Tuning with Parallel Processing</h1>
@@ -478,10 +478,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.014 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 30.424 seconds</span>
+<span class="co">#&gt;  Beginning Parallel Loop | 0.008 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 14.245 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 30.426 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 14.246 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -521,7 +521,7 @@
 <span class="co">#&gt; ✓ Model Successfully Fitted: 5</span>
 <span class="co">#&gt; ℹ Fitting Model: 6</span>
 <span class="co">#&gt; ✓ Model Successfully Fitted: 6</span>
-<span class="co">#&gt; Total time | 27.177 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 18.838 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -533,12 +533,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="eyexguwfjw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="hwvaiglkou" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#eyexguwfjw .gt_table {
+#hwvaiglkou .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -563,7 +563,7 @@
   border-left-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_heading {
+#hwvaiglkou .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -575,7 +575,7 @@
   border-right-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_title {
+#hwvaiglkou .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -585,23 +585,23 @@
   border-bottom-width: 0;
 }
 
-#eyexguwfjw .gt_subtitle {
+#hwvaiglkou .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
   padding-top: 0;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#eyexguwfjw .gt_bottom_border {
+#hwvaiglkou .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_col_headings {
+#hwvaiglkou .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -616,7 +616,7 @@
   border-right-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_col_heading {
+#hwvaiglkou .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -636,7 +636,7 @@
   overflow-x: hidden;
 }
 
-#eyexguwfjw .gt_column_spanner_outer {
+#hwvaiglkou .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -648,27 +648,27 @@
   padding-right: 4px;
 }
 
-#eyexguwfjw .gt_column_spanner_outer:first-child {
+#hwvaiglkou .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eyexguwfjw .gt_column_spanner_outer:last-child {
+#hwvaiglkou .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eyexguwfjw .gt_column_spanner {
+#hwvaiglkou .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
   vertical-align: bottom;
   padding-top: 5px;
-  padding-bottom: 6px;
+  padding-bottom: 5px;
   overflow-x: hidden;
   display: inline-block;
   width: 100%;
 }
 
-#eyexguwfjw .gt_group_heading {
+#hwvaiglkou .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -690,7 +690,7 @@
   vertical-align: middle;
 }
 
-#eyexguwfjw .gt_empty_group_heading {
+#hwvaiglkou .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -705,15 +705,15 @@
   vertical-align: middle;
 }
 
-#eyexguwfjw .gt_from_md > :first-child {
+#hwvaiglkou .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#eyexguwfjw .gt_from_md > :last-child {
+#hwvaiglkou .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#eyexguwfjw .gt_row {
+#hwvaiglkou .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -732,7 +732,7 @@
   overflow-x: hidden;
 }
 
-#eyexguwfjw .gt_stub {
+#hwvaiglkou .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -744,7 +744,7 @@
   padding-left: 12px;
 }
 
-#eyexguwfjw .gt_summary_row {
+#hwvaiglkou .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -754,7 +754,7 @@
   padding-right: 5px;
 }
 
-#eyexguwfjw .gt_first_summary_row {
+#hwvaiglkou .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -764,7 +764,7 @@
   border-top-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_grand_summary_row {
+#hwvaiglkou .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -774,7 +774,7 @@
   padding-right: 5px;
 }
 
-#eyexguwfjw .gt_first_grand_summary_row {
+#hwvaiglkou .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -784,11 +784,11 @@
   border-top-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_striped {
+#hwvaiglkou .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eyexguwfjw .gt_table_body {
+#hwvaiglkou .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -797,7 +797,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_footnotes {
+#hwvaiglkou .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -811,13 +811,13 @@
   border-right-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_footnote {
+#hwvaiglkou .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#eyexguwfjw .gt_sourcenotes {
+#hwvaiglkou .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -831,41 +831,41 @@
   border-right-color: #D3D3D3;
 }
 
-#eyexguwfjw .gt_sourcenote {
+#hwvaiglkou .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#eyexguwfjw .gt_left {
+#hwvaiglkou .gt_left {
   text-align: left;
 }
 
-#eyexguwfjw .gt_center {
+#hwvaiglkou .gt_center {
   text-align: center;
 }
 
-#eyexguwfjw .gt_right {
+#hwvaiglkou .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eyexguwfjw .gt_font_normal {
+#hwvaiglkou .gt_font_normal {
   font-weight: normal;
 }
 
-#eyexguwfjw .gt_font_bold {
+#hwvaiglkou .gt_font_bold {
   font-weight: bold;
 }
 
-#eyexguwfjw .gt_font_italic {
+#hwvaiglkou .gt_font_italic {
   font-style: italic;
 }
 
-#eyexguwfjw .gt_super {
+#hwvaiglkou .gt_super {
   font-size: 65%;
 }
 
-#eyexguwfjw .gt_footnote_marks {
+#hwvaiglkou .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

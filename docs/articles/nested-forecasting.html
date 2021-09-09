@@ -178,7 +178,7 @@
 
       
 
-      </header><script src="nested-forecasting_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="nested-forecasting_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Nested Forecasting</h1>
@@ -331,13 +331,13 @@
 <span class="co">#&gt; # A tibble: 7 × 4</span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits        </span>
 <span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;         </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52/52]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
+<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
+<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
+<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
+<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
+<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
+<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span></code></pre></div>
 <p>This creates a nested tibble with “.actual_data”, “.future_data”, and “.splits”. Each column will help in the nested modeltime workflow.</p>
 </div>
 <div id="nested-modeltime-workflow" class="section level2">
@@ -357,9 +357,9 @@
 <div id="prophet" class="section level4">
 <h4 class="hasAnchor">
 <a href="#prophet" class="anchor"></a>Prophet</h4>
-<p>A common modeling method is prophet, that can be created using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>. We’ll create a workflow. Note that we use the first <code>nested_data_tbl$.splits[[1]])</code> to help us determine how to build features.</p>
+<p>A common modeling method is prophet, that can be created using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>. We’ll create a workflow. Note that we use the <code><a href="../reference/prep_nested.html">extract_nested_train_split(nested_data_tbl)</a></code> to help us build preprocessing features.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/prep_nested.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
 
 <span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_model</span><span class="op">(</span>
@@ -371,9 +371,9 @@
 <div id="xgboost" class="section level4">
 <h4 class="hasAnchor">
 <a href="#xgboost" class="anchor"></a>XGBoost</h4>
-<p>Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the first <code>nested_data_tbl$.splits[[1]])</code> to help us determine how to build features.</p>
+<p>Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the <code><a href="../reference/prep_nested.html">extract_nested_train_split(nested_data_tbl)</a></code> to help us build preprocessing features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">$</span><span class="va">.splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/prep_nested.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -400,7 +400,6 @@
 <span class="co">#&gt; Fitting models on training data... ■■■■■                             14% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■                        29% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■                57% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■            71% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:…</span>
 
@@ -409,15 +408,15 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Trained on: .splits | Model Errors: [0]</span>
 <span class="co">#&gt; # A tibble: 7 × 5</span>
-<span class="co">#&gt;   id    .actual_data       .future_data     .splits        .modeltime_tables    </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;           &lt;list&gt;         &lt;list&gt;               </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [2 × 5…</span></code></pre></div>
+<span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables  </span>
+<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             </span>
+<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
+<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
+<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
+<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
+<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
+<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
+<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span></code></pre></div>
 <p>This adds a new column with <code>.modeltime_tables</code> for each of the data sets and has created several <strong>logged attributes</strong> that are part of the “Nested Modeltime Table”. We also can see that the models were trained on “.splits” and none of the models had any errors.</p>
 </div>
 <div id="step-3-logged-attributes" class="section level3">
@@ -432,12 +431,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="wvmaexbamy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="auybfjmaxh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wvmaexbamy .gt_table {
+#auybfjmaxh .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -462,7 +461,7 @@
   border-left-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_heading {
+#auybfjmaxh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -474,7 +473,7 @@
   border-right-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_title {
+#auybfjmaxh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -484,23 +483,23 @@
   border-bottom-width: 0;
 }
 
-#wvmaexbamy .gt_subtitle {
+#auybfjmaxh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
   padding-top: 0;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#wvmaexbamy .gt_bottom_border {
+#auybfjmaxh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_col_headings {
+#auybfjmaxh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -515,7 +514,7 @@
   border-right-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_col_heading {
+#auybfjmaxh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -535,7 +534,7 @@
   overflow-x: hidden;
 }
 
-#wvmaexbamy .gt_column_spanner_outer {
+#auybfjmaxh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -547,27 +546,27 @@
   padding-right: 4px;
 }
 
-#wvmaexbamy .gt_column_spanner_outer:first-child {
+#auybfjmaxh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wvmaexbamy .gt_column_spanner_outer:last-child {
+#auybfjmaxh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wvmaexbamy .gt_column_spanner {
+#auybfjmaxh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
   vertical-align: bottom;
   padding-top: 5px;
-  padding-bottom: 6px;
+  padding-bottom: 5px;
   overflow-x: hidden;
   display: inline-block;
   width: 100%;
 }
 
-#wvmaexbamy .gt_group_heading {
+#auybfjmaxh .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -589,7 +588,7 @@
   vertical-align: middle;
 }
 
-#wvmaexbamy .gt_empty_group_heading {
+#auybfjmaxh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -604,15 +603,15 @@
   vertical-align: middle;
 }
 
-#wvmaexbamy .gt_from_md > :first-child {
+#auybfjmaxh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wvmaexbamy .gt_from_md > :last-child {
+#auybfjmaxh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wvmaexbamy .gt_row {
+#auybfjmaxh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -631,7 +630,7 @@
   overflow-x: hidden;
 }
 
-#wvmaexbamy .gt_stub {
+#auybfjmaxh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -643,7 +642,7 @@
   padding-left: 12px;
 }
 
-#wvmaexbamy .gt_summary_row {
+#auybfjmaxh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -653,7 +652,7 @@
   padding-right: 5px;
 }
 
-#wvmaexbamy .gt_first_summary_row {
+#auybfjmaxh .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -663,7 +662,7 @@
   border-top-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_grand_summary_row {
+#auybfjmaxh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -673,7 +672,7 @@
   padding-right: 5px;
 }
 
-#wvmaexbamy .gt_first_grand_summary_row {
+#auybfjmaxh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -683,11 +682,11 @@
   border-top-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_striped {
+#auybfjmaxh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wvmaexbamy .gt_table_body {
+#auybfjmaxh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -696,7 +695,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_footnotes {
+#auybfjmaxh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -710,13 +709,13 @@
   border-right-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_footnote {
+#auybfjmaxh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#wvmaexbamy .gt_sourcenotes {
+#auybfjmaxh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -730,41 +729,41 @@
   border-right-color: #D3D3D3;
 }
 
-#wvmaexbamy .gt_sourcenote {
+#auybfjmaxh .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#wvmaexbamy .gt_left {
+#auybfjmaxh .gt_left {
   text-align: left;
 }
 
-#wvmaexbamy .gt_center {
+#auybfjmaxh .gt_center {
   text-align: center;
 }
 
-#wvmaexbamy .gt_right {
+#auybfjmaxh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wvmaexbamy .gt_font_normal {
+#auybfjmaxh .gt_font_normal {
   font-weight: normal;
 }
 
-#wvmaexbamy .gt_font_bold {
+#auybfjmaxh .gt_font_bold {
   font-weight: bold;
 }
 
-#wvmaexbamy .gt_font_italic {
+#auybfjmaxh .gt_font_italic {
   font-style: italic;
 }
 
-#wvmaexbamy .gt_super {
+#auybfjmaxh .gt_super {
   font-size: 65%;
 }
 
-#wvmaexbamy .gt_footnote_marks {
+#auybfjmaxh .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -991,11 +990,11 @@
 <p>Using the accuracy data, we can pick a metric and select the best model based on that metric. The available metrics are in the <code><a href="../reference/default_forecast_accuracy_metric_set.html">default_forecast_accuracy_metric_set()</a></code>. Make sure to select <code>minimize</code> based on the metric. The <code>filter_test_forecasts</code> parameter tells the function to filter the logged test forecasts to just the best.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
-            <span class="fu"><a href="../reference/modeltime_nested_select_best.html">modeltime_nested_select_best</a></span><span class="op">(</span>
-              metric                <span class="op">=</span> <span class="st">"rmse"</span>, 
-              minimize              <span class="op">=</span> <span class="cn">TRUE</span>, 
-              filter_test_forecasts <span class="op">=</span> <span class="cn">TRUE</span>
-            <span class="op">)</span></code></pre></div>
+    <span class="fu"><a href="../reference/modeltime_nested_select_best.html">modeltime_nested_select_best</a></span><span class="op">(</span>
+      metric                <span class="op">=</span> <span class="st">"rmse"</span>, 
+      minimize              <span class="op">=</span> <span class="cn">TRUE</span>, 
+      filter_test_forecasts <span class="op">=</span> <span class="cn">TRUE</span>
+    <span class="op">)</span></code></pre></div>
 <p>This identifies which models should be used for the final forecast. With the models selected, we can make the future forecast.</p>
 <div id="extract-nested-best-model-report" class="section level4">
 <h4 class="hasAnchor">
@@ -1067,7 +1066,7 @@
 <span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
 <span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 7.488328 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 4.278231 secs.</span></code></pre></div>
 <p>Note that we used <code><a href="../reference/control_modeltime.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -1076,15 +1075,15 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Trained on: .actual_data | Model Errors: [0]</span>
 <span class="co">#&gt; # A tibble: 7 × 5</span>
-<span class="co">#&gt;   id    .actual_data       .future_data     .splits        .modeltime_tables    </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;           &lt;list&gt;         &lt;list&gt;               </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2… &lt;split [52/52… &lt;mdl_time_tbl [1 × 5…</span></code></pre></div>
+<span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables  </span>
+<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             </span>
+<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
+<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
+<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
+<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
+<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
+<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
+<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span></code></pre></div>
 <div id="extract-nested-future-forecast" class="section level4">
 <h4 class="hasAnchor">
 <a href="#extract-nested-future-forecast" class="anchor"></a>Extract Nested Future Forecast</h4>
