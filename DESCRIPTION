@@ -48,8 +48,7 @@ Imports:
     xgboost (>= 1.2.0.1),
     prophet,
     methods,
-    cli,
-    TSrepr
+    cli
 Suggests:
     rstan,
     slider, 
@@ -72,7 +71,8 @@ Suggests:
     rmarkdown (>= 2.9),
     webshot,
     qpdf,
-    covr
+    covr,
+    TSrepr
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
