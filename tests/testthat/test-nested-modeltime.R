@@ -57,7 +57,7 @@ nested_data_tbl <- data_start_tbl %>%
 
 # * XGBoost ----
 
-rec_xgb <- recipe(value ~ ., training(nested_data_tbl$.splits[[1]])) %>%
+rec_xgb <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl)) %>%
     step_timeseries_signature(date) %>%
     step_rm(date) %>%
     step_zv(all_predictors()) %>%
@@ -70,14 +70,14 @@ wflw_xgb <- workflow() %>%
 # * Bad Model ----
 #   - Xgboost can't handle dates
 
-recipe_bad <- recipe(value ~ ., training(nested_data_tbl$.splits[[1]]))
+recipe_bad <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl))
 
 wflw_bad <- workflow() %>%
     add_model(boost_tree()) %>%
     add_recipe(recipe_bad)
 
 # * Prophet ----
-# rec_prophet <- recipe(value ~ date, training(nested_data_tbl$.splits[[1]]))
+# rec_prophet <- recipe(value ~ date, extract_nested_train_split(nested_data_tbl))
 #
 # wflw_prophet <- workflow() %>%
 #     add_model(
@@ -114,7 +114,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
     acc_tbl <- nested_modeltime_tbl %>% extract_nested_test_accuracy()
 
     expect_equal(nrow(acc_tbl), 6)
-    expect_equal(ncol(acc_tbl), 11)
+    expect_equal(ncol(acc_tbl), 10)
 
     err_tbl <- nested_modeltime_tbl %>% extract_nested_error_report()
 
@@ -152,7 +152,7 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
         extract_nested_best_model_report()
 
     expect_equal(nrow(best_model_report), 3)
-    expect_equal(ncol(best_model_report), 11)
+    expect_equal(ncol(best_model_report), 10)
 
     fcast_tbl <- best_nested_modeltime_tbl %>%
         extract_nested_test_forecast()
