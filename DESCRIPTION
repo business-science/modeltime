@@ -48,7 +48,9 @@ Imports:
     xgboost (>= 1.2.0.1),
     prophet,
     methods,
-    cli
+    cli,
+    smooth,
+    greybox
 Suggests:
     rstan,
     slider, 

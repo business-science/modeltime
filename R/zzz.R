@@ -37,4 +37,7 @@
     #HIERARCHICAL MODEL
     make_temporal_hierarchy()
 
+    #ADAM
+    make_adam_reg()
+
 }
