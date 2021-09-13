@@ -40,7 +40,12 @@ __Nested (Iterative) Forecasting__ is aimed at making it easier to perform forec
 - [Forecasting with Global Models](https://business-science.github.io/modeltime/articles/modeling-panel-data.html): Added more complete steps in the forecasting process so now user can see how to forecast each step from start to finish including future forecasting.  
 
 
-### Workflowsets Integration
+### New Accuracy Metric Set and Yardstick Functions
+
+- `extended_forecast_accuracy_metric_set()`: Adds the new MAAPE metric for handling intermittent data when MAPE returns Inf. 
+- `maape()`: New yardstick metric that calculates "Mean Arctangent Absolute Percentage Error" (MAAPE). Used when MAPE returns Inf typically due to intermittent data. 
+
+### Improvements
 
 - `modeltime_fit_workflowset()`: Improved handling of Workflowset Descriptions, which now match the `wflow_id`. 
 

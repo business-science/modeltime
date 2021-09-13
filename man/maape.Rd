@@ -12,5 +12,6 @@ maape(data, ...)
 \item{...}{Not currently in use.}
 }
 \description{
-This is basically a wrapper to the function of \code{TSrepr::maape()}.
+Useful when MAPE returns Inf typically due to intermittent data containing zeros.
+This is a wrapper to the function of \code{TSrepr::maape()}.
 }

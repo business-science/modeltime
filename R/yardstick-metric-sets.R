@@ -11,8 +11,11 @@
 #'
 #' @details
 #'
+#' # Default Forecast Accuracy Metric Set
+#'
 #' The primary purpose is to use the default accuracy metrics to calculate the following
 #' forecast accuracy metrics using [modeltime_accuracy()]:
+#'
 #' - MAE   - Mean absolute error, [mae()]
 #' - MAPE  - Mean absolute percentage error, [mape()]
 #' - MASE  - Mean absolute scaled error, [mase()]
@@ -21,6 +24,15 @@
 #' - RSQ   - R-squared, [rsq()]
 #'
 #' Adding additional metrics is possible via `...`.
+#'
+#' # Extended Forecast Accuracy Metric Set
+#'
+#' Extends the default metric set by adding:
+#'
+#' - MAAPE - Mean Arctangent Absolute Percentage Error, [maape()].
+#'   MAAPE is designed for intermittent data where MAPE returns `Inf`.
+#'
+#'
 #'
 #' @seealso
 #' - [yardstick::metric_tweak()] - For modifying `yardstick` metrics
@@ -60,8 +72,11 @@
 #' my_metric_set(fake_data, y, yhat)
 #'
 #'
-#' @export
+#' @name metric_sets
+
 #' @importFrom yardstick mae mape mase smape rmse rsq metric_tweak
+#' @export
+#' @rdname metric_sets
 default_forecast_accuracy_metric_set <- function(...) {
     yardstick::metric_set(
         yardstick::mae,
@@ -77,70 +92,10 @@ default_forecast_accuracy_metric_set <- function(...) {
 
 # EXTENDED FORECAST ACCURACY METRIC SET ----
 
-#' Forecast Accuracy Metrics Sets
-#'
-#'
-#' This is a wrapper for [metric_set()] with several common forecast / regression
-#' accuracy metrics included. These are the default time series accuracy
-#' metrics used with [modeltime_accuracy()]. This metric set is applied when
-#' the MAPE metric returns Inf.
-#'
-#' @param ... Add additional `yardstick` metrics
-#'
-#' @details
-#'
-#' The primary purpose is to use the default accuracy metrics to calculate the following
-#' forecast accuracy metrics using [modeltime_accuracy()]:
-#' - MAE   - Mean absolute error, [mae()]
-#' - MAPE  - Mean absolute percentage error, [mape()]
-#' - MAAPE - Mean Arctangent Absolute Percentage Error, [maape()]
-#' - MASE  - Mean absolute scaled error, [mase()]
-#' - SMAPE - Symmetric mean absolute percentage error, [smape()]
-#' - RMSE  - Root mean squared error, [rmse()]
-#' - RSQ   - R-squared, [rsq()]
-#'
-#' Adding additional metrics is possible via `...`.
-#'
-#' @seealso
-#' - [yardstick::metric_tweak()] - For modifying `yardstick` metrics
-#'
-#' @examples
-#' library(tibble)
-#' library(dplyr)
-#' library(timetk)
-#' library(yardstick)
-#'
-#' fake_data <- tibble(
-#'     y    = c(1:12, 2*1:12),
-#'     yhat = c(1 + 1:12, 2*1:12 - 1)
-#' )
-#'
-#' # ---- HOW IT WORKS ----
-#'
-#' # Extended Forecast Accuracy Metric Specification
-#' extended_forecast_accuracy_metric_set()
-#'
-#' # Create a metric summarizer function from the metric set
-#' calc_default_metrics <- extended_forecast_accuracy_metric_set()
-#'
-#' # Apply the metric summarizer to new data
-#' calc_default_metrics(fake_data, y, yhat)
-#'
-#' # ---- ADD MORE PARAMETERS ----
-#'
-#' # Can create a version of mase() with seasonality = 12 (monthly)
-#' mase12 <- metric_tweak(.name = "mase12", .fn = mase, m = 12)
-#'
-#' # Add it to the default metric set
-#' my_metric_set <- extended_forecast_accuracy_metric_set(mase12)
-#' my_metric_set
-#'
-#' # Apply the newly created metric set
-#' my_metric_set(fake_data, y, yhat)
-#'
-#'
-#' @export
+
 #' @importFrom yardstick mae mape mase smape rmse rsq metric_tweak
+#' @export
+#' @rdname metric_sets
 extended_forecast_accuracy_metric_set <- function(...) {
     yardstick::metric_set(
         yardstick::mae,
@@ -290,7 +245,8 @@ maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
 
 #' Mean Arctangent Absolute Percentage Error
 #'
-#' This is basically a wrapper to the function of `TSrepr::maape()`.
+#' Useful when MAPE returns Inf typically due to intermittent data containing zeros.
+#' This is a wrapper to the function of `TSrepr::maape()`.
 #'
 #' @param data  A `data.frame` containing the truth and estimate columns.
 #' @param ... Not currently in use.

@@ -145,9 +145,12 @@ reference:
     - update_modeltime_description
     - pluck_modeltime_model
   - title: Accuracy Metrics (Yardstick)
+  - subtitle: Metric Sets and Summarizers
     contents:
     - default_forecast_accuracy_metric_set
     - summarize_accuracy_metrics
+  - subtitle: New Accuracy Metrics
+    - maape
     - metric_tweak
   - title: Parameters (Dials)
     desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
