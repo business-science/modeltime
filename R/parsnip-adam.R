@@ -382,6 +382,17 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
 
     y <- all.vars(formula)[1]
 
+    detect_function <- function(x){
+
+        if (stringr::str_detect(x, "\\(") && stringr::str_detect(x, "\\)")) {TRUE} else {FALSE}
+    }
+
+    is_fun <- sapply(attr(stats::terms(formula, data = data), "term.labels"), detect_function) %>% sum()
+
+    if (is_fun){
+        rlang::warn("We have detected the possible use of a function in the external regressors in the `fit` function. The ADAM algorithm does not support the use of functions directly. Please create a new variable and then use it in the `fit` function.")
+    }
+
     data <- data %>% dplyr::relocate(y)
 
     args <- list(...)
@@ -477,7 +488,8 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
         extras = list(
             value = y,
             xreg_recipe = xreg_recipe,
-            value2 = y1
+            value2 = y1,
+            terms = attr(stats::terms(formula, data = data), "term.labels")
         ),
 
         # Description - Convert ADAM model parameters to short description
@@ -588,6 +600,17 @@ auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q =
 
 
     y <- all.vars(formula)[1]
+
+    detect_function <- function(x){
+
+        if (stringr::str_detect(x, "\\(") && stringr::str_detect(x, "\\)")) {TRUE} else {FALSE}
+    }
+
+    is_fun <- sapply(attr(stats::terms(formula, data = data), "term.labels"), detect_function) %>% sum()
+
+    if (is_fun){
+        rlang::warn("We have detected the possible use of a function in the external regressors in the `fit` function. The ADAM algorithm does not support the use of functions directly. Please create a new variable and then use it in the `fit` function.")
+    }
 
     data <- data %>% dplyr::relocate(y)
 
