@@ -1,4 +1,4 @@
-# modeltime 0.7.0.9000 (Development Version)
+# modeltime 1.0.0
 
 ### New Feature: Nested (Iterative) Forecasting
 
