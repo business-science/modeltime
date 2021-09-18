@@ -61,20 +61,21 @@ Models can be created using the following \emph{engines}:
 \item "ets" (default) - Connects to \code{\link[forecast:ets]{forecast::ets()}}
 \item "croston" - Connects to \code{\link[forecast:croston]{forecast::croston()}}
 \item "theta" - Connects to \code{\link[forecast:thetaf]{forecast::thetaf()}}
+\item "smooth_es" - Connects to \code{\link[smooth:es]{smooth::es()}}
 }
 }
 \section{Engine Details}{
 
 
 The standardized parameter names in \code{modeltime} can be mapped to their original
-names in each engine:\tabular{lll}{
-   modeltime \tab forecast::ets \tab forecast::croston() \cr
-   seasonal_period() \tab ts(frequency) \tab ts(frequency) \cr
-   error(), trend(), season() \tab model ('ZZZ') \tab NA \cr
-   damping() \tab damped (NULL) \tab NA \cr
-   smooth_level() \tab alpha (NULL) \tab alpha (0.1) \cr
-   smooth_trend() \tab beta (NULL) \tab NA \cr
-   smooth_seasonal() \tab gamma (NULL) \tab NA \cr
+names in each engine:\tabular{llll}{
+   modeltime \tab forecast::ets \tab forecast::croston() \tab smooth::es() \cr
+   seasonal_period() \tab ts(frequency) \tab ts(frequency) \tab ts(frequency) \cr
+   error(), trend(), season() \tab model ('ZZZ') \tab NA \tab model('ZZZ') \cr
+   damping() \tab damped (NULL) \tab NA \tab phi \cr
+   smooth_level() \tab alpha (NULL) \tab alpha (0.1) \tab persistence(alpha) \cr
+   smooth_trend() \tab beta (NULL) \tab NA \tab persistence(beta) \cr
+   smooth_seasonal() \tab gamma (NULL) \tab NA \tab persistence(gamma) \cr
 }
 
 
@@ -84,13 +85,9 @@ Other options can be set using \code{set_engine()}.
 
 The engine uses \code{\link[forecast:ets]{forecast::ets()}}.
 
-Function Parameters:\preformatted{## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, 
-##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, 
-##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", 
-##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", 
-##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, 
-##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", 
-##         "na.fail"), ...)
+Function Parameters:\preformatted{## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, lower = c(rep(1e-04, 
+##     3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", "admissible"), ic = c("aicc", 
+##     "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", "na.fail"), ...)
 }
 
 The main arguments are \code{model} and \code{damped} are defined using:
@@ -141,6 +138,37 @@ Parameter Notes:
 \item \code{xreg} - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.
 }
+
+\strong{smooth_es}
+
+The engine uses \code{\link[smooth:es]{smooth::es()}}.
+
+Function Parameters:\preformatted{## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", "BICc"), loss = c("likelihood", 
+##     "MSE", "MAE", "HAM", "MSEh", "TMSE", "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", "parametric", "likelihood", "semiparametric", 
+##     "nonparametric"), level = 0.95, bounds = c("usual", "admissible", "none"), silent = c("all", "graph", "legend", "output", "none"), xreg = NULL, xregDo = c("use", 
+##     "select"), initialX = NULL, ...)
+}
+
+The main arguments \code{model} and \code{phi} are defined using:
+\itemize{
+\item \code{error()} = "auto", "additive" and "multiplicative" are converted to "Z", "A" and "M"
+\item \code{trend()} = "auto", "additive", "multiplicative", "additive_damped", "multiplicative_damped" and "none" are converted to "Z", "A", "M", "Ad", "Md" and "N".
+\item \code{season()} = "auto", "additive", "multiplicative", and "none" are converted "Z", "A","M" and "N"
+\item \code{damping()} - Value of damping parameter. If NULL, then it is estimated.
+\item \code{smooth_level()}, \code{smooth_trend()}, and \code{smooth_seasonal()} are
+automatically determined if not provided. They are mapped to "persistence"("alpha", "beta" and "gamma", respectively).
+}
+
+By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
+\emph{in-sample data} following the underlying \code{smooth::es()} automation routine.
+
+Other options and argument can be set using \code{set_engine()}.
+
+Parameter Notes:
+\itemize{
+\item \code{xreg} - This is supplied via the parsnip / modeltime \code{fit()} interface
+(so don't provide this manually). See Fit Details (below).
+}
 }
 
 \section{Fit Details}{
@@ -174,7 +202,31 @@ For univariate analysis, you must include a date or date-time feature. Simply us
 
 \strong{Multivariate (xregs, Exogenous Regressors)}
 
-This model is not set up for use with exogenous regressors.
+Just for \code{smooth} engine.
+
+The \code{xreg} parameter is populated using the \code{fit()} or \code{fit_xy()} function:
+\itemize{
+\item Only \code{factor}, \verb{ordered factor}, and \code{numeric} data will be used as xregs.
+\item Date and Date-time variables are not used as xregs
+\item \code{character} data should be converted to factor.
+}
+
+\emph{Xreg Example:} Suppose you have 3 features:
+\enumerate{
+\item \code{y} (target)
+\item \code{date} (time stamp),
+\item \code{month.lbl} (labeled month as a ordered factor).
+}
+
+The \code{month.lbl} is an exogenous regressor that can be passed to the \code{arima_reg()} using
+\code{fit()}:
+\itemize{
+\item \code{fit(y ~ date + month.lbl)} will pass \code{month.lbl} on as an exogenous regressor.
+\item \code{fit_xy(data[,c("date", "month.lbl")], y = data$y)} will pass x, where x is a data frame containing \code{month.lbl}
+and the \code{date} feature. Only \code{month.lbl} will be used as an exogenous regressor.
+}
+
+Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
@@ -246,6 +298,26 @@ model_spec <- exp_smoothing() \%>\%
 # Fit Spec
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date, data = training(splits))
+model_fit
+}
+
+
+
+
+#' # ---- SMOOTH ----
+\donttest{
+#' # Model Spec
+model_spec <- exp_smoothing(
+               seasonal_period  = 12,
+               error            = "multiplicative",
+               trend            = "additive_damped",
+               season           = "additive"
+         ) \%>\%
+    set_engine("smooth_es")
+
+# Fit Spec
+model_fit <- model_spec \%>\%
+    fit(value ~ date, data = training(splits))
 model_fit
 }
 

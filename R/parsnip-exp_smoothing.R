@@ -38,6 +38,7 @@
 #'  - "ets" (default) - Connects to [forecast::ets()]
 #'  - "croston" - Connects to [forecast::croston()]
 #'  - "theta" - Connects to [forecast::thetaf()]
+#'  - "smooth_es" - Connects to [smooth::es()]
 #'
 #' @section Engine Details:
 #'
@@ -46,15 +47,15 @@
 #'
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("exp_smoothing")
-#' tibble::tribble(
-#'     ~ "modeltime", ~ "forecast::ets", ~ "forecast::croston()",
-#'     "seasonal_period()", "ts(frequency)", "ts(frequency)",
-#'     "error(), trend(), season()", "model ('ZZZ')", "NA",
-#'     "damping()", "damped (NULL)", "NA",
-#'     "smooth_level()", "alpha (NULL)", "alpha (0.1)",
-#'     "smooth_trend()", "beta (NULL)", "NA",
-#'     "smooth_seasonal()", "gamma (NULL)", "NA"
-#' ) %>% knitr::kable()
+#'tibble::tribble(
+#'    ~ "modeltime", ~ "forecast::ets", ~ "forecast::croston()", ~ "smooth::es()",
+#'    "seasonal_period()", "ts(frequency)", "ts(frequency)", "ts(frequency)",
+#'    "error(), trend(), season()", "model ('ZZZ')", "NA", "model('ZZZ')",
+#'    "damping()", "damped (NULL)", "NA", "phi",
+#'    "smooth_level()", "alpha (NULL)", "alpha (0.1)", "persistence(alpha)",
+#'    "smooth_trend()", "beta (NULL)", "NA", "persistence(beta)",
+#'    "smooth_seasonal()", "gamma (NULL)", "NA", "persistence(gamma)"
+#') %>% knitr::kable()
 #' ```
 #'
 #' Other options can be set using `set_engine()`.
@@ -107,6 +108,32 @@
 #' - `xreg` - This model is not set up to use exogenous regressors. Only univariate
 #'   models will be fit.
 #'
+#'
+#' __smooth_es__
+#'
+#' The engine uses [smooth::es()].
+#'
+#' Function Parameters:
+#' ```{r echo = FALSE}
+#' str(smooth::es)
+#' ```
+#' The main arguments `model` and `phi` are defined using:
+#' - `error()` = "auto", "additive" and "multiplicative" are converted to "Z", "A" and "M"
+#' - `trend()` = "auto", "additive", "multiplicative", "additive_damped", "multiplicative_damped" and "none" are converted to "Z", "A", "M", "Ad", "Md" and "N".
+#' - `season()` = "auto", "additive", "multiplicative", and "none" are converted "Z", "A","M" and "N"
+#' - `damping()` - Value of damping parameter. If NULL, then it is estimated.
+#' - `smooth_level()`, `smooth_trend()`, and `smooth_seasonal()` are
+#'    automatically determined if not provided. They are mapped to "persistence"("alpha", "beta" and "gamma", respectively).
+#'
+#' By default, all arguments are set to "auto" to perform automated Exponential Smoothing using
+#' _in-sample data_ following the underlying `smooth::es()` automation routine.
+#'
+#' Other options and argument can be set using `set_engine()`.
+#'
+#' Parameter Notes:
+#' - `xreg` - This is supplied via the parsnip / modeltime `fit()` interface
+#'  (so don't provide this manually). See Fit Details (below).
+#'
 #' @section Fit Details:
 #'
 #' __Date and Date-Time Variable__
@@ -135,7 +162,28 @@
 #'
 #' __Multivariate (xregs, Exogenous Regressors)__
 #'
-#' This model is not set up for use with exogenous regressors.
+#'  Just for `smooth` engine.
+#'
+#'  The `xreg` parameter is populated using the `fit()` or `fit_xy()` function:
+#'
+#'  - Only `factor`, `ordered factor`, and `numeric` data will be used as xregs.
+#'  - Date and Date-time variables are not used as xregs
+#'  - `character` data should be converted to factor.
+#'
+#'  _Xreg Example:_ Suppose you have 3 features:
+#'
+#'  1. `y` (target)
+#'  2. `date` (time stamp),
+#'  3. `month.lbl` (labeled month as a ordered factor).
+#'
+#'  The `month.lbl` is an exogenous regressor that can be passed to the `arima_reg()` using
+#'  `fit()`:
+#'
+#'  - `fit(y ~ date + month.lbl)` will pass `month.lbl` on as an exogenous regressor.
+#'  - `fit_xy(data[,c("date", "month.lbl")], y = data$y)` will pass x, where x is a data frame containing `month.lbl`
+#'   and the `date` feature. Only `month.lbl` will be used as an exogenous regressor.
+#'
+#'  Note that date or date-time class values are excluded from `xreg`.
 #'
 #'
 #' @seealso [fit.model_spec()], [set_engine()]
@@ -209,6 +257,26 @@
 #' # Fit Spec
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
+#' model_fit
+#' }
+#'
+#'
+#'
+#'
+#' #' # ---- SMOOTH ----
+#' \donttest{
+#' #' # Model Spec
+#' model_spec <- exp_smoothing(
+#'                seasonal_period  = 12,
+#'                error            = "multiplicative",
+#'                trend            = "additive_damped",
+#'                season           = "additive"
+#'          ) %>%
+#'     set_engine("smooth_es")
+#'
+#' # Fit Spec
+#' model_fit <- model_spec %>%
+#'     fit(value ~ date, data = training(splits))
 #' model_fit
 #' }
 #'
@@ -434,6 +502,7 @@ print.ets_fit_impl <- function(x, ...) {
 }
 
 
+
 #' @export
 predict.ets_fit_impl <- function(object, new_data, ...) {
     ets_predict_impl(object, new_data, ...)
@@ -465,6 +534,180 @@ ets_predict_impl <- function(object, new_data, ...) {
 
 }
 
+# SMOOTH -----
+
+#' Low-Level Exponential Smoothing function for translating modeltime to forecast
+#'
+#' @inheritParams exp_smoothing
+#' @inheritParams forecast::ets
+#' @param x A dataframe of xreg (exogenous regressors)
+#' @param y A numeric vector of values to fit
+#' @param period A seasonal frequency. Uses "auto" by default. A character phrase
+#'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
+#' @param ... Additional arguments passed to `smooth::es`
+#'
+#' @export
+smooth_fit_impl <- function(x, y, period = "auto",
+                         error = "auto", trend = "auto",
+                         season = "auto", damping = NULL,
+                         alpha = NULL, beta = NULL, gamma = NULL, ...) {
+
+    args <- list(...)
+
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
+    outcome    <- y
+    predictor  <- x
+
+    # INDEX & PERIOD
+    # Determine Period, Index Col, and Index
+    index_tbl <- parse_index_from_data(predictor)
+    period    <- parse_period_from_index(index_tbl, period)
+    idx_col   <- names(index_tbl)
+    idx       <- timetk::tk_index(index_tbl)
+
+    # XREGS
+    # Clean names, get xreg recipe, process predictors
+    xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
+    xreg_matrix <- juice_xreg_recipe(xreg_recipe, format = "matrix")
+
+    outcome   <- stats::ts(outcome, frequency = period)
+
+    error  <- tolower(error)
+    trend  <- tolower(trend)
+    season <- tolower(season)
+
+    # CHECK PARAMS
+    if (!error %in% c("auto", "additive", "multiplicative")) {
+        rlang::abort("'error' must be one of 'auto', 'additive', or 'multiplicative'.")
+    }
+    if (!trend %in% c("auto", "additive", "multiplicative", "none", "additive_damped", "multiplicative_damped")) {
+        rlang::abort("'trend' must be one of 'auto', 'additive', 'multiplicative', 'none', 'additive_damped' or 'multiplicative_damped'.")
+    }
+    if (!season %in% c("auto", "additive", "multiplicative", "none")) {
+        rlang::abort("'season' must be one of 'auto', 'additive', 'multiplicative', or 'none'.")
+    }
+
+    # CONVERT PARAMS
+    error_ets <- switch(
+        error,
+        "auto"           = "Z",
+        "additive"       = "A",
+        "multiplicative" = "M"
+    )
+    trend_ets <- switch(
+        trend,
+        "auto"                  = "Z",
+        "additive"              = "A",
+        "multiplicative"        = "M",
+        "none"                  = "N",
+        "additive_damped"       = "Ad",
+        "multiplicative_damped" = "Md"
+    )
+    season_ets <- switch(
+        season,
+        "auto"           = "Z",
+        "additive"       = "A",
+        "multiplicative" = "M",
+        "none"           = "N"
+    )
+
+
+    model_ets <- stringr::str_c(error_ets, trend_ets, season_ets)
+
+    #If the model is passed through set_engine, we use this option (this is because there are 30 options
+    #and not all of them are included in the "standard" options).
+    if (any(names(args) == "model")){
+        model_ets <- args$model
+        args$model <- NULL
+    }
+
+    persistence <- c(alpha, beta, gamma)
+
+    # FIT
+
+    if (!is.null(xreg_matrix)){
+        fit_ets <- smooth::es(outcome,
+                              model = model_ets,
+                              persistence = persistence,
+                              phi = damping,
+                              xreg = xreg_matrix,
+                              ...)
+    } else {
+        fit_ets <- smooth::es(outcome,
+                              model = model_ets,
+                              persistence = persistence,
+                              phi = damping,
+                              ...)
+    }
+
+    # RETURN
+    new_modeltime_bridge(
+        class = "smooth_fit_impl",
+
+        # Models
+        models = list(
+            model_1 = fit_ets
+        ),
+
+        # Data - Date column (matches original), .actual, .fitted, and .residuals columns
+        data = tibble::tibble(
+            !! idx_col  := idx,
+            .actual      =  as.numeric(fit_ets$y),
+            .fitted      =  as.numeric(fit_ets$fitted),
+            .residuals   =  as.numeric(fit_ets$residuals)
+        ),
+
+        # Preprocessing Recipe (prepped) - Used in predict method
+        extras = list(xreg_matrix = xreg_matrix,
+                      xreg_recipe = xreg_recipe),
+
+        # Description
+        desc = fit_ets$model
+
+    )
+
+}
+
+#' @export
+print.smooth_fit_impl <- function(x, ...) {
+    print(x$models$model_1)
+    invisible(x)
+}
+
+
+#' @export
+predict.smooth_fit_impl <- function(object, new_data, ...) {
+    smooth_predict_impl(object, new_data, ...)
+}
+
+#' Bridge prediction function for Exponential Smoothing models
+#'
+#' @inheritParams parsnip::predict.model_fit
+#' @param ... Additional arguments passed to `smooth::es()`
+#'
+#' @export
+smooth_predict_impl <- function(object, new_data, ...) {
+
+    # PREPARE INPUTS
+    model       <- object$models$model_1
+    idx_train   <- object$data %>% timetk::tk_index()
+    h_horizon   <- nrow(new_data)
+    xreg_recipe <- object$models$extras$xreg_recipe
+
+    #PREDICTIONS
+
+    if (is.null(xreg_recipe)){
+        preds <- as.numeric(greybox::forecast(model, h = h_horizon, ...)$mean)
+    } else {
+        xreg_matrix <- bake_xreg_recipe(xreg_recipe, new_data, format = "matrix")
+        preds <- as.numeric(greybox::forecast(model, h = h_horizon, newdata = xreg_matrix, ...)$mean)
+    }
+
+    return(preds)
+
+}
 
 # CROSTON ----
 

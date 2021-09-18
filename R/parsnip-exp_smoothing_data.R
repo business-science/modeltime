@@ -246,6 +246,132 @@ make_exp_smoothing <- function() {
         )
     )
 
+    # SMOOTH----
+
+    # * Model ----
+    parsnip::set_model_engine("exp_smoothing", mode = "regression", eng = "smooth_es")
+    parsnip::set_dependency("exp_smoothing", "smooth_es", "smooth")
+    parsnip::set_dependency("exp_smoothing", "smooth_es", "modeltime")
+
+    # * Args ----
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "seasonal_period",
+        original     = "period",
+        func         = list(pkg = "modeltime", fun = "seasonal_period"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "error",
+        original     = "error",
+        func         = list(pkg = "modeltime", fun = "error"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "trend",
+        original     = "trend",
+        func         = list(pkg = "modeltime", fun = "trend_smooth"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "season",
+        original     = "season",
+        func         = list(pkg = "modeltime", fun = "season"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "damping",
+        original     = "damping",
+        func         = list(pkg = "modeltime", fun = "damping_smooth"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "smooth_level",
+        original     = "alpha",
+        func         = list(pkg = "modeltime", fun = "smooth_level"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "smooth_trend",
+        original     = "beta",
+        func         = list(pkg = "modeltime", fun = "smooth_trend"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = "exp_smoothing",
+        eng          = "smooth_es",
+        parsnip      = "smooth_seasonal",
+        original     = "gamma",
+        func         = list(pkg = "modeltime", fun = "smooth_seasonal"),
+        has_submodel = FALSE
+    )
+
+
+
+    # * Encoding ----
+    parsnip::set_encoding(
+        model   = "exp_smoothing",
+        eng     = "smooth_es",
+        mode    = "regression",
+        options = list(
+            predictor_indicators = "none",
+            compute_intercept    = FALSE,
+            remove_intercept     = FALSE,
+            allow_sparse_x       = FALSE
+        )
+    )
+
+    # * Fit ----
+    parsnip::set_fit(
+        model         = "exp_smoothing",
+        eng           = "smooth_es",
+        mode          = "regression",
+        value         = list(
+            interface = "data.frame",
+            protect   = c("x", "y"),
+            func      = c(fun = "smooth_fit_impl"),
+            defaults  = list()
+        )
+    )
+
+    # * Predict ----
+    parsnip::set_pred(
+        model         = "exp_smoothing",
+        eng           = "smooth_es",
+        mode          = "regression",
+        type          = "numeric",
+        value         = list(
+            pre       = NULL,
+            post      = NULL,
+            func      = c(fun = "predict"),
+            args      =
+                list(
+                    object   = rlang::expr(object$fit),
+                    new_data = rlang::expr(new_data)
+                )
+        )
+    )
+
 }
 
 # nocov end
