@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -231,9 +231,9 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="modeltime-0709000-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.0.9000">
-<a href="#modeltime-0709000-development-version" class="anchor"></a>modeltime 0.7.0.9000 (Development Version)<small> Unreleased </small>
+    <div id="modeltime-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#modeltime-100" class="anchor"></a>modeltime 1.0.0<small> 2021-09-14 </small>
 </h1>
 <div id="new-feature-nested-iterative-forecasting" class="section level3">
 <h3 class="hasAnchor">
@@ -289,9 +289,19 @@
 <a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html">Forecasting with Global Models</a>: Added more complete steps in the forecasting process so now user can see how to forecast each step from start to finish including future forecasting.</li>
 </ul>
 </div>
-<div id="workflowsets-integration" class="section level3">
+<div id="new-accuracy-metric-set-and-yardstick-functions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#workflowsets-integration" class="anchor"></a>Workflowsets Integration</h3>
+<a href="#new-accuracy-metric-set-and-yardstick-functions" class="anchor"></a>New Accuracy Metric Set and Yardstick Functions</h3>
+<ul>
+<li>
+<code><a href="../reference/metric_sets.html">extended_forecast_accuracy_metric_set()</a></code>: Adds the new MAAPE metric for handling intermittent data when MAPE returns Inf.</li>
+<li>
+<code><a href="../reference/maape.html">maape()</a></code>: New yardstick metric that calculates “Mean Arctangent Absolute Percentage Error” (MAAPE). Used when MAPE returns Inf typically due to intermittent data.</li>
+</ul>
+</div>
+<div id="improvements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h3>
 <ul>
 <li>
 <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code>: Improved handling of Workflowset Descriptions, which now match the <code>wflow_id</code>.</li>
@@ -477,7 +487,7 @@
 <li>
 <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html">metric_tweak()</a></code> - Can modify <code>yardstick</code> metrics like <code><a href="https://yardstick.tidymodels.org/reference/mase.html">mase()</a></code>, which have seasonal parameters.</li>
 <li>
-<code><a href="../reference/default_forecast_accuracy_metric_set.html">default_forecast_accuracy_metric_set()</a></code> - Gets a <code>...</code> parameter that allows us to add more metrics beyond the defaults.</li>
+<code><a href="../reference/metric_sets.html">default_forecast_accuracy_metric_set()</a></code> - Gets a <code>...</code> parameter that allows us to add more metrics beyond the defaults.</li>
 </ul>
 </div>
 <div id="modeltime-residual-tests" class="section level3">
@@ -699,9 +709,9 @@
 <code><a href="../reference/update_model_description.html">update_model_description()</a></code> - A helper function making it easier to update model descriptions.</li>
 </ul>
 </div>
-<div id="improvements" class="section level3">
+<div id="improvements-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#improvements" class="anchor"></a>Improvements</h3>
+<a href="#improvements-1" class="anchor"></a>Improvements</h3>
 <ul>
 <li><p><code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: When modeltime model parameters update (e.g. when Auto ARIMA changes to a new model), the Model Description now alerts the user (e.g. “UPDATE: ARIMA(0,1,1)(1,1,1)[12]”).</p></li>
 <li><p><code><a href="../reference/modeltime_calibrate.html">modeltime_calibrate()</a></code>: When training data is supplied in a time window that the model has previously been trained on (e.g. <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">training(splits)</a></code>), the calibration calculation first inspects whether the “Fitted” data exists. If it iexists, it returns the “Fitted” data. This helps prevent sequence-based (e.g. ARIMA, ETS, TBATS models) from displaying odd results because these algorithms can only predict sequences directly following the training window. If “Fitted” data is being used, the <code>.type</code> column will display “Fitted” instead of “Test”.</p></li>
