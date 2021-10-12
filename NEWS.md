@@ -1,3 +1,13 @@
+# modeltime 1.0.0.9000 (Development Version)
+
+## Nested Modeltime Improvements
+
+- New extractor: `extract_nested_modeltime_table()` - Extracts a nested modeltime table by row id. 
+
+#### (potentially) Breaking Change
+
+- Added a new logged feature to `modeltime_nested_fit()` to track the attribute "metric_set", which is needed for ensembles. Old nested modeltime objects will need to be re-run to get this new attribute. This will be used in ensembles. 
+
 # modeltime 1.0.0
 
 ### New Feature: Nested (Iterative) Forecasting

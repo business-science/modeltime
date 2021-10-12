@@ -11,6 +11,7 @@
 #'  Default: TRUE.
 #' @param .id_subset Can supply a vector of id's to extract forcasts for one or more id's,
 #'  rather than extracting all forecasts. If `NULL`, extracts forecasts for all id's.
+#' @param .row_id The row number to extract from the nested data.
 #'
 #'
 #' @name log_extractors
@@ -68,6 +69,16 @@ extract_nested_future_forecast <- function(object, .include_actual = TRUE, .id_s
 
     return(ret)
 }
+
+#' @export
+#' @rdname log_extractors
+extract_nested_modeltime_table <- function(object, .row_id = 1) {
+    object %>%
+        dplyr::slice(.row_id) %>%
+        dplyr::select(1, .modeltime_tables) %>%
+        tidyr::unnest(.modeltime_tables)
+}
+
 
 
 # HELPERS ----

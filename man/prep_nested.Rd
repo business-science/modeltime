@@ -45,8 +45,6 @@ time series by each time series group.
 \item{.length_test}{Defines the length of the test split for evaluation.}
 
 \item{.length_train}{Defines the length of the training split for evaluation.}
-
-\item{.row_id}{The row number to extract from the nested data.}
 }
 \description{
 A set of functions to simplify preparation of nested data for
@@ -93,7 +91,7 @@ testing sample. This is typically the same size as the \code{.future_data}.
 
 \subsection{Helpers}{
 
-\code{extract_nested_train_split()} and \code{extract_nested_test_split()} are used to simplify extracting
+\code{\link[=extract_nested_train_split]{extract_nested_train_split()}} and \code{\link[=extract_nested_test_split]{extract_nested_test_split()}} are used to simplify extracting
 the training and testing data from the actual data. This can be helpful when making
 preprocessing recipes using the \code{recipes} package.
 }

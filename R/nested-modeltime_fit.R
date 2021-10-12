@@ -319,6 +319,7 @@ modeltime_nested_fit_parallel <- function(nested_data, ...,
     attr(nested_modeltime, "id")                  <- id_text
     attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
     attr(nested_modeltime, "conf_interval")       <- conf_interval
+    attr(nested_modeltime, "metric_set")          <- metric_set
     attr(nested_modeltime, "error_tbl")           <- error_tbl
     attr(nested_modeltime, "accuracy_tbl")        <- acc_tbl
     attr(nested_modeltime, "test_forecast_tbl")   <- fcast_tbl
@@ -555,6 +556,7 @@ modeltime_nested_fit_sequential <- function(nested_data, ...,
     attr(nested_modeltime, "id")                  <- id_text
     attr(nested_modeltime, "model_list_tbl")      <- model_list_tbl
     attr(nested_modeltime, "conf_interval")       <- conf_interval
+    attr(nested_modeltime, "metric_set")          <- metric_set
     attr(nested_modeltime, "error_tbl")           <- error_tbl
     attr(nested_modeltime, "accuracy_tbl")        <- logging_env$acc_tbl
     attr(nested_modeltime, "test_forecast_tbl")   <- logging_env$fcast_tbl

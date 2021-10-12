@@ -15,7 +15,7 @@ m750_training_resamples
 The Time Series Cross Validation Resamples the M750 Data (Training Set)
 }
 \details{
-\if{html}{\out{<div class="r">}}\preformatted{library(timetk)
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(timetk)
 m750_training_resamples <- time_series_cv(
     data        = training(m750_splits),
     assess      = "2 years",

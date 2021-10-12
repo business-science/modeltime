@@ -25,7 +25,6 @@
 #' @param .length_test Defines the length of the test split for evaluation.
 #' @param .length_train Defines the length of the training split for evaluation.
 #' @param ... Additional arguments passed to the helper function. See details.
-#' @param .row_id The row number to extract from the nested data.
 #'
 #' @details
 #'
@@ -65,7 +64,7 @@
 #'
 #' ### Helpers
 #'
-#' `extract_nested_train_split()` and `extract_nested_test_split()` are used to simplify extracting
+#' [`extract_nested_train_split()`] and [`extract_nested_test_split()`] are used to simplify extracting
 #' the training and testing data from the actual data. This can be helpful when making
 #' preprocessing recipes using the `recipes` package.
 #'
@@ -265,6 +264,7 @@ extract_nested_train_split <- function(.data, .row_id = 1) {
     actual_data %>% dplyr::slice(split_list$idx_train)
 }
 
+#' @export
 #' @rdname prep_nested
 extract_nested_test_split <- function(.data, .row_id = 1) {
 

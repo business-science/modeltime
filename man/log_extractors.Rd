@@ -7,6 +7,7 @@
 \alias{extract_nested_error_report}
 \alias{extract_nested_best_model_report}
 \alias{extract_nested_future_forecast}
+\alias{extract_nested_modeltime_table}
 \title{Log Extractor Functions for Modeltime Nested Tables}
 \usage{
 extract_nested_test_accuracy(object)
@@ -22,6 +23,8 @@ extract_nested_future_forecast(
   .include_actual = TRUE,
   .id_subset = NULL
 )
+
+extract_nested_modeltime_table(object, .row_id = 1)
 }
 \arguments{
 \item{object}{A nested modeltime table}
@@ -31,6 +34,8 @@ Default: TRUE.}
 
 \item{.id_subset}{Can supply a vector of id's to extract forcasts for one or more id's,
 rather than extracting all forecasts. If \code{NULL}, extracts forecasts for all id's.}
+
+\item{.row_id}{The row number to extract from the nested data.}
 }
 \description{
 Extract logged information calculated during the \code{modeltime_nested_fit()},

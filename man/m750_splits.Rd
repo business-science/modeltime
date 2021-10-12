@@ -15,7 +15,7 @@ m750_splits
 The results of train/test splitting the M750 Data
 }
 \details{
-\if{html}{\out{<div class="r">}}\preformatted{library(timetk)
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(timetk)
 m750_splits <- time_series_split(m750, assess = "2 years", cumulative = TRUE)
 }\if{html}{\out{</div>}}
 }
