@@ -80,6 +80,26 @@ extract_nested_modeltime_table <- function(object, .row_id = 1) {
 }
 
 
+#' @export
+#' @rdname log_extractors
+extract_nested_train_split <- function(object, .row_id = 1) {
+
+    actual_data <- object$.actual_data[[.row_id]]
+    split_list  <- object$.splits[[.row_id]]
+
+    actual_data %>% dplyr::slice(split_list$idx_train)
+}
+
+#' @export
+#' @rdname log_extractors
+extract_nested_test_split <- function(object, .row_id = 1) {
+
+    actual_data <- object$.actual_data[[.row_id]]
+    split_list  <- object$.splits[[.row_id]]
+
+    actual_data %>% dplyr::slice(split_list$idx_test)
+}
+
 
 # HELPERS ----
 

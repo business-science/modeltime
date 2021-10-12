@@ -8,6 +8,8 @@
 \alias{extract_nested_best_model_report}
 \alias{extract_nested_future_forecast}
 \alias{extract_nested_modeltime_table}
+\alias{extract_nested_train_split}
+\alias{extract_nested_test_split}
 \title{Log Extractor Functions for Modeltime Nested Tables}
 \usage{
 extract_nested_test_accuracy(object)
@@ -25,6 +27,10 @@ extract_nested_future_forecast(
 )
 
 extract_nested_modeltime_table(object, .row_id = 1)
+
+extract_nested_train_split(object, .row_id = 1)
+
+extract_nested_test_split(object, .row_id = 1)
 }
 \arguments{
 \item{object}{A nested modeltime table}

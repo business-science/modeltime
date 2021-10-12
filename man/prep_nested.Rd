@@ -5,8 +5,6 @@
 \alias{extend_timeseries}
 \alias{nest_timeseries}
 \alias{split_nested_timeseries}
-\alias{extract_nested_train_split}
-\alias{extract_nested_test_split}
 \title{Prepared Nested Modeltime Data}
 \usage{
 extend_timeseries(.data, .id_var, .date_var, .length_future, ...)
@@ -14,10 +12,6 @@ extend_timeseries(.data, .id_var, .date_var, .length_future, ...)
 nest_timeseries(.data, .id_var, .length_future, .length_actual = NULL)
 
 split_nested_timeseries(.data, .length_test, .length_train = NULL, ...)
-
-extract_nested_train_split(.data, .row_id = 1)
-
-extract_nested_test_split(.data, .row_id = 1)
 }
 \arguments{
 \item{.data}{A data frame or tibble containing time series data. The data should have:

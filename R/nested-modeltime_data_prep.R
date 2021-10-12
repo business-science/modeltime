@@ -254,25 +254,6 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
 
 }
 
-#' @export
-#' @rdname prep_nested
-extract_nested_train_split <- function(.data, .row_id = 1) {
-
-    actual_data <- .data$.actual_data[[.row_id]]
-    split_list  <- .data$.splits[[.row_id]]
-
-    actual_data %>% dplyr::slice(split_list$idx_train)
-}
-
-#' @export
-#' @rdname prep_nested
-extract_nested_test_split <- function(.data, .row_id = 1) {
-
-    actual_data <- .data$.actual_data[[.row_id]]
-    split_list  <- .data$.splits[[.row_id]]
-
-    actual_data %>% dplyr::slice(split_list$idx_test)
-}
 
 
 # Helpers ----
