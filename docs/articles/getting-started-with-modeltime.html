@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
 
       
 
-      </header><script src="getting-started-with-modeltime_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><script src="getting-started-with-modeltime_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting Started with Modeltime</h1>
@@ -301,7 +301,7 @@ The Modeltime Workflow
     learn_rate <span class="op">=</span> <span class="fl">0.015</span>
 <span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima_xgboost"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>,
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>,
         data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
 </div>
@@ -337,14 +337,14 @@ The Modeltime Workflow
 <em>Trend:</em> Modeled using <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric(date)</a></code>
 </li>
 <li>
-<em>Seasonal:</em> Modeled using <code><a href="http://lubridate.tidyverse.org/reference/month.html">month(date)</a></code>
+<em>Seasonal:</em> Modeled using <code><a href="https://lubridate.tidyverse.org/reference/month.html">month(date)</a></code>
 </li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 5: lm ----</span>
 <span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
         data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="model-6-mars-workflow" class="section level4">
@@ -496,12 +496,12 @@ The Modeltime Workflow
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>
         .interactive <span class="op">=</span> <span class="va">interactive</span>
     <span class="op">)</span></code></pre></div>
-<div id="wmcetalurx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="eihcduywpa" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wmcetalurx .gt_table {
+#eihcduywpa .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -526,7 +526,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_heading {
+#eihcduywpa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -538,7 +538,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_title {
+#eihcduywpa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -548,7 +548,7 @@ The Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#wmcetalurx .gt_subtitle {
+#eihcduywpa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -558,13 +558,13 @@ The Modeltime Workflow
   border-top-width: 0;
 }
 
-#wmcetalurx .gt_bottom_border {
+#eihcduywpa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_col_headings {
+#eihcduywpa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -579,7 +579,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_col_heading {
+#eihcduywpa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -599,7 +599,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#wmcetalurx .gt_column_spanner_outer {
+#eihcduywpa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -611,15 +611,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#wmcetalurx .gt_column_spanner_outer:first-child {
+#eihcduywpa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wmcetalurx .gt_column_spanner_outer:last-child {
+#eihcduywpa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wmcetalurx .gt_column_spanner {
+#eihcduywpa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -631,7 +631,7 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#wmcetalurx .gt_group_heading {
+#eihcduywpa .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -653,7 +653,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#wmcetalurx .gt_empty_group_heading {
+#eihcduywpa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -668,15 +668,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#wmcetalurx .gt_from_md > :first-child {
+#eihcduywpa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wmcetalurx .gt_from_md > :last-child {
+#eihcduywpa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wmcetalurx .gt_row {
+#eihcduywpa .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -695,7 +695,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#wmcetalurx .gt_stub {
+#eihcduywpa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -707,7 +707,7 @@ The Modeltime Workflow
   padding-left: 12px;
 }
 
-#wmcetalurx .gt_summary_row {
+#eihcduywpa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -717,7 +717,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#wmcetalurx .gt_first_summary_row {
+#eihcduywpa .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -727,7 +727,7 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_grand_summary_row {
+#eihcduywpa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -737,7 +737,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#wmcetalurx .gt_first_grand_summary_row {
+#eihcduywpa .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -747,11 +747,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_striped {
+#eihcduywpa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wmcetalurx .gt_table_body {
+#eihcduywpa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -760,7 +760,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_footnotes {
+#eihcduywpa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -774,13 +774,13 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_footnote {
+#eihcduywpa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#wmcetalurx .gt_sourcenotes {
+#eihcduywpa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -794,41 +794,41 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#wmcetalurx .gt_sourcenote {
+#eihcduywpa .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#wmcetalurx .gt_left {
+#eihcduywpa .gt_left {
   text-align: left;
 }
 
-#wmcetalurx .gt_center {
+#eihcduywpa .gt_center {
   text-align: center;
 }
 
-#wmcetalurx .gt_right {
+#eihcduywpa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wmcetalurx .gt_font_normal {
+#eihcduywpa .gt_font_normal {
   font-weight: normal;
 }
 
-#wmcetalurx .gt_font_bold {
+#eihcduywpa .gt_font_bold {
   font-weight: bold;
 }
 
-#wmcetalurx .gt_font_italic {
+#eihcduywpa .gt_font_italic {
   font-style: italic;
 }
 
-#wmcetalurx .gt_super {
+#eihcduywpa .gt_super {
   font-size: 65%;
 }
 
-#wmcetalurx .gt_footnote_marks {
+#eihcduywpa .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

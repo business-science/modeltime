@@ -93,7 +93,7 @@ iterative (nested) forecasting with Nested Modeltime Tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -243,11 +243,7 @@ iterative (nested) forecasting with Nested Modeltime Tables.</p>
 
 <span class='fu'>nest_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.id_var</span>, <span class='va'>.length_future</span>, .length_actual <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>split_nested_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.length_test</span>, .length_train <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>extract_nested_train_split</span><span class='op'>(</span><span class='va'>.data</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-
-<span class='fu'>extract_nested_test_split</span><span class='op'>(</span><span class='va'>.data</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+<span class='fu'>split_nested_timeseries</span><span class='op'>(</span><span class='va'>.data</span>, <span class='va'>.length_test</span>, .length_train <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -292,10 +288,6 @@ time series by each time series group.</p></li>
       <th>.length_train</th>
       <td><p>Defines the length of the training split for evaluation.</p></td>
     </tr>
-    <tr>
-      <th>.row_id</th>
-      <td><p>The row number to extract from the nested data.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -339,7 +331,7 @@ testing sample. This is typically the same size as the <code>.future_data</code>
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Helpers</h3>
 
 
-<p><code>extract_nested_train_split()</code> and <code>extract_nested_test_split()</code> are used to simplify extracting
+<p><code><a href='log_extractors.html'>extract_nested_train_split()</a></code> and <code><a href='log_extractors.html'>extract_nested_test_split()</a></code> are used to simplify extracting
 the training and testing data from the actual data. This can be helpful when making
 preprocessing recipes using the <code>recipes</code> package.</p>
 
@@ -385,7 +377,7 @@ preprocessing recipes using the <code>recipes</code> package.</p>
 #&gt; <span style='color: #BCBCBC;'>6</span> 1_93  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>7</span> 1_95  <span style='color: #949494;'>&lt;tibble [143 × 2]&gt;</span> <span style='color: #949494;'>&lt;tibble [52 × 2]&gt;</span> <span style='color: #949494;'>&lt;split [91|52]&gt;</span></div><div class='input'>
 <span class='co'># Helpers: Getting the Train/Test Sets</span>
-<span class='fu'>extract_nested_train_split</span><span class='op'>(</span><span class='va'>nested_data_tbl</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='log_extractors.html'>extract_nested_train_split</a></span><span class='op'>(</span><span class='va'>nested_data_tbl</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 91 × 2</span>
 #&gt;    date        value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>

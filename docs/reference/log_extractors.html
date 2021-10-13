@@ -93,7 +93,7 @@ modeltime_nested_select_best(), and modeltime_nested_refit() processes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -251,7 +251,13 @@ modeltime_nested_select_best(), and modeltime_nested_refit() processes." />
   <span class='va'>object</span>,
   .include_actual <span class='op'>=</span> <span class='cn'>TRUE</span>,
   .id_subset <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span>
+
+<span class='fu'>extract_nested_modeltime_table</span><span class='op'>(</span><span class='va'>object</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_train_split</span><span class='op'>(</span><span class='va'>object</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+
+<span class='fu'>extract_nested_test_split</span><span class='op'>(</span><span class='va'>object</span>, .row_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -269,6 +275,10 @@ Default: TRUE.</p></td>
       <th>.id_subset</th>
       <td><p>Can supply a vector of id's to extract forcasts for one or more id's,
 rather than extracting all forecasts. If <code>NULL</code>, extracts forecasts for all id's.</p></td>
+    </tr>
+    <tr>
+      <th>.row_id</th>
+      <td><p>The row number to extract from the nested data.</p></td>
     </tr>
     </table>
 

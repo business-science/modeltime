@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -231,6 +231,28 @@
       <small>Source: <a href='https://github.com/business-science/modeltime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modeltime-1009000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0.9000">
+<a href="#modeltime-1009000-development-version" class="anchor"></a>modeltime 1.0.0.9000 (Development Version)<small> Unreleased </small>
+</h1>
+<div id="nested-modeltime-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#nested-modeltime-improvements" class="anchor"></a>Nested Modeltime Improvements</h2>
+<ul>
+<li>New extractor: <code><a href="../reference/log_extractors.html">extract_nested_modeltime_table()</a></code> - Extracts a nested modeltime table by row id.</li>
+</ul>
+<div id="potentially-breaking-change" class="section level4">
+<h4 class="hasAnchor">
+<a href="#potentially-breaking-change" class="anchor"></a>(potentially) Breaking Change</h4>
+<ul>
+<li>
+<code>extract_nested_train_split</code> and <code>extract_nested_test_split</code>: Changed parameter from <code>.data</code> to <code>.object</code>
+</li>
+<li>Added a new logged feature to <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> to track the attribute “metric_set”, which is needed for ensembles. Old nested modeltime objects will need to be re-run to get this new attribute. This will be used in ensembles.</li>
+</ul>
+</div>
+</div>
+</div>
     <div id="modeltime-100" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.0">
 <a href="#modeltime-100" class="anchor"></a>modeltime 1.0.0<small> 2021-09-14 </small>
