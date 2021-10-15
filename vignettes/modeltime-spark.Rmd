@@ -36,7 +36,9 @@ This tutorial requires:
 
 - __sparklyr__: Used to register the spark `foreach` adapter via `registerDoSpark()`.
 
-- __Spark Installation:__ Can be accomplished via `sparklyr::spark_install()`
+- __Java__: Spark installation depends on Java being installed. 
+
+- __Spark Installation:__ Can be accomplished via `sparklyr::spark_install()` provided the user has `sparklyr` and Java. 
 
 # Libraries
 
