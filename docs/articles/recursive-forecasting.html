@@ -87,6 +87,9 @@
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
+    <li>
+      <a href="../articles/modeltime-spark.html">Using the Modeltime Spark Backend</a>
+    </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
     <li>
@@ -306,7 +309,7 @@ Recursive Panel Forecast with XGBoost
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m750_rolling</span> <span class="op">&lt;-</span> <span class="va">m750_extended</span> <span class="op">%&gt;%</span>
     <span class="fu">lag_roll_transformer</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
 
 <span class="va">m750_rolling</span>
 <span class="co">#&gt; # A tibble: 330 × 27</span>
@@ -360,7 +363,7 @@ Recursive Panel Forecast with XGBoost
 <p>The <strong>future data</strong> has missing values in the “value” column. We isolate these. Our autoregressive algorithm will predict these. Notice that the lags have missing data, this is OK - and why we are going to use <code><a href="../reference/recursive.html">recursive()</a></code> to fill these missing values in with predictions.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">future_data</span>
 <span class="co">#&gt; # A tibble: 24 × 27</span>
@@ -405,7 +408,7 @@ Recursive Panel Forecast with XGBoost
 <span class="va">model_fit_lm</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  4ms </span>
+<span class="co">#&gt; Fit time:  5ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span>
@@ -611,7 +614,7 @@ Recursive Panel Forecast with XGBoost
     <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="modeling-1" class="section level2">
 <h2 class="hasAnchor">
@@ -644,7 +647,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  148ms </span>
+<span class="co">#&gt; Fit time:  138ms </span>
 <span class="co">#&gt; ##### xgb.Booster</span>
 <span class="co">#&gt; raw: 69.2 Kb </span>
 <span class="co">#&gt; call:</span>

@@ -87,6 +87,9 @@
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
+    <li>
+      <a href="../articles/modeltime-spark.html">Using the Modeltime Spark Backend</a>
+    </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
     <li>
@@ -245,7 +248,7 @@
 <p>Next, let’s use the <code>walmart_sales_weekly</code> dataset that comes with <code>timetk</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">data_tbl</span>
@@ -430,12 +433,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="tpdlodrfmz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nazniouoqk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#tpdlodrfmz .gt_table {
+#nazniouoqk .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -460,7 +463,7 @@
   border-left-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_heading {
+#nazniouoqk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -472,7 +475,7 @@
   border-right-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_title {
+#nazniouoqk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -482,7 +485,7 @@
   border-bottom-width: 0;
 }
 
-#tpdlodrfmz .gt_subtitle {
+#nazniouoqk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -492,13 +495,13 @@
   border-top-width: 0;
 }
 
-#tpdlodrfmz .gt_bottom_border {
+#nazniouoqk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_col_headings {
+#nazniouoqk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -513,7 +516,7 @@
   border-right-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_col_heading {
+#nazniouoqk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -533,7 +536,7 @@
   overflow-x: hidden;
 }
 
-#tpdlodrfmz .gt_column_spanner_outer {
+#nazniouoqk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -545,15 +548,15 @@
   padding-right: 4px;
 }
 
-#tpdlodrfmz .gt_column_spanner_outer:first-child {
+#nazniouoqk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tpdlodrfmz .gt_column_spanner_outer:last-child {
+#nazniouoqk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tpdlodrfmz .gt_column_spanner {
+#nazniouoqk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -565,7 +568,7 @@
   width: 100%;
 }
 
-#tpdlodrfmz .gt_group_heading {
+#nazniouoqk .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -587,7 +590,7 @@
   vertical-align: middle;
 }
 
-#tpdlodrfmz .gt_empty_group_heading {
+#nazniouoqk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -602,15 +605,15 @@
   vertical-align: middle;
 }
 
-#tpdlodrfmz .gt_from_md > :first-child {
+#nazniouoqk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tpdlodrfmz .gt_from_md > :last-child {
+#nazniouoqk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tpdlodrfmz .gt_row {
+#nazniouoqk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -629,7 +632,7 @@
   overflow-x: hidden;
 }
 
-#tpdlodrfmz .gt_stub {
+#nazniouoqk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -641,7 +644,7 @@
   padding-left: 12px;
 }
 
-#tpdlodrfmz .gt_summary_row {
+#nazniouoqk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -651,7 +654,7 @@
   padding-right: 5px;
 }
 
-#tpdlodrfmz .gt_first_summary_row {
+#nazniouoqk .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -661,7 +664,7 @@
   border-top-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_grand_summary_row {
+#nazniouoqk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -671,7 +674,7 @@
   padding-right: 5px;
 }
 
-#tpdlodrfmz .gt_first_grand_summary_row {
+#nazniouoqk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -681,11 +684,11 @@
   border-top-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_striped {
+#nazniouoqk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tpdlodrfmz .gt_table_body {
+#nazniouoqk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -694,7 +697,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_footnotes {
+#nazniouoqk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -708,13 +711,13 @@
   border-right-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_footnote {
+#nazniouoqk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#tpdlodrfmz .gt_sourcenotes {
+#nazniouoqk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -728,41 +731,41 @@
   border-right-color: #D3D3D3;
 }
 
-#tpdlodrfmz .gt_sourcenote {
+#nazniouoqk .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#tpdlodrfmz .gt_left {
+#nazniouoqk .gt_left {
   text-align: left;
 }
 
-#tpdlodrfmz .gt_center {
+#nazniouoqk .gt_center {
   text-align: center;
 }
 
-#tpdlodrfmz .gt_right {
+#nazniouoqk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tpdlodrfmz .gt_font_normal {
+#nazniouoqk .gt_font_normal {
   font-weight: normal;
 }
 
-#tpdlodrfmz .gt_font_bold {
+#nazniouoqk .gt_font_bold {
   font-weight: bold;
 }
 
-#tpdlodrfmz .gt_font_italic {
+#nazniouoqk .gt_font_italic {
   font-style: italic;
 }
 
-#tpdlodrfmz .gt_super {
+#nazniouoqk .gt_super {
   font-size: 65%;
 }
 
-#tpdlodrfmz .gt_footnote_marks {
+#nazniouoqk .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1065,7 +1068,7 @@
 <span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
 <span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 3.704196 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 3.50198 secs.</span></code></pre></div>
 <p>Note that we used <code><a href="../reference/control_modeltime.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">

@@ -137,6 +137,9 @@ different packages. Currently the only package is forecast." />
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
+    <li>
+      <a href="../articles/modeltime-spark.html">Using the Modeltime Spark Backend</a>
+    </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
@@ -426,7 +429,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  594ms 
+#&gt; Fit time:  504ms 
 #&gt; SEASONAL DECOMP: ETS(A,Ad,N)
 #&gt; 
 #&gt; <span style='color: #949494;'># A tibble: 1 × 5</span>
@@ -446,7 +449,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 48 observations per 1 day</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  746ms 
+#&gt; Fit time:  633ms 
 #&gt; SEASONAL DECOMP: ARIMA(3,1,2)
 #&gt; 
 #&gt; Series: x 

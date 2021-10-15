@@ -134,6 +134,9 @@
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
+    <li>
+      <a href="../articles/modeltime-spark.html">Using the Modeltime Spark Backend</a>
+    </li>
     <li class="divider"></li>
     <li class="dropdown-header">Algorithms</li>
     <li>
@@ -285,7 +288,7 @@
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>dplyr</span>::<span style='color: #00BB00;'>filter()</span>  masks <span style='color: #0000BB;'>stats</span>::filter()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>dplyr</span>::<span style='color: #00BB00;'>lag()</span>     masks <span style='color: #0000BB;'>stats</span>::lag()</span>
 #&gt; <span class='message'><span style='color: #BB0000;'>x</span> <span style='color: #0000BB;'>recipes</span>::<span style='color: #00BB00;'>step()</span>  masks <span style='color: #0000BB;'>stats</span>::step()</span>
-#&gt; <span class='message'><span style='color: #0000BB;'>•</span> Dig deeper into tidy modeling with R at <span style='color: #00BB00;'>https://www.tmwr.org</span></span></div><div class='input'>
+#&gt; <span class='message'><span style='color: #0000BB;'>•</span> Learn how to get started at <span style='color: #00BB00;'>https://www.tidymodels.org/start/</span></span></div><div class='input'>
 <span class='va'>model_fit_ets</span> <span class='op'>&lt;-</span> <span class='fu'><a href='exp_smoothing.html'>exp_smoothing</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"ets"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>fit</span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, <span class='fu'>training</span><span class='op'>(</span><span class='va'>m750_splits</span><span class='op'>)</span><span class='op'>)</span>

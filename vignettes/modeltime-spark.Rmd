@@ -56,7 +56,7 @@ Next, we set up a Spark connection via `sparklyr`. For this tutorial, we use the
 
 Ro run Spark locally:
 
-```{r, message=TRUE}
+```{r, message=TRUE, warning=TRUE}
 sc <- spark_connect(master = "local")
 ```
 
@@ -157,6 +157,8 @@ wflw_prophet
 
 Now, the beauty is that everything is set up for us to perform the nested forecasting with Spark. We simply use `modeltime_nested_fit()` and make sure it uses the Spark Backend by setting `control_nested_fit(allow_par = TRUE)`.
 
+Note that this will take about 30-seconds because we have a one-time cost to move data, libraries, and environment variables to the Spark clusters. But the good news is that when we scale up to 10,000+ time series, that the one-time cost is minimal compared to the speed up from distributed computation. 
+
 ```{r, message=TRUE}
 nested_modeltime_tbl <- nested_data_tbl %>%
     modeltime_nested_fit(
@@ -175,14 +177,17 @@ nested_modeltime_tbl
 
 ## Model Test Accuracy
 
-We can observe the results. 
+We can observe the results. First, we can check the accuracy for each model
 
 ```{r}
 nested_modeltime_tbl %>%
-  extract_nested_test_accuracy()
+  extract_nested_test_accuracy() %>%
+  table_modeltime_accuracy(.interactive = F)
 ```
 
 ## Test Forecast
+
+Next, we can examine the test forecast for each of the models. 
 
 ```{r}
 nested_modeltime_tbl %>%

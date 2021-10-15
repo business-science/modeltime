@@ -87,6 +87,9 @@
     <li>
       <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
     </li>
+    <li>
+      <a href="../articles/modeltime-spark.html">Using the Modeltime Spark Backend</a>
+    </li>
     <li class="divider">
     <li class="dropdown-header">Algorithms</li>
     <li>
@@ -244,7 +247,7 @@
 <p>We’ll use the <code>walmart_sales_weeekly</code> dataset from <code>timetk</code>. It has seven (7) time series that represent weekly sales demand by department.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dataset_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span>
 
 <span class="va">dataset_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -478,10 +481,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.008 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 14.728 seconds</span>
+<span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.44 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 14.729 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.441 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -521,7 +524,7 @@
 <span class="co">#&gt; ✓ Model Successfully Fitted: 5</span>
 <span class="co">#&gt; ℹ Fitting Model: 6</span>
 <span class="co">#&gt; ✓ Model Successfully Fitted: 6</span>
-<span class="co">#&gt; Total time | 19.975 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 17.864 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -533,12 +536,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="hiywogbtxk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="cujhvwrxcr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hiywogbtxk .gt_table {
+#cujhvwrxcr .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -563,7 +566,7 @@
   border-left-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_heading {
+#cujhvwrxcr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -575,7 +578,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_title {
+#cujhvwrxcr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -585,7 +588,7 @@
   border-bottom-width: 0;
 }
 
-#hiywogbtxk .gt_subtitle {
+#cujhvwrxcr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -595,13 +598,13 @@
   border-top-width: 0;
 }
 
-#hiywogbtxk .gt_bottom_border {
+#cujhvwrxcr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_col_headings {
+#cujhvwrxcr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -616,7 +619,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_col_heading {
+#cujhvwrxcr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -636,7 +639,7 @@
   overflow-x: hidden;
 }
 
-#hiywogbtxk .gt_column_spanner_outer {
+#cujhvwrxcr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -648,15 +651,15 @@
   padding-right: 4px;
 }
 
-#hiywogbtxk .gt_column_spanner_outer:first-child {
+#cujhvwrxcr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hiywogbtxk .gt_column_spanner_outer:last-child {
+#cujhvwrxcr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hiywogbtxk .gt_column_spanner {
+#cujhvwrxcr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -668,7 +671,7 @@
   width: 100%;
 }
 
-#hiywogbtxk .gt_group_heading {
+#cujhvwrxcr .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -690,7 +693,7 @@
   vertical-align: middle;
 }
 
-#hiywogbtxk .gt_empty_group_heading {
+#cujhvwrxcr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -705,15 +708,15 @@
   vertical-align: middle;
 }
 
-#hiywogbtxk .gt_from_md > :first-child {
+#cujhvwrxcr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hiywogbtxk .gt_from_md > :last-child {
+#cujhvwrxcr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hiywogbtxk .gt_row {
+#cujhvwrxcr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -732,7 +735,7 @@
   overflow-x: hidden;
 }
 
-#hiywogbtxk .gt_stub {
+#cujhvwrxcr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -744,7 +747,7 @@
   padding-left: 12px;
 }
 
-#hiywogbtxk .gt_summary_row {
+#cujhvwrxcr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -754,7 +757,7 @@
   padding-right: 5px;
 }
 
-#hiywogbtxk .gt_first_summary_row {
+#cujhvwrxcr .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -764,7 +767,7 @@
   border-top-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_grand_summary_row {
+#cujhvwrxcr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -774,7 +777,7 @@
   padding-right: 5px;
 }
 
-#hiywogbtxk .gt_first_grand_summary_row {
+#cujhvwrxcr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -784,11 +787,11 @@
   border-top-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_striped {
+#cujhvwrxcr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hiywogbtxk .gt_table_body {
+#cujhvwrxcr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -797,7 +800,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_footnotes {
+#cujhvwrxcr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -811,13 +814,13 @@
   border-right-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_footnote {
+#cujhvwrxcr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#hiywogbtxk .gt_sourcenotes {
+#cujhvwrxcr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -831,41 +834,41 @@
   border-right-color: #D3D3D3;
 }
 
-#hiywogbtxk .gt_sourcenote {
+#cujhvwrxcr .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#hiywogbtxk .gt_left {
+#cujhvwrxcr .gt_left {
   text-align: left;
 }
 
-#hiywogbtxk .gt_center {
+#cujhvwrxcr .gt_center {
   text-align: center;
 }
 
-#hiywogbtxk .gt_right {
+#cujhvwrxcr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hiywogbtxk .gt_font_normal {
+#cujhvwrxcr .gt_font_normal {
   font-weight: normal;
 }
 
-#hiywogbtxk .gt_font_bold {
+#cujhvwrxcr .gt_font_bold {
   font-weight: bold;
 }
 
-#hiywogbtxk .gt_font_italic {
+#cujhvwrxcr .gt_font_italic {
   font-style: italic;
 }
 
-#hiywogbtxk .gt_super {
+#cujhvwrxcr .gt_super {
   font-size: 65%;
 }
 
-#hiywogbtxk .gt_footnote_marks {
+#cujhvwrxcr .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
