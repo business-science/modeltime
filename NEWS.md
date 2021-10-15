@@ -2,7 +2,9 @@
 
 ## Spark Backend
 
-Modeltime now has a Spark Backend with a NEW Vignette describing how to set up Modeltime with the Sparke Backend. 
+- Modeltime now has a Spark Backend 
+
+- [NEW Vignette - Modeltime Spark Backend](https://business-science.github.io/modeltime/articles/modeltime-spark.html) describing how to set up Modeltime with the Sparke Backend. 
 
 ## Nested Modeltime Improvements
 
