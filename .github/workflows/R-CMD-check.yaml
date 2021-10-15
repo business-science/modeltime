@@ -48,27 +48,18 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
 
-      - name: Install Java
-        id: install-java
-        run: |
-          sudo apt-get -y remove --purge default-jdk adoptopenjdk-11-hotspot || :
-          if [[ ! -z "$JAVA_URL" ]]; then
-            wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
-            source ./install-jdk.sh --url $JAVA_URL
-          else
-            sudo apt-get -y install openjdk-8-jdk
-            wget https://raw.githubusercontent.com/michaelklishin/jdk_switcher/master/jdk_switcher.sh
-            . ./jdk_switcher.sh
-            jdk_switcher use openjdk8;
-          fi
-          echo "${JAVA_HOME}"
-          echo "::set-output name=JAVA_HOME::${JAVA_HOME}"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
-      - name: Install Spark master if necessary
-        run: |
-          if [[ $SPARK_VERSION == 'master' ]]; then
-            source ./ci/spark-master-install.sh;
-          fi
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - uses: vemonet/setup-spark@v1
+        with:
+          spark-version: '3.1.2'
+          hadoop-version: '3.2'
 
       - uses: r-lib/actions/setup-pandoc@v1
 

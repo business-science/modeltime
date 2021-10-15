@@ -28,7 +28,7 @@ navbar:
           href: articles/recursive-forecasting.html
         - text: 'Hyperparameter Tuning & Parallel Processing'
           href: articles/parallel-processing.html
-        - text: 'Using the Modeltime Spark Backend'
+        - text: 'The Modeltime Spark Backend'
           href: articles/modeltime-spark.html
         - text: "---"
         - text: 'Algorithms'
