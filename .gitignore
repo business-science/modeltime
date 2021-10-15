@@ -4,3 +4,7 @@
 inst/doc
 doc
 Meta
+derby.log
+logs
+vignettes/derby.log
+vignettes/logs/

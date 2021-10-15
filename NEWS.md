@@ -1,5 +1,9 @@
 # modeltime 1.0.0.9000 (Development Version)
 
+## Spark Backend
+
+Modeltime now has a Spark Backend with a NEW Vignette describing how to set up Modeltime with the Sparke Backend. 
+
 ## Nested Modeltime Improvements
 
 - New extractor: `extract_nested_modeltime_table()` - Extracts a nested modeltime table by row id. 

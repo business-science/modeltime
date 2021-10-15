@@ -52,6 +52,7 @@ Imports:
 Suggests:
     rstan,
     slider, 
+    sparklyr,
     tidymodels,
     workflowsets,
     recipes,

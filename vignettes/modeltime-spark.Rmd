@@ -1,0 +1,249 @@
+---
+title: "The Modeltime Spark Backend"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The Modeltime Spark Backend}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  
+  out.width='100%',
+  fig.align = "center",
+  fig.width = 7,
+  fig.height = 5,
+  
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+__Modeltime is built for scale__, and as such many users may want to use a distributed backend that allows for scale beyond their local machine. One such tool is [__Spark__](https://spark.apache.org/), a unified engine for large-scale data analytics. In this tutorial, we'll show you how to use the __Modeltime Spark Backend__ for high-performance computing. 
+
+# Spark for Iterative (Nested) Forecasting
+
+One of the most common situations that parallel computation is required is when doing __iterative forecasting__ where the data scientist needs to experiment with 10+ models across 10,000+ time series. It's common for this large-scale, high-performance forecasting exercise to take days. 
+
+We'll show you how we can __combine Modeltime Nested Forecasting and it's Parallel Spark Backend__ to scale this computation with distributed parallel Spark execution. Let's go!
+
+# System Requirements
+
+This tutorial requires:
+
+- __sparklyr__: Used to register the spark `foreach` adapter via `registerDoSpark()`.
+
+- __Spark Installation:__ Can be accomplished via `sparklyr::spark_install()`
+
+# Libraries
+
+Load the following libraries. 
+
+```{r}
+library(sparklyr)
+library(tidymodels)
+library(modeltime)
+library(tidyverse)
+library(timetk)
+```
+
+# Spark Connection
+
+Next, we set up a Spark connection via `sparklyr`. For this tutorial, we use the "local" connection. But many users will use [Databricks](https://databricks.com/) to scale the forecasting workload. 
+
+Ro run Spark locally:
+
+```{r, message=TRUE}
+sc <- spark_connect(master = "local")
+```
+
+If using Databricks, you can use:
+
+```{r, eval = F}
+sc <- spark_connect(method = "databricks")
+```
+
+# Register the Spark Backend
+
+Next, we register the Spark Backend using `registerDoSpark()`.
+
+```{r}
+registerDoSpark(sc)
+```
+
+# Data Preparation (Nested Forecasting)
+
+We'll run through a minimal nested forecasting example. Refer to the [Nested Forecasting Tutorial](https://business-science.github.io/modeltime/articles/nested-forecasting.html) for further information on how to perform iterative forecasting with the "nested" data structure in `modeltime`.
+
+The dataset we'll be forecasting is the `walmart_sales_weekly`, which we modify to just include 3 columns: "id", "date", "value". 
+
+1. The __id__ feature is the grouping variable. 
+2. The __date__ feature contains timestamps.
+3. The __value__ feature is the sales value for the Walmart store-department combination. 
+
+```{r}
+walmart_sales_weekly %>%
+    select(id, Date, Weekly_Sales) %>%
+    set_names(c("id", "date", "value")) %>%
+    group_by(id) %>%
+    plot_time_series(date, value, .facet_ncol = 2, .interactive = F)
+```
+
+We prepare as nested data using the Nested Forecasting preparation functions. 
+
+```{r}
+nested_data_tbl <- walmart_sales_weekly %>%
+    select(id, Date, Weekly_Sales) %>%
+    set_names(c("id", "date", "value")) %>%
+    extend_timeseries(
+        .id_var        = id,
+        .date_var      = date,
+        .length_future = 52
+    ) %>%
+    nest_timeseries(
+        .id_var        = id,
+        .length_future = 52
+    ) %>%
+    
+    split_nested_timeseries(
+        .length_test = 52
+    )
+
+nested_data_tbl
+```
+
+# Modeling
+
+We'll create two unfitted models: XGBoost and Prophet. Then we'll use `modeltime_nested_fit()` to iteratively fit the models to each of the time series using the Spark Backend. 
+
+## XGBoost
+
+We create the XGBoost model on features derived from the date column. 
+
+```{r}
+rec_xgb <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl)) %>%
+    step_timeseries_signature(date) %>%
+    step_rm(date) %>%
+    step_zv(all_predictors()) %>%
+    step_dummy(all_nominal_predictors(), one_hot = TRUE)
+
+wflw_xgb <- workflow() %>%
+    add_model(boost_tree("regression") %>% set_engine("xgboost")) %>%
+    add_recipe(rec_xgb)
+
+wflw_xgb
+```
+## Prophet
+
+Next, we create a prophet workflow. 
+
+```{r}
+rec_prophet <- recipe(value ~ date, extract_nested_train_split(nested_data_tbl)) 
+
+wflw_prophet <- workflow() %>%
+    add_model(
+        prophet_reg("regression", seasonality_yearly = TRUE) %>% 
+            set_engine("prophet")
+    ) %>%
+    add_recipe(rec_prophet)
+
+wflw_prophet
+```
+
+# Nested Forecasting with Spark
+
+Now, the beauty is that everything is set up for us to perform the nested forecasting with Spark. We simply use `modeltime_nested_fit()` and make sure it uses the Spark Backend by setting `control_nested_fit(allow_par = TRUE)`.
+
+```{r, message=TRUE}
+nested_modeltime_tbl <- nested_data_tbl %>%
+    modeltime_nested_fit(
+        wflw_xgb,
+        wflw_prophet,
+        
+        control = control_nested_fit(allow_par = TRUE, verbose = TRUE)
+    )
+```
+
+The nested modeltime object has now fit the models using Spark. 
+
+```{r}
+nested_modeltime_tbl
+```
+
+## Model Test Accuracy
+
+We can observe the results. 
+
+```{r}
+nested_modeltime_tbl %>%
+  extract_nested_test_accuracy()
+```
+
+## Test Forecast
+
+```{r}
+nested_modeltime_tbl %>%
+  extract_nested_test_forecast() %>%
+  group_by(id) %>%
+  plot_modeltime_forecast(.facet_ncol = 2, .interactive = F)
+```
+
+# Close Clusters and Shutdown Spark
+
+We can close the Spark adapter and shut down the Spark session when we are finished. 
+
+```{r}
+# Unregisters the Spark Backend
+parallel_stop()
+
+# Disconnects Spark
+spark_disconnect_all()
+```
+
+
+# Summary
+
+We've now successfully completed a __Nested Forecast using the Spark Backend.__ You may find this challenging, especially if you are not familiar with the Modeltime Workflow, terminology, or tidy-modeling in R. If this is the case, we have a solution. Take our high-performance forecasting course. 
+
+
+## Take the High-Performance Forecasting Course
+
+> Become the forecasting expert for your organization
+
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"/></a>
+
+[_High-Performance Time Series Course_](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)
+
+### Time Series is Changing
+
+Time series is changing. __Businesses now need 10,000+ time series forecasts every day.__ This is what I call a _High-Performance Time Series Forecasting System (HPTSF)_ - Accurate, Robust, and Scalable Forecasting. 
+
+ __High-Performance Forecasting Systems will save companies by improving accuracy and scalability.__ Imagine what will happen to your career if you can provide your organization a "High-Performance Time Series Forecasting System" (HPTSF System).
+
+### How to Learn High-Performance Time Series Forecasting
+
+I teach how to build a HPTFS System in my [__High-Performance Time Series Forecasting Course__](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting). You will learn:
+
+- __Time Series Machine Learning__ (cutting-edge) with `Modeltime` - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, & many more)
+- __Deep Learning__ with `GluonTS` (Competition Winners)
+- __Time Series Preprocessing__, Noise Reduction, & Anomaly Detection
+- __Feature engineering__ using lagged variables & external regressors
+- __Hyperparameter Tuning__
+- __Time series cross-validation__
+- __Ensembling__ Multiple Machine Learning & Univariate Modeling Techniques (Competition Winner)
+- __Scalable Forecasting__ - Forecast 1000+ time series in parallel
+- and more.
+
+<p class="text-center" style="font-size:24px;">
+Become the Time Series Expert for your organization.
+</p>
+<br>
+<p class="text-center" style="font-size:30px;">
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+</p>
+
+
+
