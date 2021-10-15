@@ -138,12 +138,12 @@ modeltime_accuracy.mdl_time_tbl <- function(object, new_data = NULL,
 
     # MAPE/MAAPE Check: Intermittent Series
 
-    if (any(is.na(ret$mape) | is.infinite(ret$mape))){
-
-
-        cli::cli_alert_info(cli::col_yellow("We have detected a possible intermittent series, you can change the default metric set to the extended_forecast_accuracy_metric_set() containing the MAAPE metric, which is more appropriate for this type of series."))
-
+    if ("mape" %in% names(ret)) {
+        if (any(is.na(ret$mape) | is.infinite(ret$mape))){
+            cli::cli_alert_info(cli::col_yellow("We have detected a possible intermittent series, you can change the default metric set to the extended_forecast_accuracy_metric_set() containing the MAAPE metric, which is more appropriate for this type of series."))
+        }
     }
+
 
     if (".nested.col" %in% names(ret)) {
         ret <- ret %>%

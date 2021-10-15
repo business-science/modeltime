@@ -129,6 +129,7 @@ reference:
   - subtitle: Additional Algorithms
     desc: These algorithms have additional dependencies that can be installed with `dependencies = TRUE`
     contents:
+    - adam_reg
     - temporal_hierarchy
   - subtitle: Baseline Algorithms (Simple Methods)
     contents:
@@ -173,6 +174,9 @@ reference:
   - subtitle: NNETAR
     contents:
     - num_networks
+  - subtitle: ADAM
+    contents:
+    -
   - subtitle: Temporal Hierachical Models
     contents:
     - combination_method

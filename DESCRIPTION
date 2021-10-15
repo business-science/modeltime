@@ -48,9 +48,7 @@ Imports:
     xgboost (>= 1.2.0.1),
     prophet,
     methods,
-    cli,
-    smooth,
-    greybox
+    cli
 Suggests:
     rstan,
     slider, 
@@ -67,6 +65,8 @@ Suggests:
     roxygen2,
     kernlab,
     thief,
+    smooth,
+    greybox,
     earth,
     randomForest,
     tidyquant,

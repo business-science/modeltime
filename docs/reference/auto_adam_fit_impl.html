@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tuning Parameters for Exponential Smoothing Models — exp_smoothing_params • modeltime</title>
+<title>Low-Level ADAM function for translating modeltime to forecast — auto_adam_fit_impl • modeltime</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,8 +48,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Tuning Parameters for Exponential Smoothing Models — exp_smoothing_params" />
-<meta property="og:description" content="Tuning Parameters for Exponential Smoothing Models" />
+<meta property="og:title" content="Low-Level ADAM function for translating modeltime to forecast — auto_adam_fit_impl" />
+<meta property="og:description" content="Low-Level ADAM function for translating modeltime to forecast" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -231,86 +231,130 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tuning Parameters for Exponential Smoothing Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/dials-ets_params.R'><code>R/dials-ets_params.R</code></a></small>
-    <div class="hidden name"><code>exp_smoothing_params.Rd</code></div>
+    <h1>Low-Level ADAM function for translating modeltime to forecast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/business-science/modeltime/blob/master/R/parsnip-adam.R'><code>R/parsnip-adam.R</code></a></small>
+    <div class="hidden name"><code>auto_adam_fit_impl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Tuning Parameters for Exponential Smoothing Models</p>
+    <p>Low-Level ADAM function for translating modeltime to forecast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>error</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>trend</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>trend_smooth</span><span class='op'>(</span>
-  values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span>, <span class='st'>"additive_damped"</span>,
-    <span class='st'>"multiplicative_damped"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>season</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>damping</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"damped"</span>, <span class='st'>"none"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>damping_smooth</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-
-<span class='fu'>smooth_level</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-
-<span class='fu'>smooth_trend</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-
-<span class='fu'>smooth_seasonal</span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, trans <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>auto_adam_fit_impl</span><span class='op'>(</span>
+  <span class='va'>formula</span>,
+  <span class='va'>data</span>,
+  period <span class='op'>=</span> <span class='st'>"auto"</span>,
+  p <span class='op'>=</span> <span class='fl'>0</span>,
+  d <span class='op'>=</span> <span class='fl'>0</span>,
+  q <span class='op'>=</span> <span class='fl'>0</span>,
+  P <span class='op'>=</span> <span class='fl'>0</span>,
+  D <span class='op'>=</span> <span class='fl'>0</span>,
+  Q <span class='op'>=</span> <span class='fl'>0</span>,
+  model <span class='op'>=</span> <span class='st'>"ZXZ"</span>,
+  constant <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  regressors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"use"</span>, <span class='st'>"select"</span>, <span class='st'>"adapt"</span><span class='op'>)</span>,
+  outliers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ignore"</span>, <span class='st'>"use"</span>, <span class='st'>"select"</span><span class='op'>)</span>,
+  level <span class='op'>=</span> <span class='fl'>0.99</span>,
+  occurrence <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"auto"</span>, <span class='st'>"fixed"</span>, <span class='st'>"general"</span>, <span class='st'>"odds-ratio"</span>,
+    <span class='st'>"inverse-odds-ratio"</span>, <span class='st'>"direct"</span><span class='op'>)</span>,
+  distribution <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"default"</span>, <span class='st'>"dnorm"</span>, <span class='st'>"dlaplace"</span>, <span class='st'>"ds"</span>, <span class='st'>"dgnorm"</span>, <span class='st'>"dlnorm"</span>,
+    <span class='st'>"dinvgauss"</span>, <span class='st'>"dgamma"</span><span class='op'>)</span>,
+  loss <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"likelihood"</span>, <span class='st'>"MSE"</span>, <span class='st'>"MAE"</span>, <span class='st'>"HAM"</span>, <span class='st'>"LASSO"</span>, <span class='st'>"RIDGE"</span>, <span class='st'>"MSEh"</span>, <span class='st'>"TMSE"</span>,
+    <span class='st'>"GTMSE"</span>, <span class='st'>"MSCE"</span><span class='op'>)</span>,
+  ic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AICc"</span>, <span class='st'>"AIC"</span>, <span class='st'>"BIC"</span>, <span class='st'>"BICc"</span><span class='op'>)</span>,
+  select_order <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>values</th>
-      <td><p>A character string of possible values.</p></td>
+      <th>formula</th>
+      <td><p>A formula</p></td>
     </tr>
     <tr>
-      <th>range</th>
-      <td><p>A two-element vector holding the <em>defaults</em> for the smallest and
-largest possible values, respectively.</p></td>
+      <th>data</th>
+      <td><p>data</p></td>
     </tr>
     <tr>
-      <th>trans</th>
-      <td><p>A <code>trans</code> object from the <code>scales</code> package, such as
-<code><a href='https://scales.r-lib.org/reference/log_trans.html'>scales::log10_trans()</a></code> or <code><a href='https://scales.r-lib.org/reference/reciprocal_trans.html'>scales::reciprocal_trans()</a></code>. If not provided,
-the default is used which matches the units used in <code>range</code>. If no
-transformation, <code>NULL</code>.</p></td>
+      <th>period</th>
+      <td><p>A seasonal frequency. Uses "auto" by default. A character phrase
+of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.</p></td>
+    </tr>
+    <tr>
+      <th>d</th>
+      <td><p>The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.</p></td>
+    </tr>
+    <tr>
+      <th>q</th>
+      <td><p>The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.</p></td>
+    </tr>
+    <tr>
+      <th>P</th>
+      <td><p>The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.</p></td>
+    </tr>
+    <tr>
+      <th>D</th>
+      <td><p>The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.</p></td>
+    </tr>
+    <tr>
+      <th>Q</th>
+      <td><p>The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>The type of ETS model.</p></td>
+    </tr>
+    <tr>
+      <th>constant</th>
+      <td><p>Logical, determining, whether the constant is needed in the model or not.</p></td>
+    </tr>
+    <tr>
+      <th>regressors</th>
+      <td><p>The variable defines what to do with the provided explanatory variables.</p></td>
+    </tr>
+    <tr>
+      <th>outliers</th>
+      <td><p>Defines what to do with outliers.</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p>What confidence level to use for detection of outliers.</p></td>
+    </tr>
+    <tr>
+      <th>occurrence</th>
+      <td><p>The type of model used in probability estimation.</p></td>
+    </tr>
+    <tr>
+      <th>distribution</th>
+      <td><p>what density function to assume for the error term.</p></td>
+    </tr>
+    <tr>
+      <th>loss</th>
+      <td><p>The type of Loss Function used in optimization.</p></td>
+    </tr>
+    <tr>
+      <th>ic</th>
+      <td><p>The information criterion to use in the model selection / combination procedure.</p></td>
+    </tr>
+    <tr>
+      <th>select_order</th>
+      <td><p>If TRUE, then the function will select the most appropriate order using
+a mechanism similar to auto.msarima(), but implemented in auto.adam(). The values list(ar=...,i=...,ma=...)
+specify the maximum orders to check in this case.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/smooth/man/adam.html'>smooth::auto.adam</a></code></p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The main parameters for Exponential Smoothing models are:</p><ul>
-<li><p><code>error</code>: The form of the error term: additive", or "multiplicative".
-If the error is multiplicative, the data must be non-negative.</p></li>
-<li><p><code>trend</code>: The form of the trend term: "additive", "multiplicative" or "none".</p></li>
-<li><p><code>season</code>: The form of the seasonal term: "additive", "multiplicative" or "none"..</p></li>
-<li><p><code>damping</code>: Apply damping to a trend: "damped", or "none".</p></li>
-<li><p><code>smooth_level</code>: This is often called the "alpha" parameter used as the base level smoothing factor for exponential smoothing models.</p></li>
-<li><p><code>smooth_trend</code>: This is often called the "beta" parameter used as the trend smoothing factor for exponential smoothing models.</p></li>
-<li><p><code>smooth_seasonal</code>: This is often called the "gamma" parameter used as the seasonal smoothing factor for exponential smoothing models.</p></li>
-</ul>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>error</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error Term  (qualitative)
-#&gt; 2 possible value include:
-#&gt; 'additive' and 'multiplicative' </div><div class='input'>
-<span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Trend Term  (qualitative)
-#&gt; 3 possible value include:
-#&gt; 'additive', 'multiplicative' and 'none' </div><div class='input'>
-<span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Season Term  (qualitative)
-#&gt; 3 possible value include:
-#&gt; 'additive', 'multiplicative' and 'none' </div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

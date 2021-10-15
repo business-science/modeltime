@@ -1,7 +1,6 @@
 #' Tuning Parameters for ADAM Models
 #'
-#'
-#' @inheritParams dials::Laplace
+#' @param values A character string of possible values.
 #'
 #' @details
 #' The main parameters for ADAM models are:
@@ -20,6 +19,7 @@
 #'  - `information_criteria`: The information criterion to use in the model selection / combination procedure.
 #'  - `select_order`: If TRUE, then the function will select the most appropriate order.
 #'
+#' @returns  A `dials` parameter
 #'
 #' @examples
 #' use_constant()
@@ -35,11 +35,11 @@
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-use_constant <- function() {
+use_constant <- function(values = c(FALSE, TRUE)) {
     dials::new_qual_param(
         type      = "logical",
         default   = FALSE,
-        values    = c(FALSE, TRUE),
+        values    = values,
         label     = c(use_constant = "Logical, determining, whether the constant is needed in the model or not"),
         finalize  = NULL
     )
@@ -49,10 +49,11 @@ use_constant <- function() {
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-regressors_treatment <- function() {
+regressors_treatment <- function(values = c("use", "select", "adapt")) {
     dials::new_qual_param(
         type      = "character",
-        values    = c("use", "select", "adapt"),
+        default   = "use",
+        values    = values,
         label     = c(regressors_treatment = "The variable defines what to do with the provided explanatory variables."),
         finalize  = NULL
     )
@@ -61,10 +62,11 @@ regressors_treatment <- function() {
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-outliers_treatment <- function() {
+outliers_treatment <- function(values = c( "ignore", "use", "select")) {
     dials::new_qual_param(
         type      = "character",
-        values    = c("use", "select", "ignore"),
+        values    = values,
+        default   = "ignore",
         label     = c(outliers_treatment = "Defines what to do with outliers."),
         finalize  = NULL
     )
@@ -73,11 +75,11 @@ outliers_treatment <- function() {
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-probability_model <- function() {
+probability_model <- function(values= c("none", "auto", "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct")) {
     dials::new_qual_param(
         type      = "character",
-        values    = c("none", "auto", "fixed", "general", "odds-ratio",
-                      "inverse-odds-ratio", "direct"),
+        default   = "none",
+        values    = values,
         label     = c(probability_model = "The type of model used in probability estimation."),
         finalize  = NULL
     )
@@ -86,11 +88,11 @@ probability_model <- function() {
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-distribution <- function() {
+distribution <- function(values = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma")) {
     dials::new_qual_param(
         type      = "character",
-        values    = c("default", "dnorm", "dlaplace", "ds", "dgnorm",
-                      "dlnorm", "dinvgauss", "dgamma"),
+        default   = "default",
+        values    = values,
         label     = c(distribution = "What density function to assume for the error term."),
         finalize  = NULL
     )
@@ -99,10 +101,11 @@ distribution <- function() {
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-information_criteria <- function() {
+information_criteria <- function(values    = c("AICc", "AIC", "BICc", "BIC")) {
     dials::new_qual_param(
         type      = "character",
-        values    = c("AICc", "AIC", "BIC", "BICc"),
+        values    = values,
+        default   = "AICc",
         label     = c(information_criteria = "The information criterion to use in the model selection / combination procedure."),
         finalize  = NULL
     )
@@ -111,11 +114,11 @@ information_criteria <- function() {
 #' @export
 #' @return A parameter
 #' @rdname adam_params
-select_order <- function() {
+select_order <- function(values = c(FALSE, TRUE)) {
     dials::new_qual_param(
         type      = "logical",
         default   = FALSE,
-        values    = c(FALSE, TRUE),
+        values    = values,
         label     = c(select_order = "If TRUE, then the function will select the most appropriate order."),
         finalize  = NULL
     )

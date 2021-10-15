@@ -5,6 +5,8 @@ library(randomForest)
 library(kernlab)
 library(earth)
 library(thief)
+library(smooth)
+library(greybox)
 
 library(stats)
 

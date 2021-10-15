@@ -48,13 +48,13 @@
 #' ```{r echo = FALSE}
 #' # parsnip::convert_args("exp_smoothing")
 #'tibble::tribble(
-#'    ~ "modeltime", ~ "forecast::ets", ~ "forecast::croston()", ~ "smooth::es()",
-#'    "seasonal_period()", "ts(frequency)", "ts(frequency)", "ts(frequency)",
-#'    "error(), trend(), season()", "model ('ZZZ')", "NA", "model('ZZZ')",
-#'    "damping()", "damped (NULL)", "NA", "phi",
-#'    "smooth_level()", "alpha (NULL)", "alpha (0.1)", "persistence(alpha)",
-#'    "smooth_trend()", "beta (NULL)", "NA", "persistence(beta)",
-#'    "smooth_seasonal()", "gamma (NULL)", "NA", "persistence(gamma)"
+#'    ~ "modeltime", ~ "forecast::ets", ~ "forecast::croston()", ~ "forecast::thetaf()", ~ "smooth::es()",
+#'    "seasonal_period()", "ts(frequency)", "ts(frequency)", "ts(frequency)", "ts(frequency)",
+#'    "error(), trend(), season()", "model ('ZZZ')", "NA", "NA", "model('ZZZ')",
+#'    "damping()", "damped (NULL)", "NA", "NA", "phi",
+#'    "smooth_level()", "alpha (NULL)", "alpha (0.1)", "NA", "persistence(alpha)",
+#'    "smooth_trend()", "beta (NULL)", "NA", "NA", "persistence(beta)",
+#'    "smooth_seasonal()", "gamma (NULL)", "NA", "NA", "persistence(gamma)"
 #') %>% knitr::kable()
 #' ```
 #'

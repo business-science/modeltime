@@ -13,3 +13,5 @@
 ^\.github$
 ^codecov\.yml$
 vignettes/temp
+logs
+derby.log

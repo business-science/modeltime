@@ -6,6 +6,14 @@
 
 - [NEW Vignette - Modeltime Spark Backend](https://business-science.github.io/modeltime/articles/modeltime-spark.html) describing how to set up Modeltime with the Sparke Backend. 
 
+## New Algorithms: Smooth Package Integration
+
+If users install `smooth`, the following models become available:
+
+- `adam_reg()`: Interfaces with the ADAM forecasting algorithm in `smooth`. 
+
+- `exp_smoothing()`: A new engine "smooth_es" connects to the Exponential Smoothing algorithm in `smooth::es()`. This algorithm has several advantages, most importantly that it can use x-regs (unlike "ets" engine).
+
 ## Nested Modeltime Improvements
 
 - New extractor: `extract_nested_modeltime_table()` - Extracts a nested modeltime table by row id. 

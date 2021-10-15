@@ -128,7 +128,10 @@ in lieu of recreating the object from scratch.
 
 The engine uses \code{\link[smooth:adam]{smooth::auto.adam()}}.
 
-Function Parameters:\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
+Function Parameters:\preformatted{## Registered S3 method overwritten by 'greybox':
+##   method     from
+##   print.pcor lava
+}\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
 ##     i = c(0), ma = c(0), select = FALSE), formula = NULL, outliers = c("ignore", 
 ##     "use", "select"), level = 0.99, distribution = c("dnorm", "dlaplace", 
 ##     "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), h = 0, holdout = FALSE, 
@@ -250,8 +253,8 @@ splits <- initial_time_split(m750, prop = 0.8)
 # ---- AUTO ADAM ----
 
 # Model Spec
-model_spec <- arima_reg() \%>\%
-    set_engine("auto_arima")
+model_spec <- adam_reg() \%>\%
+    set_engine("auto_adam")
 
 # Fit Spec
 model_fit <- model_spec \%>\%
@@ -262,7 +265,7 @@ model_fit
 # ---- STANDARD ADAM ----
 
 # Model Spec
-model_spec <- arima_reg(
+model_spec <- adam_reg(
         seasonal_period          = 12,
         non_seasonal_ar          = 3,
         non_seasonal_differences = 1,
@@ -271,7 +274,7 @@ model_spec <- arima_reg(
         seasonal_differences     = 0,
         seasonal_ma              = 1
     ) \%>\%
-    set_engine("arima")
+    set_engine("adam")
 
 # Fit Spec
 model_fit <- model_spec \%>\%

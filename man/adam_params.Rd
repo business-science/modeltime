@@ -11,21 +11,32 @@
 \alias{select_order}
 \title{Tuning Parameters for ADAM Models}
 \usage{
-use_constant()
+use_constant(values = c(FALSE, TRUE))
 
-regressors_treatment()
+regressors_treatment(values = c("use", "select", "adapt"))
 
-outliers_treatment()
+outliers_treatment(values = c("ignore", "use", "select"))
 
-probability_model()
+probability_model(
+  values = c("none", "auto", "fixed", "general", "odds-ratio", "inverse-odds-ratio",
+    "direct")
+)
 
-distribution()
+distribution(
+  values = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss",
+    "dgamma")
+)
 
-information_criteria()
+information_criteria(values = c("AICc", "AIC", "BICc", "BIC"))
 
-select_order()
+select_order(values = c(FALSE, TRUE))
+}
+\arguments{
+\item{values}{A character string of possible values.}
 }
 \value{
+A \code{dials} parameter
+
 A parameter
 
 A parameter

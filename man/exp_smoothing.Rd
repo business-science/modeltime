@@ -68,14 +68,14 @@ Models can be created using the following \emph{engines}:
 
 
 The standardized parameter names in \code{modeltime} can be mapped to their original
-names in each engine:\tabular{llll}{
-   modeltime \tab forecast::ets \tab forecast::croston() \tab smooth::es() \cr
-   seasonal_period() \tab ts(frequency) \tab ts(frequency) \tab ts(frequency) \cr
-   error(), trend(), season() \tab model ('ZZZ') \tab NA \tab model('ZZZ') \cr
-   damping() \tab damped (NULL) \tab NA \tab phi \cr
-   smooth_level() \tab alpha (NULL) \tab alpha (0.1) \tab persistence(alpha) \cr
-   smooth_trend() \tab beta (NULL) \tab NA \tab persistence(beta) \cr
-   smooth_seasonal() \tab gamma (NULL) \tab NA \tab persistence(gamma) \cr
+names in each engine:\tabular{lllll}{
+   modeltime \tab forecast::ets \tab forecast::croston() \tab forecast::thetaf() \tab smooth::es() \cr
+   seasonal_period() \tab ts(frequency) \tab ts(frequency) \tab ts(frequency) \tab ts(frequency) \cr
+   error(), trend(), season() \tab model ('ZZZ') \tab NA \tab NA \tab model('ZZZ') \cr
+   damping() \tab damped (NULL) \tab NA \tab NA \tab phi \cr
+   smooth_level() \tab alpha (NULL) \tab alpha (0.1) \tab NA \tab persistence(alpha) \cr
+   smooth_trend() \tab beta (NULL) \tab NA \tab NA \tab persistence(beta) \cr
+   smooth_seasonal() \tab gamma (NULL) \tab NA \tab NA \tab persistence(gamma) \cr
 }
 
 
@@ -85,9 +85,13 @@ Other options can be set using \code{set_engine()}.
 
 The engine uses \code{\link[forecast:ets]{forecast::ets()}}.
 
-Function Parameters:\preformatted{## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, lower = c(rep(1e-04, 
-##     3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", "admissible"), ic = c("aicc", 
-##     "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", "na.fail"), ...)
+Function Parameters:\preformatted{## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, 
+##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, 
+##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", 
+##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", 
+##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, 
+##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", 
+##         "na.fail"), ...)
 }
 
 The main arguments are \code{model} and \code{damped} are defined using:
@@ -143,10 +147,14 @@ models will be fit.
 
 The engine uses \code{\link[smooth:es]{smooth::es()}}.
 
-Function Parameters:\preformatted{## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", "BICc"), loss = c("likelihood", 
-##     "MSE", "MAE", "HAM", "MSEh", "TMSE", "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", "parametric", "likelihood", "semiparametric", 
-##     "nonparametric"), level = 0.95, bounds = c("usual", "admissible", "none"), silent = c("all", "graph", "legend", "output", "none"), xreg = NULL, xregDo = c("use", 
-##     "select"), initialX = NULL, ...)
+Function Parameters:\preformatted{## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", 
+##     "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", 
+##     "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", "TMSE", 
+##     "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", 
+##     "parametric", "likelihood", "semiparametric", "nonparametric"), level = 0.95, 
+##     bounds = c("usual", "admissible", "none"), silent = c("all", "graph", 
+##         "legend", "output", "none"), xreg = NULL, xregDo = c("use", "select"), 
+##     initialX = NULL, ...)
 }
 
 The main arguments \code{model} and \code{phi} are defined using:
