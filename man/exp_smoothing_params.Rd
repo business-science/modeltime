@@ -4,8 +4,10 @@
 \alias{exp_smoothing_params}
 \alias{error}
 \alias{trend}
+\alias{trend_smooth}
 \alias{season}
 \alias{damping}
+\alias{damping_smooth}
 \alias{smooth_level}
 \alias{smooth_trend}
 \alias{smooth_seasonal}
@@ -15,9 +17,16 @@ error(values = c("additive", "multiplicative"))
 
 trend(values = c("additive", "multiplicative", "none"))
 
+trend_smooth(
+  values = c("additive", "multiplicative", "none", "additive_damped",
+    "multiplicative_damped")
+)
+
 season(values = c("additive", "multiplicative", "none"))
 
 damping(values = c("damped", "none"))
+
+damping_smooth(range = c(0, 2), trans = NULL)
 
 smooth_level(range = c(0, 1), trans = NULL)
 

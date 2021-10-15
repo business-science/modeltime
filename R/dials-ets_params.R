@@ -54,6 +54,18 @@ trend <- function(values = c("additive", "multiplicative", "none")) {
 
 #' @export
 #' @rdname exp_smoothing_params
+trend_smooth <- function(values = c("additive", "multiplicative", "none", "additive_damped", "multiplicative_damped")) {
+    dials::new_qual_param(
+        type     = c("character"),
+        values   = values,
+        default  = "additive",
+        label    = c(trend = "Trend Term"),
+        finalize = NULL
+    )
+}
+
+#' @export
+#' @rdname exp_smoothing_params
 season <- function(values = c("additive", "multiplicative", "none")) {
     dials::new_qual_param(
         type     = c("character"),
@@ -73,6 +85,18 @@ damping <- function(values = c("damped", "none")) {
         default  = "none",
         label    = c(damping = "Damping Term"),
         finalize = NULL
+    )
+}
+
+#' @export
+#' @rdname exp_smoothing_params
+damping_smooth <- function(range = c(0, 2), trans = NULL) {
+    dials::new_qual_param(
+        type      = "double",
+        range     = range,
+        inclusive = c(TRUE, TRUE),
+        label     = c(damping_smooth = "Damping Term"),
+        finalize  = NULL
     )
 }
 
