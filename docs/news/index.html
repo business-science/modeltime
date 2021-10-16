@@ -246,6 +246,15 @@
 <li><p><a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html">NEW Vignette - Modeltime Spark Backend</a> describing how to set up Modeltime with the Sparke Backend.</p></li>
 </ul>
 </div>
+<div id="new-algorithms-smooth-package-integration" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-algorithms-smooth-package-integration" class="anchor"></a>New Algorithms: Smooth Package Integration</h2>
+<p>If users install <code>smooth</code>, the following models become available:</p>
+<ul>
+<li><p><code><a href="../reference/adam_reg.html">adam_reg()</a></code>: Interfaces with the ADAM forecasting algorithm in <code>smooth</code>.</p></li>
+<li><p><code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>: A new engine “smooth_es” connects to the Exponential Smoothing algorithm in <code><a href="https://rdrr.io/pkg/smooth/man/es.html">smooth::es()</a></code>. This algorithm has several advantages, most importantly that it can use x-regs (unlike “ets” engine).</p></li>
+</ul>
+</div>
 <div id="nested-modeltime-improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nested-modeltime-improvements" class="anchor"></a>Nested Modeltime Improvements</h2>

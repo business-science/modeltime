@@ -493,22 +493,19 @@ There are 3 ways to specify:</p><ol>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘dplyr’ was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'dplyr' was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://parsnip.tidymodels.org'>parsnip</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘parsnip’ was built under R version 4.0.5</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘rsample’ was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘rsample’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'parsnip' was built under R version 4.0.5</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'rsample' was built under R version 4.0.5</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'tune':</span>
+#&gt; <span class='message'>  method                   from   </span>
+#&gt; <span class='message'>  required_pkgs.model_spec parsnip</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/config-i1/smooth'>smooth</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘smooth’ was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: greybox</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘greybox’ was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'greybox':</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'smooth' was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: greybox</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package 'greybox' was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'greybox':</span>
 #&gt; <span class='message'>  method     from</span>
 #&gt; <span class='message'>  print.pcor lava</span></div><div class='output co'>#&gt; <span class='message'>Package "greybox", v1.0.1 loaded.</span></div><div class='output co'>#&gt; <span class='message'>This is package "smooth", v3.1.3</span></div><div class='input'>
 <span class='co'># Data</span>
@@ -536,12 +533,28 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># Model Spec</span>
 <span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>adam_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"auto_adam"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in adam_reg(): could not find function "adam_reg"</span></div><div class='input'>
+
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in fit(., log(value) ~ date, data = training(splits)): object 'model_spec' not found</span></div><div class='input'><span class='va'>model_fit</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'model_fit' not found</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; parsnip model object
+#&gt; 
+#&gt; Fit time:  1.5s 
+#&gt; Time elapsed: 1.43 seconds
+#&gt; Model estimated using auto.adam() function: ETS(AAdN)
+#&gt; Distribution assumed in the model: S
+#&gt; Loss function type: likelihood; Loss function value: -471.368
+#&gt; Persistence vector g:
+#&gt; alpha  beta 
+#&gt;     1     0 
+#&gt; Damping parameter: 0.9784
+#&gt; Sample size: 244
+#&gt; Number of estimated parameters: 6
+#&gt; Number of degrees of freedom: 238
+#&gt; Information criteria:
+#&gt;       AIC      AICc       BIC      BICc 
+#&gt; -930.7360 -930.3816 -909.7530 -908.7788 </div><div class='input'>
 
 <span class='co'># ---- STANDARD ADAM ----</span>
 
@@ -556,12 +569,36 @@ There are 3 ways to specify:</p><ol>
         seasonal_ma              <span class='op'>=</span> <span class='fl'>1</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"adam"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in adam_reg(seasonal_period = 12, non_seasonal_ar = 3, non_seasonal_differences = 1,     non_seasonal_ma = 3, seasonal_ar = 1, seasonal_differences = 0,     seasonal_ma = 1): could not find function "adam_reg"</span></div><div class='input'>
+
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in fit(., log(value) ~ date, data = training(splits)): object 'model_spec' not found</span></div><div class='input'><span class='va'>model_fit</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'model_fit' not found</span></div><div class='input'>
+<span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; parsnip model object
+#&gt; 
+#&gt; Fit time:  1.4s 
+#&gt; Time elapsed: 1.38 seconds
+#&gt; Model estimated using adam() function: ETS(AAN)+ARIMA(3,1,3)
+#&gt; Distribution assumed in the model: Normal
+#&gt; Loss function type: likelihood; Loss function value: -444.7548
+#&gt; Persistence vector g:
+#&gt;  alpha   beta 
+#&gt; 0.0315 0.0315 
+#&gt; 
+#&gt; ARMA parameters of the model:
+#&gt; AR:
+#&gt; phi1[1] phi2[1] phi3[1] 
+#&gt;  0.1000 -0.0508  0.1156 
+#&gt; MA:
+#&gt; theta1[1] theta2[1] theta3[1] 
+#&gt;   -0.2071   -0.4779   -0.4091 
+#&gt; 
+#&gt; Sample size: 244
+#&gt; Number of estimated parameters: 15
+#&gt; Number of degrees of freedom: 229
+#&gt; Information criteria:
+#&gt;       AIC      AICc       BIC      BICc 
+#&gt; -859.5097 -857.4044 -807.0521 -801.2657 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
