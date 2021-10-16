@@ -289,40 +289,33 @@ Modeltime Tables from models stored in a <code>list</code>.</p>
 
 <span class='co'># --- MODELS ---</span>
 
-<span class='co'># Model 1: auto_arima ----</span>
-<span class='va'>model_fit_arima</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"auto_arima"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='co'># Model 1: prophet ----</span>
+<span class='va'>model_fit_prophet</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prophet_reg.html'>prophet_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"prophet"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in prophet_reg(): could not find function "prophet_reg"</span></div><div class='input'>
 
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
 <span class='co'># Make a Modeltime Table</span>
 <span class='va'>models_tbl</span> <span class='op'>&lt;-</span> <span class='fu'>modeltime_table</span><span class='op'>(</span>
-    <span class='va'>model_fit_arima</span>
+    <span class='va'>model_fit_prophet</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_table(model_fit_prophet): could not find function "modeltime_table"</span></div><div class='input'>
 <span class='co'># Can also convert a list of models</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>model_fit_arima</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>model_fit_prophet</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>as_modeltime_table</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # Modeltime Table
-#&gt; <span style='color: #949494;'># A tibble: 1 × 3</span>
-#&gt;   .model_id .model   .model_desc            
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 <span style='color: #949494;'>&lt;fit[+]&gt;</span> ARIMA(0,1,1)(0,1,1)[12]</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in as_modeltime_table(.): could not find function "as_modeltime_table"</span></div><div class='input'>
 <span class='co'># ---- CALIBRATE ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>&lt;-</span> <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_calibrate(., new_data = testing(splits)): could not find function "modeltime_calibrate"</span></div><div class='input'>
 <span class='co'># ---- ACCURACY ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 9</span>
-#&gt;   .model_id .model_desc             .type   mae  mape  mase smape  rmse   rsq
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 ARIMA(0,1,1)(0,1,1)[12] Test   151.  1.41 0.516  1.43  198. 0.930</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_accuracy(.): could not find function "modeltime_accuracy"</span></div><div class='input'>
 <span class='co'># ---- FORECAST ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
@@ -330,20 +323,7 @@ Modeltime Tables from models stored in a <code>list</code>.</p>
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 × 7</span>
-#&gt;    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi
-#&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 2</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-02-01   <span style='text-decoration: underline;'>6</span>430       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 3</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-03-01   <span style='text-decoration: underline;'>6</span>520       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 4</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-04-01   <span style='text-decoration: underline;'>6</span>580       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 5</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-05-01   <span style='text-decoration: underline;'>6</span>620       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 6</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-06-01   <span style='text-decoration: underline;'>6</span>690       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 7</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-07-01   <span style='text-decoration: underline;'>6</span>000       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 8</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-08-01   <span style='text-decoration: underline;'>5</span>450       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'> 9</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-09-01   <span style='text-decoration: underline;'>6</span>480       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #BCBCBC;'>10</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-10-01   <span style='text-decoration: underline;'>6</span>820       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #949494;'># … with 327 more rows</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_forecast(., new_data = testing(splits), actual_data = m750): could not find function "modeltime_forecast"</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

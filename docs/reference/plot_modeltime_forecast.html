@@ -341,18 +341,18 @@ Can save space with long model descriptions.</p></td>
 
 <span class='co'># --- MODELS ---</span>
 
-<span class='co'># Model 1: auto_arima ----</span>
-<span class='va'>model_fit_arima</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"auto_arima"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='co'># Model 1: prophet ----</span>
+<span class='va'>model_fit_prophet</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prophet_reg.html'>prophet_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"prophet"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in prophet_reg(): could not find function "prophet_reg"</span></div><div class='input'>
 
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
 <span class='va'>models_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
-    <span class='va'>model_fit_arima</span>
+    <span class='va'>model_fit_prophet</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_table(model_fit_prophet): could not find function "modeltime_table"</span></div><div class='input'>
 <span class='co'># ---- FORECAST ----</span>
 
 <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
@@ -362,7 +362,7 @@ Can save space with long model descriptions.</p></td>
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>plot_modeltime_forecast</span><span class='op'>(</span>.interactive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='img'><img src='plot_modeltime_forecast-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in plot_modeltime_forecast(., .interactive = FALSE): could not find function "plot_modeltime_forecast"</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

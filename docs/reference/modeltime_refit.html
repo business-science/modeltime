@@ -310,30 +310,30 @@ retraining on new data.</p>
 
 <span class='co'># --- MODELS ---</span>
 
-<span class='va'>model_fit_auto_arima</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"auto_arima"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>model_fit_prophet</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prophet_reg.html'>prophet_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"prophet"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in prophet_reg(): could not find function "prophet_reg"</span></div><div class='input'>
 
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
 <span class='va'>models_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
-    <span class='va'>model_fit_auto_arima</span>
+    <span class='va'>model_fit_prophet</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_table(model_fit_prophet): could not find function "modeltime_table"</span></div><div class='input'>
 <span class='co'># ---- CALIBRATE ----</span>
 <span class='co'># - Calibrate on training data set</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>&lt;-</span> <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_calibrate(., new_data = testing(splits)): could not find function "modeltime_calibrate"</span></div><div class='input'>
 
 <span class='co'># ---- REFIT ----</span>
 <span class='co'># - Refit on full data set</span>
 
 <span class='va'>refit_tbl</span> <span class='op'>&lt;-</span> <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'>modeltime_refit</span><span class='op'>(</span><span class='va'>m750</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in modeltime_refit(., m750): could not find function "modeltime_refit"</span></div><div class='input'>
 
 </div></pre>
   </div>
