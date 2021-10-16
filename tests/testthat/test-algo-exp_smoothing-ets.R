@@ -1,5 +1,5 @@
 # ---- ETS, CROSTON ----
-context("TEST exp_smoothing: ets")
+context("TEST exp_smoothing()")
 
 
 # SETUP ----
@@ -173,7 +173,7 @@ predictions_tbl <- wflw_fit %>%
     mutate_at(vars(.value), exp)
 
 # TESTS
-test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
+test_that("exp_smoothing: CROSTON", {
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "croston_fit_impl")
 
@@ -191,9 +191,7 @@ test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
 
-test_that("exp_smoothing: ets (workflow), Test Predictions", {
 
     full_data <- bind_rows(training(splits), testing(splits))
 
@@ -241,7 +239,7 @@ predictions_tbl <- wflw_fit %>%
     mutate_at(vars(.value), exp)
 
 # TESTS
-test_that("exp_smoothing: Theta (workflow), Test Model Fit Object", {
+test_that("exp_smoothing: Theta", {
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "theta_fit_impl")
 
@@ -259,9 +257,7 @@ test_that("exp_smoothing: Theta (workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
 
-test_that("exp_smoothing: Theta (workflow), Test Predictions", {
 
     full_data <- bind_rows(training(splits), testing(splits))
 
@@ -301,7 +297,7 @@ predictions_tbl <- model_fit %>%
 
 
 # TESTS
-test_that("exp_smoothing: smooth, Test Model Fit Object", {
+test_that("exp_smoothing: smooth", {
 
     testthat::expect_s3_class(model_fit$fit, "smooth_fit_impl")
 
@@ -319,9 +315,6 @@ test_that("exp_smoothing: smooth, Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
-
-test_that("exp_smoothing: smooth, Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -342,7 +335,9 @@ test_that("exp_smoothing: smooth, Test Predictions", {
 
 
 
-# ---- ETS WORKFLOWS ----
+
+
+# * WORKFLOWS XREGS ----
 
 # Model Spec
 model_spec <- exp_smoothing(
@@ -355,7 +350,8 @@ model_spec <- exp_smoothing(
 
 # Recipe spec
 recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
+    step_log(value, skip = FALSE) %>%
+    step_date(date, features = "month")
 
 # Workflow
 wflw <- workflow() %>%
@@ -370,7 +366,7 @@ predictions_tbl <- wflw_fit %>%
     modeltime_calibrate(testing(splits)) %>%
     modeltime_forecast(new_data = testing(splits),
                        actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
+    mutate_at(vars(.value, .conf_lo, .conf_hi), exp)
 
 
 
@@ -387,7 +383,7 @@ test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
 
     testthat::expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    testthat::expect_true(!is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
 
     # $preproc
     mld <- wflw_fit %>% workflows::extract_mold()
