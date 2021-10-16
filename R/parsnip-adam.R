@@ -173,6 +173,7 @@
 #' library(rsample)
 #' library(timetk)
 #' library(modeltime)
+#' library(smooth)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")

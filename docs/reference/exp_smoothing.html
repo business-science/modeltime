@@ -482,6 +482,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rsample.tidymodels.org'>rsample</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/config-i1/smooth'>smooth</a></span><span class='op'>)</span>
 
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
@@ -558,7 +559,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  290ms 
+#&gt; Fit time:  281ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:
@@ -598,7 +599,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  1s 
+#&gt; Fit time:  1.1s 
 #&gt; Croston Method
 #&gt; ---</div><div class='input'><span class='co'># }</span>
 
@@ -616,7 +617,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  10ms 
+#&gt; Fit time:  0ms 
 #&gt; Theta Method
 #&gt; ---</div><div class='input'><span class='co'># }</span>
 
@@ -640,8 +641,8 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  331ms 
-#&gt; Time elapsed: 0.32 seconds
+#&gt; Fit time:  360ms 
+#&gt; Time elapsed: 0.34 seconds
 #&gt; Model estimated: ETS(MAdA)
 #&gt; Persistence vector g:
 #&gt;  alpha   beta  gamma 

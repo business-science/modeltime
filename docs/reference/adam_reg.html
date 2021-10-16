@@ -507,7 +507,10 @@ There are 3 ways to specify:</p><ol>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    matches</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
-
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/config-i1/smooth'>smooth</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘smooth’ was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: greybox</span></div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘greybox’ was built under R version 4.0.5</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'greybox':</span>
+#&gt; <span class='message'>  method     from</span>
+#&gt; <span class='message'>  print.pcor lava</span></div><div class='output co'>#&gt; <span class='message'>Package "greybox", v1.0.1 loaded.</span></div><div class='output co'>#&gt; <span class='message'>This is package "smooth", v3.1.3</span></div><div class='input'>
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
@@ -576,8 +579,8 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  1.4s 
-#&gt; Time elapsed: 1.37 seconds
+#&gt; Fit time:  1.2s 
+#&gt; Time elapsed: 1.18 seconds
 #&gt; Model estimated using adam() function: ETS(AAN)+ARIMA(3,1,3)
 #&gt; Distribution assumed in the model: Normal
 #&gt; Loss function type: likelihood; Loss function value: -444.7548
