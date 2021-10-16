@@ -42,24 +42,25 @@
 #' library(lubridate)
 #' library(timetk)
 #'
+#'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
 #'
 #' # Split Data 80/20
-#' splits <- initial_time_split(m750, prop = 0.9)
+#' splits <- initial_time_split(m750, prop = 0.8)
 #'
 #' # --- MODELS ---
 #'
-#' # Model 1: auto_arima ----
-#' model_fit_arima <- arima_reg() %>%
-#'     set_engine(engine = "auto_arima") %>%
+#' # Model 1: prophet ----
+#' model_fit_prophet <- prophet_reg() %>%
+#'     set_engine(engine = "prophet") %>%
 #'     fit(value ~ date, data = training(splits))
 #'
 #'
 #' # ---- MODELTIME TABLE ----
 #'
 #' models_tbl <- modeltime_table(
-#'     model_fit_arima
+#'     model_fit_prophet
 #' )
 #'
 #' # ---- ACCURACY ----
