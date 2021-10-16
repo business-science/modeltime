@@ -429,3 +429,6 @@ make_adam_reg <- function(){
     )
 
 }
+
+# nocov end
+
