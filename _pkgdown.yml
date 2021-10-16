@@ -176,7 +176,7 @@ reference:
     - num_networks
   - subtitle: ADAM
     contents:
-    -
+    - use_constant
   - subtitle: Temporal Hierachical Models
     contents:
     - combination_method
