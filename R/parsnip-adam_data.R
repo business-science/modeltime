@@ -194,8 +194,8 @@ make_adam_reg <- function(){
         eng           = engine,
         mode          = "regression",
         value         = list(
-            interface = "formula",
-            protect   = c("formula", "data"),
+            interface = "data.frame",
+            protect   = c("x", "y"),
             func      = c(fun = "adam_fit_impl"),
             defaults  = list()
         )
@@ -403,8 +403,8 @@ make_adam_reg <- function(){
         eng           = engine_auto,
         mode          = "regression",
         value         = list(
-            interface = "formula",
-            protect   = c("formula", "data"),
+            interface = "data.frame",
+            protect   = c("x", "y"),
             func      = c(fun = "auto_adam_fit_impl"),
             defaults  = list()
         )

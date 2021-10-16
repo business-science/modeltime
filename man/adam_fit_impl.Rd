@@ -5,8 +5,8 @@
 \title{Low-Level ADAM function for translating modeltime to forecast}
 \usage{
 adam_fit_impl(
-  formula,
-  data,
+  x,
+  y,
   period = "auto",
   p = 0,
   d = 0,
@@ -31,9 +31,9 @@ adam_fit_impl(
 )
 }
 \arguments{
-\item{formula}{A formula}
+\item{x}{A data.frame of predictors}
 
-\item{data}{data}
+\item{y}{A vector with outcome}
 
 \item{period}{A seasonal frequency. Uses "auto" by default. A character phrase
 of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.}

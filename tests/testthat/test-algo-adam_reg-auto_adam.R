@@ -1,4 +1,4 @@
-# ---- STANDARD Auto ADAM ----
+# ---- Auto ADAM ----
 context("TEST adam_reg: Auto ADAM")
 
 
@@ -12,13 +12,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- adam_reg(
-    seasonal_period          = 12,
-    non_seasonal_ar          = 3,
-    non_seasonal_differences = 1,
-    non_seasonal_ma          = 3,
-    seasonal_ar              = 1,
-    seasonal_differences     = 0,
-    seasonal_ma              = 1
+    seasonal_period          = 12
 ) %>%
     set_engine("auto_adam")
 
@@ -69,10 +63,10 @@ test_that("adam_reg: Auto ADAM, (No xregs), Test Predictions", {
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 2100)
+    testthat::expect_lte(max(abs(resid)), 3000)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 530)
+    testthat::expect_lte(mean(abs(resid)), 1000)
 
 })
 
@@ -84,18 +78,22 @@ m750 <- m4_monthly %>% filter(id == "M750") %>% mutate(month = month(date, label
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(value ~ date + month, data = training(splits))
 
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
 
 
 # TESTS
-test_that("adam_reg: Auto ADAM, (XREGS), Test Model Fit Object", {
+test_that("adam_reg: Auto ADAM, (XREGS)", {
+
+    testthat::skip_on_cran()
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(value ~ date + month, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "Auto_adam_fit_impl")
 
@@ -113,9 +111,7 @@ test_that("adam_reg: Auto ADAM, (XREGS), Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
 
-test_that("adam_reg: Auto ADAM (XREGS), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -126,10 +122,10 @@ test_that("adam_reg: Auto ADAM (XREGS), Test Predictions", {
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 1464)
+    testthat::expect_lte(max(abs(resid)), 3000)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 400)
+    testthat::expect_lte(mean(abs(resid)), 1000)
 
 })
 
@@ -182,7 +178,7 @@ test_that("adam_reg: Auto ADAM (workflow), Test Model Fit Object", {
     testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
 
     # $preproc
-    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
 })
@@ -200,10 +196,10 @@ test_that("adam_reg: Auto ADAM (workflow), Test Predictions", {
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 2100)
+    testthat::expect_lte(max(abs(resid)), 3000)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 530)
+    testthat::expect_lte(mean(abs(resid)), 1000)
 
 })
 

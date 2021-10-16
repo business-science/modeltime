@@ -341,8 +341,8 @@ translate.adam_reg <- function(x, engine = x$engine, ...) {
 
 #' Low-Level ADAM function for translating modeltime to forecast
 #'
-#' @param formula A formula
-#' @param data data
+#' @param x A data.frame of predictors
+#' @param y A vector with outcome
 #' @param period A seasonal frequency. Uses "auto" by default. A character phrase
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param p The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
@@ -366,7 +366,7 @@ translate.adam_reg <- function(x, engine = x$engine, ...) {
 #' @param ... Additional arguments passed to `smooth::adam`
 #'
 #' @export
-adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
+adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
                           model = "ZXZ", constant = FALSE, regressors =  c("use", "select", "adapt"),
                           outliers = c("ignore", "use", "select"), level = 0.99,
                           occurrence = c("none", "auto", "fixed", "general", "odds-ratio",
@@ -380,20 +380,11 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
                            ...) {
 
 
-    y <- all.vars(formula)[1]
-
-    detect_function <- function(x){
-
-        if (stringr::str_detect(x, "\\(") && stringr::str_detect(x, "\\)")) {TRUE} else {FALSE}
-    }
-
-    is_fun <- sapply(attr(stats::terms(formula, data = data), "term.labels"), detect_function) %>% sum()
-
-    if (is_fun){
-        rlang::warn("We have detected the possible use of a function in the external regressors in the `fit` function. The ADAM algorithm does not support the use of functions directly. Please create a new variable and then use it in the `fit` function.")
-    }
-
-    data <- data %>% dplyr::relocate(y)
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
+    outcome    <- y
+    predictor  <- x
 
     args <- list(...)
 
@@ -437,7 +428,6 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
         args[["ic"]] <- ic
     }
 
-    predictor  <- data %>% dplyr::select(-dplyr::all_of(y))
 
     # INDEX & PERIOD
     # Determine Period, Index Col, and Index
@@ -448,12 +438,18 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
 
     # # XREGS
     # # Clean names, get xreg recipe, process predictors
+
     xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     xreg_tbl    <- juice_xreg_recipe(xreg_recipe, format = "tbl")
 
-    args[["data"]] <- dplyr::bind_cols(data %>% dplyr::select(y),
-                                       xreg_tbl) %>%
-                      as.data.frame()
+    # Combine Xregs and data
+    args[["data"]] <- dplyr::bind_cols(
+        tibble::tibble(..y = y),
+        xreg_tbl
+    ) %>%
+        as.data.frame()
+
+
 
     fit_call <- parsnip::make_call(fun  = "adam",
                                    ns   = "smooth",
@@ -461,11 +457,6 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
 
     fit_adam <- rlang::eval_tidy(fit_call)
 
-    if (y == "..y"){
-        y1 <- names(predictor)
-    } else {
-        y1 <- NULL
-    }
 
     # RETURN
     new_modeltime_bridge(
@@ -486,10 +477,7 @@ adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P
 
         # Preprocessing Recipe (prepped) - Used in predict method
         extras = list(
-            value = y,
-            xreg_recipe = xreg_recipe,
-            value2 = y1,
-            terms = attr(stats::terms(formula, data = data), "term.labels")
+            xreg_recipe = xreg_recipe
         ),
 
         # Description - Convert ADAM model parameters to short description
@@ -522,25 +510,15 @@ Adam_predict_impl <- function(object, new_data, ...) {
 
     # PREPARE INPUTS
     model       <- object$models$model_1
-    value       <- object$extras$value
-    value2      <- object$extras$value2
     xreg_recipe <- object$extras$xreg_recipe
     h_horizon   <- nrow(new_data)
-
-    if (value == "..y"){
-        value <- names(new_data) %>% dplyr::setdiff(value2)
-    }
 
     # XREG
     xreg_tbl <- bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
 
-    data <- dplyr::bind_cols(new_data %>% dplyr::select(value),
-                     xreg_tbl) %>%
-            as.data.frame()
-
     # PREDICTIONS
     if (!is.null(xreg_tbl)) {
-        preds_forecast <- greybox::forecast(model, h = h_horizon, newdata = data, ...)$mean %>% as.vector()
+        preds_forecast <- greybox::forecast(model, h = h_horizon, newdata = xreg_tbl, ...)$mean %>% as.vector()
     } else {
         preds_forecast <- greybox::forecast(model, h = h_horizon, ...)$mean %>% as.vector()
     }
@@ -560,8 +538,8 @@ Adam_predict_impl <- function(object, new_data, ...) {
 
 #' Low-Level ADAM function for translating modeltime to forecast
 #'
-#' @param formula A formula
-#' @param data data
+#' @param x A data.frame of predictors
+#' @param y A vector with outcome
 #' @param period A seasonal frequency. Uses "auto" by default. A character phrase
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param p The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.
@@ -585,7 +563,7 @@ Adam_predict_impl <- function(object, new_data, ...) {
 #' @param ... Additional arguments passed to `smooth::auto.adam`
 #'
 #' @export
-auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
+auto_adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
                           model = "ZXZ", constant = FALSE, regressors =  c("use", "select", "adapt"),
                           outliers = c("ignore", "use", "select"), level = 0.99,
                           occurrence = c("none", "auto", "fixed", "general", "odds-ratio",
@@ -599,20 +577,11 @@ auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q =
                           ...) {
 
 
-    y <- all.vars(formula)[1]
-
-    detect_function <- function(x){
-
-        if (stringr::str_detect(x, "\\(") && stringr::str_detect(x, "\\)")) {TRUE} else {FALSE}
-    }
-
-    is_fun <- sapply(attr(stats::terms(formula, data = data), "term.labels"), detect_function) %>% sum()
-
-    if (is_fun){
-        rlang::warn("We have detected the possible use of a function in the external regressors in the `fit` function. The ADAM algorithm does not support the use of functions directly. Please create a new variable and then use it in the `fit` function.")
-    }
-
-    data <- data %>% dplyr::relocate(y)
+    # X & Y
+    # Expect outcomes  = vector
+    # Expect predictor = data.frame
+    outcome    <- y
+    predictor  <- x
 
     args <- list(...)
 
@@ -656,7 +625,6 @@ auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q =
         args[["ic"]] <- ic
     }
 
-    predictor  <- data %>% dplyr::select(-dplyr::all_of(y))
 
     # INDEX & PERIOD
     # Determine Period, Index Col, and Index
@@ -670,8 +638,10 @@ auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q =
     xreg_recipe <- create_xreg_recipe(predictor, prepare = TRUE)
     xreg_tbl    <- juice_xreg_recipe(xreg_recipe, format = "tbl")
 
-    args[["data"]] <- dplyr::bind_cols(data %>% dplyr::select(y),
-                                       xreg_tbl) %>%
+    args[["data"]] <- dplyr::bind_cols(
+        tibble::tibble(..y = y),
+        xreg_tbl
+    ) %>%
         as.data.frame()
 
     fit_call <- parsnip::make_call(fun  = "auto.adam",
@@ -679,12 +649,6 @@ auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q =
                                    args = args)
 
     fit_adam <- rlang::eval_tidy(fit_call)
-
-    if (y == "..y"){
-        y1 <- names(predictor)
-    } else {
-        y1 <- NULL
-    }
 
     # RETURN
     new_modeltime_bridge(
@@ -705,9 +669,7 @@ auto_adam_fit_impl <- function(formula, data, period = "auto", p = 0, d = 0, q =
 
         # Preprocessing Recipe (prepped) - Used in predict method
         extras = list(
-            value = y,
-            xreg_recipe = xreg_recipe,
-            value2 = y1
+            xreg_recipe = xreg_recipe
         ),
 
         # Description - Convert ADAM model parameters to short description
@@ -740,25 +702,15 @@ Auto_adam_predict_impl <- function(object, new_data, ...) {
 
     # PREPARE INPUTS
     model       <- object$models$model_1
-    value       <- object$extras$value
-    value2      <- object$extras$value2
     xreg_recipe <- object$extras$xreg_recipe
     h_horizon   <- nrow(new_data)
-
-    if (value == "..y"){
-        value <- names(new_data) %>% dplyr::setdiff(value2)
-    }
 
     # XREG
     xreg_tbl <- bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
 
-    data <- dplyr::bind_cols(new_data %>% dplyr::select(value),
-                             xreg_tbl) %>%
-        as.data.frame()
-
     # PREDICTIONS
     if (!is.null(xreg_tbl)) {
-        preds_forecast <- greybox::forecast(model, h = h_horizon, newdata = data, ...)$mean %>% as.vector()
+        preds_forecast <- greybox::forecast(model, h = h_horizon, newdata = xreg_tbl, ...)$mean %>% as.vector()
     } else {
         preds_forecast <- greybox::forecast(model, h = h_horizon, ...)$mean %>% as.vector()
     }
