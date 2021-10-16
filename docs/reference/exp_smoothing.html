@@ -335,13 +335,13 @@ factor for exponential smoothing models.</p></td>
 
 <p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
 names in each engine:</p><table class='table'>
-<tr><td>modeltime</td><td>forecast::ets</td><td>forecast::croston()</td><td>smooth::es()</td></tr>
-<tr><td>seasonal_period()</td><td>ts(frequency)</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
-<tr><td>error(), trend(), season()</td><td>model ('ZZZ')</td><td>NA</td><td>model('ZZZ')</td></tr>
-<tr><td>damping()</td><td>damped (NULL)</td><td>NA</td><td>phi</td></tr>
-<tr><td>smooth_level()</td><td>alpha (NULL)</td><td>alpha (0.1)</td><td>persistence(alpha)</td></tr>
-<tr><td>smooth_trend()</td><td>beta (NULL)</td><td>NA</td><td>persistence(beta)</td></tr>
-<tr><td>smooth_seasonal()</td><td>gamma (NULL)</td><td>NA</td><td>persistence(gamma)</td></tr>
+<tr><td>modeltime</td><td>forecast::ets</td><td>forecast::croston()</td><td>forecast::thetaf()</td><td>smooth::es()</td></tr>
+<tr><td>seasonal_period()</td><td>ts(frequency)</td><td>ts(frequency)</td><td>ts(frequency)</td><td>ts(frequency)</td></tr>
+<tr><td>error(), trend(), season()</td><td>model ('ZZZ')</td><td>NA</td><td>NA</td><td>model('ZZZ')</td></tr>
+<tr><td>damping()</td><td>damped (NULL)</td><td>NA</td><td>NA</td><td>phi</td></tr>
+<tr><td>smooth_level()</td><td>alpha (NULL)</td><td>alpha (0.1)</td><td>NA</td><td>persistence(alpha)</td></tr>
+<tr><td>smooth_trend()</td><td>beta (NULL)</td><td>NA</td><td>NA</td><td>persistence(beta)</td></tr>
+<tr><td>smooth_seasonal()</td><td>gamma (NULL)</td><td>NA</td><td>NA</td><td>persistence(gamma)</td></tr>
 </table>
 
 
@@ -349,9 +349,13 @@ names in each engine:</p><table class='table'>
 <p>Other options can be set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine()</a></code>.</p>
 <p><strong>ets (default engine)</strong></p>
 <p>The engine uses <code><a href='https://pkg.robjhyndman.com/forecast/reference/ets.html'>forecast::ets()</a></code>.</p>
-<p>Function Parameters:</p><pre><span class='co'>## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, lower = c(rep(1e-04, </span>
-<span class='co'>##     3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", "admissible"), ic = c("aicc", </span>
-<span class='co'>##     "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", "na.fail"), ...)</span>
+<p>Function Parameters:</p><pre><span class='co'>## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, </span>
+<span class='co'>##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, </span>
+<span class='co'>##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", </span>
+<span class='co'>##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", </span>
+<span class='co'>##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, </span>
+<span class='co'>##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", </span>
+<span class='co'>##         "na.fail"), ...)</span>
 </pre>
 
 <p>The main arguments are <code>model</code> and <code>damped</code> are defined using:</p><ul>
@@ -394,10 +398,14 @@ models will be fit.</p></li>
 
 <p><strong>smooth_es</strong></p>
 <p>The engine uses <code><a href='https://rdrr.io/pkg/smooth/man/es.html'>smooth::es()</a></code>.</p>
-<p>Function Parameters:</p><pre><span class='co'>## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", "BICc"), loss = c("likelihood", </span>
-<span class='co'>##     "MSE", "MAE", "HAM", "MSEh", "TMSE", "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", "parametric", "likelihood", "semiparametric", </span>
-<span class='co'>##     "nonparametric"), level = 0.95, bounds = c("usual", "admissible", "none"), silent = c("all", "graph", "legend", "output", "none"), xreg = NULL, xregDo = c("use", </span>
-<span class='co'>##     "select"), initialX = NULL, ...)</span>
+<p>Function Parameters:</p><pre><span class='co'>## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", </span>
+<span class='co'>##     "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", </span>
+<span class='co'>##     "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", "TMSE", </span>
+<span class='co'>##     "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", </span>
+<span class='co'>##     "parametric", "likelihood", "semiparametric", "nonparametric"), level = 0.95, </span>
+<span class='co'>##     bounds = c("usual", "admissible", "none"), silent = c("all", "graph", </span>
+<span class='co'>##         "legend", "output", "none"), xreg = NULL, xregDo = c("use", "select"), </span>
+<span class='co'>##     initialX = NULL, ...)</span>
 </pre>
 
 <p>The main arguments <code>model</code> and <code>phi</code> are defined using:</p><ul>
@@ -550,7 +558,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  271ms 
+#&gt; Fit time:  290ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:
@@ -590,7 +598,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  1.1s 
+#&gt; Fit time:  1s 
 #&gt; Croston Method
 #&gt; ---</div><div class='input'><span class='co'># }</span>
 
@@ -608,7 +616,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  20ms 
+#&gt; Fit time:  10ms 
 #&gt; Theta Method
 #&gt; ---</div><div class='input'><span class='co'># }</span>
 
@@ -632,8 +640,8 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  360ms 
-#&gt; Time elapsed: 0.34 seconds
+#&gt; Fit time:  331ms 
+#&gt; Time elapsed: 0.32 seconds
 #&gt; Model estimated: ETS(MAdA)
 #&gt; Persistence vector g:
 #&gt;  alpha   beta  gamma 

@@ -395,7 +395,10 @@ set using <code><a href='https://parsnip.tidymodels.org/reference/set_engine.htm
 in lieu of recreating the object from scratch.</p>
 <p><strong>auto_adam (default engine)</strong></p>
 <p>The engine uses <code><a href='https://rdrr.io/pkg/smooth/man/adam.html'>smooth::auto.adam()</a></code>.</p>
-<p>Function Parameters:</p><pre><span class='co'>## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span>
+<p>Function Parameters:</p><pre><span class='co'>## Registered S3 method overwritten by 'greybox':</span>
+<span class='co'>##   method     from</span>
+<span class='co'>##   print.pcor lava</span>
+</pre><pre><span class='co'>## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span>
 <span class='co'>##     i = c(0), ma = c(0), select = FALSE), formula = NULL, outliers = c("ignore", </span>
 <span class='co'>##     "use", "select"), level = 0.99, distribution = c("dnorm", "dlaplace", </span>
 <span class='co'>##     "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), h = 0, holdout = FALSE, </span>
@@ -528,8 +531,8 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># ---- AUTO ADAM ----</span>
 
 <span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"auto_arima"</span><span class='op'>)</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>adam_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"auto_adam"</span><span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
@@ -537,22 +540,26 @@ There are 3 ways to specify:</p><ol>
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  411ms 
-#&gt; Series: outcome 
-#&gt; ARIMA(0,1,1)(1,1,1)[12] 
-#&gt; 
-#&gt; Coefficients:
-#&gt;           ma1    sar1     sma1
-#&gt;       -0.3591  0.2034  -0.7114
-#&gt; s.e.   0.0702  0.1166   0.0970
-#&gt; 
-#&gt; sigma^2 estimated as 0.0003485:  log likelihood=592.09
-#&gt; AIC=-1176.17   AICc=-1176   BIC=-1162.4</div><div class='input'>
+#&gt; Fit time:  1.4s 
+#&gt; Time elapsed: 1.31 seconds
+#&gt; Model estimated using auto.adam() function: ETS(AAdN)
+#&gt; Distribution assumed in the model: S
+#&gt; Loss function type: likelihood; Loss function value: -471.368
+#&gt; Persistence vector g:
+#&gt; alpha  beta 
+#&gt;     1     0 
+#&gt; Damping parameter: 0.9784
+#&gt; Sample size: 244
+#&gt; Number of estimated parameters: 6
+#&gt; Number of degrees of freedom: 238
+#&gt; Information criteria:
+#&gt;       AIC      AICc       BIC      BICc 
+#&gt; -930.7360 -930.3816 -909.7530 -908.7788 </div><div class='input'>
 
 <span class='co'># ---- STANDARD ADAM ----</span>
 
 <span class='co'># Model Spec</span>
-<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span>
+<span class='va'>model_spec</span> <span class='op'>&lt;-</span> <span class='fu'>adam_reg</span><span class='op'>(</span>
         seasonal_period          <span class='op'>=</span> <span class='fl'>12</span>,
         non_seasonal_ar          <span class='op'>=</span> <span class='fl'>3</span>,
         non_seasonal_differences <span class='op'>=</span> <span class='fl'>1</span>,
@@ -561,7 +568,7 @@ There are 3 ways to specify:</p><ol>
         seasonal_differences     <span class='op'>=</span> <span class='fl'>0</span>,
         seasonal_ma              <span class='op'>=</span> <span class='fl'>1</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"arima"</span><span class='op'>)</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span><span class='st'>"adam"</span><span class='op'>)</span>
 
 <span class='co'># Fit Spec</span>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
@@ -569,17 +576,29 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  610ms 
-#&gt; Series: outcome 
-#&gt; ARIMA(3,1,3)(1,0,1)[12] 
+#&gt; Fit time:  1.4s 
+#&gt; Time elapsed: 1.37 seconds
+#&gt; Model estimated using adam() function: ETS(AAN)+ARIMA(3,1,3)
+#&gt; Distribution assumed in the model: Normal
+#&gt; Loss function type: likelihood; Loss function value: -444.7548
+#&gt; Persistence vector g:
+#&gt;  alpha   beta 
+#&gt; 0.0315 0.0315 
 #&gt; 
-#&gt; Coefficients:
-#&gt;          ar1     ar2      ar3      ma1      ma2     ma3    sar1     sma1
-#&gt;       0.2258  0.2542  -0.2801  -0.5205  -0.2663  0.2491  0.9846  -0.5381
-#&gt; s.e.  0.6883  0.4581   0.2378   0.6995   0.4192  0.3959  0.0077   0.0751
+#&gt; ARMA parameters of the model:
+#&gt; AR:
+#&gt; phi1[1] phi2[1] phi3[1] 
+#&gt;  0.1000 -0.0508  0.1156 
+#&gt; MA:
+#&gt; theta1[1] theta2[1] theta3[1] 
+#&gt;   -0.2071   -0.4779   -0.4091 
 #&gt; 
-#&gt; sigma^2 estimated as 0.0003465:  log likelihood=613.46
-#&gt; AIC=-1208.91   AICc=-1208.14   BIC=-1177.48</div><div class='input'>
+#&gt; Sample size: 244
+#&gt; Number of estimated parameters: 15
+#&gt; Number of degrees of freedom: 229
+#&gt; Information criteria:
+#&gt;       AIC      AICc       BIC      BICc 
+#&gt; -859.5097 -857.4044 -807.0521 -801.2657 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -240,24 +240,39 @@
     <p>Tuning Parameters for ADAM Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>use_constant</span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>use_constant</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>regressors_treatment</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>regressors_treatment</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"use"</span>, <span class='st'>"select"</span>, <span class='st'>"adapt"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>outliers_treatment</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>outliers_treatment</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ignore"</span>, <span class='st'>"use"</span>, <span class='st'>"select"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>probability_model</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>probability_model</span><span class='op'>(</span>
+  values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"auto"</span>, <span class='st'>"fixed"</span>, <span class='st'>"general"</span>, <span class='st'>"odds-ratio"</span>, <span class='st'>"inverse-odds-ratio"</span>,
+    <span class='st'>"direct"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>distribution</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>distribution</span><span class='op'>(</span>
+  values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"default"</span>, <span class='st'>"dnorm"</span>, <span class='st'>"dlaplace"</span>, <span class='st'>"ds"</span>, <span class='st'>"dgnorm"</span>, <span class='st'>"dlnorm"</span>, <span class='st'>"dinvgauss"</span>,
+    <span class='st'>"dgamma"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>information_criteria</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>information_criteria</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AICc"</span>, <span class='st'>"AIC"</span>, <span class='st'>"BICc"</span>, <span class='st'>"BIC"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>select_order</span><span class='op'>(</span><span class='op'>)</span></pre>
+<span class='fu'>select_order</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>values</th>
+      <td><p>A character string of possible values.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A parameter</p>
+    <p>A <code>dials</code> parameter</p>
+<p>A parameter</p>
 <p>A parameter</p>
 <p>A parameter</p>
 <p>A parameter</p>
