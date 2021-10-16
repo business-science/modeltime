@@ -178,7 +178,7 @@ test_that("arima_reg: Arima (workflow), Test Model Fit Object", {
     testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
 
     # $preproc
-    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
 })

@@ -224,7 +224,7 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$uncertainty.samples, 0)
 
     # $preproc
-    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
 

@@ -772,7 +772,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     # WORKFLOW MOLD
 
     # Contains $predictors, $outcomes, $blueprint
-    mld <- object %>% workflows::pull_workflow_mold()
+    mld <- object %>% workflows::extract_mold()
 
     # NEW DATA
 
@@ -928,7 +928,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
         nms_final <- names(data_formatted)
 
-        mld <- object %>% workflows::pull_workflow_mold()
+        mld <- object %>% workflows::extract_mold()
 
         actual_data_forged <- hardhat::forge(new_data = actual_data, blueprint = mld$blueprint, outcomes = TRUE)
 

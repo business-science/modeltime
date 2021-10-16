@@ -259,7 +259,7 @@ test_that("arima_boost: Arima (workflow), Test Model Fit Object", {
 
 
     # $preproc
-    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
 })

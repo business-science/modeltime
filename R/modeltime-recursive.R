@@ -238,7 +238,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
     # object$fit$fit$fit$spec[["transform"]] <- .prepare_transform(transform)
     # object$fit$fit$fit$spec[["train_tail"]] <- train_tail
 
-    mld         <- object %>% workflows::pull_workflow_mold()
+    mld         <- object %>% workflows::extract_mold()
     y_var       <- names(mld$outcomes)
 
     if (is.null(id)){

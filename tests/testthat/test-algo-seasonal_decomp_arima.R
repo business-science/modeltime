@@ -132,7 +132,7 @@ test_that("seasonal_reg: workflow", {
     testthat::expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "stlm")
 
     # $preproc
-    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
 

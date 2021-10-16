@@ -200,7 +200,7 @@ test_that("nnetar_reg: (workflow)", {
     testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$model[[1]]$decay, 0.1)
 
     # $preproc
-    mld <- wflw_fit %>% workflows::pull_workflow_mold()
+    mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
     # Predictions
