@@ -257,10 +257,15 @@ temporal_hier_fit_impl <- function(x, y,
 
     if (length(idx) != length(as.numeric(fit_thief$fitted))){
 
-        x<-fit_thief$x %>% timetk::tk_tbl() %>% tibble::rowid_to_column()
-        fitted <- fit_thief$fitted %>% timetk::tk_tbl()
-        residuals <- fit_thief$residuals %>% timetk::tk_tbl()
-
+        # SUPPRESS WARNING MESSAGE FROM tk_tbl()
+        # Warning message:
+        #     `type_convert()` only converts columns of type 'character'.
+        # - `df` has no columns of type 'character'
+        suppressWarnings({
+            x         <- fit_thief$x %>% timetk::tk_tbl() %>% tibble::rowid_to_column()
+            fitted    <- fit_thief$fitted %>% timetk::tk_tbl()
+            residuals <- fit_thief$residuals %>% timetk::tk_tbl()
+        })
 
         val <- x %>%
               dplyr::inner_join(fitted, by = "index") %>%
