@@ -27,6 +27,7 @@
 #' library(timetk)
 #' library(parsnip)
 #' library(rsample)
+#' library(modeltime)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")

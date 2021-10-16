@@ -41,6 +41,7 @@
 #' library(tidyverse)
 #' library(lubridate)
 #' library(timetk)
+#' library(modeltime)
 #'
 #'
 #' # Data
