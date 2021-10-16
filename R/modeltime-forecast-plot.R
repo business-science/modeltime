@@ -32,16 +32,16 @@
 #'
 #' # --- MODELS ---
 #'
-#' # Model 1: auto_arima ----
-#' model_fit_arima <- arima_reg() %>%
-#'     set_engine(engine = "auto_arima") %>%
+#' # Model 1: prophet ----
+#' model_fit_prophet <- prophet_reg() %>%
+#'     set_engine(engine = "prophet") %>%
 #'     fit(value ~ date, data = training(splits))
 #'
 #'
 #' # ---- MODELTIME TABLE ----
 #'
 #' models_tbl <- modeltime_table(
-#'     model_fit_arima
+#'     model_fit_prophet
 #' )
 #'
 #' # ---- FORECAST ----

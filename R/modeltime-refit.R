@@ -63,15 +63,15 @@
 #'
 #' # --- MODELS ---
 #'
-#' model_fit_auto_arima <- arima_reg() %>%
-#'     set_engine(engine = "auto_arima") %>%
+#' model_fit_prophet <- prophet_reg() %>%
+#'     set_engine(engine = "prophet") %>%
 #'     fit(value ~ date, data = training(splits))
 #'
 #'
 #' # ---- MODELTIME TABLE ----
 #'
 #' models_tbl <- modeltime_table(
-#'     model_fit_auto_arima
+#'     model_fit_prophet
 #' )
 #'
 #' # ---- CALIBRATE ----

@@ -90,7 +90,7 @@ mode will always be "regression".
 The model can be created using the \code{fit()} function using the
 following \emph{engines}:
 \itemize{
-\item "auto_arima" (default) - Connects to \code{\link[smooth:adam]{smooth::auto.adam()}}
+\item "auto_adam" (default) - Connects to \code{\link[smooth:adam]{smooth::auto.adam()}}
 \item "adam" - Connects to \code{\link[smooth:adam]{smooth::adam()}}
 }
 

@@ -36,9 +36,9 @@
 #'
 #' # --- MODELS ---
 #'
-#' # Model 1: auto_arima ----
-#' model_fit_arima <- arima_reg() %>%
-#'     set_engine(engine = "auto_arima") %>%
+#' # Model 1: prophet ----
+#' model_fit_prophet <- prophet_reg() %>%
+#'     set_engine(engine = "prophet") %>%
 #'     fit(value ~ date, data = training(splits))
 #'
 #'
@@ -46,11 +46,11 @@
 #'
 #' # Make a Modeltime Table
 #' models_tbl <- modeltime_table(
-#'     model_fit_arima
+#'     model_fit_prophet
 #' )
 #'
 #' # Can also convert a list of models
-#' list(model_fit_arima) %>%
+#' list(model_fit_prophet) %>%
 #'     as_modeltime_table()
 #'
 #' # ---- CALIBRATE ----

@@ -48,7 +48,7 @@
 #' The model can be created using the `fit()` function using the
 #'  following _engines_:
 #'
-#'  - "auto_arima" (default) - Connects to [smooth::auto.adam()]
+#'  - "auto_adam" (default) - Connects to [smooth::auto.adam()]
 #'  - "adam" - Connects to [smooth::adam()]
 #'
 #' __Main Arguments__
