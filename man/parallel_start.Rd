@@ -5,24 +5,41 @@
 \alias{parallel_stop}
 \title{Start parallel clusters using \code{parallel} package}
 \usage{
-parallel_start(...)
+parallel_start(..., .method = c("parallel", "spark"))
 
 parallel_stop()
 }
 \arguments{
-\item{...}{Parameters passed to \code{parallel::makeCluster()}}
+\item{...}{Parameters passed to underlying functions (See Details Section)}
+
+\item{.method}{The method to create the parallel backend. Supports:
+\itemize{
+\item "parallel" - Uses the \code{parallel} and \code{doParallel} packages
+\item "spark" - Uses the \code{sparklyr} package
+}}
 }
 \description{
 Start parallel clusters using \code{parallel} package
 }
-\details{
+\section{Parallel (\code{.method = "parallel"})}{
 Performs 3 Steps:
 \enumerate{
-\item Makes clusters using \code{parallel::makeCluster()}
-\item Registers clusters using \code{doParallel::registerDoParallel()}
-\item Adds \code{.libPaths()} using \code{parallel::clusterCall()}
+\item Makes clusters using \code{parallel::makeCluster(...)}. The \code{parallel_start(...)}
+are passed to \code{parallel::makeCluster(...)}.
+\item Registers clusters using \code{doParallel::registerDoParallel()}.
+\item Adds \code{.libPaths()} using \code{parallel::clusterCall()}.
 }
 }
+
+\section{Spark (\code{.method = "spark"})}{
+\itemize{
+\item Important, make sure to create a spark connection using \code{sparklyr::spark_connect()}.
+\item Pass the connection object as the first argument.
+For example, \code{parallel_start(sc, .method = "spark")}.
+\item The \code{parallel_start(...)} are passed to \code{sparklyr::registerDoSpark(...)}.
+}
+}
+
 \examples{
 
 # Starts 2 clusters

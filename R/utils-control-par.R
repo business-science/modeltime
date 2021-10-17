@@ -3,17 +3,30 @@
 
 #' Start parallel clusters using `parallel` package
 #'
-#' @param ... Parameters passed to `parallel::makeCluster()`
+#' @param ... Parameters passed to underlying functions (See Details Section)
+#' @param .method The method to create the parallel backend. Supports:
+#'
+#'  - "parallel" - Uses the `parallel` and `doParallel` packages
+#'  - "spark" - Uses the `sparklyr` package
 #'
 #'
 #' @details
 #'
+#' # Parallel (`.method = "parallel"`)
+#'
 #' Performs 3 Steps:
 #'
-#' 1. Makes clusters using `parallel::makeCluster()`
-#' 2. Registers clusters using `doParallel::registerDoParallel()`
-#' 3. Adds `.libPaths()` using `parallel::clusterCall()`
+#' 1. Makes clusters using `parallel::makeCluster(...)`. The `parallel_start(...)`
+#'   are passed to `parallel::makeCluster(...)`.
+#' 2. Registers clusters using `doParallel::registerDoParallel()`.
+#' 3. Adds `.libPaths()` using `parallel::clusterCall()`.
 #'
+#' # Spark (`.method = "spark"`)
+#'
+#'  - Important, make sure to create a spark connection using `sparklyr::spark_connect()`.
+#'  - Pass the connection object as the first argument.
+#'    For example, `parallel_start(sc, .method = "spark")`.
+#'  - The `parallel_start(...)` are passed to `sparklyr::registerDoSpark(...)`.
 #'
 #' @examples
 #'
@@ -31,13 +44,25 @@
 
 #' @export
 #' @rdname parallel_start
-parallel_start <- function(...) {
+parallel_start <- function(..., .method = c("parallel", "spark")) {
 
-    cl <- parallel::makeCluster(...)
-    doParallel::registerDoParallel(cl)
-    invisible(
-        parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-    )
+    meth <- tolower(.method[1])
+
+    if (!meth %in% .method) {
+        rlang::abort("`.method` is not an available method. Available values are one of 'parallel' or 'spark'.")
+    }
+
+    if (meth == "parallel") {
+        cl <- parallel::makeCluster(...)
+        doParallel::registerDoParallel(cl)
+        invisible(
+            parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+        )
+    }
+
+    if (meth == "spark") {
+        sparklyr::registerDoSpark(...)
+    }
 
 }
 

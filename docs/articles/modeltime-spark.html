@@ -233,12 +233,12 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"databricks"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="register-the-spark-backend" class="section level1">
+<div id="setup-the-spark-backend" class="section level1">
 <h1 class="hasAnchor">
-<a href="#register-the-spark-backend" class="anchor"></a>Register the Spark Backend</h1>
-<p>Next, we register the Spark Backend using <code><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html">registerDoSpark()</a></code>.</p>
+<a href="#setup-the-spark-backend" class="anchor"></a>Setup the Spark Backend</h1>
+<p>Next, we register the Spark Backend using <code><a href="../reference/parallel_start.html">parallel_start(sc, .method = "spark")</a></code>. This is a helper to set up the <code><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html">registerDoSpark()</a></code> foreach adaptor. In layman’s terms, this just means that we can now run parallel using Spark.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html">registerDoSpark</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_start</a></span><span class="op">(</span><span class="va">sc</span>, .method <span class="op">=</span> <span class="st">"spark"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="data-preparation-nested-forecasting" class="section level1">
 <h1 class="hasAnchor">
@@ -253,15 +253,15 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="modeltime-spark_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We prepare as nested data using the Nested Forecasting preparation functions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../reference/prep_nested.html">extend_timeseries</a></span><span class="op">(</span>
         .id_var        <span class="op">=</span> <span class="va">id</span>,
         .date_var      <span class="op">=</span> <span class="va">date</span>,
@@ -277,16 +277,16 @@
     <span class="op">)</span>
 
 <span class="va">nested_data_tbl</span>
-<span class="co">#&gt; # A tibble: 7 × 4</span>
+<span class="co">#&gt; # A tibble: 7 x 4</span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits        </span>
 <span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;         </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 1_1   &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span>
+<span class="co">#&gt; 2 1_3   &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span>
+<span class="co">#&gt; 3 1_8   &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span>
+<span class="co">#&gt; 4 1_13  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span>
+<span class="co">#&gt; 5 1_38  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span>
+<span class="co">#&gt; 6 1_93  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span>
+<span class="co">#&gt; 7 1_95  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt;</span></code></pre></div>
 </div>
 <div id="modeling" class="section level1">
 <h1 class="hasAnchor">
@@ -297,30 +297,30 @@
 <a href="#xgboost" class="anchor"></a>XGBoost</h2>
 <p>We create the XGBoost model on features derived from the date column.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="fu">step_rm</span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">add_model</span><span class="op">(</span><span class="fu">boost_tree</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_xgb</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span>
-<span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════════════════</span>
+<span class="co">#&gt; == Workflow ====================================================================</span>
 <span class="co">#&gt; Preprocessor: Recipe</span>
 <span class="co">#&gt; Model: boost_tree()</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; -- Preprocessor ----------------------------------------------------------------</span>
 <span class="co">#&gt; 4 Recipe Steps</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; • step_timeseries_signature()</span>
-<span class="co">#&gt; • step_rm()</span>
-<span class="co">#&gt; • step_zv()</span>
-<span class="co">#&gt; • step_dummy()</span>
+<span class="co">#&gt; * step_timeseries_signature()</span>
+<span class="co">#&gt; * step_rm()</span>
+<span class="co">#&gt; * step_zv()</span>
+<span class="co">#&gt; * step_dummy()</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; -- Model -----------------------------------------------------------------------</span>
 <span class="co">#&gt; Boosted Tree Model Specification (regression)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Computational engine: xgboost</span></code></pre></div>
@@ -330,24 +330,24 @@
 <a href="#prophet" class="anchor"></a>Prophet</h2>
 <p>Next, we create a prophet workflow.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
 
 <span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_model</span><span class="op">(</span>
         <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-            <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
+            <span class="fu">set_engine</span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_prophet</span><span class="op">)</span>
 
 <span class="va">wflw_prophet</span>
-<span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════════════════</span>
+<span class="co">#&gt; == Workflow ====================================================================</span>
 <span class="co">#&gt; Preprocessor: Recipe</span>
 <span class="co">#&gt; Model: prophet_reg()</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; -- Preprocessor ----------------------------------------------------------------</span>
 <span class="co">#&gt; 0 Recipe Steps</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt; -- Model -----------------------------------------------------------------------</span>
 <span class="co">#&gt; PROPHET Regression Model Specification (regression)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Main Arguments:</span>
@@ -361,34 +361,36 @@
 <a href="#nested-forecasting-with-spark" class="anchor"></a>Nested Forecasting with Spark</h1>
 <p>Now, the beauty is that everything is set up for us to perform the nested forecasting with Spark. We simply use <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> and make sure it uses the Spark Backend by setting <code><a href="../reference/control_modeltime.html">control_nested_fit(allow_par = TRUE)</a></code>.</p>
 <p>Note that this will take about 30-seconds because we have a one-time cost to move data, libraries, and environment variables to the Spark clusters. But the good news is that when we scale up to 10,000+ time series, that the one-time cost is minimal compared to the speed up from distributed computation.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_data_tbl</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit</a></span><span class="op">(</span>
-        <span class="va">wflw_xgb</span>,
-        <span class="va">wflw_prophet</span>,
-        
-        control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_nested_fit</a></span><span class="op">(</span>allow_par <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-    <span class="op">)</span>
-<span class="co">#&gt; Using existing parallel backend with 12 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 20.972 seconds</span>
-<span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 20.97268 secs.</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nested_modeltime_tbl <span class="ot">&lt;-</span> nested_data_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">modeltime_nested_fit</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        wflw_xgb,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        wflw_prophet,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">control =</span> <span class="fu">control_nested_fit</span>(<span class="at">allow_par =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Using existing parallel backend with 12 clusters (cores)...</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 20.385 seconds</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>Finished <span class="cf">in</span><span class="sc">:</span> <span class="fl">20.38557</span> secs.</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span>
 <span class="co">#&gt; # Nested Modeltime Table</span>
-<span class="co">#&gt;   # A tibble: 7 × 5</span>
+<span class="co">#&gt;   # A tibble: 7 x 5</span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables  </span>
 <span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span></code></pre></div>
+<span class="co">#&gt; 1 1_1   &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span>
+<span class="co">#&gt; 2 1_3   &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span>
+<span class="co">#&gt; 3 1_8   &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span>
+<span class="co">#&gt; 4 1_13  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span>
+<span class="co">#&gt; 5 1_38  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span>
+<span class="co">#&gt; 6 1_93  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span>
+<span class="co">#&gt; 7 1_95  &lt;tibble [143 x 2]&gt; &lt;tibble [52 x 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 x~</span></code></pre></div>
 <div id="model-test-accuracy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#model-test-accuracy" class="anchor"></a>Model Test Accuracy</h2>
@@ -397,12 +399,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="idsvweeijf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zxcctkrcxe" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#idsvweeijf .gt_table {
+#zxcctkrcxe .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -427,7 +429,7 @@
   border-left-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_heading {
+#zxcctkrcxe .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -439,7 +441,7 @@
   border-right-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_title {
+#zxcctkrcxe .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -449,7 +451,7 @@
   border-bottom-width: 0;
 }
 
-#idsvweeijf .gt_subtitle {
+#zxcctkrcxe .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -459,13 +461,13 @@
   border-top-width: 0;
 }
 
-#idsvweeijf .gt_bottom_border {
+#zxcctkrcxe .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_col_headings {
+#zxcctkrcxe .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -480,7 +482,7 @@
   border-right-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_col_heading {
+#zxcctkrcxe .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -500,7 +502,7 @@
   overflow-x: hidden;
 }
 
-#idsvweeijf .gt_column_spanner_outer {
+#zxcctkrcxe .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -512,15 +514,15 @@
   padding-right: 4px;
 }
 
-#idsvweeijf .gt_column_spanner_outer:first-child {
+#zxcctkrcxe .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#idsvweeijf .gt_column_spanner_outer:last-child {
+#zxcctkrcxe .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#idsvweeijf .gt_column_spanner {
+#zxcctkrcxe .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -532,7 +534,7 @@
   width: 100%;
 }
 
-#idsvweeijf .gt_group_heading {
+#zxcctkrcxe .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -554,7 +556,7 @@
   vertical-align: middle;
 }
 
-#idsvweeijf .gt_empty_group_heading {
+#zxcctkrcxe .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -569,15 +571,15 @@
   vertical-align: middle;
 }
 
-#idsvweeijf .gt_from_md > :first-child {
+#zxcctkrcxe .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#idsvweeijf .gt_from_md > :last-child {
+#zxcctkrcxe .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#idsvweeijf .gt_row {
+#zxcctkrcxe .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -596,7 +598,7 @@
   overflow-x: hidden;
 }
 
-#idsvweeijf .gt_stub {
+#zxcctkrcxe .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -608,7 +610,7 @@
   padding-left: 12px;
 }
 
-#idsvweeijf .gt_summary_row {
+#zxcctkrcxe .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -618,7 +620,7 @@
   padding-right: 5px;
 }
 
-#idsvweeijf .gt_first_summary_row {
+#zxcctkrcxe .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -628,7 +630,7 @@
   border-top-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_grand_summary_row {
+#zxcctkrcxe .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -638,7 +640,7 @@
   padding-right: 5px;
 }
 
-#idsvweeijf .gt_first_grand_summary_row {
+#zxcctkrcxe .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -648,11 +650,11 @@
   border-top-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_striped {
+#zxcctkrcxe .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#idsvweeijf .gt_table_body {
+#zxcctkrcxe .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -661,7 +663,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_footnotes {
+#zxcctkrcxe .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -675,13 +677,13 @@
   border-right-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_footnote {
+#zxcctkrcxe .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#idsvweeijf .gt_sourcenotes {
+#zxcctkrcxe .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -695,41 +697,41 @@
   border-right-color: #D3D3D3;
 }
 
-#idsvweeijf .gt_sourcenote {
+#zxcctkrcxe .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#idsvweeijf .gt_left {
+#zxcctkrcxe .gt_left {
   text-align: left;
 }
 
-#idsvweeijf .gt_center {
+#zxcctkrcxe .gt_center {
   text-align: center;
 }
 
-#idsvweeijf .gt_right {
+#zxcctkrcxe .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#idsvweeijf .gt_font_normal {
+#zxcctkrcxe .gt_font_normal {
   font-weight: normal;
 }
 
-#idsvweeijf .gt_font_bold {
+#zxcctkrcxe .gt_font_bold {
   font-weight: bold;
 }
 
-#idsvweeijf .gt_font_italic {
+#zxcctkrcxe .gt_font_italic {
   font-style: italic;
 }
 
-#idsvweeijf .gt_super {
+#zxcctkrcxe .gt_super {
   font-size: 65%;
 }
 
-#idsvweeijf .gt_footnote_marks {
+#zxcctkrcxe .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -931,7 +933,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="modeltime-spark_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>

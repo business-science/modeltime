@@ -4,7 +4,7 @@
 
 - Modeltime now has a Spark Backend 
 
-- [NEW Vignette - Modeltime Spark Backend](https://business-science.github.io/modeltime/articles/modeltime-spark.html) describing how to set up Modeltime with the Sparke Backend. 
+- [NEW Vignette - Modeltime Spark Backend](https://business-science.github.io/modeltime/articles/modeltime-spark.html) describing how to set up Modeltime with the Spark Backend. 
 
 ## New Algorithms: Smooth Package Integration
 

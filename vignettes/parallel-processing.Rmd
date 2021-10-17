@@ -63,14 +63,38 @@ library(timetk)
 
 ## Setup Parallel Backend
 
-I'll set up this tutorial to use two (2) cores. 
+The `modeltime` package uses `parallel_start()` to simplify setup, which integrates multiple backend options for parallel processing including:
 
-- To simplify creating clusters, `modeltime` includes `parallel_start()`. We can simply supply the number of cores we'd like to use. 
-- To detect how many physical cores you have, you can run `parallel::detectCores(logical = FALSE)`. 
+1. `.method = "parallel"` (default): Uses the `parallel` and `doParallel` packages. 
+
+2. `.method = "spark"`: Uses `sparklyr`. See our tutorial, [The Modeltime Spark Backend](https://business-science.github.io/modeltime/articles/modeltime-spark.html). 
+
+### Parallel Setup
+
+I'll set up this tutorial to use two (2) cores using the default `parallel` package. 
+
+- To simplify creating clusters, `modeltime` includes `parallel_start()`. We can simply supply the number of cores we'd like to use. To detect how many physical cores you have, you can run `parallel::detectCores(logical = FALSE)`. 
+
+- The `.method` argument specifies that we want the `parallel` backend. 
+
 
 ```{r, message=F, warning=FALSE}
-parallel_start(2)
+parallel_start(2, .method = "parallel")
 ```
+
+### Spark Setup
+
+We could optionally run this tutorial with the Spark Backend. For more information, refer to our tutorial [The Modeltime Spark Backend](https://business-science.github.io/modeltime/articles/modeltime-spark.html).
+
+```{r, eval=F}
+# OPTIONAL - Run using spark backend
+library(sparklyr)
+
+sc <- spark_connect(master = "local")
+
+parallel_start(sc, .method = "spark")
+```
+
 
 ## Load Data
 

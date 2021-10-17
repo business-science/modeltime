@@ -68,12 +68,12 @@ If using Databricks, you can use:
 sc <- spark_connect(method = "databricks")
 ```
 
-# Register the Spark Backend
+# Setup the Spark Backend
 
-Next, we register the Spark Backend using `registerDoSpark()`.
+Next, we register the Spark Backend using `parallel_start(sc, .method = "spark")`. This is a helper to set up the `registerDoSpark()` foreach adaptor. In layman's terms, this just means that we can now run  parallel using Spark. 
 
 ```{r}
-registerDoSpark(sc)
+parallel_start(sc, .method = "spark")
 ```
 
 # Data Preparation (Nested Forecasting)

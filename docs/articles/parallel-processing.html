@@ -233,37 +233,58 @@
 <div id="setup-parallel-backend" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setup-parallel-backend" class="anchor"></a>Setup Parallel Backend</h2>
-<p>I’ll set up this tutorial to use two (2) cores.</p>
+<p>The <code>modeltime</code> package uses <code><a href="../reference/parallel_start.html">parallel_start()</a></code> to simplify setup, which integrates multiple backend options for parallel processing including:</p>
+<ol style="list-style-type: decimal">
+<li><p><code>.method = "parallel"</code> (default): Uses the <code>parallel</code> and <code>doParallel</code> packages.</p></li>
+<li><p><code>.method = "spark"</code>: Uses <code>sparklyr</code>. See our tutorial, <a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html">The Modeltime Spark Backend</a>.</p></li>
+</ol>
+<div id="parallel-setup" class="section level3">
+<h3 class="hasAnchor">
+<a href="#parallel-setup" class="anchor"></a>Parallel Setup</h3>
+<p>I’ll set up this tutorial to use two (2) cores using the default <code>parallel</code> package.</p>
 <ul>
-<li>To simplify creating clusters, <code>modeltime</code> includes <code><a href="../reference/parallel_start.html">parallel_start()</a></code>. We can simply supply the number of cores we’d like to use.</li>
-<li>To detect how many physical cores you have, you can run <code><a href="https://rdrr.io/r/parallel/detectCores.html">parallel::detectCores(logical = FALSE)</a></code>.</li>
+<li><p>To simplify creating clusters, <code>modeltime</code> includes <code><a href="../reference/parallel_start.html">parallel_start()</a></code>. We can simply supply the number of cores we’d like to use. To detect how many physical cores you have, you can run <code><a href="https://rdrr.io/r/parallel/detectCores.html">parallel::detectCores(logical = FALSE)</a></code>.</p></li>
+<li><p>The <code>.method</code> argument specifies that we want the <code>parallel</code> backend.</p></li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_start</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_start</a></span><span class="op">(</span><span class="fl">2</span>, .method <span class="op">=</span> <span class="st">"parallel"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="spark-setup" class="section level3">
+<h3 class="hasAnchor">
+<a href="#spark-setup" class="anchor"></a>Spark Setup</h3>
+<p>We could optionally run this tutorial with the Spark Backend. For more information, refer to our tutorial <a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html">The Modeltime Spark Backend</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># OPTIONAL - Run using spark backend</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.rstudio.com/">sparklyr</a></span><span class="op">)</span>
+
+<span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/parallel_start.html">parallel_start</a></span><span class="op">(</span><span class="va">sc</span>, .method <span class="op">=</span> <span class="st">"spark"</span><span class="op">)</span></code></pre></div>
+</div>
 </div>
 <div id="load-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#load-data" class="anchor"></a>Load Data</h2>
 <p>We’ll use the <code>walmart_sales_weeekly</code> dataset from <code>timetk</code>. It has seven (7) time series that represent weekly sales demand by department.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dataset_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span>
 
 <span class="va">dataset_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
     .date_var    <span class="op">=</span> <span class="va">Date</span>, 
     .value       <span class="op">=</span> <span class="va">Weekly_Sales</span>, 
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>, 
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="train-test-splits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#train-test-splits" class="anchor"></a>Train / Test Splits</h2>
 <p>Use <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html">time_series_split()</a></code> to make a temporal split for all seven time series.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html">time_series_split</a></span><span class="op">(</span>
   <span class="va">dataset_tbl</span>, 
   assess     <span class="op">=</span> <span class="st">"6 months"</span>, 
@@ -273,54 +294,54 @@
 <span class="va">splits</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_time_series_cv_plan.html">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series_cv_plan.html">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="recipe" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recipe" class="anchor"></a>Recipe</h2>
 <p>Make a preprocessing recipe that generates time series features.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">recipe_spec_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">Weekly_Sales</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">recipe_spec_1</span> <span class="op">&lt;-</span> <span class="fu">recipe</span><span class="op">(</span><span class="va">Weekly_Sales</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu">training</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html">step_normalize</a></span><span class="op">(</span><span class="va">Date_index.num</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+  <span class="fu">step_rm</span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">step_normalize</span><span class="op">(</span><span class="va">Date_index.num</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="model-specifications" class="section level2">
 <h2 class="hasAnchor">
 <a href="#model-specifications" class="anchor"></a>Model Specifications</h2>
-<p>We’ll make 6 <code>xgboost</code> model specifications using <code><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree()</a></code> and the “xgboost” engine. These will be combined with the <code>recipe</code> from the previous step using a <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code> in the next section.</p>
+<p>We’ll make 6 <code>xgboost</code> model specifications using <code>boost_tree()</code> and the “xgboost” engine. These will be combined with the <code>recipe</code> from the previous step using a <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code> in the next section.</p>
 <div id="the-general-idea" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-general-idea" class="anchor"></a>The general idea</h3>
 <p>We can vary the <code>learn_rate</code> parameter to see it’s effect on forecast error.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># XGBOOST MODELS</span>
-<span class="va">model_spec_xgb_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
+<span class="va">model_spec_xgb_1</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
 
-<span class="va">model_spec_xgb_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.010</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
+<span class="va">model_spec_xgb_2</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.010</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
 
-<span class="va">model_spec_xgb_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.100</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
+<span class="va">model_spec_xgb_3</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.100</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
 
-<span class="va">model_spec_xgb_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.350</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
+<span class="va">model_spec_xgb_4</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.350</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
 
-<span class="va">model_spec_xgb_5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.500</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
+<span class="va">model_spec_xgb_5</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.500</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span>
 
-<span class="va">model_spec_xgb_6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.650</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></code></pre></div>
+<span class="va">model_spec_xgb_6</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>learn_rate <span class="op">=</span> <span class="fl">0.650</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="a-faster-way" class="section level3">
 <h3 class="hasAnchor">
 <a href="#a-faster-way" class="anchor"></a>A faster way</h3>
 <p>You may notice that this is a lot of repeated code to adjust the <code>learn_rate</code>. To simplify this process, we can use <code><a href="../reference/create_model_grid.html">create_model_grid()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>
   learn_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.010</span>, <span class="fl">0.100</span>, <span class="fl">0.350</span>, <span class="fl">0.500</span>, <span class="fl">0.650</span><span class="op">)</span>
 <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/create_model_grid.html">create_model_grid</a></span><span class="op">(</span>
@@ -330,7 +351,7 @@
   <span class="op">)</span>
 
 <span class="va">model_tbl</span>
-<span class="co">#&gt; # A tibble: 6 × 2</span>
+<span class="co">#&gt; # A tibble: 6 x 2</span>
 <span class="co">#&gt;   learn_rate .models  </span>
 <span class="co">#&gt;        &lt;dbl&gt; &lt;list&gt;   </span>
 <span class="co">#&gt; 1      0.001 &lt;spec[+]&gt;</span>
@@ -344,7 +365,7 @@
 <h3 class="hasAnchor">
 <a href="#extracting-the-model-list" class="anchor"></a>Extracting the model list</h3>
 <p>We can extract the model list for use with our <code>workflowset</code> next. This is the same result if we would have placed the manually generated 6 model specs into a <code><a href="https://rdrr.io/r/base/list.html">list()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_list</span> <span class="op">&lt;-</span> <span class="va">model_tbl</span><span class="op">$</span><span class="va">.models</span>
 
 <span class="va">model_list</span>
@@ -406,7 +427,7 @@
 <h2 class="hasAnchor">
 <a href="#workflowsets" class="anchor"></a>Workflowsets</h2>
 <p>With the <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code> function, we can combine the 6 xgboost models with the 1 recipe to return six (6) combinations of recipe and model specifications. These are currently untrained (unfitted).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_wfset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set</a></span><span class="op">(</span>
   preproc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
     <span class="va">recipe_spec_1</span>
@@ -416,15 +437,15 @@
 <span class="op">)</span>
 
 <span class="va">model_wfset</span>
-<span class="co">#&gt; # A workflow set/tibble: 6 × 4</span>
+<span class="co">#&gt; # A workflow set/tibble: 6 x 4</span>
 <span class="co">#&gt;   wflow_id            info             option    result    </span>
 <span class="co">#&gt;   &lt;chr&gt;               &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span>
-<span class="co">#&gt; 1 recipe_boost_tree_1 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 2 recipe_boost_tree_2 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 3 recipe_boost_tree_3 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 4 recipe_boost_tree_4 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 5 recipe_boost_tree_5 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 6 recipe_boost_tree_6 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 recipe_boost_tree_1 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 2 recipe_boost_tree_2 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 3 recipe_boost_tree_3 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 4 recipe_boost_tree_4 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 5 recipe_boost_tree_5 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 6 recipe_boost_tree_6 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></code></pre></div>
 </div>
 <div id="parallel-training-fitting" class="section level2">
 <h2 class="hasAnchor">
@@ -455,7 +476,7 @@
 <li><p><strong>cores:</strong> The cores that the user has set up. Since we’ve already set up <code>doParallel</code> to use 2 cores, the control recognizes this.</p></li>
 <li><p><strong>packages:</strong> The packages are packages that will be sent to each of the workers.</p></li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/control_modeltime.html">control_fit_workflowset</a></span><span class="op">(</span>
   verbose   <span class="op">=</span> <span class="cn">TRUE</span>,
   allow_par <span class="op">=</span> <span class="cn">TRUE</span>
@@ -471,10 +492,10 @@
 <h3 class="hasAnchor">
 <a href="#fitting-using-parallel-backend" class="anchor"></a>Fitting Using Parallel Backend</h3>
 <p>We use the <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> and <code><a href="../reference/control_modeltime.html">control_fit_workflowset()</a></code> together to train the unfitted workflowset in parallel.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span> <span class="op">&lt;-</span> <span class="va">model_wfset</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset</a></span><span class="op">(</span>
-    data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
+    data    <span class="op">=</span> <span class="fu">training</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
     control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_fit_workflowset</a></span><span class="op">(</span>
       verbose   <span class="op">=</span> <span class="cn">TRUE</span>,
       allow_par <span class="op">=</span> <span class="cn">TRUE</span>
@@ -482,14 +503,14 @@
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.934 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.932 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 12.935 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 12.933 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 6 × 3</span>
+<span class="co">#&gt; # A tibble: 6 x 3</span>
 <span class="co">#&gt;   .model_id .model     .model_desc        </span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;              </span>
 <span class="co">#&gt; 1         1 &lt;workflow&gt; RECIPE_BOOST_TREE_1</span>
@@ -503,45 +524,45 @@
 <h3 class="hasAnchor">
 <a href="#comparison-to-sequential-backend" class="anchor"></a>Comparison to Sequential Backend</h3>
 <p>We can compare to a sequential backend. We have a slight perfomance boost. Note that this performance benefit increases with the size of the training task.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_sequential_tbl</span> <span class="op">&lt;-</span> <span class="va">model_wfset</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset</a></span><span class="op">(</span>
-    data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
+    data    <span class="op">=</span> <span class="fu">training</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
     control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_fit_workflowset</a></span><span class="op">(</span>
       verbose   <span class="op">=</span> <span class="cn">TRUE</span>,
       allow_par <span class="op">=</span> <span class="cn">FALSE</span>
     <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; ℹ Fitting Model: 1</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 1</span>
-<span class="co">#&gt; ℹ Fitting Model: 2</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 2</span>
-<span class="co">#&gt; ℹ Fitting Model: 3</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 3</span>
-<span class="co">#&gt; ℹ Fitting Model: 4</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 4</span>
-<span class="co">#&gt; ℹ Fitting Model: 5</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 5</span>
-<span class="co">#&gt; ℹ Fitting Model: 6</span>
-<span class="co">#&gt; ✓ Model Successfully Fitted: 6</span>
-<span class="co">#&gt; Total time | 16.296 seconds</span></code></pre></div>
+<span class="co">#&gt; i Fitting Model: 1</span>
+<span class="co">#&gt; v Model Successfully Fitted: 1</span>
+<span class="co">#&gt; i Fitting Model: 2</span>
+<span class="co">#&gt; v Model Successfully Fitted: 2</span>
+<span class="co">#&gt; i Fitting Model: 3</span>
+<span class="co">#&gt; v Model Successfully Fitted: 3</span>
+<span class="co">#&gt; i Fitting Model: 4</span>
+<span class="co">#&gt; v Model Successfully Fitted: 4</span>
+<span class="co">#&gt; i Fitting Model: 5</span>
+<span class="co">#&gt; v Model Successfully Fitted: 5</span>
+<span class="co">#&gt; i Fitting Model: 6</span>
+<span class="co">#&gt; v Model Successfully Fitted: 6</span>
+<span class="co">#&gt; Total time | 12.101 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
 <h2 class="hasAnchor">
 <a href="#accuracy-assessment" class="anchor"></a>Accuracy Assessment</h2>
 <p>We can review the forecast accuracy. We can see that Model 5 has the lowest MAE.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu">testing</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="iywxsvhahi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rgebcsvmog" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#iywxsvhahi .gt_table {
+#rgebcsvmog .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -566,7 +587,7 @@
   border-left-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_heading {
+#rgebcsvmog .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -578,7 +599,7 @@
   border-right-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_title {
+#rgebcsvmog .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -588,7 +609,7 @@
   border-bottom-width: 0;
 }
 
-#iywxsvhahi .gt_subtitle {
+#rgebcsvmog .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -598,13 +619,13 @@
   border-top-width: 0;
 }
 
-#iywxsvhahi .gt_bottom_border {
+#rgebcsvmog .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_col_headings {
+#rgebcsvmog .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -619,7 +640,7 @@
   border-right-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_col_heading {
+#rgebcsvmog .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -639,7 +660,7 @@
   overflow-x: hidden;
 }
 
-#iywxsvhahi .gt_column_spanner_outer {
+#rgebcsvmog .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -651,15 +672,15 @@
   padding-right: 4px;
 }
 
-#iywxsvhahi .gt_column_spanner_outer:first-child {
+#rgebcsvmog .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#iywxsvhahi .gt_column_spanner_outer:last-child {
+#rgebcsvmog .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#iywxsvhahi .gt_column_spanner {
+#rgebcsvmog .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -671,7 +692,7 @@
   width: 100%;
 }
 
-#iywxsvhahi .gt_group_heading {
+#rgebcsvmog .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -693,7 +714,7 @@
   vertical-align: middle;
 }
 
-#iywxsvhahi .gt_empty_group_heading {
+#rgebcsvmog .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -708,15 +729,15 @@
   vertical-align: middle;
 }
 
-#iywxsvhahi .gt_from_md > :first-child {
+#rgebcsvmog .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#iywxsvhahi .gt_from_md > :last-child {
+#rgebcsvmog .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#iywxsvhahi .gt_row {
+#rgebcsvmog .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -735,7 +756,7 @@
   overflow-x: hidden;
 }
 
-#iywxsvhahi .gt_stub {
+#rgebcsvmog .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -747,7 +768,7 @@
   padding-left: 12px;
 }
 
-#iywxsvhahi .gt_summary_row {
+#rgebcsvmog .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -757,7 +778,7 @@
   padding-right: 5px;
 }
 
-#iywxsvhahi .gt_first_summary_row {
+#rgebcsvmog .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -767,7 +788,7 @@
   border-top-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_grand_summary_row {
+#rgebcsvmog .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -777,7 +798,7 @@
   padding-right: 5px;
 }
 
-#iywxsvhahi .gt_first_grand_summary_row {
+#rgebcsvmog .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -787,11 +808,11 @@
   border-top-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_striped {
+#rgebcsvmog .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#iywxsvhahi .gt_table_body {
+#rgebcsvmog .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -800,7 +821,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_footnotes {
+#rgebcsvmog .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -814,13 +835,13 @@
   border-right-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_footnote {
+#rgebcsvmog .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#iywxsvhahi .gt_sourcenotes {
+#rgebcsvmog .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -834,41 +855,41 @@
   border-right-color: #D3D3D3;
 }
 
-#iywxsvhahi .gt_sourcenote {
+#rgebcsvmog .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#iywxsvhahi .gt_left {
+#rgebcsvmog .gt_left {
   text-align: left;
 }
 
-#iywxsvhahi .gt_center {
+#rgebcsvmog .gt_center {
   text-align: center;
 }
 
-#iywxsvhahi .gt_right {
+#rgebcsvmog .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#iywxsvhahi .gt_font_normal {
+#rgebcsvmog .gt_font_normal {
   font-weight: normal;
 }
 
-#iywxsvhahi .gt_font_bold {
+#rgebcsvmog .gt_font_bold {
   font-weight: bold;
 }
 
-#iywxsvhahi .gt_font_italic {
+#rgebcsvmog .gt_font_italic {
   font-style: italic;
 }
 
-#iywxsvhahi .gt_super {
+#rgebcsvmog .gt_super {
   font-size: 65%;
 }
 
-#iywxsvhahi .gt_footnote_marks {
+#rgebcsvmog .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -964,25 +985,25 @@
 <h2 class="hasAnchor">
 <a href="#forecast-assessment" class="anchor"></a>Forecast Assessment</h2>
 <p>We can visualize the forecast.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
-    new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
+    new_data    <span class="op">=</span> <span class="fu">testing</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
     actual_data <span class="op">=</span> <span class="va">dataset_tbl</span>,
     keep_data   <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">3</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="closing-clusters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#closing-clusters" class="anchor"></a>Closing Clusters</h2>
 <p>We can close the parallel clusters using <code><a href="../reference/parallel_start.html">parallel_stop()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_stop</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
