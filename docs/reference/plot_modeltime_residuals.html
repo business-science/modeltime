@@ -97,7 +97,7 @@ Seasonality Plot: plot_seasonal_diagnostics()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -339,16 +339,16 @@ Can save space with long model descriptions.</p></td>
 
 <span class='co'># --- MODELS ---</span>
 
-<span class='co'># Model 1: auto_arima ----</span>
-<span class='va'>model_fit_arima</span> <span class='op'>&lt;-</span> <span class='fu'><a href='arima_reg.html'>arima_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"auto_arima"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='co'># Model 1: prophet ----</span>
+<span class='va'>model_fit_prophet</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prophet_reg.html'>prophet_reg</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://parsnip.tidymodels.org/reference/set_engine.html'>set_engine</a></span><span class='op'>(</span>engine <span class='op'>=</span> <span class='st'>"prophet"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='va'>date</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span></div><div class='output co'>#&gt; <span class='message'>Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></div><div class='input'>
 
 <span class='co'># ---- MODELTIME TABLE ----</span>
 
 <span class='va'>models_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modeltime_table.html'>modeltime_table</a></span><span class='op'>(</span>
-    <span class='va'>model_fit_arima</span>
+    <span class='va'>model_fit_prophet</span>
 <span class='op'>)</span>
 
 <span class='co'># ---- RESIDUALS ----</span>
@@ -356,20 +356,13 @@ Can save space with long model descriptions.</p></td>
 <span class='va'>residuals_tbl</span> <span class='op'>&lt;-</span> <span class='va'>models_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_calibrate.html'>modeltime_calibrate</a></span><span class='op'>(</span>new_data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_residuals.html'>modeltime_residuals</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span></div><div class='output co'>#&gt; <span class='message'>-- Model Calibration Failure Report ------------------------</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 4</span>
-#&gt;   .model_id .model   .model_desc             .nested.col
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;list&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>      
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 <span style='color: #949494;'>&lt;fit[+]&gt;</span> ARIMA(0,1,1)(0,1,1)[12] <span style='color: #BB0000;'>NA</span>         </div><div class='output co'>#&gt; <span class='message'>All models failed Modeltime Calibration:</span>
-#&gt; <span class='message'>- Model 1: Failed Calibration.</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>Potential Solution: Use `modeltime_calibrate(quiet = FALSE)` AND Check the Error/Warning Messages for clues as to why your model(s) failed calibration.</span>
-#&gt; <span class='message'>-- End Model Calibration Failure Report --------------------</span></div><div class='output co'>#&gt; <span class='error'>Error: All models failed Modeltime Calibration.</span></div><div class='input'>
+
 <span class='va'>residuals_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'>plot_modeltime_residuals</span><span class='op'>(</span>
         .type <span class='op'>=</span> <span class='st'>"timeplot"</span>,
         .interactive <span class='op'>=</span> <span class='cn'>FALSE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in plot_modeltime_residuals(., .type = "timeplot", .interactive = FALSE): object 'residuals_tbl' not found</span></div><div class='input'>
+</div><div class='img'><img src='plot_modeltime_residuals-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

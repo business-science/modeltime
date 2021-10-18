@@ -93,7 +93,7 @@ by computing predictions and residuals from out of sample data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -341,10 +341,10 @@ calculated from <code>new_data</code> (Test Data)</p></li>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 9</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 9</span>
 #&gt;   .model_id .model_desc .type   mae  mape  mase smape  rmse   rsq
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 PROPHET     Test   271.  2.74 0.808  2.67  364. 0.812</div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'>1</span>         1 PROPHET     Test   260.  2.62 0.773  2.56  353. 0.813</div><div class='input'>
 <span class='co'># ---- FORECAST ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
@@ -352,7 +352,7 @@ calculated from <code>new_data</code> (Test Data)</p></li>
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 368 x 7</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 368 × 7</span>
 #&gt;    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
@@ -365,7 +365,7 @@ calculated from <code>new_data</code> (Test Data)</p></li>
 #&gt; <span style='color: #BCBCBC;'> 8</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-08-01   <span style='text-decoration: underline;'>5</span>450       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
 #&gt; <span style='color: #BCBCBC;'> 9</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-09-01   <span style='text-decoration: underline;'>6</span>480       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
 #&gt; <span style='color: #BCBCBC;'>10</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-10-01   <span style='text-decoration: underline;'>6</span>820       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #949494;'># ... with 358 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 358 more rows</span></div><div class='input'>
 
 </div></pre>
   </div>

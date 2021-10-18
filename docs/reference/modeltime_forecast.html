@@ -93,7 +93,7 @@ forecasting future data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -435,10 +435,10 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='modeltime_accuracy.html'>modeltime_accuracy</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 9</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 9</span>
 #&gt;   .model_id .model_desc .type   mae  mape  mase smape  rmse   rsq
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>         1 PROPHET     Test   177.  1.70 0.605  1.70  235. 0.880</div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'>1</span>         1 PROPHET     Test   172.  1.65 0.587  1.65  230. 0.882</div><div class='input'>
 <span class='co'># ---- FUTURE FORECAST ----</span>
 
 <span class='va'>calibration_tbl</span> <span class='op'>%&gt;%</span>
@@ -446,7 +446,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 x 7</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 × 7</span>
 #&gt;    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
@@ -459,7 +459,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 #&gt; <span style='color: #BCBCBC;'> 8</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-08-01   <span style='text-decoration: underline;'>5</span>450       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
 #&gt; <span style='color: #BCBCBC;'> 9</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-09-01   <span style='text-decoration: underline;'>6</span>480       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
 #&gt; <span style='color: #BCBCBC;'>10</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-10-01   <span style='text-decoration: underline;'>6</span>820       <span style='color: #BB0000;'>NA</span>       <span style='color: #BB0000;'>NA</span>
-#&gt; <span style='color: #949494;'># ... with 327 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 327 more rows</span></div><div class='input'>
 <span class='co'># ---- ALTERNATIVE: FORECAST WITHOUT CONFIDENCE INTERVALS ----</span>
 <span class='co'># Skips Calibration Step, No Confidence Intervals</span>
 
@@ -468,7 +468,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
         new_data    <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         actual_data <span class='op'>=</span> <span class='va'>m750</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 x 5</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 337 × 5</span>
 #&gt;    .model_id .model_desc .key   .index     .value
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-01-01   <span style='text-decoration: underline;'>6</span>370
@@ -481,7 +481,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 #&gt; <span style='color: #BCBCBC;'> 8</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-08-01   <span style='text-decoration: underline;'>5</span>450
 #&gt; <span style='color: #BCBCBC;'> 9</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-09-01   <span style='text-decoration: underline;'>6</span>480
 #&gt; <span style='color: #BCBCBC;'>10</span>        <span style='color: #BB0000;'>NA</span> ACTUAL      actual 1990-10-01   <span style='text-decoration: underline;'>6</span>820
-#&gt; <span style='color: #949494;'># ... with 327 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 327 more rows</span></div><div class='input'>
 <span class='co'># ---- KEEP NEW DATA WITH FORECAST ----</span>
 <span class='co'># Keeps the new data. Useful if new data has information</span>
 <span class='co'>#  like ID features that should be kept with the forecast data</span>
@@ -491,20 +491,20 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
         new_data      <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span>,
         keep_data     <span class='op'>=</span> <span class='cn'>TRUE</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 31 x 10</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 31 × 10</span>
 #&gt;    .model_id .model_desc .key       .index     .value .conf_lo .conf_hi id   
 #&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>         1 PROPHET     prediction 2012-12-01 <span style='text-decoration: underline;'>10</span>595.   <span style='text-decoration: underline;'>10</span>132.   <span style='text-decoration: underline;'>11</span>058. M750 
-#&gt; <span style='color: #BCBCBC;'> 2</span>         1 PROPHET     prediction 2013-01-01 <span style='text-decoration: underline;'>10</span>508.   <span style='text-decoration: underline;'>10</span>045.   <span style='text-decoration: underline;'>10</span>972. M750 
-#&gt; <span style='color: #BCBCBC;'> 3</span>         1 PROPHET     prediction 2013-02-01 <span style='text-decoration: underline;'>10</span>548.   <span style='text-decoration: underline;'>10</span>085.   <span style='text-decoration: underline;'>11</span>012. M750 
-#&gt; <span style='color: #BCBCBC;'> 4</span>         1 PROPHET     prediction 2013-03-01 <span style='text-decoration: underline;'>10</span>687.   <span style='text-decoration: underline;'>10</span>223.   <span style='text-decoration: underline;'>11</span>150. M750 
-#&gt; <span style='color: #BCBCBC;'> 5</span>         1 PROPHET     prediction 2013-04-01 <span style='text-decoration: underline;'>10</span>715.   <span style='text-decoration: underline;'>10</span>252.   <span style='text-decoration: underline;'>11</span>179. M750 
-#&gt; <span style='color: #BCBCBC;'> 6</span>         1 PROPHET     prediction 2013-05-01 <span style='text-decoration: underline;'>10</span>717.   <span style='text-decoration: underline;'>10</span>253.   <span style='text-decoration: underline;'>11</span>180. M750 
-#&gt; <span style='color: #BCBCBC;'> 7</span>         1 PROPHET     prediction 2013-06-01 <span style='text-decoration: underline;'>10</span>558.   <span style='text-decoration: underline;'>10</span>094.   <span style='text-decoration: underline;'>11</span>021. M750 
-#&gt; <span style='color: #BCBCBC;'> 8</span>         1 PROPHET     prediction 2013-07-01  <span style='text-decoration: underline;'>9</span>679.    <span style='text-decoration: underline;'>9</span>216.   <span style='text-decoration: underline;'>10</span>143. M750 
-#&gt; <span style='color: #BCBCBC;'> 9</span>         1 PROPHET     prediction 2013-08-01  <span style='text-decoration: underline;'>9</span>531.    <span style='text-decoration: underline;'>9</span>068.    <span style='text-decoration: underline;'>9</span>994. M750 
-#&gt; <span style='color: #BCBCBC;'>10</span>         1 PROPHET     prediction 2013-09-01 <span style='text-decoration: underline;'>10</span>159.    <span style='text-decoration: underline;'>9</span>696.   <span style='text-decoration: underline;'>10</span>623. M750 
-#&gt; <span style='color: #949494;'># ... with 21 more rows, and 2 more variables: date &lt;date&gt;, value &lt;dbl&gt;</span></div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'> 1</span>         1 PROPHET     prediction 2012-12-01 <span style='text-decoration: underline;'>10</span>603.   <span style='text-decoration: underline;'>10</span>149.   <span style='text-decoration: underline;'>11</span>058. M750 
+#&gt; <span style='color: #BCBCBC;'> 2</span>         1 PROPHET     prediction 2013-01-01 <span style='text-decoration: underline;'>10</span>517.   <span style='text-decoration: underline;'>10</span>062.   <span style='text-decoration: underline;'>10</span>971. M750 
+#&gt; <span style='color: #BCBCBC;'> 3</span>         1 PROPHET     prediction 2013-02-01 <span style='text-decoration: underline;'>10</span>557.   <span style='text-decoration: underline;'>10</span>102.   <span style='text-decoration: underline;'>11</span>011. M750 
+#&gt; <span style='color: #BCBCBC;'> 4</span>         1 PROPHET     prediction 2013-03-01 <span style='text-decoration: underline;'>10</span>694.   <span style='text-decoration: underline;'>10</span>240.   <span style='text-decoration: underline;'>11</span>149. M750 
+#&gt; <span style='color: #BCBCBC;'> 5</span>         1 PROPHET     prediction 2013-04-01 <span style='text-decoration: underline;'>10</span>724.   <span style='text-decoration: underline;'>10</span>269.   <span style='text-decoration: underline;'>11</span>178. M750 
+#&gt; <span style='color: #BCBCBC;'> 6</span>         1 PROPHET     prediction 2013-05-01 <span style='text-decoration: underline;'>10</span>725.   <span style='text-decoration: underline;'>10</span>271.   <span style='text-decoration: underline;'>11</span>180. M750 
+#&gt; <span style='color: #BCBCBC;'> 7</span>         1 PROPHET     prediction 2013-06-01 <span style='text-decoration: underline;'>10</span>566.   <span style='text-decoration: underline;'>10</span>112.   <span style='text-decoration: underline;'>11</span>021. M750 
+#&gt; <span style='color: #BCBCBC;'> 8</span>         1 PROPHET     prediction 2013-07-01  <span style='text-decoration: underline;'>9</span>689.    <span style='text-decoration: underline;'>9</span>234.   <span style='text-decoration: underline;'>10</span>143. M750 
+#&gt; <span style='color: #BCBCBC;'> 9</span>         1 PROPHET     prediction 2013-08-01  <span style='text-decoration: underline;'>9</span>540.    <span style='text-decoration: underline;'>9</span>086.    <span style='text-decoration: underline;'>9</span>995. M750 
+#&gt; <span style='color: #BCBCBC;'>10</span>         1 PROPHET     prediction 2013-09-01 <span style='text-decoration: underline;'>10</span>169.    <span style='text-decoration: underline;'>9</span>714.   <span style='text-decoration: underline;'>10</span>624. M750 
+#&gt; <span style='color: #949494;'># … with 21 more rows, and 2 more variables: date &lt;date&gt;, value &lt;dbl&gt;</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -351,7 +351,7 @@
   <span class="op">)</span>
 
 <span class="va">model_tbl</span>
-<span class="co">#&gt; # A tibble: 6 x 2</span>
+<span class="co">#&gt; # A tibble: 6 × 2</span>
 <span class="co">#&gt;   learn_rate .models  </span>
 <span class="co">#&gt;        &lt;dbl&gt; &lt;list&gt;   </span>
 <span class="co">#&gt; 1      0.001 &lt;spec[+]&gt;</span>
@@ -437,15 +437,15 @@
 <span class="op">)</span>
 
 <span class="va">model_wfset</span>
-<span class="co">#&gt; # A workflow set/tibble: 6 x 4</span>
+<span class="co">#&gt; # A workflow set/tibble: 6 × 4</span>
 <span class="co">#&gt;   wflow_id            info             option    result    </span>
 <span class="co">#&gt;   &lt;chr&gt;               &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span>
-<span class="co">#&gt; 1 recipe_boost_tree_1 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 2 recipe_boost_tree_2 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 3 recipe_boost_tree_3 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 4 recipe_boost_tree_4 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 5 recipe_boost_tree_5 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
-<span class="co">#&gt; 6 recipe_boost_tree_6 &lt;tibble [1 x 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 recipe_boost_tree_1 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 2 recipe_boost_tree_2 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 3 recipe_boost_tree_3 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 4 recipe_boost_tree_4 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 5 recipe_boost_tree_5 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span>
+<span class="co">#&gt; 6 recipe_boost_tree_6 &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></code></pre></div>
 </div>
 <div id="parallel-training-fitting" class="section level2">
 <h2 class="hasAnchor">
@@ -503,14 +503,14 @@
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.932 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.809 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 12.933 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 12.81 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt; # A tibble: 6 × 3</span>
 <span class="co">#&gt;   .model_id .model     .model_desc        </span>
 <span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;              </span>
 <span class="co">#&gt; 1         1 &lt;workflow&gt; RECIPE_BOOST_TREE_1</span>
@@ -533,19 +533,19 @@
       allow_par <span class="op">=</span> <span class="cn">FALSE</span>
     <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; i Fitting Model: 1</span>
-<span class="co">#&gt; v Model Successfully Fitted: 1</span>
-<span class="co">#&gt; i Fitting Model: 2</span>
-<span class="co">#&gt; v Model Successfully Fitted: 2</span>
-<span class="co">#&gt; i Fitting Model: 3</span>
-<span class="co">#&gt; v Model Successfully Fitted: 3</span>
-<span class="co">#&gt; i Fitting Model: 4</span>
-<span class="co">#&gt; v Model Successfully Fitted: 4</span>
-<span class="co">#&gt; i Fitting Model: 5</span>
-<span class="co">#&gt; v Model Successfully Fitted: 5</span>
-<span class="co">#&gt; i Fitting Model: 6</span>
-<span class="co">#&gt; v Model Successfully Fitted: 6</span>
-<span class="co">#&gt; Total time | 12.101 seconds</span></code></pre></div>
+<span class="co">#&gt; ℹ Fitting Model: 1</span>
+<span class="co">#&gt; ✓ Model Successfully Fitted: 1</span>
+<span class="co">#&gt; ℹ Fitting Model: 2</span>
+<span class="co">#&gt; ✓ Model Successfully Fitted: 2</span>
+<span class="co">#&gt; ℹ Fitting Model: 3</span>
+<span class="co">#&gt; ✓ Model Successfully Fitted: 3</span>
+<span class="co">#&gt; ℹ Fitting Model: 4</span>
+<span class="co">#&gt; ✓ Model Successfully Fitted: 4</span>
+<span class="co">#&gt; ℹ Fitting Model: 5</span>
+<span class="co">#&gt; ✓ Model Successfully Fitted: 5</span>
+<span class="co">#&gt; ℹ Fitting Model: 6</span>
+<span class="co">#&gt; ✓ Model Successfully Fitted: 6</span>
+<span class="co">#&gt; Total time | 16.064 seconds</span></code></pre></div>
 </div>
 </div>
 <div id="accuracy-assessment" class="section level2">
@@ -557,12 +557,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu">testing</span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="rgebcsvmog" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gxizkjtjys" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rgebcsvmog .gt_table {
+#gxizkjtjys .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -587,7 +587,7 @@
   border-left-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_heading {
+#gxizkjtjys .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -599,7 +599,7 @@
   border-right-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_title {
+#gxizkjtjys .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -609,7 +609,7 @@
   border-bottom-width: 0;
 }
 
-#rgebcsvmog .gt_subtitle {
+#gxizkjtjys .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -619,13 +619,13 @@
   border-top-width: 0;
 }
 
-#rgebcsvmog .gt_bottom_border {
+#gxizkjtjys .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_col_headings {
+#gxizkjtjys .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -640,7 +640,7 @@
   border-right-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_col_heading {
+#gxizkjtjys .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -660,7 +660,7 @@
   overflow-x: hidden;
 }
 
-#rgebcsvmog .gt_column_spanner_outer {
+#gxizkjtjys .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -672,15 +672,15 @@
   padding-right: 4px;
 }
 
-#rgebcsvmog .gt_column_spanner_outer:first-child {
+#gxizkjtjys .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rgebcsvmog .gt_column_spanner_outer:last-child {
+#gxizkjtjys .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rgebcsvmog .gt_column_spanner {
+#gxizkjtjys .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -692,7 +692,7 @@
   width: 100%;
 }
 
-#rgebcsvmog .gt_group_heading {
+#gxizkjtjys .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -714,7 +714,7 @@
   vertical-align: middle;
 }
 
-#rgebcsvmog .gt_empty_group_heading {
+#gxizkjtjys .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -729,15 +729,15 @@
   vertical-align: middle;
 }
 
-#rgebcsvmog .gt_from_md > :first-child {
+#gxizkjtjys .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rgebcsvmog .gt_from_md > :last-child {
+#gxizkjtjys .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rgebcsvmog .gt_row {
+#gxizkjtjys .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -756,7 +756,7 @@
   overflow-x: hidden;
 }
 
-#rgebcsvmog .gt_stub {
+#gxizkjtjys .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -768,7 +768,7 @@
   padding-left: 12px;
 }
 
-#rgebcsvmog .gt_summary_row {
+#gxizkjtjys .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -778,7 +778,7 @@
   padding-right: 5px;
 }
 
-#rgebcsvmog .gt_first_summary_row {
+#gxizkjtjys .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -788,7 +788,7 @@
   border-top-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_grand_summary_row {
+#gxizkjtjys .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -798,7 +798,7 @@
   padding-right: 5px;
 }
 
-#rgebcsvmog .gt_first_grand_summary_row {
+#gxizkjtjys .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -808,11 +808,11 @@
   border-top-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_striped {
+#gxizkjtjys .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rgebcsvmog .gt_table_body {
+#gxizkjtjys .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -821,7 +821,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_footnotes {
+#gxizkjtjys .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -835,13 +835,13 @@
   border-right-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_footnote {
+#gxizkjtjys .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#rgebcsvmog .gt_sourcenotes {
+#gxizkjtjys .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -855,41 +855,41 @@
   border-right-color: #D3D3D3;
 }
 
-#rgebcsvmog .gt_sourcenote {
+#gxizkjtjys .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#rgebcsvmog .gt_left {
+#gxizkjtjys .gt_left {
   text-align: left;
 }
 
-#rgebcsvmog .gt_center {
+#gxizkjtjys .gt_center {
   text-align: center;
 }
 
-#rgebcsvmog .gt_right {
+#gxizkjtjys .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rgebcsvmog .gt_font_normal {
+#gxizkjtjys .gt_font_normal {
   font-weight: normal;
 }
 
-#rgebcsvmog .gt_font_bold {
+#gxizkjtjys .gt_font_bold {
   font-weight: bold;
 }
 
-#rgebcsvmog .gt_font_italic {
+#gxizkjtjys .gt_font_italic {
   font-style: italic;
 }
 
-#rgebcsvmog .gt_super {
+#gxizkjtjys .gt_super {
   font-size: 65%;
 }
 
-#rgebcsvmog .gt_footnote_marks {
+#gxizkjtjys .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

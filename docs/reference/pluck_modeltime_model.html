@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -276,21 +276,21 @@
     <pre class="examples"><div class='input'>
 <span class='va'>m750_models</span> <span class='op'>%&gt;%</span>
     <span class='fu'>pluck_modeltime_model</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; == Workflow [trained] ==========================================================
+</div><div class='output co'>#&gt; ══ Workflow [trained] ══════════════════════════════════════════════════════════
 #&gt; <span style='font-style: italic;'>Preprocessor:</span> Recipe
 #&gt; <span style='font-style: italic;'>Model:</span> prophet_reg()
 #&gt; 
-#&gt; -- Preprocessor ----------------------------------------------------------------
+#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────
 #&gt; 6 Recipe Steps
 #&gt; 
-#&gt; * step_timeseries_signature()
-#&gt; * step_rm()
-#&gt; * step_normalize()
-#&gt; * step_dummy()
-#&gt; * step_fourier()
-#&gt; * step_rm()
+#&gt; • step_timeseries_signature()
+#&gt; • step_rm()
+#&gt; • step_normalize()
+#&gt; • step_dummy()
+#&gt; • step_fourier()
+#&gt; • step_rm()
 #&gt; 
-#&gt; -- Model -----------------------------------------------------------------------
+#&gt; ── Model ───────────────────────────────────────────────────────────────────────
 #&gt; PROPHET Model
 #&gt; - growth: 'linear'
 #&gt; - n.changepoints: 25
