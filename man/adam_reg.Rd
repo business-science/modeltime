@@ -237,6 +237,7 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
+\dontrun{
 library(dplyr)
 library(parsnip)
 library(rsample)
@@ -281,6 +282,7 @@ model_spec <- adam_reg(
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date, data = training(splits))
 model_fit
+}
 
 }
 \seealso{
