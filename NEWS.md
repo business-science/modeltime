@@ -1,4 +1,4 @@
-# modeltime 1.0.0.9000 (Development Version)
+# modeltime 1.1.0 
 
 ## Spark Backend
 
