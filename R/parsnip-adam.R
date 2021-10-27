@@ -168,6 +168,7 @@
 #' @seealso [fit.model_spec()], [set_engine()]
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' library(parsnip)
 #' library(rsample)
@@ -212,6 +213,7 @@
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date, data = training(splits))
 #' model_fit
+#' }
 #'
 #' @export
 adam_reg <- function(mode = "regression", ets_model = NULL,

@@ -13,5 +13,7 @@
 ^\.github$
 ^codecov\.yml$
 vignettes/temp
+^derby.log$
 ^logs$
-^derby\.log
+^vignettes/derby.log$
+vignettes/logs

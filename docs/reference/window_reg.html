@@ -94,7 +94,7 @@ different backends." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -361,7 +361,7 @@ There are 3 ways to specify:</p><ol>
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 306 × 3</span>
 #&gt;    id    date       value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M750  1990-01-01  <span style='text-decoration: underline;'>6</span>370
@@ -374,7 +374,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; <span style='color: #BCBCBC;'> 8</span> M750  1990-08-01  <span style='text-decoration: underline;'>5</span>450
 #&gt; <span style='color: #BCBCBC;'> 9</span> M750  1990-09-01  <span style='text-decoration: underline;'>6</span>480
 #&gt; <span style='color: #BCBCBC;'>10</span> M750  1990-10-01  <span style='text-decoration: underline;'>6</span>820
-#&gt; <span style='color: #949494;'># ... with 296 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 296 more rows</span></div><div class='input'>
 <span class='co'># Split Data 80/20</span>
 <span class='va'>splits</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>initial_time_split</a></span><span class='op'>(</span><span class='va'>m750</span>, prop <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 
@@ -403,18 +403,18 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  20ms 
+#&gt; Fit time:  14ms 
 #&gt; WINDOW FUNC [12]
 #&gt; --------
 #&gt; Model: 
-#&gt; <span style='color: #949494;'># A tibble: 1 x 1</span>
+#&gt; <span style='color: #949494;'># A tibble: 1 × 1</span>
 #&gt;   value
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span>  9.26</div><div class='input'>
 <span class='co'># Predict</span>
 <span class='co'># - The 12-month median repeats going forward</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 62 x 1</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 62 × 1</span>
 #&gt;    .pred
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>  9.26
@@ -427,7 +427,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; <span style='color: #BCBCBC;'> 8</span>  9.26
 #&gt; <span style='color: #BCBCBC;'> 9</span>  9.26
 #&gt; <span style='color: #BCBCBC;'>10</span>  9.26
-#&gt; <span style='color: #949494;'># ... with 52 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 52 more rows</span></div><div class='input'>
 
 <span class='co'># ---- PANEL FORECAST - WINDOW FUNCTION ----</span>
 
@@ -449,17 +449,17 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  20ms 
+#&gt; Fit time:  17ms 
 #&gt; WINDOW FUNC [12]
 #&gt; --------
 #&gt; Model: 
-#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
+#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
 #&gt;   id    value
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> M750   9.29</div><div class='input'>
 <span class='co'># Predict: The weighted average (scalar) repeats going forward</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 62 x 1</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 62 × 1</span>
 #&gt;    .pred
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>  9.29
@@ -472,7 +472,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; <span style='color: #BCBCBC;'> 8</span>  9.29
 #&gt; <span style='color: #BCBCBC;'> 9</span>  9.29
 #&gt; <span style='color: #BCBCBC;'>10</span>  9.29
-#&gt; <span style='color: #949494;'># ... with 52 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 52 more rows</span></div><div class='input'>
 <span class='co'># ---- BROADCASTING PANELS (REPEATING) ----</span>
 
 <span class='co'># Simulating a Seasonal Naive Forecast by</span>
@@ -492,11 +492,11 @@ There are 3 ways to specify:</p><ol>
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  20ms 
+#&gt; Fit time:  16ms 
 #&gt; WINDOW FUNC [Inf]
 #&gt; --------
 #&gt; Model: 
-#&gt; <span style='color: #949494;'># A tibble: 12 x 2</span>
+#&gt; <span style='color: #949494;'># A tibble: 12 × 2</span>
 #&gt;    id    value
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> M750   9.27
@@ -513,7 +513,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; <span style='color: #BCBCBC;'>12</span> M750   9.29</div><div class='input'>
 <span class='co'># Predict: The sequence is broadcasted (repeated) during prediction</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>model_fit</span>, <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>testing</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 62 x 1</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 62 × 1</span>
 #&gt;    .pred
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>  9.27
@@ -526,7 +526,7 @@ There are 3 ways to specify:</p><ol>
 #&gt; <span style='color: #BCBCBC;'> 8</span>  9.27
 #&gt; <span style='color: #BCBCBC;'> 9</span>  9.26
 #&gt; <span style='color: #BCBCBC;'>10</span>  9.26
-#&gt; <span style='color: #949494;'># ... with 52 more rows</span></div><div class='input'>
+#&gt; <span style='color: #949494;'># … with 52 more rows</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

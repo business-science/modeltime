@@ -12,7 +12,7 @@
 ![](http://cranlogs.r-pkg.org/badges/grand-total/modeltime?color=brightgreen)
 [![R-CMD-check](https://github.com/business-science/modeltime/workflows/R-CMD-check/badge.svg)](https://github.com/business-science/modeltime/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://codecov.io/gh/business-science/modeltime?branch=master)
+coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://app.codecov.io/gh/business-science/modeltime?branch=master)
 <!-- badges: end -->
 
 > Tidy time series forecasting with `tidymodels`.
