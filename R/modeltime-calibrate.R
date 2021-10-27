@@ -242,28 +242,35 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
 
     # Generate Predictions
     # - Return format: .index, actual, prediction
-    predictions_tbl <- forecast_data %>%
-        tidyr::pivot_wider(names_from = .key, values_from = .value, values_fn = list) %>%
+
+    if (!is.null(id_var_text)) {
+        forecast_data <- forecast_data %>%
+            dplyr::mutate(!! id_var_text := rep(test_data[[id_var_text]], 2))
+    }
+
+    ret <- forecast_data %>%
+        tidyr::pivot_wider(
+            names_from  = .key,
+            values_from = .value,
+            values_fn   = list,
+            id_cols     = dplyr::all_of(c(id_var_text, ".index"))
+        ) %>%
         tidyr::drop_na() %>%
-        tidyr::unnest(cols = c(actual, prediction))
-
-    # print("Check 3 - Predictions Table")
-    # print(predictions_tbl)
-
-    # Return Residuals
-    ret <- tibble::tibble(
-        !!idx_var_text   := test_data %>% timetk::tk_index(),
-        .actual           = predictions_tbl$actual,
-        .prediction       = predictions_tbl$prediction
-    ) %>%
+        tidyr::unnest(cols = c(actual, prediction)) %>%
+        dplyr::rename(.actual = actual, .prediction = prediction) %>%
+        dplyr::rename(!! idx_var_text := .index) %>%
         dplyr::mutate(
             .residuals    = .actual - .prediction
         )
 
+    # print("Check 3 - Residuals Table")
+    # print(ret)
+
     if (!is.null(id_var_text)) {
         ret <- ret %>%
-            dplyr::mutate(
-                !! rlang::ensym(id_var_text) := test_data %>% dplyr::pull(!! rlang::ensym(id_var_text))
+            dplyr::relocate(
+                dplyr::all_of(id_var_text),
+                .after = dplyr::last_col()
             )
     }
 
