@@ -234,6 +234,8 @@ modeltime_calibrate.workflow <- function(object, new_data, id = NULL,
 
 mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_text, id_var_text = NULL) {
 
+    # forecast_data<<- forecast_data
+
     # print("Check 1 - actual")
     # print(forecast_data %>% dplyr::filter(.key == "actual"))
     #
@@ -242,10 +244,18 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
 
     # Generate Predictions
     # - Return format: .index, actual, prediction
-    predictions_tbl <- forecast_data %>%
-        tidyr::pivot_wider(names_from = .key, values_from = .value, values_fn = list) %>%
-        tidyr::drop_na() %>%
-        tidyr::unnest(cols = c(actual, prediction))
+
+    # OLD - pivot_wider() generates inconsistent return order
+    # predictions_tbl <- forecast_data %>%
+    #     tidyr::pivot_wider(names_from = .key, values_from = .value, values_fn = list) %>%
+    #     tidyr::drop_na() %>%
+    #     tidyr::unnest(cols = c(actual, prediction))
+
+    # predictions_tbl <- tibble::tibble(
+    #     .index     = forecast_data %>% dplyr::filter(.key == "actual") %>% dplyr::pull(.index),
+    #     actual     = forecast_data %>% dplyr::filter(.key == "actual") %>% dplyr::pull(.value),
+    #     prediction = forecast_data %>% dplyr::filter(.key == "prediction") %>% dplyr::pull(.value)
+    # )
 
     # print("Check 3 - Predictions Table")
     # print(predictions_tbl)
@@ -253,8 +263,8 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
     # Return Residuals
     ret <- tibble::tibble(
         !!idx_var_text   := test_data %>% timetk::tk_index(),
-        .actual           = predictions_tbl$actual,
-        .prediction       = predictions_tbl$prediction
+        .actual           = forecast_data %>% dplyr::filter(.key == "actual") %>% dplyr::pull(.value),
+        .prediction       = forecast_data %>% dplyr::filter(.key == "prediction") %>% dplyr::pull(.value)
     ) %>%
         dplyr::mutate(
             .residuals    = .actual - .prediction
