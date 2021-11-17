@@ -257,9 +257,6 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
     #     prediction = forecast_data %>% dplyr::filter(.key == "prediction") %>% dplyr::pull(.value)
     # )
 
-    # print("Check 3 - Predictions Table")
-    # print(predictions_tbl)
-
     # Return Residuals
     ret <- tibble::tibble(
         !!idx_var_text   := test_data %>% timetk::tk_index(),
@@ -270,10 +267,14 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
             .residuals    = .actual - .prediction
         )
 
+    # print("Check 3 - Residuals Table")
+    # print(ret)
+
     if (!is.null(id_var_text)) {
         ret <- ret %>%
-            dplyr::mutate(
-                !! rlang::ensym(id_var_text) := test_data %>% dplyr::pull(!! rlang::ensym(id_var_text))
+            dplyr::relocate(
+                dplyr::all_of(id_var_text),
+                .after = dplyr::last_col()
             )
     }
 

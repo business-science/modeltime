@@ -38,15 +38,22 @@ test_that("Confidence and Accuracy by ID", {
     )
 
 
-    # CALIBRATION ID ----
+    # CALIBRATION BY ID ----
+
+    test_data <- testing(splits) %>% arrange(ID, date)
 
     calib_tbl <- model_tbl %>%
-        modeltime_calibrate(new_data = testing(splits), id = "ID")
+        modeltime_calibrate(new_data = test_data, id = "ID")
 
     df <- calib_tbl$.calibration_data[[1]]
 
     expect_equal(ncol(df), 5)
     expect_equal(names(df)[5], "ID")
+
+    expect_equal(
+        df %>% select(ID, date, .actual) %>% rename(value = .actual),
+        test_data
+    )
 
     # ACCURACY BY ID ----
 
