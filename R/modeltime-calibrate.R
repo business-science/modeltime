@@ -272,10 +272,7 @@ mdl_time_forecast_to_residuals <- function(forecast_data, test_data, idx_var_tex
 
     if (!is.null(id_var_text)) {
         ret <- ret %>%
-            dplyr::relocate(
-                dplyr::all_of(id_var_text),
-                .after = dplyr::last_col()
-            )
+            dplyr::mutate(!! rlang::ensym(id_var_text) := test_data %>% dplyr::pull(!! rlang::ensym(id_var_text)) )
     }
 
     return(ret)
