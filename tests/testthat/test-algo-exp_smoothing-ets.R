@@ -358,8 +358,12 @@ wflw <- workflow() %>%
     add_recipe(recipe_spec) %>%
     add_model(model_spec)
 
-wflw_fit <- wflw %>%
-    fit(training(splits))
+# xreg did not contain values for the holdout, so we had to predict missing values.
+suppressWarnings({
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+})
+
 
 # Forecast
 predictions_tbl <- wflw_fit %>%
