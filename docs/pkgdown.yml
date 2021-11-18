@@ -8,7 +8,7 @@ articles:
   modeltime-model-list: modeltime-model-list.html
   modeltime-spark: modeltime-spark.html
   nested-forecasting: nested-forecasting.html
+  parallel-processing: parallel-processing.html
   recursive-forecasting: recursive-forecasting.html
-  temp/parallel-processing: parallel-processing.html
-last_built: 2021-10-18T13:21Z
+last_built: 2021-11-18T01:31Z
 

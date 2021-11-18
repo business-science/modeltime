@@ -101,7 +101,7 @@ performed well in the M3 Competition
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -483,7 +483,15 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/timetk'>timetk</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/business-science/modeltime'>modeltime</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/config-i1/smooth'>smooth</a></span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Loading required package: greybox</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'greybox':</span>
+#&gt; <span class='message'>  method     from</span>
+#&gt; <span class='message'>  print.pcor lava</span></div><div class='output co'>#&gt; <span class='message'>Package "greybox", v1.0.1 loaded.</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘greybox’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:lubridate’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    hm</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tidyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    spread</span></div><div class='output co'>#&gt; <span class='message'>This is package "smooth", v3.1.3</span>
+#&gt; <span class='message'>Any thought or suggestions about the package? Have you found a bug? File an issue on github: https://github.com/config-i1/smooth/issues</span></div><div class='input'>
 <span class='co'># Data</span>
 <span class='va'>m750</span> <span class='op'>&lt;-</span> <span class='va'>m4_monthly</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='st'>"M750"</span><span class='op'>)</span>
 <span class='va'>m750</span>
@@ -517,7 +525,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div><div class='output co'>#&gt; <span class='message'>frequency = 12 observations per 1 year</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  659ms 
+#&gt; Fit time:  662ms 
 #&gt; ETS(A,A,A) 
 #&gt; 
 #&gt; Call:
@@ -559,7 +567,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  161ms 
+#&gt; Fit time:  162ms 
 #&gt; ETS(M,Ad,M) 
 #&gt; 
 #&gt; Call:
@@ -599,7 +607,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  918ms 
+#&gt; Fit time:  953ms 
 #&gt; Croston Method
 #&gt; ---</div><div class='input'><span class='co'># }</span>
 
@@ -617,7 +625,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  10ms 
+#&gt; Fit time:  8ms 
 #&gt; Theta Method
 #&gt; ---</div><div class='input'><span class='co'># }</span>
 
@@ -641,8 +649,8 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; parsnip model object
 #&gt; 
-#&gt; Fit time:  344ms 
-#&gt; Time elapsed: 0.33 seconds
+#&gt; Fit time:  359ms 
+#&gt; Time elapsed: 0.35 seconds
 #&gt; Model estimated: ETS(MAdA)
 #&gt; Persistence vector g:
 #&gt;  alpha   beta  gamma 
