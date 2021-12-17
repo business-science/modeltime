@@ -1,3 +1,4 @@
+url: https://business-science.github.io/modeltime/
 template:
   bootstrap: 5
   bslib:
@@ -6,203 +7,193 @@ template:
     heading_font:
       google: Montserrat
     code_font:
-      google: "JetBrains Mono"
+      google: JetBrains Mono
   params:
     bootswatch: flatly
     ganalytics: UA-76139189-2
-
 navbar:
-  title: "modeltime"
+  title: modeltime
   left:
-    - icon: fa-home
-      href: index.html
-    - text: "Getting Started"
+  - icon: fa-home
+    href: index.html
+  - text: Getting Started
+    href: articles/getting-started-with-modeltime.html
+  - text: Articles
+    href: articles/index.html
+    menu:
+    - text: Getting Started
+    - text: Getting Started with Modeltime
       href: articles/getting-started-with-modeltime.html
-    - text: "Articles"
-      href: articles/index.html
-      menu:
-        - text: 'Getting Started'
-        - text: 'Getting Started with Modeltime'
-          href: articles/getting-started-with-modeltime.html
-        - text: "---"
-        - text: 'Forecasting Many Time Series (Scale)'
-        - text: 'Global Model Forecasting'
-          href: articles/modeling-panel-data.html
-        - text: 'Iterative (Nested) Forecasting'
-          href: articles/nested-forecasting.html
-        - text: "---"
-        - text: 'Advanced Topics'
-        - text: 'Autoregressive (Recursive) Forecasting'
-          href: articles/recursive-forecasting.html
-        - text: 'Hyperparameter Tuning & Parallel Processing'
-          href: articles/parallel-processing.html
-        - text: 'The Modeltime Spark Backend'
-          href: articles/modeltime-spark.html
-        - text: "---"
-        - text: 'Algorithms'
-        - text: 'Modeltime Algorithm Roadmap'
-          href: articles/modeltime-model-list.html
-        - text: "---"
-        - text: 'Developers'
-        - text: 'Extending Modeltime (Developer Tools)'
-          href: articles/extending-modeltime.html
-    - text: "API"
+    - text: '---'
+    - text: Forecasting Many Time Series (Scale)
+    - text: Global Model Forecasting
+      href: articles/modeling-panel-data.html
+    - text: Iterative (Nested) Forecasting
+      href: articles/nested-forecasting.html
+    - text: '---'
+    - text: Advanced Topics
+    - text: Autoregressive (Recursive) Forecasting
+      href: articles/recursive-forecasting.html
+    - text: Hyperparameter Tuning & Parallel Processing
+      href: articles/parallel-processing.html
+    - text: The Modeltime Spark Backend
+      href: articles/modeltime-spark.html
+    - text: '---'
+    - text: Algorithms
+    - text: Modeltime Algorithm Roadmap
+      href: articles/modeltime-model-list.html
+    - text: '---'
+    - text: Developers
+    - text: Extending Modeltime (Developer Tools)
+      href: articles/extending-modeltime.html
+  - text: API
+    href: reference/index.html
+    menu:
+    - text: API Functions
+    - icon: fa-home
+      text: Function Reference
       href: reference/index.html
-      menu:
-        - text: 'API Functions'
-        - icon: fa-home
-          text: 'Function Reference'
-          href: reference/index.html
-        - text: '---'
-        - text: 'Change History'
-        - text: "News"
-          href: news/index.html
-    - text: "Ecosystem"
-      menu:
-        - text: 'Forecast'
-        - text: 'Modeltime (Forecasting)'
-          href: https://business-science.github.io/modeltime/
-        - text: 'TimeTK (Time Series Analysis)'
-          href: https://business-science.github.io/timetk/
-        - text: "---"
-        - text: 'Improve'
-        - text: 'Modeltime Ensemble (Blending Forecasts)'
-          href: https://business-science.github.io/modeltime.ensemble/
-        - text: 'Modeltime Resample (Backtesting)'
-          href: https://business-science.github.io/modeltime.resample/
-        - text: "---"
-        - text: 'Scale'
-        - text: 'Modeltime H2O (AutoML)'
-          href: https://business-science.github.io/modeltime.h2o/
-        - text: 'Modeltime GluonTS (Deep Learning)'
-          href: https://business-science.github.io/modeltime.gluonts/
-    - icon: fas fa-graduation-cap
-      text: "Learn"
-      href: https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/
-
+    - text: '---'
+    - text: Change History
+    - text: News
+      href: news/index.html
+  - text: Ecosystem
+    menu:
+    - text: Forecast
+    - text: Modeltime (Forecasting)
+      href: https://business-science.github.io/modeltime/
+    - text: TimeTK (Time Series Analysis)
+      href: https://business-science.github.io/timetk/
+    - text: '---'
+    - text: Improve
+    - text: Modeltime Ensemble (Blending Forecasts)
+      href: https://business-science.github.io/modeltime.ensemble/
+    - text: Modeltime Resample (Backtesting)
+      href: https://business-science.github.io/modeltime.resample/
+    - text: '---'
+    - text: Scale
+    - text: Modeltime H2O (AutoML)
+      href: https://business-science.github.io/modeltime.h2o/
+    - text: Modeltime GluonTS (Deep Learning)
+      href: https://business-science.github.io/modeltime.gluonts/
+  - icon: fas fa-graduation-cap
+    text: Learn
+    href: https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/
   right:
-    - icon: fab fa-github
-      href: https://github.com/business-science/modeltime
-
+  - icon: fab fa-github
+    href: https://github.com/business-science/modeltime
 reference:
-  - title: Modeltime Workflow
-    desc: The main workflow functions for time series modeling.
-  - subtitle: Core Functions
-    contents:
-    - modeltime_table
-    - modeltime_calibrate
-    - modeltime_forecast
-    - modeltime_accuracy
-    - modeltime_refit
-    - modeltime_fit_workflowset
-  - subtitle: Recursive Forecast Prediction
-    contents:
-    - recursive
-    - panel_tail
-  - subtitle: Plotting & Tables
-    contents:
-    - starts_with("plot_modeltime")
-    - starts_with("table_modeltime")
-  - subtitle: Residual Analysis
-    contents:
-    - modeltime_residuals
-    - modeltime_residuals_test
-    - plot_modeltime_residuals
-  - title: Nested Forecasting
-    desc: Forecast many time series iteratively using "nested modeltime tables". Used to apply models to each time series panel independently.
-  - subtitle: Core functions
-    contents:
-    - modeltime_nested_fit
-    - modeltime_nested_select_best
-    - modeltime_nested_refit
-    - modeltime_nested_forecast
-  - subtitle: Extractors
-    contents:
-    - starts_with("extract_")
-  - subtitle: Workflow
-    contents:
-    - extend_timeseries
-  - title: Algorithms
-    desc: The `parsnip`-adjacent algorithms that implement time series models.
-  - subtitle: Core Forecasting Methods
-    desc: These models come with modeltime.
-    contents:
-    - prophet_reg
-    - prophet_boost
-    - arima_reg
-    - arima_boost
-    - exp_smoothing
-    - seasonal_reg
-    - nnetar_reg
-  - subtitle: Additional Algorithms
-    desc: These algorithms have additional dependencies that can be installed with `dependencies = TRUE`
-    contents:
-    - adam_reg
-    - temporal_hierarchy
-  - subtitle: Baseline Algorithms (Simple Methods)
-    contents:
-    - window_reg
-    - naive_reg
-  - title: Parallel Processing
-    contents:
-    - starts_with("parallel_")
-    - starts_with("control_")
-    - create_model_grid
-  - title: Modeltime Workflow Helpers
-    contents:
-    - combine_modeltime_tables
-    - add_modeltime_model
-    - update_modeltime_model
-    - update_modeltime_description
-    - pluck_modeltime_model
-  - title: Accuracy Metrics (Yardstick)
-  - subtitle: Metric Sets and Summarizers
-    contents:
-    - default_forecast_accuracy_metric_set
-    - summarize_accuracy_metrics
-  - subtitle: New Accuracy Metrics
-    contents:
-    - maape
-    - metric_tweak
-  - title: Parameters (Dials)
-    desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
-  - subtitle: General Time Series
-    contents:
-    - seasonal_period
-  - subtitle: ARIMA
-    contents:
-    - starts_with("non_seasonal")
-  - subtitle: Exponential Smoothing
-    contents:
-    - error
-    - smooth_level
-  - subtitle: Prophet
-    contents:
-    - changepoint_num
-  - subtitle: NNETAR
-    contents:
-    - num_networks
-  - subtitle: ADAM
-    contents:
-    - use_constant
-  - subtitle: Temporal Hierachical Models
-    contents:
-    - combination_method
-  - title: Developer Tools
-    desc: Tools for extending `modeltime`.
-    contents:
-    - new_modeltime_bridge
-    - create_xreg_recipe
-    - juice_xreg_recipe
-    - parse_index_from_data
-    - get_model_description
-    - get_arima_description
-  - title: Data
-    contents:
-    - starts_with("m750")
-
+- title: Modeltime Workflow
+  desc: The main workflow functions for time series modeling.
+- subtitle: Core Functions
+  contents:
+  - modeltime_table
+  - modeltime_calibrate
+  - modeltime_forecast
+  - modeltime_accuracy
+  - modeltime_refit
+  - modeltime_fit_workflowset
+- subtitle: Recursive Forecast Prediction
+  contents:
+  - recursive
+  - panel_tail
+- subtitle: Plotting & Tables
+  contents:
+  - starts_with("plot_modeltime")
+  - starts_with("table_modeltime")
+- subtitle: Residual Analysis
+  contents:
+  - modeltime_residuals
+  - modeltime_residuals_test
+  - plot_modeltime_residuals
+- title: Nested Forecasting
+  desc: Forecast many time series iteratively using "nested modeltime tables". Used
+    to apply models to each time series panel independently.
+- subtitle: Core functions
+  contents:
+  - modeltime_nested_fit
+  - modeltime_nested_select_best
+  - modeltime_nested_refit
+  - modeltime_nested_forecast
+- subtitle: Extractors
+  contents: starts_with("extract_")
+- subtitle: Workflow
+  contents: extend_timeseries
+- title: Algorithms
+  desc: The `parsnip`-adjacent algorithms that implement time series models.
+- subtitle: Core Forecasting Methods
+  desc: These models come with modeltime.
+  contents:
+  - prophet_reg
+  - prophet_boost
+  - arima_reg
+  - arima_boost
+  - exp_smoothing
+  - seasonal_reg
+  - nnetar_reg
+- subtitle: Additional Algorithms
+  desc: These algorithms have additional dependencies that can be installed with `dependencies
+    = TRUE`
+  contents:
+  - adam_reg
+  - temporal_hierarchy
+- subtitle: Baseline Algorithms (Simple Methods)
+  contents:
+  - window_reg
+  - naive_reg
+- title: Parallel Processing
+  contents:
+  - starts_with("parallel_")
+  - starts_with("control_")
+  - create_model_grid
+- title: Modeltime Workflow Helpers
+  contents:
+  - combine_modeltime_tables
+  - add_modeltime_model
+  - update_modeltime_model
+  - update_modeltime_description
+  - pluck_modeltime_model
+- title: Accuracy Metrics (Yardstick)
+- subtitle: Metric Sets and Summarizers
+  contents:
+  - default_forecast_accuracy_metric_set
+  - summarize_accuracy_metrics
+- subtitle: New Accuracy Metrics
+  contents:
+  - maape
+  - metric_tweak
+- title: Parameters (Dials)
+  desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
+- subtitle: General Time Series
+  contents: seasonal_period
+- subtitle: ARIMA
+  contents: starts_with("non_seasonal")
+- subtitle: Exponential Smoothing
+  contents:
+  - error
+  - smooth_level
+- subtitle: Prophet
+  contents: changepoint_num
+- subtitle: NNETAR
+  contents: num_networks
+- subtitle: ADAM
+  contents: use_constant
+- subtitle: Temporal Hierachical Models
+  contents: combination_method
+- title: Developer Tools
+  desc: Tools for extending `modeltime`.
+  contents:
+  - new_modeltime_bridge
+  - create_xreg_recipe
+  - juice_xreg_recipe
+  - parse_index_from_data
+  - get_model_description
+  - get_arima_description
+- title: Data
+  contents: starts_with("m750")
 repo:
   url:
     home: https://github.com/business-science/modeltime
     source: https://github.com/business-science/modeltime/blob/master/
     issue: https://github.com/business-science/modeltime/issues/
+

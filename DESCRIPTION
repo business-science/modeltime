@@ -11,7 +11,8 @@ Description:
     (<https://otexts.com/fpp2/>).
     Refer to "Prophet: forecasting at scale" 
     (<https://research.fb.com/blog/2017/02/prophet-forecasting-at-scale/>.).
-URL: https://github.com/business-science/modeltime
+URL: https://github.com/business-science/modeltime,
+    https://business-science.github.io/modeltime/
 BugReports: https://github.com/business-science/modeltime/issues
 License: MIT + file LICENSE
 Encoding: UTF-8

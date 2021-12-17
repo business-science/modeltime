@@ -23,7 +23,7 @@
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Hyperparameter Tuning with Parallel Processing">
 <meta property="og:description" content="modeltime">
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="https://business-science.github.io/modeltime/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -101,16 +101,16 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-ecosystem">Ecosystem</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-ecosystem">
     <h6 class="dropdown-header" data-toc-skip>Forecast</h6>
-    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
+    <a class="dropdown-item" href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
     <a class="external-link dropdown-item" href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Improve</h6>
-    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
-    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    <a class="dropdown-item" href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    <a class="dropdown-item" href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Scale</h6>
-    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
-    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+    <a class="dropdown-item" href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    <a class="dropdown-item" href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -191,7 +191,7 @@
 <p>The <code>modeltime</code> package uses <code><a href="../reference/parallel_start.html">parallel_start()</a></code> to simplify setup, which integrates multiple backend options for parallel processing including:</p>
 <ol style="list-style-type: decimal">
 <li><p><code>.method = "parallel"</code> (default): Uses the <code>parallel</code> and <code>doParallel</code> packages.</p></li>
-<li><p><code>.method = "spark"</code>: Uses <code>sparklyr</code>. See our tutorial, <a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html" class="external-link">The Modeltime Spark Backend</a>.</p></li>
+<li><p><code>.method = "spark"</code>: Uses <code>sparklyr</code>. See our tutorial, <a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html">The Modeltime Spark Backend</a>.</p></li>
 </ol>
 <div class="section level3">
 <h3 id="parallel-setup">Parallel Setup<a class="anchor" aria-label="anchor" href="#parallel-setup"></a>
@@ -207,7 +207,7 @@
 <div class="section level3">
 <h3 id="spark-setup">Spark Setup<a class="anchor" aria-label="anchor" href="#spark-setup"></a>
 </h3>
-<p>We could optionally run this tutorial with the Spark Backend. For more information, refer to our tutorial <a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html" class="external-link">The Modeltime Spark Backend</a>.</p>
+<p>We could optionally run this tutorial with the Spark Backend. For more information, refer to our tutorial <a href="https://business-science.github.io/modeltime/articles/modeltime-spark.html">The Modeltime Spark Backend</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># OPTIONAL - Run using spark backend</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.rstudio.com/" class="external-link">sparklyr</a></span><span class="op">)</span>
@@ -457,10 +457,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.074 seconds</span>
+<span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 12.966 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 13.075 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 12.966 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -500,7 +500,7 @@
 <span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #555555;">Model Successfully Fitted: 5</span></span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Fitting Model: 6</span></span>
 <span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #555555;">Model Successfully Fitted: 6</span></span>
-<span class="co">#&gt; Total time | 16.26 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 16.151 seconds</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -512,12 +512,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="obmfdrmenc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="adklpggprh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#obmfdrmenc .gt_table {
+#adklpggprh .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -542,7 +542,7 @@
   border-left-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_heading {
+#adklpggprh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -554,7 +554,7 @@
   border-right-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_title {
+#adklpggprh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -564,7 +564,7 @@
   border-bottom-width: 0;
 }
 
-#obmfdrmenc .gt_subtitle {
+#adklpggprh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -574,13 +574,13 @@
   border-top-width: 0;
 }
 
-#obmfdrmenc .gt_bottom_border {
+#adklpggprh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_col_headings {
+#adklpggprh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -595,7 +595,7 @@
   border-right-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_col_heading {
+#adklpggprh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -615,7 +615,7 @@
   overflow-x: hidden;
 }
 
-#obmfdrmenc .gt_column_spanner_outer {
+#adklpggprh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -627,15 +627,15 @@
   padding-right: 4px;
 }
 
-#obmfdrmenc .gt_column_spanner_outer:first-child {
+#adklpggprh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#obmfdrmenc .gt_column_spanner_outer:last-child {
+#adklpggprh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#obmfdrmenc .gt_column_spanner {
+#adklpggprh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -647,7 +647,7 @@
   width: 100%;
 }
 
-#obmfdrmenc .gt_group_heading {
+#adklpggprh .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -669,7 +669,7 @@
   vertical-align: middle;
 }
 
-#obmfdrmenc .gt_empty_group_heading {
+#adklpggprh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -684,15 +684,15 @@
   vertical-align: middle;
 }
 
-#obmfdrmenc .gt_from_md > :first-child {
+#adklpggprh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#obmfdrmenc .gt_from_md > :last-child {
+#adklpggprh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#obmfdrmenc .gt_row {
+#adklpggprh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -711,7 +711,7 @@
   overflow-x: hidden;
 }
 
-#obmfdrmenc .gt_stub {
+#adklpggprh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -723,7 +723,7 @@
   padding-left: 12px;
 }
 
-#obmfdrmenc .gt_summary_row {
+#adklpggprh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -733,7 +733,7 @@
   padding-right: 5px;
 }
 
-#obmfdrmenc .gt_first_summary_row {
+#adklpggprh .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -743,7 +743,7 @@
   border-top-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_grand_summary_row {
+#adklpggprh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -753,7 +753,7 @@
   padding-right: 5px;
 }
 
-#obmfdrmenc .gt_first_grand_summary_row {
+#adklpggprh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -763,11 +763,11 @@
   border-top-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_striped {
+#adklpggprh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#obmfdrmenc .gt_table_body {
+#adklpggprh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -776,7 +776,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_footnotes {
+#adklpggprh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -790,13 +790,13 @@
   border-right-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_footnote {
+#adklpggprh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#obmfdrmenc .gt_sourcenotes {
+#adklpggprh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -810,41 +810,41 @@
   border-right-color: #D3D3D3;
 }
 
-#obmfdrmenc .gt_sourcenote {
+#adklpggprh .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#obmfdrmenc .gt_left {
+#adklpggprh .gt_left {
   text-align: left;
 }
 
-#obmfdrmenc .gt_center {
+#adklpggprh .gt_center {
   text-align: center;
 }
 
-#obmfdrmenc .gt_right {
+#adklpggprh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#obmfdrmenc .gt_font_normal {
+#adklpggprh .gt_font_normal {
   font-weight: normal;
 }
 
-#obmfdrmenc .gt_font_bold {
+#adklpggprh .gt_font_bold {
   font-weight: bold;
 }
 
-#obmfdrmenc .gt_font_italic {
+#adklpggprh .gt_font_italic {
   font-style: italic;
 }
 
-#obmfdrmenc .gt_super {
+#adklpggprh .gt_super {
   font-size: 65%;
 }
 
-#obmfdrmenc .gt_footnote_marks {
+#adklpggprh .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

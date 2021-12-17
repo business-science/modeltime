@@ -1,480 +1,480 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://business-science.github.io/modeltime/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://business-science.github.io/modeltime/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://business-science.github.io/modeltime/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/README.knit.html</loc>
+    <loc>https://business-science.github.io/modeltime/README.knit.html</loc>
   </url>
   <url>
-    <loc>/README.utf8.html</loc>
+    <loc>https://business-science.github.io/modeltime/README.utf8.html</loc>
   </url>
   <url>
-    <loc>/articles/extending-modeltime.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/extending-modeltime.html</loc>
   </url>
   <url>
-    <loc>/articles/getting-started-with-modeltime.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/modeling-panel-data.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/modeling-panel-data.html</loc>
   </url>
   <url>
-    <loc>/articles/modeltime-model-list.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/modeltime-model-list.html</loc>
   </url>
   <url>
-    <loc>/articles/modeltime-spark.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/modeltime-spark.html</loc>
   </url>
   <url>
-    <loc>/articles/nested-forecasting.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/nested-forecasting.html</loc>
   </url>
   <url>
-    <loc>/articles/parallel-processing.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/parallel-processing.html</loc>
   </url>
   <url>
-    <loc>/articles/recursive-forecasting.html</loc>
+    <loc>https://business-science.github.io/modeltime/articles/recursive-forecasting.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://business-science.github.io/modeltime/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://business-science.github.io/modeltime/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://business-science.github.io/modeltime/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/Adam_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/Adam_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/Arima_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/Arima_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/Arima_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/Arima_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/Auto_adam_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/Auto_adam_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/adam_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/adam_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/adam_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/adam_params.html</loc>
   </url>
   <url>
-    <loc>/reference/adam_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/adam_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/add_modeltime_model.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/add_modeltime_model.html</loc>
   </url>
   <url>
-    <loc>/reference/arima_boost.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/arima_boost.html</loc>
   </url>
   <url>
-    <loc>/reference/arima_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/arima_params.html</loc>
   </url>
   <url>
-    <loc>/reference/arima_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/arima_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/arima_workflow_tuned.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/arima_workflow_tuned.html</loc>
   </url>
   <url>
-    <loc>/reference/arima_xgboost_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/arima_xgboost_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/arima_xgboost_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/arima_xgboost_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/auto_adam_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/auto_adam_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/auto_arima_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/auto_arima_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/auto_arima_xgboost_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/auto_arima_xgboost_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/check_class_and_single.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/check_class_and_single.html</loc>
   </url>
   <url>
-    <loc>/reference/check_class_integer.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/check_class_integer.html</loc>
   </url>
   <url>
-    <loc>/reference/combine_model_tables.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/combine_model_tables.html</loc>
   </url>
   <url>
-    <loc>/reference/combine_modeltime_tables.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/combine_modeltime_tables.html</loc>
   </url>
   <url>
-    <loc>/reference/control_fit_workflowset.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/control_fit_workflowset.html</loc>
   </url>
   <url>
-    <loc>/reference/control_modeltime.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/control_modeltime.html</loc>
   </url>
   <url>
-    <loc>/reference/control_nested_fit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/control_nested_fit.html</loc>
   </url>
   <url>
-    <loc>/reference/control_nested_refit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/control_nested_refit.html</loc>
   </url>
   <url>
-    <loc>/reference/control_refit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/control_refit.html</loc>
   </url>
   <url>
-    <loc>/reference/control_workflowset.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/control_workflowset.html</loc>
   </url>
   <url>
-    <loc>/reference/create_model_grid.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/create_model_grid.html</loc>
   </url>
   <url>
-    <loc>/reference/create_xreg_recipe.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/create_xreg_recipe.html</loc>
   </url>
   <url>
-    <loc>/reference/croston_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/croston_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/croston_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/croston_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/default_forecast_accuracy_metric_set.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/default_forecast_accuracy_metric_set.html</loc>
   </url>
   <url>
-    <loc>/reference/dot_prepare_transform.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/dot_prepare_transform.html</loc>
   </url>
   <url>
-    <loc>/reference/ets_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/ets_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/ets_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/ets_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/exp_smoothing.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/exp_smoothing.html</loc>
   </url>
   <url>
-    <loc>/reference/exp_smoothing_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/exp_smoothing_params.html</loc>
   </url>
   <url>
-    <loc>/reference/fit.modeltime.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/fit.modeltime.html</loc>
   </url>
   <url>
-    <loc>/reference/get_arima_description.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/get_arima_description.html</loc>
   </url>
   <url>
-    <loc>/reference/get_model_description.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/get_model_description.html</loc>
   </url>
   <url>
-    <loc>/reference/get_tbats_description.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/get_tbats_description.html</loc>
   </url>
   <url>
-    <loc>/reference/hierarchical_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/hierarchical_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/hierarchical_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/hierarchical_params.html</loc>
   </url>
   <url>
-    <loc>/reference/hierarchical_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/hierarchical_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/hierarchical_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/hierarchical_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/is_calibrated.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/is_calibrated.html</loc>
   </url>
   <url>
-    <loc>/reference/is_modeltime.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/is_modeltime.html</loc>
   </url>
   <url>
-    <loc>/reference/is_modeltime_model.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/is_modeltime_model.html</loc>
   </url>
   <url>
-    <loc>/reference/is_modeltime_table.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/is_modeltime_table.html</loc>
   </url>
   <url>
-    <loc>/reference/is_residuals.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/is_residuals.html</loc>
   </url>
   <url>
-    <loc>/reference/load_namespace.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/load_namespace.html</loc>
   </url>
   <url>
-    <loc>/reference/log_extractors.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/log_extractors.html</loc>
   </url>
   <url>
-    <loc>/reference/m750.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/m750.html</loc>
   </url>
   <url>
-    <loc>/reference/m750_models.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/m750_models.html</loc>
   </url>
   <url>
-    <loc>/reference/m750_splits.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/m750_splits.html</loc>
   </url>
   <url>
-    <loc>/reference/m750_training_resamples.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/m750_training_resamples.html</loc>
   </url>
   <url>
-    <loc>/reference/maape.data.frame.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/maape.data.frame.html</loc>
   </url>
   <url>
-    <loc>/reference/maape.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/maape.html</loc>
   </url>
   <url>
-    <loc>/reference/maape_vec.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/maape_vec.html</loc>
   </url>
   <url>
-    <loc>/reference/make_ts_splits.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/make_ts_splits.html</loc>
   </url>
   <url>
-    <loc>/reference/mdl_time_forecast.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/mdl_time_forecast.html</loc>
   </url>
   <url>
-    <loc>/reference/mdl_time_refit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/mdl_time_refit.html</loc>
   </url>
   <url>
-    <loc>/reference/metric_sets.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/metric_sets.html</loc>
   </url>
   <url>
-    <loc>/reference/metric_tweak.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/metric_tweak.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_accuracy.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_accuracy.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_calibrate.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_calibrate.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_fit_workflowset.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_fit_workflowset.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_forecast.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_forecast.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_nested_fit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_nested_fit.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_nested_forecast.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_nested_forecast.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_nested_refit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_nested_refit.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_nested_select_best.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_nested_select_best.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_refit.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_refit.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_residuals.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_residuals.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_residuals_test.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_residuals_test.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_residuals_tests.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_residuals_tests.html</loc>
   </url>
   <url>
-    <loc>/reference/modeltime_table.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/modeltime_table.html</loc>
   </url>
   <url>
-    <loc>/reference/naive_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/naive_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/naive_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/naive_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/naive_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/naive_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/new_modeltime_bridge.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/new_modeltime_bridge.html</loc>
   </url>
   <url>
-    <loc>/reference/nnetar_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/nnetar_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/nnetar_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/nnetar_params.html</loc>
   </url>
   <url>
-    <loc>/reference/nnetar_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/nnetar_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/nnetar_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/nnetar_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/panel_tail.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/panel_tail.html</loc>
   </url>
   <url>
-    <loc>/reference/parallel_start.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/parallel_start.html</loc>
   </url>
   <url>
-    <loc>/reference/parse_index.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/parse_index.html</loc>
   </url>
   <url>
-    <loc>/reference/pipe.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_modeltime_forecast.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/plot_modeltime_forecast.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_modeltime_residuals.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/plot_modeltime_residuals.html</loc>
   </url>
   <url>
-    <loc>/reference/pluck_modeltime_model.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/pluck_modeltime_model.html</loc>
   </url>
   <url>
-    <loc>/reference/predict.recursive.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/predict.recursive.html</loc>
   </url>
   <url>
-    <loc>/reference/predict.recursive_panel.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/predict.recursive_panel.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_nested.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prep_nested.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_boost.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_boost.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_params.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_xgboost_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_xgboost_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/prophet_xgboost_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/prophet_xgboost_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/pull_modeltime_residuals.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/pull_modeltime_residuals.html</loc>
   </url>
   <url>
-    <loc>/reference/pull_parsnip_preprocessor.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/pull_parsnip_preprocessor.html</loc>
   </url>
   <url>
-    <loc>/reference/recipe_helpers.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/recipe_helpers.html</loc>
   </url>
   <url>
-    <loc>/reference/recursive.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/recursive.html</loc>
   </url>
   <url>
-    <loc>/reference/seasonal_decomp.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/seasonal_decomp.html</loc>
   </url>
   <url>
-    <loc>/reference/seasonal_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/seasonal_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/smooth_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/smooth_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/smooth_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/smooth_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/snaive_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/snaive_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/snaive_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/snaive_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/stlm_arima_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/stlm_arima_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/stlm_arima_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/stlm_arima_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/stlm_ets_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/stlm_ets_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/stlm_ets_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/stlm_ets_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/summarize_accuracy_metrics.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/summarize_accuracy_metrics.html</loc>
   </url>
   <url>
-    <loc>/reference/table_modeltime_accuracy.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/table_modeltime_accuracy.html</loc>
   </url>
   <url>
-    <loc>/reference/tbats_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/tbats_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/tbats_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/tbats_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/temporal_hier_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/temporal_hier_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/temporal_hier_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/temporal_hier_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/temporal_hierarchy.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/temporal_hierarchy.html</loc>
   </url>
   <url>
-    <loc>/reference/temporal_hierarchy_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/temporal_hierarchy_params.html</loc>
   </url>
   <url>
-    <loc>/reference/theta_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/theta_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/theta_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/theta_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/tidyeval.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/tidyeval.html</loc>
   </url>
   <url>
-    <loc>/reference/time_series_params.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/time_series_params.html</loc>
   </url>
   <url>
-    <loc>/reference/type_sum.mdl_time_tbl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/type_sum.mdl_time_tbl.html</loc>
   </url>
   <url>
-    <loc>/reference/update_model_description.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/update_model_description.html</loc>
   </url>
   <url>
-    <loc>/reference/update_modeltime_model.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/update_modeltime_model.html</loc>
   </url>
   <url>
-    <loc>/reference/val_class_and_single.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/val_class_and_single.html</loc>
   </url>
   <url>
-    <loc>/reference/window_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/window_function_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_function_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/window_function_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_function_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/window_lm_fit_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_lm_fit_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/window_lm_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_lm_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/window_predict_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_predict_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/window_reg.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/window_reg.html</loc>
   </url>
   <url>
-    <loc>/reference/xgboost_impl.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/xgboost_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/xgboost_predict.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/xgboost_predict.html</loc>
   </url>
 </urlset>
