@@ -10,12 +10,6 @@
     <loc>https://business-science.github.io/modeltime/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/README.knit.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/README.utf8.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/articles/extending-modeltime.html</loc>
   </url>
   <url>
@@ -85,9 +79,6 @@
     <loc>https://business-science.github.io/modeltime/reference/arima_reg.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/arima_workflow_tuned.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/arima_xgboost_fit_impl.html</loc>
   </url>
   <url>
@@ -103,34 +94,10 @@
     <loc>https://business-science.github.io/modeltime/reference/auto_arima_xgboost_fit_impl.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/check_class_and_single.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/check_class_integer.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/combine_model_tables.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/combine_modeltime_tables.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/control_fit_workflowset.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/control_modeltime.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/control_nested_fit.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/control_nested_refit.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/control_refit.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/control_workflowset.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/create_model_grid.html</loc>
@@ -143,9 +110,6 @@
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/croston_predict_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/default_forecast_accuracy_metric_set.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/dot_prepare_transform.html</loc>
@@ -163,9 +127,6 @@
     <loc>https://business-science.github.io/modeltime/reference/exp_smoothing_params.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/fit.modeltime.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/get_arima_description.html</loc>
   </url>
   <url>
@@ -175,25 +136,10 @@
     <loc>https://business-science.github.io/modeltime/reference/get_tbats_description.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/hierarchical_fit_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/hierarchical_params.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/hierarchical_predict_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/hierarchical_reg.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/index.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/is_calibrated.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/is_modeltime.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/is_modeltime_model.html</loc>
@@ -244,9 +190,6 @@
     <loc>https://business-science.github.io/modeltime/reference/metric_sets.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/metric_tweak.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/modeltime_accuracy.html</loc>
   </url>
   <url>
@@ -278,9 +221,6 @@
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/modeltime_residuals_test.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/modeltime_residuals_tests.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/modeltime_table.html</loc>
@@ -373,9 +313,6 @@
     <loc>https://business-science.github.io/modeltime/reference/recursive.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/seasonal_decomp.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/seasonal_reg.html</loc>
   </url>
   <url>
@@ -448,25 +385,10 @@
     <loc>https://business-science.github.io/modeltime/reference/update_modeltime_model.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/val_class_and_single.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/window_fit_impl.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/window_function_fit_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/window_function_predict_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/window_lm_fit_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/window_lm_predict_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/window_predict_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/window_reg.html</loc>
