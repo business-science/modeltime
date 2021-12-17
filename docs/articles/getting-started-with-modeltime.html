@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="modeltime">
 <title>Getting Started with Modeltime • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,14 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Roboto-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_JetBrains%20Mono-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_Montserrat-0.4.0/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Getting Started with Modeltime">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
@@ -32,164 +35,117 @@
   gtag('config', 'UA-76139189-2');
 </script>
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">modeltime</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../index.html">
     <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../articles/getting-started-with-modeltime.html">Getting Started</a>
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/getting-started-with-modeltime.html">Getting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Getting Started</li>
-    <li>
-      <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Advanced Topics</li>
-    <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Algorithms</li>
-    <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Developers</li>
-    <li>
-      <a href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Getting Started</h6>
+    <a class="dropdown-item" href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Forecasting Many Time Series (Scale)</h6>
+    <a class="dropdown-item" href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    <a class="dropdown-item" href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6>
+    <a class="dropdown-item" href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
+    <a class="dropdown-item" href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
+    <a class="dropdown-item" href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Algorithms</h6>
+    <a class="dropdown-item" href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Developers</h6>
+    <a class="dropdown-item" href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    API
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">API Functions</li>
-    <li>
-      <a href="../reference/index.html">
-        <span class="fa fa-home"></span>
-         
-        Function Reference
-      </a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Change History</li>
-    <li>
-      <a href="../news/index.html">News</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-api">API</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-api">
+    <h6 class="dropdown-header" data-toc-skip>API Functions</h6>
+    <a class="dropdown-item" href="../reference/index.html">
+      <span class="fa fa-home"></span>
+       
+      Function Reference
+    </a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Change History</h6>
+    <a class="dropdown-item" href="../news/index.html">News</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Ecosystem
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecast</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Improve</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Scale</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-ecosystem">Ecosystem</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-ecosystem">
+    <h6 class="dropdown-header" data-toc-skip>Forecast</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Improve</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Scale</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+  </div>
 </li>
-<li>
-  <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
-    <span class="fas fa-graduation-cap"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
+    <span class="fas fa fas fa-graduation-cap"></span>
      
     Learn
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/business-science/modeltime">
-    <span class="fab fa-github"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/business-science/modeltime">
+    <span class="fab fa fab fa-github"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
-
-      </header><script src="getting-started-with-modeltime_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Getting Started with Modeltime</h1>
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Getting Started with Modeltime</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/getting-started-with-modeltime.Rmd"><code>vignettes/getting-started-with-modeltime.Rmd</code></a></small>
-      <div class="hidden name"><code>getting-started-with-modeltime.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/getting-started-with-modeltime.Rmd" class="external-link"><code>vignettes/getting-started-with-modeltime.Rmd</code></a></small>
+      <div class="d-none name"><code>getting-started-with-modeltime.Rmd</code></div>
     </div>
 
     
@@ -200,14 +156,14 @@
 <li>
 <strong>Modeltime models</strong> like <code><a href="../reference/arima_reg.html">arima_reg()</a></code>, <code><a href="../reference/arima_boost.html">arima_boost()</a></code>, <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>, <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>, <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>, and more</li>
 <li>
-<strong>Parsnip models</strong> like <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/mars.html">mars()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/svm_rbf.html">svm_rbf()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/rand_forest.html">rand_forest()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree()</a></code> and more</li>
+<strong>Parsnip models</strong> like <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/mars.html" class="external-link">mars()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/svm_rbf.html" class="external-link">svm_rbf()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest()</a></code>, <code><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree()</a></code> and more</li>
 </ul>
-<p>…to perform classical time series analysis and machine learning <strong><em>in one framework!</em></strong> See <a href="https://business-science.github.io/modeltime/articles/modeltime-model-list.html"><em>“Model List”</em></a> for the full list of <code>modeltime</code> models.</p>
-<div id="quickstart-video" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quickstart-video" class="anchor"></a>Quickstart Video</h2>
-<p>For those that prefer video tutorials, we have an <a href="https://www.youtube.com/watch?v=-bCelif-ENY">11-minute YouTube Video</a> that walks you through the Modeltime Workflow.</p>
-<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank">
+<p>…to perform classical time series analysis and machine learning <strong><em>in one framework!</em></strong> See <a href="https://business-science.github.io/modeltime/articles/modeltime-model-list.html" class="external-link"><em>“Model List”</em></a> for the full list of <code>modeltime</code> models.</p>
+<div class="section level2">
+<h2 id="quickstart-video">Quickstart Video<a class="anchor" aria-label="anchor" href="#quickstart-video"></a>
+</h2>
+<p>For those that prefer video tutorials, we have an <a href="https://www.youtube.com/watch?v=-bCelif-ENY" class="external-link">11-minute YouTube Video</a> that walks you through the Modeltime Workflow.</p>
+<a href="https://www.youtube.com/watch?v=-bCelif-ENY" target="_blank" class="external-link">
 <p style="text-align:center;">
 <img src="modeltime-video.jpg" alt="Introduction to Modeltime" width="60%"></p>
 <p style="text-align:center">
@@ -215,9 +171,9 @@
 </p>
 <p></p></a>
 </div>
-<div id="the-modeltime-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-modeltime-workflow" class="anchor"></a>The Modeltime Workflow</h2>
+<div class="section level2">
+<h2 id="the-modeltime-workflow">The Modeltime Workflow<a class="anchor" aria-label="anchor" href="#the-modeltime-workflow"></a>
+</h2>
 <p>Here’s the general process and where the functions fit.</p>
 <div class="figure" style="text-align: center">
 <img src="modeltime_workflow.jpg" alt="The Modeltime Workflow" width="100%"><p class="caption">
@@ -238,39 +194,39 @@ The Modeltime Workflow
 </ol>
 <p>Let’s go through a guided tour to kick the tires on <code>modeltime</code>.</p>
 </div>
-<div id="time-series-forecasting-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#time-series-forecasting-example" class="anchor"></a>Time Series Forecasting Example</h2>
+<div class="section level2">
+<h2 id="time-series-forecasting-example">Time Series Forecasting Example<a class="anchor" aria-label="anchor" href="#time-series-forecasting-example"></a>
+</h2>
 <p>Load libraries to complete this short tutorial.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost">xgboost</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost" class="external-link">xgboost</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span>
 
 <span class="co"># This toggles plots from plotly (interactive) to ggplot (static)</span>
 <span class="va">interactive</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></code></pre></div>
-<div id="step-1---collect-data-and-split-into-training-and-test-sets-" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-1---collect-data-and-split-into-training-and-test-sets-" class="anchor"></a>Step 1 - Collect data and split into training and test sets.</h3>
+<div class="section level3">
+<h3 id="step-1---collect-data-and-split-into-training-and-test-sets-">Step 1 - Collect data and split into training and test sets.<a class="anchor" aria-label="anchor" href="#step-1---collect-data-and-split-into-training-and-test-sets-"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Data</span>
-<span class="va">m750</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="st">"M750"</span><span class="op">)</span></code></pre></div>
+<span class="va">m750</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="st">"M750"</span><span class="op">)</span></code></pre></div>
 <p>We can visualize the dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></code></pre></div>
 <p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Let’s split the data into training and test sets using <code><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_time_split()</a></code></p>
+<p>Let’s split the data into training and test sets using <code><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split()</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Split Data 80/20</span>
-<span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">initial_time_split</a></span><span class="op">(</span><span class="va">m750</span>, prop <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
+<span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split</a></span><span class="op">(</span><span class="va">m750</span>, prop <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="step-2---create-fit-multiple-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-2---create-fit-multiple-models" class="anchor"></a>Step 2 - Create &amp; Fit Multiple Models</h3>
+<div class="section level3">
+<h3 id="step-2---create-fit-multiple-models">Step 2 - Create &amp; Fit Multiple Models<a class="anchor" aria-label="anchor" href="#step-2---create-fit-multiple-models"></a>
+</h3>
 <p>We can easily create dozens of forecasting models by combining <code>modeltime</code> and <code>parsnip</code>. We can also use the <code>workflows</code> interface for adding preprocessing! Your forecasting possibilities are endless. Let’s get a few basic models developed:</p>
 <ul>
 <li>ARIMA</li>
@@ -279,108 +235,108 @@ The Modeltime Workflow
 <li>MARS (Multivariate Adaptive Regression Splines)</li>
 </ul>
 <p><strong>Important note: Handling Date Features</strong></p>
-<p><em>Modeltime models</em> (e.g. <code><a href="../reference/arima_reg.html">arima_reg()</a></code>) are created with a date or date time feature in the model. You will see that most models include a formula like <code><a href="https://generics.r-lib.org/reference/fit.html">fit(value ~ date, data)</a></code>.</p>
-<p><em>Parsnip models</em> (e.g. <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code>) typically should not have date features, but may contain derivatives of dates (e.g. month, year, etc). You will often see formulas like <code><a href="https://generics.r-lib.org/reference/fit.html">fit(value ~ as.numeric(date) + month(date), data)</a></code>.</p>
-<div id="model-1-auto-arima-modeltime" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-1-auto-arima-modeltime" class="anchor"></a>Model 1: Auto ARIMA (Modeltime)</h4>
+<p><em>Modeltime models</em> (e.g. <code><a href="../reference/arima_reg.html">arima_reg()</a></code>) are created with a date or date time feature in the model. You will see that most models include a formula like <code>fit(value ~ date, data)</code>.</p>
+<p><em>Parsnip models</em> (e.g. <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg()</a></code>) typically should not have date features, but may contain derivatives of dates (e.g. month, year, etc). You will often see formulas like <code>fit(value ~ as.numeric(date) + month(date), data)</code>.</p>
+<div class="section level4">
+<h4 id="model-1-auto-arima-modeltime">Model 1: Auto ARIMA (Modeltime)<a class="anchor" aria-label="anchor" href="#model-1-auto-arima-modeltime"></a>
+</h4>
 <p>First, we create a basic univariate ARIMA model using “Auto Arima” using <code><a href="../reference/arima_reg.html">arima_reg()</a></code></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 1: auto_arima ----</span>
-<span class="va">model_fit_arima_no_boost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_reg.html">arima_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+<span class="va">model_fit_arima_no_boost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_reg.html">arima_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
 </div>
-<div id="model-2-boosted-auto-arima-modeltime" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-2-boosted-auto-arima-modeltime" class="anchor"></a>Model 2: Boosted Auto ARIMA (Modeltime)</h4>
+<div class="section level4">
+<h4 id="model-2-boosted-auto-arima-modeltime">Model 2: Boosted Auto ARIMA (Modeltime)<a class="anchor" aria-label="anchor" href="#model-2-boosted-auto-arima-modeltime"></a>
+</h4>
 <p>Next, we create a boosted ARIMA using <code><a href="../reference/arima_boost.html">arima_boost()</a></code>. Boosting uses XGBoost to model the ARIMA errors. Note that model formula contains both a date feature and derivatives of date - ARIMA uses the date - XGBoost uses the derivatives of date as regressors</p>
-<p>Normally I’d use a preprocessing workflow for the month features using a function like <code><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature()</a></code> from <code>timetk</code> to help reduce the complexity of the parsnip formula interface.</p>
+<p>Normally I’d use a preprocessing workflow for the month features using a function like <code><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature()</a></code> from <code>timetk</code> to help reduce the complexity of the parsnip formula interface.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 2: arima_boost ----</span>
 <span class="va">model_fit_arima_boosted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_boost.html">arima_boost</a></span><span class="op">(</span>
     min_n <span class="op">=</span> <span class="fl">2</span>,
     learn_rate <span class="op">=</span> <span class="fl">0.015</span>
-<span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima_xgboost"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>,
-        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+<span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima_xgboost"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>,
+        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
 </div>
-<div id="model-3-exponential-smoothing-modeltime" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-3-exponential-smoothing-modeltime" class="anchor"></a>Model 3: Exponential Smoothing (Modeltime)</h4>
+<div class="section level4">
+<h4 id="model-3-exponential-smoothing-modeltime">Model 3: Exponential Smoothing (Modeltime)<a class="anchor" aria-label="anchor" href="#model-3-exponential-smoothing-modeltime"></a>
+</h4>
 <p>Next, create an Error-Trend-Season (ETS) model using an Exponential Smoothing State Space model. This is accomplished with <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 3: ets ----</span>
-<span class="va">model_fit_ets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_smoothing.html">exp_smoothing</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"ets"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+<span class="va">model_fit_ets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_smoothing.html">exp_smoothing</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"ets"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
 </div>
-<div id="model-4-prophet-modeltime" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-4-prophet-modeltime" class="anchor"></a>Model 4: Prophet (Modeltime)</h4>
+<div class="section level4">
+<h4 id="model-4-prophet-modeltime">Model 4: Prophet (Modeltime)<a class="anchor" aria-label="anchor" href="#model-4-prophet-modeltime"></a>
+</h4>
 <p>We’ll create a <code>prophet</code> model using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 4: prophet ----</span>
-<span class="va">model_fit_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"prophet"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+<span class="va">model_fit_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"prophet"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span>
 <span class="co">#&gt; Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></code></pre></div>
 </div>
-<div id="model-5-linear-regression-parsnip" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-5-linear-regression-parsnip" class="anchor"></a>Model 5: Linear Regression (Parsnip)</h4>
-<p>We can model time series linear regression (TSLM) using the <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg()</a></code> algorithm from <code>parsnip</code>. The following derivatives of date are used:</p>
+<div class="section level4">
+<h4 id="model-5-linear-regression-parsnip">Model 5: Linear Regression (Parsnip)<a class="anchor" aria-label="anchor" href="#model-5-linear-regression-parsnip"></a>
+</h4>
+<p>We can model time series linear regression (TSLM) using the <code><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg()</a></code> algorithm from <code>parsnip</code>. The following derivatives of date are used:</p>
 <ul>
 <li>
-<em>Trend:</em> Modeled using <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric(date)</a></code>
+<em>Trend:</em> Modeled using <code>as.numeric(date)</code>
 </li>
 <li>
-<em>Seasonal:</em> Modeled using <code><a href="https://lubridate.tidyverse.org/reference/month.html">month(date)</a></code>
+<em>Seasonal:</em> Modeled using <code>month(date)</code>
 </li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 5: lm ----</span>
-<span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
-        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
+        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="model-6-mars-workflow" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-6-mars-workflow" class="anchor"></a>Model 6: MARS (Workflow)</h4>
-<p>We can model a Multivariate Adaptive Regression Spline model using <code><a href="https://parsnip.tidymodels.org/reference/mars.html">mars()</a></code>. I’ve modified the process to use a <code>workflow</code> to standardize the preprocessing of the features that are provided to the machine learning model (mars).</p>
+<div class="section level4">
+<h4 id="model-6-mars-workflow">Model 6: MARS (Workflow)<a class="anchor" aria-label="anchor" href="#model-6-mars-workflow"></a>
+</h4>
+<p>We can model a Multivariate Adaptive Regression Spline model using <code><a href="https://parsnip.tidymodels.org/reference/mars.html" class="external-link">mars()</a></code>. I’ve modified the process to use a <code>workflow</code> to standardize the preprocessing of the features that are provided to the machine learning model (mars).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 6: earth ----</span>
-<span class="va">model_spec_mars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/mars.html">mars</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"earth"</span><span class="op">)</span> 
+<span class="va">model_spec_mars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/mars.html" class="external-link">mars</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"earth"</span><span class="op">)</span> 
 
-<span class="va">recipe_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="st">"month"</span>, ordinal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html">step_mutate</a></span><span class="op">(</span>date_num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html">step_normalize</a></span><span class="op">(</span><span class="va">date_num</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>
+<span class="va">recipe_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html" class="external-link">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="st">"month"</span>, ordinal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html" class="external-link">step_mutate</a></span><span class="op">(</span>date_num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="va">date_num</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>
   
-<span class="va">wflw_fit_mars</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_recipe</span><span class="op">(</span><span class="va">recipe_spec</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="va">model_spec_mars</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">wflw_fit_mars</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu">add_recipe</span><span class="op">(</span><span class="va">recipe_spec</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu">add_model</span><span class="op">(</span><span class="va">model_spec_mars</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>OK, with these 6 models, we’ll show how easy it is to forecast.</p>
 </div>
 </div>
-<div id="step-3---add-fitted-models-to-a-model-table-" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-3---add-fitted-models-to-a-model-table-" class="anchor"></a>Step 3 - Add fitted models to a Model Table.</h3>
+<div class="section level3">
+<h3 id="step-3---add-fitted-models-to-a-model-table-">Step 3 - Add fitted models to a Model Table.<a class="anchor" aria-label="anchor" href="#step-3---add-fitted-models-to-a-model-table-"></a>
+</h3>
 <p>The next step is to add each of the models to a Modeltime Table using <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code>. This step does some basic checking to make sure each of the models are fitted and that organizes into a scalable structure called a <strong><em>“Modeltime Table”</em></strong> that is used as part of our <em>forecasting workflow.</em></p>
 <p>We have 6 models to add. A couple of notes before moving on:</p>
 <ul>
 <li>Note that some of the models have <em>tunable parameters</em>.</li>
 <li>It’s expected that tuning and parameter selection is performed prior to incorporating into a Modeltime Table.</li>
-<li>If you try to add an unfitted model, the <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code> will complain (throw an informative error) saying you need to <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> the model.</li>
+<li>If you try to add an unfitted model, the <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code> will complain (throw an informative error) saying you need to <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> the model.</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">models_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
@@ -394,19 +350,19 @@ The Modeltime Workflow
 
 <span class="va">models_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 6 × 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span>
 <span class="co">#&gt;   .model_id .model     .model_desc                              </span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;                                    </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt;   ARIMA(0,1,1)(0,1,1)[12]                  </span>
-<span class="co">#&gt; 2         2 &lt;fit[+]&gt;   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</span>
-<span class="co">#&gt; 3         3 &lt;fit[+]&gt;   ETS(M,A,A)                               </span>
-<span class="co">#&gt; 4         4 &lt;fit[+]&gt;   PROPHET                                  </span>
-<span class="co">#&gt; 5         5 &lt;fit[+]&gt;   LM                                       </span>
-<span class="co">#&gt; 6         6 &lt;workflow&gt; EARTH</span></code></pre></div>
+<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]                  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                               </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                                  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH</span></code></pre></div>
 </div>
-<div id="step-4---calibrate-the-model-to-a-testing-set-" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-4---calibrate-the-model-to-a-testing-set-" class="anchor"></a>Step 4 - Calibrate the model to a testing set.</h3>
+<div class="section level3">
+<h3 id="step-4---calibrate-the-model-to-a-testing-set-">Step 4 - Calibrate the model to a testing set.<a class="anchor" aria-label="anchor" href="#step-4---calibrate-the-model-to-a-testing-set-"></a>
+</h3>
 <p>Calibrating adds a new column, <code>.calibration_data</code>, with the test predictions and residuals inside. A few notes on Calibration:</p>
 <ul>
 <li>Calibration is how confidence intervals and accuracy metrics are determined</li>
@@ -415,39 +371,39 @@ The Modeltime Workflow
 <li>After calibrating, the calibration data follows the data through the forecasting workflow.</li>
 </ul>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op">&lt;-</span> <span class="va">models_tbl</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op">&lt;-</span> <span class="va">models_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">calibration_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 6 × 5</span>
-<span class="co">#&gt;   .model_id .model     .model_desc                               .type .calibration_da…</span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;                                     &lt;chr&gt; &lt;list&gt;          </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt;   ARIMA(0,1,1)(0,1,1)[12]                   Test  &lt;tibble [31 × 4…</span>
-<span class="co">#&gt; 2         2 &lt;fit[+]&gt;   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS Test  &lt;tibble [31 × 4…</span>
-<span class="co">#&gt; 3         3 &lt;fit[+]&gt;   ETS(M,A,A)                                Test  &lt;tibble [31 × 4…</span>
-<span class="co">#&gt; 4         4 &lt;fit[+]&gt;   PROPHET                                   Test  &lt;tibble [31 × 4…</span>
-<span class="co">#&gt; 5         5 &lt;fit[+]&gt;   LM                                        Test  &lt;tibble [31 × 4…</span>
-<span class="co">#&gt; 6         6 &lt;workflow&gt; EARTH                                     Test  &lt;tibble [31 × 4…</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span>
+<span class="co">#&gt;   .model_id .model     .model_desc                        .type .calibration_da…</span>
+<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]            Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOS… Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                         Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                            Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                 Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH                              Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span></code></pre></div>
 </div>
-<div id="step-5---testing-set-forecast-accuracy-evaluation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-5---testing-set-forecast-accuracy-evaluation" class="anchor"></a>Step 5 - Testing Set Forecast &amp; Accuracy Evaluation</h3>
+<div class="section level3">
+<h3 id="step-5---testing-set-forecast-accuracy-evaluation">Step 5 - Testing Set Forecast &amp; Accuracy Evaluation<a class="anchor" aria-label="anchor" href="#step-5---testing-set-forecast-accuracy-evaluation"></a>
+</h3>
 <p>There are 2 critical parts to an evaluation.</p>
 <ul>
 <li>Visualizing the Forecast vs Test Data Set</li>
 <li>Evaluating the Test (Out of Sample) Accuracy</li>
 </ul>
-<div id="a---visualizing-the-forecast-test" class="section level4">
-<h4 class="hasAnchor">
-<a href="#a---visualizing-the-forecast-test" class="anchor"></a>5A - Visualizing the Forecast Test</h4>
+<div class="section level4">
+<h4 id="a---visualizing-the-forecast-test">5A - Visualizing the Forecast Test<a class="anchor" aria-label="anchor" href="#a---visualizing-the-forecast-test"></a>
+</h4>
 <p>Visualizing the Test Error is easy to do using the <strong>interactive plotly visualization (just toggle the visibility of the models using the Legend).</strong></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
-        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
+        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
         actual_data <span class="op">=</span> <span class="va">m750</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
       .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span>
       .interactive      <span class="op">=</span> <span class="va">interactive</span>
@@ -467,44 +423,44 @@ The Modeltime Workflow
 <strong>Model 6: EARTH</strong> is overfitting the local trend. This is because we did not tune the number of change points, so the algorithm is auto-calculating the change points.</li>
 </ul>
 </div>
-<div id="b---accuracy-metrics" class="section level4">
-<h4 class="hasAnchor">
-<a href="#b---accuracy-metrics" class="anchor"></a>5B - Accuracy Metrics</h4>
+<div class="section level4">
+<h4 id="b---accuracy-metrics">5B - Accuracy Metrics<a class="anchor" aria-label="anchor" href="#b---accuracy-metrics"></a>
+</h4>
 <p>We can use <code><a href="../reference/modeltime_accuracy.html">modeltime_accuracy()</a></code> to collect common accuracy metrics. The default reports the following metrics using <code>yardstick</code> functions:</p>
 <ul>
 <li>
-<strong>MAE</strong> - Mean absolute error, <code><a href="https://yardstick.tidymodels.org/reference/mae.html">mae()</a></code>
+<strong>MAE</strong> - Mean absolute error, <code><a href="https://yardstick.tidymodels.org/reference/mae.html" class="external-link">mae()</a></code>
 </li>
 <li>
-<strong>MAPE</strong> - Mean absolute percentage error, <code><a href="https://yardstick.tidymodels.org/reference/mape.html">mape()</a></code>
+<strong>MAPE</strong> - Mean absolute percentage error, <code><a href="https://yardstick.tidymodels.org/reference/mape.html" class="external-link">mape()</a></code>
 </li>
 <li>
-<strong>MASE</strong> - Mean absolute scaled error, <code><a href="https://yardstick.tidymodels.org/reference/mase.html">mase()</a></code>
+<strong>MASE</strong> - Mean absolute scaled error, <code><a href="https://yardstick.tidymodels.org/reference/mase.html" class="external-link">mase()</a></code>
 </li>
 <li>
-<strong>SMAPE</strong> - Symmetric mean absolute percentage error, <code><a href="https://yardstick.tidymodels.org/reference/smape.html">smape()</a></code>
+<strong>SMAPE</strong> - Symmetric mean absolute percentage error, <code><a href="https://yardstick.tidymodels.org/reference/smape.html" class="external-link">smape()</a></code>
 </li>
 <li>
-<strong>RMSE</strong> - Root mean squared error, <code><a href="https://yardstick.tidymodels.org/reference/rmse.html">rmse()</a></code>
+<strong>RMSE</strong> - Root mean squared error, <code><a href="https://yardstick.tidymodels.org/reference/rmse.html" class="external-link">rmse()</a></code>
 </li>
 <li>
-<strong>RSQ</strong> - R-squared, <code><a href="https://yardstick.tidymodels.org/reference/rsq.html">rsq()</a></code>
+<strong>RSQ</strong> - R-squared, <code><a href="https://yardstick.tidymodels.org/reference/rsq.html" class="external-link">rsq()</a></code>
 </li>
 </ul>
 <p>These of course can be customized following the rules for creating new yardstick metrics, but the defaults are very useful. Refer to <code>default_forecast_accuracy_metrics()</code> to learn more.</p>
 <p>To make table-creation a bit easier, I’ve included <code><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy()</a></code> for outputing results in either interactive (<code>reactable</code>) or static (<code>gt</code>) tables.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>
         .interactive <span class="op">=</span> <span class="va">interactive</span>
     <span class="op">)</span></code></pre></div>
-<div id="ngveanjeud" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="awmpzsnasw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ngveanjeud .gt_table {
+#awmpzsnasw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -529,7 +485,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_heading {
+#awmpzsnasw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -541,7 +497,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_title {
+#awmpzsnasw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -551,7 +507,7 @@ The Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#ngveanjeud .gt_subtitle {
+#awmpzsnasw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -561,13 +517,13 @@ The Modeltime Workflow
   border-top-width: 0;
 }
 
-#ngveanjeud .gt_bottom_border {
+#awmpzsnasw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_col_headings {
+#awmpzsnasw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -582,7 +538,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_col_heading {
+#awmpzsnasw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -602,7 +558,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#ngveanjeud .gt_column_spanner_outer {
+#awmpzsnasw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -614,15 +570,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#ngveanjeud .gt_column_spanner_outer:first-child {
+#awmpzsnasw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ngveanjeud .gt_column_spanner_outer:last-child {
+#awmpzsnasw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ngveanjeud .gt_column_spanner {
+#awmpzsnasw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -634,7 +590,7 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#ngveanjeud .gt_group_heading {
+#awmpzsnasw .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -656,7 +612,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#ngveanjeud .gt_empty_group_heading {
+#awmpzsnasw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -671,15 +627,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#ngveanjeud .gt_from_md > :first-child {
+#awmpzsnasw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ngveanjeud .gt_from_md > :last-child {
+#awmpzsnasw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ngveanjeud .gt_row {
+#awmpzsnasw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -698,7 +654,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#ngveanjeud .gt_stub {
+#awmpzsnasw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -710,7 +666,7 @@ The Modeltime Workflow
   padding-left: 12px;
 }
 
-#ngveanjeud .gt_summary_row {
+#awmpzsnasw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -720,7 +676,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#ngveanjeud .gt_first_summary_row {
+#awmpzsnasw .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -730,7 +686,7 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_grand_summary_row {
+#awmpzsnasw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -740,7 +696,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#ngveanjeud .gt_first_grand_summary_row {
+#awmpzsnasw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -750,11 +706,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_striped {
+#awmpzsnasw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ngveanjeud .gt_table_body {
+#awmpzsnasw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -763,7 +719,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_footnotes {
+#awmpzsnasw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -777,13 +733,13 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_footnote {
+#awmpzsnasw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ngveanjeud .gt_sourcenotes {
+#awmpzsnasw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -797,41 +753,41 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ngveanjeud .gt_sourcenote {
+#awmpzsnasw .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ngveanjeud .gt_left {
+#awmpzsnasw .gt_left {
   text-align: left;
 }
 
-#ngveanjeud .gt_center {
+#awmpzsnasw .gt_center {
   text-align: center;
 }
 
-#ngveanjeud .gt_right {
+#awmpzsnasw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ngveanjeud .gt_font_normal {
+#awmpzsnasw .gt_font_normal {
   font-weight: normal;
 }
 
-#ngveanjeud .gt_font_bold {
+#awmpzsnasw .gt_font_bold {
   font-weight: bold;
 }
 
-#ngveanjeud .gt_font_italic {
+#awmpzsnasw .gt_font_italic {
   font-style: italic;
 }
 
-#ngveanjeud .gt_super {
+#awmpzsnasw .gt_super {
   font-size: 65%;
 }
 
-#ngveanjeud .gt_footnote_marks {
+#awmpzsnasw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -930,16 +886,16 @@ The Modeltime Workflow
 </ul>
 </div>
 </div>
-<div id="step-6---refit-to-full-dataset-forecast-forward" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-6---refit-to-full-dataset-forecast-forward" class="anchor"></a>Step 6 - Refit to Full Dataset &amp; Forecast Forward</h3>
+<div class="section level3">
+<h3 id="step-6---refit-to-full-dataset-forecast-forward">Step 6 - Refit to Full Dataset &amp; Forecast Forward<a class="anchor" aria-label="anchor" href="#step-6---refit-to-full-dataset-forecast-forward"></a>
+</h3>
 <p>The final step is to refit the models to the full dataset using <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> and forecast them forward.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calibration_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span>
 
-<span class="va">refit_tbl</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"3 years"</span>, actual_data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">refit_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"3 years"</span>, actual_data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
       .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span>
       .interactive      <span class="op">=</span> <span class="va">interactive</span>
@@ -947,9 +903,9 @@ The Modeltime Workflow
 <p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="refitting---what-happened" class="section level2">
-<h2 class="hasAnchor">
-<a href="#refitting---what-happened" class="anchor"></a>Refitting - What happened?</h2>
+<div class="section level2">
+<h2 id="refitting---what-happened">Refitting - What happened?<a class="anchor" aria-label="anchor" href="#refitting---what-happened"></a>
+</h2>
 <p><strong>The models have all changed!</strong> (Yes - this is the point of refitting)</p>
 <ul>
 <li>The <strong>LM</strong> model looks much better now because the linear trend line has now been fit to new data that follows the longer term trend.</li>
@@ -978,9 +934,9 @@ The Modeltime Workflow
 </li>
 </ul>
 </div>
-<div id="summary" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary" class="anchor"></a>Summary</h2>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
 <p>We just showcased the Modeltime Workflow. But this is a simple problem. And, there’s a lot more to learning time series.</p>
 <ul>
 <li>Many more algorithms</li>
@@ -991,24 +947,24 @@ The Modeltime Workflow
 </ul>
 <p>Your probably thinking how am I ever going to learn time series forecasting. Here’s the solution that will save you years of struggling.</p>
 </div>
-<div id="take-the-high-performance-forecasting-course" class="section level2">
-<h2 class="hasAnchor">
-<a href="#take-the-high-performance-forecasting-course" class="anchor"></a>Take the High-Performance Forecasting Course</h2>
+<div class="section level2">
+<h2 id="take-the-high-performance-forecasting-course">Take the High-Performance Forecasting Course<a class="anchor" aria-label="anchor" href="#take-the-high-performance-forecasting-course"></a>
+</h2>
 <blockquote>
 <p>Become the forecasting expert for your organization</p>
 </blockquote>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/"><em>High-Performance Time Series Course</em></a></p>
-<div id="time-series-is-changing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#time-series-is-changing" class="anchor"></a>Time Series is Changing</h3>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank" class="external-link"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" class="external-link"><em>High-Performance Time Series Course</em></a></p>
+<div class="section level3">
+<h3 id="time-series-is-changing">Time Series is Changing<a class="anchor" aria-label="anchor" href="#time-series-is-changing"></a>
+</h3>
 <p>Time series is changing. <strong>Businesses now need 10,000+ time series forecasts every day.</strong> This is what I call a <em>High-Performance Time Series Forecasting System (HPTSF)</em> - Accurate, Robust, and Scalable Forecasting.</p>
 <p><strong>High-Performance Forecasting Systems will save companies by improving accuracy and scalability.</strong> Imagine what will happen to your career if you can provide your organization a “High-Performance Time Series Forecasting System” (HPTSF System).</p>
 </div>
-<div id="how-to-learn-high-performance-time-series-forecasting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-learn-high-performance-time-series-forecasting" class="anchor"></a>How to Learn High-Performance Time Series Forecasting</h3>
-<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
+<div class="section level3">
+<h3 id="how-to-learn-high-performance-time-series-forecasting">How to Learn High-Performance Time Series Forecasting<a class="anchor" aria-label="anchor" href="#how-to-learn-high-performance-time-series-forecasting"></a>
+</h3>
+<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
 <ul>
 <li>
 <strong>Time Series Machine Learning</strong> (cutting-edge) with <code>Modeltime</code> - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, &amp; many more)</li>
@@ -1030,35 +986,32 @@ The Modeltime Workflow
 Become the Time Series Expert for your organization.
 </p>
 <br><p class="text-center" style="font-size:30px;">
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link">Take the High-Performance Time Series Forecasting Course</a>
 </p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Matt Dancho.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Matt Dancho.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>

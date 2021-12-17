@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="modeltime">
 <title>Nested Forecasting • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,14 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Roboto-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_JetBrains%20Mono-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_Montserrat-0.4.0/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Nested Forecasting">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
@@ -32,164 +35,117 @@
   gtag('config', 'UA-76139189-2');
 </script>
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">modeltime</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../index.html">
     <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../articles/getting-started-with-modeltime.html">Getting Started</a>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/getting-started-with-modeltime.html">Getting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Getting Started</li>
-    <li>
-      <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Advanced Topics</li>
-    <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Algorithms</li>
-    <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Developers</li>
-    <li>
-      <a href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Getting Started</h6>
+    <a class="dropdown-item" href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Forecasting Many Time Series (Scale)</h6>
+    <a class="dropdown-item" href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    <a class="dropdown-item" href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6>
+    <a class="dropdown-item" href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
+    <a class="dropdown-item" href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
+    <a class="dropdown-item" href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Algorithms</h6>
+    <a class="dropdown-item" href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Developers</h6>
+    <a class="dropdown-item" href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    API
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">API Functions</li>
-    <li>
-      <a href="../reference/index.html">
-        <span class="fa fa-home"></span>
-         
-        Function Reference
-      </a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Change History</li>
-    <li>
-      <a href="../news/index.html">News</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-api">API</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-api">
+    <h6 class="dropdown-header" data-toc-skip>API Functions</h6>
+    <a class="dropdown-item" href="../reference/index.html">
+      <span class="fa fa-home"></span>
+       
+      Function Reference
+    </a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Change History</h6>
+    <a class="dropdown-item" href="../news/index.html">News</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Ecosystem
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecast</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Improve</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Scale</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-ecosystem">Ecosystem</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-ecosystem">
+    <h6 class="dropdown-header" data-toc-skip>Forecast</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Improve</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Scale</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+  </div>
 </li>
-<li>
-  <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
-    <span class="fas fa-graduation-cap"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
+    <span class="fas fa fas fa-graduation-cap"></span>
      
     Learn
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/business-science/modeltime">
-    <span class="fab fa-github"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/business-science/modeltime">
+    <span class="fab fa fab fa-github"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
-
-      </header><script src="nested-forecasting_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Nested Forecasting</h1>
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Nested Forecasting</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/nested-forecasting.Rmd"><code>vignettes/nested-forecasting.Rmd</code></a></small>
-      <div class="hidden name"><code>nested-forecasting.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/nested-forecasting.Rmd" class="external-link"><code>vignettes/nested-forecasting.Rmd</code></a></small>
+      <div class="d-none name"><code>nested-forecasting.Rmd</code></div>
     </div>
 
     
@@ -197,21 +153,21 @@
 <blockquote>
 <p>Iteratively forecast with nested modeling</p>
 </blockquote>
-<p><strong>Why is nested forecasting important?</strong> For starters, the ability to <em>iteratively forecast</em> time series with many models that are trained on many individual groups has been a huge request from students in our <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">Time Series Course</a>. Why? Because two methods exist that get results:</p>
+<p><strong>Why is nested forecasting important?</strong> For starters, the ability to <em>iteratively forecast</em> time series with many models that are trained on many individual groups has been a huge request from students in our <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" class="external-link">Time Series Course</a>. Why? Because two methods exist that get results:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Global Modeling:</strong> Best for scalability using a Global Models and a Panel Data structure. See <a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html">Forecasting with Global Models</a>.</p></li>
+<li><p><strong>Global Modeling:</strong> Best for scalability using a Global Models and a Panel Data structure. See <a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html" class="external-link">Forecasting with Global Models</a>.</p></li>
 <li><p><strong>Iterative Forecasting:</strong> Best for accuracy using a Nested Data Structure. Takes longer than global model (more resources due to for-loop iteration), but can yield great results.</p></li>
 </ol>
 <p>We’ve incorporated a new approach called <strong><em>“nested forecasting”</em></strong> to help perform <em>Iterative Forecasting</em>.</p>
-<div id="nested-forecasting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#nested-forecasting" class="anchor"></a>Nested Forecasting</h2>
+<div class="section level2">
+<h2 id="nested-forecasting">Nested Forecasting<a class="anchor" aria-label="anchor" href="#nested-forecasting"></a>
+</h2>
 <p>The core idea of <strong>nested forecasting</strong> is to convert a dataset containing <strong>many time series groups</strong> into a nested data set, then fit <strong>many models</strong> to each of the nested datasets. The result is an iterative forecasting process that generates Nested Modeltime Tables with all of the forecast attributes needed to make decisions.</p>
 <p><img src="modeltime-nested.jpg" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="important-concepts-logging-attributes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#important-concepts-logging-attributes" class="anchor"></a>Important Concepts: Logging &amp; Attributes</h2>
+<div class="section level2">
+<h2 id="important-concepts-logging-attributes">Important Concepts: Logging &amp; Attributes<a class="anchor" aria-label="anchor" href="#important-concepts-logging-attributes"></a>
+</h2>
 <p>A new feature to nested forecasting workflow is <strong>logged attributes</strong>, which is very useful in complex workflows where loops (iteration) is performed. In a <em>Nested Modeltime Table</em>, we push as many operations as possible into the fitting and refitting stages, logging important aspects including:</p>
 <ul>
 <li>
@@ -233,39 +189,39 @@
 <p>While this deviates from the traditional Modeltime Workflow, we find that <strong>logging vastly speeds up experimentation and information retrieval</strong> especially when the number of time series increases.</p>
 <p><img src="nested-logs.jpg" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="getting-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting Started</h2>
+<div class="section level2">
+<h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
 <p>We’ll go through a short tutorial on <strong>Nested Forecasting.</strong> The first thing to do is to load the following libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span></code></pre></div>
-<div id="dataset" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dataset" class="anchor"></a>Dataset</h3>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></code></pre></div>
+<div class="section level3">
+<h3 id="dataset">Dataset<a class="anchor" aria-label="anchor" href="#dataset"></a>
+</h3>
 <p>Next, let’s use the <code>walmart_sales_weekly</code> dataset that comes with <code>timetk</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">data_tbl</span>
-<span class="co">#&gt; # A tibble: 1,001 × 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,001 × 3</span></span>
 <span class="co">#&gt;    id    date        value</span>
-<span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1_1   2010-02-05 24924.</span>
-<span class="co">#&gt;  2 1_1   2010-02-12 46039.</span>
-<span class="co">#&gt;  3 1_1   2010-02-19 41596.</span>
-<span class="co">#&gt;  4 1_1   2010-02-26 19404.</span>
-<span class="co">#&gt;  5 1_1   2010-03-05 21828.</span>
-<span class="co">#&gt;  6 1_1   2010-03-12 21043.</span>
-<span class="co">#&gt;  7 1_1   2010-03-19 22137.</span>
-<span class="co">#&gt;  8 1_1   2010-03-26 26229.</span>
-<span class="co">#&gt;  9 1_1   2010-04-02 57258.</span>
-<span class="co">#&gt; 10 1_1   2010-04-09 42961.</span>
-<span class="co">#&gt; # … with 991 more rows</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1_1   2010-02-05 <span style="text-decoration: underline;">24</span>924.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1_1   2010-02-12 <span style="text-decoration: underline;">46</span>039.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1_1   2010-02-19 <span style="text-decoration: underline;">41</span>596.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1_1   2010-02-26 <span style="text-decoration: underline;">19</span>404.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1_1   2010-03-05 <span style="text-decoration: underline;">21</span>828.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1_1   2010-03-12 <span style="text-decoration: underline;">21</span>043.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1_1   2010-03-19 <span style="text-decoration: underline;">22</span>137.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1_1   2010-03-26 <span style="text-decoration: underline;">26</span>229.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1_1   2010-04-02 <span style="text-decoration: underline;">57</span>258.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1_1   2010-04-09 <span style="text-decoration: underline;">42</span>961.</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 991 more rows</span></span></code></pre></div>
 <p>The problem with this dataset is that it’s set up for panel data modeling. The important columns are:</p>
 <ul>
 <li><p>“id”: This separates the time series groups (in this case these represent sales from departments in a walmart store)</p></li>
@@ -274,17 +230,17 @@
 </ul>
 <p>We can visualize this by time series group to expose the differences in sales by department.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">data_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
     <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">F</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="nested-forecasting_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We can clearly see that there are 7 time series groups with different weekly sales patterns.</p>
 </div>
-<div id="nested-forecasting-preparation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#nested-forecasting-preparation" class="anchor"></a>Nested Forecasting Preparation</h3>
+<div class="section level3">
+<h3 id="nested-forecasting-preparation">Nested Forecasting Preparation<a class="anchor" aria-label="anchor" href="#nested-forecasting-preparation"></a>
+</h3>
 <p>There are two key components that we need to prepare for:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Nested Data Structure:</strong> Most critical to ensure your data is prepared (covered next)</p></li>
@@ -294,9 +250,9 @@
 <p><img src="modeltime_nested_fit.jpg" width="80%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="data-preparation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a>Data Preparation</h2>
+<div class="section level2">
+<h2 id="data-preparation">Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation"></a>
+</h2>
 <p>The most critical stage in <strong>“Nested Forecasting”</strong> is data preparation, making sure that the input to the nested forecasting workflow is in the appropriate structure. We’ve included several functions to help that involve a bit of forethought that can be broken into 3 steps:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Extending each of the times series:</strong> How far into the future do you need to predict for each time series? See <code><a href="../reference/prep_nested.html">extend_timeseries()</a></code>.</p></li>
@@ -305,14 +261,14 @@
 </ol>
 <p>Here are the 3-steps in action:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_data_tbl</span> <span class="op">&lt;-</span> <span class="va">data_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_data_tbl</span> <span class="op">&lt;-</span> <span class="va">data_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     
     <span class="co"># 1. Extending: We'll predict 52 weeks into the future.</span>
     <span class="fu"><a href="../reference/prep_nested.html">extend_timeseries</a></span><span class="op">(</span>
         .id_var        <span class="op">=</span> <span class="va">id</span>,
         .date_var      <span class="op">=</span> <span class="va">date</span>,
         .length_future <span class="op">=</span> <span class="fl">52</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     
     <span class="co"># 2. Nesting: We'll group by id, and create a future dataset</span>
     <span class="co">#    that forecasts 52 weeks of extended data and</span>
@@ -321,7 +277,7 @@
         .id_var        <span class="op">=</span> <span class="va">id</span>,
         .length_future <span class="op">=</span> <span class="fl">52</span>,
         .length_actual <span class="op">=</span> <span class="fl">52</span><span class="op">*</span><span class="fl">2</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     
    <span class="co"># 3. Splitting: We'll take the actual data and create splits</span>
    <span class="co">#    for accuracy and confidence interval estimation of 52 weeks (test)</span>
@@ -331,21 +287,21 @@
     <span class="op">)</span>
 
 <span class="va">nested_data_tbl</span>
-<span class="co">#&gt; # A tibble: 7 × 4</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 4</span></span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits        </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;         </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt;</span></code></pre></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span></span></code></pre></div>
 <p>This creates a nested tibble with “.actual_data”, “.future_data”, and “.splits”. Each column will help in the nested modeltime workflow.</p>
 </div>
-<div id="nested-modeltime-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#nested-modeltime-workflow" class="anchor"></a>Nested Modeltime Workflow</h2>
+<div class="section level2">
+<h2 id="nested-modeltime-workflow">Nested Modeltime Workflow<a class="anchor" aria-label="anchor" href="#nested-modeltime-workflow"></a>
+</h2>
 <p>Next, we move into the <strong>Nested Modeltime Workflow</strong> now that nested data has been created. The Nested Modeltime Workflow includes 3 core functions:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Modeling Fitting:</strong> This is the training stage where we fit to <em>training data</em>. The <em>test forecast</em> is generated from this step. See <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code>.</p></li>
@@ -353,43 +309,43 @@
 <li><p><strong>Model Refitting:</strong> This is the final fitting stage where we fit to <em>actual data</em>. The <em>future forecast</em> is generated from this step. See <code><a href="../reference/modeltime_nested_refit.html">modeltime_nested_refit()</a></code>.</p></li>
 </ol>
 <p><img src="nested-core-functions.jpg" width="80%" style="display: block; margin: auto;"></p>
-<div id="step-1-create-tidymodels-workflows" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-1-create-tidymodels-workflows" class="anchor"></a>Step 1: Create Tidymodels Workflows</h3>
+<div class="section level3">
+<h3 id="step-1-create-tidymodels-workflows">Step 1: Create Tidymodels Workflows<a class="anchor" aria-label="anchor" href="#step-1-create-tidymodels-workflows"></a>
+</h3>
 <p>First, we create <code>tidymodels</code> workflows for the various models that you intend to create.</p>
-<div id="prophet" class="section level4">
-<h4 class="hasAnchor">
-<a href="#prophet" class="anchor"></a>Prophet</h4>
-<p>A common modeling method is prophet, that can be created using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>. We’ll create a workflow. Note that we use the <code><a href="../reference/log_extractors.html">extract_nested_train_split(nested_data_tbl)</a></code> to help us build preprocessing features.</p>
+<div class="section level4">
+<h4 id="prophet">Prophet<a class="anchor" aria-label="anchor" href="#prophet"></a>
+</h4>
+<p>A common modeling method is prophet, that can be created using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>. We’ll create a workflow. Note that we use the <code>extract_nested_train_split(nested_data_tbl)</code> to help us build preprocessing features.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
 
-<span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">add_model</span><span class="op">(</span>
-      <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+      <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+        <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_prophet</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="xgboost" class="section level4">
-<h4 class="hasAnchor">
-<a href="#xgboost" class="anchor"></a>XGBoost</h4>
-<p>Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the <code><a href="../reference/log_extractors.html">extract_nested_train_split(nested_data_tbl)</a></code> to help us build preprocessing features.</p>
+<div class="section level4">
+<h4 id="xgboost">XGBoost<a class="anchor" aria-label="anchor" href="#xgboost"></a>
+</h4>
+<p>Next, we can use a machine learning method that can get good results: XGBoost. We will add a few extra features in the recipe feature engineering step to generate features that tend to get better modeling results. Note that we use the <code>extract_nested_train_split(nested_data_tbl)</code> to help us build preprocessing features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html" class="external-link">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_xgb</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="step-2-nested-modeltime-tables" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-2-nested-modeltime-tables" class="anchor"></a>Step 2: Nested Modeltime Tables</h3>
+<div class="section level3">
+<h3 id="step-2-nested-modeltime-tables">Step 2: Nested Modeltime Tables<a class="anchor" aria-label="anchor" href="#step-2-nested-modeltime-tables"></a>
+</h3>
 <p>With a couple of modeling workflows in hand, we are now ready to test them on each of the time series. We start by using the <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> function, which iteratively fits each model to each of the nested time series train/test “.splits” column.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit</a></span><span class="op">(</span>
@@ -400,45 +356,46 @@
   <span class="va">wflw_prophet</span>,
   <span class="va">wflw_xgb</span>
 <span class="op">)</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■                             14% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■                    43% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■            71% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■                           </span>  14% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■                      </span>  29% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  86% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:…</span>
 
 <span class="va">nested_modeltime_tbl</span>
 <span class="co">#&gt; # Nested Modeltime Table</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Trained on: .splits | Model Errors: [0]</span>
-<span class="co">#&gt; # A tibble: 7 × 5</span>
+<span class="co">#&gt; <span style="color: #555555;">Trained on: .splits | Model Errors: [0]</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 5</span></span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables  </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [2 ×…</span></code></pre></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span></code></pre></div>
 <p>This adds a new column with <code>.modeltime_tables</code> for each of the data sets and has created several <strong>logged attributes</strong> that are part of the “Nested Modeltime Table”. We also can see that the models were trained on “.splits” and none of the models had any errors.</p>
 </div>
-<div id="step-3-logged-attributes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-3-logged-attributes" class="anchor"></a>Step 3: Logged Attributes</h3>
+<div class="section level3">
+<h3 id="step-3-logged-attributes">Step 3: Logged Attributes<a class="anchor" aria-label="anchor" href="#step-3-logged-attributes"></a>
+</h3>
 <p>During the forecasting, the iterative modeltime fitting process logs important information that enable us to evaluate the models. These logged attributes are accessable with “extract” functions.</p>
-<div id="extract-nested-test-accuracy" class="section level4">
-<h4 class="hasAnchor">
-<a href="#extract-nested-test-accuracy" class="anchor"></a>Extract Nested Test Accuracy</h4>
+<div class="section level4">
+<h4 id="extract-nested-test-accuracy">Extract Nested Test Accuracy<a class="anchor" aria-label="anchor" href="#extract-nested-test-accuracy"></a>
+</h4>
 <p>Using the <code><a href="../reference/log_extractors.html">extract_nested_test_accuracy()</a></code>, we can get the accuracy measures by time series and model. This allows us to see which model performs best on which time series.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="lfowkigwws" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="renvwucnne" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lfowkigwws .gt_table {
+#renvwucnne .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -463,7 +420,7 @@
   border-left-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_heading {
+#renvwucnne .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -475,7 +432,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_title {
+#renvwucnne .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -485,7 +442,7 @@
   border-bottom-width: 0;
 }
 
-#lfowkigwws .gt_subtitle {
+#renvwucnne .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -495,13 +452,13 @@
   border-top-width: 0;
 }
 
-#lfowkigwws .gt_bottom_border {
+#renvwucnne .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_col_headings {
+#renvwucnne .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -516,7 +473,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_col_heading {
+#renvwucnne .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -536,7 +493,7 @@
   overflow-x: hidden;
 }
 
-#lfowkigwws .gt_column_spanner_outer {
+#renvwucnne .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -548,15 +505,15 @@
   padding-right: 4px;
 }
 
-#lfowkigwws .gt_column_spanner_outer:first-child {
+#renvwucnne .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lfowkigwws .gt_column_spanner_outer:last-child {
+#renvwucnne .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lfowkigwws .gt_column_spanner {
+#renvwucnne .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -568,7 +525,7 @@
   width: 100%;
 }
 
-#lfowkigwws .gt_group_heading {
+#renvwucnne .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -590,7 +547,7 @@
   vertical-align: middle;
 }
 
-#lfowkigwws .gt_empty_group_heading {
+#renvwucnne .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -605,15 +562,15 @@
   vertical-align: middle;
 }
 
-#lfowkigwws .gt_from_md > :first-child {
+#renvwucnne .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lfowkigwws .gt_from_md > :last-child {
+#renvwucnne .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lfowkigwws .gt_row {
+#renvwucnne .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -632,7 +589,7 @@
   overflow-x: hidden;
 }
 
-#lfowkigwws .gt_stub {
+#renvwucnne .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -644,7 +601,7 @@
   padding-left: 12px;
 }
 
-#lfowkigwws .gt_summary_row {
+#renvwucnne .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -654,7 +611,7 @@
   padding-right: 5px;
 }
 
-#lfowkigwws .gt_first_summary_row {
+#renvwucnne .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -664,7 +621,7 @@
   border-top-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_grand_summary_row {
+#renvwucnne .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -674,7 +631,7 @@
   padding-right: 5px;
 }
 
-#lfowkigwws .gt_first_grand_summary_row {
+#renvwucnne .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -684,11 +641,11 @@
   border-top-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_striped {
+#renvwucnne .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lfowkigwws .gt_table_body {
+#renvwucnne .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -697,7 +654,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_footnotes {
+#renvwucnne .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -711,13 +668,13 @@
   border-right-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_footnote {
+#renvwucnne .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#lfowkigwws .gt_sourcenotes {
+#renvwucnne .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -731,41 +688,41 @@
   border-right-color: #D3D3D3;
 }
 
-#lfowkigwws .gt_sourcenote {
+#renvwucnne .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#lfowkigwws .gt_left {
+#renvwucnne .gt_left {
   text-align: left;
 }
 
-#lfowkigwws .gt_center {
+#renvwucnne .gt_center {
   text-align: center;
 }
 
-#lfowkigwws .gt_right {
+#renvwucnne .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lfowkigwws .gt_font_normal {
+#renvwucnne .gt_font_normal {
   font-weight: normal;
 }
 
-#lfowkigwws .gt_font_bold {
+#renvwucnne .gt_font_bold {
   font-weight: bold;
 }
 
-#lfowkigwws .gt_font_italic {
+#renvwucnne .gt_font_italic {
   font-style: italic;
 }
 
-#lfowkigwws .gt_super {
+#renvwucnne .gt_super {
   font-size: 65%;
 }
 
-#lfowkigwws .gt_footnote_marks {
+#renvwucnne .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -960,71 +917,71 @@
 </table>
 </div>
 </div>
-<div id="extract-nested-test-forecast" class="section level4">
-<h4 class="hasAnchor">
-<a href="#extract-nested-test-forecast" class="anchor"></a>Extract Nested Test Forecast</h4>
+<div class="section level4">
+<h4 id="extract-nested-test-forecast">Extract Nested Test Forecast<a class="anchor" aria-label="anchor" href="#extract-nested-test-forecast"></a>
+</h4>
 <p>Next, we can visualize the test forecast with <code><a href="../reference/log_extractors.html">extract_nested_test_forecast()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="nested-forecasting_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="extract-nested-error-logs" class="section level4">
-<h4 class="hasAnchor">
-<a href="#extract-nested-error-logs" class="anchor"></a>Extract Nested Error Logs</h4>
+<div class="section level4">
+<h4 id="extract-nested-error-logs">Extract Nested Error Logs<a class="anchor" aria-label="anchor" href="#extract-nested-error-logs"></a>
+</h4>
 <p>If any of the models have errors, then we can investigate the error logs with <code><a href="../reference/log_extractors.html">extract_nested_error_report()</a></code>. Fortunately, we don’t have any errors, but if we did we could investigate further.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_error_report</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 0 × 4</span>
-<span class="co">#&gt; # … with 4 variables: id &lt;fct&gt;, .model_id &lt;int&gt;, .model_desc &lt;chr&gt;,</span>
-<span class="co">#&gt; #   .error_desc &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 4</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 4 variables: id &lt;fct&gt;, .model_id &lt;int&gt;, .model_desc &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   .error_desc &lt;chr&gt;</span></span></code></pre></div>
 </div>
 </div>
-<div id="step-4-select-the-best" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-4-select-the-best" class="anchor"></a>Step 4: Select the Best</h3>
+<div class="section level3">
+<h3 id="step-4-select-the-best">Step 4: Select the Best<a class="anchor" aria-label="anchor" href="#step-4-select-the-best"></a>
+</h3>
 <p>Using the accuracy data, we can pick a metric and select the best model based on that metric. The available metrics are in the <code><a href="../reference/metric_sets.html">default_forecast_accuracy_metric_set()</a></code>. Make sure to select <code>minimize</code> based on the metric. The <code>filter_test_forecasts</code> parameter tells the function to filter the logged test forecasts to just the best.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/modeltime_nested_select_best.html">modeltime_nested_select_best</a></span><span class="op">(</span>
       metric                <span class="op">=</span> <span class="st">"rmse"</span>, 
       minimize              <span class="op">=</span> <span class="cn">TRUE</span>, 
       filter_test_forecasts <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span></code></pre></div>
 <p>This identifies which models should be used for the final forecast. With the models selected, we can make the future forecast.</p>
-<div id="extract-nested-best-model-report" class="section level4">
-<h4 class="hasAnchor">
-<a href="#extract-nested-best-model-report" class="anchor"></a>Extract Nested Best Model Report</h4>
+<div class="section level4">
+<h4 id="extract-nested-best-model-report">Extract Nested Best Model Report<a class="anchor" aria-label="anchor" href="#extract-nested-best-model-report"></a>
+</h4>
 <p>The best model selections can be accessed with <code><a href="../reference/log_extractors.html">extract_nested_best_model_report()</a></code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_best_model_report</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # Nested Modeltime Table</span>
-<span class="co">#&gt;   # A tibble: 7 × 10</span>
+<span class="co">#&gt;   <span style="color: #949494;"># A tibble: 7 × 10</span></span>
 <span class="co">#&gt;   id    .model_id .model_desc .type    mae  mape  mase smape   rmse   rsq</span>
-<span class="co">#&gt;   &lt;fct&gt;     &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 1_1           2 XGBOOST     Test   6237. 25.3  1.23  24.6   9017. 0.191</span>
-<span class="co">#&gt; 2 1_3           1 PROPHET     Test   3540. 29.9  1.37  25.5   4708. 0.796</span>
-<span class="co">#&gt; 3 1_8           2 XGBOOST     Test   3586.  9.33 1.53   9.89  4009. 0.297</span>
-<span class="co">#&gt; 4 1_13          2 XGBOOST     Test   2338.  5.83 0.861  6.02  2721. 0.536</span>
-<span class="co">#&gt; 5 1_38          2 XGBOOST     Test   6847.  8.47 0.585  8.75  8825. 0.402</span>
-<span class="co">#&gt; 6 1_93          2 XGBOOST     Test   7234.  9.11 0.728  9.66  8879. 0.488</span>
-<span class="co">#&gt; 7 1_95          2 XGBOOST     Test  10784.  8.54 1.30   8.96 12843. 0.139</span></code></pre></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1           2 XGBOOST     Test   <span style="text-decoration: underline;">6</span>237. 25.3  1.23  24.6   <span style="text-decoration: underline;">9</span>017. 0.191</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3           1 PROPHET     Test   <span style="text-decoration: underline;">3</span>540. 29.9  1.37  25.5   <span style="text-decoration: underline;">4</span>708. 0.796</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8           2 XGBOOST     Test   <span style="text-decoration: underline;">3</span>586.  9.33 1.53   9.89  <span style="text-decoration: underline;">4</span>009. 0.297</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13          2 XGBOOST     Test   <span style="text-decoration: underline;">2</span>338.  5.83 0.861  6.02  <span style="text-decoration: underline;">2</span>721. 0.536</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38          2 XGBOOST     Test   <span style="text-decoration: underline;">6</span>847.  8.47 0.585  8.75  <span style="text-decoration: underline;">8</span>825. 0.402</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93          2 XGBOOST     Test   <span style="text-decoration: underline;">7</span>234.  9.11 0.728  9.66  <span style="text-decoration: underline;">8</span>879. 0.488</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95          2 XGBOOST     Test  <span style="text-decoration: underline;">10</span>784.  8.54 1.30   8.96 <span style="text-decoration: underline;">12</span>843. 0.139</span></code></pre></div>
 </div>
-<div id="extract-nested-best-test-forecasts" class="section level4">
-<h4 class="hasAnchor">
-<a href="#extract-nested-best-test-forecasts" class="anchor"></a>Extract Nested Best Test Forecasts</h4>
+<div class="section level4">
+<h4 id="extract-nested-best-test-forecasts">Extract Nested Best Test Forecasts<a class="anchor" aria-label="anchor" href="#extract-nested-best-test-forecasts"></a>
+</h4>
 <p>Once we’ve selected the best models, we can easily visualize the best forecasts by time series. Note that the nested test forecast logs have been modified to isolate the best models.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">best_nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>
@@ -1032,9 +989,9 @@
 <p><img src="nested-forecasting_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="step-5-refitting-and-future-forecast" class="section level3">
-<h3 class="hasAnchor">
-<a href="#step-5-refitting-and-future-forecast" class="anchor"></a>Step 5: Refitting and Future Forecast</h3>
+<div class="section level3">
+<h3 id="step-5-refitting-and-future-forecast">Step 5: Refitting and Future Forecast<a class="anchor" aria-label="anchor" href="#step-5-refitting-and-future-forecast"></a>
+</h3>
 <p>With the best models in hand, we can make our future forecasts by refitting the models to the full dataset.</p>
 <ul>
 <li><p>If the best models have been selected, the only the best models will be refit.</p></li>
@@ -1042,58 +999,58 @@
 </ul>
 <p>We’ve selected our best models, and will move forward with refitting and future forecast logging using the <code><a href="../reference/modeltime_nested_refit.html">modeltime_nested_refit()</a></code> function.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span> <span class="op">&lt;-</span> <span class="va">best_nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span> <span class="op">&lt;-</span> <span class="va">best_nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/modeltime_nested_refit.html">modeltime_nested_refit</a></span><span class="op">(</span>
         control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_nested_refit</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
     <span class="op">)</span>
-<span class="co">#&gt; ℹ [1/7] Starting Modeltime Table: ID 1_1...</span>
-<span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; ✓ [1/7] Finished Modeltime Table: ID 1_1</span>
-<span class="co">#&gt; ℹ [2/7] Starting Modeltime Table: ID 1_3...</span>
-<span class="co">#&gt; ✓ Model 1 Passed PROPHET.</span>
-<span class="co">#&gt; ✓ [2/7] Finished Modeltime Table: ID 1_3</span>
-<span class="co">#&gt; ℹ [3/7] Starting Modeltime Table: ID 1_8...</span>
-<span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; ✓ [3/7] Finished Modeltime Table: ID 1_8</span>
-<span class="co">#&gt; ℹ [4/7] Starting Modeltime Table: ID 1_13...</span>
-<span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; ✓ [4/7] Finished Modeltime Table: ID 1_13</span>
-<span class="co">#&gt; ℹ [5/7] Starting Modeltime Table: ID 1_38...</span>
-<span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; ✓ [5/7] Finished Modeltime Table: ID 1_38</span>
-<span class="co">#&gt; ℹ [6/7] Starting Modeltime Table: ID 1_93...</span>
-<span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; ✓ [6/7] Finished Modeltime Table: ID 1_93</span>
-<span class="co">#&gt; ℹ [7/7] Starting Modeltime Table: ID 1_95...</span>
-<span class="co">#&gt; ✓ Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; ✓ [7/7] Finished Modeltime Table: ID 1_95</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [1/7] Starting Modeltime Table: ID 1_1...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [1/7] Finished Modeltime Table: ID 1_1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [2/7] Starting Modeltime Table: ID 1_3...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 1 Passed PROPHET.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [2/7] Finished Modeltime Table: ID 1_3</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [3/7] Starting Modeltime Table: ID 1_8...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [3/7] Finished Modeltime Table: ID 1_8</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [4/7] Starting Modeltime Table: ID 1_13...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [4/7] Finished Modeltime Table: ID 1_13</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [5/7] Starting Modeltime Table: ID 1_38...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [5/7] Finished Modeltime Table: ID 1_38</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [6/7] Starting Modeltime Table: ID 1_93...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [6/7] Finished Modeltime Table: ID 1_93</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [7/7] Starting Modeltime Table: ID 1_95...</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 3.572313 secs.</span></code></pre></div>
-<p>Note that we used <code><a href="../reference/control_modeltime.html">control_nested_refit(verbose = TRUE)</a></code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
+<span class="co">#&gt; Finished in: 3.76629 secs.</span></code></pre></div>
+<p>Note that we used <code>control_nested_refit(verbose = TRUE)</code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span>
 <span class="co">#&gt; # Nested Modeltime Table</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Trained on: .actual_data | Model Errors: [0]</span>
-<span class="co">#&gt; # A tibble: 7 × 5</span>
+<span class="co">#&gt; <span style="color: #555555;">Trained on: .actual_data | Model Errors: [0]</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 5</span></span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables  </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [104 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [52|52]&gt; &lt;mdl_time_tbl [1 ×…</span></code></pre></div>
-<div id="extract-nested-future-forecast" class="section level4">
-<h4 class="hasAnchor">
-<a href="#extract-nested-future-forecast" class="anchor"></a>Extract Nested Future Forecast</h4>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8   <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95  <span style="color: #949494;">&lt;tibble [104 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [52|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [1 ×</span>…</span></code></pre></div>
+<div class="section level4">
+<h4 id="extract-nested-future-forecast">Extract Nested Future Forecast<a class="anchor" aria-label="anchor" href="#extract-nested-future-forecast"></a>
+</h4>
 <p>After the refitting process completes, we can now access the future forecast, which is logged.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_future_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_refit_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_future_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
     .interactive <span class="op">=</span> <span class="cn">FALSE</span>,
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>
@@ -1102,29 +1059,29 @@
 </div>
 </div>
 </div>
-<div id="summary" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary" class="anchor"></a>Summary</h2>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
 <p>We’ve now successfully completed a <strong>Nested Forecast.</strong> You may find this challenging, especially if you are not familiar with the Modeltime Workflow, terminology, or tidymodeling in R. If this is the case, we have a solution. Take our high-performance forecasting course.</p>
 </div>
-<div id="take-the-high-performance-forecasting-course" class="section level2">
-<h2 class="hasAnchor">
-<a href="#take-the-high-performance-forecasting-course" class="anchor"></a>Take the High-Performance Forecasting Course</h2>
+<div class="section level2">
+<h2 id="take-the-high-performance-forecasting-course">Take the High-Performance Forecasting Course<a class="anchor" aria-label="anchor" href="#take-the-high-performance-forecasting-course"></a>
+</h2>
 <blockquote>
 <p>Become the forecasting expert for your organization</p>
 </blockquote>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/"><em>High-Performance Time Series Course</em></a></p>
-<div id="time-series-is-changing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#time-series-is-changing" class="anchor"></a>Time Series is Changing</h3>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank" class="external-link"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" class="external-link"><em>High-Performance Time Series Course</em></a></p>
+<div class="section level3">
+<h3 id="time-series-is-changing">Time Series is Changing<a class="anchor" aria-label="anchor" href="#time-series-is-changing"></a>
+</h3>
 <p>Time series is changing. <strong>Businesses now need 10,000+ time series forecasts every day.</strong> This is what I call a <em>High-Performance Time Series Forecasting System (HPTSF)</em> - Accurate, Robust, and Scalable Forecasting.</p>
 <p><strong>High-Performance Forecasting Systems will save companies by improving accuracy and scalability.</strong> Imagine what will happen to your career if you can provide your organization a “High-Performance Time Series Forecasting System” (HPTSF System).</p>
 </div>
-<div id="how-to-learn-high-performance-time-series-forecasting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-learn-high-performance-time-series-forecasting" class="anchor"></a>How to Learn High-Performance Time Series Forecasting</h3>
-<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
+<div class="section level3">
+<h3 id="how-to-learn-high-performance-time-series-forecasting">How to Learn High-Performance Time Series Forecasting<a class="anchor" aria-label="anchor" href="#how-to-learn-high-performance-time-series-forecasting"></a>
+</h3>
+<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
 <ul>
 <li>
 <strong>Time Series Machine Learning</strong> (cutting-edge) with <code>Modeltime</code> - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, &amp; many more)</li>
@@ -1146,35 +1103,32 @@
 Become the Time Series Expert for your organization.
 </p>
 <br><p class="text-center" style="font-size:30px;">
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link">Take the High-Performance Time Series Forecasting Course</a>
 </p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Matt Dancho.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Matt Dancho.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>

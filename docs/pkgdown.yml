@@ -1,5 +1,5 @@
 pandoc: '2.13'
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   extending-modeltime: extending-modeltime.html
@@ -10,5 +10,5 @@ articles:
   nested-forecasting: nested-forecasting.html
   parallel-processing: parallel-processing.html
   recursive-forecasting: recursive-forecasting.html
-last_built: 2021-11-18T01:31Z
+last_built: 2021-12-17T01:54Z
 

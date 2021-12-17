@@ -3,8 +3,6 @@
 
 # modeltime
 
-<img src="vignettes/logo-modeltime.png" width="147" height="170" align="right" />
-
 <!-- badges: start -->
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/modeltime)](https://cran.r-project.org/package=modeltime)

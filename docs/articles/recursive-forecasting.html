@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="modeltime">
 <title>Autoregressive Forecasting with Recursive • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,14 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Roboto-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_JetBrains%20Mono-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_Montserrat-0.4.0/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Autoregressive Forecasting with Recursive">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
@@ -32,164 +35,117 @@
   gtag('config', 'UA-76139189-2');
 </script>
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">modeltime</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../index.html">
     <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../articles/getting-started-with-modeltime.html">Getting Started</a>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/getting-started-with-modeltime.html">Getting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Getting Started</li>
-    <li>
-      <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Advanced Topics</li>
-    <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Algorithms</li>
-    <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Developers</li>
-    <li>
-      <a href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Getting Started</h6>
+    <a class="dropdown-item" href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Forecasting Many Time Series (Scale)</h6>
+    <a class="dropdown-item" href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    <a class="dropdown-item" href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6>
+    <a class="dropdown-item" href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
+    <a class="dropdown-item" href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
+    <a class="dropdown-item" href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Algorithms</h6>
+    <a class="dropdown-item" href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Developers</h6>
+    <a class="dropdown-item" href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    API
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">API Functions</li>
-    <li>
-      <a href="../reference/index.html">
-        <span class="fa fa-home"></span>
-         
-        Function Reference
-      </a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Change History</li>
-    <li>
-      <a href="../news/index.html">News</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-api">API</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-api">
+    <h6 class="dropdown-header" data-toc-skip>API Functions</h6>
+    <a class="dropdown-item" href="../reference/index.html">
+      <span class="fa fa-home"></span>
+       
+      Function Reference
+    </a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Change History</h6>
+    <a class="dropdown-item" href="../news/index.html">News</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Ecosystem
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecast</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Improve</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Scale</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-ecosystem">Ecosystem</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-ecosystem">
+    <h6 class="dropdown-header" data-toc-skip>Forecast</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Improve</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Scale</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+  </div>
 </li>
-<li>
-  <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
-    <span class="fas fa-graduation-cap"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
+    <span class="fas fa fas fa-graduation-cap"></span>
      
     Learn
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/business-science/modeltime">
-    <span class="fab fa-github"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/business-science/modeltime">
+    <span class="fab fa fab fa-github"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
-
-      </header><script src="recursive-forecasting_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Autoregressive Forecasting with Recursive</h1>
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Autoregressive Forecasting with Recursive</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/recursive-forecasting.Rmd"><code>vignettes/recursive-forecasting.Rmd</code></a></small>
-      <div class="hidden name"><code>recursive-forecasting.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/recursive-forecasting.Rmd" class="external-link"><code>vignettes/recursive-forecasting.Rmd</code></a></small>
+      <div class="d-none name"><code>recursive-forecasting.Rmd</code></div>
     </div>
 
     
@@ -208,15 +164,15 @@ Recursive Panel Forecast with XGBoost
 </p>
 </div>
 <p><strong>Forecasting with Recursive Ensembles</strong></p>
-<p>We have a separate <code>modeltime.ensemble</code> package that includes support for <code><a href="../reference/recursive.html">recursive()</a></code>. Making recursive ensembles is covered in the <a href="https://business-science.github.io/modeltime.ensemble/articles/recursive-ensembles.html">“Forecasting with Recursive Ensembles” article</a>.</p>
-<div id="what-is-a-recursive-model" class="section level1">
-<h1 class="hasAnchor">
-<a href="#what-is-a-recursive-model" class="anchor"></a>What is a Recursive Model?</h1>
+<p>We have a separate <code>modeltime.ensemble</code> package that includes support for <code><a href="../reference/recursive.html">recursive()</a></code>. Making recursive ensembles is covered in the <a href="https://business-science.github.io/modeltime.ensemble/articles/recursive-ensembles.html" class="external-link">“Forecasting with Recursive Ensembles” article</a>.</p>
+<div class="section level1">
+<h1 id="what-is-a-recursive-model">What is a Recursive Model?<a class="anchor" aria-label="anchor" href="#what-is-a-recursive-model"></a>
+</h1>
 <p>A <em>recursive model</em> uses predictions to generate new values for independent features. These features are typically lags used in autoregressive models.</p>
 </div>
-<div id="why-is-recursive-needed-for-autoregressive-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#why-is-recursive-needed-for-autoregressive-models" class="anchor"></a>Why is Recursive needed for Autoregressive Models?</h1>
+<div class="section level1">
+<h1 id="why-is-recursive-needed-for-autoregressive-models">Why is Recursive needed for Autoregressive Models?<a class="anchor" aria-label="anchor" href="#why-is-recursive-needed-for-autoregressive-models"></a>
+</h1>
 <p>It’s important to understand that a recursive model is only needed when using lagged features with a <strong>Lag Size &lt; Forecast Horizon.</strong> When the lag length is less than the forecast horizon, a problem exists were missing values (<code>NA</code>) are generated in the future data.</p>
 <p>A solution that <code><a href="../reference/recursive.html">recursive()</a></code> implements is to iteratively fill these missing values in with values generated from predictions. This technique can be used for:</p>
 <ol style="list-style-type: decimal">
@@ -224,45 +180,45 @@ Recursive Panel Forecast with XGBoost
 <li><p><strong>Panel time series predictions</strong> - In many situations we need to forecast more than one time series. We can batch-process these with 1 model by processing time series groups as panels. This technique can be extended to recursive forecasting for scalable models (1 model that predicts many time series).</p></li>
 </ol>
 </div>
-<div id="libraries" class="section level1">
-<h1 class="hasAnchor">
-<a href="#libraries" class="anchor"></a>Libraries</h1>
+<div class="section level1">
+<h1 id="libraries">Libraries<a class="anchor" aria-label="anchor" href="#libraries"></a>
+</h1>
 <p>Load the following libraries.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="make-a-recursive-forecast-model" class="section level1">
-<h1 class="hasAnchor">
-<a href="#make-a-recursive-forecast-model" class="anchor"></a>Make a Recursive Forecast Model</h1>
+<div class="section level1">
+<h1 id="make-a-recursive-forecast-model">Make a Recursive Forecast Model<a class="anchor" aria-label="anchor" href="#make-a-recursive-forecast-model"></a>
+</h1>
 <p>We’ll start with the simplest example, turning a Linear Regresion into an Autoregressive model.</p>
-<div id="data-visualization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-visualization" class="anchor"></a>Data Visualization</h2>
+<div class="section level2">
+<h2 id="data-visualization">Data Visualization<a class="anchor" aria-label="anchor" href="#data-visualization"></a>
+</h2>
 <p>Let’s start with the <code>m750</code> dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m750</span>
-<span class="co">#&gt; # A tibble: 306 × 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 306 × 3</span></span>
 <span class="co">#&gt;    id    date       value</span>
-<span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 M750  1990-01-01  6370</span>
-<span class="co">#&gt;  2 M750  1990-02-01  6430</span>
-<span class="co">#&gt;  3 M750  1990-03-01  6520</span>
-<span class="co">#&gt;  4 M750  1990-04-01  6580</span>
-<span class="co">#&gt;  5 M750  1990-05-01  6620</span>
-<span class="co">#&gt;  6 M750  1990-06-01  6690</span>
-<span class="co">#&gt;  7 M750  1990-07-01  6000</span>
-<span class="co">#&gt;  8 M750  1990-08-01  5450</span>
-<span class="co">#&gt;  9 M750  1990-09-01  6480</span>
-<span class="co">#&gt; 10 M750  1990-10-01  6820</span>
-<span class="co">#&gt; # … with 296 more rows</span></code></pre></div>
-<p>We can visualize the data with <code><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series()</a></code>.</p>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M750  1990-01-01  <span style="text-decoration: underline;">6</span>370</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M750  1990-02-01  <span style="text-decoration: underline;">6</span>430</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M750  1990-03-01  <span style="text-decoration: underline;">6</span>520</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M750  1990-04-01  <span style="text-decoration: underline;">6</span>580</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M750  1990-05-01  <span style="text-decoration: underline;">6</span>620</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M750  1990-06-01  <span style="text-decoration: underline;">6</span>690</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M750  1990-07-01  <span style="text-decoration: underline;">6</span>000</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M750  1990-08-01  <span style="text-decoration: underline;">5</span>450</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M750  1990-09-01  <span style="text-decoration: underline;">6</span>480</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M750  1990-10-01  <span style="text-decoration: underline;">6</span>820</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 296 more rows</span></span></code></pre></div>
+<p>We can visualize the data with <code><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
     .date_var    <span class="op">=</span> <span class="va">date</span>, 
     .value       <span class="op">=</span> <span class="va">value</span>, 
     .facet_var   <span class="op">=</span> <span class="va">id</span>, 
@@ -271,124 +227,124 @@ Recursive Panel Forecast with XGBoost
   <span class="op">)</span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="data-preparation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a>Data Preparation</h2>
+<div class="section level2">
+<h2 id="data-preparation">Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation"></a>
+</h2>
 <p>Let’s establish a forecast horizon and extend the dataset to create a forecast region.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
 
-<span class="va">m750_extended</span> <span class="op">&lt;-</span> <span class="va">m750</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span><span class="op">(</span>
+<span class="va">m750_extended</span> <span class="op">&lt;-</span> <span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>
         .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,
         .bind_data  <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="transform-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transform-function" class="anchor"></a>Transform Function</h2>
+<div class="section level2">
+<h2 id="transform-function">Transform Function<a class="anchor" aria-label="anchor" href="#transform-function"></a>
+</h2>
 <p>We’ll use <strong>short-term lags</strong>, lags with a size that are smaller than the forecast horizon. Here we create a custom function, <code>lag_roll_transformer()</code> that takes a dataset and adds lags 1 through 12 and a rolling mean using lag 12. Each of the features this function use lags less than our forecast horizon of 24 months, which means we need to use <code><a href="../reference/recursive.html">recursive()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lag_roll_transformer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">data</span> <span class="op">%&gt;%</span>
-        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_slidify.html">tk_augment_slidify</a></span><span class="op">(</span>
-          <span class="fu">contains</span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
-          .f <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
+    <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_slidify.html" class="external-link">tk_augment_slidify</a></span><span class="op">(</span>
+          <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
+          .f <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
           .period  <span class="op">=</span> <span class="fl">12</span>,
           .partial <span class="op">=</span> <span class="cn">TRUE</span>
         <span class="op">)</span> 
 <span class="op">}</span></code></pre></div>
 </div>
-<div id="apply-the-transform-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#apply-the-transform-function" class="anchor"></a>Apply the Transform Function</h2>
+<div class="section level2">
+<h2 id="apply-the-transform-function">Apply the Transform Function<a class="anchor" aria-label="anchor" href="#apply-the-transform-function"></a>
+</h2>
 <p>When we apply the lag roll transformation to our extended data set, we can see the effect.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750_rolling</span> <span class="op">&lt;-</span> <span class="va">m750_extended</span> <span class="op">%&gt;%</span>
-    <span class="fu">lag_roll_transformer</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">m750_rolling</span> <span class="op">&lt;-</span> <span class="va">m750_extended</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu">lag_roll_transformer</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
 
 <span class="va">m750_rolling</span>
-<span class="co">#&gt; # A tibble: 330 × 27</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 330 × 27</span></span>
 <span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1990-01-01  6370         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt;  2 1990-02-01  6430       6370         NA         NA         NA         NA</span>
-<span class="co">#&gt;  3 1990-03-01  6520       6430       6370         NA         NA         NA</span>
-<span class="co">#&gt;  4 1990-04-01  6580       6520       6430       6370         NA         NA</span>
-<span class="co">#&gt;  5 1990-05-01  6620       6580       6520       6430       6370         NA</span>
-<span class="co">#&gt;  6 1990-06-01  6690       6620       6580       6520       6430       6370</span>
-<span class="co">#&gt;  7 1990-07-01  6000       6690       6620       6580       6520       6430</span>
-<span class="co">#&gt;  8 1990-08-01  5450       6000       6690       6620       6580       6520</span>
-<span class="co">#&gt;  9 1990-09-01  6480       5450       6000       6690       6620       6580</span>
-<span class="co">#&gt; 10 1990-10-01  6820       6480       5450       6000       6690       6620</span>
-<span class="co">#&gt; # … with 320 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1990-01-01  <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1990-02-01  <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1990-03-01  <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1990-04-01  <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1990-05-01  <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1990-06-01  <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1990-07-01  <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1990-08-01  <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1990-09-01  <span style="text-decoration: underline;">6</span>480       <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1990-10-01  <span style="text-decoration: underline;">6</span>820       <span style="text-decoration: underline;">6</span>480       <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 320 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
 </div>
-<div id="split-into-training-and-future-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#split-into-training-and-future-data" class="anchor"></a>Split into Training and Future Data</h2>
+<div class="section level2">
+<h2 id="split-into-training-and-future-data">Split into Training and Future Data<a class="anchor" aria-label="anchor" href="#split-into-training-and-future-data"></a>
+</h2>
 <p>The <strong>training data</strong> needs to be completely filled in. We remove any rows with <code>NA</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op">%&gt;%</span>
-    <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">train_data</span>
-<span class="co">#&gt; # A tibble: 282 × 27</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 282 × 27</span></span>
 <span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1992-01-01  7030       7040       7000       6980       6550       5780</span>
-<span class="co">#&gt;  2 1992-02-01  7170       7030       7040       7000       6980       6550</span>
-<span class="co">#&gt;  3 1992-03-01  7150       7170       7030       7040       7000       6980</span>
-<span class="co">#&gt;  4 1992-04-01  7180       7150       7170       7030       7040       7000</span>
-<span class="co">#&gt;  5 1992-05-01  7140       7180       7150       7170       7030       7040</span>
-<span class="co">#&gt;  6 1992-06-01  7100       7140       7180       7150       7170       7030</span>
-<span class="co">#&gt;  7 1992-07-01  6490       7100       7140       7180       7150       7170</span>
-<span class="co">#&gt;  8 1992-08-01  6060       6490       7100       7140       7180       7150</span>
-<span class="co">#&gt;  9 1992-09-01  6870       6060       6490       7100       7140       7180</span>
-<span class="co">#&gt; 10 1992-10-01  6880       6870       6060       6490       7100       7140</span>
-<span class="co">#&gt; # … with 272 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1992-01-01  <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">6</span>980       <span style="text-decoration: underline;">6</span>550       <span style="text-decoration: underline;">5</span>780</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1992-02-01  <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">6</span>980       <span style="text-decoration: underline;">6</span>550</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1992-03-01  <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">6</span>980</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1992-04-01  <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1992-05-01  <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1992-06-01  <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1992-07-01  <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1992-08-01  <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1992-09-01  <span style="text-decoration: underline;">6</span>870       <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1992-10-01  <span style="text-decoration: underline;">6</span>880       <span style="text-decoration: underline;">6</span>870       <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 272 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
 <p>The <strong>future data</strong> has missing values in the “value” column. We isolate these. Our autoregressive algorithm will predict these. Notice that the lags have missing data, this is OK - and why we are going to use <code><a href="../reference/recursive.html">recursive()</a></code> to fill these missing values in with predictions.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">future_data</span>
-<span class="co">#&gt; # A tibble: 24 × 27</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 27</span></span>
 <span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2015-07-01    NA      11000      11310      11290      11250      11010</span>
-<span class="co">#&gt;  2 2015-08-01    NA         NA      11000      11310      11290      11250</span>
-<span class="co">#&gt;  3 2015-09-01    NA         NA         NA      11000      11310      11290</span>
-<span class="co">#&gt;  4 2015-10-01    NA         NA         NA         NA      11000      11310</span>
-<span class="co">#&gt;  5 2015-11-01    NA         NA         NA         NA         NA      11000</span>
-<span class="co">#&gt;  6 2015-12-01    NA         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt;  7 2016-01-01    NA         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt;  8 2016-02-01    NA         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt;  9 2016-03-01    NA         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt; 10 2016-04-01    NA         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt; # … with 14 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2015-07-01    <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310      <span style="text-decoration: underline;">11</span>290      <span style="text-decoration: underline;">11</span>250      <span style="text-decoration: underline;">11</span>010</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2015-08-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310      <span style="text-decoration: underline;">11</span>290      <span style="text-decoration: underline;">11</span>250</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2015-09-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310      <span style="text-decoration: underline;">11</span>290</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2015-10-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2015-11-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2015-12-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2016-01-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2016-02-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2016-03-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2016-04-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
 </div>
-<div id="modeling" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modeling" class="anchor"></a>Modeling</h2>
+<div class="section level2">
+<h2 id="modeling">Modeling<a class="anchor" aria-label="anchor" href="#modeling"></a>
+</h2>
 <p>We’ll make 2 models for comparison purposes:</p>
 <ol style="list-style-type: decimal">
 <li>
@@ -396,19 +352,19 @@ Recursive Panel Forecast with XGBoost
 <li>
 <strong>Autoregressive Forecast Model</strong> using Linear Regression with the Date feature, Lags 1-12, and Rolling Mean Lag 12</li>
 </ol>
-<div id="model-1-baseline-straight-line-forecast-model" class="section level3">
-<h3 class="hasAnchor">
-<a href="#model-1-baseline-straight-line-forecast-model" class="anchor"></a>Model 1 (Baseline): Straight-Line Forecast Model</h3>
+<div class="section level3">
+<h3 id="model-1-baseline-straight-line-forecast-model">Model 1 (Baseline): Straight-Line Forecast Model<a class="anchor" aria-label="anchor" href="#model-1-baseline-straight-line-forecast-model"></a>
+</h3>
 <p>A straight-line forecast is just to illustrate the effect of no autoregressive features. Consider this a NAIVE modeling approach. The only feature that is used as a dependent variable is the “date” column.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">fit</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span>
 
 <span class="va">model_fit_lm</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  3ms </span>
+<span class="co">#&gt; Fit time:  4ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span>
@@ -417,9 +373,9 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; (Intercept)         date  </span>
 <span class="co">#&gt;   3356.7208       0.4712</span></code></pre></div>
 </div>
-<div id="model-2-autoregressive-forecast-model" class="section level3">
-<h3 class="hasAnchor">
-<a href="#model-2-autoregressive-forecast-model" class="anchor"></a>Model 2: Autoregressive Forecast Model</h3>
+<div class="section level3">
+<h3 id="model-2-autoregressive-forecast-model">Model 2: Autoregressive Forecast Model<a class="anchor" aria-label="anchor" href="#model-2-autoregressive-forecast-model"></a>
+</h3>
 <p>The autoregressive forecast model is simply a <code>parsnip</code> model with one additional step: using <code><a href="../reference/recursive.html">recursive()</a></code>. The key components are:</p>
 <ul>
 <li><p><code>transform</code>: A transformation function. We use the function previously made that generated Lags 1 to 12 and the Rolling Mean Lag 12 features.</p></li>
@@ -434,13 +390,13 @@ Recursive Panel Forecast with XGBoost
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Autoregressive Forecast</span>
-<span class="va">model_fit_lm_recursive</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">fit</span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">model_fit_lm_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="co"># One additional step - use recursive()</span>
     <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span>
         transform  <span class="op">=</span> <span class="va">lag_roll_transformer</span>,
-        train_tail <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">train_data</span>, <span class="va">FORECAST_HORIZON</span><span class="op">)</span>
+        train_tail <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">train_data</span>, <span class="va">FORECAST_HORIZON</span><span class="op">)</span>
     <span class="op">)</span>
 
 <span class="va">model_fit_lm_recursive</span>
@@ -448,7 +404,7 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  4ms </span>
+<span class="co">#&gt; Fit time:  3ms </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span>
@@ -474,10 +430,10 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;             0.05754              0.15960                   NA</span></code></pre></div>
 </div>
 </div>
-<div id="modeltime-forecasting-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modeltime-forecasting-workflow" class="anchor"></a>Modeltime Forecasting Workflow</h2>
-<p>Once we have our fitted model, we can follow the <a href="https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html">Modeltime Workflow</a> (note we are skipping calibration and refitting, but this can be performed to get confidence intervals):</p>
+<div class="section level2">
+<h2 id="modeltime-forecasting-workflow">Modeltime Forecasting Workflow<a class="anchor" aria-label="anchor" href="#modeltime-forecasting-workflow"></a>
+</h2>
+<p>Once we have our fitted model, we can follow the <a href="https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html" class="external-link">Modeltime Workflow</a> (note we are skipping calibration and refitting, but this can be performed to get confidence intervals):</p>
 <p>First, we add fitted models to a <strong>Model Table</strong> using <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code>. (Note - If your model description says “LM”, install the development version of <code>modeltime</code>, which has improved model descriptions for recursive models).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
@@ -487,20 +443,20 @@ Recursive Panel Forecast with XGBoost
 
 <span class="va">model_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 2 × 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span>
 <span class="co">#&gt;   .model_id .model   .model_desc </span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;       </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt; LM          </span>
-<span class="co">#&gt; 2         2 &lt;fit[+]&gt; RECURSIVE LM</span></code></pre></div>
+<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span> LM          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span> RECURSIVE LM</span></code></pre></div>
 <p>Next, we perform <strong>Forecast Evaluation</strong> using <code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code> and <code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   
     <span class="co"># Forecast using future data</span>
     <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
         new_data    <span class="op">=</span> <span class="va">future_data</span>,
         actual_data <span class="op">=</span> <span class="va">m750</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   
     <span class="co"># Visualize the forecast</span>
     <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
@@ -511,9 +467,9 @@ Recursive Panel Forecast with XGBoost
 <p>We can see the benefit of autoregressive features.</p>
 </div>
 </div>
-<div id="recursive-forecasting-with-panel-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#recursive-forecasting-with-panel-models" class="anchor"></a>Recursive Forecasting with Panel Models</h1>
+<div class="section level1">
+<h1 id="recursive-forecasting-with-panel-models">Recursive Forecasting with Panel Models<a class="anchor" aria-label="anchor" href="#recursive-forecasting-with-panel-models"></a>
+</h1>
 <p>We can take this further by extending what we’ve learned here to panel data:</p>
 <p><strong>Panel Data:</strong></p>
 <ul>
@@ -527,13 +483,13 @@ Recursive Panel Forecast with XGBoost
 <li>Instead of using a simple Linear Regression</li>
 <li>We use <code>xgboost</code> to forecast multiple time series</li>
 </ul>
-<div id="data-visualization-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-visualization-1" class="anchor"></a>Data Visualization</h2>
+<div class="section level2">
+<h2 id="data-visualization-1">Data Visualization<a class="anchor" aria-label="anchor" href="#data-visualization-1"></a>
+</h2>
 <p>Now we have 4 time series that we will forecast.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m4_monthly</span> <span class="op">%&gt;%</span>  
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>  
+  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
     .date_var    <span class="op">=</span> <span class="va">date</span>, 
     .value       <span class="op">=</span> <span class="va">value</span>, 
     .facet_var   <span class="op">=</span> <span class="va">id</span>, 
@@ -543,98 +499,98 @@ Recursive Panel Forecast with XGBoost
 <span class="op">)</span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="data-preparation-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-preparation-1" class="anchor"></a>Data Preparation</h2>
-<p>We use <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">timetk::future_frame()</a></code> to project each series forward by the forecast horizon. This sets up an extended data set with each series extended by 24 time stamps.</p>
+<div class="section level2">
+<h2 id="data-preparation-1">Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation-1"></a>
+</h2>
+<p>We use <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">timetk::future_frame()</a></code> to project each series forward by the forecast horizon. This sets up an extended data set with each series extended by 24 time stamps.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
 
-<span class="va">m4_extended</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html">future_frame</a></span><span class="op">(</span>
+<span class="va">m4_extended</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>
         .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,
         .bind_data  <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="transform-function-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transform-function-1" class="anchor"></a>Transform Function</h2>
+<div class="section level2">
+<h2 id="transform-function-1">Transform Function<a class="anchor" aria-label="anchor" href="#transform-function-1"></a>
+</h2>
 <p>The only difference is that we are applying any lags by group.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lag_roll_transformer_grouped</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">data</span> <span class="op">%&gt;%</span>
-        <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_slidify.html">tk_augment_slidify</a></span><span class="op">(</span>
-          .value   <span class="op">=</span> <span class="fu">contains</span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
-          .f       <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-          .period  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,
+    <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_slidify.html" class="external-link">tk_augment_slidify</a></span><span class="op">(</span>
+          .value   <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
+          .f       <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
+          .period  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,
           .partial <span class="op">=</span> <span class="cn">TRUE</span>
-        <span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span>
+        <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div id="apply-the-transform-function-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#apply-the-transform-function-1" class="anchor"></a>Apply the Transform Function</h2>
+<div class="section level2">
+<h2 id="apply-the-transform-function-1">Apply the Transform Function<a class="anchor" aria-label="anchor" href="#apply-the-transform-function-1"></a>
+</h2>
 <p>We apply the groupwise lag transformation to the extended data set. This adds autoregressive features.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m4_lags</span> <span class="op">&lt;-</span> <span class="va">m4_extended</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">m4_lags</span> <span class="op">&lt;-</span> <span class="va">m4_extended</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">lag_roll_transformer_grouped</span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">m4_lags</span>
-<span class="co">#&gt; # A tibble: 1,670 × 28</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,670 × 28</span></span>
 <span class="co">#&gt;    id    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    &lt;fct&gt; &lt;date&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 M1    1976-06-01  8000         NA         NA         NA         NA         NA</span>
-<span class="co">#&gt;  2 M1    1976-07-01  8350       8000         NA         NA         NA         NA</span>
-<span class="co">#&gt;  3 M1    1976-08-01  8570       8350       8000         NA         NA         NA</span>
-<span class="co">#&gt;  4 M1    1976-09-01  7700       8570       8350       8000         NA         NA</span>
-<span class="co">#&gt;  5 M1    1976-10-01  7080       7700       8570       8350       8000         NA</span>
-<span class="co">#&gt;  6 M1    1976-11-01  6520       7080       7700       8570       8350       8000</span>
-<span class="co">#&gt;  7 M1    1976-12-01  6070       6520       7080       7700       8570       8350</span>
-<span class="co">#&gt;  8 M1    1977-01-01  6650       6070       6520       7080       7700       8570</span>
-<span class="co">#&gt;  9 M1    1977-02-01  6830       6650       6070       6520       7080       7700</span>
-<span class="co">#&gt; 10 M1    1977-03-01  5710       6830       6650       6070       6520       7080</span>
-<span class="co">#&gt; # … with 1,660 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M1    1976-06-01  <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M1    1976-07-01  <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M1    1976-08-01  <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M1    1976-09-01  <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M1    1976-10-01  <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M1    1976-11-01  <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M1    1976-12-01  <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M1    1977-01-01  <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M1    1977-02-01  <span style="text-decoration: underline;">6</span>830       <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M1    1977-03-01  <span style="text-decoration: underline;">5</span>710       <span style="text-decoration: underline;">6</span>830       <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 1,660 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
 </div>
-<div id="split-into-training-and-future-data-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#split-into-training-and-future-data-1" class="anchor"></a>Split into Training and Future Data</h2>
+<div class="section level2">
+<h2 id="split-into-training-and-future-data-1">Split into Training and Future Data<a class="anchor" aria-label="anchor" href="#split-into-training-and-future-data-1"></a>
+</h2>
 <p>Just like the single case, we split into future and training data.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op">%&gt;%</span>
-    <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="modeling-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modeling-1" class="anchor"></a>Modeling</h2>
+<div class="section level2">
+<h2 id="modeling-1">Modeling<a class="anchor" aria-label="anchor" href="#modeling-1"></a>
+</h2>
 <p>We’ll use a more sophisticated algorithm <code>xgboost</code> to develop an autoregressive model.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Modeling Autoregressive Panel Data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
-<span class="va">model_fit_xgb_recursive</span> <span class="op">&lt;-</span> <span class="fu">boost_tree</span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<span class="va">model_fit_xgb_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span>
         mode <span class="op">=</span> <span class="st">"regression"</span>,
         learn_rate <span class="op">=</span> <span class="fl">0.35</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">fit</span><span class="op">(</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span>
         <span class="va">value</span> <span class="op">~</span> <span class="va">.</span> 
-        <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
-        <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> 
+        <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
+        <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> 
         <span class="op">-</span> <span class="va">date</span>, 
         data <span class="op">=</span> <span class="va">train_data</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span>
         id         <span class="op">=</span> <span class="st">"id"</span>, <span class="co"># We add an id = "id" to specify the groups</span>
         transform  <span class="op">=</span> <span class="va">lag_roll_transformer_grouped</span>,
@@ -647,9 +603,9 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt; </span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  129ms </span>
+<span class="co">#&gt; Fit time:  115ms </span>
 <span class="co">#&gt; ##### xgb.Booster</span>
-<span class="co">#&gt; raw: 69.2 Kb </span>
+<span class="co">#&gt; raw: 69.1 Kb </span>
 <span class="co">#&gt; call:</span>
 <span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.35, max_depth = 6, gamma = 0, </span>
 <span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span>
@@ -672,9 +628,9 @@ Recursive Panel Forecast with XGBoost
 <span class="co">#&gt;       14      210.7798</span>
 <span class="co">#&gt;       15      200.4421</span></code></pre></div>
 </div>
-<div id="modeltime-forecasting-workflow-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modeltime-forecasting-workflow-1" class="anchor"></a>Modeltime Forecasting Workflow</h2>
+<div class="section level2">
+<h2 id="modeltime-forecasting-workflow-1">Modeltime Forecasting Workflow<a class="anchor" aria-label="anchor" href="#modeltime-forecasting-workflow-1"></a>
+</h2>
 <p>First, create a Modeltime Table. Note - If your model description says “XGBOOST”, install the development version of <code>modeltime</code>, which has improved model descriptions for recursive models).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
@@ -683,19 +639,19 @@ Recursive Panel Forecast with XGBoost
 
 <span class="va">model_tbl</span>
 <span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; # A tibble: 1 × 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span>
 <span class="co">#&gt;   .model_id .model   .model_desc      </span>
-<span class="co">#&gt;       &lt;int&gt; &lt;list&gt;   &lt;chr&gt;            </span>
-<span class="co">#&gt; 1         1 &lt;fit[+]&gt; RECURSIVE XGBOOST</span></code></pre></div>
+<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span> RECURSIVE XGBOOST</span></code></pre></div>
 <p>Next, we can forecast the results.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
         new_data    <span class="op">=</span> <span class="va">future_data</span>,
         actual_data <span class="op">=</span> <span class="va">m4_monthly</span>,
         keep_data   <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
         .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,
         .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -703,9 +659,9 @@ Recursive Panel Forecast with XGBoost
     <span class="op">)</span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="summary" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary" class="anchor"></a>Summary</h2>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
 <p>We just showcased Recursive Forecasting. But this is a simple problem. And, there’s a lot more to learning time series.</p>
 <ul>
 <li>Many more algorithms</li>
@@ -716,24 +672,24 @@ Recursive Panel Forecast with XGBoost
 </ul>
 <p>Your probably thinking how am I ever going to learn time series forecasting. Here’s the solution that will save you years of struggling.</p>
 </div>
-<div id="take-the-high-performance-forecasting-course" class="section level2">
-<h2 class="hasAnchor">
-<a href="#take-the-high-performance-forecasting-course" class="anchor"></a>Take the High-Performance Forecasting Course</h2>
+<div class="section level2">
+<h2 id="take-the-high-performance-forecasting-course">Take the High-Performance Forecasting Course<a class="anchor" aria-label="anchor" href="#take-the-high-performance-forecasting-course"></a>
+</h2>
 <blockquote>
 <p>Become the forecasting expert for your organization</p>
 </blockquote>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/"><em>High-Performance Time Series Course</em></a></p>
-<div id="time-series-is-changing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#time-series-is-changing" class="anchor"></a>Time Series is Changing</h3>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank" class="external-link"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" class="external-link"><em>High-Performance Time Series Course</em></a></p>
+<div class="section level3">
+<h3 id="time-series-is-changing">Time Series is Changing<a class="anchor" aria-label="anchor" href="#time-series-is-changing"></a>
+</h3>
 <p>Time series is changing. <strong>Businesses now need 10,000+ time series forecasts every day.</strong> This is what I call a <em>High-Performance Time Series Forecasting System (HPTSF)</em> - Accurate, Robust, and Scalable Forecasting.</p>
 <p><strong>High-Performance Forecasting Systems will save companies by improving accuracy and scalability.</strong> Imagine what will happen to your career if you can provide your organization a “High-Performance Time Series Forecasting System” (HPTSF System).</p>
 </div>
-<div id="how-to-learn-high-performance-time-series-forecasting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-learn-high-performance-time-series-forecasting" class="anchor"></a>How to Learn High-Performance Time Series Forecasting</h3>
-<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
+<div class="section level3">
+<h3 id="how-to-learn-high-performance-time-series-forecasting">How to Learn High-Performance Time Series Forecasting<a class="anchor" aria-label="anchor" href="#how-to-learn-high-performance-time-series-forecasting"></a>
+</h3>
+<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
 <ul>
 <li>
 <strong>Time Series Machine Learning</strong> (cutting-edge) with <code>Modeltime</code> - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, &amp; many more)</li>
@@ -755,36 +711,33 @@ Recursive Panel Forecast with XGBoost
 Become the Time Series Expert for your organization.
 </p>
 <br><p class="text-center" style="font-size:30px;">
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link">Take the High-Performance Time Series Forecasting Course</a>
 </p>
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Matt Dancho.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Matt Dancho.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>

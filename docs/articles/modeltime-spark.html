@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="modeltime">
 <title>The Modeltime Spark Backend • modeltime</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,14 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Roboto-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_JetBrains%20Mono-0.4.0/font.css" rel="stylesheet">
+<link href="../deps/_Montserrat-0.4.0/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="The Modeltime Spark Backend">
 <meta property="og:description" content="modeltime">
 <meta property="og:image" content="/logo.png">
@@ -32,218 +35,171 @@
   gtag('config', 'UA-76139189-2');
 </script>
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">modeltime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">modeltime</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../index.html">
     <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../articles/getting-started-with-modeltime.html">Getting Started</a>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/getting-started-with-modeltime.html">Getting Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Getting Started</li>
-    <li>
-      <a href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Forecasting Many Time Series (Scale)</li>
-    <li>
-      <a href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Advanced Topics</li>
-    <li>
-      <a href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
-    </li>
-    <li>
-      <a href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
-    </li>
-    <li>
-      <a href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Algorithms</li>
-    <li>
-      <a href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Developers</li>
-    <li>
-      <a href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Getting Started</h6>
+    <a class="dropdown-item" href="../articles/getting-started-with-modeltime.html">Getting Started with Modeltime</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Forecasting Many Time Series (Scale)</h6>
+    <a class="dropdown-item" href="../articles/modeling-panel-data.html">Global Model Forecasting</a>
+    <a class="dropdown-item" href="../articles/nested-forecasting.html">Iterative (Nested) Forecasting</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6>
+    <a class="dropdown-item" href="../articles/recursive-forecasting.html">Autoregressive (Recursive) Forecasting</a>
+    <a class="dropdown-item" href="../articles/parallel-processing.html">Hyperparameter Tuning &amp; Parallel Processing</a>
+    <a class="dropdown-item" href="../articles/modeltime-spark.html">The Modeltime Spark Backend</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Algorithms</h6>
+    <a class="dropdown-item" href="../articles/modeltime-model-list.html">Modeltime Algorithm Roadmap</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Developers</h6>
+    <a class="dropdown-item" href="../articles/extending-modeltime.html">Extending Modeltime (Developer Tools)</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    API
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">API Functions</li>
-    <li>
-      <a href="../reference/index.html">
-        <span class="fa fa-home"></span>
-         
-        Function Reference
-      </a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Change History</li>
-    <li>
-      <a href="../news/index.html">News</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-api">API</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-api">
+    <h6 class="dropdown-header" data-toc-skip>API Functions</h6>
+    <a class="dropdown-item" href="../reference/index.html">
+      <span class="fa fa-home"></span>
+       
+      Function Reference
+    </a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Change History</h6>
+    <a class="dropdown-item" href="../news/index.html">News</a>
+  </div>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Ecosystem
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Forecast</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Improve</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Scale</li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
-    </li>
-    <li>
-      <a href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-ecosystem">Ecosystem</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-ecosystem">
+    <h6 class="dropdown-header" data-toc-skip>Forecast</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime/">Modeltime (Forecasting)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/timetk/">TimeTK (Time Series Analysis)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Improve</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.ensemble/">Modeltime Ensemble (Blending Forecasts)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.resample/">Modeltime Resample (Backtesting)</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Scale</h6>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.h2o/">Modeltime H2O (AutoML)</a>
+    <a class="external-link dropdown-item" href="https://business-science.github.io/modeltime.gluonts/">Modeltime GluonTS (Deep Learning)</a>
+  </div>
 </li>
-<li>
-  <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
-    <span class="fas fa-graduation-cap"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/">
+    <span class="fas fa fas fa-graduation-cap"></span>
      
     Learn
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/business-science/modeltime">
-    <span class="fab fa-github"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/business-science/modeltime">
+    <span class="fab fa fab fa-github"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
-
-      </header><script src="modeltime-spark_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>The Modeltime Spark Backend</h1>
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>The Modeltime Spark Backend</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/modeltime-spark.Rmd"><code>vignettes/modeltime-spark.Rmd</code></a></small>
-      <div class="hidden name"><code>modeltime-spark.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/business-science/modeltime/blob/master/vignettes/modeltime-spark.Rmd" class="external-link"><code>vignettes/modeltime-spark.Rmd</code></a></small>
+      <div class="d-none name"><code>modeltime-spark.Rmd</code></div>
     </div>
 
     
     
-<p><strong>Modeltime is built for scale</strong>, and as such many users may want to use a distributed backend that allows for scale beyond their local machine. One such tool is <a href="https://spark.apache.org/"><strong>Spark</strong></a>, a unified engine for large-scale data analytics. In this tutorial, we’ll show you how to use the <strong>Modeltime Spark Backend</strong> for high-performance computing.</p>
-<div id="spark-for-iterative-nested-forecasting" class="section level1">
-<h1 class="hasAnchor">
-<a href="#spark-for-iterative-nested-forecasting" class="anchor"></a>Spark for Iterative (Nested) Forecasting</h1>
+<p><strong>Modeltime is built for scale</strong>, and as such many users may want to use a distributed backend that allows for scale beyond their local machine. One such tool is <a href="https://spark.apache.org/" class="external-link"><strong>Spark</strong></a>, a unified engine for large-scale data analytics. In this tutorial, we’ll show you how to use the <strong>Modeltime Spark Backend</strong> for high-performance computing.</p>
+<div class="section level1">
+<h1 id="spark-for-iterative-nested-forecasting">Spark for Iterative (Nested) Forecasting<a class="anchor" aria-label="anchor" href="#spark-for-iterative-nested-forecasting"></a>
+</h1>
 <p>One of the most common situations that parallel computation is required is when doing <strong>iterative forecasting</strong> where the data scientist needs to experiment with 10+ models across 10,000+ time series. It’s common for this large-scale, high-performance forecasting exercise to take days.</p>
 <p>We’ll show you how we can <strong>combine Modeltime Nested Forecasting and it’s Parallel Spark Backend</strong> to scale this computation with distributed parallel Spark execution. Let’s go!</p>
 </div>
-<div id="system-requirements" class="section level1">
-<h1 class="hasAnchor">
-<a href="#system-requirements" class="anchor"></a>System Requirements</h1>
+<div class="section level1">
+<h1 id="system-requirements">System Requirements<a class="anchor" aria-label="anchor" href="#system-requirements"></a>
+</h1>
 <p>This tutorial requires:</p>
 <ul>
-<li><p><strong>sparklyr</strong>: Used to register the spark <code>foreach</code> adapter via <code><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html">registerDoSpark()</a></code>.</p></li>
+<li><p><strong>sparklyr</strong>: Used to register the spark <code>foreach</code> adapter via <code><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html" class="external-link">registerDoSpark()</a></code>.</p></li>
 <li><p><strong>Java</strong>: Spark installation depends on Java being installed.</p></li>
-<li><p><strong>Spark Installation:</strong> Can be accomplished via <code><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html">sparklyr::spark_install()</a></code> provided the user has <code>sparklyr</code> and Java.</p></li>
+<li><p><strong>Spark Installation:</strong> Can be accomplished via <code><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html" class="external-link">sparklyr::spark_install()</a></code> provided the user has <code>sparklyr</code> and Java.</p></li>
 </ul>
 </div>
-<div id="libraries" class="section level1">
-<h1 class="hasAnchor">
-<a href="#libraries" class="anchor"></a>Libraries</h1>
+<div class="section level1">
+<h1 id="libraries">Libraries<a class="anchor" aria-label="anchor" href="#libraries"></a>
+</h1>
 <p>Load the following libraries.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.rstudio.com/">sparklyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime">modeltime</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk">timetk</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.rstudio.com/" class="external-link">sparklyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="spark-connection" class="section level1">
-<h1 class="hasAnchor">
-<a href="#spark-connection" class="anchor"></a>Spark Connection</h1>
-<p>Next, we set up a Spark connection via <code>sparklyr</code>. For this tutorial, we use the “local” connection. But many users will use <a href="https://databricks.com/">Databricks</a> to scale the forecasting workload.</p>
+<div class="section level1">
+<h1 id="spark-connection">Spark Connection<a class="anchor" aria-label="anchor" href="#spark-connection"></a>
+</h1>
+<p>Next, we set up a Spark connection via <code>sparklyr</code>. For this tutorial, we use the “local” connection. But many users will use <a href="https://databricks.com/" class="external-link">Databricks</a> to scale the forecasting workload.</p>
 <p>Ro run Spark locally:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html" class="external-link">spark_connect</a></span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></code></pre></div>
 <p>If using Databricks, you can use:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_connect</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"databricks"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html" class="external-link">spark_connect</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"databricks"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="setup-the-spark-backend" class="section level1">
-<h1 class="hasAnchor">
-<a href="#setup-the-spark-backend" class="anchor"></a>Setup the Spark Backend</h1>
-<p>Next, we register the Spark Backend using <code><a href="../reference/parallel_start.html">parallel_start(sc, .method = "spark")</a></code>. This is a helper to set up the <code><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html">registerDoSpark()</a></code> foreach adaptor. In layman’s terms, this just means that we can now run parallel using Spark.</p>
+<div class="section level1">
+<h1 id="setup-the-spark-backend">Setup the Spark Backend<a class="anchor" aria-label="anchor" href="#setup-the-spark-backend"></a>
+</h1>
+<p>Next, we register the Spark Backend using <code>parallel_start(sc, .method = "spark")</code>. This is a helper to set up the <code><a href="https://rdrr.io/pkg/sparklyr/man/registerDoSpark.html" class="external-link">registerDoSpark()</a></code> foreach adaptor. In layman’s terms, this just means that we can now run parallel using Spark.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/parallel_start.html">parallel_start</a></span><span class="op">(</span><span class="va">sc</span>, .method <span class="op">=</span> <span class="st">"spark"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="data-preparation-nested-forecasting" class="section level1">
-<h1 class="hasAnchor">
-<a href="#data-preparation-nested-forecasting" class="anchor"></a>Data Preparation (Nested Forecasting)</h1>
-<p>We’ll run through a minimal nested forecasting example. Refer to the <a href="https://business-science.github.io/modeltime/articles/nested-forecasting.html">Nested Forecasting Tutorial</a> for further information on how to perform iterative forecasting with the “nested” data structure in <code>modeltime</code>.</p>
+<div class="section level1">
+<h1 id="data-preparation-nested-forecasting">Data Preparation (Nested Forecasting)<a class="anchor" aria-label="anchor" href="#data-preparation-nested-forecasting"></a>
+</h1>
+<p>We’ll run through a minimal nested forecasting example. Refer to the <a href="https://business-science.github.io/modeltime/articles/nested-forecasting.html" class="external-link">Nested Forecasting Tutorial</a> for further information on how to perform iterative forecasting with the “nested” data structure in <code>modeltime</code>.</p>
 <p>The dataset we’ll be forecasting is the <code>walmart_sales_weekly</code>, which we modify to just include 3 columns: “id”, “date”, “value”.</p>
 <ol style="list-style-type: decimal">
 <li>The <strong>id</strong> feature is the grouping variable.</li>
@@ -251,66 +207,66 @@
 <li>The <strong>value</strong> feature is the sales value for the Walmart store-department combination.</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">walmart_sales_weekly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="modeltime-spark_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We prepare as nested data using the Nested Forecasting preparation functions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/prep_nested.html">extend_timeseries</a></span><span class="op">(</span>
         .id_var        <span class="op">=</span> <span class="va">id</span>,
         .date_var      <span class="op">=</span> <span class="va">date</span>,
         .length_future <span class="op">=</span> <span class="fl">52</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/prep_nested.html">nest_timeseries</a></span><span class="op">(</span>
         .id_var        <span class="op">=</span> <span class="va">id</span>,
         .length_future <span class="op">=</span> <span class="fl">52</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     
     <span class="fu"><a href="../reference/prep_nested.html">split_nested_timeseries</a></span><span class="op">(</span>
         .length_test <span class="op">=</span> <span class="fl">52</span>
     <span class="op">)</span>
 
 <span class="va">nested_data_tbl</span>
-<span class="co">#&gt; # A tibble: 7 × 4</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 4</span></span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits        </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;         </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt;</span></code></pre></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1   <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3   <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8   <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span></span></code></pre></div>
 </div>
-<div id="modeling" class="section level1">
-<h1 class="hasAnchor">
-<a href="#modeling" class="anchor"></a>Modeling</h1>
+<div class="section level1">
+<h1 id="modeling">Modeling<a class="anchor" aria-label="anchor" href="#modeling"></a>
+</h1>
 <p>We’ll create two unfitted models: XGBoost and Prophet. Then we’ll use <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> to iteratively fit the models to each of the time series using the Spark Backend.</p>
-<div id="xgboost" class="section level2">
-<h2 class="hasAnchor">
-<a href="#xgboost" class="anchor"></a>XGBoost</h2>
+<div class="section level2">
+<h2 id="xgboost">XGBoost<a class="anchor" aria-label="anchor" href="#xgboost"></a>
+</h2>
 <p>We create the XGBoost model on features derived from the date column.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html" class="external-link">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">wflw_xgb</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+    <span class="fu">add_model</span><span class="op">(</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_xgb</span><span class="op">)</span>
 
 <span class="va">wflw_xgb</span>
 <span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════════════════</span>
-<span class="co">#&gt; Preprocessor: Recipe</span>
-<span class="co">#&gt; Model: boost_tree()</span>
+<span class="co">#&gt; <span style="font-style: italic;">Preprocessor:</span> Recipe</span>
+<span class="co">#&gt; <span style="font-style: italic;">Model:</span> boost_tree()</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; 4 Recipe Steps</span>
@@ -325,24 +281,24 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Computational engine: xgboost</span></code></pre></div>
 </div>
-<div id="prophet" class="section level2">
-<h2 class="hasAnchor">
-<a href="#prophet" class="anchor"></a>Prophet</h2>
+<div class="section level2">
+<h2 id="prophet">Prophet<a class="anchor" aria-label="anchor" href="#prophet"></a>
+</h2>
 <p>Next, we create a prophet workflow.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
+<code class="sourceCode R"><span class="va">rec_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> 
 
-<span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">wflw_prophet</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">add_model</span><span class="op">(</span>
-        <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-            <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+        <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="st">"regression"</span>, seasonality_yearly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+            <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"prophet"</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu">add_recipe</span><span class="op">(</span><span class="va">rec_prophet</span><span class="op">)</span>
 
 <span class="va">wflw_prophet</span>
 <span class="co">#&gt; ══ Workflow ════════════════════════════════════════════════════════════════════</span>
-<span class="co">#&gt; Preprocessor: Recipe</span>
-<span class="co">#&gt; Model: prophet_reg()</span>
+<span class="co">#&gt; <span style="font-style: italic;">Preprocessor:</span> Recipe</span>
+<span class="co">#&gt; <span style="font-style: italic;">Model:</span> prophet_reg()</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Preprocessor ────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt; 0 Recipe Steps</span>
@@ -356,13 +312,13 @@
 <span class="co">#&gt; Computational engine: prophet</span></code></pre></div>
 </div>
 </div>
-<div id="nested-forecasting-with-spark" class="section level1">
-<h1 class="hasAnchor">
-<a href="#nested-forecasting-with-spark" class="anchor"></a>Nested Forecasting with Spark</h1>
-<p>Now, the beauty is that everything is set up for us to perform the nested forecasting with Spark. We simply use <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> and make sure it uses the Spark Backend by setting <code><a href="../reference/control_modeltime.html">control_nested_fit(allow_par = TRUE)</a></code>.</p>
+<div class="section level1">
+<h1 id="nested-forecasting-with-spark">Nested Forecasting with Spark<a class="anchor" aria-label="anchor" href="#nested-forecasting-with-spark"></a>
+</h1>
+<p>Now, the beauty is that everything is set up for us to perform the nested forecasting with Spark. We simply use <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> and make sure it uses the Spark Backend by setting <code>control_nested_fit(allow_par = TRUE)</code>.</p>
 <p>Note that this will take about 30-seconds because we have a one-time cost to move data, libraries, and environment variables to the Spark clusters. But the good news is that when we scale up to 10,000+ time series, that the one-time cost is minimal compared to the speed up from distributed computation.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_data_tbl</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">&lt;-</span> <span class="va">nested_data_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit</a></span><span class="op">(</span>
         <span class="va">wflw_xgb</span>,
         <span class="va">wflw_prophet</span>,
@@ -371,38 +327,38 @@
     <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 12 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.004 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 22.978 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 24.795 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 22.97905 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 24.79589 secs.</span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span>
 <span class="co">#&gt; # Nested Modeltime Table</span>
-<span class="co">#&gt;   # A tibble: 7 × 5</span>
+<span class="co">#&gt;   <span style="color: #949494;"># A tibble: 7 × 5</span></span>
 <span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables  </span>
-<span class="co">#&gt;   &lt;fct&gt; &lt;list&gt;             &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             </span>
-<span class="co">#&gt; 1 1_1   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 2 1_3   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 3 1_8   &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 4 1_13  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 5 1_38  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 6 1_93  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span>
-<span class="co">#&gt; 7 1_95  &lt;tibble [143 × 2]&gt; &lt;tibble [52 × 2]&gt; &lt;split [91|52]&gt; &lt;mdl_time_tbl [2 ×…</span></code></pre></div>
-<div id="model-test-accuracy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-test-accuracy" class="anchor"></a>Model Test Accuracy</h2>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1   <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3   <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8   <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95  <span style="color: #949494;">&lt;tibble [143 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [52 × 2]&gt;</span> <span style="color: #949494;">&lt;split [91|52]&gt;</span> <span style="color: #949494;">&lt;mdl_time_tbl [2 ×</span>…</span></code></pre></div>
+<div class="section level2">
+<h2 id="model-test-accuracy">Model Test Accuracy<a class="anchor" aria-label="anchor" href="#model-test-accuracy"></a>
+</h2>
 <p>We can observe the results. First, we can check the accuracy for each model</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="bgdwpvcmol" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="cgjegixjwp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#bgdwpvcmol .gt_table {
+#cgjegixjwp .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -427,7 +383,7 @@
   border-left-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_heading {
+#cgjegixjwp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -439,7 +395,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_title {
+#cgjegixjwp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -449,7 +405,7 @@
   border-bottom-width: 0;
 }
 
-#bgdwpvcmol .gt_subtitle {
+#cgjegixjwp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -459,13 +415,13 @@
   border-top-width: 0;
 }
 
-#bgdwpvcmol .gt_bottom_border {
+#cgjegixjwp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_col_headings {
+#cgjegixjwp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -480,7 +436,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_col_heading {
+#cgjegixjwp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -500,7 +456,7 @@
   overflow-x: hidden;
 }
 
-#bgdwpvcmol .gt_column_spanner_outer {
+#cgjegixjwp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -512,15 +468,15 @@
   padding-right: 4px;
 }
 
-#bgdwpvcmol .gt_column_spanner_outer:first-child {
+#cgjegixjwp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bgdwpvcmol .gt_column_spanner_outer:last-child {
+#cgjegixjwp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bgdwpvcmol .gt_column_spanner {
+#cgjegixjwp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -532,7 +488,7 @@
   width: 100%;
 }
 
-#bgdwpvcmol .gt_group_heading {
+#cgjegixjwp .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -554,7 +510,7 @@
   vertical-align: middle;
 }
 
-#bgdwpvcmol .gt_empty_group_heading {
+#cgjegixjwp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -569,15 +525,15 @@
   vertical-align: middle;
 }
 
-#bgdwpvcmol .gt_from_md > :first-child {
+#cgjegixjwp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bgdwpvcmol .gt_from_md > :last-child {
+#cgjegixjwp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bgdwpvcmol .gt_row {
+#cgjegixjwp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -596,7 +552,7 @@
   overflow-x: hidden;
 }
 
-#bgdwpvcmol .gt_stub {
+#cgjegixjwp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -608,7 +564,7 @@
   padding-left: 12px;
 }
 
-#bgdwpvcmol .gt_summary_row {
+#cgjegixjwp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -618,7 +574,7 @@
   padding-right: 5px;
 }
 
-#bgdwpvcmol .gt_first_summary_row {
+#cgjegixjwp .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -628,7 +584,7 @@
   border-top-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_grand_summary_row {
+#cgjegixjwp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -638,7 +594,7 @@
   padding-right: 5px;
 }
 
-#bgdwpvcmol .gt_first_grand_summary_row {
+#cgjegixjwp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -648,11 +604,11 @@
   border-top-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_striped {
+#cgjegixjwp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bgdwpvcmol .gt_table_body {
+#cgjegixjwp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -661,7 +617,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_footnotes {
+#cgjegixjwp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -675,13 +631,13 @@
   border-right-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_footnote {
+#cgjegixjwp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#bgdwpvcmol .gt_sourcenotes {
+#cgjegixjwp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -695,41 +651,41 @@
   border-right-color: #D3D3D3;
 }
 
-#bgdwpvcmol .gt_sourcenote {
+#cgjegixjwp .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#bgdwpvcmol .gt_left {
+#cgjegixjwp .gt_left {
   text-align: left;
 }
 
-#bgdwpvcmol .gt_center {
+#cgjegixjwp .gt_center {
   text-align: center;
 }
 
-#bgdwpvcmol .gt_right {
+#cgjegixjwp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bgdwpvcmol .gt_font_normal {
+#cgjegixjwp .gt_font_normal {
   font-weight: normal;
 }
 
-#bgdwpvcmol .gt_font_bold {
+#cgjegixjwp .gt_font_bold {
   font-weight: bold;
 }
 
-#bgdwpvcmol .gt_font_italic {
+#cgjegixjwp .gt_font_italic {
   font-style: italic;
 }
 
-#bgdwpvcmol .gt_super {
+#cgjegixjwp .gt_super {
   font-size: 65%;
 }
 
-#bgdwpvcmol .gt_footnote_marks {
+#cgjegixjwp .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -924,52 +880,52 @@
 </table>
 </div>
 </div>
-<div id="test-forecast" class="section level2">
-<h2 class="hasAnchor">
-<a href="#test-forecast" class="anchor"></a>Test Forecast</h2>
+<div class="section level2">
+<h2 id="test-forecast">Test Forecast<a class="anchor" aria-label="anchor" href="#test-forecast"></a>
+</h2>
 <p>Next, we can examine the test forecast for each of the models.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="modeltime-spark_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="close-clusters-and-shutdown-spark" class="section level1">
-<h1 class="hasAnchor">
-<a href="#close-clusters-and-shutdown-spark" class="anchor"></a>Close Clusters and Shutdown Spark</h1>
+<div class="section level1">
+<h1 id="close-clusters-and-shutdown-spark">Close Clusters and Shutdown Spark<a class="anchor" aria-label="anchor" href="#close-clusters-and-shutdown-spark"></a>
+</h1>
 <p>We can close the Spark adapter and shut down the Spark session when we are finished.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Unregisters the Spark Backend</span>
 <span class="fu"><a href="../reference/parallel_start.html">parallel_stop</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Disconnects Spark</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_disconnect_all</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html" class="external-link">spark_disconnect_all</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1</span></code></pre></div>
 </div>
-<div id="summary" class="section level1">
-<h1 class="hasAnchor">
-<a href="#summary" class="anchor"></a>Summary</h1>
+<div class="section level1">
+<h1 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h1>
 <p>We’ve now successfully completed a <strong>Nested Forecast using the Spark Backend.</strong> You may find this challenging, especially if you are not familiar with the Modeltime Workflow, terminology, or tidy-modeling in R. If this is the case, we have a solution. Take our high-performance forecasting course.</p>
-<div id="take-the-high-performance-forecasting-course" class="section level2">
-<h2 class="hasAnchor">
-<a href="#take-the-high-performance-forecasting-course" class="anchor"></a>Take the High-Performance Forecasting Course</h2>
+<div class="section level2">
+<h2 id="take-the-high-performance-forecasting-course">Take the High-Performance Forecasting Course<a class="anchor" aria-label="anchor" href="#take-the-high-performance-forecasting-course"></a>
+</h2>
 <blockquote>
 <p>Become the forecasting expert for your organization</p>
 </blockquote>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
-<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/"><em>High-Performance Time Series Course</em></a></p>
-<div id="time-series-is-changing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#time-series-is-changing" class="anchor"></a>Time Series is Changing</h3>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" target="_blank" class="external-link"><img src="https://www.filepicker.io/api/file/bKyqVAi5Qi64sS05QYLk" alt="High-Performance Time Series Forecasting Course" width="100%" style="box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);"></a></p>
+<p><a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" class="external-link"><em>High-Performance Time Series Course</em></a></p>
+<div class="section level3">
+<h3 id="time-series-is-changing">Time Series is Changing<a class="anchor" aria-label="anchor" href="#time-series-is-changing"></a>
+</h3>
 <p>Time series is changing. <strong>Businesses now need 10,000+ time series forecasts every day.</strong> This is what I call a <em>High-Performance Time Series Forecasting System (HPTSF)</em> - Accurate, Robust, and Scalable Forecasting.</p>
 <p><strong>High-Performance Forecasting Systems will save companies by improving accuracy and scalability.</strong> Imagine what will happen to your career if you can provide your organization a “High-Performance Time Series Forecasting System” (HPTSF System).</p>
 </div>
-<div id="how-to-learn-high-performance-time-series-forecasting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-learn-high-performance-time-series-forecasting" class="anchor"></a>How to Learn High-Performance Time Series Forecasting</h3>
-<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
+<div class="section level3">
+<h3 id="how-to-learn-high-performance-time-series-forecasting">How to Learn High-Performance Time Series Forecasting<a class="anchor" aria-label="anchor" href="#how-to-learn-high-performance-time-series-forecasting"></a>
+</h3>
+<p>I teach how to build a HPTFS System in my <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link"><strong>High-Performance Time Series Forecasting Course</strong></a>. You will learn:</p>
 <ul>
 <li>
 <strong>Time Series Machine Learning</strong> (cutting-edge) with <code>Modeltime</code> - 30+ Models (Prophet, ARIMA, XGBoost, Random Forest, &amp; many more)</li>
@@ -991,36 +947,33 @@
 Become the Time Series Expert for your organization.
 </p>
 <br><p class="text-center" style="font-size:30px;">
-<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting">Take the High-Performance Time Series Forecasting Course</a>
+<a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting" class="external-link">Take the High-Performance Time Series Forecasting Course</a>
 </p>
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Matt Dancho.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Matt Dancho.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>
