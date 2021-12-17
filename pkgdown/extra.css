@@ -6,7 +6,7 @@ thead {
     font-size: 20px;
 }
 
-
+/**
 div.comparison thead tr th:first-child,
 div.comparison tbody tr td:first-child {
   width: 12em;
@@ -34,3 +34,4 @@ div.comparison .header {
 .ref-index h3 {
   color: #18bc9c;
 }
+**/
