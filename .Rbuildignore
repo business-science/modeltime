@@ -17,3 +17,4 @@ vignettes/temp
 ^logs$
 ^vignettes/derby.log$
 vignettes/logs
+^CRAN-SUBMISSION$
