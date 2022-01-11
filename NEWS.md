@@ -1,6 +1,8 @@
 # modeltime 1.1.0.9000
 
+## Fixes
 
+- Fixes issue of incorrect order of forecasts #142
 
 # modeltime 1.1.0 
 
