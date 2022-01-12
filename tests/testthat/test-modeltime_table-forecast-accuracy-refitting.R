@@ -54,7 +54,7 @@ test_that("Auto ARIMA (Parsnip)", {
 
     # ** Accuracy ----
     accuracy_tbl <- calibrated_tbl %>%
-        modeltime_accuracy(metric_set = metric_set(rsq, mae))
+        modeltime_accuracy(metric_set = metric_set(rsq, yardstick::mae))
 
     expect_equal(nrow(accuracy_tbl), 1)
 
@@ -117,7 +117,7 @@ test_that("Auto ARIMA (Workflow)", {
 
     # ** Accuracy ----
     accuracy_tbl <- calibrated_tbl %>%
-        modeltime_accuracy(metric_set = metric_set(rsq, mae))
+        modeltime_accuracy(metric_set = metric_set(rsq, yardstick::mae))
 
     expect_equal(nrow(accuracy_tbl), 1)
 

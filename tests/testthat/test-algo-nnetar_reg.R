@@ -1,4 +1,4 @@
-# ---- STANDARD ARIMA ----
+# ---- NNETAR ----
 context("TEST nnetar_reg")
 
 
@@ -10,36 +10,37 @@ m750 <- m4_monthly %>% filter(id == "M750")
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
 
-# Model Spec
-model_spec <- nnetar_reg(
-    seasonal_period          = 12,
-    non_seasonal_ar          = 3,
-    seasonal_ar              = 1,
-    hidden_units             = 6,
-    num_networks             = 15,
-    penalty                  = 0.1,
-    epochs                   = 50
-) %>%
-    set_engine("nnetar")
-
 
 # PARSNIP ----
 
 # * NO XREGS ----
 
-# Fit Spec
-set.seed(123)
-model_fit <- model_spec %>%
-    fit(log(value) ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
-test_that("nnetar_reg: (No xregs), Test Model Fit Object", {
+test_that("nnetar_reg: Parsnip", {
+
+    skip_on_cran()
+
+    # Model Spec
+    model_spec <- nnetar_reg(
+        seasonal_period          = 12,
+        non_seasonal_ar          = 3,
+        seasonal_ar              = 1,
+        hidden_units             = 6,
+        num_networks             = 15,
+        penalty                  = 0.1,
+        epochs                   = 50
+    ) %>%
+        set_engine("nnetar")
+
+    # Fit Spec
+    set.seed(123)
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "nnetar_fit_impl")
 
@@ -82,23 +83,19 @@ test_that("nnetar_reg: (No xregs), Test Model Fit Object", {
     # - MAE less than 700
     testthat::expect_lte(mean(abs(resid)), 700)
 
-})
 
-# * XREGS ----
+    # * XREGS ----
 
-# Fit
-set.seed(123)
-model_fit <- model_spec %>%
-    fit(log(value) ~ date + month(date, label = TRUE), data = training(splits))
+    # Fit
+    set.seed(123)
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date + month(date, label = TRUE), data = training(splits))
 
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
-
-# TESTS
-test_that("nnetar_reg (XREGS)", {
 
     testthat::expect_s3_class(model_fit$fit, "nnetar_fit_impl")
 
@@ -143,41 +140,41 @@ test_that("nnetar_reg (XREGS)", {
 
 # ---- WORKFLOWS ----
 
-# Model Spec
-model_spec <- nnetar_reg(
-    seasonal_period          = 12,
-    non_seasonal_ar          = 3,
-    seasonal_ar              = 1,
-    hidden_units             = 6,
-    num_networks             = 15,
-    penalty                  = 0.1,
-    epochs                   = 50
-) %>%
-    set_engine("nnetar")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-set.seed(123)
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
-
-
 # TESTS
 test_that("nnetar_reg: (workflow)", {
+
+    skip_on_cran()
+
+    # Model Spec
+    model_spec <- nnetar_reg(
+        seasonal_period          = 12,
+        non_seasonal_ar          = 3,
+        seasonal_ar              = 1,
+        hidden_units             = 6,
+        num_networks             = 15,
+        penalty                  = 0.1,
+        epochs                   = 50
+    ) %>%
+        set_engine("nnetar")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE)
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    set.seed(123)
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "nnetar_fit_impl")
 

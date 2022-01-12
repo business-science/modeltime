@@ -1,20 +1,24 @@
 context("RECURSIVE MODELS")
 
-FORECAST_HORIZON <- 24
 
-m750_extended <- m750 %>%
-  group_by(id) %>%
-  future_frame(
-    .length_out = FORECAST_HORIZON,
-    .bind_data  = TRUE
-  ) %>%
-  ungroup()
 
 # SINGLE / RECIPE / PARSNIP ----
 
-test_that("recursive 1 - single / recipe / parsnip", {
+test_that("Recursive Tests ", {
 
   skip_on_cran()
+
+  FORECAST_HORIZON <- 24
+
+  m750_extended <- m750 %>%
+    group_by(id) %>%
+    future_frame(
+      .length_out = FORECAST_HORIZON,
+      .bind_data  = TRUE
+    ) %>%
+    ungroup()
+
+  # recursive 1 - single / recipe / parsnip ----
 
   # Lag Recipe
   recipe_lag <- recipe(value ~ date, m750_extended) %>%
@@ -97,11 +101,12 @@ test_that("recursive 1 - single / recipe / parsnip", {
   expect_lt(max(preds), 10600)
   expect_gt(min(preds), 8800)
 
-})
 
-# SINGLE / TRANSFORM FUNCTION / WORKFLOW ----
 
-test_that("recursive 2 - single / transform func / workflow", {
+  # SINGLE / TRANSFORM FUNCTION / WORKFLOW ----
+
+
+  # recursive 2 - single / transform func / workflow -----
 
   # Function run recursively that updates the forcasted dataset
   lag_transformer <- function(data){
@@ -191,11 +196,10 @@ test_that("recursive 2 - single / transform func / workflow", {
   expect_lt(max(preds), 10600)
   expect_gt(min(preds), 8800)
 
-})
 
-# PANEL / FUNCTION / PARSNIP & WORKFLOW ----
+  # PANEL / FUNCTION / PARSNIP & WORKFLOW ----
 
-test_that("recursive 3 - panel / function / parsnip + workflow", {
+  # recursive 3 - panel / function / parsnip + workflow
 
   # Jumble the data to make sure it forecasts properly
   m4_monthly_updated <- m4_monthly %>%

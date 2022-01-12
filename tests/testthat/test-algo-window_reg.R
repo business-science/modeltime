@@ -430,3 +430,4 @@ testthat::test_that("SNAIVE - Check New Factors", {
     expect_equal(future_forecast_vec, rep_len(NA_real_, 60))
 
 })
+

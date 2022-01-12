@@ -10,35 +10,39 @@ m750 <- m4_monthly %>% filter(id == "M750")
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
 
-# Model Spec
-model_spec <- adam_reg(
-    seasonal_period          = 12,
-    non_seasonal_ar          = 3,
-    non_seasonal_differences = 1,
-    non_seasonal_ma          = 3,
-    seasonal_ar              = 1,
-    seasonal_differences     = 0,
-    seasonal_ma              = 1
-) %>%
-    set_engine("adam")
 
-
-# PARSNIP ----
-
-# * NO XREGS ----
-
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(value ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
 
 
 # TESTS
 test_that("adam_reg: Adam, (No xregs), Test Model Fit Object", {
+
+    skip_on_cran()
+
+    # Model Spec
+    model_spec <- adam_reg(
+        seasonal_period          = 12,
+        non_seasonal_ar          = 3,
+        non_seasonal_differences = 1,
+        non_seasonal_ma          = 3,
+        seasonal_ar              = 1,
+        seasonal_differences     = 0,
+        seasonal_ma              = 1
+    ) %>%
+        set_engine("adam")
+
+
+    # PARSNIP ----
+
+    # * NO XREGS ----
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(value ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "Adam_fit_impl")
 
@@ -56,10 +60,6 @@ test_that("adam_reg: Adam, (No xregs), Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
-
-test_that("adam_reg: Adam, (No xregs), Test Predictions", {
-
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
     testthat::expect_identical(testing(splits)$date, predictions_tbl$.index)
@@ -74,28 +74,27 @@ test_that("adam_reg: Adam, (No xregs), Test Predictions", {
     # - MAE less than 700
     testthat::expect_lte(mean(abs(resid)), 700)
 
-})
 
-# * XREGS ----
+    # * XREGS ----
 
-# Data
-m750 <- m4_monthly %>% filter(id == "M750") %>% mutate(month = month(date, label = TRUE))
+    # Data
+    m750 <- m4_monthly %>% filter(id == "M750") %>%
+        mutate(month = month(date, label = TRUE))
 
-# Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+    # Split Data 80/20
+    splits <- initial_time_split(m750, prop = 0.8)
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(value ~ date + month, data = training(splits))
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(value ~ date + month, data = training(splits))
 
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
 
-# TESTS
-test_that("adam_reg: Adam, (XREGS), Test Model Fit Object", {
+    # Model Fit ----
 
     testthat::expect_s3_class(model_fit$fit, "Adam_fit_impl")
 
@@ -113,9 +112,7 @@ test_that("adam_reg: Adam, (XREGS), Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
 
-test_that("adam_reg: Adam (XREGS), Test Predictions", {
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -136,42 +133,41 @@ test_that("adam_reg: Adam (XREGS), Test Predictions", {
 
 # ---- WORKFLOWS ----
 
-# Model Spec
-model_spec <- adam_reg(
-    seasonal_period          = 12,
-    non_seasonal_ar          = 3,
-    non_seasonal_differences = 1,
-    non_seasonal_ma          = 3,
-    seasonal_ar              = 1,
-    seasonal_differences     = 0,
-    seasonal_ma              = 1
-) %>%
-    set_engine("adam")
+test_that("adam_reg: Adam (workflow)", {
 
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits))
+    skip_on_cran()
 
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
+    # * Model Spec ====
+    model_spec <- adam_reg(
+        seasonal_period          = 12,
+        non_seasonal_ar          = 3,
+        non_seasonal_differences = 1,
+        non_seasonal_ma          = 3,
+        seasonal_ar              = 1,
+        seasonal_differences     = 0,
+        seasonal_ma              = 1
+    ) %>%
+        set_engine("adam")
 
-wflw_fit <- wflw %>%
-    fit(training(splits))
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits))
 
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits))
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
 
+    wflw_fit <- wflw %>%
+        fit(training(splits))
 
-
-# TESTS
-test_that("adam_reg: Adam (workflow), Test Model Fit Object", {
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits))
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "Adam_fit_impl")
 
-    # $fit
+    # * Structure ----
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "adam")
 
@@ -185,9 +181,7 @@ test_that("adam_reg: Adam (workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
-
-test_that("adam_reg: Adam (workflow), Test Predictions", {
+    # * Test Predictions ----
 
     full_data <- bind_rows(training(splits), testing(splits))
 

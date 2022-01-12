@@ -1,43 +1,42 @@
 # RESIDUALS TESTS-----
 context("TEST MODELTIME RESIDUALS TESTS")
 
-# SETUP ----
-
-# Data
-m750   <- m4_monthly %>% filter(id == "M750")
-splits <- initial_time_split(m750, prop = 0.8)
-
-# Model Spec
-model_fit_arima <- arima_reg() %>%
-    set_engine("auto_arima") %>%
-    fit(value ~ date, training(splits))
-
-model_fit_prophet <- prophet_reg() %>%
-    set_engine("prophet") %>%
-    fit(value ~ date, training(splits))
-
-model_fit_lm <- linear_reg() %>%
-    set_engine("lm") %>%
-    fit(value ~ splines::ns(date, df = 5)
-        + month(date, label = TRUE),
-        training(splits))
-
-# Model Table
-model_tbl <- modeltime_table(
-    model_fit_arima,
-    model_fit_prophet,
-    model_fit_lm
-)
-
-residuals_tbl <- model_tbl %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_residuals()
-
-
 
 # RESIDUALS TESTS ----
 
 test_that("Test Modeltime Residuals Tests", {
+
+    skip_on_cran()
+
+    # Data
+    m750   <- m4_monthly %>% filter(id == "M750")
+    splits <- initial_time_split(m750, prop = 0.8)
+
+    # Model Spec
+    model_fit_arima <- arima_reg() %>%
+        set_engine("auto_arima") %>%
+        fit(value ~ date, training(splits))
+
+    model_fit_prophet <- prophet_reg() %>%
+        set_engine("prophet") %>%
+        fit(value ~ date, training(splits))
+
+    model_fit_lm <- linear_reg() %>%
+        set_engine("lm") %>%
+        fit(value ~ splines::ns(date, df = 5)
+            + month(date, label = TRUE),
+            training(splits))
+
+    # Model Table
+    model_tbl <- modeltime_table(
+        model_fit_arima,
+        model_fit_prophet,
+        model_fit_lm
+    )
+
+    residuals_tbl <- model_tbl %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_residuals()
 
     res_tbl_1 <- residuals_tbl %>% modeltime_residuals_test()
 

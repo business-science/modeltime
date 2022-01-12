@@ -86,7 +86,7 @@ test_that("Test Modeltime Accuracy", {
 test_that("Modifying Default Forecast Accuracy Metric Set", {
 
     my_metric_set <- default_forecast_accuracy_metric_set(
-        metric_tweak("mase12", mase, m = 12)
+        metric_tweak("mase12", yardstick::mase, m = 12)
     )
 
     acc_tbl_6 <- calibration_tbl %>%
@@ -178,3 +178,4 @@ test_that("accuracy table, Reactable - Workflow Interface", {
     testthat::expect_s3_class(react, "reactable")
 
 })
+

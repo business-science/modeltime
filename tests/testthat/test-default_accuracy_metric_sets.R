@@ -15,7 +15,7 @@ test_that("default_forecast_accuracy_metric_set works", {
     )
 
     # Create a metric summarizer function from the metric set
-    calc_default_metrics <- default_forecast_accuracy_metric_set(mae)
+    calc_default_metrics <- default_forecast_accuracy_metric_set(yardstick::mae)
 
     # Apply the metric summarizer to new data
     ret <- calc_default_metrics(data, y, y_hat)
@@ -49,7 +49,7 @@ test_that("summarize_accuracy_metrics works", {
         summarize_accuracy_metrics(
             truth, estimate,
             metric_set = default_forecast_accuracy_metric_set(
-                mae
+                yardstick::mae
             )
         )
 

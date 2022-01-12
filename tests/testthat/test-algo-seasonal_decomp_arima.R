@@ -2,35 +2,35 @@
 context("TEST seasonal_reg() - stlm_arima")
 
 
-# SETUP ----
-
-# Split Data 80/20
-splits <- initial_time_split(taylor_30_min, prop = 0.9)
-
-# Model Spec
-model_spec <- seasonal_reg(seasonal_period_1 = "1 day", seasonal_period_2 = "week") %>%
-    set_engine("stlm_arima")
-
-# CHECKS ----
-test_that("seasonal_reg: checks", {
-
-    # external regressors message
-    expect_error({
-        seasonal_reg(seasonal_period_1 = 1) %>%
-            set_engine("stlm_arima") %>%
-            fit(value ~ date, data = training(splits))
-    })
-
-})
-
-# PARSNIP ----
-
-# * XREGS ----
-
 # TESTS
 test_that("seasonal_reg - arima: parnip", {
 
     skip_on_cran()
+
+    # PARSNIP ----
+
+    # * XREGS ----
+
+    # SETUP ----
+
+    # Split Data 80/20
+    splits <- initial_time_split(taylor_30_min, prop = 0.9)
+
+    # Model Spec
+    model_spec <- seasonal_reg(seasonal_period_1 = "1 day", seasonal_period_2 = "week") %>%
+        set_engine("stlm_arima")
+
+    # CHECKS ----
+    test_that("seasonal_reg: checks", {
+
+        # external regressors message
+        expect_error({
+            seasonal_reg(seasonal_period_1 = 1) %>%
+                set_engine("stlm_arima") %>%
+                fit(value ~ date, data = training(splits))
+        })
+
+    })
 
     # SETUP
 
@@ -81,18 +81,9 @@ test_that("seasonal_reg - arima: parnip", {
     # - MAE less than 700
     testthat::expect_lte(mean(abs(resid)), 700)
 
-})
 
 
-
-# ---- WORKFLOWS ----
-
-
-
-# TESTS
-test_that("seasonal_reg: workflow", {
-
-    skip_on_cran()
+    # ---- WORKFLOWS ----
 
     # SETUP
 

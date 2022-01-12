@@ -2,17 +2,21 @@
 context("TEST seasonal_reg() - stlm_ets")
 
 
-# SETUP ----
 
-# Split Data 80/20
-splits <- initial_time_split(taylor_30_min, prop = 0.9)
-
-# Model Spec
-model_spec <- seasonal_reg(seasonal_period_1 = "1 day", seasonal_period_2 = "week") %>%
-    set_engine("stlm_ets")
 
 # CHECKS ----
-test_that("seasonal_reg: checks", {
+test_that("seasonal_reg: stlm_ets", {
+
+
+
+    # SETUP ----
+
+    # Split Data 80/20
+    splits <- initial_time_split(taylor_30_min, prop = 0.9)
+
+    # Model Spec
+    model_spec <- seasonal_reg(seasonal_period_1 = "1 day", seasonal_period_2 = "week") %>%
+        set_engine("stlm_ets")
 
     # external regressors message
     expect_message({
@@ -27,24 +31,21 @@ test_that("seasonal_reg: checks", {
             fit(value ~ date, data = training(splits))
     })
 
-})
-
-# PARSNIP ----
-
-# * NO XREGS ----
-
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
 
 
-# TESTS
-test_that("seasonal_reg: parnip", {
+    # PARSNIP ----
+
+    # * NO XREGS ----
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
+
 
     testthat::expect_s3_class(model_fit$fit, "stlm_ets_fit_impl")
 
@@ -81,34 +82,28 @@ test_that("seasonal_reg: parnip", {
     # - MAE less than 700
     testthat::expect_lte(mean(abs(resid)), 700)
 
-})
 
 
+    # ---- WORKFLOWS ----
 
-# ---- WORKFLOWS ----
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE)
 
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
 
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
+    wflw_fit <- wflw %>%
+        fit(training(splits))
 
-wflw_fit <- wflw %>%
-    fit(training(splits))
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
 
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
-
-
-# TESTS
-test_that("seasonal_reg: workflow", {
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "stlm_ets_fit_impl")
 
