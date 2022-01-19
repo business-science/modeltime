@@ -10,7 +10,7 @@ articles:
   nested-forecasting: nested-forecasting.html
   parallel-processing: parallel-processing.html
   recursive-forecasting: recursive-forecasting.html
-last_built: 2022-01-19T02:44Z
+last_built: 2022-01-19T11:52Z
 urls:
   reference: https://business-science.github.io/modeltime/reference
   article: https://business-science.github.io/modeltime/articles
