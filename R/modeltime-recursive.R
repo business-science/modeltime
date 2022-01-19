@@ -305,19 +305,7 @@ print.recursive_panel <- function(x, ...) {
     invisible(x)
 }
 
-#' Recursive Model Predictions
-#'
-#' Make predictions from a recursive model.
-#'
-#' @inheritParams parsnip::predict.model_fit
-#'
-#' @details
-#'
-#' Refer to [recursive()] for further details and examples.
-#'
-#' @return
-#' Numeric values for the recursive panel prediction
-#'
+
 #' @export
 predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...) {
 
@@ -335,19 +323,7 @@ predict.recursive <- function(object, new_data, type = NULL, opts = list(), ...)
 
 }
 
-#' Recursive Model Predictions
-#'
-#' Make predictions from a recursive model.
-#'
-#' @inheritParams parsnip::predict.model_fit
-#'
-#' @details
-#'
-#' Refer to [recursive()] for further details and examples.
-#'
-#' @return
-#' Numeric values for the recursive panel prediction
-#'
+
 #' @export
 predict.recursive_panel <- function(object, new_data, type = NULL, opts = list(), ...) {
 
@@ -632,6 +608,7 @@ panel_tail <- function(data, id, n){
 #' @return A function that applies a recursive transformation
 #'
 #' @rdname dot_prepare_transform
+#' @keywords internal
 #' @export
 .prepare_transform <- function(.transform) {
 

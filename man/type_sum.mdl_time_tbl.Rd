@@ -16,3 +16,4 @@ A character value.
 \code{type_sum} controls how objects are shown when inside tibble
 columns.
 }
+\keyword{internal}

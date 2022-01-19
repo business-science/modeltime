@@ -153,6 +153,8 @@ reference:
   - update_modeltime_model
   - update_modeltime_description
   - pluck_modeltime_model
+  - pull_modeltime_residuals
+  - pull_parsnip_preprocessor
 - title: Accuracy Metrics (Yardstick)
 - subtitle: Metric Sets and Summarizers
   contents:
@@ -161,7 +163,7 @@ reference:
 - subtitle: New Accuracy Metrics
   contents:
   - maape
-  - metric_tweak
+  - maape_vec
 - title: Parameters (Dials)
   desc: The `dials` parameter functions that support hyperparameter tuning with `tune`.
 - subtitle: General Time Series
@@ -189,6 +191,7 @@ reference:
   - parse_index_from_data
   - get_model_description
   - get_arima_description
+  - get_tbats_description
 - title: Data
   contents: starts_with("m750")
 repo:

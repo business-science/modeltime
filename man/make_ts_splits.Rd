@@ -20,3 +20,4 @@ A list containing train_idx and test_idx
 \description{
 Makes fast train/test split indicies for time series.
 }
+\keyword{internal}

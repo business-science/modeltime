@@ -14,3 +14,4 @@ window_function_predict_impl(object, new_data)
 \description{
 Bridge prediction function for window Models
 }
+\keyword{internal}

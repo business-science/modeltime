@@ -270,6 +270,7 @@ translate.nnetar_reg <- function(x, engine = x$engine, ...) {
 #' @param maxit Maximum number of iterations. Default 100.
 #' @param ... Additional arguments passed to `forecast::nnetar`
 #'
+#' @keywords internal
 #' @export
 nnetar_fit_impl <- function(x, y, period = "auto",
                             p = 1, P = 1, size = 10, repeats = 20,
@@ -350,6 +351,7 @@ predict.nnetar_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::forecast()`
 #'
+#' @keywords internal
 #' @export
 nnetar_predict_impl <- function(object, new_data, ...) {
 

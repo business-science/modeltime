@@ -12,3 +12,4 @@ is_residuals(object)
 \description{
 This function returns \code{TRUE} for objects that contains the column name '.residuals'.
 }
+\keyword{internal}

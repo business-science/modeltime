@@ -77,3 +77,4 @@ specify the maximum orders to check in this case}
 \description{
 Low-Level ADAM function for translating modeltime to forecast
 }
+\keyword{internal}

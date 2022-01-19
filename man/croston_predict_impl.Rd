@@ -16,3 +16,4 @@ croston_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for CROSTON models
 }
+\keyword{internal}

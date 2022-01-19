@@ -323,6 +323,7 @@ translate.arima_reg <- function(x, engine = x$engine, ...) {
 #' @param Q The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.
 #' @param ... Additional arguments passed to `forecast::Arima`
 #'
+#' @keywords internal
 #' @export
 Arima_fit_impl <- function(x, y, period = "auto",
                            p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
@@ -406,6 +407,7 @@ print.Arima_fit_impl <- function(x, ...) {
 #' @param max.Q The maximum order of the seasonal moving average (SMA) terms.
 #' @param ... Additional arguments passed to `forecast::auto.arima`
 #'
+#' @keywords internal
 #' @export
 auto_arima_fit_impl <- function(x, y, period = "auto",
                                 max.p = 5, max.d = 2, max.q = 5,
@@ -498,6 +500,7 @@ predict.Arima_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::Arima()`
 #'
+#' @keywords internal
 #' @export
 Arima_predict_impl <- function(object, new_data, ...) {
 

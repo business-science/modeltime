@@ -14,6 +14,7 @@
 #' used, performance is base on the validation set; otherwise the training set
 #' is used.
 #'
+#' @keywords internal
 #' @export
 xgboost_impl <- function(x, y,
                          max_depth = 6, nrounds = 15, eta  = 0.3, colsample_bynode = NULL,
@@ -61,6 +62,7 @@ xgboost_impl <- function(x, y,
 #' @inheritParams stats::predict
 #' @param newdata New data to be predicted
 #'
+#' @keywords internal
 #' @export
 xgboost_predict <- function(object, newdata, ...) {
     if (!inherits(newdata, "xgb.DMatrix")) {

@@ -16,3 +16,4 @@ prophet_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for PROPHET models
 }
+\keyword{internal}

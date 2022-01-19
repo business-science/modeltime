@@ -77,3 +77,4 @@ should be considered the "event".}
 \description{
 Wrapper for parsnip::xgb_train
 }
+\keyword{internal}

@@ -16,3 +16,4 @@ stlm_arima_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for ARIMA models
 }
+\keyword{internal}

@@ -233,6 +233,7 @@ translate.naive_reg <- function(x, engine = x$engine, ...) {
 #' @param seasonal_period Not used for NAIVE forecast but here for consistency with SNAIVE
 #' @param ... Not currently used
 #'
+#' @keywords internal
 #' @export
 naive_fit_impl <- function(x, y, id = NULL, seasonal_period = "auto", ...) {
 
@@ -331,6 +332,7 @@ print.naive_fit_impl <- function(x, ...) {
 #'
 #' @inheritParams parsnip::predict.model_fit
 #'
+#' @keywords internal
 #' @export
 naive_predict_impl <- function(object, new_data) {
 
@@ -373,6 +375,7 @@ predict.naive_fit_impl <- function(object, new_data, ...) {
 #' @param seasonal_period The seasonal period to forecast into the future
 #' @param ... Not currently used
 #'
+#' @keywords internal
 #' @export
 snaive_fit_impl <- function(x, y, id = NULL, seasonal_period = "auto", ...) {
 
@@ -472,6 +475,7 @@ print.snaive_fit_impl <- function(x, ...) {
 #'
 #' @inheritParams parsnip::predict.model_fit
 #'
+#' @keywords internal
 #' @export
 snaive_predict_impl <- function(object, new_data) {
 

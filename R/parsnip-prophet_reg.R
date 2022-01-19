@@ -337,6 +337,7 @@ translate.prophet_reg <- function(x, engine = x$engine, ...) {
 #'  Defaults to `seasonality.mode`.
 #' @param ... Additional arguments passed to `prophet::prophet`
 #'
+#' @keywords internal
 #' @export
 prophet_fit_impl <- function(x, y,
                              growth = "linear",
@@ -537,6 +538,7 @@ predict.prophet_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `prophet::predict()`
 #'
+#' @keywords internal
 #' @export
 prophet_predict_impl <- function(object, new_data, ...) {
 

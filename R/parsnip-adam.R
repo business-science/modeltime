@@ -368,6 +368,7 @@ translate.adam_reg <- function(x, engine = x$engine, ...) {
 #' specify the maximum orders to check in this case
 #' @param ... Additional arguments passed to `smooth::adam`
 #'
+#' @keywords internal
 #' @export
 adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
                           model = "ZXZ", constant = FALSE, regressors =  c("use", "select", "adapt"),
@@ -566,6 +567,7 @@ Adam_predict_impl <- function(object, new_data, ...) {
 #' specify the maximum orders to check in this case.
 #' @param ... Additional arguments passed to `smooth::auto.adam`
 #'
+#' @keywords internal
 #' @export
 auto_adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
                           model = "ZXZ", constant = FALSE, regressors =  c("use", "select", "adapt"),
@@ -701,6 +703,7 @@ predict.Auto_adam_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `smooth::auto.adam()`
 #'
+#' @keywords internal
 #' @export
 Auto_adam_predict_impl <- function(object, new_data, ...) {
 

@@ -17,3 +17,4 @@ Control information
 \description{
 These are not intended for use by the general public.
 }
+\keyword{internal}

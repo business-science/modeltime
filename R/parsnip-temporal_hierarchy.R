@@ -229,6 +229,7 @@ translate.temporal_hierarchy <- function(x, engine = x$engine, ...) {
 #' @param usemodel Model used for forecasting each aggregation level
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
+#' @keywords internal
 #' @export
 temporal_hier_fit_impl <- function(x, y,
                                    period = "auto",
@@ -340,6 +341,7 @@ predict.temporal_hier_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `stats::predict()`
 #'
+#' @keywords internal
 #' @export
 temporal_hier_predict_impl <- function(object, new_data, ...) {
     # PREPARE INPUTS

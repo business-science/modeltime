@@ -412,6 +412,7 @@ translate.arima_boost <- function(x, engine = x$engine, ...) {
 #' @param ... Additional arguments passed to `xgboost::xgb.train`
 #'
 #'
+#' @keywords internal
 #' @export
 #' @importFrom stats frequency
 auto_arima_xgboost_fit_impl <- function(x, y, period = "auto",
@@ -610,7 +611,7 @@ print.auto_arima_xgboost_fit_impl <- function(x, ...) {
 #' is used.
 #' @param ... Additional arguments passed to `xgboost::xgb.train`
 #'
-#'
+#' @keywords internal
 #' @export
 #' @importFrom stats frequency
 arima_xgboost_fit_impl <- function(x, y, period = "auto",
@@ -769,6 +770,7 @@ predict.arima_xgboost_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `predict.xgb.Booster()`
 #'
+#' @keywords internal
 #' @export
 arima_xgboost_predict_impl <- function(object, new_data, ...) {
 

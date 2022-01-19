@@ -20,3 +20,4 @@ naive_fit_impl(x, y, id = NULL, seasonal_period = "auto", ...)
 \description{
 Low-Level NAIVE Forecast
 }
+\keyword{internal}

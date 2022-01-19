@@ -13,3 +13,4 @@ is_calibrated(object)
 This function returns \code{TRUE} for objects that contains columns
 ".type" and ".calibration_data"
 }
+\keyword{internal}

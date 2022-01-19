@@ -16,3 +16,4 @@ temporal_hier_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for TEMPORAL HIERARCHICAL models
 }
+\keyword{internal}

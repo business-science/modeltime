@@ -16,3 +16,4 @@ arima_xgboost_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction Function for ARIMA-XGBoost Models
 }
+\keyword{internal}

@@ -30,3 +30,4 @@ common to pass \code{na.rm = TRUE} for the mean forecast.}
 \description{
 Low-Level Window Forecast
 }
+\keyword{internal}

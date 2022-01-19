@@ -16,3 +16,4 @@ Auto_adam_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for AUTO ADAM models
 }
+\keyword{internal}

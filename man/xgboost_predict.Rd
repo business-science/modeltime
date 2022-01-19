@@ -16,3 +16,4 @@ xgboost_predict(object, newdata, ...)
 \description{
 Wrapper for xgboost::predict
 }
+\keyword{internal}

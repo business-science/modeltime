@@ -32,3 +32,4 @@ of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time v
 \description{
 Low-Level stlm function for translating modeltime to forecast
 }
+\keyword{internal}

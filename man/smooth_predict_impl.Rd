@@ -16,3 +16,4 @@ smooth_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for Exponential Smoothing models
 }
+\keyword{internal}

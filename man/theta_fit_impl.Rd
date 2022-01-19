@@ -16,3 +16,4 @@ theta_fit_impl(x, y, ...)
 \description{
 Low-Level Exponential Smoothing function for translating modeltime to forecast
 }
+\keyword{internal}

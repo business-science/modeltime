@@ -395,6 +395,7 @@ translate.exp_smoothing <- function(x, engine = x$engine, ...) {
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
+#' @keywords internal
 #' @export
 ets_fit_impl <- function(x, y, period = "auto",
                          error = "auto", trend = "auto",
@@ -514,6 +515,7 @@ predict.ets_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::ets()`
 #'
+#' @keywords internal
 #' @export
 ets_predict_impl <- function(object, new_data, ...) {
 
@@ -547,6 +549,7 @@ ets_predict_impl <- function(object, new_data, ...) {
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param ... Additional arguments passed to `smooth::es`
 #'
+#' @keywords internal
 #' @export
 smooth_fit_impl <- function(x, y, period = "auto",
                          error = "auto", trend = "auto",
@@ -688,6 +691,7 @@ predict.smooth_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `smooth::es()`
 #'
+#' @keywords internal
 #' @export
 smooth_predict_impl <- function(object, new_data, ...) {
 
@@ -720,6 +724,7 @@ smooth_predict_impl <- function(object, new_data, ...) {
 #' @param y A numeric vector of values to fit
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
+#' @keywords internal
 #' @export
 croston_fit_impl <- function(x, y, alpha = 0.1, ...){
 
@@ -774,6 +779,7 @@ predict.croston_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `stats::predict()`
 #'
+#' @keywords internal
 #' @export
 croston_predict_impl <- function(object, new_data, ...) {
     # PREPARE INPUTS
@@ -809,6 +815,7 @@ croston_predict_impl <- function(object, new_data, ...) {
 #' @param y A numeric vector of values to fit
 #' @param ... Additional arguments passed to `forecast::ets`
 #'
+#' @keywords internal
 #' @export
 theta_fit_impl <- function(x, y, ...){
 
@@ -863,6 +870,7 @@ predict.theta_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `stats::predict()`
 #'
+#' @keywords internal
 #' @export
 theta_predict_impl <- function(object, new_data, ...) {
     # PREPARE INPUTS

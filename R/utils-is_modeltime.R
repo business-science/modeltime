@@ -5,6 +5,7 @@
 #'
 #' @param object An object to detect if contains a fitted modeltime model
 #'
+#' @keywords internal
 #' @export
 is_modeltime_model <- function(object) {
     UseMethod("is_modeltime_model", object)
@@ -31,6 +32,7 @@ is_modeltime_model.model_fit <- function(object) {
 #'
 #' @param object An object to detect if is a Modeltime Table
 #'
+#' @keywords internal
 #' @export
 is_modeltime_table <- function(object) {
     inherits(object, "mdl_time_tbl")
@@ -43,6 +45,7 @@ is_modeltime_table <- function(object) {
 #'
 #' @param object An object to detect if is a Calibrated Modeltime Table
 #'
+#' @keywords internal
 #' @export
 is_calibrated <- function(object) {
     all(c(".type", ".calibration_data") %in% names(object) )
@@ -56,6 +59,7 @@ is_calibrated <- function(object) {
 #'
 #' @param object An object to detect if it provides from modeltime::modeltime_residuals().
 #'
+#' @keywords internal
 #' @export
 is_residuals <- function(object) {
     all(c(".residuals") %in% names(object) )

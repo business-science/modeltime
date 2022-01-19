@@ -16,3 +16,4 @@ theta_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for THETA models
 }
+\keyword{internal}

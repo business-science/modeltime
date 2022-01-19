@@ -273,6 +273,7 @@ translate.seasonal_reg <- function(x, engine = x$engine, ...) {
 #' @param use.parallel `TRUE/FALSE` indicates whether or not to use parallel processing.
 #' @param ... Additional arguments passed to `forecast::tbats()`
 #'
+#' @keywords internal
 #' @export
 tbats_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL, use.parallel = length(y) > 1000, ...) {
 
@@ -359,6 +360,7 @@ predict.tbats_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::forecast()`
 #'
+#' @keywords internal
 #' @export
 tbats_predict_impl <- function(object, new_data, ...) {
 
@@ -396,6 +398,7 @@ tbats_predict_impl <- function(object, new_data, ...) {
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param ... Additional arguments passed to `forecast::stlm()`
 #'
+#' @keywords internal
 #' @export
 stlm_ets_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL, ...) {
 
@@ -494,6 +497,7 @@ predict.stlm_ets_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::forecast()`
 #'
+#' @keywords internal
 #' @export
 stlm_ets_predict_impl <- function(object, new_data, ...) {
 
@@ -531,6 +535,7 @@ stlm_ets_predict_impl <- function(object, new_data, ...) {
 #'  of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.
 #' @param ... Additional arguments passed to `forecast::stlm()`
 #'
+#' @keywords internal
 #' @export
 stlm_arima_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = NULL, ...) {
 
@@ -634,6 +639,7 @@ predict.stlm_arima_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `forecast::forecast()`
 #'
+#' @keywords internal
 #' @export
 stlm_arima_predict_impl <- function(object, new_data, ...) {
 

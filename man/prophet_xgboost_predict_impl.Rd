@@ -16,3 +16,4 @@ prophet_xgboost_predict_impl(object, new_data, ...)
 \description{
 Bridge prediction function for Boosted PROPHET models
 }
+\keyword{internal}

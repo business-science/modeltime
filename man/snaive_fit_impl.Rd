@@ -20,3 +20,4 @@ snaive_fit_impl(x, y, id = NULL, seasonal_period = "auto", ...)
 \description{
 Low-Level SNAIVE Forecast
 }
+\keyword{internal}

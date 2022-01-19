@@ -402,6 +402,7 @@ translate.prophet_boost <- function(x, engine = x$engine, ...) {
 #' is used.
 #' @param ... Additional arguments passed to `xgboost::xgb.train`
 #'
+#' @keywords internal
 #' @export
 prophet_xgboost_fit_impl <- function(x, y,
                                      df = NULL,
@@ -640,6 +641,7 @@ predict.prophet_xgboost_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `prophet::predict()`
 #'
+#' @keywords internal
 #' @export
 prophet_xgboost_predict_impl <- function(object, new_data, ...) {
 

@@ -46,3 +46,4 @@ If the error is multiplicative, the data must be non-negative.}
 \description{
 Low-Level Exponential Smoothing function for translating modeltime to forecast
 }
+\keyword{internal}

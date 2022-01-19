@@ -12,3 +12,4 @@ is_modeltime_table(object)
 \description{
 This function returns \code{TRUE} for objects that contain class \code{mdl_time_tbl}
 }
+\keyword{internal}

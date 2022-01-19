@@ -18,3 +18,4 @@ croston_fit_impl(x, y, alpha = 0.1, ...)
 \description{
 Low-Level Exponential Smoothing function for translating modeltime to forecast
 }
+\keyword{internal}

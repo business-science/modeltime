@@ -5,6 +5,7 @@
 #' @param x	A `mdl_time_tbl` object to summarise.
 #' @return A character value.
 #' @importFrom tibble type_sum
+#' @keywords internal
 #' @export
 type_sum.mdl_time_tbl <- function(x) {
     stringr::str_glue("model_time")

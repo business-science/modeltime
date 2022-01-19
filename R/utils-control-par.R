@@ -476,6 +476,7 @@ check_class_integer <- function(x){
 #' @return
 #' Control information
 #'
+#' @keywords internal
 #' @export
 load_namespace <- function(x, full_load) {
     if (length(x) == 0) {

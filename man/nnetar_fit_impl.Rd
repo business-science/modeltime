@@ -48,3 +48,4 @@ weights. These are then averaged when producing forecasts.}
 \description{
 Low-Level NNETAR function for translating modeltime to forecast
 }
+\keyword{internal}

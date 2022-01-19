@@ -86,3 +86,4 @@ Defaults to \code{seasonality.mode}.}
 \description{
 Low-Level PROPHET function for translating modeltime to PROPHET
 }
+\keyword{internal}

@@ -269,6 +269,7 @@ split_nested_timeseries <- function(.data, .length_test, .length_train = NULL, .
 #'
 #' @return A list containing train_idx and test_idx
 #'
+#' @keywords internal
 #' @export
 #'
 make_ts_splits <- function(.data, .length_test, .length_train = NULL) {

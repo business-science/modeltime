@@ -252,7 +252,6 @@ maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
 #' @param ... Not currently in use.
 #'
 #' @export
-
 maape <- function(data, ...) {
     UseMethod("maape")
 }
@@ -261,16 +260,6 @@ maape <- yardstick::new_numeric_metric(maape, direction = "minimize")
 
 # MAAPE ----
 
-#' Mean Arctangent Absolute Percentage Error
-#'
-#' This is basically a wrapper to the function of `TSrepr::maape()`.
-#'
-#' @param data  A `data.frame` containing the truth and estimate columns.
-#' @param truth The column identifier for the true results (that is numeric).
-#' @param estimate The column identifier for the predicted results (that is also numeric).
-#' @param na_rm Not in use...NA values managed by TSrepr::maape
-#' @param ... Not currently in use
-#'
 #' @export
 maape.data.frame <- function(data, truth, estimate, na_rm = TRUE, ...) {
 

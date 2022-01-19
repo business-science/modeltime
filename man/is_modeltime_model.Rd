@@ -13,3 +13,4 @@ is_modeltime_model(object)
 This function returns \code{TRUE} for trained workflows and parsnip objects
 that contain modeltime models
 }
+\keyword{internal}

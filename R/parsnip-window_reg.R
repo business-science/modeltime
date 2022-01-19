@@ -294,6 +294,7 @@ translate.window_reg <- function(x, engine = x$engine, ...) {
 #' @param ... Additional arguments for the `window_function`. For example, it's
 #'  common to pass `na.rm = TRUE` for the mean forecast.
 #'
+#' @keywords internal
 #' @export
 window_function_fit_impl <- function(x, y, id = NULL,
                             window_size = "all",
@@ -412,6 +413,7 @@ print.window_function_fit_impl <- function(x, ...) {
 #'
 #' @inheritParams parsnip::predict.model_fit
 #'
+#' @keywords internal
 #' @export
 window_function_predict_impl <- function(object, new_data) {
 

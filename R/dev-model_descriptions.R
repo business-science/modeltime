@@ -282,7 +282,6 @@ get_arima_description.Arima <- function(object, padding = FALSE) {
 #' @source
 #' - Forecast R Package, `forecast:::as.character.tbats()`
 #'
-#'
 #' @export
 get_tbats_description <- function(object) {
 

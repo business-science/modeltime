@@ -150,3 +150,4 @@ is used.}
 \description{
 Low-Level PROPHET function for translating modeltime to Boosted PROPHET
 }
+\keyword{internal}
