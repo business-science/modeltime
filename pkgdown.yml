@@ -1,5 +1,5 @@
-pandoc: '2.13'
-pkgdown: 2.0.1
+pandoc: 2.7.3
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   extending-modeltime: extending-modeltime.html
@@ -10,7 +10,7 @@ articles:
   nested-forecasting: nested-forecasting.html
   parallel-processing: parallel-processing.html
   recursive-forecasting: recursive-forecasting.html
-last_built: 2021-12-17T12:47Z
+last_built: 2022-01-19T02:44Z
 urls:
   reference: https://business-science.github.io/modeltime/reference
   article: https://business-science.github.io/modeltime/articles

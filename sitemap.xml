@@ -169,9 +169,6 @@
     <loc>https://business-science.github.io/modeltime/reference/m750_training_resamples.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/maape.data.frame.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/maape.html</loc>
   </url>
   <url>
@@ -269,12 +266,6 @@
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/pluck_modeltime_model.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/predict.recursive.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/predict.recursive_panel.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/prep_nested.html</loc>

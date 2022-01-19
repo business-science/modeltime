@@ -15,10 +15,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Roboto-0.4.0/font.css" rel="stylesheet">
-<link href="../deps/_JetBrains%20Mono-0.4.0/font.css" rel="stylesheet">
-<link href="../deps/_Montserrat-0.4.0/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Nested Forecasting">
@@ -43,14 +40,14 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="../index.html">
@@ -139,7 +136,9 @@
   </div>
 </nav><div class="container template-article">
 
-<div class="row">
+
+
+<script src="nested-forecasting_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <main id="main"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Nested Forecasting</h1>
             
@@ -357,8 +356,9 @@
   <span class="va">wflw_xgb</span>
 <span class="op">)</span>
 <span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■                           </span>  14% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | ETA:…</span>
-<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  71% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■                      </span>  29% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  57% | ETA:…</span>
+<span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  86% | ETA:…</span>
 <span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:…</span>
 
 <span class="va">nested_modeltime_tbl</span>
@@ -389,12 +389,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="qplhdxnhby" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zylkpbtoxw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#qplhdxnhby .gt_table {
+#zylkpbtoxw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -419,7 +419,7 @@
   border-left-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_heading {
+#zylkpbtoxw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -431,7 +431,7 @@
   border-right-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_title {
+#zylkpbtoxw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -441,7 +441,7 @@
   border-bottom-width: 0;
 }
 
-#qplhdxnhby .gt_subtitle {
+#zylkpbtoxw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -451,13 +451,13 @@
   border-top-width: 0;
 }
 
-#qplhdxnhby .gt_bottom_border {
+#zylkpbtoxw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_col_headings {
+#zylkpbtoxw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -472,7 +472,7 @@
   border-right-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_col_heading {
+#zylkpbtoxw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -492,7 +492,7 @@
   overflow-x: hidden;
 }
 
-#qplhdxnhby .gt_column_spanner_outer {
+#zylkpbtoxw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -504,15 +504,15 @@
   padding-right: 4px;
 }
 
-#qplhdxnhby .gt_column_spanner_outer:first-child {
+#zylkpbtoxw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qplhdxnhby .gt_column_spanner_outer:last-child {
+#zylkpbtoxw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qplhdxnhby .gt_column_spanner {
+#zylkpbtoxw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -524,7 +524,7 @@
   width: 100%;
 }
 
-#qplhdxnhby .gt_group_heading {
+#zylkpbtoxw .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -546,7 +546,7 @@
   vertical-align: middle;
 }
 
-#qplhdxnhby .gt_empty_group_heading {
+#zylkpbtoxw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -561,15 +561,15 @@
   vertical-align: middle;
 }
 
-#qplhdxnhby .gt_from_md > :first-child {
+#zylkpbtoxw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qplhdxnhby .gt_from_md > :last-child {
+#zylkpbtoxw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qplhdxnhby .gt_row {
+#zylkpbtoxw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -588,7 +588,7 @@
   overflow-x: hidden;
 }
 
-#qplhdxnhby .gt_stub {
+#zylkpbtoxw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -600,7 +600,7 @@
   padding-left: 12px;
 }
 
-#qplhdxnhby .gt_summary_row {
+#zylkpbtoxw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -610,7 +610,7 @@
   padding-right: 5px;
 }
 
-#qplhdxnhby .gt_first_summary_row {
+#zylkpbtoxw .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -620,7 +620,7 @@
   border-top-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_grand_summary_row {
+#zylkpbtoxw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -630,7 +630,7 @@
   padding-right: 5px;
 }
 
-#qplhdxnhby .gt_first_grand_summary_row {
+#zylkpbtoxw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -640,11 +640,11 @@
   border-top-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_striped {
+#zylkpbtoxw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qplhdxnhby .gt_table_body {
+#zylkpbtoxw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -653,7 +653,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_footnotes {
+#zylkpbtoxw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -667,13 +667,13 @@
   border-right-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_footnote {
+#zylkpbtoxw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#qplhdxnhby .gt_sourcenotes {
+#zylkpbtoxw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -687,41 +687,41 @@
   border-right-color: #D3D3D3;
 }
 
-#qplhdxnhby .gt_sourcenote {
+#zylkpbtoxw .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#qplhdxnhby .gt_left {
+#zylkpbtoxw .gt_left {
   text-align: left;
 }
 
-#qplhdxnhby .gt_center {
+#zylkpbtoxw .gt_center {
   text-align: center;
 }
 
-#qplhdxnhby .gt_right {
+#zylkpbtoxw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qplhdxnhby .gt_font_normal {
+#zylkpbtoxw .gt_font_normal {
   font-weight: normal;
 }
 
-#qplhdxnhby .gt_font_bold {
+#zylkpbtoxw .gt_font_bold {
   font-weight: bold;
 }
 
-#qplhdxnhby .gt_font_italic {
+#zylkpbtoxw .gt_font_italic {
   font-style: italic;
 }
 
-#qplhdxnhby .gt_super {
+#zylkpbtoxw .gt_super {
   font-size: 65%;
 }
 
-#qplhdxnhby .gt_footnote_marks {
+#zylkpbtoxw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -761,11 +761,11 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">6236.79</td>
-<td class="gt_row gt_right">25.31</td>
+<td class="gt_row gt_right">6223.73</td>
+<td class="gt_row gt_right">25.25</td>
 <td class="gt_row gt_right">1.23</td>
-<td class="gt_row gt_right">24.57</td>
-<td class="gt_row gt_right">9017.22</td>
+<td class="gt_row gt_right">24.50</td>
+<td class="gt_row gt_right">9026.26</td>
 <td class="gt_row gt_right">0.19</td>
 </tr>
 <tr>
@@ -785,11 +785,11 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">3085.78</td>
-<td class="gt_row gt_right">18.81</td>
-<td class="gt_row gt_right">1.20</td>
-<td class="gt_row gt_right">20.40</td>
-<td class="gt_row gt_right">5085.81</td>
+<td class="gt_row gt_right">3071.25</td>
+<td class="gt_row gt_right">18.74</td>
+<td class="gt_row gt_right">1.19</td>
+<td class="gt_row gt_right">20.26</td>
+<td class="gt_row gt_right">5069.27</td>
 <td class="gt_row gt_right">0.79</td>
 </tr>
 <tr>
@@ -809,11 +809,11 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">3585.77</td>
-<td class="gt_row gt_right">9.33</td>
+<td class="gt_row gt_right">3608.13</td>
+<td class="gt_row gt_right">9.39</td>
 <td class="gt_row gt_right">1.53</td>
-<td class="gt_row gt_right">9.89</td>
-<td class="gt_row gt_right">4009.47</td>
+<td class="gt_row gt_right">9.95</td>
+<td class="gt_row gt_right">4025.27</td>
 <td class="gt_row gt_right">0.30</td>
 </tr>
 <tr>
@@ -833,12 +833,12 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">2338.42</td>
-<td class="gt_row gt_right">5.83</td>
-<td class="gt_row gt_right">0.86</td>
-<td class="gt_row gt_right">6.02</td>
-<td class="gt_row gt_right">2721.47</td>
-<td class="gt_row gt_right">0.54</td>
+<td class="gt_row gt_right">2712.05</td>
+<td class="gt_row gt_right">6.73</td>
+<td class="gt_row gt_right">1.00</td>
+<td class="gt_row gt_right">7.00</td>
+<td class="gt_row gt_right">3056.42</td>
+<td class="gt_row gt_right">0.55</td>
 </tr>
 <tr>
 <td class="gt_row gt_center">1_38</td>
@@ -857,12 +857,12 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">6847.04</td>
-<td class="gt_row gt_right">8.47</td>
-<td class="gt_row gt_right">0.58</td>
-<td class="gt_row gt_right">8.75</td>
-<td class="gt_row gt_right">8825.28</td>
-<td class="gt_row gt_right">0.40</td>
+<td class="gt_row gt_right">7210.40</td>
+<td class="gt_row gt_right">8.89</td>
+<td class="gt_row gt_right">0.62</td>
+<td class="gt_row gt_right">9.20</td>
+<td class="gt_row gt_right">9260.56</td>
+<td class="gt_row gt_right">0.34</td>
 </tr>
 <tr>
 <td class="gt_row gt_center">1_93</td>
@@ -881,12 +881,12 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">7233.95</td>
-<td class="gt_row gt_right">9.11</td>
-<td class="gt_row gt_right">0.73</td>
-<td class="gt_row gt_right">9.66</td>
-<td class="gt_row gt_right">8879.21</td>
-<td class="gt_row gt_right">0.49</td>
+<td class="gt_row gt_right">7327.73</td>
+<td class="gt_row gt_right">9.20</td>
+<td class="gt_row gt_right">0.74</td>
+<td class="gt_row gt_right">9.73</td>
+<td class="gt_row gt_right">9061.71</td>
+<td class="gt_row gt_right">0.45</td>
 </tr>
 <tr>
 <td class="gt_row gt_center">1_95</td>
@@ -905,12 +905,12 @@
 <td class="gt_row gt_right">2</td>
 <td class="gt_row gt_left">XGBOOST</td>
 <td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">10783.75</td>
-<td class="gt_row gt_right">8.54</td>
-<td class="gt_row gt_right">1.30</td>
-<td class="gt_row gt_right">8.96</td>
-<td class="gt_row gt_right">12843.50</td>
-<td class="gt_row gt_right">0.14</td>
+<td class="gt_row gt_right">11896.46</td>
+<td class="gt_row gt_right">9.39</td>
+<td class="gt_row gt_right">1.43</td>
+<td class="gt_row gt_right">9.95</td>
+<td class="gt_row gt_right">14105.76</td>
+<td class="gt_row gt_right">0.13</td>
 </tr>
 </tbody>
 </table>
@@ -965,13 +965,13 @@
 <span class="co">#&gt;   <span style="color: #949494;"># A tibble: 7 × 10</span></span>
 <span class="co">#&gt;   id    .model_id .model_desc .type    mae  mape  mase smape   rmse   rsq</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1           2 XGBOOST     Test   <span style="text-decoration: underline;">6</span>237. 25.3  1.23  24.6   <span style="text-decoration: underline;">9</span>017. 0.191</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1           2 XGBOOST     Test   <span style="text-decoration: underline;">6</span>224. 25.2  1.23  24.5   <span style="text-decoration: underline;">9</span>026. 0.189</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_3           1 PROPHET     Test   <span style="text-decoration: underline;">3</span>540. 29.9  1.37  25.5   <span style="text-decoration: underline;">4</span>708. 0.796</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8           2 XGBOOST     Test   <span style="text-decoration: underline;">3</span>586.  9.33 1.53   9.89  <span style="text-decoration: underline;">4</span>009. 0.297</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13          2 XGBOOST     Test   <span style="text-decoration: underline;">2</span>338.  5.83 0.861  6.02  <span style="text-decoration: underline;">2</span>721. 0.536</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38          2 XGBOOST     Test   <span style="text-decoration: underline;">6</span>847.  8.47 0.585  8.75  <span style="text-decoration: underline;">8</span>825. 0.402</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93          2 XGBOOST     Test   <span style="text-decoration: underline;">7</span>234.  9.11 0.728  9.66  <span style="text-decoration: underline;">8</span>879. 0.488</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95          2 XGBOOST     Test  <span style="text-decoration: underline;">10</span>784.  8.54 1.30   8.96 <span style="text-decoration: underline;">12</span>843. 0.139</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1_8           2 XGBOOST     Test   <span style="text-decoration: underline;">3</span>608.  9.39 1.53   9.95  <span style="text-decoration: underline;">4</span>025. 0.304</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1_13          2 XGBOOST     Test   <span style="text-decoration: underline;">2</span>712.  6.73 0.998  7.00  <span style="text-decoration: underline;">3</span>056. 0.551</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1_38          2 XGBOOST     Test   <span style="text-decoration: underline;">7</span>210.  8.89 0.616  9.20  <span style="text-decoration: underline;">9</span>261. 0.339</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1_93          2 XGBOOST     Test   <span style="text-decoration: underline;">7</span>328.  9.20 0.738  9.73  <span style="text-decoration: underline;">9</span>062. 0.450</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 1_95          2 XGBOOST     Test  <span style="text-decoration: underline;">11</span>896.  9.39 1.43   9.95 <span style="text-decoration: underline;">14</span>106. 0.133</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="extract-nested-best-test-forecasts">Extract Nested Best Test Forecasts<a class="anchor" aria-label="anchor" href="#extract-nested-best-test-forecasts"></a>
@@ -1003,28 +1003,28 @@
         control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_nested_refit</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
     <span class="op">)</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [1/7] Starting Modeltime Table: ID 1_1...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [1/7] Finished Modeltime Table: ID 1_1</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [1/7] Finished Modeltime Table: ID 1_1</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [2/7] Starting Modeltime Table: ID 1_3...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 1 Passed PROPHET.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [2/7] Finished Modeltime Table: ID 1_3</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 1 Passed PROPHET.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [2/7] Finished Modeltime Table: ID 1_3</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [3/7] Starting Modeltime Table: ID 1_8...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [3/7] Finished Modeltime Table: ID 1_8</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [3/7] Finished Modeltime Table: ID 1_8</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [4/7] Starting Modeltime Table: ID 1_13...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [4/7] Finished Modeltime Table: ID 1_13</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [4/7] Finished Modeltime Table: ID 1_13</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [5/7] Starting Modeltime Table: ID 1_38...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [5/7] Finished Modeltime Table: ID 1_38</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [5/7] Finished Modeltime Table: ID 1_38</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [6/7] Starting Modeltime Table: ID 1_93...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [6/7] Finished Modeltime Table: ID 1_93</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [6/7] Finished Modeltime Table: ID 1_93</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [7/7] Starting Modeltime Table: ID 1_95...</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Model 2 Passed XGBOOST.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✓</span> [7/7] Finished Modeltime Table: ID 1_95</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> [7/7] Finished Modeltime Table: ID 1_95</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Finished in: 3.529666 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 4.310588 secs.</span></code></pre></div>
 <p>Note that we used <code>control_nested_refit(verbose = TRUE)</code> to display the modeling results as each model is refit. This is not necessary, but can be useful to follow the nested model fitting process.</p>
 <p>We can see that the nested modeltime table appears the same, but has now been trained on <code>.actual_data</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -1119,7 +1119,7 @@ Become the Time Series Expert for your organization.
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer>
