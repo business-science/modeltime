@@ -508,6 +508,7 @@ predict.Adam_fit_impl <- function(object, new_data, ...) {
 #' @inheritParams parsnip::predict.model_fit
 #' @param ... Additional arguments passed to `smooth::adam()`
 #'
+#' @keywords internal
 #' @export
 Adam_predict_impl <- function(object, new_data, ...) {
 

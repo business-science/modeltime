@@ -15,10 +15,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Roboto-0.4.0/font.css" rel="stylesheet">
-<link href="../deps/_JetBrains%20Mono-0.4.0/font.css" rel="stylesheet">
-<link href="../deps/_Montserrat-0.4.0/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Hyperparameter Tuning with Parallel Processing">
@@ -43,7 +40,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -227,7 +224,7 @@
 
 <span class="va">dataset_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
     .date_var    <span class="op">=</span> <span class="va">Date</span>, 
     .value       <span class="op">=</span> <span class="va">Weekly_Sales</span>, 
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>, 
@@ -238,17 +235,17 @@
 <div class="section level2">
 <h2 id="train-test-splits">Train / Test Splits<a class="anchor" aria-label="anchor" href="#train-test-splits"></a>
 </h2>
-<p>Use <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">time_series_split()</a></code> to make a temporal split for all seven time series.</p>
+<p>Use <code><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split()</a></code> to make a temporal split for all seven time series.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">time_series_split</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split</a></span><span class="op">(</span>
   <span class="va">dataset_tbl</span>, 
   assess     <span class="op">=</span> <span class="st">"6 months"</span>, 
   cumulative <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 
 <span class="va">splits</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="parallel-processing_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -257,7 +254,7 @@
 <p>Make a preprocessing recipe that generates time series features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">recipe_spec_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">Weekly_Sales</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="va">Date_index.num</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -457,10 +454,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.196 seconds</span>
+<span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 13.383 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 13.197 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 13.384 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -500,7 +497,7 @@
 <span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #555555;">Model Successfully Fitted: 5</span></span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Fitting Model: 6</span></span>
 <span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #555555;">Model Successfully Fitted: 6</span></span>
-<span class="co">#&gt; Total time | 16.432 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 16.519 seconds</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -512,12 +509,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="ewoverqket" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gnlbdxrnjv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ewoverqket .gt_table {
+#gnlbdxrnjv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -542,7 +539,7 @@
   border-left-color: #D3D3D3;
 }
 
-#ewoverqket .gt_heading {
+#gnlbdxrnjv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -554,7 +551,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ewoverqket .gt_title {
+#gnlbdxrnjv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -564,7 +561,7 @@
   border-bottom-width: 0;
 }
 
-#ewoverqket .gt_subtitle {
+#gnlbdxrnjv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -574,13 +571,13 @@
   border-top-width: 0;
 }
 
-#ewoverqket .gt_bottom_border {
+#gnlbdxrnjv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ewoverqket .gt_col_headings {
+#gnlbdxrnjv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -595,7 +592,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ewoverqket .gt_col_heading {
+#gnlbdxrnjv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -615,7 +612,7 @@
   overflow-x: hidden;
 }
 
-#ewoverqket .gt_column_spanner_outer {
+#gnlbdxrnjv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -627,15 +624,15 @@
   padding-right: 4px;
 }
 
-#ewoverqket .gt_column_spanner_outer:first-child {
+#gnlbdxrnjv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ewoverqket .gt_column_spanner_outer:last-child {
+#gnlbdxrnjv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ewoverqket .gt_column_spanner {
+#gnlbdxrnjv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -647,7 +644,7 @@
   width: 100%;
 }
 
-#ewoverqket .gt_group_heading {
+#gnlbdxrnjv .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -669,7 +666,7 @@
   vertical-align: middle;
 }
 
-#ewoverqket .gt_empty_group_heading {
+#gnlbdxrnjv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -684,15 +681,15 @@
   vertical-align: middle;
 }
 
-#ewoverqket .gt_from_md > :first-child {
+#gnlbdxrnjv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ewoverqket .gt_from_md > :last-child {
+#gnlbdxrnjv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ewoverqket .gt_row {
+#gnlbdxrnjv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -711,7 +708,7 @@
   overflow-x: hidden;
 }
 
-#ewoverqket .gt_stub {
+#gnlbdxrnjv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -723,7 +720,7 @@
   padding-left: 12px;
 }
 
-#ewoverqket .gt_summary_row {
+#gnlbdxrnjv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -733,7 +730,7 @@
   padding-right: 5px;
 }
 
-#ewoverqket .gt_first_summary_row {
+#gnlbdxrnjv .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -743,7 +740,7 @@
   border-top-color: #D3D3D3;
 }
 
-#ewoverqket .gt_grand_summary_row {
+#gnlbdxrnjv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -753,7 +750,7 @@
   padding-right: 5px;
 }
 
-#ewoverqket .gt_first_grand_summary_row {
+#gnlbdxrnjv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -763,11 +760,11 @@
   border-top-color: #D3D3D3;
 }
 
-#ewoverqket .gt_striped {
+#gnlbdxrnjv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ewoverqket .gt_table_body {
+#gnlbdxrnjv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -776,7 +773,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#ewoverqket .gt_footnotes {
+#gnlbdxrnjv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -790,13 +787,13 @@
   border-right-color: #D3D3D3;
 }
 
-#ewoverqket .gt_footnote {
+#gnlbdxrnjv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ewoverqket .gt_sourcenotes {
+#gnlbdxrnjv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -810,41 +807,41 @@
   border-right-color: #D3D3D3;
 }
 
-#ewoverqket .gt_sourcenote {
+#gnlbdxrnjv .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ewoverqket .gt_left {
+#gnlbdxrnjv .gt_left {
   text-align: left;
 }
 
-#ewoverqket .gt_center {
+#gnlbdxrnjv .gt_center {
   text-align: center;
 }
 
-#ewoverqket .gt_right {
+#gnlbdxrnjv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ewoverqket .gt_font_normal {
+#gnlbdxrnjv .gt_font_normal {
   font-weight: normal;
 }
 
-#ewoverqket .gt_font_bold {
+#gnlbdxrnjv .gt_font_bold {
   font-weight: bold;
 }
 
-#ewoverqket .gt_font_italic {
+#gnlbdxrnjv .gt_font_italic {
   font-style: italic;
 }
 
-#ewoverqket .gt_super {
+#gnlbdxrnjv .gt_super {
   font-size: 65%;
 }
 
-#ewoverqket .gt_footnote_marks {
+#gnlbdxrnjv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

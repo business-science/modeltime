@@ -1,13 +1,13 @@
 url: https://business-science.github.io/modeltime/
 template:
   bootstrap: 5
-  bslib:
-    base_font:
-      google: Roboto
-    heading_font:
-      google: Montserrat
-    code_font:
-      google: JetBrains Mono
+  # bslib:
+    # base_font:
+    #   google: Roboto
+    # heading_font:
+    #   google: Montserrat
+    # code_font:
+    #   google: JetBrains Mono
   params:
     bootswatch: flatly
     ganalytics: UA-76139189-2
