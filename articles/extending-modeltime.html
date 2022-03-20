@@ -204,7 +204,7 @@
 </h3>
 <p>To use the code in this tutorial, you’ll need to have the following packages installed.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://parsnip.tidymodels.org" class="external-link">parsnip</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/forecast/" class="external-link">forecast</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rsample.tidymodels.org" class="external-link">rsample</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
@@ -218,7 +218,7 @@
 <p>We’ll use <code>taylor_30_min</code> data from the <code>timetk</code> package, which is electricity demand data at a 30-minute interval.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">taylor_30_min</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -335,8 +335,8 @@
                               <span class="va">period_seasonal_2</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span>
 
     <span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-        period_seasonal_1 <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">enquo</a></span><span class="op">(</span><span class="va">period_seasonal_1</span><span class="op">)</span>,
-        period_seasonal_2 <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">enquo</a></span><span class="op">(</span><span class="va">period_seasonal_2</span><span class="op">)</span>
+        period_seasonal_1 <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/enquo.html" class="external-link">enquo</a></span><span class="op">(</span><span class="va">period_seasonal_1</span><span class="op">)</span>,
+        period_seasonal_2 <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/enquo.html" class="external-link">enquo</a></span><span class="op">(</span><span class="va">period_seasonal_2</span><span class="op">)</span>
     <span class="op">)</span>
 
     <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/add_on_exports.html" class="external-link">new_model_spec</a></span><span class="op">(</span>
@@ -398,7 +398,7 @@
   <span class="co"># 2. Predictors - Handle Dates </span>
   <span class="va">index_tbl</span> <span class="op">&lt;-</span> <span class="fu">modeltime</span><span class="fu">::</span><span class="fu"><a href="../reference/parse_index.html">parse_index_from_data</a></span><span class="op">(</span><span class="va">predictors</span><span class="op">)</span>
   <span class="va">idx_col</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">index_tbl</span><span class="op">)</span>
-  <span class="va">idx</span>       <span class="op">&lt;-</span> <span class="fu">timetk</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_index.html" class="external-link">tk_index</a></span><span class="op">(</span><span class="va">index_tbl</span><span class="op">)</span>
+  <span class="va">idx</span>       <span class="op">&lt;-</span> <span class="fu">timetk</span><span class="fu">::</span><span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_index.html" class="external-link">tk_index</a></span><span class="op">(</span><span class="va">index_tbl</span><span class="op">)</span>
   
   <span class="co"># 3. Predictors - Handle Xregs</span>
   <span class="co"># NOT REQUIRED - ETS is univariate</span>
@@ -528,10 +528,10 @@
     <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">preds</span><span class="op">)</span>
 
 <span class="op">}</span></code></pre></div>
-<p>Let’s test the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method out. To help, I’ll leverage <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">future_frame()</a></code> to predict the next 3-hours worth of forecast points.</p>
+<p>Let’s test the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method out. To help, I’ll leverage <code><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame()</a></code> to predict the next 3-hours worth of forecast points.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stlm_test</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">taylor_30_min</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>.length_out <span class="op">=</span> <span class="st">"1 week"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">taylor_30_min</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>.length_out <span class="op">=</span> <span class="st">"1 week"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="extending-modeltime_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Excellent. We have predictions!</p>
@@ -552,8 +552,8 @@
         func      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="st">"predict"</span><span class="op">)</span>,
         args      <span class="op">=</span>
             <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-                object   <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">expr</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>,
-                new_data <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">expr</a></span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span>
+                object   <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/expr.html" class="external-link">expr</a></span><span class="op">(</span><span class="va">object</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>,
+                new_data <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/expr.html" class="external-link">expr</a></span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span>
             <span class="op">)</span>
     <span class="op">)</span>
 <span class="op">)</span>
@@ -619,7 +619,6 @@
 <span class="va">model_fit</span>
 <span class="co">#&gt; parsnip model object</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Fit time:  302ms </span>
 <span class="co">#&gt; STLM Model: ETS(M,N,N)</span>
 <span class="co">#&gt; ets(y = x, model = etsmodel, allow.multiplicative.trend = allow.multiplicative.trend)</span>
 <span class="co">#&gt; </span>

@@ -236,14 +236,14 @@ in lieu of recreating the object from scratch.</p>
 <p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## Registered S3 method overwritten by 'greybox':</span>
 <span class="co">##   method     from</span>
 <span class="co">##   print.pcor lava</span></code></pre></div><div class="sourceCode"><pre><code><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span>
-<span class="co">##     i = c(0), ma = c(0), select = FALSE), formula = NULL, outliers = c("ignore", </span>
-<span class="co">##     "use", "select"), level = 0.99, distribution = c("dnorm", "dlaplace", </span>
-<span class="co">##     "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), h = 0, holdout = FALSE, </span>
-<span class="co">##     persistence = NULL, phi = NULL, initial = c("optimal", "backcasting"), </span>
-<span class="co">##     arma = NULL, occurrence = c("none", "auto", "fixed", "general", "odds-ratio", </span>
-<span class="co">##         "inverse-odds-ratio", "direct"), ic = c("AICc", "AIC", "BIC", "BICc"), </span>
-<span class="co">##     bounds = c("usual", "admissible", "none"), regressors = c("use", "select", </span>
-<span class="co">##         "adapt"), silent = TRUE, parallel = FALSE, ...)</span></code></pre></div>
+<span class="co">##     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", </span>
+<span class="co">##     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", </span>
+<span class="co">##     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", </span>
+<span class="co">##     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", </span>
+<span class="co">##     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span>
+<span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span>
+<span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span>
+<span class="co">##     silent = TRUE, parallel = FALSE, ...)</span></code></pre></div>
 
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
@@ -257,12 +257,12 @@ The <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-lin
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code>.</p>
 <p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span>
 <span class="co">##     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, </span>
-<span class="co">##     regressors = c("use", "select", "adapt"), outliers = c("ignore", "use", </span>
-<span class="co">##         "select"), level = 0.99, occurrence = c("none", "auto", "fixed", </span>
-<span class="co">##         "general", "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("default", </span>
-<span class="co">##         "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), </span>
-<span class="co">##     loss = c("likelihood", "MSE", "MAE", "HAM", "LASSO", "RIDGE", "MSEh", </span>
-<span class="co">##         "TMSE", "GTMSE", "MSCE"), h = 0, holdout = FALSE, persistence = NULL, </span>
+<span class="co">##     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", </span>
+<span class="co">##         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), </span>
+<span class="co">##     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", </span>
+<span class="co">##         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", </span>
+<span class="co">##         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", </span>
+<span class="co">##         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span>
 <span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span>
 <span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span>
 <span class="co">##     silent = TRUE, ...)</span></code></pre></div>
@@ -309,7 +309,7 @@ There are 3 ways to specify:</p><ol><li><p><code>seasonal_period = "auto"</code>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://parsnip.tidymodels.org" class="external-link">parsnip</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rsample.tidymodels.org" class="external-link">rsample</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span></span>

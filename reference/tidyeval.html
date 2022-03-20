@@ -182,12 +182,12 @@ section of Advanced R."><meta property="og:image" content="https://business-scie
 <ul><li><p><code><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a>()</code> creates a symbol from a string and
 <code><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">syms</a>()</code> creates a list of symbols from a
 character vector.</p></li>
-<li><p><code><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">enquo</a>()</code> and
-<code><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">enquos</a>()</code> delay the execution of one or
+<li><p><code><a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">enquo</a>()</code> and
+<code><a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">enquos</a>()</code> delay the execution of one or
 several function arguments. <code>enquo()</code> returns a single quoted
 expression, which is like a blueprint for the delayed computation.
 <code>enquos()</code> returns a list of such quoted expressions.</p></li>
-<li><p><code><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">expr</a>()</code> quotes a new expression <em>locally</em>. It
+<li><p><code><a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">expr</a>()</code> quotes a new expression <em>locally</em>. It
 is mostly useful to build new expressions around arguments
 captured with <code>enquo()</code> or <code>enquos()</code>:
 <code>expr(mean(!!enquo(arg), na.rm = TRUE))</code>.</p></li>

@@ -216,7 +216,7 @@ The Modeltime Workflow
 <p>We can visualize the dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></code></pre></div>
 <p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Let’s split the data into training and test sets using <code><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split()</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -251,7 +251,7 @@ The Modeltime Workflow
 <h4 id="model-2-boosted-auto-arima-modeltime">Model 2: Boosted Auto ARIMA (Modeltime)<a class="anchor" aria-label="anchor" href="#model-2-boosted-auto-arima-modeltime"></a>
 </h4>
 <p>Next, we create a boosted ARIMA using <code><a href="../reference/arima_boost.html">arima_boost()</a></code>. Boosting uses XGBoost to model the ARIMA errors. Note that model formula contains both a date feature and derivatives of date - ARIMA uses the date - XGBoost uses the derivatives of date as regressors</p>
-<p>Normally I’d use a preprocessing workflow for the month features using a function like <code><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature()</a></code> from <code>timetk</code> to help reduce the complexity of the parsnip formula interface.</p>
+<p>Normally I’d use a preprocessing workflow for the month features using a function like <code><a href="https://business-science.github.io/timetk/reference/step_timeseries_signature.html" class="external-link">step_timeseries_signature()</a></code> from <code>timetk</code> to help reduce the complexity of the parsnip formula interface.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Model 2: arima_boost ----</span>
 <span class="va">model_fit_arima_boosted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_boost.html">arima_boost</a></span><span class="op">(</span>
@@ -378,12 +378,12 @@ The Modeltime Workflow
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span>
 <span class="co">#&gt;   .model_id .model     .model_desc                        .type .calibration_da…</span>
 <span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]            Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOS… Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                         Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                            Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                 Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH                              Test  <span style="color: #949494;">&lt;tibble [31 × 4</span>…</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]            Test  &lt;tibble&gt;        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOS… Test  &lt;tibble&gt;        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                         Test  &lt;tibble&gt;        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                            Test  &lt;tibble&gt;        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                 Test  &lt;tibble&gt;        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH                              Test  &lt;tibble&gt;</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-5---testing-set-forecast-accuracy-evaluation">Step 5 - Testing Set Forecast &amp; Accuracy Evaluation<a class="anchor" aria-label="anchor" href="#step-5---testing-set-forecast-accuracy-evaluation"></a>
@@ -454,12 +454,12 @@ The Modeltime Workflow
     <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>
         .interactive <span class="op">=</span> <span class="va">interactive</span>
     <span class="op">)</span></code></pre></div>
-<div id="ntcspyaqdh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="tkvihnyvld" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ntcspyaqdh .gt_table {
+#tkvihnyvld .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -484,7 +484,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_heading {
+#tkvihnyvld .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -496,33 +496,37 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_title {
+#tkvihnyvld .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
   padding-top: 4px;
   padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
   border-bottom-color: #FFFFFF;
   border-bottom-width: 0;
 }
 
-#ntcspyaqdh .gt_subtitle {
+#tkvihnyvld .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
   padding-top: 0;
   padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#ntcspyaqdh .gt_bottom_border {
+#tkvihnyvld .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_col_headings {
+#tkvihnyvld .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -537,7 +541,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_col_heading {
+#tkvihnyvld .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -557,7 +561,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#ntcspyaqdh .gt_column_spanner_outer {
+#tkvihnyvld .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -569,15 +573,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#ntcspyaqdh .gt_column_spanner_outer:first-child {
+#tkvihnyvld .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ntcspyaqdh .gt_column_spanner_outer:last-child {
+#tkvihnyvld .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ntcspyaqdh .gt_column_spanner {
+#tkvihnyvld .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -589,8 +593,11 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#ntcspyaqdh .gt_group_heading {
-  padding: 8px;
+#tkvihnyvld .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -611,7 +618,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#ntcspyaqdh .gt_empty_group_heading {
+#tkvihnyvld .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -626,15 +633,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#ntcspyaqdh .gt_from_md > :first-child {
+#tkvihnyvld .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ntcspyaqdh .gt_from_md > :last-child {
+#tkvihnyvld .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ntcspyaqdh .gt_row {
+#tkvihnyvld .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -653,7 +660,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#ntcspyaqdh .gt_stub {
+#tkvihnyvld .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -662,10 +669,29 @@ The Modeltime Workflow
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #D3D3D3;
-  padding-left: 12px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-#ntcspyaqdh .gt_summary_row {
+#tkvihnyvld .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#tkvihnyvld .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#tkvihnyvld .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -675,17 +701,26 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#ntcspyaqdh .gt_first_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
+#tkvihnyvld .gt_first_summary_row {
   border-top-style: solid;
-  border-top-width: 2px;
   border-top-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_grand_summary_row {
+#tkvihnyvld .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#tkvihnyvld .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tkvihnyvld .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -695,7 +730,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#ntcspyaqdh .gt_first_grand_summary_row {
+#tkvihnyvld .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -705,11 +740,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_striped {
+#tkvihnyvld .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ntcspyaqdh .gt_table_body {
+#tkvihnyvld .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -718,7 +753,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_footnotes {
+#tkvihnyvld .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -732,13 +767,16 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_footnote {
+#tkvihnyvld .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-#ntcspyaqdh .gt_sourcenotes {
+#tkvihnyvld .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -752,44 +790,71 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#ntcspyaqdh .gt_sourcenote {
+#tkvihnyvld .gt_sourcenote {
   font-size: 90%;
-  padding: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-#ntcspyaqdh .gt_left {
+#tkvihnyvld .gt_left {
   text-align: left;
 }
 
-#ntcspyaqdh .gt_center {
+#tkvihnyvld .gt_center {
   text-align: center;
 }
 
-#ntcspyaqdh .gt_right {
+#tkvihnyvld .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ntcspyaqdh .gt_font_normal {
+#tkvihnyvld .gt_font_normal {
   font-weight: normal;
 }
 
-#ntcspyaqdh .gt_font_bold {
+#tkvihnyvld .gt_font_bold {
   font-weight: bold;
 }
 
-#ntcspyaqdh .gt_font_italic {
+#tkvihnyvld .gt_font_italic {
   font-style: italic;
 }
 
-#ntcspyaqdh .gt_super {
+#tkvihnyvld .gt_super {
   font-size: 65%;
 }
 
-#ntcspyaqdh .gt_footnote_marks {
+#tkvihnyvld .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
-  font-size: 65%;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#tkvihnyvld .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#tkvihnyvld .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#tkvihnyvld .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#tkvihnyvld .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
 }
 </style>
 <table class="table gt_table">

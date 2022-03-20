@@ -160,11 +160,11 @@ time series by each time series group.</p></li>
 <h3 id="step-extend-the-time-series">Step 1: Extend the Time Series<a class="anchor" aria-label="anchor" href="#step-extend-the-time-series"></a></h3>
 
 
-<p><code>extend_timeseries()</code>: A wrapper for <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">timetk::future_frame()</a></code> that extends a time series
+<p><code>extend_timeseries()</code>: A wrapper for <code><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">timetk::future_frame()</a></code> that extends a time series
 group-wise into the future.</p><ul><li><p>The group column is specified by <code>.id_var</code>.</p></li>
 <li><p>The date column is specified by <code>.date_var</code>.</p></li>
 <li><p>The length into the future is specified with <code>.length_future</code>.</p></li>
-<li><p>The <code>...</code> are additional parameters that can be passed to <code><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">timetk::future_frame()</a></code></p></li>
+<li><p>The <code>...</code> are additional parameters that can be passed to <code><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">timetk::future_frame()</a></code></p></li>
 </ul></div>
 
 <div class="section">
@@ -182,11 +182,11 @@ group-wise into the future.</p><ul><li><p>The group column is specified by <code
 <h3 id="step-split-the-actual-data-into-train-test-splits">Step 3: Split the Actual Data into Train/Test Splits<a class="anchor" aria-label="anchor" href="#step-split-the-actual-data-into-train-test-splits"></a></h3>
 
 
-<p><code>split_nested_timeseries()</code>: A wrapper for <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">timetk::time_series_split()</a></code> that generates
+<p><code>split_nested_timeseries()</code>: A wrapper for <code><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">timetk::time_series_split()</a></code> that generates
 training/testing splits from the <code>.actual_data</code> column.</p><ul><li><p>The <code>.length_test</code> is the primary argument that identifies the size of the
 testing sample. This is typically the same size as the <code>.future_data</code>.</p></li>
 <li><p>The <code>.length_train</code> is an optional size of the training data.</p></li>
-<li><p>The <code>...</code> (dots) are additional arguments that can be passed to <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">timetk::time_series_split()</a></code>.</p></li>
+<li><p>The <code>...</code> (dots) are additional arguments that can be passed to <code><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">timetk::time_series_split()</a></code>.</p></li>
 </ul></div>
 
 <div class="section">

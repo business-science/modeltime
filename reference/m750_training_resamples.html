@@ -130,7 +130,7 @@ resamples made on the <code>training(m750_splits)</code></p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p></p><div class="sourceCode r"><pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span>
-<span class="va">m750_training_resamples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_cv.html" class="external-link">time_series_cv</a></span><span class="op">(</span>
+<span class="va">m750_training_resamples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://business-science.github.io/timetk/reference/time_series_cv.html" class="external-link">time_series_cv</a></span><span class="op">(</span>
     data        <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">m750_splits</span><span class="op">)</span>,
     assess      <span class="op">=</span> <span class="st">"2 years"</span>,
     skip        <span class="op">=</span> <span class="st">"2 years"</span>,

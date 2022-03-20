@@ -213,7 +213,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-in"></span>
 <span class="r-in"><span class="va">m750_extended</span> <span class="op">&lt;-</span> <span class="va">m750</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span></span>
+<span class="r-in">    <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span></span>
 <span class="r-in">        .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,</span>
 <span class="r-in">        .bind_data  <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in">    <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
@@ -225,7 +225,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-in"><span class="va">lag_roll_transformer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span></span>
 <span class="r-in">    <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">        <span class="co"># Lags</span></span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
+<span class="r-in">        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">        <span class="co"># Rolling Features</span></span>
 <span class="r-in">        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rolling_mean_12 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html" class="external-link">slide_dbl</a></span><span class="op">(</span></span>
 <span class="r-in">            <span class="va">value</span>, .f <span class="op">=</span> <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">12</span>, .complete <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -267,7 +267,6 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fit time:  4ms </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stats::lm(formula = value ~ ., data = data)</span>
@@ -321,7 +320,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-in"></span>
 <span class="r-in"><span class="va">m4_extended</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span></span>
+<span class="r-in">    <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span></span>
 <span class="r-in">        .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,</span>
 <span class="r-in">        .bind_data  <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in">    <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
@@ -333,7 +332,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-in"><span class="va">lag_transformer_grouped</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span></span>
 <span class="r-in">    <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
+<span class="r-in">        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>

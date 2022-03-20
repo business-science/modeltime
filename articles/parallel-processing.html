@@ -226,7 +226,7 @@
 
 <span class="va">dataset_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
     .date_var    <span class="op">=</span> <span class="va">Date</span>, 
     .value       <span class="op">=</span> <span class="va">Weekly_Sales</span>, 
     .facet_ncol  <span class="op">=</span> <span class="fl">2</span>, 
@@ -237,17 +237,17 @@
 <div class="section level3">
 <h3 id="train-test-splits">Train / Test Splits<a class="anchor" aria-label="anchor" href="#train-test-splits"></a>
 </h3>
-<p>Use <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">time_series_split()</a></code> to make a temporal split for all seven time series.</p>
+<p>Use <code><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split()</a></code> to make a temporal split for all seven time series.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">time_series_split</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split</a></span><span class="op">(</span>
   <span class="va">dataset_tbl</span>, 
   assess     <span class="op">=</span> <span class="st">"6 months"</span>, 
   cumulative <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 
 <span class="va">splits</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="parallel-processing_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -256,7 +256,7 @@
 <p>Make a preprocessing recipe that generates time series features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">recipe_spec_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">Weekly_Sales</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://business-science.github.io/timetk/reference/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="va">Date_index.num</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -456,10 +456,10 @@
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
-<span class="co">#&gt;  Beginning Parallel Loop | 0.01 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 15.487 seconds</span>
+<span class="co">#&gt;  Beginning Parallel Loop | 0.028 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 17.66 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt;  Total time | 15.488 seconds</span></code></pre></div>
+<span class="co">#&gt;  Total time | 17.661 seconds</span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_parallel_tbl</span>
@@ -499,7 +499,7 @@
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #555555;">Model Successfully Fitted: 5</span></span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Fitting Model: 6</span></span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #555555;">Model Successfully Fitted: 6</span></span>
-<span class="co">#&gt; Total time | 18.088 seconds</span></code></pre></div>
+<span class="co">#&gt; Total time | 18.746 seconds</span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -511,12 +511,12 @@
   <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div id="cawgyhzibf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dfsamymzvo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#cawgyhzibf .gt_table {
+#dfsamymzvo .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -541,7 +541,7 @@
   border-left-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_heading {
+#dfsamymzvo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -553,33 +553,37 @@
   border-right-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_title {
+#dfsamymzvo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
   padding-top: 4px;
   padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
   border-bottom-color: #FFFFFF;
   border-bottom-width: 0;
 }
 
-#cawgyhzibf .gt_subtitle {
+#dfsamymzvo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
   padding-top: 0;
   padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#cawgyhzibf .gt_bottom_border {
+#dfsamymzvo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_col_headings {
+#dfsamymzvo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -594,7 +598,7 @@
   border-right-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_col_heading {
+#dfsamymzvo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -614,7 +618,7 @@
   overflow-x: hidden;
 }
 
-#cawgyhzibf .gt_column_spanner_outer {
+#dfsamymzvo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -626,15 +630,15 @@
   padding-right: 4px;
 }
 
-#cawgyhzibf .gt_column_spanner_outer:first-child {
+#dfsamymzvo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cawgyhzibf .gt_column_spanner_outer:last-child {
+#dfsamymzvo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cawgyhzibf .gt_column_spanner {
+#dfsamymzvo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -646,8 +650,11 @@
   width: 100%;
 }
 
-#cawgyhzibf .gt_group_heading {
-  padding: 8px;
+#dfsamymzvo .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -668,7 +675,7 @@
   vertical-align: middle;
 }
 
-#cawgyhzibf .gt_empty_group_heading {
+#dfsamymzvo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -683,15 +690,15 @@
   vertical-align: middle;
 }
 
-#cawgyhzibf .gt_from_md > :first-child {
+#dfsamymzvo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cawgyhzibf .gt_from_md > :last-child {
+#dfsamymzvo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cawgyhzibf .gt_row {
+#dfsamymzvo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -710,7 +717,7 @@
   overflow-x: hidden;
 }
 
-#cawgyhzibf .gt_stub {
+#dfsamymzvo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -719,10 +726,29 @@
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #D3D3D3;
-  padding-left: 12px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-#cawgyhzibf .gt_summary_row {
+#dfsamymzvo .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dfsamymzvo .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dfsamymzvo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -732,17 +758,26 @@
   padding-right: 5px;
 }
 
-#cawgyhzibf .gt_first_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
+#dfsamymzvo .gt_first_summary_row {
   border-top-style: solid;
-  border-top-width: 2px;
   border-top-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_grand_summary_row {
+#dfsamymzvo .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dfsamymzvo .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dfsamymzvo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -752,7 +787,7 @@
   padding-right: 5px;
 }
 
-#cawgyhzibf .gt_first_grand_summary_row {
+#dfsamymzvo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -762,11 +797,11 @@
   border-top-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_striped {
+#dfsamymzvo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cawgyhzibf .gt_table_body {
+#dfsamymzvo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -775,7 +810,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_footnotes {
+#dfsamymzvo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -789,13 +824,16 @@
   border-right-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_footnote {
+#dfsamymzvo .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-#cawgyhzibf .gt_sourcenotes {
+#dfsamymzvo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -809,44 +847,71 @@
   border-right-color: #D3D3D3;
 }
 
-#cawgyhzibf .gt_sourcenote {
+#dfsamymzvo .gt_sourcenote {
   font-size: 90%;
-  padding: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-#cawgyhzibf .gt_left {
+#dfsamymzvo .gt_left {
   text-align: left;
 }
 
-#cawgyhzibf .gt_center {
+#dfsamymzvo .gt_center {
   text-align: center;
 }
 
-#cawgyhzibf .gt_right {
+#dfsamymzvo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cawgyhzibf .gt_font_normal {
+#dfsamymzvo .gt_font_normal {
   font-weight: normal;
 }
 
-#cawgyhzibf .gt_font_bold {
+#dfsamymzvo .gt_font_bold {
   font-weight: bold;
 }
 
-#cawgyhzibf .gt_font_italic {
+#dfsamymzvo .gt_font_italic {
   font-style: italic;
 }
 
-#cawgyhzibf .gt_super {
+#dfsamymzvo .gt_super {
   font-size: 65%;
 }
 
-#cawgyhzibf .gt_footnote_marks {
+#dfsamymzvo .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
-  font-size: 65%;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#dfsamymzvo .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dfsamymzvo .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#dfsamymzvo .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#dfsamymzvo .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
 }
 </style>
 <table class="table gt_table">

@@ -292,13 +292,13 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://parsnip.tidymodels.org" class="external-link">parsnip</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rsample.tidymodels.org" class="external-link">rsample</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/config-i1/smooth" class="external-link">smooth</a></span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: greybox</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Package "greybox", v1.0.2 loaded.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Package "greybox", v1.0.4 loaded.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘greybox’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:lubridate’:</span>
@@ -307,7 +307,12 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:tidyr’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     spread</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This is package "smooth", v3.1.4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is package "smooth", v3.1.5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘smooth’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:parsnip’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     pls</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Data</span></span>
 <span class="r-in"><span class="va">m750</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="st">"M750"</span><span class="op">)</span></span>
@@ -344,7 +349,6 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fit time:  1.5s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ETS(A,A,A) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -387,7 +391,6 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fit time:  340ms </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ETS(M,Ad,M) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -428,7 +431,6 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fit time:  1.5s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Croston Method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-in"><span class="co"># }</span></span>
@@ -447,7 +449,6 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fit time:  11ms </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Theta Method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-in"><span class="co"># }</span></span>
@@ -472,8 +473,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Fit time:  538ms </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.52 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.63 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model estimated: ETS(MAdA)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Persistence vector g:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  alpha   beta  gamma </span>
