@@ -130,12 +130,16 @@
   .smooth <span class="op">=</span> <span class="cn">FALSE</span>,
   .legend_show <span class="op">=</span> <span class="cn">TRUE</span>,
   .legend_max_width <span class="op">=</span> <span class="fl">40</span>,
+  .facet_ncol <span class="op">=</span> <span class="fl">1</span>,
+  .facet_nrow <span class="op">=</span> <span class="fl">1</span>,
+  .facet_scales <span class="op">=</span> <span class="st">"free_y"</span>,
   .title <span class="op">=</span> <span class="st">"Forecast Plot"</span>,
   .x_lab <span class="op">=</span> <span class="st">""</span>,
   .y_lab <span class="op">=</span> <span class="st">""</span>,
   .color_lab <span class="op">=</span> <span class="st">"Legend"</span>,
   .interactive <span class="op">=</span> <span class="cn">TRUE</span>,
   .plotly_slider <span class="op">=</span> <span class="cn">FALSE</span>,
+  .trelliscope <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -158,6 +162,13 @@ Uses See <code><a href="https://business-science.github.io/timetk/reference/smoo
 Can save space with long model descriptions.</p></dd>
 <dt>.legend_max_width</dt>
 <dd><p>Numeric. The width of truncation to apply to the legend text.</p></dd>
+<dt>.facet_ncol</dt>
+<dd><p>Number of facet columns.</p></dd>
+<dt>.facet_nrow</dt>
+<dd><p>Number of facet rows (only used for <code>.trelliscope = TRUE</code>)</p></dd>
+<dt>.facet_scales</dt>
+<dd><p>Control facet x &amp; y-axis ranges.
+Options include "fixed", "free", "free_y", "free_x"</p></dd>
 <dt>.title</dt>
 <dd><p>Title for the plot</p></dd>
 <dt>.x_lab</dt>
@@ -170,6 +181,9 @@ Can save space with long model descriptions.</p></dd>
 <dd><p>Returns either a static (<code>ggplot2</code>) visualization or an interactive (<code>plotly</code>) visualization</p></dd>
 <dt>.plotly_slider</dt>
 <dd><p>If TRUE, returns a plotly date range slider.</p></dd>
+<dt>.trelliscope</dt>
+<dd><p>Returns either a normal plot or a trelliscopejs plot (great for many time series)
+Must have <code>trelliscopejs</code> installed.</p></dd>
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">timetk::plot_time_series()</a></code>.</p></dd>
 </dl></div>
