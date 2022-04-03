@@ -91,7 +91,7 @@ damping <- function(values = c("damped", "none")) {
 #' @export
 #' @rdname exp_smoothing_params
 damping_smooth <- function(range = c(0, 2), trans = NULL) {
-    dials::new_qual_param(
+    dials::new_quant_param(
         type      = "double",
         range     = range,
         inclusive = c(TRUE, TRUE),
