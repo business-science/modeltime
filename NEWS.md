@@ -1,5 +1,17 @@
 # modeltime 1.1.1.9000 (Development Version)
 
+__New Features__
+
+Many of the plotting functions have been upgraded for use with `trelliscopejs` for 
+easier visualization of many time series. 
+
+- `plot_modeltime_forecast()`: 
+    - Gets a new argument `trelliscope`: Used for visualizing many time series.
+    - Gets a new argument `.facet_strip_remove` to remove facet strips since trelliscope is automatically labeled.
+    - Gets a new argument `.facet_nrow` to adjust grid with trelliscope.
+    - The default argument for `facet_collapse = TRUE` was changed to `FALSE` for better compatibility with Trelliscope JS. This may cause some plots to have multiple groups take up extra space in the strip.
+
+
 # modeltime 1.1.1
 
 ## Fixes

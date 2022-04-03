@@ -56,17 +56,26 @@
 #'     plot_modeltime_forecast(.interactive = FALSE)
 #'
 #' @export
-plot_modeltime_forecast <- function(.data,
-                                    .conf_interval_show = TRUE,
-                                    .conf_interval_fill = "grey20",
-                                    .conf_interval_alpha = 0.20,
-                                    .smooth = FALSE,
-                                    .legend_show = TRUE,
-                                    .legend_max_width = 40,
-                                    .title = "Forecast Plot", .x_lab = "", .y_lab = "",
-                                    .color_lab = "Legend",
-                                    .interactive = TRUE, .plotly_slider = FALSE,
-                                    ...) {
+plot_modeltime_forecast <- function(
+    .data,
+    .conf_interval_show = TRUE,
+    .conf_interval_fill = "grey20",
+    .conf_interval_alpha = 0.20,
+    .smooth = FALSE,
+    .legend_show = TRUE,
+    .legend_max_width = 40,
+    .facet_ncol = 1,
+    .facet_nrow = 1,
+    .facet_scales = "free_y",
+    .title = "Forecast Plot",
+    .x_lab = "",
+    .y_lab = "",
+    .color_lab = "Legend",
+    .interactive = TRUE,
+    .plotly_slider = FALSE,
+    .trelliscope = FALSE,
+    ...
+) {
 
     # Checks
     if (!inherits(.data, "data.frame")) {
@@ -105,39 +114,61 @@ plot_modeltime_forecast <- function(.data,
 
     # INTERACTIVE
 
-    if (.interactive) {
+    # Convert to trelliscope and/or plotly?
+    if (!.trelliscope) {
 
-        p <- plotly::ggplotly(g, dynamicTicks = TRUE)
+        if (.interactive) {
 
-        if (.plotly_slider) {
-            p <- p %>%
-                plotly::layout(
-                    xaxis = list(
-                        rangeslider = list(type = "date")
+            g <- plotly::ggplotly(g, dynamicTicks = TRUE)
+
+            if (.plotly_slider) {
+                g <- g %>%
+                    plotly::layout(
+                        xaxis = list(
+                            rangeslider = list(type = "date")
+                        )
                     )
-                )
+            }
+
         }
 
-        return(p)
     } else {
-        return(g)
+
+        group_names   <- dplyr::group_vars(.data)
+
+        g <- g +
+            trelliscopejs::facet_trelliscope(
+                facets    = ggplot2::vars(!!! rlang::syms(group_names)),
+                ncol      = .facet_ncol,
+                nrow      = .facet_nrow,
+                scales    = .facet_scales,
+                as_plotly = .interactive
+            )
+
     }
+
+    return(g)
 
 }
 
 
 
-plot_modeltime_forecast_multi <- function(.data,
-                                          .conf_interval_show = TRUE,
-                                          .conf_interval_fill = "grey20",
-                                          .conf_interval_alpha = 0.20,
-                                          .smooth = FALSE,
-                                          .legend_show = TRUE,
-                                          .legend_max_width = 40,
-                                          .title = "Forecast Plot", .x_lab = "", .y_lab = "",
-                                          .color_lab = "Legend",
-                                          .interactive = TRUE, .plotly_slider = FALSE,
-                                          ...) {
+plot_modeltime_forecast_multi <- function(
+    .data,
+    .conf_interval_show = TRUE,
+    .conf_interval_fill = "grey20",
+    .conf_interval_alpha = 0.20,
+    .smooth = FALSE,
+    .legend_show = TRUE,
+    .legend_max_width = 40,
+    .title = "Forecast Plot",
+    .x_lab = "",
+    .y_lab = "",
+    .color_lab = "Legend",
+    .interactive = TRUE,
+    .plotly_slider = FALSE,
+    ...
+) {
 
 
     # Data prep
@@ -174,8 +205,7 @@ plot_modeltime_forecast_multi <- function(.data,
         .x_lab        = .x_lab,
         .y_lab        = .y_lab,
         .color_lab    = .color_lab,
-        .interactive  = FALSE
-        ,
+        .interactive  = FALSE,
         ...
     )
 
