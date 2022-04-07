@@ -1,6 +1,6 @@
 Package: modeltime
 Title: The Tidymodels Extension for Time Series Modeling
-Version: 1.1.1.9000
+Version: 1.2.0
 Authors@R: c(
     person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre")),
     person("Business Science", role = "cph"))
@@ -21,7 +21,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     StanHeaders,
-    timetk (>= 2.6.0),
+    timetk (>= 2.8.0),
     parsnip (>= 0.2.1),
     dials,
     yardstick (>= 0.0.8),
