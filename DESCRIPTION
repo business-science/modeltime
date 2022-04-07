@@ -1,6 +1,6 @@
 Package: modeltime
 Title: The Tidymodels Extension for Time Series Modeling
-Version: 1.2.0
+Version: 1.2.0.9000
 Authors@R: c(
     person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre")),
     person("Business Science", role = "cph"))
