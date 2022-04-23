@@ -145,7 +145,8 @@ plot_modeltime_forecast <- function(
                 ncol      = .facet_ncol,
                 nrow      = .facet_nrow,
                 scales    = .facet_scales,
-                as_plotly = .interactive
+                as_plotly = .interactive,
+                width     = .width
             )
 
     }
