@@ -74,6 +74,7 @@ plot_modeltime_forecast <- function(
     .interactive = TRUE,
     .plotly_slider = FALSE,
     .trelliscope = FALSE,
+    .width = 500,
     ...
 ) {
 
@@ -111,6 +112,7 @@ plot_modeltime_forecast <- function(
         .color_lab             = .color_lab,
         .interactive           = .interactive,
         .plotly_slider         = .plotly_slider,
+        .width                 = .width,
         ...
     )
 
