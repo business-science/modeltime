@@ -21,7 +21,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     StanHeaders,
-    timetk (>= 2.8.0),
+    timetk (>= 2.8.0.9000),
     parsnip (>= 0.2.1),
     dials,
     yardstick (>= 0.0.8),
@@ -41,7 +41,7 @@ Imports:
     forcats,
     scales,
     janitor,
-    parallel, 
+    parallel,
     doParallel,
     foreach,
     magrittr,
@@ -82,3 +82,5 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
+Remotes:  
+    business-science/timetk

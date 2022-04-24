@@ -74,7 +74,7 @@ plot_modeltime_forecast <- function(
     .interactive = TRUE,
     .plotly_slider = FALSE,
     .trelliscope = FALSE,
-    .width = 500,
+    .trelliscope_params = list(),
     ...
 ) {
 
@@ -140,15 +140,29 @@ plot_modeltime_forecast <- function(
 
         group_names   <- dplyr::group_vars(.data)
 
-        g <- g +
-            trelliscopejs::facet_trelliscope(
+        # g <- g +
+        #     trelliscopejs::facet_trelliscope(
+        #         facets    = ggplot2::vars(!!! rlang::syms(group_names)),
+        #         ncol      = .facet_ncol,
+        #         nrow      = .facet_nrow,
+        #         scales    = .facet_scales,
+        #         as_plotly = .interactive,
+        #
+        #     )
+
+        trell <- do.call(trelliscopejs::facet_trelliscope, c(
+            list(
                 facets    = ggplot2::vars(!!! rlang::syms(group_names)),
                 ncol      = .facet_ncol,
                 nrow      = .facet_nrow,
                 scales    = .facet_scales,
-                as_plotly = .interactive,
-                width     = .width
-            )
+                as_plotly = .interactive
+            ),
+            .trelliscope_params
+        ))
+
+        g <- g + trell
+
 
     }
 

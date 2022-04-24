@@ -1,5 +1,9 @@
 # modeltime 1.2.0.9000 (Development Version)
 
+### Trelliscope Plotting
+
+- `plot_modeltime_forecast()`: Expose the `facet_trelliscope()` plotting parameters. 
+
 # modeltime 1.2.0 
 
 __New Features__
