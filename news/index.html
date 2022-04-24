@@ -114,25 +114,26 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.0.9000" id="modeltime-1209000-development-version">modeltime 1.2.0.9000 (Development Version)<a class="anchor" aria-label="anchor" href="#modeltime-1209000-development-version"></a></h2>
+<div class="section level4">
+<h4 id="trelliscope-plotting-1-2-0-9000">Trelliscope Plotting<a class="anchor" aria-label="anchor" href="#trelliscope-plotting-1-2-0-9000"></a></h4>
+<ul><li>
+<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code>: Expose the <code>facet_trelliscope()</code> plotting parameters.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.0" id="modeltime-120">modeltime 1.2.0<a class="anchor" aria-label="anchor" href="#modeltime-120"></a></h2><p class="text-muted">CRAN release: 2022-04-07</p>
 <p><strong>New Features</strong></p>
 <p>Many of the plotting functions have been upgraded for use with <code>trelliscopejs</code> for easier visualization of many time series.</p>
 <ul><li>
-<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code>:
-<ul><li>Gets a new argument <code>trelliscope</code>: Used for visualizing many time series.</li>
+<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code>:<ul><li>Gets a new argument <code>trelliscope</code>: Used for visualizing many time series.</li>
 <li>Gets a new argument <code>.facet_strip_remove</code> to remove facet strips since trelliscope is automatically labeled.</li>
 <li>Gets a new argument <code>.facet_nrow</code> to adjust grid with trelliscope.</li>
 <li>The default argument for <code>facet_collapse = TRUE</code> was changed to <code>FALSE</code> for better compatibility with Trelliscope JS. This may cause some plots to have multiple groups take up extra space in the strip.</li>
-</ul></li>
-</ul></div>
+</ul></li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.1" id="modeltime-111">modeltime 1.1.1<a class="anchor" aria-label="anchor" href="#modeltime-111"></a></h2><p class="text-muted">CRAN release: 2022-01-12</p>
 <div class="section level3">
 <h3 id="fixes-1-1-1">Fixes<a class="anchor" aria-label="anchor" href="#fixes-1-1-1"></a></h3>
-<ul><li>Fixes issue of incorrect order of forecasts <a href="https://github.com/business-science/modeltime/issues/142" class="external-link">#142</a></li>
-</ul></div>
+<ul><li>Fixes issue of incorrect order of forecasts <a href="https://github.com/business-science/modeltime/issues/142" class="external-link">#142</a></li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="modeltime-110">modeltime 1.1.0<a class="anchor" aria-label="anchor" href="#modeltime-110"></a></h2><p class="text-muted">CRAN release: 2021-10-18</p>
@@ -149,8 +150,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="nested-modeltime-improvements-1-1-0">Nested Modeltime Improvements<a class="anchor" aria-label="anchor" href="#nested-modeltime-improvements-1-1-0"></a></h3>
-<ul><li>New extractor: <code><a href="../reference/log_extractors.html">extract_nested_modeltime_table()</a></code> - Extracts a nested modeltime table by row id.</li>
-</ul></div>
+<ul><li>New extractor: <code><a href="../reference/log_extractors.html">extract_nested_modeltime_table()</a></code> - Extracts a nested modeltime table by row id.</li></ul></div>
 <div class="section level3">
 <h3 id="potentially-breaking-changes-1-1-0">(potentially) Breaking Changes<a class="anchor" aria-label="anchor" href="#potentially-breaking-changes-1-1-0"></a></h3>
 <ul><li><p><code>extract_nested_train_split</code> and <code>extract_nested_test_split</code>: Changed parameter from <code>.data</code> to <code>.object</code> for consistency with other “extract” functions</p></li>
@@ -165,8 +165,7 @@
 <div class="section level5">
 <h5 id="format-data-in-a-nested-time-series-structure-1-0-0">Format data in a Nested Time Series structure<a class="anchor" aria-label="anchor" href="#format-data-in-a-nested-time-series-structure-1-0-0"></a></h5>
 <ul><li>
-<strong>Data Preparation Utilities:</strong> <code><a href="../reference/prep_nested.html">extend_timeseries()</a></code>, <code><a href="../reference/prep_nested.html">nest_timeseries()</a></code>, and <code>split_nested_timeseris()</code>.</li>
-</ul></div>
+<strong>Data Preparation Utilities:</strong> <code><a href="../reference/prep_nested.html">extend_timeseries()</a></code>, <code><a href="../reference/prep_nested.html">nest_timeseries()</a></code>, and <code>split_nested_timeseris()</code>.</li></ul></div>
 <div class="section level5">
 <h5 id="nested-model-fitting-traintest-1-0-0">Nested Model Fitting (Train/Test)<a class="anchor" aria-label="anchor" href="#nested-model-fitting-traintest-1-0-0"></a></h5>
 <ul><li><p><strong><code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code>:</strong> Fits many models to nested time series data and organizes in a “Nested Modeltime Table”. Logs Accuracy, Errors, and Test Forecasts.</p></li>
@@ -187,13 +186,11 @@
 </div>
 <div class="section level4">
 <h4 id="new-vignette-1-0-0">New Vignette<a class="anchor" aria-label="anchor" href="#new-vignette-1-0-0"></a></h4>
-<ul><li><a href="https://business-science.github.io/modeltime/articles/nested-forecasting.html">Nested Forecasting</a></li>
-</ul></div>
+<ul><li><a href="https://business-science.github.io/modeltime/articles/nested-forecasting.html">Nested Forecasting</a></li></ul></div>
 <div class="section level4">
 <h4 id="vignette-improvements-1-0-0">Vignette Improvements<a class="anchor" aria-label="anchor" href="#vignette-improvements-1-0-0"></a></h4>
 <ul><li>
-<a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html">Forecasting with Global Models</a>: Added more complete steps in the forecasting process so now user can see how to forecast each step from start to finish including future forecasting.</li>
-</ul></div>
+<a href="https://business-science.github.io/modeltime/articles/modeling-panel-data.html">Forecasting with Global Models</a>: Added more complete steps in the forecasting process so now user can see how to forecast each step from start to finish including future forecasting.</li></ul></div>
 <div class="section level4">
 <h4 id="new-accuracy-metric-set-and-yardstick-functions-1-0-0">New Accuracy Metric Set and Yardstick Functions<a class="anchor" aria-label="anchor" href="#new-accuracy-metric-set-and-yardstick-functions-1-0-0"></a></h4>
 <ul><li>
@@ -204,8 +201,7 @@
 <div class="section level4">
 <h4 id="improvements-1-0-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-0-0"></a></h4>
 <ul><li>
-<code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code>: Improved handling of Workflowset Descriptions, which now match the <code>wflow_id</code>.</li>
-</ul></div>
+<code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code>: Improved handling of Workflowset Descriptions, which now match the <code>wflow_id</code>.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="modeltime-070">modeltime 0.7.0<a class="anchor" aria-label="anchor" href="#modeltime-070"></a></h2><p class="text-muted">CRAN release: 2021-07-16</p>
@@ -225,13 +221,11 @@
 <div class="section level5">
 <h5 id="thief-temporal-hierarchical-forecasting-0-7-0">THIEF: Temporal Hierarchical Forecasting<a class="anchor" aria-label="anchor" href="#thief-temporal-hierarchical-forecasting-0-7-0"></a></h5>
 <ul><li>
-<code><a href="../reference/temporal_hierarchy.html">temporal_hierarchy()</a></code>: Implements the <code>thief</code> package by Rob Hyndman and Nikolaos Kourentzes for “Temporal HIErarchical Forecasting”. <a href="https://github.com/business-science/modeltime/issues/117" class="external-link">#117</a></li>
-</ul></div>
+<code><a href="../reference/temporal_hierarchy.html">temporal_hierarchy()</a></code>: Implements the <code>thief</code> package by Rob Hyndman and Nikolaos Kourentzes for “Temporal HIErarchical Forecasting”. <a href="https://github.com/business-science/modeltime/issues/117" class="external-link">#117</a></li></ul></div>
 </div>
 <div class="section level4">
 <h4 id="bug-fixes-0-7-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-0"></a></h4>
-<ul><li>Issue <a href="https://github.com/business-science/modeltime/issues/111" class="external-link">#111</a>: Fix bug with <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> where the workflowset (wflw_id) order was not maintained.</li>
-</ul></div>
+<ul><li>Issue <a href="https://github.com/business-science/modeltime/issues/111" class="external-link">#111</a>: Fix bug with <code><a href="../reference/modeltime_fit_workflowset.html">modeltime_fit_workflowset()</a></code> where the workflowset (wflw_id) order was not maintained.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.1" id="modeltime-061">modeltime 0.6.1<a class="anchor" aria-label="anchor" href="#modeltime-061"></a></h2><p class="text-muted">CRAN release: 2021-06-13</p>
@@ -241,8 +235,7 @@
 <li><p><code><a href="../reference/create_model_grid.html">create_model_grid()</a></code>: Helper to generate model specifications with filled-in parameters from a parameter grid (e.g. <code><a href="https://dials.tidymodels.org/reference/grid_regular.html" class="external-link">dials::grid_regular()</a></code>).</p></li>
 <li><p><code><a href="../reference/control_modeltime.html">control_refit()</a></code> and <code><a href="../reference/control_modeltime.html">control_fit_workflowset()</a></code>: Better printing.</p></li>
 </ul><p><strong>Bug Fixes</strong></p>
-<ul><li>Issue <a href="https://github.com/business-science/modeltime/issues/110" class="external-link">#110</a>: Fix bug with <code>cores &gt; cores_available</code>.</li>
-</ul></div>
+<ul><li>Issue <a href="https://github.com/business-science/modeltime/issues/110" class="external-link">#110</a>: Fix bug with <code>cores &gt; cores_available</code>.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.0" id="modeltime-060">modeltime 0.6.0<a class="anchor" aria-label="anchor" href="#modeltime-060"></a></h2><p class="text-muted">CRAN release: 2021-05-30</p>
 <div class="section level4">
@@ -277,23 +270,19 @@
 <h4 id="updates-for-parsnip--0-6-0">Updates for parsnip &gt;= 0.1.6<a class="anchor" aria-label="anchor" href="#updates-for-parsnip--0-6-0"></a></h4>
 <ul><li>
 <code>boost_tree(mtry)</code>: Mapping switched from <code>colsample_bytree</code> to <code>colsample_bynode</code>. <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code> and <code><a href="../reference/arima_boost.html">arima_boost()</a></code> have been updated to reflect this change. <a href="https://github.com/tidymodels/parsnip/pull/499" class="external-link uri">https://github.com/tidymodels/parsnip/pull/499</a>
-</li>
-</ul></div>
+</li></ul></div>
 <div class="section level4">
 <h4 id="general-improvements-0-6-0">General Improvements<a class="anchor" aria-label="anchor" href="#general-improvements-0-6-0"></a></h4>
-<ul><li>Improve Model Description of Recursive Models (<a href="https://github.com/business-science/modeltime/issues/96" class="external-link">#96</a>)</li>
-</ul></div>
+<ul><li>Improve Model Description of Recursive Models (<a href="https://github.com/business-science/modeltime/issues/96" class="external-link">#96</a>)</li></ul></div>
 <div class="section level4">
 <h4 id="potential-breaking-changes-0-6-0">Potential Breaking Changes<a class="anchor" aria-label="anchor" href="#potential-breaking-changes-0-6-0"></a></h4>
-<ul><li>We’ve added new parameters to Exponential Smoothing Models. <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code> models produced in prior versions may require refitting with <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> to upgrade their internals with the new parameters.</li>
-</ul></div>
+<ul><li>We’ve added new parameters to Exponential Smoothing Models. <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code> models produced in prior versions may require refitting with <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> to upgrade their internals with the new parameters.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="modeltime-051">modeltime 0.5.1<a class="anchor" aria-label="anchor" href="#modeltime-051"></a></h2><p class="text-muted">CRAN release: 2021-04-03</p>
 <div class="section level4">
 <h4 id="recursive-ensemble-predictions-0-5-1">Recursive Ensemble Predictions<a class="anchor" aria-label="anchor" href="#recursive-ensemble-predictions-0-5-1"></a></h4>
-<ul><li>Add support for <code><a href="../reference/recursive.html">recursive()</a></code> for ensembles. The new recursive ensemble functionality is in <code>modeltime.ensemble</code> &gt;= 0.3.0.9000.</li>
-</ul></div>
+<ul><li>Add support for <code><a href="../reference/recursive.html">recursive()</a></code> for ensembles. The new recursive ensemble functionality is in <code>modeltime.ensemble</code> &gt;= 0.3.0.9000.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="modeltime-050">modeltime 0.5.0<a class="anchor" aria-label="anchor" href="#modeltime-050"></a></h2><p class="text-muted">CRAN release: 2021-03-29</p>
@@ -307,8 +296,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="breaking-changes-0-5-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-5-0"></a></h4>
-<ul><li>Deprecating <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html" class="external-link">modeltime::metric_tweak()</a></code> for <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html" class="external-link">yardstick::metric_tweak()</a></code>. The <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html" class="external-link">yardstick::metric_tweak()</a></code> has a required <code>.name</code> argument in addition to <code>.fn</code>, which is needed for tuning.</li>
-</ul></div>
+<ul><li>Deprecating <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html" class="external-link">modeltime::metric_tweak()</a></code> for <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html" class="external-link">yardstick::metric_tweak()</a></code>. The <code><a href="https://yardstick.tidymodels.org/reference/metric_tweak.html" class="external-link">yardstick::metric_tweak()</a></code> has a required <code>.name</code> argument in addition to <code>.fn</code>, which is needed for tuning.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.2" id="modeltime-042">modeltime 0.4.2<a class="anchor" aria-label="anchor" href="#modeltime-042"></a></h2><p class="text-muted">CRAN release: 2021-03-19</p>
@@ -336,15 +324,13 @@
 <div class="section level4">
 <h4 id="fixes-0-4-2">Fixes<a class="anchor" aria-label="anchor" href="#fixes-0-4-2"></a></h4>
 <ul><li>
-<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> - When plotting a single point forecast, <code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> now uses <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code> instead of <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line()</a></code>. Fixes <a href="https://github.com/business-science/modeltime/issues/66" class="external-link">#66</a>.</li>
-</ul></div>
+<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> - When plotting a single point forecast, <code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> now uses <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code> instead of <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line()</a></code>. Fixes <a href="https://github.com/business-science/modeltime/issues/66" class="external-link">#66</a>.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="modeltime-041">modeltime 0.4.1<a class="anchor" aria-label="anchor" href="#modeltime-041"></a></h2><p class="text-muted">CRAN release: 2021-01-17</p>
 <p><strong>Fixes</strong></p>
 <ul><li>
-<code><a href="../reference/recursive.html">recursive()</a></code> &amp; <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: Now able to refit a recursive workflow or recursive fitted parsnip object.</li>
-</ul></div>
+<code><a href="../reference/recursive.html">recursive()</a></code> &amp; <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code>: Now able to refit a recursive workflow or recursive fitted parsnip object.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="modeltime-040">modeltime 0.4.0<a class="anchor" aria-label="anchor" href="#modeltime-040"></a></h2><p class="text-muted">CRAN release: 2020-11-23</p>
 <p><strong>New Functions</strong></p>
@@ -353,14 +339,12 @@
 <li>
 <code><a href="../reference/update_modeltime_model.html">update_modeltime_model()</a></code>: New function to update a modeltime model inside a Modeltime Table.</li>
 </ul><p><strong>Breaking Changes</strong></p>
-<ul><li>Removed <code>arima_workflow_tuned</code> dataset.</li>
-</ul></div>
+<ul><li>Removed <code>arima_workflow_tuned</code> dataset.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.1" id="modeltime-031">modeltime 0.3.1<a class="anchor" aria-label="anchor" href="#modeltime-031"></a></h2><p class="text-muted">CRAN release: 2020-11-09</p>
 <p><code><a href="../reference/modeltime_table.html">as_modeltime_table()</a></code>: New function to convert one or more fitted models stored in a <code>list</code> to a Modeltime Table.</p>
 <p><strong>Bug Fixes</strong></p>
-<ul><li>Update <code>m750_models</code>: Fixes error “R parsnip Error: Internal error: Unknown <code>composition</code> type.”</li>
-</ul></div>
+<ul><li>Update <code>m750_models</code>: Fixes error “R parsnip Error: Internal error: Unknown <code>composition</code> type.”</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="modeltime-030">modeltime 0.3.0<a class="anchor" aria-label="anchor" href="#modeltime-030"></a></h2><p class="text-muted">CRAN release: 2020-10-28</p>
 <p><strong>Panel Data</strong></p>
@@ -374,21 +358,17 @@
 <p><code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code>: Can handle panel data provided the data is grouped by an ID column prior to plotting.</p>
 <p><strong>Error Messaging</strong></p>
 <ul><li>
-<strong>Calibration:</strong> Improve error messaging during calibration. Provide warnings if models fail. Provide report with <code>modeltime_calibrate(quiet = FALSE)</code>.</li>
-</ul><p><strong>Compatibility</strong></p>
-<ul><li>Compatibility with <code>parsnip &gt;= 0.1.4</code>. Uses <code>set_encodings()</code> new parameter <code>allow_sparse_x</code>.</li>
-</ul></div>
+<strong>Calibration:</strong> Improve error messaging during calibration. Provide warnings if models fail. Provide report with <code>modeltime_calibrate(quiet = FALSE)</code>.</li></ul><p><strong>Compatibility</strong></p>
+<ul><li>Compatibility with <code>parsnip &gt;= 0.1.4</code>. Uses <code>set_encodings()</code> new parameter <code>allow_sparse_x</code>.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="modeltime-021">modeltime 0.2.1<a class="anchor" aria-label="anchor" href="#modeltime-021"></a></h2><p class="text-muted">CRAN release: 2020-10-08</p>
 <p><strong>Ensembles</strong></p>
 <ul><li>
-<code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> - Changes to improve fault tolerance and error handling / messaging when making ensembles.</li>
-</ul></div>
+<code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> - Changes to improve fault tolerance and error handling / messaging when making ensembles.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="modeltime-020">modeltime 0.2.0<a class="anchor" aria-label="anchor" href="#modeltime-020"></a></h2><p class="text-muted">CRAN release: 2020-09-28</p>
 <p><strong>Ensembles</strong></p>
-<ul><li>Integrates <code>modeltime.ensemble</code>, a new R package designed for forecasting with ensemble models.</li>
-</ul><p><strong><em>New Workflow Helper Functions</em></strong></p>
+<ul><li>Integrates <code>modeltime.ensemble</code>, a new R package designed for forecasting with ensemble models.</li></ul><p><strong><em>New Workflow Helper Functions</em></strong></p>
 <ul><li>
 <code><a href="../reference/add_modeltime_model.html">add_modeltime_model()</a></code> - A helper function making it easy to add a fitted parsnip or workflow object to a modeltime table</li>
 <li>
@@ -397,8 +377,7 @@
 <ul><li>Documentation - Algorithms now identify default parameter values in the “Engine Details” Section in their respective documentation. E.g. <code><a href="../reference/prophet_boost.html">?prophet_boost</a></code>
 </li>
 <li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code> using the following parameters:
-<ul><li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> can now have regressors controlled via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code> using the following parameters:<ul><li>
 <code>regressors.mode</code> - Set to <code>seasonality.mode</code> by default.</li>
 <li>
 <code>regressors.prior.scale</code> - Set to 10,000 by default.</li>
@@ -418,8 +397,7 @@
 </li>
 </ul><p><strong>Bug Fix</strong></p>
 <ul><li>
-<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> fix issue with “ACTUAL” data being shown at bottom of legend list. Should be first item.</li>
-</ul></div>
+<code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code> fix issue with “ACTUAL” data being shown at bottom of legend list. Should be first item.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="modeltime-010">modeltime 0.1.0<a class="anchor" aria-label="anchor" href="#modeltime-010"></a></h2><p class="text-muted">CRAN release: 2020-09-02</p>
 <div class="section level4">
@@ -444,8 +422,7 @@
 <ul><li>
 <code><a href="../reference/modeltime_residuals.html">modeltime_residuals()</a></code> - A new function used to extract out residual information</li>
 <li>
-<code><a href="../reference/plot_modeltime_residuals.html">plot_modeltime_residuals()</a></code> - Visualizes the output of <code><a href="../reference/modeltime_residuals.html">modeltime_residuals()</a></code>. Offers 3 plots:
-<ol style="list-style-type: decimal"><li>
+<code><a href="../reference/plot_modeltime_residuals.html">plot_modeltime_residuals()</a></code> - Visualizes the output of <code><a href="../reference/modeltime_residuals.html">modeltime_residuals()</a></code>. Offers 3 plots:<ol style="list-style-type: decimal"><li>
 <strong>Time Plot</strong> - Residuals over time</li>
 <li>
 <strong>ACF Plot</strong> - Residual Autocorrelation vs Lags</li>
@@ -472,12 +449,10 @@
     <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"nnetar"</span><span class="op">)</span> </code></pre></div>
 <p><strong>Prophet Model - Logistic Growth Support</strong></p>
 <ul><li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>:
-<ul><li>Now supports logistic growth. Set <code>growth = 'logistic'</code> and one or more of <code>logistic_cap</code> and <code>logistic_floor</code> to valid saturation boundaries.</li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> and <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>:<ul><li>Now supports logistic growth. Set <code>growth = 'logistic'</code> and one or more of <code>logistic_cap</code> and <code>logistic_floor</code> to valid saturation boundaries.</li>
 <li>New arguments making it easier to modify the <code>changepoint_num</code>, <code>changepoint_range</code>, <code>seasonality_yearly</code>, <code>seasonality_weekly</code>, <code>seasonality_daily</code>, <code>logistic_cap</code>, <code>logistic_floor</code>
 </li>
-</ul></li>
-</ul></div>
+</ul></li></ul></div>
 <div class="section level4">
 <h4 id="new-workflow-helper-functions-0-1-0">New Workflow Helper Functions<a class="anchor" aria-label="anchor" href="#new-workflow-helper-functions-0-1-0"></a></h4>
 <ul><li>
@@ -505,11 +480,9 @@
 <ul><li>
 <code>seasonal_decomp()</code> has changed to <code><a href="../reference/seasonal_reg.html">seasonal_reg()</a></code> and now supports both TBATS and Seasonal Decomposition Models.</li>
 <li>
-<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> &amp; <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: Argument changes:
-<ul><li>
+<code><a href="../reference/prophet_reg.html">prophet_reg()</a></code> &amp; <code><a href="../reference/prophet_boost.html">prophet_boost()</a></code>: Argument changes:<ul><li>
 <code>num_changepoints</code> has become <code>changepoint_num</code>
-</li>
-</ul></li>
+</li></ul></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -517,8 +490,7 @@
 <div class="section level4">
 <h4 id="confidence-interval-estimation-0-0-2">Confidence Interval Estimation<a class="anchor" aria-label="anchor" href="#confidence-interval-estimation-0-0-2"></a></h4>
 <ul><li>
-<code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>: Now estimates confidence intervals using centered standard deviation. The mean is assumed to be zero and residuals deviate from mean = 0.</li>
-</ul></div>
+<code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code>: Now estimates confidence intervals using centered standard deviation. The mean is assumed to be zero and residuals deviate from mean = 0.</li></ul></div>
 <div class="section level4">
 <h4 id="fixes-0-0-2">Fixes<a class="anchor" aria-label="anchor" href="#fixes-0-0-2"></a></h4>
 <ul><li>Updates to work with <code>parsnip</code> 0.1.2.</li>
@@ -528,8 +500,7 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.1" id="modeltime-001">modeltime 0.0.1<a class="anchor" aria-label="anchor" href="#modeltime-001"></a></h2><p class="text-muted">CRAN release: 2020-06-22</p>
-<ul><li>Initial Release</li>
-</ul></div>
+<ul><li>Initial Release</li></ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
@@ -539,7 +510,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>
