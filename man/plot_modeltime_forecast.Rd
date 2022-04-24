@@ -22,6 +22,7 @@ plot_modeltime_forecast(
   .interactive = TRUE,
   .plotly_slider = FALSE,
   .trelliscope = FALSE,
+  .trelliscope_params = list(),
   ...
 )
 }
@@ -59,10 +60,19 @@ Options include "fixed", "free", "free_y", "free_x"}
 
 \item{.interactive}{Returns either a static (\code{ggplot2}) visualization or an interactive (\code{plotly}) visualization}
 
-\item{.plotly_slider}{If TRUE, returns a plotly date range slider.}
+\item{.plotly_slider}{If \code{TRUE}, returns a plotly date range slider.}
 
 \item{.trelliscope}{Returns either a normal plot or a trelliscopejs plot (great for many time series)
 Must have \code{trelliscopejs} installed.}
+
+\item{.trelliscope_params}{Pass parameters to the \code{trelliscopejs::facet_trelliscope()} function as a \code{list()}.
+The only parameters that cannot be passed are:
+\itemize{
+\item \code{ncol}: use \code{.facet_ncol}
+\item \code{nrow}: use \code{.facet_nrow}
+\item \code{scales}: use \code{facet_scales}
+\item \code{as_plotly}: use \code{.interactive}
+}}
 
 \item{...}{Additional arguments passed to \code{\link[timetk:plot_time_series]{timetk::plot_time_series()}}.}
 }
