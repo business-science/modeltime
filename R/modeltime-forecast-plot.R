@@ -74,6 +74,7 @@ plot_modeltime_forecast <- function(
     .interactive = TRUE,
     .plotly_slider = FALSE,
     .trelliscope = FALSE,
+    .width = 500,
     ...
 ) {
 
@@ -102,6 +103,9 @@ plot_modeltime_forecast <- function(
         .smooth                = .smooth,
         .legend_show           = .legend_show,
         .legend_max_width      = .legend_max_width,
+        .facet_ncol            = .facet_ncol,
+        .facet_nrow            = .facet_nrow,
+        .facet_scales          = .facet_scales,
         .title                 = .title,
         .x_lab                 = .x_lab,
         .y_lab                 = .y_lab,
@@ -142,7 +146,8 @@ plot_modeltime_forecast <- function(
                 ncol      = .facet_ncol,
                 nrow      = .facet_nrow,
                 scales    = .facet_scales,
-                as_plotly = .interactive
+                as_plotly = .interactive,
+                width     = .width
             )
 
     }
