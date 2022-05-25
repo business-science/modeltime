@@ -32,13 +32,13 @@ wflw_fit_prophet <- workflow() %>%
 set.seed(123)
 wflw_fit_svm <- workflow() %>%
     add_model(svm_rbf() %>% set_engine("kernlab")) %>%
-    add_recipe(recipe_spec %>% update_role(date, new_role = "ID")) %>%
+    add_recipe(recipe_spec %>% step_rm(date)) %>%
     fit(data_set)
 
 # set.seed(123)
 # wflw_fit_xgb <- workflow() %>%
 #     add_model(boost_tree() %>% set_engine("xgboost")) %>%
-#     add_recipe(recipe_spec %>% update_role(date, new_role = "ID")) %>%
+#     add_recipe(recipe_spec %>% step_rm(date)) %>%
 #     fit(data_set)
 
 # PANEL DATA - FORECAST JUMBLED ----
