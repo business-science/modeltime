@@ -21,7 +21,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     StanHeaders,
-    timetk (>= 2.8.0.9000),
+    timetk (>= 2.8.1),
     parsnip (>= 0.2.1),
     dials,
     yardstick (>= 0.0.8),
@@ -42,6 +42,7 @@ Imports:
     scales,
     janitor,
     parallel,
+    parallelly,
     doParallel,
     foreach,
     magrittr,

@@ -389,7 +389,7 @@ control_modeltime_objects <- function(
     if (!allow_par) {
         cores <- 1
     } else {
-        cores_available <- parallel::detectCores(logical = FALSE) # Detect Physical Cores
+        cores_available <- parallelly::availableCores(logical = FALSE) # Detect Physical Cores
 
         foreach_workers <- foreach::getDoParWorkers() # Detect how many workers currently set up
 
