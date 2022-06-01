@@ -83,5 +83,4 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
-Remotes:  
-    business-science/timetk
+
