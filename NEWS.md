@@ -1,6 +1,8 @@
 # modeltime 1.2.1.9000
 
+### Fixes
 
+- Updates for `hardhat 1.0.0` #182
 
 # modeltime 1.2.1
 
