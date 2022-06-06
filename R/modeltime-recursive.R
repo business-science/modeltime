@@ -409,9 +409,11 @@ predict_recursive_workflow <- function(object, new_data, type = NULL, opts = lis
         rlang::abort("Workflow has not yet been trained. Do you need to call `fit()`?")
     }
 
-    blueprint <- workflow$pre$mold$blueprint
-    forged    <- hardhat::forge(new_data, blueprint)
-    new_data  <- forged$predictors
+    # blueprint <- workflow$pre$mold$blueprint
+    preprocessor <- workflows::extract_preprocessor(workflow)
+    mld          <- hardhat::mold(preprocessor, preprocessor$template)
+    forged       <- hardhat::forge(new_data, mld$blueprint)
+    new_data     <- forged$predictors
 
     fit <- workflow$fit$fit
 
@@ -537,9 +539,10 @@ predict_recursive_panel_workflow <- function(object, new_data, type = NULL, opts
         rlang::abort("Workflow has not yet been trained. Do you need to call `fit()`?")
     }
 
-    blueprint <- workflow$pre$mold$blueprint
-    forged    <- hardhat::forge(new_data, blueprint)
-    new_data  <- forged$predictors
+    preprocessor <- workflows::extract_preprocessor(workflow)
+    mld          <- hardhat::mold(preprocessor, preprocessor$template)
+    forged       <- hardhat::forge(new_data, mld$blueprint)
+    new_data     <- forged$predictors
 
     # Fix - When ID is dummied
     if (!is.null(id)) {

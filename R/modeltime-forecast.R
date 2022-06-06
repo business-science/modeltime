@@ -773,7 +773,13 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     # WORKFLOW MOLD
 
     # Contains $predictors, $outcomes, $blueprint
-    mld <- object %>% workflows::extract_mold()
+    # mld <- object %>% workflows::extract_mold()
+
+    # UPGRADE MOLD (TEMP FIX) ----
+    # - models built with hardhat <1.0.0 have issue
+    #   https://github.com/tidymodels/hardhat/issues/200
+    preprocessor <- workflows::extract_preprocessor(object)
+    mld          <- hardhat::mold(preprocessor, preprocessor$template)
 
     # NEW DATA
 
@@ -879,8 +885,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     }
 
     # Issue - hardhat::forge defaults to outcomes = FALSE, which creates an error at predict.workflow()
-    blueprint <- object$pre$mold$blueprint
-    forged    <- hardhat::forge(new_data, blueprint, outcomes = TRUE)
+    forged    <- hardhat::forge(new_data, mld$blueprint, outcomes = TRUE)
     new_data  <- forged$predictors
     fit       <- object$fit$fit
 
@@ -929,7 +934,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
         nms_final <- names(data_formatted)
 
-        mld <- object %>% workflows::extract_mold()
+        # mld <- object %>% workflows::extract_mold()
 
         actual_data_forged <- hardhat::forge(new_data = actual_data, blueprint = mld$blueprint, outcomes = TRUE)
 
@@ -1034,5 +1039,4 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     return(ret)
 
 }
-
 
