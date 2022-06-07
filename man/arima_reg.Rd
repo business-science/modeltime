@@ -93,7 +93,9 @@ Other options can be set using \code{set_engine()}.
 
 The engine uses \code{\link[forecast:auto.arima]{forecast::auto.arima()}}.
 
-Function Parameters:\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
+Function Parameters:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
 ##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
 ##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
 ##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
@@ -102,7 +104,7 @@ Function Parameters:\preformatted{## function (y, d = NA, D = NA, max.p = 5, max
 ##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
 ##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
 ##     num.cores = 2, x = y, ...)
-}
+}\if{html}{\out{</div>}}
 
 The \emph{MAXIMUM} nonseasonal ARIMA terms (\code{max.p}, \code{max.d}, \code{max.q}) and
 seasonal ARIMA terms (\code{max.P}, \code{max.D}, \code{max.Q}) are provided to
@@ -121,10 +123,12 @@ The \code{forecast::auto.arima()} model will select a value using these as an up
 
 The engine uses \code{\link[forecast:Arima]{forecast::Arima()}}.
 
-Function Parameters:\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
+Function Parameters:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, 
 ##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, 
 ##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)
-}
+}\if{html}{\out{</div>}}
 
 The nonseasonal ARIMA terms (\code{order}) and seasonal ARIMA terms (\code{seasonal})
 are provided to \code{\link[forecast:Arima]{forecast::Arima()}} via \code{arima_reg()} parameters.

@@ -128,10 +128,14 @@ in lieu of recreating the object from scratch.
 
 The engine uses \code{\link[smooth:adam]{smooth::auto.adam()}}.
 
-Function Parameters:\preformatted{## Registered S3 method overwritten by 'greybox':
+Function Parameters:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## Registered S3 method overwritten by 'greybox':
 ##   method     from
 ##   print.pcor lava
-}\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
 ##     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", 
 ##     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", 
 ##     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", 
@@ -140,7 +144,7 @@ Function Parameters:\preformatted{## Registered S3 method overwritten by 'greybo
 ##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
 ##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
 ##     silent = TRUE, parallel = FALSE, ...)
-}
+}\if{html}{\out{</div>}}
 
 The \emph{MAXIMUM} nonseasonal ARIMA terms (\code{max.p}, \code{max.d}, \code{max.q}) and
 seasonal ARIMA terms (\code{max.P}, \code{max.D}, \code{max.Q}) are provided to
@@ -159,7 +163,9 @@ The \code{smooth::auto.adam()} model will select a value using these as an upper
 
 The engine uses \code{\link[smooth:adam]{smooth::adam()}}.
 
-Function Parameters:\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
+Function Parameters:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
 ##     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, 
 ##     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", 
 ##         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), 
@@ -170,7 +176,7 @@ Function Parameters:\preformatted{## function (data, model = "ZXZ", lags = c(fre
 ##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
 ##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
 ##     silent = TRUE, ...)
-}
+}\if{html}{\out{</div>}}
 
 The nonseasonal ARIMA terms (\code{orders}) and seasonal ARIMA terms (\code{orders})
 are provided to \code{\link[smooth:adam]{smooth::adam()}} via \code{adam_reg()} parameters.
