@@ -20,7 +20,7 @@ different packages. Currently the only package is forecast."><meta property="og:
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -187,9 +187,8 @@ in lieu of recreating the object from scratch.</p>
 names in each engine:</p><table class="table table"><tr><td>modeltime</td><td>forecast::nnetar</td></tr><tr><td>seasonal_period</td><td>ts(frequency)</td></tr><tr><td>non_seasonal_ar</td><td>p (1)</td></tr><tr><td>seasonal_ar</td><td>P (1)</td></tr><tr><td>hidden_units</td><td>size (10)</td></tr><tr><td>num_networks</td><td>repeats (20)</td></tr><tr><td>epochs</td><td>maxit (100)</td></tr><tr><td>penalty</td><td>decay (0)</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>nnetar</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/nnetar.html" class="external-link">forecast::nnetar()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (y, p, P = 1, size, repeats = 20, xreg = NULL, lambda = NULL, </span>
-<span class="co">##     model = NULL, subset = NULL, scale.inputs = TRUE, x = y, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p><code>xreg</code> - This is supplied via the parsnip / modeltime <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> interface
 (so don't provide this manually). See Fit Details (below).</p></li>
 <li><p><code>size</code> - Is set to 10 by default. This differs from the <code>forecast</code> implementation</p></li>

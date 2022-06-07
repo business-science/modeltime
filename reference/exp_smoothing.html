@@ -34,7 +34,7 @@ performed well in the M3 Competition
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -201,14 +201,8 @@ factor for exponential smoothing models.</p></dd>
 names in each engine:</p><table class="table table"><tr><td>modeltime</td><td>forecast::ets</td><td>forecast::croston()</td><td>forecast::thetaf()</td><td>smooth::es()</td></tr><tr><td>seasonal_period()</td><td>ts(frequency)</td><td>ts(frequency)</td><td>ts(frequency)</td><td>ts(frequency)</td></tr><tr><td>error(), trend(), season()</td><td>model ('ZZZ')</td><td>NA</td><td>NA</td><td>model('ZZZ')</td></tr><tr><td>damping()</td><td>damped (NULL)</td><td>NA</td><td>NA</td><td>phi</td></tr><tr><td>smooth_level()</td><td>alpha (NULL)</td><td>alpha (0.1)</td><td>NA</td><td>persistence(alpha)</td></tr><tr><td>smooth_trend()</td><td>beta (NULL)</td><td>NA</td><td>NA</td><td>persistence(beta)</td></tr><tr><td>smooth_seasonal()</td><td>gamma (NULL)</td><td>NA</td><td>NA</td><td>persistence(gamma)</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>ets (default engine)</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/ets.html" class="external-link">forecast::ets()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, </span>
-<span class="co">##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, </span>
-<span class="co">##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", </span>
-<span class="co">##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", </span>
-<span class="co">##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, </span>
-<span class="co">##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", </span>
-<span class="co">##         "na.fail"), ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The main arguments are <code>model</code> and <code>damped</code> are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">error()</a></code> = "auto", "additive", and "multiplicative" are converted to  "Z", "A", and "M"</p></li>
 <li><p><code><a href="exp_smoothing_params.html">trend()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
 <li><p><code><a href="exp_smoothing_params.html">season()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
@@ -222,8 +216,8 @@ automatically determined if not provided. They are mapped to "alpha", "beta" and
 models will be fit.</p></li>
 </ul><p><strong>croston</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/croston.html" class="external-link">forecast::croston()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (y, h = 10, alpha = 0.1, x = y)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The main arguments are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">smooth_level()</a></code>: The "alpha" parameter</p></li>
 </ul><p>Parameter Notes:</p><ul><li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.</p></li>
@@ -233,15 +227,8 @@ models will be fit.</p></li>
 models will be fit.</p></li>
 </ul><p><strong>smooth_es</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/es.html" class="external-link">smooth::es()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", </span>
-<span class="co">##     "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", </span>
-<span class="co">##     "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", "TMSE", </span>
-<span class="co">##     "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", </span>
-<span class="co">##     "parametric", "likelihood", "semiparametric", "nonparametric"), level = 0.95, </span>
-<span class="co">##     bounds = c("usual", "admissible", "none"), silent = c("all", "graph", </span>
-<span class="co">##         "legend", "output", "none"), xreg = NULL, xregDo = c("use", "select"), </span>
-<span class="co">##     initialX = NULL, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The main arguments <code>model</code> and <code>phi</code> are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">error()</a></code> = "auto", "additive" and "multiplicative" are converted to "Z", "A" and "M"</p></li>
 <li><p><code><a href="exp_smoothing_params.html">trend()</a></code> = "auto", "additive", "multiplicative", "additive_damped", "multiplicative_damped" and "none" are converted to "Z", "A", "M", "Ad", "Md" and "N".</p></li>
 <li><p><code><a href="exp_smoothing_params.html">season()</a></code> = "auto", "additive", "multiplicative", and "none" are converted "Z", "A","M" and "N"</p></li>
@@ -308,7 +295,6 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     spread</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This is package "smooth", v3.1.6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> By the way, have you already tried adam() function from smooth?</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘smooth’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:parsnip’:</span>
@@ -474,7 +460,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.57 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.59 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model estimated: ETS(MAdA)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Persistence vector g:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  alpha   beta  gamma </span>

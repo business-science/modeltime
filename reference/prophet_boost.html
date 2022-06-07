@@ -20,7 +20,7 @@ different packages. Currently the only package is prophet."><meta property="og:i
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -266,13 +266,8 @@ in lieu of recreating the object from scratch.</p>
 names in each engine:</p>
 <p>Model 1: PROPHET:</p><table class="table table"><tr><td>modeltime</td><td>prophet</td></tr><tr><td>growth</td><td>growth ('linear')</td></tr><tr><td>changepoint_num</td><td>n.changepoints (25)</td></tr><tr><td>changepoint_range</td><td>changepoints.range (0.8)</td></tr><tr><td>seasonality_yearly</td><td>yearly.seasonality ('auto')</td></tr><tr><td>seasonality_weekly</td><td>weekly.seasonality ('auto')</td></tr><tr><td>seasonality_daily</td><td>daily.seasonality ('auto')</td></tr><tr><td>season</td><td>seasonality.mode ('additive')</td></tr><tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale (0.05)</td></tr><tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale (10)</td></tr><tr><td>prior_scale_holidays</td><td>holidays.prior.scale (10)</td></tr><tr><td>logistic_cap</td><td>df$cap (NULL)</td></tr><tr><td>logistic_floor</td><td>df$floor (NULL)</td></tr></table><p>Model 2: XGBoost:</p><table class="table table"><tr><td>modeltime</td><td>xgboost::xgb.train</td></tr><tr><td>tree_depth</td><td>max_depth (6)</td></tr><tr><td>trees</td><td>nrounds (15)</td></tr><tr><td>learn_rate</td><td>eta (0.3)</td></tr><tr><td>mtry</td><td>colsample_bynode (1)</td></tr><tr><td>min_n</td><td>min_child_weight (1)</td></tr><tr><td>loss_reduction</td><td>gamma (0)</td></tr><tr><td>sample_size</td><td>subsample (1)</td></tr><tr><td>stop_iter</td><td>early_stop</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>prophet_xgboost</strong></p>
-<p>Model 1: PROPHET (<code><a href="https://rdrr.io/pkg/prophet/man/prophet.html" class="external-link">prophet::prophet</a></code>):</p><div class="sourceCode"><pre><code><span class="co">## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, </span>
-<span class="co">##     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", </span>
-<span class="co">##     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", </span>
-<span class="co">##     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, </span>
-<span class="co">##     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, </span>
-<span class="co">##     fit = TRUE, ...)</span></code></pre></div>
-
+<p>Model 1: PROPHET (<code><a href="https://rdrr.io/pkg/prophet/man/prophet.html" class="external-link">prophet::prophet</a></code>):</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p><code>df</code>: This is supplied via the parsnip / modeltime <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> interface
 (so don't provide this manually). See Fit Details (below).</p></li>
 <li><p><code>holidays</code>: A data.frame of holidays can be supplied via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code></p></li>
@@ -285,11 +280,8 @@ for "cap" and "floor" to your data frame.</p></li>
 </ul><p>Limitations:</p><ul><li><p><code><a href="https://rdrr.io/pkg/prophet/man/add_seasonality.html" class="external-link">prophet::add_seasonality()</a></code> is not currently implemented. It's used to
 specify non-standard seasonalities using fourier series. An alternative is to use
 <code><a href="https://business-science.github.io/timetk/reference/step_fourier.html" class="external-link">step_fourier()</a></code> and supply custom seasonalities as Extra Regressors.</p></li>
-</ul><p>Model 2: XGBoost (<code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train</a></code>):</p><div class="sourceCode"><pre><code><span class="co">## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, </span>
-<span class="co">##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, </span>
-<span class="co">##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, </span>
-<span class="co">##     callbacks = list(), ...)</span></code></pre></div>
-
+</ul><p>Model 2: XGBoost (<code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train</a></code>):</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p>XGBoost uses a <code>params = list()</code> to capture.
 Parsnip / Modeltime automatically sends any args provided as <code>...</code> inside of <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code> to
 the <code>params = list(...)</code>.</p></li>

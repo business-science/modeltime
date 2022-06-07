@@ -20,7 +20,7 @@ different packages. Currently the only package is smooth."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -233,18 +233,9 @@ set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.htm
 in lieu of recreating the object from scratch.</p>
 <p><strong>auto_adam (default engine)</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::auto.adam()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## Registered S3 method overwritten by 'greybox':</span>
-<span class="co">##   method     from</span>
-<span class="co">##   print.pcor lava</span></code></pre></div><div class="sourceCode"><pre><code><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span>
-<span class="co">##     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", </span>
-<span class="co">##     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", </span>
-<span class="co">##     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", </span>
-<span class="co">##     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", </span>
-<span class="co">##     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span>
-<span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span>
-<span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span>
-<span class="co">##     silent = TRUE, parallel = FALSE, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
 <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima()</a></code> via <code><a href="arima_reg.html">arima_reg()</a></code> parameters.
@@ -255,18 +246,8 @@ The <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-lin
 (so don't provide this manually). See Fit Details (below).</p></li>
 </ul><p><strong>adam</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span>
-<span class="co">##     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, </span>
-<span class="co">##     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", </span>
-<span class="co">##         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), </span>
-<span class="co">##     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", </span>
-<span class="co">##         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", </span>
-<span class="co">##         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", </span>
-<span class="co">##         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span>
-<span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span>
-<span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span>
-<span class="co">##     silent = TRUE, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The nonseasonal ARIMA terms (<code>orders</code>) and seasonal ARIMA terms (<code>orders</code>)
 are provided to <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code> via <code>adam_reg()</code> parameters.
 Other options and argument can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>

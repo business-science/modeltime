@@ -20,7 +20,7 @@ different packages. Currently the only package is prophet."><meta property="og:i
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -220,13 +220,8 @@ in lieu of recreating the object from scratch.</p>
 names in each engine:</p><table class="table table"><tr><td>modeltime</td><td>prophet</td></tr><tr><td>growth</td><td>growth ('linear')</td></tr><tr><td>changepoint_num</td><td>n.changepoints (25)</td></tr><tr><td>changepoint_range</td><td>changepoints.range (0.8)</td></tr><tr><td>seasonality_yearly</td><td>yearly.seasonality ('auto')</td></tr><tr><td>seasonality_weekly</td><td>weekly.seasonality ('auto')</td></tr><tr><td>seasonality_daily</td><td>daily.seasonality ('auto')</td></tr><tr><td>season</td><td>seasonality.mode ('additive')</td></tr><tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale (0.05)</td></tr><tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale (10)</td></tr><tr><td>prior_scale_holidays</td><td>holidays.prior.scale (10)</td></tr><tr><td>logistic_cap</td><td>df$cap (NULL)</td></tr><tr><td>logistic_floor</td><td>df$floor (NULL)</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>prophet</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/prophet/man/prophet.html" class="external-link">prophet::prophet()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, </span>
-<span class="co">##     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", </span>
-<span class="co">##     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", </span>
-<span class="co">##     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, </span>
-<span class="co">##     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, </span>
-<span class="co">##     fit = TRUE, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p><code>df</code>: This is supplied via the parsnip / modeltime <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> interface
 (so don't provide this manually). See Fit Details (below).</p></li>
 <li><p><code>holidays</code>: A data.frame of holidays can be supplied via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code></p></li>

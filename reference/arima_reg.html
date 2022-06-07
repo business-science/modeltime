@@ -20,7 +20,7 @@ different packages. Currently the only package is forecast."><meta property="og:
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -192,16 +192,8 @@ in lieu of recreating the object from scratch.</p>
 names in each engine:</p><table class="table table"><tr><td>modeltime</td><td>forecast::auto.arima</td><td>forecast::Arima</td></tr><tr><td>seasonal_period</td><td>ts(frequency)</td><td>ts(frequency)</td></tr><tr><td>non_seasonal_ar, non_seasonal_differences, non_seasonal_ma</td><td>max.p(5), max.d(2), max.q(5)</td><td>order = c(p(0), d(0), q(0))</td></tr><tr><td>seasonal_ar, seasonal_differences, seasonal_ma</td><td>max.P(2), max.D(1), max.Q(2)</td><td>seasonal = c(P(0), D(0), Q(0))</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>auto_arima (default engine)</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, </span>
-<span class="co">##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, </span>
-<span class="co">##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", </span>
-<span class="co">##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) &gt; </span>
-<span class="co">##         150 | frequency(x) &gt; 12), method = NULL, truncate = NULL, xreg = NULL, </span>
-<span class="co">##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", </span>
-<span class="co">##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, </span>
-<span class="co">##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, </span>
-<span class="co">##     num.cores = 2, x = y, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
 <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima()</a></code> via <code>arima_reg()</code> parameters.
@@ -212,10 +204,8 @@ The <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.htm
 (so don't provide this manually). See Fit Details (below).</p></li>
 </ul><p><strong>arima</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/Arima.html" class="external-link">forecast::Arima()</a></code>.</p>
-<p>Function Parameters:</p><div class="sourceCode"><pre><code><span class="co">## function (y, order = c(0, 0, 0), seasonal = c(0, 0, 0), xreg = NULL, include.mean = TRUE, </span>
-<span class="co">##     include.drift = FALSE, include.constant, lambda = model$lambda, biasadj = FALSE, </span>
-<span class="co">##     method = c("CSS-ML", "ML", "CSS"), model = NULL, x = y, ...)</span></code></pre></div>
-
+<p>Function Parameters:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>The nonseasonal ARIMA terms (<code>order</code>) and seasonal ARIMA terms (<code>seasonal</code>)
 are provided to <code><a href="https://pkg.robjhyndman.com/forecast/reference/Arima.html" class="external-link">forecast::Arima()</a></code> via <code>arima_reg()</code> parameters.
 Other options and argument can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
