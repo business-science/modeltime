@@ -20,7 +20,7 @@ different packages. Currently the only package is prophet."><meta property="og:i
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,63 +155,104 @@ different packages. Currently the only package is <code>prophet</code>.</p>
     <dl><dt>mode</dt>
 <dd><p>A single character string for the type of model.
 The only possible value for this model is "regression".</p></dd>
+
+
 <dt>growth</dt>
 <dd><p>String 'linear' or 'logistic' to specify a linear or logistic trend.</p></dd>
+
+
 <dt>changepoint_num</dt>
 <dd><p>Number of potential changepoints to include for modeling trend.</p></dd>
+
+
 <dt>changepoint_range</dt>
 <dd><p>Adjusts the flexibility of the trend component by limiting to a percentage of data
 before the end of the time series. 0.80 means that a changepoint cannot exist after the first 80% of the data.</p></dd>
+
+
 <dt>seasonality_yearly</dt>
 <dd><p>One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
 models year-over-year seasonality.</p></dd>
+
+
 <dt>seasonality_weekly</dt>
 <dd><p>One of "auto", TRUE or FALSE. Toggles on/off a seasonal component that
 models week-over-week seasonality.</p></dd>
+
+
 <dt>seasonality_daily</dt>
 <dd><p>One of "auto", TRUE or FALSE. Toggles on/off a seasonal componet that
 models day-over-day seasonality.</p></dd>
+
+
 <dt>season</dt>
 <dd><p>'additive' (default) or 'multiplicative'.</p></dd>
+
+
 <dt>prior_scale_changepoints</dt>
 <dd><p>Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
 small values will allow few changepoints.</p></dd>
+
+
 <dt>prior_scale_seasonality</dt>
 <dd><p>Parameter modulating the strength of the
 seasonality model. Larger values allow the model to fit larger seasonal
 fluctuations, smaller values dampen the seasonality.</p></dd>
+
+
 <dt>prior_scale_holidays</dt>
 <dd><p>Parameter modulating the strength of the holiday components model,
 unless overridden in the holidays input.</p></dd>
+
+
 <dt>logistic_cap</dt>
 <dd><p>When growth is logistic, the upper-bound for "saturation".</p></dd>
+
+
 <dt>logistic_floor</dt>
 <dd><p>When growth is logistic, the lower-bound for "saturation".</p></dd>
+
+
 <dt>mtry</dt>
 <dd><p>A number for the number (or proportion) of predictors that will
 be randomly sampled at each split when creating the tree models
 (specific engines only)</p></dd>
+
+
 <dt>trees</dt>
 <dd><p>An integer for the number of trees contained in
 the ensemble.</p></dd>
+
+
 <dt>min_n</dt>
 <dd><p>An integer for the minimum number of data points
 in a node that is required for the node to be split further.</p></dd>
+
+
 <dt>tree_depth</dt>
 <dd><p>An integer for the maximum depth of the tree (i.e. number
 of splits) (specific engines only).</p></dd>
+
+
 <dt>learn_rate</dt>
 <dd><p>A number for the rate at which the boosting algorithm adapts
 from iteration-to-iteration (specific engines only).</p></dd>
+
+
 <dt>loss_reduction</dt>
 <dd><p>A number for the reduction in the loss function required
 to split further (specific engines only).</p></dd>
+
+
 <dt>sample_size</dt>
 <dd><p>number for the number (or proportion) of data that is exposed to the fitting routine.</p></dd>
+
+
 <dt>stop_iter</dt>
 <dd><p>The number of iterations without improvement before
 stopping  (<code>xgboost</code> only).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -267,7 +308,12 @@ names in each engine:</p>
 <p>Model 1: PROPHET:</p><table class="table table"><tr><td>modeltime</td><td>prophet</td></tr><tr><td>growth</td><td>growth ('linear')</td></tr><tr><td>changepoint_num</td><td>n.changepoints (25)</td></tr><tr><td>changepoint_range</td><td>changepoints.range (0.8)</td></tr><tr><td>seasonality_yearly</td><td>yearly.seasonality ('auto')</td></tr><tr><td>seasonality_weekly</td><td>weekly.seasonality ('auto')</td></tr><tr><td>seasonality_daily</td><td>daily.seasonality ('auto')</td></tr><tr><td>season</td><td>seasonality.mode ('additive')</td></tr><tr><td>prior_scale_changepoints</td><td>changepoint.prior.scale (0.05)</td></tr><tr><td>prior_scale_seasonality</td><td>seasonality.prior.scale (10)</td></tr><tr><td>prior_scale_holidays</td><td>holidays.prior.scale (10)</td></tr><tr><td>logistic_cap</td><td>df$cap (NULL)</td></tr><tr><td>logistic_floor</td><td>df$floor (NULL)</td></tr></table><p>Model 2: XGBoost:</p><table class="table table"><tr><td>modeltime</td><td>xgboost::xgb.train</td></tr><tr><td>tree_depth</td><td>max_depth (6)</td></tr><tr><td>trees</td><td>nrounds (15)</td></tr><tr><td>learn_rate</td><td>eta (0.3)</td></tr><tr><td>mtry</td><td>colsample_bynode (1)</td></tr><tr><td>min_n</td><td>min_child_weight (1)</td></tr><tr><td>loss_reduction</td><td>gamma (0)</td></tr><tr><td>sample_size</td><td>subsample (1)</td></tr><tr><td>stop_iter</td><td>early_stop</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>prophet_xgboost</strong></p>
 <p>Model 1: PROPHET (<code><a href="https://rdrr.io/pkg/prophet/man/prophet.html" class="external-link">prophet::prophet</a></code>):</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##     fit = TRUE, ...)</span></span></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p><code>df</code>: This is supplied via the parsnip / modeltime <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> interface
 (so don't provide this manually). See Fit Details (below).</p></li>
 <li><p><code>holidays</code>: A data.frame of holidays can be supplied via <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code></p></li>
@@ -281,7 +327,10 @@ for "cap" and "floor" to your data frame.</p></li>
 specify non-standard seasonalities using fourier series. An alternative is to use
 <code><a href="https://business-science.github.io/timetk/reference/step_fourier.html" class="external-link">step_fourier()</a></code> and supply custom seasonalities as Extra Regressors.</p></li>
 </ul><p>Model 2: XGBoost (<code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train</a></code>):</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##     callbacks = list(), ...)</span></span></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p>XGBoost uses a <code>params = list()</code> to capture.
 Parsnip / Modeltime automatically sends any args provided as <code>...</code> inside of <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code> to
 the <code>params = list(...)</code>.</p></li>
@@ -374,7 +423,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

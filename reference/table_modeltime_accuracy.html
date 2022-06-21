@@ -10,7 +10,7 @@ either interactive (reactable) or static (gt) tables."><meta property="og:image"
   gtag('js', new Date());
 
   gtag('config', 'UA-76139189-2');
-</script></head><body>
+</script><!-- dependencies from examples --><script src="libs/core-js-2.5.3/shim.min.js"></script><script src="libs/react-17.0.0/react.min.js"></script><script src="libs/react-17.0.0/react-dom.min.js"></script><script src="libs/reactwidget-1.0.0/react-tools.js"></script><script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="libs/reactable-binding-0.3.0/reactable.js"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
@@ -18,7 +18,7 @@ either interactive (reactable) or static (gt) tables."><meta property="og:image"
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,41 +140,62 @@ either interactive (<code>reactable</code>) or static (<code>gt</code>) tables.<
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.data</dt>
 <dd><p>A <code>tibble</code> that is the output of <code><a href="modeltime_accuracy.html">modeltime_accuracy()</a></code></p></dd>
+
+
 <dt>.round_digits</dt>
 <dd><p>Rounds accuracy metrics to a specified number of digits.
 If <code>NULL</code>, rounding is not performed.</p></dd>
+
+
 <dt>.sortable</dt>
 <dd><p>Allows sorting by columns.
 Only applied to <code>reactable</code> tables.
 Passed to <code>reactable(sortable)</code>.</p></dd>
+
+
 <dt>.show_sortable</dt>
 <dd><p>Shows sorting.
 Only applied to <code>reactable</code> tables.
 Passed to <code>reactable(showSortable)</code>.</p></dd>
+
+
 <dt>.searchable</dt>
 <dd><p>Adds search input.
 Only applied to <code>reactable</code> tables.
 Passed to <code>reactable(searchable)</code>.</p></dd>
+
+
 <dt>.filterable</dt>
 <dd><p>Adds filters to table columns.
 Only applied to <code>reactable</code> tables.
 Passed to <code>reactable(filterable)</code>.</p></dd>
+
+
 <dt>.expand_groups</dt>
 <dd><p>Expands groups dropdowns.
 Only applied to <code>reactable</code> tables.
 Passed to <code>reactable(defaultExpanded)</code>.</p></dd>
+
+
 <dt>.title</dt>
 <dd><p>A title for static (<code>gt</code>) tables.</p></dd>
+
+
 <dt>.interactive</dt>
 <dd><p>Return interactive or static tables. If <code>TRUE</code>,
 returns <code>reactable</code> table. If <code>FALSE</code>, returns static <code>gt</code> table.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="https://glin.github.io/reactable/reference/reactable.html" class="external-link">reactable::reactable()</a></code>
 or <code><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt::gt()</a></code> (depending on <code>.interactive</code> selection).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A static <code>gt</code> table or an interactive <code>reactable</code> table containing
+    
+
+<p>A static <code>gt</code> table or an interactive <code>reactable</code> table containing
 the accuracy information.</p>
     </div>
     <div class="section level2">
@@ -231,8 +252,8 @@ For more information, refer to the <a href="https://gt.rstudio.com/index.html" c
 <span class="r-in">    <span class="fu"><a href="modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu"><a href="modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
 <span class="r-in">    <span class="fu">table_modeltime_accuracy</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in x$width %||% settings$fig.width * settings$dpi:</span> non-numeric argument to binary operator</span>
-<span class="r-in"></span>
+<div id="htmlwidget-a0e6c43c96a8d8bef730" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a0e6c43c96a8d8bef730">{"x":{"tag":{"name":"Reactable","attribs":{"data":{".model_id":[1],".model_desc":["PROPHET"],".type":["Test"],"mae":[172.97],"mape":[1.66],"mase":[0.59],"smape":[1.66],"rmse":[230.76],"rsq":[0.88]},"columns":[{"accessor":".model_id","name":".model_id","type":"numeric"},{"accessor":".model_desc","name":".model_desc","type":"character"},{"accessor":".type","name":".type","type":"character"},{"accessor":"mae","name":"mae","type":"numeric"},{"accessor":"mape","name":"mape","type":"numeric"},{"accessor":"mase","name":"mase","type":"numeric"},{"accessor":"smape","name":"smape","type":"numeric"},{"accessor":"rmse","name":"rmse","type":"numeric"},{"accessor":"rsq","name":"rsq","type":"numeric"}],"searchable":true,"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"defaultExpanded":true,"showSortable":true,"dataKey":"ae5d87bc8c024ed89061101532876809"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script><span class="r-in"></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -245,7 +266,7 @@ For more information, refer to the <a href="https://gt.rstudio.com/index.html" c
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

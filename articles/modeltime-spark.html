@@ -40,7 +40,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,7 +139,7 @@
 
 
 <script src="modeltime-spark_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>The Modeltime Spark Backend</h1>
             
       
@@ -326,9 +326,9 @@
     <span class="op">)</span>
 <span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span>
 <span class="co">#&gt;  Beginning Parallel Loop | 0.008 seconds</span>
-<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 37.251 seconds</span>
+<span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 35.767 seconds</span>
 <span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span>
-<span class="co">#&gt; Finished in: 37.25226 secs.</span></code></pre></div>
+<span class="co">#&gt; Finished in: 35.76723 secs.</span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span>
@@ -351,12 +351,12 @@
 <code class="sourceCode R"><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div id="boalvniknr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="fbrzgonoeo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#boalvniknr .gt_table {
+#fbrzgonoeo .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -381,7 +381,7 @@
   border-left-color: #D3D3D3;
 }
 
-#boalvniknr .gt_heading {
+#fbrzgonoeo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -393,7 +393,7 @@
   border-right-color: #D3D3D3;
 }
 
-#boalvniknr .gt_title {
+#fbrzgonoeo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -405,7 +405,7 @@
   border-bottom-width: 0;
 }
 
-#boalvniknr .gt_subtitle {
+#fbrzgonoeo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -417,13 +417,13 @@
   border-top-width: 0;
 }
 
-#boalvniknr .gt_bottom_border {
+#fbrzgonoeo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#boalvniknr .gt_col_headings {
+#fbrzgonoeo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -438,7 +438,7 @@
   border-right-color: #D3D3D3;
 }
 
-#boalvniknr .gt_col_heading {
+#fbrzgonoeo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -458,7 +458,7 @@
   overflow-x: hidden;
 }
 
-#boalvniknr .gt_column_spanner_outer {
+#fbrzgonoeo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -470,15 +470,15 @@
   padding-right: 4px;
 }
 
-#boalvniknr .gt_column_spanner_outer:first-child {
+#fbrzgonoeo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#boalvniknr .gt_column_spanner_outer:last-child {
+#fbrzgonoeo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#boalvniknr .gt_column_spanner {
+#fbrzgonoeo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -490,7 +490,7 @@
   width: 100%;
 }
 
-#boalvniknr .gt_group_heading {
+#fbrzgonoeo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -515,7 +515,7 @@
   vertical-align: middle;
 }
 
-#boalvniknr .gt_empty_group_heading {
+#fbrzgonoeo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -530,15 +530,15 @@
   vertical-align: middle;
 }
 
-#boalvniknr .gt_from_md > :first-child {
+#fbrzgonoeo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#boalvniknr .gt_from_md > :last-child {
+#fbrzgonoeo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#boalvniknr .gt_row {
+#fbrzgonoeo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -557,7 +557,7 @@
   overflow-x: hidden;
 }
 
-#boalvniknr .gt_stub {
+#fbrzgonoeo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -570,7 +570,7 @@
   padding-right: 5px;
 }
 
-#boalvniknr .gt_stub_row_group {
+#fbrzgonoeo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -584,11 +584,11 @@
   vertical-align: top;
 }
 
-#boalvniknr .gt_row_group_first td {
+#fbrzgonoeo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#boalvniknr .gt_summary_row {
+#fbrzgonoeo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -598,16 +598,16 @@
   padding-right: 5px;
 }
 
-#boalvniknr .gt_first_summary_row {
+#fbrzgonoeo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#boalvniknr .gt_first_summary_row.thick {
+#fbrzgonoeo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#boalvniknr .gt_last_summary_row {
+#fbrzgonoeo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -617,7 +617,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#boalvniknr .gt_grand_summary_row {
+#fbrzgonoeo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -627,7 +627,7 @@
   padding-right: 5px;
 }
 
-#boalvniknr .gt_first_grand_summary_row {
+#fbrzgonoeo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -637,11 +637,11 @@
   border-top-color: #D3D3D3;
 }
 
-#boalvniknr .gt_striped {
+#fbrzgonoeo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#boalvniknr .gt_table_body {
+#fbrzgonoeo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -650,7 +650,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#boalvniknr .gt_footnotes {
+#fbrzgonoeo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -664,7 +664,7 @@
   border-right-color: #D3D3D3;
 }
 
-#boalvniknr .gt_footnote {
+#fbrzgonoeo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -673,7 +673,7 @@
   padding-right: 5px;
 }
 
-#boalvniknr .gt_sourcenotes {
+#fbrzgonoeo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -687,7 +687,7 @@
   border-right-color: #D3D3D3;
 }
 
-#boalvniknr .gt_sourcenote {
+#fbrzgonoeo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -695,36 +695,36 @@
   padding-right: 5px;
 }
 
-#boalvniknr .gt_left {
+#fbrzgonoeo .gt_left {
   text-align: left;
 }
 
-#boalvniknr .gt_center {
+#fbrzgonoeo .gt_center {
   text-align: center;
 }
 
-#boalvniknr .gt_right {
+#fbrzgonoeo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#boalvniknr .gt_font_normal {
+#fbrzgonoeo .gt_font_normal {
   font-weight: normal;
 }
 
-#boalvniknr .gt_font_bold {
+#fbrzgonoeo .gt_font_bold {
   font-weight: bold;
 }
 
-#boalvniknr .gt_font_italic {
+#fbrzgonoeo .gt_font_italic {
   font-style: italic;
 }
 
-#boalvniknr .gt_super {
+#fbrzgonoeo .gt_super {
   font-size: 65%;
 }
 
-#boalvniknr .gt_two_val_uncert {
+#fbrzgonoeo .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -733,31 +733,31 @@
   margin-left: 0.1em;
 }
 
-#boalvniknr .gt_footnote_marks {
+#fbrzgonoeo .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#boalvniknr .gt_asterisk {
+#fbrzgonoeo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#boalvniknr .gt_slash_mark {
+#fbrzgonoeo .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#boalvniknr .gt_fraction_numerator {
+#fbrzgonoeo .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#boalvniknr .gt_fraction_denominator {
+#fbrzgonoeo .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1037,7 +1037,7 @@ Become the Time Series Expert for your organization.
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer>

@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,111 +159,174 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A dataframe of xreg (exogenous regressors)</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A numeric vector of values to fit</p></dd>
+
+
 <dt>df</dt>
 <dd><p>(optional) Dataframe containing the history. Must have columns ds
 (date type) and y, the time series. If growth is logistic, then df must
 also have a column cap that specifies the capacity at each ds. If not
 provided, then the model object will be instantiated but not fit; use
 fit.prophet(m, df) to fit the model.</p></dd>
+
+
 <dt>growth</dt>
 <dd><p>String 'linear', 'logistic', or 'flat' to specify a linear, logistic
 or flat trend.</p></dd>
+
+
 <dt>changepoints</dt>
 <dd><p>Vector of dates at which to include potential
 changepoints. If not specified, potential changepoints are selected
 automatically.</p></dd>
+
+
 <dt>n.changepoints</dt>
 <dd><p>Number of potential changepoints to include. Not used
 if input `changepoints` is supplied. If `changepoints` is not supplied,
 then n.changepoints potential changepoints are selected uniformly from the
 first `changepoint.range` proportion of df$ds.</p></dd>
+
+
 <dt>changepoint.range</dt>
 <dd><p>Proportion of history in which trend changepoints
 will be estimated. Defaults to 0.8 for the first 80<!-- %. Not used if -->
 `changepoints` is specified.</p></dd>
+
+
 <dt>yearly.seasonality</dt>
 <dd><p>Fit yearly seasonality. Can be 'auto', TRUE,
 FALSE, or a number of Fourier terms to generate.</p></dd>
+
+
 <dt>weekly.seasonality</dt>
 <dd><p>Fit weekly seasonality. Can be 'auto', TRUE,
 FALSE, or a number of Fourier terms to generate.</p></dd>
+
+
 <dt>daily.seasonality</dt>
 <dd><p>Fit daily seasonality. Can be 'auto', TRUE,
 FALSE, or a number of Fourier terms to generate.</p></dd>
+
+
 <dt>holidays</dt>
 <dd><p>data frame with columns holiday (character) and ds (date
 type)and optionally columns lower_window and upper_window which specify a
 range of days around the date to be included as holidays. lower_window=-2
 will include 2 days prior to the date as holidays. Also optionally can have
 a column prior_scale specifying the prior scale for each holiday.</p></dd>
+
+
 <dt>seasonality.mode</dt>
 <dd><p>'additive' (default) or 'multiplicative'.</p></dd>
+
+
 <dt>seasonality.prior.scale</dt>
 <dd><p>Parameter modulating the strength of the
 seasonality model. Larger values allow the model to fit larger seasonal
 fluctuations, smaller values dampen the seasonality. Can be specified for
 individual seasonalities using add_seasonality.</p></dd>
+
+
 <dt>holidays.prior.scale</dt>
 <dd><p>Parameter modulating the strength of the holiday
 components model, unless overridden in the holidays input.</p></dd>
+
+
 <dt>changepoint.prior.scale</dt>
 <dd><p>Parameter modulating the flexibility of the
 automatic changepoint selection. Large values will allow many changepoints,
 small values will allow few changepoints.</p></dd>
+
+
 <dt>logistic_cap</dt>
 <dd><p>When growth is logistic, the upper-bound for "saturation".</p></dd>
+
+
 <dt>logistic_floor</dt>
 <dd><p>When growth is logistic, the lower-bound for "saturation".</p></dd>
+
+
 <dt>mcmc.samples</dt>
 <dd><p>Integer, if greater than 0, will do full Bayesian
 inference with the specified number of MCMC samples. If 0, will do MAP
 estimation.</p></dd>
+
+
 <dt>interval.width</dt>
 <dd><p>Numeric, width of the uncertainty intervals provided
 for the forecast. If mcmc.samples=0, this will be only the uncertainty
 in the trend using the MAP estimate of the extrapolated generative model.
 If mcmc.samples&gt;0, this will be integrated over all model parameters,
 which will include uncertainty in seasonality.</p></dd>
+
+
 <dt>uncertainty.samples</dt>
 <dd><p>Number of simulated draws used to estimate
 uncertainty intervals. Settings this value to 0 or False will disable
 uncertainty estimation and speed up the calculation.</p></dd>
+
+
 <dt>fit</dt>
 <dd><p>Boolean, if FALSE the model is initialized but not fit.</p></dd>
+
+
 <dt>max_depth</dt>
 <dd><p>An integer for the maximum depth of the tree.</p></dd>
+
+
 <dt>nrounds</dt>
 <dd><p>An integer for the number of boosting iterations.</p></dd>
+
+
 <dt>eta</dt>
 <dd><p>A numeric value between zero and one to control the learning rate.</p></dd>
+
+
 <dt>colsample_bytree</dt>
 <dd><p>Subsampling proportion of columns.</p></dd>
+
+
 <dt>colsample_bynode</dt>
 <dd><p>Subsampling proportion of columns for each node
 within each tree. See the <code>counts</code> argument below. The default uses all
 columns.</p></dd>
+
+
 <dt>min_child_weight</dt>
 <dd><p>A numeric value for the minimum sum of instance
 weights needed in a child to continue to split.</p></dd>
+
+
 <dt>gamma</dt>
 <dd><p>A number for the minimum loss reduction required to make a
 further partition on a leaf node of the tree</p></dd>
+
+
 <dt>subsample</dt>
 <dd><p>Subsampling proportion of rows.</p></dd>
+
+
 <dt>validation</dt>
 <dd><p>A positive number. If on <code>[0, 1)</code> the value, <code>validation</code>
 is a random proportion of data in <code>x</code> and <code>y</code> that are used for performance
 assessment and potential early stopping. If 1 or greater, it is the <em>number</em>
 of training set samples use for these purposes.</p></dd>
+
+
 <dt>early_stop</dt>
 <dd><p>An integer or <code>NULL</code>. If not <code>NULL</code>, it is the number of
 training iterations without improvement before stopping. If <code>validation</code> is
 used, performance is base on the validation set; otherwise the training set
 is used.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train</a></code></p></dd>
+
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -275,7 +338,7 @@ is used.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

@@ -26,7 +26,7 @@ Seasonality Plot: plot_seasonal_diagnostics()
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,35 +150,58 @@ Seasonality Plot: plot_seasonal_diagnostics()
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.data</dt>
 <dd><p>A <code>tibble</code> that is the output of <code><a href="modeltime_residuals.html">modeltime_residuals()</a></code></p></dd>
+
+
 <dt>.type</dt>
 <dd><p>One of "timeplot", "acf", or "seasonality". The default is "timeplot".</p></dd>
+
+
 <dt>.smooth</dt>
 <dd><p>Logical - Whether or not to include a trendline smoother.
 Uses See <code><a href="https://business-science.github.io/timetk/reference/smooth_vec.html" class="external-link">smooth_vec()</a></code> to apply a LOESS smoother.</p></dd>
+
+
 <dt>.legend_show</dt>
 <dd><p>Logical. Whether or not to show the legend.
 Can save space with long model descriptions.</p></dd>
+
+
 <dt>.legend_max_width</dt>
 <dd><p>Numeric. The width of truncation to apply to the legend text.</p></dd>
+
+
 <dt>.title</dt>
 <dd><p>Title for the plot</p></dd>
+
+
 <dt>.x_lab</dt>
 <dd><p>X-axis label for the plot</p></dd>
+
+
 <dt>.y_lab</dt>
 <dd><p>Y-axis label for the plot</p></dd>
+
+
 <dt>.color_lab</dt>
 <dd><p>Legend label if a <code>color_var</code> is used.</p></dd>
+
+
 <dt>.interactive</dt>
 <dd><p>Returns either a static (<code>ggplot2</code>) visualization or an interactive (<code>plotly</code>) visualization</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to:</p><ul><li><p>Time Plot: <code><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series()</a></code></p></li>
 <li><p>ACF Plot: <code><a href="https://business-science.github.io/timetk/reference/plot_acf_diagnostics.html" class="external-link">plot_acf_diagnostics()</a></code></p></li>
 <li><p>Seasonality Plot: <code><a href="https://business-science.github.io/timetk/reference/plot_seasonal_diagnostics.html" class="external-link">plot_seasonal_diagnostics()</a></code></p></li>
 </ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A static <code>ggplot2</code> plot or an interactive <code>plotly</code> plot containing residuals vs time</p>
+    
+
+<p>A static <code>ggplot2</code> plot or an interactive <code>plotly</code> plot containing residuals vs time</p>
     </div>
 
     <div class="section level2">
@@ -236,7 +259,7 @@ Can save space with long model descriptions.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

@@ -34,7 +34,7 @@ performed well in the M3 Competition
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -161,29 +161,46 @@ performed well in the M3 Competition</p></li>
     <dl><dt>mode</dt>
 <dd><p>A single character string for the type of model.
 The only possible value for this model is "regression".</p></dd>
+
+
 <dt>seasonal_period</dt>
 <dd><p>A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.</p></dd>
+
+
 <dt>error</dt>
 <dd><p>The form of the error term: "auto", "additive", or "multiplicative".
 If the error is multiplicative, the data must be non-negative.</p></dd>
+
+
 <dt>trend</dt>
 <dd><p>The form of the trend term: "auto", "additive", "multiplicative" or "none".</p></dd>
+
+
 <dt>season</dt>
 <dd><p>The form of the seasonal term: "auto", "additive", "multiplicative" or "none".</p></dd>
+
+
 <dt>damping</dt>
 <dd><p>Apply damping to a trend: "auto", "damped", or "none".</p></dd>
+
+
 <dt>smooth_level</dt>
 <dd><p>This is often called the "alpha" parameter used as the base level smoothing
 factor for exponential smoothing models.</p></dd>
+
+
 <dt>smooth_trend</dt>
 <dd><p>This is often called the "beta" parameter used as the trend smoothing
 factor for exponential smoothing models.</p></dd>
+
+
 <dt>smooth_seasonal</dt>
 <dd><p>This is often called the "gamma" parameter used as the seasonal smoothing
 factor for exponential smoothing models.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -202,7 +219,13 @@ names in each engine:</p><table class="table table"><tr><td>modeltime</td><td>fo
 <p><strong>ets (default engine)</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/ets.html" class="external-link">forecast::ets()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (y, model = "ZZZ", damped = NULL, alpha = NULL, beta = NULL, gamma = NULL, </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     phi = NULL, additive.only = FALSE, lambda = NULL, biasadj = FALSE, </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     lower = c(rep(1e-04, 3), 0.8), upper = c(rep(0.9999, 3), 0.98), opt.crit = c("lik", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##         "amse", "mse", "sigma", "mae"), nmse = 3, bounds = c("both", "usual", </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##         "admissible"), ic = c("aicc", "aic", "bic"), restrict = TRUE, allow.multiplicative.trend = FALSE, </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##     use.initial.values = FALSE, na.action = c("na.contiguous", "na.interp", </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##         "na.fail"), ...)</span></span></code></pre><p></p></div>
 <p>The main arguments are <code>model</code> and <code>damped</code> are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">error()</a></code> = "auto", "additive", and "multiplicative" are converted to  "Z", "A", and "M"</p></li>
 <li><p><code><a href="exp_smoothing_params.html">trend()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
 <li><p><code><a href="exp_smoothing_params.html">season()</a></code> = "auto", "additive", "multiplicative", and "none" are converted to "Z","A","M" and "N"</p></li>
@@ -217,7 +240,7 @@ models will be fit.</p></li>
 </ul><p><strong>croston</strong></p>
 <p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/croston.html" class="external-link">forecast::croston()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (y, h = 10, alpha = 0.1, x = y)</span></span></code></pre><p></p></div>
 <p>The main arguments are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">smooth_level()</a></code>: The "alpha" parameter</p></li>
 </ul><p>Parameter Notes:</p><ul><li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.</p></li>
@@ -228,7 +251,14 @@ models will be fit.</p></li>
 </ul><p><strong>smooth_es</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/es.html" class="external-link">smooth::es()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", "TMSE", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##     "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##     "parametric", "likelihood", "semiparametric", "nonparametric"), level = 0.95, </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##     bounds = c("usual", "admissible", "none"), silent = c("all", "graph", </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##         "legend", "output", "none"), xreg = NULL, xregDo = c("use", "select"), </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">##     initialX = NULL, ...)</span></span></code></pre><p></p></div>
 <p>The main arguments <code>model</code> and <code>phi</code> are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">error()</a></code> = "auto", "additive" and "multiplicative" are converted to "Z", "A" and "M"</p></li>
 <li><p><code><a href="exp_smoothing_params.html">trend()</a></code> = "auto", "additive", "multiplicative", "additive_damped", "multiplicative_damped" and "none" are converted to "Z", "A", "M", "Ad", "Md" and "N".</p></li>
 <li><p><code><a href="exp_smoothing_params.html">season()</a></code> = "auto", "additive", "multiplicative", and "none" are converted "Z", "A","M" and "N"</p></li>
@@ -460,7 +490,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span class="va">model_fit</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.59 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.56 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model estimated: ETS(MAdA)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Persistence vector g:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  alpha   beta  gamma </span>
@@ -490,7 +520,7 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

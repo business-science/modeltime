@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,20 +133,31 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
 <dd><p>A Nested Modeltime Table</p></dd>
+
+
 <dt>h</dt>
 <dd><p>The forecast horizon. Extends the "trained on" data "h" periods
 into the future.</p></dd>
+
+
 <dt>include_actual</dt>
 <dd><p>Whether or not to include the ".actual_data" as part of the forecast.
 If FALSE, just returns the forecast predictions.</p></dd>
+
+
 <dt>conf_interval</dt>
 <dd><p>An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></dd>
+
+
 <dt>id_subset</dt>
 <dd><p>A sequence of ID's from the modeltime table to subset the forecasting process.
 This can speed forecasts up.</p></dd>
+
+
 <dt>control</dt>
 <dd><p>Used to control verbosity and parallel processing. See <code><a href="control_modeltime.html">control_nested_forecast()</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -189,7 +200,7 @@ Generally, parallel is better if many forecasts are being generated.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

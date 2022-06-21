@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,23 +126,34 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
 <dd><p>An object of <code>model_fit</code> or a fitted <code>workflow</code> class</p></dd>
+
+
 <dt>transform</dt>
 <dd><p>A transformation performed on <code>new_data</code> after
 each step of recursive algorithm.</p><ul><li><p><strong>Transformation Function:</strong> Must have one argument <code>data</code> (see examples)</p></li>
 </ul></dd>
+
+
 <dt>train_tail</dt>
 <dd><p>A tibble with tail of training data set.
 In most cases it'll be required to create some variables
 based on dependent variable.</p></dd>
+
+
 <dt>id</dt>
 <dd><p>(Optional) An identifier that can be provided to perform a panel forecast.
 A single quoted column name (e.g. <code>id = "id"</code>).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Not currently used.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object with added <code>recursive</code> class</p>
+    
+
+<p>An object with added <code>recursive</code> class</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -384,7 +395,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

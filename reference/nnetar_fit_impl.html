@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,31 +137,50 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A dataframe of xreg (exogenous regressors)</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A numeric vector of values to fit</p></dd>
+
+
 <dt>period</dt>
 <dd><p>A seasonal frequency. Uses "auto" by default. A character phrase
 of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></dd>
+
+
 <dt>p</dt>
 <dd><p>Embedding dimension for non-seasonal time series. Number of
 non-seasonal lags used as inputs. For non-seasonal time series, the default
 is the optimal number of lags (according to the AIC) for a linear AR(p)
 model. For seasonal time series, the same method is used but applied to
 seasonally adjusted data (from an stl decomposition).</p></dd>
+
+
 <dt>P</dt>
 <dd><p>Number of seasonal lags used as inputs.</p></dd>
+
+
 <dt>size</dt>
 <dd><p>Number of nodes in the hidden layer. Default is half of the
 number of input nodes (including external regressors, if given) plus 1.</p></dd>
+
+
 <dt>repeats</dt>
 <dd><p>Number of networks to fit with different random starting
 weights. These are then averaged when producing forecasts.</p></dd>
+
+
 <dt>decay</dt>
 <dd><p>Parameter for weight decay. Default 0.</p></dd>
+
+
 <dt>maxit</dt>
 <dd><p>Maximum number of iterations. Default 100.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="https://pkg.robjhyndman.com/forecast/reference/nnetar.html" class="external-link">forecast::nnetar</a></code></p></dd>
+
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -173,7 +192,7 @@ weights. These are then averaged when producing forecasts.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

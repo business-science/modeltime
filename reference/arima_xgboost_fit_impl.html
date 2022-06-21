@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,31 +154,53 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A dataframe of xreg (exogenous regressors)</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A numeric vector of values to fit</p></dd>
+
+
 <dt>period</dt>
 <dd><p>A seasonal frequency. Uses "auto" by default. A character phrase
 of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time variable is provided.</p></dd>
+
+
 <dt>p</dt>
 <dd><p>The order of the non-seasonal auto-regressive (AR) terms.</p></dd>
+
+
 <dt>d</dt>
 <dd><p>The order of integration for non-seasonal differencing.</p></dd>
+
+
 <dt>q</dt>
 <dd><p>The order of the non-seasonal moving average (MA) terms.</p></dd>
+
+
 <dt>P</dt>
 <dd><p>The order of the seasonal auto-regressive (SAR) terms.</p></dd>
+
+
 <dt>D</dt>
 <dd><p>The order of integration for seasonal differencing.</p></dd>
+
+
 <dt>Q</dt>
 <dd><p>The order of the seasonal moving average (SMA) terms.</p></dd>
+
+
 <dt>include.mean</dt>
 <dd><p>Should the ARIMA model include a mean term? The default
 is <code>TRUE</code> for undifferenced series, <code>FALSE</code> for differenced ones
 (where a mean would not affect the fit nor predictions).</p></dd>
+
+
 <dt>include.drift</dt>
 <dd><p>Should the ARIMA model include a linear drift term?
 (i.e., a linear regression with ARIMA errors is fitted.)  The default is
 <code>FALSE</code>.</p></dd>
+
+
 <dt>include.constant</dt>
 <dd><p>If <code>TRUE</code>, then <code>include.mean</code> is set to
 be <code>TRUE</code> for undifferenced series and <code>include.drift</code> is set to
@@ -186,56 +208,87 @@ be <code>TRUE</code> for differenced series. Note that if there is more than one
 difference taken, no constant is included regardless of the value of this
 argument. This is deliberate as otherwise quadratic and higher order
 polynomial trends would be induced.</p></dd>
+
+
 <dt>lambda</dt>
 <dd><p>Box-Cox transformation parameter. If <code>lambda="auto"</code>,
 then a transformation is automatically selected using <code>BoxCox.lambda</code>.
 The transformation is ignored if NULL. Otherwise,
 data transformed before model is estimated.</p></dd>
+
+
 <dt>biasadj</dt>
 <dd><p>Use adjusted back-transformed mean for Box-Cox
 transformations. If transformed data is used to produce forecasts and fitted values,
 a regular back transformation will result in median forecasts. If biasadj is TRUE,
 an adjustment will be made to produce mean forecasts and fitted values.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>Fitting method: maximum likelihood or minimize conditional
 sum-of-squares. The default (unless there are missing values) is to use
 conditional-sum-of-squares to find starting values, then maximum likelihood.</p></dd>
+
+
 <dt>model</dt>
 <dd><p>Output from a previous call to <code>Arima</code>. If model is
 passed, this same model is fitted to <code>y</code> without re-estimating any
 parameters.</p></dd>
+
+
 <dt>max_depth</dt>
 <dd><p>An integer for the maximum depth of the tree.</p></dd>
+
+
 <dt>nrounds</dt>
 <dd><p>An integer for the number of boosting iterations.</p></dd>
+
+
 <dt>eta</dt>
 <dd><p>A numeric value between zero and one to control the learning rate.</p></dd>
+
+
 <dt>colsample_bytree</dt>
 <dd><p>Subsampling proportion of columns.</p></dd>
+
+
 <dt>colsample_bynode</dt>
 <dd><p>Subsampling proportion of columns for each node
 within each tree. See the <code>counts</code> argument below. The default uses all
 columns.</p></dd>
+
+
 <dt>min_child_weight</dt>
 <dd><p>A numeric value for the minimum sum of instance
 weights needed in a child to continue to split.</p></dd>
+
+
 <dt>gamma</dt>
 <dd><p>A number for the minimum loss reduction required to make a
 further partition on a leaf node of the tree</p></dd>
+
+
 <dt>subsample</dt>
 <dd><p>Subsampling proportion of rows.</p></dd>
+
+
 <dt>validation</dt>
 <dd><p>A positive number. If on <code>[0, 1)</code> the value, <code>validation</code>
 is a random proportion of data in <code>x</code> and <code>y</code> that are used for performance
 assessment and potential early stopping. If 1 or greater, it is the <em>number</em>
 of training set samples use for these purposes.</p></dd>
+
+
 <dt>early_stop</dt>
 <dd><p>An integer or <code>NULL</code>. If not <code>NULL</code>, it is the number of
 training iterations without improvement before stopping. If <code>validation</code> is
 used, performance is base on the validation set; otherwise the training set
 is used.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train</a></code></p></dd>
+
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -247,7 +300,7 @@ is used.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

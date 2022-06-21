@@ -20,7 +20,7 @@ different packages. Currently the only package is smooth."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -152,54 +152,89 @@ different packages. Currently the only package is <code>smooth</code>.</p>
     <dl><dt>mode</dt>
 <dd><p>A single character string for the type of model.
 The only possible value for this model is "regression".</p></dd>
+
+
 <dt>ets_model</dt>
 <dd><p>The type of ETS model. The first letter stands for the type of the error term ("A" or "M"),
 the second (and sometimes the third as well) is for the trend ("N", "A", "Ad", "M" or "Md"), and the last one is
 for the type of seasonality ("N", "A" or "M").</p></dd>
+
+
 <dt>non_seasonal_ar</dt>
 <dd><p>The order of the non-seasonal auto-regressive (AR) terms. Often denoted "p" in pdq-notation.</p></dd>
+
+
 <dt>non_seasonal_differences</dt>
 <dd><p>The order of integration for non-seasonal differencing. Often denoted "d" in pdq-notation.</p></dd>
+
+
 <dt>non_seasonal_ma</dt>
 <dd><p>The order of the non-seasonal moving average (MA) terms. Often denoted "q" in pdq-notation.</p></dd>
+
+
 <dt>seasonal_ar</dt>
 <dd><p>The order of the seasonal auto-regressive (SAR) terms. Often denoted "P" in PDQ-notation.</p></dd>
+
+
 <dt>seasonal_differences</dt>
 <dd><p>The order of integration for seasonal differencing. Often denoted "D" in PDQ-notation.</p></dd>
+
+
 <dt>seasonal_ma</dt>
 <dd><p>The order of the seasonal moving average (SMA) terms. Often denoted "Q" in PDQ-notation.</p></dd>
+
+
 <dt>use_constant</dt>
 <dd><p>Logical, determining, whether the constant is needed in the model or not. This is mainly needed for
 ARIMA part of the model, but can be used for ETS as well.</p></dd>
+
+
 <dt>regressors_treatment</dt>
 <dd><p>The variable defines what to do with the provided explanatory variables: "use" means that all
 of the data should be used, while "select" means that a selection using ic should be done, "adapt" will trigger the
 mechanism of time varying parameters for the explanatory variables.</p></dd>
+
+
 <dt>outliers_treatment</dt>
 <dd><p>Defines what to do with outliers: "ignore", so just returning the model, "detect" outliers based
 on specified level and include dummies for them in the model, or detect and "select" those of them that reduce ic value.</p></dd>
+
+
 <dt>outliers_ci</dt>
 <dd><p>What confidence level to use for detection of outliers. Default is 99%.</p></dd>
+
+
 <dt>probability_model</dt>
 <dd><p>The type of model used in probability estimation. Can be "none" - none, "fixed" - constant
 probability, "general" - the general Beta model with two parameters, "odds-ratio" - the Odds-ratio model with b=1 in
 Beta distribution, "inverse-odds-ratio" - the model with a=1 in Beta distribution, "direct" - the TSB-like
 (Teunter et al., 2011) probability update mechanism a+b=1, "auto" - the automatically selected type of occurrence model.</p></dd>
+
+
 <dt>distribution</dt>
 <dd><p>what density function to assume for the error term. The full name of the distribution should be
 provided, starting with the letter "d" - "density".</p></dd>
+
+
 <dt>loss</dt>
 <dd><p>The type of Loss Function used in optimization.</p></dd>
+
+
 <dt>information_criteria</dt>
 <dd><p>The information criterion to use in the model selection / combination procedure.</p></dd>
+
+
 <dt>seasonal_period</dt>
 <dd><p>A seasonal frequency. Uses "auto" by default.
 A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.</p></dd>
+
+
 <dt>select_order</dt>
 <dd><p>If TRUE, then the function will select the most appropriate order. The values list(ar=...,i=...,ma=...)
 specify the maximum orders to check in this case.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -234,8 +269,18 @@ in lieu of recreating the object from scratch.</p>
 <p><strong>auto_adam (default engine)</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::auto.adam()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## Registered S3 method overwritten by 'greybox':</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##   method     from</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##   print.pcor lava</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">##     silent = TRUE, parallel = FALSE, ...)</span></span></code></pre><p></p></div>
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
 <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima()</a></code> via <code><a href="arima_reg.html">arima_reg()</a></code> parameters.
@@ -247,7 +292,17 @@ The <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-lin
 </ul><p><strong>adam</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">##         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">##     silent = TRUE, ...)</span></span></code></pre><p></p></div>
 <p>The nonseasonal ARIMA terms (<code>orders</code>) and seasonal ARIMA terms (<code>orders</code>)
 are provided to <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code> via <code>adam_reg()</code> parameters.
 Other options and argument can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
@@ -346,7 +401,7 @@ There are 3 ways to specify:</p><ol><li><p><code>seasonal_period = "auto"</code>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

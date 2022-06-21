@@ -18,7 +18,7 @@ forecasting future data."><meta property="og:image" content="https://business-sc
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,38 +139,57 @@ forecasting future data.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
 <dd><p>A Modeltime Table</p></dd>
+
+
 <dt>new_data</dt>
 <dd><p>A <code>tibble</code> containing future information to forecast.
 If <code>NULL</code>, forecasts the calibration data.</p></dd>
+
+
 <dt>h</dt>
 <dd><p>The forecast horizon (can be used instead of <code>new_data</code> for
 time series with no exogenous regressors).
 Extends the calibration data <code>h</code> periods into the future.</p></dd>
+
+
 <dt>actual_data</dt>
 <dd><p>Reference data that is combined with the output tibble and given a <code>.key = "actual"</code></p></dd>
+
+
 <dt>conf_interval</dt>
 <dd><p>An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></dd>
+
+
 <dt>conf_by_id</dt>
 <dd><p>Whether or not to produce confidence interval estimates by an ID feature.</p><ul><li><p>When <code>FALSE</code>, a global model confidence interval is provided.</p></li>
 <li><p>If <code>TRUE</code>, a local confidence interval is provided group-wise for each time series ID.
 To enable local confidence interval, an <code>id</code> must be provided during <code><a href="modeltime_calibrate.html">modeltime_calibrate()</a></code>.</p></li>
 </ul></dd>
+
+
 <dt>keep_data</dt>
 <dd><p>Whether or not to keep the <code>new_data</code> and <code>actual_data</code> as extra columns in the results.
 This can be useful if there is an important feature in the <code>new_data</code> and <code>actual_data</code> needed
 when forecasting.
 Default: <code>FALSE</code>.</p></dd>
+
+
 <dt>arrange_index</dt>
 <dd><p>Whether or not to sort the index in rowwise chronological order (oldest to newest) or to
 keep the original order of the data.
 Default: <code>FALSE</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Not currently used</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with predictions and time-stamp data. For ease of plotting and calculations,
+    
+
+<p>A tibble with predictions and time-stamp data. For ease of plotting and calculations,
 the column names are transformed to:</p><ul><li><p><code>.key</code>: Values labeled either "prediction" or "actual"</p></li>
 <li><p><code>.index</code>: The timestamp index.</p></li>
 <li><p><code>.value</code>: The value being forecasted.</p></li>
@@ -367,7 +386,7 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>
