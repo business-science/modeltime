@@ -30,6 +30,7 @@
 #' @seealso
 #' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
 #' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [drop_modeltime_model()]: Drop one or more models from a Modeltime Table
 #' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
 #' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
 #' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
@@ -112,6 +113,7 @@ combine_modeltime_tables <- function(...) {
 #' @seealso
 #' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
 #' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [drop_modeltime_model()]: Drop one or more models from a Modeltime Table
 #' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
 #' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
 #' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
@@ -144,6 +146,47 @@ add_modeltime_model <- function(object, model, location = "bottom") {
 
 }
 
+# DROP MODEL -----
+
+#' Drop a Model from a Modeltime Table
+#'
+#' @param object A Modeltime Table (class `mdl_time_tbl`)
+#' @param .model_id A numeric value matching the .model_id that you want to drop
+#'
+#' @seealso
+#' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
+#' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [drop_modeltime_model()]: Drop one or more models from a Modeltime Table
+#' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
+#' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
+#' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
+#'
+#' @examples
+#' \donttest{
+#' library(tidymodels)
+#'
+#'
+#' m750_models %>%
+#'     drop_modeltime_model(.model_id = c(2,3))
+#' }
+#'
+#' @export
+drop_modeltime_model <- function(object, .model_id) {
+
+    if (!rlang::is_bare_numeric(.model_id)){
+        rlang::abort(".model_id must be numeric")
+    }
+
+    if (!is_modeltime_table(object)){
+        rlang::abort("object must be a 'modeltime_table'")
+    }
+
+    ret <- object %>%
+           dplyr::filter(!(.model_id %in% !!.model_id))
+
+    return(ret)
+
+}
 
 # UPDATE MODEL ----
 
@@ -157,6 +200,7 @@ add_modeltime_model <- function(object, model, location = "bottom") {
 #' @seealso
 #' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
 #' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [drop_modeltime_model()]: Drop one or more models from a Modeltime Table
 #' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
 #' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
 #' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
@@ -213,6 +257,7 @@ update_modeltime_model.mdl_time_tbl <- function(object, .model_id, .new_model) {
 #' @seealso
 #' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
 #' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [drop_modeltime_model()]: Drop one or more models from a Modeltime Table
 #' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
 #' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
 #' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
@@ -256,6 +301,7 @@ update_modeltime_description <- update_model_description
 #' @seealso
 #' - [combine_modeltime_tables()]: Combine 2 or more Modeltime Tables together
 #' - [add_modeltime_model()]: Adds a new row with a new model to a Modeltime Table
+#' - [drop_modeltime_model()]: Drop one or more models from a Modeltime Table
 #' - [update_modeltime_description()]: Updates a description for a model inside a Modeltime Table
 #' - [update_modeltime_model()]: Updates a model inside a Modeltime Table
 #' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table

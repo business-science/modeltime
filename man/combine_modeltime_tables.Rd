@@ -65,6 +65,7 @@ combine_modeltime_tables(model_tbl_1, model_tbl_2)
 \itemize{
 \item \code{\link[=combine_modeltime_tables]{combine_modeltime_tables()}}: Combine 2 or more Modeltime Tables together
 \item \code{\link[=add_modeltime_model]{add_modeltime_model()}}: Adds a new row with a new model to a Modeltime Table
+\item \code{\link[=drop_modeltime_model]{drop_modeltime_model()}}: Drop one or more models from a Modeltime Table
 \item \code{\link[=update_modeltime_description]{update_modeltime_description()}}: Updates a description for a model inside a Modeltime Table
 \item \code{\link[=update_modeltime_model]{update_modeltime_model()}}: Updates a model inside a Modeltime Table
 \item \code{\link[=pull_modeltime_model]{pull_modeltime_model()}}: Extracts a model from a Modeltime Table
