@@ -627,9 +627,9 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 
     modeltime_forecast <- tryCatch({
 
-        if (inherits(object, "_elnet") && inherits(object, "recursive")) {
+        if (detect_net(object) && inherits(object, "recursive")) {
             predictions_tbl <- object %>% predict.recursive(new_data = new_data)
-        } else if (inherits(object, "_elnet") && inherits(object, "recursive_panel")) {
+        } else if (detect_net(object) && inherits(object, "recursive_panel")) {
             predictions_tbl <- object %>% predict.recursive_panel(new_data = new_data)
         } else {
             predictions_tbl <- object %>% stats::predict(new_data = new_data)
@@ -914,9 +914,9 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     }
 
     # PREDICT
-    if (inherits(fit, "_elnet") && inherits(fit, "recursive")) {
+    if (detect_net(fit) && inherits(fit, "recursive")) {
         data_formatted <- fit %>% predict.recursive(new_data = df)
-    } else if (inherits(fit, "_elnet") && inherits(fit, "recursive_panel")) {
+    } else if (detect_net(fit) && inherits(fit, "recursive_panel")) {
         data_formatted <- fit %>% predict.recursive_panel(new_data = df)
     } else {
         data_formatted <- fit %>% stats::predict(new_data = df)
@@ -1040,3 +1040,11 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
 }
 
+
+detect_net <- function(object){
+    res <- class(object) %>%
+        stringr::str_detect(., "net") %>%
+        sum()
+
+    if (res >= 1) {TRUE} else {FALSE}
+}
