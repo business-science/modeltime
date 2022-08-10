@@ -1041,10 +1041,12 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 }
 
 
-detect_net <- function(object){
-    res <- class(object) %>%
-        stringr::str_detect(., "net") %>%
-        sum()
 
-    if (res >= 1) {TRUE} else {FALSE}
+detect_net <- function(object){
+    if (inherits(object, "_fishnet") || inherits(object, "_elnet") || inherits(object, "_multnet") || inherits(object, "_lognet")){
+        res <- TRUE
+    } else {
+        res <- FALSE
+    }
+    return(res)
 }
