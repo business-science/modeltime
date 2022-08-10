@@ -279,7 +279,7 @@ print.recursive <- function(x, ...) {
     } else if (inherits(x, "workflow")) {
         cat("Recursive [workflow]\n\n")
     } else {
-       cat("Recursive [modeltime ensemble]\n\n")
+        cat("Recursive [modeltime ensemble]\n\n")
     }
 
     y <- x
@@ -440,6 +440,14 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     .id <- dplyr::ensym(id)
 
+    unique_id_new_data <- new_data %>% dplyr::select(!! .id) %>% unique() %>% dplyr::pull()
+
+    unique_id_train_tail <- train_tail %>% dplyr::select(!! .id) %>% unique() %>% dplyr::pull()
+
+    if (length(dplyr::setdiff(unique_id_train_tail, unique_id_new_data)) >= 1){
+        train_tail <- train_tail %>% dplyr::filter(!! .id %in% unique_id_new_data)
+    }
+
     # #  Comment this out ----
     # print("here")
     # obj <<- object
@@ -483,10 +491,10 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     }
 
     .preds[.preds$rowid.. == 1, 2] <- new_data[new_data$rowid.. == 1, y_var] <- pred_fun(object,
-                                                                                     new_data = .first_slice,
-                                                                                     type = type,
-                                                                                     opts = opts,
-                                                                                     ...)
+                                                                                         new_data = .first_slice,
+                                                                                         type = type,
+                                                                                         opts = opts,
+                                                                                         ...)
 
     .groups <- new_data %>%
         dplyr::group_by(!! .id) %>%
@@ -518,10 +526,10 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
 
         .preds[.preds$rowid.. == i, 2] <- new_data[new_data$rowid.. == i, y_var] <- pred_fun(object,
-                                                                                         new_data = .nth_slice,
-                                                                                         type = type,
-                                                                                         opts = opts,
-                                                                                         ...)
+                                                                                             new_data = .nth_slice,
+                                                                                             type = type,
+                                                                                             opts = opts,
+                                                                                             ...)
     }
 
     return(.preds[,2])
@@ -689,7 +697,3 @@ is_prepped_recipe <- function(recipe) {
     }
     return(is_prepped)
 }
-
-
-
-

@@ -260,7 +260,7 @@ update.prophet_reg <- function(object, parameters = NULL,
                                logistic_cap = NULL, logistic_floor = NULL,
                                fresh = FALSE, ...) {
 
-    parsnip::update_dot_check(...)
+    eng_args <- parsnip::update_engine_parameters(object$eng_args, fresh, ...)
 
     if (!is.null(parameters)) {
         parameters <- parsnip::check_final_param(parameters)
@@ -286,12 +286,15 @@ update.prophet_reg <- function(object, parameters = NULL,
 
     if (fresh) {
         object$args <- args
+        object$eng_args <- eng_args
     } else {
         null_args <- purrr::map_lgl(args, parsnip::null_value)
         if (any(null_args))
             args <- args[!null_args]
         if (length(args) > 0)
             object$args[names(args)] <- args
+        if (length(eng_args) > 0)
+            object$eng_args[names(eng_args)] <- eng_args
     }
 
     parsnip::new_model_spec(
