@@ -354,6 +354,14 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
 
+    chunk_size <- new_data %>%
+        select(-all_of(y_var)) %>%
+        filter(complete.cases(.)) %>%
+        nrow()
+
+    idx_sets <- split(x = seq_len(nrow(new_data)),
+                      f = (seq_len(nrow(new_data)) - 1) %/% chunk_size)
+
     # print({
     #     list(
     #         object,
@@ -369,10 +377,10 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     .preds <- tibble::tibble(.pred = numeric(nrow(new_data)))
 
     .first_slice <- new_data %>%
-        dplyr::slice_head(n = 1)
+        dplyr::slice_head(n = chunk_size)
 
 
-    .preds[1,] <- new_data[1, y_var] <-
+    .preds[idx_sets[[1]],] <- new_data[idx_sets[[1]], y_var] <-
         pred_fun(
             object,
             new_data = .first_slice,
@@ -383,16 +391,16 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
 
 
 
-    for (i in 2:nrow(.preds)) {
+    for (i in 2:length(idx_sets)) {
 
         .temp_new_data <- dplyr::bind_rows(
             train_tail,
             new_data
         )
 
-        .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
+        .nth_slice <- .transform(.temp_new_data, nrow(new_data), idx_sets[[i]])
 
-        .preds[i,] <- new_data[i, y_var] <- pred_fun(
+        .preds[idx_sets[[i]],] <- new_data[idx_sets[[i]], y_var] <- pred_fun(
             object, new_data = .nth_slice[names(.first_slice)],
             type = type, opts = opts, ...
         )
@@ -448,6 +456,17 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         train_tail <- train_tail %>% dplyr::filter(!! .id %in% unique_id_new_data)
     }
 
+    n_groups <- dplyr::n_distinct(new_data[[id]])
+    chunk_size <- new_data %>%
+        select(-all_of(y_var)) %>%
+        filter(complete.cases(.)) %>%
+        nrow()
+    chunk_size <- chunk_size / n_groups
+    group_size <- nrow(new_data) / n_groups
+
+    idx_sets <- split(x = seq_len(group_size),
+                      f = (seq_len(group_size) - 1) %/% chunk_size)
+
     # #  Comment this out ----
     # print("here")
     # obj <<- object
@@ -475,7 +494,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     .first_slice <- new_data %>%
         dplyr::group_by(!! .id) %>%
-        dplyr::slice_head(n = 1) %>%
+        dplyr::slice_head(n = chunk_size) %>%
         dplyr::ungroup()
 
     # Fix - When ID is dummied
@@ -490,7 +509,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         .first_slice <- .first_slice %>% dplyr::select(-rowid..)
     }
 
-    .preds[.preds$rowid.. == 1, 2] <- new_data[new_data$rowid.. == 1, y_var] <- pred_fun(object,
+    .preds[.preds$rowid.. %in% idx_sets[[1]], 2] <- new_data[new_data$rowid.. %in% idx_sets[[1]], y_var] <- pred_fun(object,
                                                                                          new_data = .first_slice,
                                                                                          type = type,
                                                                                          opts = opts,
@@ -504,11 +523,11 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     new_data_size <- nrow(.preds)/.groups
 
-    for (i in 2:new_data_size) {
+    for (i in 2:length(idx_sets)) {
 
         .temp_new_data <- dplyr::bind_rows(train_tail, new_data)
 
-        .nth_slice <- .transform(.temp_new_data, new_data_size, i, id)
+        .nth_slice <- .transform(.temp_new_data, new_data_size, idx_sets[[i]], id)
 
         # Fix - When ID is dummied
         if (!is.null(object$spec$remove_id)) {
@@ -525,7 +544,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         .nth_slice <- .nth_slice[names(.first_slice)]
 
 
-        .preds[.preds$rowid.. == i, 2] <- new_data[new_data$rowid.. == i, y_var] <- pred_fun(object,
+        .preds[.preds$rowid.. %in% idx_sets[[i]], 2] <- new_data[new_data$rowid.. %in% idx_sets[[i]], y_var] <- pred_fun(object,
                                                                                              new_data = .nth_slice,
                                                                                              type = type,
                                                                                              opts = opts,
