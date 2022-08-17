@@ -390,6 +390,10 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
             ...
         )
 
+    if (length(idx_sets) == 1){
+        return(.preds)
+    }
+
      .temp_new_data <- dplyr::bind_rows(
          train_tail,
          new_data
