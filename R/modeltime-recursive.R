@@ -354,8 +354,9 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
 
+    train_vars <- setdiff(colnames(train_tail),y_var)
     chunk_size <- new_data %>%
-        select(-all_of(y_var)) %>%
+        select(any_of(train_vars)) %>%
         filter(complete.cases(.)) %>%
         nrow()
 
@@ -462,8 +463,9 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     n_groups <- dplyr::n_distinct(new_data[[id]])
 
+    train_vars <- setdiff(colnames(train_tail),y_var)
     chunk_size <- new_data %>%
-        select(-all_of(y_var)) %>%
+        select(any_of(train_vars)) %>%
         filter(complete.cases(.)) %>%
         nrow()
     chunk_size <- chunk_size / n_groups
