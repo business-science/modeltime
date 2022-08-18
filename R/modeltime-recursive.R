@@ -14,6 +14,9 @@
 #' @param ... Not currently used.
 #' @param id (Optional) An identifier that can be provided to perform a panel forecast.
 #'  A single quoted column name (e.g. `id = "id"`).
+#' @param chunk_size The size of the smallest lag used in `transform`. If the
+#' smallest lag necessary is n, the forecasts can be computed in chunks of n,
+#' which can dramatically improve performance. Defaults to 1.
 #'
 #' @return An object with added `recursive` class
 #'
@@ -205,12 +208,12 @@
 #' }
 #'
 #' @export
-recursive <- function(object, transform, train_tail, id = NULL, ...){
+recursive <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...){
     UseMethod("recursive")
 }
 
 #' @export
-recursive.model_fit <- function(object, transform, train_tail, id = NULL, ...) {
+recursive.model_fit <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...) {
 
     dot_list <- list(...)
 
@@ -220,6 +223,7 @@ recursive.model_fit <- function(object, transform, train_tail, id = NULL, ...) {
     object$spec[["transform"]]  <- if(!is.null(id)){.prepare_panel_transform(transform)} else {.prepare_transform(transform)}
     object$spec[["train_tail"]] <- train_tail
     object$spec[["id"]]         <- id
+    object$spec[["chunk_size"]] <- chunk_size
 
     # Workflow: Need to pass in the y_var
     object$spec[["y_var"]]      <- dot_list$y_var # Could be NULL or provided by workflow
@@ -232,7 +236,7 @@ recursive.model_fit <- function(object, transform, train_tail, id = NULL, ...) {
 }
 
 #' @export
-recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
+recursive.workflow <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...) {
 
     # object$fit$fit$fit$spec[["forecast"]] <- "recursive"
     # object$fit$fit$fit$spec[["transform"]] <- .prepare_transform(transform)
@@ -247,6 +251,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
             object     = object$fit$fit,
             transform  = transform,
             train_tail = train_tail,
+            chunk_size = chunk_size,
             y_var      = y_var
         )
         .class <- class(object)
@@ -257,8 +262,9 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
             object     = object$fit$fit,
             transform  = transform,
             train_tail = train_tail,
-            y_var      = y_var,
-            id         = id
+            id         = id,
+            chunk_size = chunk_size,
+            y_var      = y_var
         )
         .class        <- class(object)
         class(object) <- c("recursive_panel", .class)
@@ -353,12 +359,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     pred_fun   <- parsnip::predict.model_fit
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
-
-    train_vars <- setdiff(colnames(train_tail),y_var)
-    chunk_size <- new_data %>%
-        select(any_of(train_vars)) %>%
-        filter(complete.cases(.)) %>%
-        nrow()
+    chunk_size <- object$spec$chunk_size
 
     idx_sets <- split(x = seq_len(nrow(new_data)),
                       f = (seq_len(nrow(new_data)) - 1) %/% chunk_size)
@@ -389,10 +390,6 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
             opts     = opts,
             ...
         )
-
-    if (length(idx_sets) == 1){
-        return(.preds)
-    }
 
      .temp_new_data <- dplyr::bind_rows(
          train_tail,
@@ -454,6 +451,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
     id         <- object$spec$id
+    chunk_size <- object$spec$chunk_size
 
     .id <- dplyr::ensym(id)
 
@@ -466,13 +464,6 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     }
 
     n_groups <- dplyr::n_distinct(new_data[[id]])
-
-    train_vars <- setdiff(colnames(train_tail),y_var)
-    chunk_size <- new_data %>%
-        select(any_of(train_vars)) %>%
-        filter(complete.cases(.)) %>%
-        nrow()
-    chunk_size <- chunk_size / n_groups
     group_size <- nrow(new_data) / n_groups
 
     idx_sets <- split(x = seq_len(group_size),
