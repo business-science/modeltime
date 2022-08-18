@@ -16,7 +16,9 @@
 #'  A single quoted column name (e.g. `id = "id"`).
 #' @param chunk_size The size of the smallest lag used in `transform`. If the
 #' smallest lag necessary is n, the forecasts can be computed in chunks of n,
-#' which can dramatically improve performance. Defaults to 1.
+#' which can dramatically improve performance. Defaults to 1. Non-integers are
+#' coerced to integer, e.g. `chunk_size = 3.5` will be coerced to integer via
+#' `as.integer()`.
 #'
 #' @return An object with added `recursive` class
 #'
@@ -219,11 +221,15 @@ recursive.model_fit <- function(object, transform, train_tail, id = NULL, chunk_
 
     .class_obj <- if(!is.null(id)){"recursive_panel"} else {"recursive"}
 
+    if (!is.numeric(chunk_size) || chunk_size < 1){
+        rlang::abort("'chunk_size' must be an integer >= 1.")
+    }
+
     object$spec[["forecast"]]   <- .class_obj
     object$spec[["transform"]]  <- if(!is.null(id)){.prepare_panel_transform(transform)} else {.prepare_transform(transform)}
     object$spec[["train_tail"]] <- train_tail
     object$spec[["id"]]         <- id
-    object$spec[["chunk_size"]] <- chunk_size
+    object$spec[["chunk_size"]] <- as.integer(chunk_size)
 
     # Workflow: Need to pass in the y_var
     object$spec[["y_var"]]      <- dot_list$y_var # Could be NULL or provided by workflow
@@ -245,13 +251,17 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, chunk_s
     mld         <- object %>% workflows::extract_mold()
     y_var       <- names(mld$outcomes)
 
+    if (!is.numeric(chunk_size) || chunk_size < 1){
+        rlang::abort("'chunk_size' must be an integer >= 1.")
+    }
+
     if (is.null(id)){
 
         object$fit$fit <- recursive(
             object     = object$fit$fit,
             transform  = transform,
             train_tail = train_tail,
-            chunk_size = chunk_size,
+            chunk_size = as.integer(chunk_size),
             y_var      = y_var
         )
         .class <- class(object)
@@ -263,7 +273,7 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, chunk_s
             transform  = transform,
             train_tail = train_tail,
             id         = id,
-            chunk_size = chunk_size,
+            chunk_size = as.integer(chunk_size),
             y_var      = y_var
         )
         .class        <- class(object)
