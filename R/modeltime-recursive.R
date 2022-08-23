@@ -414,7 +414,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
         transform_window_end <- max(idx_sets[[i]]) + n_train_tail
 
         #.nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], nrow(new_data), idx_sets[[i]])
-        .nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], chunk_size)
+        .nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], length(idx_sets[[i]]))
 
         .preds[idx_sets[[i]],] <- .temp_new_data[idx_sets[[i]] + n_train_tail, y_var] <- pred_fun(
             object, new_data = .nth_slice[names(.first_slice)],
@@ -546,7 +546,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         .nth_slice <- .transform(.temp_new_data %>%
                                      group_by(!! .id) %>%
                                      dplyr::slice(transform_window_start:transform_window_end),
-                                 chunk_size, id)
+                                 length(idx_sets[[i]]), id)
 
         # Fix - When ID is dummied
         if (!is.null(object$spec$remove_id)) {
