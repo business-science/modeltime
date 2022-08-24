@@ -380,7 +380,7 @@ mdl_time_refit.recursive <- function(object, data, ..., control = NULL) {
         object <- mdl_time_refit.workflow(object, data, ..., control = control)
 
         # Make Recursive
-        object <- recursive(object, transform = transformer, train_tail = train_tail_new)
+        object <- recursive(object, transform = transformer, train_tail = train_tail_new, chunk_size = object$spec$chunk_size)
 
         # Need to overwrite transformer
         object$fit$fit$spec$transform <- transformer
@@ -452,7 +452,8 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
             object,
             transform  = transformer,
             train_tail = train_tail_new,
-            id         = id_old
+            id         = id_old,
+            chunk_size = object$spec$chunk_size
         )
 
         # Need to overwrite transformer
