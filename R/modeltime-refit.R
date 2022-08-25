@@ -443,6 +443,7 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
             )
 
         id_old <- object$fit$fit$spec$id
+        chunk_size_old <- object$fit$fit$spec$chunk_size
 
         # Refit
         object <- mdl_time_refit.workflow(object, data, ..., control = control)
@@ -453,7 +454,7 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
             transform  = transformer,
             train_tail = train_tail_new,
             id         = id_old,
-            chunk_size = object$spec$chunk_size
+            chunk_size = chunk_size_old
         )
 
         # Need to overwrite transformer
