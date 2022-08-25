@@ -474,7 +474,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     }
 
     n_groups <- dplyr::n_distinct(new_data[[id]])
-    group_size <- nrow(new_data) / n_groups
+    group_size <- max(table(new_data[[id]]))
 
     idx_sets <- split(x = seq_len(group_size),
                       f = (seq_len(group_size) - 1) %/% chunk_size)
@@ -536,7 +536,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     new_data_size <- nrow(.preds)/.groups
 
     .temp_new_data <- dplyr::bind_rows(train_tail, new_data)
-    n_train_tail <- table(train_tail[[id]])[1]
+    n_train_tail <- max(table(train_tail[[id]]))
 
     for (i in 2:length(idx_sets)) {
 
@@ -546,7 +546,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         .nth_slice <- .transform(.temp_new_data %>%
                                      group_by(!! .id) %>%
                                      dplyr::slice(transform_window_start:transform_window_end),
-                                 length(idx_sets[[i]]), id)
+                                    idx_sets[[i]], id)
 
         # Fix - When ID is dummied
         if (!is.null(object$spec$remove_id)) {
@@ -699,7 +699,7 @@ panel_tail <- function(data, id, n){
 
     if (inherits(.transform, "function")) {
 
-        .transform_fun <- function(temp_new_data, chunk_size, id) {
+        .transform_fun <- function(temp_new_data, slice_idx, id) {
 
             id_chr <- as.character(id)
             ..id   <- dplyr::ensym(id_chr)
@@ -714,7 +714,9 @@ panel_tail <- function(data, id, n){
                 dplyr::group_split() %>%
                 purrr::map(function(x){
 
-                    dplyr::slice_tail(x,n = as.integer(chunk_size))
+                    dplyr::filter(x,rowid.. %in% slice_idx)
+
+                    #dplyr::slice_tail(x,n = as.integer(chunk_size))
 
                     #dplyr::slice_tail(x, n = as.integer(round(new_data_size))) %>%
                     #    .[slice_idx, ]
