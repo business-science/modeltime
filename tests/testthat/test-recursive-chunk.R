@@ -264,8 +264,7 @@ test_that("Chunked Recursive Tests ", {
     # * Forecasting ----
 
     forecast_tbl <- modeltime_table(
-        model_fit_lm_recursive
-        ,
+        model_fit_lm_recursive,
         wflw_fit_lm_recursive
     ) %>%
         modeltime_forecast(
