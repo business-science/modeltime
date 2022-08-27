@@ -109,7 +109,7 @@ test_that("Chunked Recursive Tests ", {
 
     # recursive 2 - single / transform func / workflow -----
 
-    # Function run recursively that updates the forcasted dataset
+    # Function run recursively that updates the forecasted dataset
     lag_transformer <- function(data){
         data %>%
             # Lags
@@ -294,8 +294,7 @@ test_that("Chunked Recursive Tests ", {
     # wflw_fit_lm_recursive %>% mdl_time_refit(retrain_tbl)
 
     refit_tbl <- modeltime_table(
-        model_fit_lm_recursive
-        ,
+        model_fit_lm_recursive,
         wflw_fit_lm_recursive
     ) %>%
         modeltime_refit(
