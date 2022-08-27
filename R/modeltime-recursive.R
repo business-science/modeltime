@@ -408,19 +408,21 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
 
      n_train_tail <- nrow(train_tail)
 
-    for (i in 2:length(idx_sets)) {
+     if (length(idx_sets) > 1){
+         for (i in 2:length(idx_sets)) {
 
-        transform_window_start <- min(idx_sets[[i]])
-        transform_window_end <- max(idx_sets[[i]]) + n_train_tail
+             transform_window_start <- min(idx_sets[[i]])
+             transform_window_end <- max(idx_sets[[i]]) + n_train_tail
 
-        #.nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], nrow(new_data), idx_sets[[i]])
-        .nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], length(idx_sets[[i]]))
+             #.nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], nrow(new_data), idx_sets[[i]])
+             .nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], length(idx_sets[[i]]))
 
-        .preds[idx_sets[[i]],] <- .temp_new_data[idx_sets[[i]] + n_train_tail, y_var] <- pred_fun(
-            object, new_data = .nth_slice[names(.first_slice)],
-            type = type, opts = opts, ...
-        )
-    }
+             .preds[idx_sets[[i]],] <- .temp_new_data[idx_sets[[i]] + n_train_tail, y_var] <- pred_fun(
+                 object, new_data = .nth_slice[names(.first_slice)],
+                 type = type, opts = opts, ...
+             )
+         }
+     }
 
     return(.preds)
 
@@ -538,36 +540,38 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     .temp_new_data <- dplyr::bind_rows(train_tail, new_data)
     n_train_tail <- max(table(train_tail[[id]]))
 
-    for (i in 2:length(idx_sets)) {
+    if (length(idx_sets) > 1){
+        for (i in 2:length(idx_sets)) {
 
-        transform_window_start <- min(idx_sets[[i]])
-        transform_window_end <- max(idx_sets[[i]]) + n_train_tail
+            transform_window_start <- min(idx_sets[[i]])
+            transform_window_end <- max(idx_sets[[i]]) + n_train_tail
 
-        .nth_slice <- .transform(.temp_new_data %>%
-                                     group_by(!! .id) %>%
-                                     dplyr::slice(transform_window_start:transform_window_end),
-                                    idx_sets[[i]], id)
+            .nth_slice <- .transform(.temp_new_data %>%
+                                         group_by(!! .id) %>%
+                                         dplyr::slice(transform_window_start:transform_window_end),
+                                     idx_sets[[i]], id)
 
-        # Fix - When ID is dummied
-        if (!is.null(object$spec$remove_id)) {
-            if (object$spec$remove_id) {
-                .nth_slice <- .nth_slice %>%
-                    dplyr::select(-(!! .id))
+            # Fix - When ID is dummied
+            if (!is.null(object$spec$remove_id)) {
+                if (object$spec$remove_id) {
+                    .nth_slice <- .nth_slice %>%
+                        dplyr::select(-(!! .id))
+                }
             }
+
+            if ("rowid.." %in% names(.nth_slice)) {
+                .nth_slice <- .nth_slice %>% dplyr::select(-rowid..)
+            }
+
+            .nth_slice <- .nth_slice[names(.first_slice)]
+
+
+            .preds[.preds$rowid.. %in% idx_sets[[i]], 2] <- .temp_new_data[.temp_new_data$rowid.. %in% idx_sets[[i]], y_var] <- pred_fun(object,
+                                                                                                                                         new_data = .nth_slice,
+                                                                                                                                         type = type,
+                                                                                                                                         opts = opts,
+                                                                                                                                         ...)
         }
-
-        if ("rowid.." %in% names(.nth_slice)) {
-            .nth_slice <- .nth_slice %>% dplyr::select(-rowid..)
-        }
-
-        .nth_slice <- .nth_slice[names(.first_slice)]
-
-
-        .preds[.preds$rowid.. %in% idx_sets[[i]], 2] <- .temp_new_data[.temp_new_data$rowid.. %in% idx_sets[[i]], y_var] <- pred_fun(object,
-                                                                                             new_data = .nth_slice,
-                                                                                             type = type,
-                                                                                             opts = opts,
-                                                                                             ...)
     }
 
     return(.preds[,2])
