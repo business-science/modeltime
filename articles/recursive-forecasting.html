@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Autoregressive Forecasting with Recursive">
@@ -184,11 +184,11 @@ Recursive Panel Forecast with XGBoost
 </h2>
 <p>Load the following libraries.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="make-a-recursive-forecast-model">Make a Recursive Forecast Model<a class="anchor" aria-label="anchor" href="#make-a-recursive-forecast-model"></a>
@@ -199,31 +199,31 @@ Recursive Panel Forecast with XGBoost
 </h3>
 <p>Let’s start with the <code>m750</code> dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 306 × 3</span></span>
-<span class="co">#&gt;    id    date       value</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M750  1990-01-01  <span style="text-decoration: underline;">6</span>370</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M750  1990-02-01  <span style="text-decoration: underline;">6</span>430</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M750  1990-03-01  <span style="text-decoration: underline;">6</span>520</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M750  1990-04-01  <span style="text-decoration: underline;">6</span>580</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M750  1990-05-01  <span style="text-decoration: underline;">6</span>620</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M750  1990-06-01  <span style="text-decoration: underline;">6</span>690</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M750  1990-07-01  <span style="text-decoration: underline;">6</span>000</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M750  1990-08-01  <span style="text-decoration: underline;">5</span>450</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M750  1990-09-01  <span style="text-decoration: underline;">6</span>480</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M750  1990-10-01  <span style="text-decoration: underline;">6</span>820</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 296 more rows</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m750</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 306 × 3</span></span></span>
+<span><span class="co">#&gt;    id    date       value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M750  1990-01-01  <span style="text-decoration: underline;">6</span>370</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M750  1990-02-01  <span style="text-decoration: underline;">6</span>430</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M750  1990-03-01  <span style="text-decoration: underline;">6</span>520</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M750  1990-04-01  <span style="text-decoration: underline;">6</span>580</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M750  1990-05-01  <span style="text-decoration: underline;">6</span>620</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M750  1990-06-01  <span style="text-decoration: underline;">6</span>690</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M750  1990-07-01  <span style="text-decoration: underline;">6</span>000</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M750  1990-08-01  <span style="text-decoration: underline;">5</span>450</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M750  1990-09-01  <span style="text-decoration: underline;">6</span>480</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M750  1990-10-01  <span style="text-decoration: underline;">6</span>820</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 296 more rows</span></span></span></code></pre></div>
 <p>We can visualize the data with <code><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
-    .date_var    <span class="op">=</span> <span class="va">date</span>, 
-    .value       <span class="op">=</span> <span class="va">value</span>, 
-    .facet_var   <span class="op">=</span> <span class="va">id</span>, 
-    .smooth      <span class="op">=</span> <span class="cn">F</span>, 
-    .interactive <span class="op">=</span> <span class="cn">F</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
+<span>    .date_var    <span class="op">=</span> <span class="va">date</span>, </span>
+<span>    .value       <span class="op">=</span> <span class="va">value</span>, </span>
+<span>    .facet_var   <span class="op">=</span> <span class="va">id</span>, </span>
+<span>    .smooth      <span class="op">=</span> <span class="cn">F</span>, </span>
+<span>    .interactive <span class="op">=</span> <span class="cn">F</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -231,115 +231,118 @@ Recursive Panel Forecast with XGBoost
 </h3>
 <p>Let’s establish a forecast horizon and extend the dataset to create a forecast region.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
-
-<span class="va">m750_extended</span> <span class="op">&lt;-</span> <span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>
-        .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,
-        .bind_data  <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span></span>
+<span></span>
+<span><span class="va">m750_extended</span> <span class="op">&lt;-</span> <span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span></span>
+<span>        .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,</span>
+<span>        .bind_data  <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="transform-function">Transform Function<a class="anchor" aria-label="anchor" href="#transform-function"></a>
 </h3>
 <p>We’ll use <strong>short-term lags</strong>, lags with a size that are smaller than the forecast horizon. Here we create a custom function, <code>lag_roll_transformer()</code> that takes a dataset and adds lags 1 through 12 and a rolling mean using lag 12. Each of the features this function use lags less than our forecast horizon of 24 months, which means we need to use <code><a href="../reference/recursive.html">recursive()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lag_roll_transformer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_slidify.html" class="external-link">tk_augment_slidify</a></span><span class="op">(</span>
-          <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
-          .f <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-          .period  <span class="op">=</span> <span class="fl">12</span>,
-          .partial <span class="op">=</span> <span class="cn">TRUE</span>
-        <span class="op">)</span> 
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lag_roll_transformer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_slidify.html" class="external-link">tk_augment_slidify</a></span><span class="op">(</span></span>
+<span>          <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,</span>
+<span>          .f <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>          .period  <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>          .partial <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>        <span class="op">)</span> </span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="apply-the-transform-function">Apply the Transform Function<a class="anchor" aria-label="anchor" href="#apply-the-transform-function"></a>
 </h3>
 <p>When we apply the lag roll transformation to our extended data set, we can see the effect.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750_rolling</span> <span class="op">&lt;-</span> <span class="va">m750_extended</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">lag_roll_transformer</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
-
-<span class="va">m750_rolling</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 330 × 27</span></span>
-<span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1990-01-01  <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1990-02-01  <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1990-03-01  <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1990-04-01  <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1990-05-01  <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1990-06-01  <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1990-07-01  <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1990-08-01  <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1990-09-01  <span style="text-decoration: underline;">6</span>480       <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1990-10-01  <span style="text-decoration: underline;">6</span>820       <span style="text-decoration: underline;">6</span>480       <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 320 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m750_rolling</span> <span class="op">&lt;-</span> <span class="va">m750_extended</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">lag_roll_transformer</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">m750_rolling</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 330 × 27</span></span></span>
+<span><span class="co">#&gt;    date       value value_lag1 value_l…¹ value…² value…³ value…⁴ value…⁵ value…⁶</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1990-01-01  <span style="text-decoration: underline;">6</span>370         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1990-02-01  <span style="text-decoration: underline;">6</span>430       <span style="text-decoration: underline;">6</span>370        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1990-03-01  <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">6</span>430      <span style="text-decoration: underline;">6</span>370      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1990-04-01  <span style="text-decoration: underline;">6</span>580       <span style="text-decoration: underline;">6</span>520      <span style="text-decoration: underline;">6</span>430    <span style="text-decoration: underline;">6</span>370      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1990-05-01  <span style="text-decoration: underline;">6</span>620       <span style="text-decoration: underline;">6</span>580      <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">6</span>430    <span style="text-decoration: underline;">6</span>370      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1990-06-01  <span style="text-decoration: underline;">6</span>690       <span style="text-decoration: underline;">6</span>620      <span style="text-decoration: underline;">6</span>580    <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">6</span>430    <span style="text-decoration: underline;">6</span>370      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1990-07-01  <span style="text-decoration: underline;">6</span>000       <span style="text-decoration: underline;">6</span>690      <span style="text-decoration: underline;">6</span>620    <span style="text-decoration: underline;">6</span>580    <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">6</span>430    <span style="text-decoration: underline;">6</span>370      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1990-08-01  <span style="text-decoration: underline;">5</span>450       <span style="text-decoration: underline;">6</span>000      <span style="text-decoration: underline;">6</span>690    <span style="text-decoration: underline;">6</span>620    <span style="text-decoration: underline;">6</span>580    <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">6</span>430    <span style="text-decoration: underline;">6</span>370</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1990-09-01  <span style="text-decoration: underline;">6</span>480       <span style="text-decoration: underline;">5</span>450      <span style="text-decoration: underline;">6</span>000    <span style="text-decoration: underline;">6</span>690    <span style="text-decoration: underline;">6</span>620    <span style="text-decoration: underline;">6</span>580    <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">6</span>430</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1990-10-01  <span style="text-decoration: underline;">6</span>820       <span style="text-decoration: underline;">6</span>480      <span style="text-decoration: underline;">5</span>450    <span style="text-decoration: underline;">6</span>000    <span style="text-decoration: underline;">6</span>690    <span style="text-decoration: underline;">6</span>620    <span style="text-decoration: underline;">6</span>580    <span style="text-decoration: underline;">6</span>520</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 320 more rows, 18 more variables: value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag10 &lt;dbl&gt;, value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag14 &lt;dbl&gt;, value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag18 &lt;dbl&gt;, value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag22 &lt;dbl&gt;, value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag12_roll_12 &lt;dbl&gt;, and abbreviated variable names ¹​value_lag2,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​value_lag3, ³​value_lag4, ⁴​value_lag5, ⁵​value_lag6, ⁶​value_lag7</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="split-into-training-and-future-data">Split into Training and Future Data<a class="anchor" aria-label="anchor" href="#split-into-training-and-future-data"></a>
 </h3>
 <p>The <strong>training data</strong> needs to be completely filled in. We remove any rows with <code>NA</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">train_data</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 282 × 27</span></span>
-<span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1992-01-01  <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">6</span>980       <span style="text-decoration: underline;">6</span>550       <span style="text-decoration: underline;">5</span>780</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1992-02-01  <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">6</span>980       <span style="text-decoration: underline;">6</span>550</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1992-03-01  <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">6</span>980</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1992-04-01  <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040       <span style="text-decoration: underline;">7</span>000</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1992-05-01  <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1992-06-01  <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1992-07-01  <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1992-08-01  <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1992-09-01  <span style="text-decoration: underline;">6</span>870       <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1992-10-01  <span style="text-decoration: underline;">6</span>880       <span style="text-decoration: underline;">6</span>870       <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 272 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">train_data</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 282 × 27</span></span></span>
+<span><span class="co">#&gt;    date       value value_lag1 value_l…¹ value…² value…³ value…⁴ value…⁵ value…⁶</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1992-01-01  <span style="text-decoration: underline;">7</span>030       <span style="text-decoration: underline;">7</span>040      <span style="text-decoration: underline;">7</span>000    <span style="text-decoration: underline;">6</span>980    <span style="text-decoration: underline;">6</span>550    <span style="text-decoration: underline;">5</span>780    <span style="text-decoration: underline;">6</span>200    <span style="text-decoration: underline;">6</span>890</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1992-02-01  <span style="text-decoration: underline;">7</span>170       <span style="text-decoration: underline;">7</span>030      <span style="text-decoration: underline;">7</span>040    <span style="text-decoration: underline;">7</span>000    <span style="text-decoration: underline;">6</span>980    <span style="text-decoration: underline;">6</span>550    <span style="text-decoration: underline;">5</span>780    <span style="text-decoration: underline;">6</span>200</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1992-03-01  <span style="text-decoration: underline;">7</span>150       <span style="text-decoration: underline;">7</span>170      <span style="text-decoration: underline;">7</span>030    <span style="text-decoration: underline;">7</span>040    <span style="text-decoration: underline;">7</span>000    <span style="text-decoration: underline;">6</span>980    <span style="text-decoration: underline;">6</span>550    <span style="text-decoration: underline;">5</span>780</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1992-04-01  <span style="text-decoration: underline;">7</span>180       <span style="text-decoration: underline;">7</span>150      <span style="text-decoration: underline;">7</span>170    <span style="text-decoration: underline;">7</span>030    <span style="text-decoration: underline;">7</span>040    <span style="text-decoration: underline;">7</span>000    <span style="text-decoration: underline;">6</span>980    <span style="text-decoration: underline;">6</span>550</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1992-05-01  <span style="text-decoration: underline;">7</span>140       <span style="text-decoration: underline;">7</span>180      <span style="text-decoration: underline;">7</span>150    <span style="text-decoration: underline;">7</span>170    <span style="text-decoration: underline;">7</span>030    <span style="text-decoration: underline;">7</span>040    <span style="text-decoration: underline;">7</span>000    <span style="text-decoration: underline;">6</span>980</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1992-06-01  <span style="text-decoration: underline;">7</span>100       <span style="text-decoration: underline;">7</span>140      <span style="text-decoration: underline;">7</span>180    <span style="text-decoration: underline;">7</span>150    <span style="text-decoration: underline;">7</span>170    <span style="text-decoration: underline;">7</span>030    <span style="text-decoration: underline;">7</span>040    <span style="text-decoration: underline;">7</span>000</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1992-07-01  <span style="text-decoration: underline;">6</span>490       <span style="text-decoration: underline;">7</span>100      <span style="text-decoration: underline;">7</span>140    <span style="text-decoration: underline;">7</span>180    <span style="text-decoration: underline;">7</span>150    <span style="text-decoration: underline;">7</span>170    <span style="text-decoration: underline;">7</span>030    <span style="text-decoration: underline;">7</span>040</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1992-08-01  <span style="text-decoration: underline;">6</span>060       <span style="text-decoration: underline;">6</span>490      <span style="text-decoration: underline;">7</span>100    <span style="text-decoration: underline;">7</span>140    <span style="text-decoration: underline;">7</span>180    <span style="text-decoration: underline;">7</span>150    <span style="text-decoration: underline;">7</span>170    <span style="text-decoration: underline;">7</span>030</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1992-09-01  <span style="text-decoration: underline;">6</span>870       <span style="text-decoration: underline;">6</span>060      <span style="text-decoration: underline;">6</span>490    <span style="text-decoration: underline;">7</span>100    <span style="text-decoration: underline;">7</span>140    <span style="text-decoration: underline;">7</span>180    <span style="text-decoration: underline;">7</span>150    <span style="text-decoration: underline;">7</span>170</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1992-10-01  <span style="text-decoration: underline;">6</span>880       <span style="text-decoration: underline;">6</span>870      <span style="text-decoration: underline;">6</span>060    <span style="text-decoration: underline;">6</span>490    <span style="text-decoration: underline;">7</span>100    <span style="text-decoration: underline;">7</span>140    <span style="text-decoration: underline;">7</span>180    <span style="text-decoration: underline;">7</span>150</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 272 more rows, 18 more variables: value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag10 &lt;dbl&gt;, value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag14 &lt;dbl&gt;, value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag18 &lt;dbl&gt;, value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag22 &lt;dbl&gt;, value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag12_roll_12 &lt;dbl&gt;, and abbreviated variable names ¹​value_lag2,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​value_lag3, ³​value_lag4, ⁴​value_lag5, ⁵​value_lag6, ⁶​value_lag7</span></span></span></code></pre></div>
 <p>The <strong>future data</strong> has missing values in the “value” column. We isolate these. Our autoregressive algorithm will predict these. Notice that the lags have missing data, this is OK - and why we are going to use <code><a href="../reference/recursive.html">recursive()</a></code> to fill these missing values in with predictions.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">future_data</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 27</span></span>
-<span class="co">#&gt;    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2015-07-01    <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310      <span style="text-decoration: underline;">11</span>290      <span style="text-decoration: underline;">11</span>250      <span style="text-decoration: underline;">11</span>010</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2015-08-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310      <span style="text-decoration: underline;">11</span>290      <span style="text-decoration: underline;">11</span>250</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2015-09-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310      <span style="text-decoration: underline;">11</span>290</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2015-10-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000      <span style="text-decoration: underline;">11</span>310</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2015-11-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2015-12-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2016-01-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2016-02-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2016-03-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2016-04-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m750_rolling</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">future_data</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 27</span></span></span>
+<span><span class="co">#&gt;    date       value value_lag1 value_l…¹ value…² value…³ value…⁴ value…⁵ value…⁶</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2015-07-01    <span style="color: #BB0000;">NA</span>      <span style="text-decoration: underline;">11</span>000     <span style="text-decoration: underline;">11</span>310   <span style="text-decoration: underline;">11</span>290   <span style="text-decoration: underline;">11</span>250   <span style="text-decoration: underline;">11</span>010   <span style="text-decoration: underline;">10</span>980   <span style="text-decoration: underline;">10</span>990</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2015-08-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>     <span style="text-decoration: underline;">11</span>000   <span style="text-decoration: underline;">11</span>310   <span style="text-decoration: underline;">11</span>290   <span style="text-decoration: underline;">11</span>250   <span style="text-decoration: underline;">11</span>010   <span style="text-decoration: underline;">10</span>980</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2015-09-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   <span style="text-decoration: underline;">11</span>000   <span style="text-decoration: underline;">11</span>310   <span style="text-decoration: underline;">11</span>290   <span style="text-decoration: underline;">11</span>250   <span style="text-decoration: underline;">11</span>010</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2015-10-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>   <span style="text-decoration: underline;">11</span>000   <span style="text-decoration: underline;">11</span>310   <span style="text-decoration: underline;">11</span>290   <span style="text-decoration: underline;">11</span>250</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2015-11-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>   <span style="text-decoration: underline;">11</span>000   <span style="text-decoration: underline;">11</span>310   <span style="text-decoration: underline;">11</span>290</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2015-12-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>   <span style="text-decoration: underline;">11</span>000   <span style="text-decoration: underline;">11</span>310</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2016-01-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>   <span style="text-decoration: underline;">11</span>000</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2016-02-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2016-03-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2016-04-01    <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows, 18 more variables: value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag10 &lt;dbl&gt;, value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag14 &lt;dbl&gt;, value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag18 &lt;dbl&gt;, value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag22 &lt;dbl&gt;, value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag12_roll_12 &lt;dbl&gt;, and abbreviated variable names ¹​value_lag2,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​value_lag3, ³​value_lag4, ⁴​value_lag5, ⁵​value_lag6, ⁶​value_lag7</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="modeling">Modeling<a class="anchor" aria-label="anchor" href="#modeling"></a>
@@ -356,20 +359,20 @@ Recursive Panel Forecast with XGBoost
 </h4>
 <p>A straight-line forecast is just to illustrate the effect of no autoregressive features. Consider this a NAIVE modeling approach. The only feature that is used as a dependent variable is the “date” column.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span>
-
-<span class="va">model_fit_lm</span>
-<span class="co">#&gt; parsnip model object</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt; (Intercept)         date  </span>
-<span class="co">#&gt;   3356.7208       0.4712</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_fit_lm</span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = value ~ date, data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)         date  </span></span>
+<span><span class="co">#&gt;   3356.7208       0.4712</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="model-2-autoregressive-forecast-model">Model 2: Autoregressive Forecast Model<a class="anchor" aria-label="anchor" href="#model-2-autoregressive-forecast-model"></a>
@@ -387,44 +390,44 @@ Recursive Panel Forecast with XGBoost
 <li><p><code>id</code> (Optional): This is used to identify groups for Recursive Panel Data.</p></li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Autoregressive Forecast</span>
-<span class="va">model_fit_lm_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="co"># One additional step - use recursive()</span>
-    <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span>
-        transform  <span class="op">=</span> <span class="va">lag_roll_transformer</span>,
-        train_tail <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">train_data</span>, <span class="va">FORECAST_HORIZON</span><span class="op">)</span>
-    <span class="op">)</span>
-
-<span class="va">model_fit_lm_recursive</span>
-<span class="co">#&gt; Recursive [parsnip model]</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; parsnip model object</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         (Intercept)                 date           value_lag1  </span>
-<span class="co">#&gt;           164.14732              0.00677              0.61244  </span>
-<span class="co">#&gt;          value_lag2           value_lag3           value_lag4  </span>
-<span class="co">#&gt;             0.18402             -0.07128              0.12089  </span>
-<span class="co">#&gt;          value_lag5           value_lag6           value_lag7  </span>
-<span class="co">#&gt;            -0.01750              0.07095              0.09785  </span>
-<span class="co">#&gt;          value_lag8           value_lag9          value_lag10  </span>
-<span class="co">#&gt;            -0.08053              0.04887              0.03030  </span>
-<span class="co">#&gt;         value_lag11          value_lag12          value_lag13  </span>
-<span class="co">#&gt;            -0.01755              0.73318             -0.52958  </span>
-<span class="co">#&gt;         value_lag14          value_lag15          value_lag16  </span>
-<span class="co">#&gt;            -0.21410              0.07734             -0.13879  </span>
-<span class="co">#&gt;         value_lag17          value_lag18          value_lag19  </span>
-<span class="co">#&gt;             0.04351             -0.08894             -0.08732  </span>
-<span class="co">#&gt;         value_lag20          value_lag21          value_lag22  </span>
-<span class="co">#&gt;             0.06641             -0.05737             -0.02331  </span>
-<span class="co">#&gt;         value_lag23          value_lag24  value_lag12_roll_12  </span>
-<span class="co">#&gt;             0.05754              0.15960                   NA</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Autoregressive Forecast</span></span>
+<span><span class="va">model_fit_lm_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train_data</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="co"># One additional step - use recursive()</span></span>
+<span>    <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span></span>
+<span>        transform  <span class="op">=</span> <span class="va">lag_roll_transformer</span>,</span>
+<span>        train_tail <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">train_data</span>, <span class="va">FORECAST_HORIZON</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_fit_lm_recursive</span></span>
+<span><span class="co">#&gt; Recursive [parsnip model]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = value ~ ., data = data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;         (Intercept)                 date           value_lag1  </span></span>
+<span><span class="co">#&gt;           164.14732              0.00677              0.61244  </span></span>
+<span><span class="co">#&gt;          value_lag2           value_lag3           value_lag4  </span></span>
+<span><span class="co">#&gt;             0.18402             -0.07128              0.12089  </span></span>
+<span><span class="co">#&gt;          value_lag5           value_lag6           value_lag7  </span></span>
+<span><span class="co">#&gt;            -0.01750              0.07095              0.09785  </span></span>
+<span><span class="co">#&gt;          value_lag8           value_lag9          value_lag10  </span></span>
+<span><span class="co">#&gt;            -0.08053              0.04887              0.03030  </span></span>
+<span><span class="co">#&gt;         value_lag11          value_lag12          value_lag13  </span></span>
+<span><span class="co">#&gt;            -0.01755              0.73318             -0.52958  </span></span>
+<span><span class="co">#&gt;         value_lag14          value_lag15          value_lag16  </span></span>
+<span><span class="co">#&gt;            -0.21410              0.07734             -0.13879  </span></span>
+<span><span class="co">#&gt;         value_lag17          value_lag18          value_lag19  </span></span>
+<span><span class="co">#&gt;             0.04351             -0.08894             -0.08732  </span></span>
+<span><span class="co">#&gt;         value_lag20          value_lag21          value_lag22  </span></span>
+<span><span class="co">#&gt;             0.06641             -0.05737             -0.02331  </span></span>
+<span><span class="co">#&gt;         value_lag23          value_lag24  value_lag12_roll_12  </span></span>
+<span><span class="co">#&gt;             0.05754              0.15960                   NA</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -433,33 +436,33 @@ Recursive Panel Forecast with XGBoost
 <p>Once we have our fitted model, we can follow the <a href="https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html">Modeltime Workflow</a> (note we are skipping calibration and refitting, but this can be performed to get confidence intervals):</p>
 <p>First, we add fitted models to a <strong>Model Table</strong> using <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code>. (Note - If your model description says “LM”, install the development version of <code>modeltime</code>, which has improved model descriptions for recursive models).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
-    <span class="va">model_fit_lm</span>,
-    <span class="va">model_fit_lm_recursive</span>
-<span class="op">)</span> 
-
-<span class="va">model_tbl</span>
-<span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span>
-<span class="co">#&gt;   .model_id .model   .model_desc </span>
-<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span> LM          </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span> RECURSIVE LM</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span></span>
+<span>    <span class="va">model_fit_lm</span>,</span>
+<span>    <span class="va">model_fit_lm_recursive</span></span>
+<span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">model_tbl</span></span>
+<span><span class="co">#&gt; # Modeltime Table</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="co">#&gt;   .model_id .model   .model_desc </span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span> LM          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span> RECURSIVE LM</span></span></code></pre></div>
 <p>Next, we perform <strong>Forecast Evaluation</strong> using <code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code> and <code><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast()</a></code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  
-    <span class="co"># Forecast using future data</span>
-    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
-        new_data    <span class="op">=</span> <span class="va">future_data</span>,
-        actual_data <span class="op">=</span> <span class="va">m750</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  
-    <span class="co"># Visualize the forecast</span>
-    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
-        .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,
-        .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>
-    <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">model_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  </span>
+<span>    <span class="co"># Forecast using future data</span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span></span>
+<span>        new_data    <span class="op">=</span> <span class="va">future_data</span>,</span>
+<span>        actual_data <span class="op">=</span> <span class="va">m750</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  </span>
+<span>    <span class="co"># Visualize the forecast</span></span>
+<span>    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span></span>
+<span>        .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We can see the benefit of autoregressive features.</p>
 </div>
@@ -485,15 +488,15 @@ Recursive Panel Forecast with XGBoost
 </h3>
 <p>Now we have 4 time series that we will forecast.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>  
-  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span>
-    .date_var    <span class="op">=</span> <span class="va">date</span>, 
-    .value       <span class="op">=</span> <span class="va">value</span>, 
-    .facet_var   <span class="op">=</span> <span class="va">id</span>, 
-    .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,
-    .smooth      <span class="op">=</span> <span class="cn">F</span>, 
-    .interactive <span class="op">=</span> <span class="cn">F</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>  </span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
+<span>    .date_var    <span class="op">=</span> <span class="va">date</span>, </span>
+<span>    .value       <span class="op">=</span> <span class="va">value</span>, </span>
+<span>    .facet_var   <span class="op">=</span> <span class="va">id</span>, </span>
+<span>    .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    .smooth      <span class="op">=</span> <span class="cn">F</span>, </span>
+<span>    .interactive <span class="op">=</span> <span class="cn">F</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -501,158 +504,159 @@ Recursive Panel Forecast with XGBoost
 </h3>
 <p>We use <code><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">timetk::future_frame()</a></code> to project each series forward by the forecast horizon. This sets up an extended data set with each series extended by 24 time stamps.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span>
-
-<span class="va">m4_extended</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>
-        .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,
-        .bind_data  <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">FORECAST_HORIZON</span> <span class="op">&lt;-</span> <span class="fl">24</span></span>
+<span></span>
+<span><span class="va">m4_extended</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span></span>
+<span>        .length_out <span class="op">=</span> <span class="va">FORECAST_HORIZON</span>,</span>
+<span>        .bind_data  <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="transform-function-1">Transform Function<a class="anchor" aria-label="anchor" href="#transform-function-1"></a>
 </h3>
 <p>The only difference is that we are applying any lags by group.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lag_roll_transformer_grouped</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_slidify.html" class="external-link">tk_augment_slidify</a></span><span class="op">(</span>
-          .value   <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,
-          .f       <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-          .period  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,
-          .partial <span class="op">=</span> <span class="cn">TRUE</span>
-        <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lag_roll_transformer_grouped</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">FORECAST_HORIZON</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_slidify.html" class="external-link">tk_augment_slidify</a></span><span class="op">(</span></span>
+<span>          .value   <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"lag12"</span><span class="op">)</span>,</span>
+<span>          .f       <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>          .period  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,</span>
+<span>          .partial <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>        <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="apply-the-transform-function-1">Apply the Transform Function<a class="anchor" aria-label="anchor" href="#apply-the-transform-function-1"></a>
 </h3>
 <p>We apply the groupwise lag transformation to the extended data set. This adds autoregressive features.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m4_lags</span> <span class="op">&lt;-</span> <span class="va">m4_extended</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">lag_roll_transformer_grouped</span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">m4_lags</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,670 × 28</span></span>
-<span class="co">#&gt;    id    date       value value_lag1 value_lag2 value_lag3 value_lag4 value_lag5</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M1    1976-06-01  <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M1    1976-07-01  <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M1    1976-08-01  <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M1    1976-09-01  <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M1    1976-10-01  <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M1    1976-11-01  <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M1    1976-12-01  <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M1    1977-01-01  <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M1    1977-02-01  <span style="text-decoration: underline;">6</span>830       <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M1    1977-03-01  <span style="text-decoration: underline;">5</span>710       <span style="text-decoration: underline;">6</span>830       <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 1,660 more rows, and 20 more variables: value_lag6 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag7 &lt;dbl&gt;, value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag11 &lt;dbl&gt;, value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag15 &lt;dbl&gt;, value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag19 &lt;dbl&gt;, value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   value_lag23 &lt;dbl&gt;, value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m4_lags</span> <span class="op">&lt;-</span> <span class="va">m4_extended</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">lag_roll_transformer_grouped</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">m4_lags</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,670 × 28</span></span></span>
+<span><span class="co">#&gt;    id    date       value value_lag1 value_lag2 value_…¹ value…² value…³ value…⁴</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M1    1976-06-01  <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M1    1976-07-01  <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000         <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M1    1976-08-01  <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350       <span style="text-decoration: underline;">8</span>000       <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M1    1976-09-01  <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570       <span style="text-decoration: underline;">8</span>350     <span style="text-decoration: underline;">8</span>000      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M1    1976-10-01  <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700       <span style="text-decoration: underline;">8</span>570     <span style="text-decoration: underline;">8</span>350    <span style="text-decoration: underline;">8</span>000      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M1    1976-11-01  <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080       <span style="text-decoration: underline;">7</span>700     <span style="text-decoration: underline;">8</span>570    <span style="text-decoration: underline;">8</span>350    <span style="text-decoration: underline;">8</span>000      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M1    1976-12-01  <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520       <span style="text-decoration: underline;">7</span>080     <span style="text-decoration: underline;">7</span>700    <span style="text-decoration: underline;">8</span>570    <span style="text-decoration: underline;">8</span>350    <span style="text-decoration: underline;">8</span>000</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M1    1977-01-01  <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070       <span style="text-decoration: underline;">6</span>520     <span style="text-decoration: underline;">7</span>080    <span style="text-decoration: underline;">7</span>700    <span style="text-decoration: underline;">8</span>570    <span style="text-decoration: underline;">8</span>350</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M1    1977-02-01  <span style="text-decoration: underline;">6</span>830       <span style="text-decoration: underline;">6</span>650       <span style="text-decoration: underline;">6</span>070     <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">7</span>080    <span style="text-decoration: underline;">7</span>700    <span style="text-decoration: underline;">8</span>570</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M1    1977-03-01  <span style="text-decoration: underline;">5</span>710       <span style="text-decoration: underline;">6</span>830       <span style="text-decoration: underline;">6</span>650     <span style="text-decoration: underline;">6</span>070    <span style="text-decoration: underline;">6</span>520    <span style="text-decoration: underline;">7</span>080    <span style="text-decoration: underline;">7</span>700</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 1,660 more rows, 19 more variables: value_lag7 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag8 &lt;dbl&gt;, value_lag9 &lt;dbl&gt;, value_lag10 &lt;dbl&gt;, value_lag11 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag12 &lt;dbl&gt;, value_lag13 &lt;dbl&gt;, value_lag14 &lt;dbl&gt;, value_lag15 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag16 &lt;dbl&gt;, value_lag17 &lt;dbl&gt;, value_lag18 &lt;dbl&gt;, value_lag19 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag20 &lt;dbl&gt;, value_lag21 &lt;dbl&gt;, value_lag22 &lt;dbl&gt;, value_lag23 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   value_lag24 &lt;dbl&gt;, value_lag12_roll_12 &lt;dbl&gt;, and abbreviated variable</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​value_lag3, ²​value_lag4, ³​value_lag5, ⁴​value_lag6</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="split-into-training-and-future-data-1">Split into Training and Future Data<a class="anchor" aria-label="anchor" href="#split-into-training-and-future-data-1"></a>
 </h3>
 <p>Just like the single case, we split into future and training data.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">train_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">future_data</span> <span class="op">&lt;-</span> <span class="va">m4_lags</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="modeling-1">Modeling<a class="anchor" aria-label="anchor" href="#modeling-1"></a>
 </h3>
 <p>We’ll use a more sophisticated algorithm <code>xgboost</code> to develop an autoregressive model.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Modeling Autoregressive Panel Data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
-<span class="va">model_fit_xgb_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span>
-        mode <span class="op">=</span> <span class="st">"regression"</span>,
-        learn_rate <span class="op">=</span> <span class="fl">0.35</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span>
-        <span class="va">value</span> <span class="op">~</span> <span class="va">.</span> 
-        <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
-        <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> 
-        <span class="op">-</span> <span class="va">date</span>, 
-        data <span class="op">=</span> <span class="va">train_data</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span>
-        id         <span class="op">=</span> <span class="st">"id"</span>, <span class="co"># We add an id = "id" to specify the groups</span>
-        transform  <span class="op">=</span> <span class="va">lag_roll_transformer_grouped</span>,
-        <span class="co"># We use panel_tail() to grab tail by groups</span>
-        train_tail <span class="op">=</span> <span class="fu"><a href="../reference/panel_tail.html">panel_tail</a></span><span class="op">(</span><span class="va">train_data</span>, <span class="va">id</span>, <span class="va">FORECAST_HORIZON</span><span class="op">)</span>
-    <span class="op">)</span>
-
-<span class="va">model_fit_xgb_recursive</span>
-<span class="co">#&gt; Recursive [parsnip model]</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; parsnip model object</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ##### xgb.Booster</span>
-<span class="co">#&gt; raw: 52.7 Kb </span>
-<span class="co">#&gt; call:</span>
-<span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.35, max_depth = 6, gamma = 0, </span>
-<span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span>
-<span class="co">#&gt;     subsample = 1, objective = "reg:squarederror"), data = x$data, </span>
-<span class="co">#&gt;     nrounds = 15, watchlist = x$watchlist, verbose = 0, nthread = 1)</span>
-<span class="co">#&gt; params (as set within xgb.train):</span>
-<span class="co">#&gt;   eta = "0.35", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "1", min_child_weight = "1", subsample = "1", objective = "reg:squarederror", nthread = "1", validate_parameters = "TRUE"</span>
-<span class="co">#&gt; xgb.attributes:</span>
-<span class="co">#&gt;   niter</span>
-<span class="co">#&gt; callbacks:</span>
-<span class="co">#&gt;   cb.evaluation.log()</span>
-<span class="co">#&gt; # of features: 41 </span>
-<span class="co">#&gt; niter: 15</span>
-<span class="co">#&gt; nfeatures : 41 </span>
-<span class="co">#&gt; evaluation_log:</span>
-<span class="co">#&gt;     iter training_rmse</span>
-<span class="co">#&gt;        1     3767.4588</span>
-<span class="co">#&gt;        2     2494.2021</span>
-<span class="co">#&gt; ---                   </span>
-<span class="co">#&gt;       14      210.7798</span>
-<span class="co">#&gt;       15      200.4422</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Modeling Autoregressive Panel Data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">model_fit_xgb_recursive</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html" class="external-link">boost_tree</a></span><span class="op">(</span></span>
+<span>        mode <span class="op">=</span> <span class="st">"regression"</span>,</span>
+<span>        learn_rate <span class="op">=</span> <span class="fl">0.35</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span></span>
+<span>        <span class="va">value</span> <span class="op">~</span> <span class="va">.</span> </span>
+<span>        <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span>        <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> </span>
+<span>        <span class="op">-</span> <span class="va">date</span>, </span>
+<span>        data <span class="op">=</span> <span class="va">train_data</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/recursive.html">recursive</a></span><span class="op">(</span></span>
+<span>        id         <span class="op">=</span> <span class="st">"id"</span>, <span class="co"># We add an id = "id" to specify the groups</span></span>
+<span>        transform  <span class="op">=</span> <span class="va">lag_roll_transformer_grouped</span>,</span>
+<span>        <span class="co"># We use panel_tail() to grab tail by groups</span></span>
+<span>        train_tail <span class="op">=</span> <span class="fu"><a href="../reference/panel_tail.html">panel_tail</a></span><span class="op">(</span><span class="va">train_data</span>, <span class="va">id</span>, <span class="va">FORECAST_HORIZON</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_fit_xgb_recursive</span></span>
+<span><span class="co">#&gt; Recursive [parsnip model]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; parsnip model object</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ##### xgb.Booster</span></span>
+<span><span class="co">#&gt; raw: 52.7 Kb </span></span>
+<span><span class="co">#&gt; call:</span></span>
+<span><span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.35, max_depth = 6, gamma = 0, </span></span>
+<span><span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span></span>
+<span><span class="co">#&gt;     subsample = 1), data = x$data, nrounds = 15, watchlist = x$watchlist, </span></span>
+<span><span class="co">#&gt;     verbose = 0, nthread = 1, objective = "reg:squarederror")</span></span>
+<span><span class="co">#&gt; params (as set within xgb.train):</span></span>
+<span><span class="co">#&gt;   eta = "0.35", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "1", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"</span></span>
+<span><span class="co">#&gt; xgb.attributes:</span></span>
+<span><span class="co">#&gt;   niter</span></span>
+<span><span class="co">#&gt; callbacks:</span></span>
+<span><span class="co">#&gt;   cb.evaluation.log()</span></span>
+<span><span class="co">#&gt; # of features: 41 </span></span>
+<span><span class="co">#&gt; niter: 15</span></span>
+<span><span class="co">#&gt; nfeatures : 41 </span></span>
+<span><span class="co">#&gt; evaluation_log:</span></span>
+<span><span class="co">#&gt;     iter training_rmse</span></span>
+<span><span class="co">#&gt;        1     3767.4588</span></span>
+<span><span class="co">#&gt;        2     2494.2021</span></span>
+<span><span class="co">#&gt; ---                   </span></span>
+<span><span class="co">#&gt;       14      210.7798</span></span>
+<span><span class="co">#&gt;       15      200.4422</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="modeltime-forecasting-workflow-1">Modeltime Forecasting Workflow<a class="anchor" aria-label="anchor" href="#modeltime-forecasting-workflow-1"></a>
 </h3>
 <p>First, create a Modeltime Table. Note - If your model description says “XGBOOST”, install the development version of <code>modeltime</code>, which has improved model descriptions for recursive models).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
-    <span class="va">model_fit_xgb_recursive</span>
-<span class="op">)</span>
-
-<span class="va">model_tbl</span>
-<span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="co">#&gt;   .model_id .model   .model_desc      </span>
-<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span> RECURSIVE XGBOOST</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">model_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span></span>
+<span>    <span class="va">model_fit_xgb_recursive</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_tbl</span></span>
+<span><span class="co">#&gt; # Modeltime Table</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">#&gt;   .model_id .model   .model_desc      </span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span> RECURSIVE XGBOOST</span></span></code></pre></div>
 <p>Next, we can forecast the results.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
-        new_data    <span class="op">=</span> <span class="va">future_data</span>,
-        actual_data <span class="op">=</span> <span class="va">m4_monthly</span>,
-        keep_data   <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
-        .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,
-        .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>,
-        .facet_ncol         <span class="op">=</span> <span class="fl">2</span>
-    <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">model_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span></span>
+<span>        new_data    <span class="op">=</span> <span class="va">future_data</span>,</span>
+<span>        actual_data <span class="op">=</span> <span class="va">m4_monthly</span>,</span>
+<span>        keep_data   <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span></span>
+<span>        .interactive        <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        .conf_interval_show <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        .facet_ncol         <span class="op">=</span> <span class="fl">2</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="recursive-forecasting_files/figure-html/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -725,7 +729,7 @@ Become the Time Series Expert for your organization.
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>

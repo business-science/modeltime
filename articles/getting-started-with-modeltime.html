@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Getting Started with Modeltime">
@@ -198,30 +198,30 @@ The Modeltime Workflow
 </h2>
 <p>Load libraries to complete this short tutorial.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost" class="external-link">xgboost</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span>
-
-<span class="co"># This toggles plots from plotly (interactive) to ggplot (static)</span>
-<span class="va">interactive</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost" class="external-link">xgboost</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># This toggles plots from plotly (interactive) to ggplot (static)</span></span>
+<span><span class="va">interactive</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="step-1---collect-data-and-split-into-training-and-test-sets-">Step 1 - Collect data and split into training and test sets.<a class="anchor" aria-label="anchor" href="#step-1---collect-data-and-split-into-training-and-test-sets-"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Data</span>
-<span class="va">m750</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="st">"M750"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Data</span></span>
+<span><span class="va">m750</span> <span class="op">&lt;-</span> <span class="va">m4_monthly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="st">"M750"</span><span class="op">)</span></span></code></pre></div>
 <p>We can visualize the dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Let’s split the data into training and test sets using <code><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split()</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Split Data 80/20</span>
-<span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split</a></span><span class="op">(</span><span class="va">m750</span>, prop <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Split Data 80/20</span></span>
+<span><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split</a></span><span class="op">(</span><span class="va">m750</span>, prop <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-2---create-fit-multiple-models">Step 2 - Create &amp; Fit Multiple Models<a class="anchor" aria-label="anchor" href="#step-2---create-fit-multiple-models"></a>
@@ -241,11 +241,11 @@ The Modeltime Workflow
 </h4>
 <p>First, we create a basic univariate ARIMA model using “Auto Arima” using <code><a href="../reference/arima_reg.html">arima_reg()</a></code></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Model 1: auto_arima ----</span>
-<span class="va">model_fit_arima_no_boost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_reg.html">arima_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model 1: auto_arima ----</span></span>
+<span><span class="va">model_fit_arima_no_boost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_reg.html">arima_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; frequency = 12 observations per 1 year</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="model-2-boosted-auto-arima-modeltime">Model 2: Boosted Auto ARIMA (Modeltime)<a class="anchor" aria-label="anchor" href="#model-2-boosted-auto-arima-modeltime"></a>
@@ -253,38 +253,38 @@ The Modeltime Workflow
 <p>Next, we create a boosted ARIMA using <code><a href="../reference/arima_boost.html">arima_boost()</a></code>. Boosting uses XGBoost to model the ARIMA errors. Note that model formula contains both a date feature and derivatives of date - ARIMA uses the date - XGBoost uses the derivatives of date as regressors</p>
 <p>Normally I’d use a preprocessing workflow for the month features using a function like <code><a href="https://business-science.github.io/timetk/reference/step_timeseries_signature.html" class="external-link">step_timeseries_signature()</a></code> from <code>timetk</code> to help reduce the complexity of the parsnip formula interface.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Model 2: arima_boost ----</span>
-<span class="va">model_fit_arima_boosted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_boost.html">arima_boost</a></span><span class="op">(</span>
-    min_n <span class="op">=</span> <span class="fl">2</span>,
-    learn_rate <span class="op">=</span> <span class="fl">0.015</span>
-<span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima_xgboost"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>,
-        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model 2: arima_boost ----</span></span>
+<span><span class="va">model_fit_arima_boosted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arima_boost.html">arima_boost</a></span><span class="op">(</span></span>
+<span>    min_n <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    learn_rate <span class="op">=</span> <span class="fl">0.015</span></span>
+<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"auto_arima_xgboost"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>,</span>
+<span>        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; frequency = 12 observations per 1 year</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="model-3-exponential-smoothing-modeltime">Model 3: Exponential Smoothing (Modeltime)<a class="anchor" aria-label="anchor" href="#model-3-exponential-smoothing-modeltime"></a>
 </h4>
 <p>Next, create an Error-Trend-Season (ETS) model using an Exponential Smoothing State Space model. This is accomplished with <code><a href="../reference/exp_smoothing.html">exp_smoothing()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Model 3: ets ----</span>
-<span class="va">model_fit_ets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_smoothing.html">exp_smoothing</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"ets"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; frequency = 12 observations per 1 year</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model 3: ets ----</span></span>
+<span><span class="va">model_fit_ets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exp_smoothing.html">exp_smoothing</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"ets"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; frequency = 12 observations per 1 year</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="model-4-prophet-modeltime">Model 4: Prophet (Modeltime)<a class="anchor" aria-label="anchor" href="#model-4-prophet-modeltime"></a>
 </h4>
 <p>We’ll create a <code>prophet</code> model using <code><a href="../reference/prophet_reg.html">prophet_reg()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Model 4: prophet ----</span>
-<span class="va">model_fit_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"prophet"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span>
-<span class="co">#&gt; Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model 4: prophet ----</span></span>
+<span><span class="va">model_fit_prophet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prophet_reg.html">prophet_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span>engine <span class="op">=</span> <span class="st">"prophet"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</span></span>
+<span><span class="co">#&gt; Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="model-5-linear-regression-parsnip">Model 5: Linear Regression (Parsnip)<a class="anchor" aria-label="anchor" href="#model-5-linear-regression-parsnip"></a>
@@ -299,31 +299,31 @@ The Modeltime Workflow
 </li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Model 5: lm ----</span>
-<span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
-        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model 5: lm ----</span></span>
+<span><span class="va">model_fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="model-6-mars-workflow">Model 6: MARS (Workflow)<a class="anchor" aria-label="anchor" href="#model-6-mars-workflow"></a>
 </h4>
 <p>We can model a Multivariate Adaptive Regression Spline model using <code><a href="https://parsnip.tidymodels.org/reference/mars.html" class="external-link">mars()</a></code>. I’ve modified the process to use a <code>workflow</code> to standardize the preprocessing of the features that are provided to the machine learning model (mars).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Model 6: earth ----</span>
-<span class="va">model_spec_mars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/mars.html" class="external-link">mars</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"earth"</span><span class="op">)</span> 
-
-<span class="va">recipe_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html" class="external-link">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="st">"month"</span>, ordinal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html" class="external-link">step_mutate</a></span><span class="op">(</span>date_num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="va">date_num</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>
-  
-<span class="va">wflw_fit_mars</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">add_recipe</span><span class="op">(</span><span class="va">recipe_spec</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">add_model</span><span class="op">(</span><span class="va">model_spec_mars</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model 6: earth ----</span></span>
+<span><span class="va">model_spec_mars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/mars.html" class="external-link">mars</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"earth"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">recipe_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_date.html" class="external-link">step_date</a></span><span class="op">(</span><span class="va">date</span>, features <span class="op">=</span> <span class="st">"month"</span>, ordinal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html" class="external-link">step_mutate</a></span><span class="op">(</span>date_num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="va">date_num</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">wflw_fit_mars</span> <span class="op">&lt;-</span> <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">add_recipe</span><span class="op">(</span><span class="va">recipe_spec</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">add_model</span><span class="op">(</span><span class="va">model_spec_mars</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>OK, with these 6 models, we’ll show how easy it is to forecast.</p>
 </div>
 </div>
@@ -338,26 +338,26 @@ The Modeltime Workflow
 <li>If you try to add an unfitted model, the <code><a href="../reference/modeltime_table.html">modeltime_table()</a></code> will complain (throw an informative error) saying you need to <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> the model.</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">models_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span>
-    <span class="va">model_fit_arima_no_boost</span>,
-    <span class="va">model_fit_arima_boosted</span>,
-    <span class="va">model_fit_ets</span>,
-    <span class="va">model_fit_prophet</span>,
-    <span class="va">model_fit_lm</span>,
-    <span class="va">wflw_fit_mars</span>
-<span class="op">)</span>
-
-<span class="va">models_tbl</span>
-<span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span>
-<span class="co">#&gt;   .model_id .model     .model_desc                              </span>
-<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]                  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                               </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                                  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                       </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">models_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modeltime_table.html">modeltime_table</a></span><span class="op">(</span></span>
+<span>    <span class="va">model_fit_arima_no_boost</span>,</span>
+<span>    <span class="va">model_fit_arima_boosted</span>,</span>
+<span>    <span class="va">model_fit_ets</span>,</span>
+<span>    <span class="va">model_fit_prophet</span>,</span>
+<span>    <span class="va">model_fit_lm</span>,</span>
+<span>    <span class="va">wflw_fit_mars</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">models_tbl</span></span>
+<span><span class="co">#&gt; # Modeltime Table</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   .model_id .model     .model_desc                              </span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                               </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-4---calibrate-the-model-to-a-testing-set-">Step 4 - Calibrate the model to a testing set.<a class="anchor" aria-label="anchor" href="#step-4---calibrate-the-model-to-a-testing-set-"></a>
@@ -370,20 +370,21 @@ The Modeltime Workflow
 <li>After calibrating, the calibration data follows the data through the forecasting workflow.</li>
 </ul>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op">&lt;-</span> <span class="va">models_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">calibration_tbl</span>
-<span class="co">#&gt; # Modeltime Table</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span>
-<span class="co">#&gt;   .model_id .model     .model_desc                        .type .calibration_da…</span>
-<span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]            Test  &lt;tibble&gt;        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOS… Test  &lt;tibble&gt;        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                         Test  &lt;tibble&gt;        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                            Test  &lt;tibble&gt;        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                 Test  &lt;tibble&gt;        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH                              Test  &lt;tibble&gt;</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">calibration_tbl</span> <span class="op">&lt;-</span> <span class="va">models_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">calibration_tbl</span></span>
+<span><span class="co">#&gt; # Modeltime Table</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   .model_id .model     .model_desc                               .type .calibr…¹</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12]                   Test  &lt;tibble&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS Test  &lt;tibble&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 <span style="color: #949494;">&lt;fit[+]&gt;</span>   ETS(M,A,A)                                Test  &lt;tibble&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 <span style="color: #949494;">&lt;fit[+]&gt;</span>   PROPHET                                   Test  &lt;tibble&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         5 <span style="color: #949494;">&lt;fit[+]&gt;</span>   LM                                        Test  &lt;tibble&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         6 <span style="color: #949494;">&lt;workflow&gt;</span> EARTH                                     Test  &lt;tibble&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable name ¹​.calibration_data</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-5---testing-set-forecast-accuracy-evaluation">Step 5 - Testing Set Forecast &amp; Accuracy Evaluation<a class="anchor" aria-label="anchor" href="#step-5---testing-set-forecast-accuracy-evaluation"></a>
@@ -398,15 +399,15 @@ The Modeltime Workflow
 </h4>
 <p>Visualizing the Test Error is easy to do using the <strong>interactive plotly visualization (just toggle the visibility of the models using the Legend).</strong></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>
-        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,
-        actual_data <span class="op">=</span> <span class="va">m750</span>
-    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
-      .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span>
-      .interactive      <span class="op">=</span> <span class="va">interactive</span>
-    <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span></span>
+<span>        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,</span>
+<span>        actual_data <span class="op">=</span> <span class="va">m750</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span></span>
+<span>      .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span></span>
+<span>      .interactive      <span class="op">=</span> <span class="va">interactive</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>From visualizing the test set forecast:</p>
 <ul>
@@ -449,17 +450,17 @@ The Modeltime Workflow
 <p>These of course can be customized following the rules for creating new yardstick metrics, but the defaults are very useful. Refer to <code>default_forecast_accuracy_metrics()</code> to learn more.</p>
 <p>To make table-creation a bit easier, I’ve included <code><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy()</a></code> for outputing results in either interactive (<code>reactable</code>) or static (<code>gt</code>) tables.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>
-        .interactive <span class="op">=</span> <span class="va">interactive</span>
-    <span class="op">)</span></code></pre></div>
-<div id="nktrtdrmnv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span></span>
+<span>        .interactive <span class="op">=</span> <span class="va">interactive</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<div id="uplnjaxhdt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#nktrtdrmnv .gt_table {
+#uplnjaxhdt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -484,7 +485,7 @@ The Modeltime Workflow
   border-left-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_heading {
+#uplnjaxhdt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -496,7 +497,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_title {
+#uplnjaxhdt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -508,7 +509,7 @@ The Modeltime Workflow
   border-bottom-width: 0;
 }
 
-#nktrtdrmnv .gt_subtitle {
+#uplnjaxhdt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -520,13 +521,13 @@ The Modeltime Workflow
   border-top-width: 0;
 }
 
-#nktrtdrmnv .gt_bottom_border {
+#uplnjaxhdt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_col_headings {
+#uplnjaxhdt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -541,7 +542,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_col_heading {
+#uplnjaxhdt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -561,7 +562,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#nktrtdrmnv .gt_column_spanner_outer {
+#uplnjaxhdt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -573,15 +574,15 @@ The Modeltime Workflow
   padding-right: 4px;
 }
 
-#nktrtdrmnv .gt_column_spanner_outer:first-child {
+#uplnjaxhdt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nktrtdrmnv .gt_column_spanner_outer:last-child {
+#uplnjaxhdt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nktrtdrmnv .gt_column_spanner {
+#uplnjaxhdt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -593,7 +594,7 @@ The Modeltime Workflow
   width: 100%;
 }
 
-#nktrtdrmnv .gt_group_heading {
+#uplnjaxhdt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -618,7 +619,7 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#nktrtdrmnv .gt_empty_group_heading {
+#uplnjaxhdt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -633,15 +634,15 @@ The Modeltime Workflow
   vertical-align: middle;
 }
 
-#nktrtdrmnv .gt_from_md > :first-child {
+#uplnjaxhdt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nktrtdrmnv .gt_from_md > :last-child {
+#uplnjaxhdt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nktrtdrmnv .gt_row {
+#uplnjaxhdt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -660,7 +661,7 @@ The Modeltime Workflow
   overflow-x: hidden;
 }
 
-#nktrtdrmnv .gt_stub {
+#uplnjaxhdt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -673,7 +674,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#nktrtdrmnv .gt_stub_row_group {
+#uplnjaxhdt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -687,11 +688,11 @@ The Modeltime Workflow
   vertical-align: top;
 }
 
-#nktrtdrmnv .gt_row_group_first td {
+#uplnjaxhdt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nktrtdrmnv .gt_summary_row {
+#uplnjaxhdt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -701,16 +702,16 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#nktrtdrmnv .gt_first_summary_row {
+#uplnjaxhdt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_first_summary_row.thick {
+#uplnjaxhdt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nktrtdrmnv .gt_last_summary_row {
+#uplnjaxhdt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -720,7 +721,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_grand_summary_row {
+#uplnjaxhdt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -730,7 +731,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#nktrtdrmnv .gt_first_grand_summary_row {
+#uplnjaxhdt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -740,11 +741,11 @@ The Modeltime Workflow
   border-top-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_striped {
+#uplnjaxhdt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nktrtdrmnv .gt_table_body {
+#uplnjaxhdt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -753,7 +754,7 @@ The Modeltime Workflow
   border-bottom-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_footnotes {
+#uplnjaxhdt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -767,7 +768,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_footnote {
+#uplnjaxhdt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -776,7 +777,7 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#nktrtdrmnv .gt_sourcenotes {
+#uplnjaxhdt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -790,7 +791,7 @@ The Modeltime Workflow
   border-right-color: #D3D3D3;
 }
 
-#nktrtdrmnv .gt_sourcenote {
+#uplnjaxhdt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -798,88 +799,81 @@ The Modeltime Workflow
   padding-right: 5px;
 }
 
-#nktrtdrmnv .gt_left {
+#uplnjaxhdt .gt_left {
   text-align: left;
 }
 
-#nktrtdrmnv .gt_center {
+#uplnjaxhdt .gt_center {
   text-align: center;
 }
 
-#nktrtdrmnv .gt_right {
+#uplnjaxhdt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nktrtdrmnv .gt_font_normal {
+#uplnjaxhdt .gt_font_normal {
   font-weight: normal;
 }
 
-#nktrtdrmnv .gt_font_bold {
+#uplnjaxhdt .gt_font_bold {
   font-weight: bold;
 }
 
-#nktrtdrmnv .gt_font_italic {
+#uplnjaxhdt .gt_font_italic {
   font-style: italic;
 }
 
-#nktrtdrmnv .gt_super {
+#uplnjaxhdt .gt_super {
   font-size: 65%;
 }
 
-#nktrtdrmnv .gt_two_val_uncert {
-  display: inline-block;
-  line-height: 1em;
-  text-align: right;
-  font-size: 60%;
-  vertical-align: -0.25em;
-  margin-left: 0.1em;
-}
-
-#nktrtdrmnv .gt_footnote_marks {
+#uplnjaxhdt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#nktrtdrmnv .gt_asterisk {
+#uplnjaxhdt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nktrtdrmnv .gt_slash_mark {
-  font-size: 0.7em;
-  line-height: 0.7em;
-  vertical-align: 0.15em;
+#uplnjaxhdt .gt_indent_1 {
+  text-indent: 5px;
 }
 
-#nktrtdrmnv .gt_fraction_numerator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: 0.45em;
+#uplnjaxhdt .gt_indent_2 {
+  text-indent: 10px;
 }
 
-#nktrtdrmnv .gt_fraction_denominator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: -0.05em;
+#uplnjaxhdt .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#uplnjaxhdt .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#uplnjaxhdt .gt_indent_5 {
+  text-indent: 25px;
 }
 </style>
 <table class="table gt_table">
 <thead class="gt_header"><tr>
-<th colspan="9" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</th>
+<td colspan="9" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</td>
     </tr></thead>
 <thead class="gt_col_headings"><tr>
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">.model_id</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.model_desc</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">.type</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mae</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mape</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mase</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">smape</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">rmse</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">rsq</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">.model_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">.model_desc</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">.type</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">mae</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">mape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">mase</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">smape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">rmse</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">rsq</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -964,15 +958,15 @@ The Modeltime Workflow
 </h3>
 <p>The final step is to refit the models to the full dataset using <code><a href="../reference/modeltime_refit.html">modeltime_refit()</a></code> and forecast them forward.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span>
-
-<span class="va">refit_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"3 years"</span>, actual_data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>
-      .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span>
-      .interactive      <span class="op">=</span> <span class="va">interactive</span>
-    <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">refit_tbl</span> <span class="op">&lt;-</span> <span class="va">calibration_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_refit.html">modeltime_refit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">refit_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"3 years"</span>, actual_data <span class="op">=</span> <span class="va">m750</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span></span>
+<span>      .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span></span>
+<span>      .interactive      <span class="op">=</span> <span class="va">interactive</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -1076,7 +1070,7 @@ Become the Time Series Expert for your organization.
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
