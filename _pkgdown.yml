@@ -150,6 +150,7 @@ reference:
   contents:
   - combine_modeltime_tables
   - add_modeltime_model
+  - drop_modeltime_model
   - update_modeltime_model
   - update_modeltime_description
   - pluck_modeltime_model
