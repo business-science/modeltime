@@ -305,7 +305,7 @@ update.prophet_boost <- function(object, parameters = NULL,
                                  sample_size = NULL, stop_iter = NULL,
                                  fresh = FALSE, ...) {
 
-    args <- parsnip::update_main_parameters(args, parameters)
+    eng_args <- parsnip::update_engine_parameters(object$eng_args, fresh, ...)
 
     if (!is.null(parameters)) {
         parameters <- parsnip::check_final_param(parameters)
