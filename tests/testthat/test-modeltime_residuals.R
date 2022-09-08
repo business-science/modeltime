@@ -31,7 +31,7 @@ testthat::test_that("modeltime_residuals(): Returns correct order", {
     # Workflow
     wflw_xgb <- workflow() %>%
         add_model(
-            boost_tree() %>% set_engine("xgboost")
+            boost_tree("regression") %>% set_engine("xgboost")
         ) %>%
         add_recipe(rec_obj) %>%
         fit(training(splits))

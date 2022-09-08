@@ -323,7 +323,7 @@ test_that("Models for Mega Test", {
 
     # * randomForest (workflow) ----
 
-    model_spec <- rand_forest() %>%
+    model_spec <- rand_forest("regression") %>%
         set_engine("randomForest")
 
     recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
@@ -351,7 +351,7 @@ test_that("Models for Mega Test", {
 
     # * XGBoost (workflow) ----
 
-    model_spec <- boost_tree() %>%
+    model_spec <- boost_tree("regression") %>%
         set_engine("xgboost", objective = "reg:squarederror")
 
     recipe_spec <- recipe(value ~ date, data = training(splits)) %>%

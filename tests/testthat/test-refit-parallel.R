@@ -28,7 +28,7 @@ testthat::test_that("refit works in parallel", {
 
     set.seed(123)
     wflw_fit_svm <- workflow() %>%
-        add_model(svm_rbf() %>% set_engine("kernlab")) %>%
+        add_model(svm_rbf("regression") %>% set_engine("kernlab")) %>%
         add_recipe(recipe_spec %>% update_role(date, new_role = "ID")) %>%
         fit(data_set)
 

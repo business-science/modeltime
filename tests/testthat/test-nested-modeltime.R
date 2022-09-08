@@ -73,7 +73,7 @@ wflw_xgb <- workflow() %>%
 recipe_bad <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl))
 
 wflw_bad <- workflow() %>%
-    add_model(boost_tree()) %>%
+    add_model(boost_tree("regression") %>% set_engine("xgboost")) %>%
     add_recipe(recipe_bad)
 
 # * Prophet ----
