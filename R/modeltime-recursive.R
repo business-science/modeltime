@@ -14,6 +14,11 @@
 #' @param ... Not currently used.
 #' @param id (Optional) An identifier that can be provided to perform a panel forecast.
 #'  A single quoted column name (e.g. `id = "id"`).
+#' @param chunk_size The size of the smallest lag used in `transform`. If the
+#' smallest lag necessary is n, the forecasts can be computed in chunks of n,
+#' which can dramatically improve performance. Defaults to 1. Non-integers are
+#' coerced to integer, e.g. `chunk_size = 3.5` will be coerced to integer via
+#' `as.integer()`.
 #'
 #' @return An object with added `recursive` class
 #'
@@ -205,21 +210,26 @@
 #' }
 #'
 #' @export
-recursive <- function(object, transform, train_tail, id = NULL, ...){
+recursive <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...){
     UseMethod("recursive")
 }
 
 #' @export
-recursive.model_fit <- function(object, transform, train_tail, id = NULL, ...) {
+recursive.model_fit <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...) {
 
     dot_list <- list(...)
 
     .class_obj <- if(!is.null(id)){"recursive_panel"} else {"recursive"}
 
+    if (!is.numeric(chunk_size) || chunk_size < 1){
+        rlang::abort("'chunk_size' must be an integer >= 1.")
+    }
+
     object$spec[["forecast"]]   <- .class_obj
     object$spec[["transform"]]  <- if(!is.null(id)){.prepare_panel_transform(transform)} else {.prepare_transform(transform)}
     object$spec[["train_tail"]] <- train_tail
     object$spec[["id"]]         <- id
+    object$spec[["chunk_size"]] <- as.integer(chunk_size)
 
     # Workflow: Need to pass in the y_var
     object$spec[["y_var"]]      <- dot_list$y_var # Could be NULL or provided by workflow
@@ -232,7 +242,7 @@ recursive.model_fit <- function(object, transform, train_tail, id = NULL, ...) {
 }
 
 #' @export
-recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
+recursive.workflow <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...) {
 
     # object$fit$fit$fit$spec[["forecast"]] <- "recursive"
     # object$fit$fit$fit$spec[["transform"]] <- .prepare_transform(transform)
@@ -241,12 +251,17 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
     mld         <- object %>% workflows::extract_mold()
     y_var       <- names(mld$outcomes)
 
+    if (!is.numeric(chunk_size) || chunk_size < 1){
+        rlang::abort("'chunk_size' must be an integer >= 1.")
+    }
+
     if (is.null(id)){
 
         object$fit$fit <- recursive(
             object     = object$fit$fit,
             transform  = transform,
             train_tail = train_tail,
+            chunk_size = as.integer(chunk_size),
             y_var      = y_var
         )
         .class <- class(object)
@@ -257,8 +272,9 @@ recursive.workflow <- function(object, transform, train_tail, id = NULL, ...) {
             object     = object$fit$fit,
             transform  = transform,
             train_tail = train_tail,
-            y_var      = y_var,
-            id         = id
+            id         = id,
+            chunk_size = as.integer(chunk_size),
+            y_var      = y_var
         )
         .class        <- class(object)
         class(object) <- c("recursive_panel", .class)
@@ -353,6 +369,10 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     pred_fun   <- parsnip::predict.model_fit
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
+    chunk_size <- object$spec$chunk_size
+
+    idx_sets <- split(x = seq_len(nrow(new_data)),
+                      f = (seq_len(nrow(new_data)) - 1) %/% chunk_size)
 
     # print({
     #     list(
@@ -369,10 +389,10 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     .preds <- tibble::tibble(.pred = numeric(nrow(new_data)))
 
     .first_slice <- new_data %>%
-        dplyr::slice_head(n = 1)
+        dplyr::slice_head(n = chunk_size)
 
 
-    .preds[1,] <- new_data[1, y_var] <-
+    .preds[idx_sets[[1]],] <- new_data[idx_sets[[1]], y_var] <-
         pred_fun(
             object,
             new_data = .first_slice,
@@ -381,22 +401,28 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
             ...
         )
 
+     .temp_new_data <- dplyr::bind_rows(
+         train_tail,
+         new_data
+     )
 
+     n_train_tail <- nrow(train_tail)
 
-    for (i in 2:nrow(.preds)) {
+     if (length(idx_sets) > 1){
+         for (i in 2:length(idx_sets)) {
 
-        .temp_new_data <- dplyr::bind_rows(
-            train_tail,
-            new_data
-        )
+             transform_window_start <- min(idx_sets[[i]])
+             transform_window_end <- max(idx_sets[[i]]) + n_train_tail
 
-        .nth_slice <- .transform(.temp_new_data, nrow(new_data), i)
+             #.nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], nrow(new_data), idx_sets[[i]])
+             .nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], length(idx_sets[[i]]))
 
-        .preds[i,] <- new_data[i, y_var] <- pred_fun(
-            object, new_data = .nth_slice[names(.first_slice)],
-            type = type, opts = opts, ...
-        )
-    }
+             .preds[idx_sets[[i]],] <- .temp_new_data[idx_sets[[i]] + n_train_tail, y_var] <- pred_fun(
+                 object, new_data = .nth_slice[names(.first_slice)],
+                 type = type, opts = opts, ...
+             )
+         }
+     }
 
     return(.preds)
 
@@ -437,6 +463,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     .transform <- object$spec[["transform"]]
     train_tail <- object$spec$train_tail
     id         <- object$spec$id
+    chunk_size <- object$spec$chunk_size
 
     .id <- dplyr::ensym(id)
 
@@ -447,6 +474,12 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     if (length(dplyr::setdiff(unique_id_train_tail, unique_id_new_data)) >= 1){
         train_tail <- train_tail %>% dplyr::filter(!! .id %in% unique_id_new_data)
     }
+
+    n_groups <- dplyr::n_distinct(new_data[[id]])
+    group_size <- max(table(new_data[[id]]))
+
+    idx_sets <- split(x = seq_len(group_size),
+                      f = (seq_len(group_size) - 1) %/% chunk_size)
 
     # #  Comment this out ----
     # print("here")
@@ -475,7 +508,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     .first_slice <- new_data %>%
         dplyr::group_by(!! .id) %>%
-        dplyr::slice_head(n = 1) %>%
+        dplyr::slice_head(n = chunk_size) %>%
         dplyr::ungroup()
 
     # Fix - When ID is dummied
@@ -490,7 +523,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
         .first_slice <- .first_slice %>% dplyr::select(-rowid..)
     }
 
-    .preds[.preds$rowid.. == 1, 2] <- new_data[new_data$rowid.. == 1, y_var] <- pred_fun(object,
+    .preds[.preds$rowid.. %in% idx_sets[[1]], 2] <- new_data[new_data$rowid.. %in% idx_sets[[1]], y_var] <- pred_fun(object,
                                                                                          new_data = .first_slice,
                                                                                          type = type,
                                                                                          opts = opts,
@@ -504,32 +537,41 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
 
     new_data_size <- nrow(.preds)/.groups
 
-    for (i in 2:new_data_size) {
+    .temp_new_data <- dplyr::bind_rows(train_tail, new_data)
+    n_train_tail <- max(table(train_tail[[id]]))
 
-        .temp_new_data <- dplyr::bind_rows(train_tail, new_data)
+    if (length(idx_sets) > 1){
+        for (i in 2:length(idx_sets)) {
 
-        .nth_slice <- .transform(.temp_new_data, new_data_size, i, id)
+            transform_window_start <- min(idx_sets[[i]])
+            transform_window_end <- max(idx_sets[[i]]) + n_train_tail
 
-        # Fix - When ID is dummied
-        if (!is.null(object$spec$remove_id)) {
-            if (object$spec$remove_id) {
-                .nth_slice <- .nth_slice %>%
-                    dplyr::select(-(!! .id))
+            .nth_slice <- .transform(.temp_new_data %>%
+                                         group_by(!! .id) %>%
+                                         dplyr::slice(transform_window_start:transform_window_end),
+                                     idx_sets[[i]], id)
+
+            # Fix - When ID is dummied
+            if (!is.null(object$spec$remove_id)) {
+                if (object$spec$remove_id) {
+                    .nth_slice <- .nth_slice %>%
+                        dplyr::select(-(!! .id))
+                }
             }
+
+            if ("rowid.." %in% names(.nth_slice)) {
+                .nth_slice <- .nth_slice %>% dplyr::select(-rowid..)
+            }
+
+            .nth_slice <- .nth_slice[names(.first_slice)]
+
+
+            .preds[.preds$rowid.. %in% idx_sets[[i]], 2] <- .temp_new_data[.temp_new_data$rowid.. %in% idx_sets[[i]], y_var] <- pred_fun(object,
+                                                                                                                                         new_data = .nth_slice,
+                                                                                                                                         type = type,
+                                                                                                                                         opts = opts,
+                                                                                                                                         ...)
         }
-
-        if ("rowid.." %in% names(.nth_slice)) {
-            .nth_slice <- .nth_slice %>% dplyr::select(-rowid..)
-        }
-
-        .nth_slice <- .nth_slice[names(.first_slice)]
-
-
-        .preds[.preds$rowid.. == i, 2] <- new_data[new_data$rowid.. == i, y_var] <- pred_fun(object,
-                                                                                             new_data = .nth_slice,
-                                                                                             type = type,
-                                                                                             opts = opts,
-                                                                                             ...)
     }
 
     return(.preds[,2])
@@ -635,19 +677,21 @@ panel_tail <- function(data, id, n){
             dplyr::filter(source == "derived") %>%
             .$variable
 
-        .transform_fun <- function(temp_new_data, new_data_size, slice_idx){
+        .transform_fun <- function(temp_new_data, chunk_size){
             temp_new_data <- temp_new_data %>%
                 dplyr::select(-!!.derived_features)
 
             recipes::bake(.recipe, new_data = temp_new_data) %>%
-                dplyr::slice_tail(n = as.integer(new_data_size)) %>%
-                .[slice_idx, ]
+                dplyr::slice_tail(n = as.integer(chunk_size))
+                #dplyr::slice_tail(n = as.integer(new_data_size)) %>%
+                #.[slice_idx, ]
         }
     } else if (inherits(.transform, "function")){
-        .transform_fun <- function(temp_new_data, new_data_size, slice_idx){
+        .transform_fun <- function(temp_new_data, chunk_size){
             .transform(temp_new_data) %>%
-                dplyr::slice_tail(n = as.integer(new_data_size)) %>%
-                .[slice_idx, ]
+                dplyr::slice_tail(n = as.integer(chunk_size))
+                #dplyr::slice_tail(n = as.integer(new_data_size)) %>%
+                #.[slice_idx, ]
         }
     }
     .transform_fun
@@ -659,7 +703,7 @@ panel_tail <- function(data, id, n){
 
     if (inherits(.transform, "function")) {
 
-        .transform_fun <- function(temp_new_data, new_data_size, slice_idx, id) {
+        .transform_fun <- function(temp_new_data, slice_idx, id) {
 
             id_chr <- as.character(id)
             ..id   <- dplyr::ensym(id_chr)
@@ -674,8 +718,12 @@ panel_tail <- function(data, id, n){
                 dplyr::group_split() %>%
                 purrr::map(function(x){
 
-                    dplyr::slice_tail(x, n = as.integer(round(new_data_size))) %>%
-                        .[slice_idx, ]
+                    dplyr::filter(x,rowid.. %in% slice_idx)
+
+                    #dplyr::slice_tail(x,n = as.integer(chunk_size))
+
+                    #dplyr::slice_tail(x, n = as.integer(round(new_data_size))) %>%
+                    #    .[slice_idx, ]
 
                 }) %>%
                 dplyr::bind_rows() %>%

@@ -372,6 +372,7 @@ mdl_time_refit.recursive <- function(object, data, ..., control = NULL) {
 
         # Create new train tail
         train_tail_old <- object$fit$fit$spec$train_tail
+        chunk_size_old <- object$fit$fit$spec$chunk_size
 
         train_tail_new <- data %>%
             dplyr::slice_tail(n = nrow(train_tail_old))
@@ -380,7 +381,10 @@ mdl_time_refit.recursive <- function(object, data, ..., control = NULL) {
         object <- mdl_time_refit.workflow(object, data, ..., control = control)
 
         # Make Recursive
-        object <- recursive(object, transform = transformer, train_tail = train_tail_new)
+        object <- recursive(object,
+                            transform = transformer,
+                            train_tail = train_tail_new,
+                            chunk_size = chunk_size_old)
 
         # Need to overwrite transformer
         object$fit$fit$spec$transform <- transformer
@@ -443,6 +447,7 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
             )
 
         id_old <- object$fit$fit$spec$id
+        chunk_size_old <- object$fit$fit$spec$chunk_size
 
         # Refit
         object <- mdl_time_refit.workflow(object, data, ..., control = control)
@@ -452,7 +457,8 @@ mdl_time_refit.recursive_panel <- function(object, data, ..., control = NULL) {
             object,
             transform  = transformer,
             train_tail = train_tail_new,
-            id         = id_old
+            id         = id_old,
+            chunk_size = chunk_size_old
         )
 
         # Need to overwrite transformer
