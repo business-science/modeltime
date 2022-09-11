@@ -79,7 +79,8 @@ in a node that is required for the node to be split further.}
 of splits) (specific engines only).}
 
 \item{learn_rate}{A number for the rate at which the boosting algorithm adapts
-from iteration-to-iteration (specific engines only).}
+from iteration-to-iteration (specific engines only). This is sometimes referred to
+as the shrinkage parameter.}
 
 \item{loss_reduction}{A number for the reduction in the loss function required
 to split further (specific engines only).}
@@ -195,12 +196,12 @@ Other options can be set using \code{set_engine()}.
 
 Model 1: PROPHET (\code{prophet::prophet}):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, 
-##     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", 
-##     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", 
-##     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, 
-##     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, 
-##     fit = TRUE, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (df = NULL, growth = "linear", changepoints = NULL, n.changepoints = 25, 
+#>     changepoint.range = 0.8, yearly.seasonality = "auto", weekly.seasonality = "auto", 
+#>     daily.seasonality = "auto", holidays = NULL, seasonality.mode = "additive", 
+#>     seasonality.prior.scale = 10, holidays.prior.scale = 10, changepoint.prior.scale = 0.05, 
+#>     mcmc.samples = 0, interval.width = 0.8, uncertainty.samples = 1000, 
+#>     fit = TRUE, ...)
 }\if{html}{\out{</div>}}
 
 Parameter Notes:
@@ -229,10 +230,10 @@ specify non-standard seasonalities using fourier series. An alternative is to us
 
 Model 2: XGBoost (\code{xgboost::xgb.train}):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
-##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
-##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
-##     callbacks = list(), ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
+#>     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
+#>     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
+#>     callbacks = list(), ...)
 }\if{html}{\out{</div>}}
 
 Parameter Notes:

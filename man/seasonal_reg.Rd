@@ -68,10 +68,10 @@ The engines use \code{forecast::stlm()}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (y, s.window = 7 + 4 * seq(6), robust = FALSE, method = c("ets", 
-##     "arima"), modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL, 
-##     biasadj = FALSE, xreg = NULL, allow.multiplicative.trend = FALSE, x = y, 
-##     ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, s.window = 7 + 4 * seq(6), robust = FALSE, method = c("ets", 
+#>     "arima"), modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL, 
+#>     biasadj = FALSE, xreg = NULL, allow.multiplicative.trend = FALSE, x = y, 
+#>     ...)
 }\if{html}{\out{</div>}}
 
 \strong{tbats}

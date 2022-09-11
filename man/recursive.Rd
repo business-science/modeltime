@@ -4,7 +4,7 @@
 \alias{recursive}
 \title{Create a Recursive Time Series Model from a Parsnip or Workflow Regression Model}
 \usage{
-recursive(object, transform, train_tail, id = NULL, ...)
+recursive(object, transform, train_tail, id = NULL, chunk_size = 1, ...)
 }
 \arguments{
 \item{object}{An object of \code{model_fit} or a fitted \code{workflow} class}
@@ -21,6 +21,12 @@ based on dependent variable.}
 
 \item{id}{(Optional) An identifier that can be provided to perform a panel forecast.
 A single quoted column name (e.g. \code{id = "id"}).}
+
+\item{chunk_size}{The size of the smallest lag used in \code{transform}. If the
+smallest lag necessary is n, the forecasts can be computed in chunks of n,
+which can dramatically improve performance. Defaults to 1. Non-integers are
+coerced to integer, e.g. \code{chunk_size = 3.5} will be coerced to integer via
+\code{as.integer()}.}
 
 \item{...}{Not currently used.}
 }

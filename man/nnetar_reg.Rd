@@ -90,8 +90,8 @@ The engine uses \code{\link[forecast:nnetar]{forecast::nnetar()}}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (y, p, P = 1, size, repeats = 20, xreg = NULL, lambda = NULL, 
-##     model = NULL, subset = NULL, scale.inputs = TRUE, x = y, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, p, P = 1, size, repeats = 20, xreg = NULL, lambda = NULL, 
+#>     model = NULL, subset = NULL, scale.inputs = TRUE, x = y, ...)
 }\if{html}{\out{</div>}}
 
 Parameter Notes:

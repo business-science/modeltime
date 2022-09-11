@@ -58,7 +58,8 @@ in a node that is required for the node to be split further.}
 of splits) (specific engines only).}
 
 \item{learn_rate}{A number for the rate at which the boosting algorithm adapts
-from iteration-to-iteration (specific engines only).}
+from iteration-to-iteration (specific engines only). This is sometimes referred to
+as the shrinkage parameter.}
 
 \item{loss_reduction}{A number for the reduction in the loss function required
 to split further (specific engines only).}
@@ -165,15 +166,15 @@ Other options can be set using \code{set_engine()}.
 
 Model 1: Auto ARIMA (\code{forecast::auto.arima}):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
-##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
-##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
-##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
-##         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
-##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
-##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
-##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
-##     num.cores = 2, x = y, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, 
+#>     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, 
+#>     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", 
+#>         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) > 
+#>         150 | frequency(x) > 12), method = NULL, truncate = NULL, xreg = NULL, 
+#>     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", 
+#>         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, 
+#>     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, 
+#>     num.cores = 2, x = y, ...)
 }\if{html}{\out{</div>}}
 
 Parameter Notes:
@@ -185,10 +186,10 @@ The \code{auto.arima} will select a value using these as an upper limit.
 
 Model 2: XGBoost (\code{xgboost::xgb.train}):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
-##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
-##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
-##     callbacks = list(), ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
+#>     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
+#>     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
+#>     callbacks = list(), ...)
 }\if{html}{\out{</div>}}
 
 Parameter Notes:

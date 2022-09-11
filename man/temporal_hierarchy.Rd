@@ -70,9 +70,9 @@ The engine uses \code{thief::thief()}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (y, m = frequency(y), h = m * 2, comb = c("struc", "mse", "ols", 
-##     "bu", "shr", "sam"), usemodel = c("ets", "arima", "theta", "naive", 
-##     "snaive"), forecastfunction = NULL, aggregatelist = NULL, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, m = frequency(y), h = m * 2, comb = c("struc", "mse", "ols", 
+#>     "bu", "shr", "sam"), usemodel = c("ets", "arima", "theta", "naive", 
+#>     "snaive"), forecastfunction = NULL, aggregatelist = NULL, ...)
 }\if{html}{\out{</div>}}
 
 Other options and argument can be set using \code{set_engine()}.

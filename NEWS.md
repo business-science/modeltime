@@ -1,5 +1,6 @@
 # modeltime 1.2.2.9000 (Development Version)
 
+- Recursive `chunk_size` #197
 - Recursive model fixes #194, #188, #187, #174
 - New function, `drop_modeltime_model` #160
 - Updates for `workflows` mode = "regression"

@@ -130,20 +130,18 @@ The engine uses \code{\link[smooth:adam]{smooth::auto.adam()}}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## Registered S3 method overwritten by 'greybox':
-##   method     from
-##   print.pcor lava
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
-##     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", 
-##     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", 
-##     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", 
-##     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", 
-##     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
-##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
-##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
-##     silent = TRUE, parallel = FALSE, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> Registered S3 method overwritten by 'greybox':
+#>   method     from
+#>   print.pcor lava
+#> function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
+#>     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", 
+#>     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", 
+#>     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", 
+#>     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", 
+#>     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
+#>     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
+#>         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
+#>     silent = TRUE, parallel = FALSE, ...)
 }\if{html}{\out{</div>}}
 
 The \emph{MAXIMUM} nonseasonal ARIMA terms (\code{max.p}, \code{max.d}, \code{max.q}) and
@@ -165,17 +163,17 @@ The engine uses \code{\link[smooth:adam]{smooth::adam()}}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
-##     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, 
-##     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", 
-##         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), 
-##     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", 
-##         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", 
-##         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", 
-##         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
-##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
-##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
-##     silent = TRUE, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
+#>     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, 
+#>     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", 
+#>         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), 
+#>     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", 
+#>         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", 
+#>         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", 
+#>         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
+#>     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
+#>         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
+#>     silent = TRUE, ...)
 }\if{html}{\out{</div>}}
 
 The nonseasonal ARIMA terms (\code{orders}) and seasonal ARIMA terms (\code{orders})

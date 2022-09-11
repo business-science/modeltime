@@ -35,7 +35,8 @@ prior_scale_holidays(range = c(-3, 2), trans = log10_trans())
 \item{values}{A character string of possible values.}
 
 \item{range}{A two-element vector holding the \emph{defaults} for the smallest and
-largest possible values, respectively.}
+largest possible values, respectively. If a transformation is specified,
+these values should be in the \emph{transformed units}.}
 
 \item{trans}{A \code{trans} object from the \code{scales} package, such as
 \code{scales::log10_trans()} or \code{scales::reciprocal_trans()}. If not provided,
