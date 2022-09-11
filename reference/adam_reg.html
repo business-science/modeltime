@@ -269,18 +269,18 @@ in lieu of recreating the object from scratch.</p>
 <p><strong>auto_adam (default engine)</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::auto.adam()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## Registered S3 method overwritten by 'greybox':</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##   method     from</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##   print.pcor lava</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", </span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", </span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", </span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", </span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">##     silent = TRUE, parallel = FALSE, ...)</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#&gt; Registered S3 method overwritten by 'greybox':</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt;   method     from</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt;   print.pcor lava</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt;     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt;         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt;     silent = TRUE, parallel = FALSE, ...)</span></span></code></pre><p></p></div>
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
 <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima()</a></code> via <code><a href="arima_reg.html">arima_reg()</a></code> parameters.
@@ -292,17 +292,17 @@ The <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-lin
 </ul><p><strong>adam</strong></p>
 <p>The engine uses <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code>.</p>
 <p>Function Parameters:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, </span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", </span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), </span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", </span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", </span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">##         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">##     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">##         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">##     silent = TRUE, ...)</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#&gt; function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt;     i = c(0), ma = c(0), select = FALSE), constant = FALSE, formula = NULL, </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt;     regressors = c("use", "select", "adapt"), occurrence = c("none", "auto", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt;         "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct"), </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;     distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt;         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt;     silent = TRUE, ...)</span></span></code></pre><p></p></div>
 <p>The nonseasonal ARIMA terms (<code>orders</code>) and seasonal ARIMA terms (<code>orders</code>)
 are provided to <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code> via <code>adam_reg()</code> parameters.
 Other options and argument can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>

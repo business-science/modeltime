@@ -201,12 +201,6 @@ used, performance is base on the validation set; otherwise the training set
 is used.</p></dd>
 
 
-<dt>objective</dt>
-<dd><p>A single string (or NULL) that defines the loss function that
-<code>xgboost</code> uses to create trees. See <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train()</a></code> for options. If left
-NULL, an appropriate loss function is chosen.</p></dd>
-
-
 <dt>counts</dt>
 <dd><p>A logical. If <code>FALSE</code>, <code>colsample_bynode</code> and
 <code>colsample_bytree</code> are both assumed to be <em>proportions</em> of the proportion of
@@ -220,7 +214,7 @@ should be considered the "event".</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Other options to pass to <code>xgb.train</code>.</p></dd>
+<dd><p>Other options to pass to <code>xgb.train()</code> or xgboost's method for <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>.</p></dd>
 
 </dl></div>
 

@@ -218,7 +218,8 @@ of splits) (specific engines only).</p></dd>
 
 <dt>learn_rate</dt>
 <dd><p>A number for the rate at which the boosting algorithm adapts
-from iteration-to-iteration (specific engines only).</p></dd>
+from iteration-to-iteration (specific engines only). This is sometimes referred to
+as the shrinkage parameter.</p></dd>
 
 
 <dt>loss_reduction</dt>
@@ -284,23 +285,23 @@ names in each engine:</p>
 <p>Model 1: ARIMA:</p><table class="table table"><tr><td>modeltime</td><td>forecast::auto.arima</td><td>forecast::Arima</td></tr><tr><td>seasonal_period</td><td>ts(frequency)</td><td>ts(frequency)</td></tr><tr><td>non_seasonal_ar, non_seasonal_differences, non_seasonal_ma</td><td>max.p(5), max.d(2), max.q(5)</td><td>order = c(p(0), d(0), q(0))</td></tr><tr><td>seasonal_ar, seasonal_differences, seasonal_ma</td><td>max.P(2), max.D(1), max.Q(2)</td><td>seasonal = c(P(0), D(0), Q(0))</td></tr></table><p>Model 2: XGBoost:</p><table class="table table"><tr><td>modeltime</td><td>xgboost::xgb.train</td></tr><tr><td>tree_depth</td><td>max_depth (6)</td></tr><tr><td>trees</td><td>nrounds (15)</td></tr><tr><td>learn_rate</td><td>eta (0.3)</td></tr><tr><td>mtry</td><td>colsample_bynode (1)</td></tr><tr><td>min_n</td><td>min_child_weight (1)</td></tr><tr><td>loss_reduction</td><td>gamma (0)</td></tr><tr><td>sample_size</td><td>subsample (1)</td></tr><tr><td>stop_iter</td><td>early_stop</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
 <p><strong>auto_arima_xgboost (default engine)</strong></p>
 <p>Model 1: Auto ARIMA (<code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima</a></code>):</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, </span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, </span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", </span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) &gt; </span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">##         150 | frequency(x) &gt; 12), method = NULL, truncate = NULL, xreg = NULL, </span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">##     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", </span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">##         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">##     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, </span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">##     num.cores = 2, x = y, ...)</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#&gt; function (y, d = NA, D = NA, max.p = 5, max.q = 5, max.P = 2, max.Q = 2, </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt;     max.order = 5, max.d = 2, max.D = 1, start.p = 2, start.q = 2, start.P = 1, </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt;     start.Q = 1, stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt;         "bic"), stepwise = TRUE, nmodels = 94, trace = FALSE, approximation = (length(x) &gt; </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;         150 | frequency(x) &gt; 12), method = NULL, truncate = NULL, xreg = NULL, </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;     test = c("kpss", "adf", "pp"), test.args = list(), seasonal.test = c("seas", </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;         "ocsb", "hegy", "ch"), seasonal.test.args = list(), allowdrift = TRUE, </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;     allowmean = TRUE, lambda = NULL, biasadj = FALSE, parallel = FALSE, </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt;     num.cores = 2, x = y, ...)</span></span></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p>All values of nonseasonal pdq and seasonal PDQ are maximums.
 The <code>auto.arima</code> will select a value using these as an upper limit.</p></li>
 <li><p><code>xreg</code> - This should not be used since XGBoost will be doing the regression</p></li>
 </ul><p>Model 2: XGBoost (<code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgboost::xgb.train</a></code>):</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## function (params = list(), data, nrounds, watchlist = list(), obj = NULL, </span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">##     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, </span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">##     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, </span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">##     callbacks = list(), ...)</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#&gt; function (params = list(), data, nrounds, watchlist = list(), obj = NULL, </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt;     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt;     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt;     callbacks = list(), ...)</span></span></code></pre><p></p></div>
 <p>Parameter Notes:</p><ul><li><p>XGBoost uses a <code>params = list()</code> to capture.
 Parsnip / Modeltime automatically sends any args provided as <code>...</code> inside of <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code> to
 the <code>params = list(...)</code>.</p></li>
