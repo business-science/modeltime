@@ -1,4 +1,4 @@
-# modeltime 1.2.2.9000 (Development Version)
+# modeltime 1.2.3
 
 - Recursive `chunk_size` (performance improvement) #197 #190
 - Recursive model fixes #194, #188, #187, #174

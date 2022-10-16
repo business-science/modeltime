@@ -547,7 +547,7 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
             transform_window_end <- max(idx_sets[[i]]) + n_train_tail
 
             .nth_slice <- .transform(.temp_new_data %>%
-                                         group_by(!! .id) %>%
+                                         dplyr::group_by(!! .id) %>%
                                          dplyr::slice(transform_window_start:transform_window_end),
                                      idx_sets[[i]], id)
 
