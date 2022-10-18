@@ -42,7 +42,7 @@ test_that("create_xreg_recipe: dummy_encode = FALSE returns factors", {
 
 })
 
-test_that("create_xreg_recipe: dummy_encode = TRUE returns numeric", {
+test_that("create_xreg_recipe: dummy_encode = TRUE returns integer", {
 
     # Month
     predictors <- m4_monthly %>%
@@ -56,7 +56,7 @@ test_that("create_xreg_recipe: dummy_encode = TRUE returns numeric", {
 
     expect_equal(ncol(juiced), 11)
 
-    expect_true(all(juiced %>% map(class) %>% unlist() %in% "numeric"))
+    expect_true(all(juiced %>% map(class) %>% unlist() %in% "integer"))
 
 
 })
