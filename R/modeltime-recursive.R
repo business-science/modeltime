@@ -210,12 +210,12 @@
 #' }
 #'
 #' @export
-recursive <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...){
+recursive <- function(object, transform, train_tail, id = NULL, chunk_size = 1, ...){
     UseMethod("recursive")
 }
 
 #' @export
-recursive.model_fit <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...) {
+recursive.model_fit <- function(object, transform, train_tail, id = NULL, chunk_size = 1, ...) {
 
     dot_list <- list(...)
 
@@ -242,7 +242,7 @@ recursive.model_fit <- function(object, transform, train_tail, id = NULL, chunk_
 }
 
 #' @export
-recursive.workflow <- function(object, transform, train_tail, id = NULL, chunk_size = 1,...) {
+recursive.workflow <- function(object, transform, train_tail, id = NULL, chunk_size = 1, ...) {
 
     # object$fit$fit$fit$spec[["forecast"]] <- "recursive"
     # object$fit$fit$fit$spec[["transform"]] <- .prepare_transform(transform)
@@ -391,7 +391,6 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
     .first_slice <- new_data %>%
         dplyr::slice_head(n = chunk_size)
 
-
     .preds[idx_sets[[1]],] <- new_data[idx_sets[[1]], y_var] <-
         pred_fun(
             object,
@@ -412,7 +411,7 @@ predict_recursive_model_fit <- function(object, new_data, type = NULL, opts = li
          for (i in 2:length(idx_sets)) {
 
              transform_window_start <- min(idx_sets[[i]])
-             transform_window_end <- max(idx_sets[[i]]) + n_train_tail
+             transform_window_end   <- max(idx_sets[[i]]) + n_train_tail
 
              #.nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], nrow(new_data), idx_sets[[i]])
              .nth_slice <- .transform(.temp_new_data[transform_window_start:transform_window_end,], length(idx_sets[[i]]))
@@ -538,13 +537,14 @@ predict_recursive_panel_model_fit <- function(object, new_data, type = NULL, opt
     new_data_size <- nrow(.preds)/.groups
 
     .temp_new_data <- dplyr::bind_rows(train_tail, new_data)
+
     n_train_tail <- max(table(train_tail[[id]]))
 
     if (length(idx_sets) > 1){
         for (i in 2:length(idx_sets)) {
 
             transform_window_start <- min(idx_sets[[i]])
-            transform_window_end <- max(idx_sets[[i]]) + n_train_tail
+            transform_window_end   <- max(idx_sets[[i]]) + n_train_tail
 
             .nth_slice <- .transform(.temp_new_data %>%
                                          dplyr::group_by(!! .id) %>%
