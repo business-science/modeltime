@@ -56,7 +56,7 @@ test_that("create_xreg_recipe: dummy_encode = TRUE returns integer", {
 
     expect_equal(ncol(juiced), 11)
 
-    expect_true(all(juiced %>% map(class) %>% unlist() %in% "integer"))
+    expect_true(all(juiced %>% map(is.numeric) %>% unlist()))
 
 
 })
