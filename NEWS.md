@@ -1,4 +1,6 @@
-# modeltime 1.2.3.9000
+# modeltime 1.2.4
+
+- Fix failing tests in test-developer-tools-xregs.R
 
 # modeltime 1.2.3
 
