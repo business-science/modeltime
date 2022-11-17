@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -208,7 +208,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/slider" class="external-link">slider</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/slider" class="external-link">slider</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ---- SINGLE TIME SERIES (NON-PANEL) -----</span></span></span>
 <span class="r-in"><span></span></span>
@@ -246,7 +246,7 @@ The <code>recursive()</code> function can be used for Panel Data with the follow
 <span class="r-in"><span>        <span class="co"># Lags</span></span></span>
 <span class="r-in"><span>        <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_augment_lags.html" class="external-link">tk_augment_lags</a></span><span class="op">(</span><span class="va">value</span>, .lags <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>        <span class="co"># Rolling Features</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rolling_mean_12 <span class="op">=</span> <span class="fu">lag</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html" class="external-link">slide_dbl</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>rolling_mean_12 <span class="op">=</span> <span class="fu">lag</span><span class="op">(</span><span class="fu"><a href="https://slider.r-lib.org/reference/slide.html" class="external-link">slide_dbl</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>            <span class="va">value</span>, .f <span class="op">=</span> <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">12</span>, .complete <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>        <span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

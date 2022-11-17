@@ -40,7 +40,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -325,10 +325,10 @@
 <span>        control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_nested_fit</a></span><span class="op">(</span>allow_par <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span></span>
-<span><span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span></span>
-<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 29.148 seconds</span></span>
+<span><span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span></span>
+<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 29.222 seconds</span></span>
 <span><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
-<span><span class="co">#&gt; Finished in: 29.149 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 29.22289 secs.</span></span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span></span>
@@ -351,12 +351,12 @@
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<div id="rzzxvaefvy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="bmswhfkhtb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rzzxvaefvy .gt_table {
+#bmswhfkhtb .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -381,7 +381,7 @@
   border-left-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_heading {
+#bmswhfkhtb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -393,7 +393,12 @@
   border-right-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_title {
+#bmswhfkhtb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#bmswhfkhtb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -405,7 +410,7 @@
   border-bottom-width: 0;
 }
 
-#rzzxvaefvy .gt_subtitle {
+#bmswhfkhtb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -417,13 +422,13 @@
   border-top-width: 0;
 }
 
-#rzzxvaefvy .gt_bottom_border {
+#bmswhfkhtb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_col_headings {
+#bmswhfkhtb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -438,7 +443,7 @@
   border-right-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_col_heading {
+#bmswhfkhtb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -458,7 +463,7 @@
   overflow-x: hidden;
 }
 
-#rzzxvaefvy .gt_column_spanner_outer {
+#bmswhfkhtb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -470,15 +475,15 @@
   padding-right: 4px;
 }
 
-#rzzxvaefvy .gt_column_spanner_outer:first-child {
+#bmswhfkhtb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rzzxvaefvy .gt_column_spanner_outer:last-child {
+#bmswhfkhtb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rzzxvaefvy .gt_column_spanner {
+#bmswhfkhtb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -490,7 +495,7 @@
   width: 100%;
 }
 
-#rzzxvaefvy .gt_group_heading {
+#bmswhfkhtb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -513,9 +518,10 @@
   border-right-width: 1px;
   border-right-color: #D3D3D3;
   vertical-align: middle;
+  text-align: left;
 }
 
-#rzzxvaefvy .gt_empty_group_heading {
+#bmswhfkhtb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -530,15 +536,15 @@
   vertical-align: middle;
 }
 
-#rzzxvaefvy .gt_from_md > :first-child {
+#bmswhfkhtb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rzzxvaefvy .gt_from_md > :last-child {
+#bmswhfkhtb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rzzxvaefvy .gt_row {
+#bmswhfkhtb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -557,7 +563,7 @@
   overflow-x: hidden;
 }
 
-#rzzxvaefvy .gt_stub {
+#bmswhfkhtb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -570,7 +576,7 @@
   padding-right: 5px;
 }
 
-#rzzxvaefvy .gt_stub_row_group {
+#bmswhfkhtb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -584,11 +590,11 @@
   vertical-align: top;
 }
 
-#rzzxvaefvy .gt_row_group_first td {
+#bmswhfkhtb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rzzxvaefvy .gt_summary_row {
+#bmswhfkhtb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -598,16 +604,16 @@
   padding-right: 5px;
 }
 
-#rzzxvaefvy .gt_first_summary_row {
+#bmswhfkhtb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_first_summary_row.thick {
+#bmswhfkhtb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rzzxvaefvy .gt_last_summary_row {
+#bmswhfkhtb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -617,7 +623,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_grand_summary_row {
+#bmswhfkhtb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -627,7 +633,7 @@
   padding-right: 5px;
 }
 
-#rzzxvaefvy .gt_first_grand_summary_row {
+#bmswhfkhtb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -637,11 +643,11 @@
   border-top-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_striped {
+#bmswhfkhtb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rzzxvaefvy .gt_table_body {
+#bmswhfkhtb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -650,7 +656,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_footnotes {
+#bmswhfkhtb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -664,7 +670,7 @@
   border-right-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_footnote {
+#bmswhfkhtb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -673,7 +679,7 @@
   padding-right: 5px;
 }
 
-#rzzxvaefvy .gt_sourcenotes {
+#bmswhfkhtb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -687,7 +693,7 @@
   border-right-color: #D3D3D3;
 }
 
-#rzzxvaefvy .gt_sourcenote {
+#bmswhfkhtb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -695,64 +701,64 @@
   padding-right: 5px;
 }
 
-#rzzxvaefvy .gt_left {
+#bmswhfkhtb .gt_left {
   text-align: left;
 }
 
-#rzzxvaefvy .gt_center {
+#bmswhfkhtb .gt_center {
   text-align: center;
 }
 
-#rzzxvaefvy .gt_right {
+#bmswhfkhtb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rzzxvaefvy .gt_font_normal {
+#bmswhfkhtb .gt_font_normal {
   font-weight: normal;
 }
 
-#rzzxvaefvy .gt_font_bold {
+#bmswhfkhtb .gt_font_bold {
   font-weight: bold;
 }
 
-#rzzxvaefvy .gt_font_italic {
+#bmswhfkhtb .gt_font_italic {
   font-style: italic;
 }
 
-#rzzxvaefvy .gt_super {
+#bmswhfkhtb .gt_super {
   font-size: 65%;
 }
 
-#rzzxvaefvy .gt_footnote_marks {
+#bmswhfkhtb .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#rzzxvaefvy .gt_asterisk {
+#bmswhfkhtb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rzzxvaefvy .gt_indent_1 {
+#bmswhfkhtb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rzzxvaefvy .gt_indent_2 {
+#bmswhfkhtb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rzzxvaefvy .gt_indent_3 {
+#bmswhfkhtb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rzzxvaefvy .gt_indent_4 {
+#bmswhfkhtb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rzzxvaefvy .gt_indent_5 {
+#bmswhfkhtb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -761,185 +767,185 @@
 <td colspan="10" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</td>
     </tr></thead>
 <thead class="gt_col_headings"><tr>
-<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">id</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">.model_id</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">.model_desc</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">.type</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">mae</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">mape</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">mase</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">smape</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">rmse</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">rsq</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id=".model_id">.model_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=".model_desc">.model_desc</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=".type">.type</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mae">mae</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mape">mape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mase">mase</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="smape">smape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="rmse">rmse</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="rsq">rsq</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td class="gt_row gt_center">1_1</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">4552.79</td>
-<td class="gt_row gt_right">18.14</td>
-<td class="gt_row gt_right">0.90</td>
-<td class="gt_row gt_right">17.03</td>
-<td class="gt_row gt_right">7902.54</td>
-<td class="gt_row gt_right">0.39</td>
+<td headers="id" class="gt_row gt_center">1_1</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">4552.79</td>
+<td headers="mape" class="gt_row gt_right">18.14</td>
+<td headers="mase" class="gt_row gt_right">0.90</td>
+<td headers="smape" class="gt_row gt_right">17.03</td>
+<td headers="rmse" class="gt_row gt_right">7902.54</td>
+<td headers="rsq" class="gt_row gt_right">0.39</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_1</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">4078.01</td>
-<td class="gt_row gt_right">17.53</td>
-<td class="gt_row gt_right">0.80</td>
-<td class="gt_row gt_right">17.58</td>
-<td class="gt_row gt_right">5984.31</td>
-<td class="gt_row gt_right">0.65</td>
+<td headers="id" class="gt_row gt_center">1_1</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">4078.01</td>
+<td headers="mape" class="gt_row gt_right">17.53</td>
+<td headers="mase" class="gt_row gt_right">0.80</td>
+<td headers="smape" class="gt_row gt_right">17.58</td>
+<td headers="rmse" class="gt_row gt_right">5984.31</td>
+<td headers="rsq" class="gt_row gt_right">0.65</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_3</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">1586.62</td>
-<td class="gt_row gt_right">10.75</td>
-<td class="gt_row gt_right">0.62</td>
-<td class="gt_row gt_right">11.38</td>
-<td class="gt_row gt_right">2374.57</td>
-<td class="gt_row gt_right">0.94</td>
+<td headers="id" class="gt_row gt_center">1_3</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">1586.62</td>
+<td headers="mape" class="gt_row gt_right">10.75</td>
+<td headers="mase" class="gt_row gt_right">0.62</td>
+<td headers="smape" class="gt_row gt_right">11.38</td>
+<td headers="rmse" class="gt_row gt_right">2374.57</td>
+<td headers="rsq" class="gt_row gt_right">0.94</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_3</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">2126.56</td>
-<td class="gt_row gt_right">13.15</td>
-<td class="gt_row gt_right">0.83</td>
-<td class="gt_row gt_right">13.91</td>
-<td class="gt_row gt_right">3806.99</td>
-<td class="gt_row gt_right">0.82</td>
+<td headers="id" class="gt_row gt_center">1_3</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">2126.56</td>
+<td headers="mape" class="gt_row gt_right">13.15</td>
+<td headers="mase" class="gt_row gt_right">0.83</td>
+<td headers="smape" class="gt_row gt_right">13.91</td>
+<td headers="rmse" class="gt_row gt_right">3806.99</td>
+<td headers="rsq" class="gt_row gt_right">0.82</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_8</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">3620.53</td>
-<td class="gt_row gt_right">9.41</td>
-<td class="gt_row gt_right">1.54</td>
-<td class="gt_row gt_right">10.00</td>
-<td class="gt_row gt_right">4090.53</td>
-<td class="gt_row gt_right">0.23</td>
+<td headers="id" class="gt_row gt_center">1_8</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">3620.53</td>
+<td headers="mape" class="gt_row gt_right">9.41</td>
+<td headers="mase" class="gt_row gt_right">1.54</td>
+<td headers="smape" class="gt_row gt_right">10.00</td>
+<td headers="rmse" class="gt_row gt_right">4090.53</td>
+<td headers="rsq" class="gt_row gt_right">0.23</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_8</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">3068.24</td>
-<td class="gt_row gt_right">8.00</td>
-<td class="gt_row gt_right">1.31</td>
-<td class="gt_row gt_right">8.38</td>
-<td class="gt_row gt_right">3639.60</td>
-<td class="gt_row gt_right">0.00</td>
+<td headers="id" class="gt_row gt_center">1_8</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">3068.24</td>
+<td headers="mape" class="gt_row gt_right">8.00</td>
+<td headers="mase" class="gt_row gt_right">1.31</td>
+<td headers="smape" class="gt_row gt_right">8.38</td>
+<td headers="rmse" class="gt_row gt_right">3639.60</td>
+<td headers="rsq" class="gt_row gt_right">0.00</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_13</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">2775.75</td>
-<td class="gt_row gt_right">6.89</td>
-<td class="gt_row gt_right">1.02</td>
-<td class="gt_row gt_right">7.18</td>
-<td class="gt_row gt_right">3190.80</td>
-<td class="gt_row gt_right">0.45</td>
+<td headers="id" class="gt_row gt_center">1_13</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">2775.75</td>
+<td headers="mape" class="gt_row gt_right">6.89</td>
+<td headers="mase" class="gt_row gt_right">1.02</td>
+<td headers="smape" class="gt_row gt_right">7.18</td>
+<td headers="rmse" class="gt_row gt_right">3190.80</td>
+<td headers="rsq" class="gt_row gt_right">0.45</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_13</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">3367.92</td>
-<td class="gt_row gt_right">8.26</td>
-<td class="gt_row gt_right">1.24</td>
-<td class="gt_row gt_right">8.73</td>
-<td class="gt_row gt_right">4006.58</td>
-<td class="gt_row gt_right">0.11</td>
+<td headers="id" class="gt_row gt_center">1_13</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">3367.92</td>
+<td headers="mape" class="gt_row gt_right">8.26</td>
+<td headers="mase" class="gt_row gt_right">1.24</td>
+<td headers="smape" class="gt_row gt_right">8.73</td>
+<td headers="rmse" class="gt_row gt_right">4006.58</td>
+<td headers="rsq" class="gt_row gt_right">0.11</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_38</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">7865.35</td>
-<td class="gt_row gt_right">9.62</td>
-<td class="gt_row gt_right">0.67</td>
-<td class="gt_row gt_right">10.14</td>
-<td class="gt_row gt_right">10496.79</td>
-<td class="gt_row gt_right">0.24</td>
+<td headers="id" class="gt_row gt_center">1_38</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">7865.35</td>
+<td headers="mape" class="gt_row gt_right">9.62</td>
+<td headers="mase" class="gt_row gt_right">0.67</td>
+<td headers="smape" class="gt_row gt_right">10.14</td>
+<td headers="rmse" class="gt_row gt_right">10496.79</td>
+<td headers="rsq" class="gt_row gt_right">0.24</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_38</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">16120.88</td>
-<td class="gt_row gt_right">19.73</td>
-<td class="gt_row gt_right">1.38</td>
-<td class="gt_row gt_right">22.49</td>
-<td class="gt_row gt_right">18856.72</td>
-<td class="gt_row gt_right">0.05</td>
+<td headers="id" class="gt_row gt_center">1_38</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">16120.88</td>
+<td headers="mape" class="gt_row gt_right">19.73</td>
+<td headers="mase" class="gt_row gt_right">1.38</td>
+<td headers="smape" class="gt_row gt_right">22.49</td>
+<td headers="rmse" class="gt_row gt_right">18856.72</td>
+<td headers="rsq" class="gt_row gt_right">0.05</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_93</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">6575.86</td>
-<td class="gt_row gt_right">8.21</td>
-<td class="gt_row gt_right">0.66</td>
-<td class="gt_row gt_right">8.74</td>
-<td class="gt_row gt_right">8489.78</td>
-<td class="gt_row gt_right">0.54</td>
+<td headers="id" class="gt_row gt_center">1_93</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">6575.86</td>
+<td headers="mape" class="gt_row gt_right">8.21</td>
+<td headers="mase" class="gt_row gt_right">0.66</td>
+<td headers="smape" class="gt_row gt_right">8.74</td>
+<td headers="rmse" class="gt_row gt_right">8489.78</td>
+<td headers="rsq" class="gt_row gt_right">0.54</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_93</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">7304.08</td>
-<td class="gt_row gt_right">10.00</td>
-<td class="gt_row gt_right">0.74</td>
-<td class="gt_row gt_right">9.57</td>
-<td class="gt_row gt_right">9024.07</td>
-<td class="gt_row gt_right">0.03</td>
+<td headers="id" class="gt_row gt_center">1_93</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">7304.08</td>
+<td headers="mape" class="gt_row gt_right">10.00</td>
+<td headers="mase" class="gt_row gt_right">0.74</td>
+<td headers="smape" class="gt_row gt_right">9.57</td>
+<td headers="rmse" class="gt_row gt_right">9024.07</td>
+<td headers="rsq" class="gt_row gt_right">0.03</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_95</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_left">XGBOOST</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">6463.79</td>
-<td class="gt_row gt_right">5.15</td>
-<td class="gt_row gt_right">0.78</td>
-<td class="gt_row gt_right">5.33</td>
-<td class="gt_row gt_right">8502.73</td>
-<td class="gt_row gt_right">0.60</td>
+<td headers="id" class="gt_row gt_center">1_95</td>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">6463.79</td>
+<td headers="mape" class="gt_row gt_right">5.15</td>
+<td headers="mase" class="gt_row gt_right">0.78</td>
+<td headers="smape" class="gt_row gt_right">5.33</td>
+<td headers="rmse" class="gt_row gt_right">8502.73</td>
+<td headers="rsq" class="gt_row gt_right">0.60</td>
 </tr>
 <tr>
-<td class="gt_row gt_center">1_95</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_left">PROPHET</td>
-<td class="gt_row gt_left">Test</td>
-<td class="gt_row gt_right">5856.69</td>
-<td class="gt_row gt_right">4.87</td>
-<td class="gt_row gt_right">0.71</td>
-<td class="gt_row gt_right">4.81</td>
-<td class="gt_row gt_right">7540.48</td>
-<td class="gt_row gt_right">0.49</td>
+<td headers="id" class="gt_row gt_center">1_95</td>
+<td headers=".model_id" class="gt_row gt_right">2</td>
+<td headers=".model_desc" class="gt_row gt_left">PROPHET</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">5856.69</td>
+<td headers="mape" class="gt_row gt_right">4.87</td>
+<td headers="mase" class="gt_row gt_right">0.71</td>
+<td headers="smape" class="gt_row gt_right">4.81</td>
+<td headers="rmse" class="gt_row gt_right">7540.48</td>
+<td headers="rsq" class="gt_row gt_right">0.49</td>
 </tr>
 </tbody>
 </table>
