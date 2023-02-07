@@ -154,13 +154,11 @@ The engine uses \code{\link[smooth:es]{smooth::es()}}.
 Function Parameters:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", 
-#>     "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", 
-#>     "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", "TMSE", 
-#>     "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", 
-#>     "parametric", "likelihood", "semiparametric", "nonparametric"), level = 0.95, 
-#>     bounds = c("usual", "admissible", "none"), silent = c("all", "graph", 
-#>         "legend", "output", "none"), xreg = NULL, xregDo = c("use", "select"), 
-#>     initialX = NULL, ...)
+#>     "backcasting", "complete"), initialSeason = NULL, ic = c("AICc", "AIC", 
+#>     "BIC", "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", 
+#>     "TMSE", "GTMSE", "MSCE"), h = 10, holdout = FALSE, bounds = c("usual", 
+#>     "admissible", "none"), silent = TRUE, xreg = NULL, regressors = c("use", 
+#>     "select"), initialX = NULL, ...)
 }\if{html}{\out{</div>}}
 
 The main arguments \code{model} and \code{phi} are defined using:
