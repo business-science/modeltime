@@ -1,3 +1,7 @@
+# modeltime 1.2.5
+
+- Fixes for Smooth `es()` model #221
+
 # modeltime 1.2.4
 
 - Fix failing tests in test-developer-tools-xregs.R
