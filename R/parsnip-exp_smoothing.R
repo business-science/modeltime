@@ -661,7 +661,7 @@ smooth_fit_impl <- function(x, y, period = "auto",
         # Data - Date column (matches original), .actual, .fitted, and .residuals columns
         data = tibble::tibble(
             !! idx_col  := idx,
-            .actual      =  as.numeric(fit_ets$y),
+            .actual      =  greybox::actuals(fit_ets) %>% as.numeric(),
             .fitted      =  as.numeric(fit_ets$fitted),
             .residuals   =  as.numeric(fit_ets$residuals)
         ),
