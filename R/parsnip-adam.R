@@ -168,7 +168,7 @@
 #' @seealso [fit.model_spec()], [set_engine()]
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(parsnip)
 #' library(rsample)

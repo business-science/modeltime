@@ -232,7 +232,7 @@
 #'
 #' # FIT ----
 #'
-#' \dontrun{
+#' \donttest{
 #' # Boosting - Happens by adding numeric date and month features
 #' model_fit_boosted <- model_spec %>%
 #'     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),

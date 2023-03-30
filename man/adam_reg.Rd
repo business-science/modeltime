@@ -171,9 +171,9 @@ Function Parameters:
 #>         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", 
 #>         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", 
 #>         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
-#>     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL, 
-#>     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", 
-#>         "none"), silent = TRUE, ...)
+#>     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
+#>         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
+#>     silent = TRUE, ...)
 }\if{html}{\out{</div>}}
 
 The nonseasonal ARIMA terms (\code{orders}) and seasonal ARIMA terms (\code{orders})
