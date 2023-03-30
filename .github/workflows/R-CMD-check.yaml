@@ -48,8 +48,8 @@ jobs:
 
       - uses: vemonet/setup-spark@v1
         with:
-          spark-version: '3.1.2'
-          hadoop-version: '3.2'
+          spark-version: '2.4.3'
+          hadoop-version: '2.7'
 
       - uses: r-lib/actions/setup-pandoc@v2
 
