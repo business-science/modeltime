@@ -1,6 +1,5 @@
 context("TEST DEVELOPER TOOLS - XREG TOOLS")
 
-
 # CREATE XREG RECIPE ----
 
 # test_that("create_xreg_recipe: recipe with no compliant features returns a warning and NULL value", {
@@ -58,7 +57,5 @@ test_that("create_xreg_recipe: dummy_encode = TRUE returns dummies", {
 
     expect_equal(ncol(juiced), 11)
 
-    # expect_true(all(juiced %>% map(class) %>% unlist() %in% "integer"))
-    # expect_true(all(juiced %>% map(class) %>% unlist() %in% "numeric"))
-
+    expect_true(all(juiced %>% map(is.numeric) %>% unlist()))
 })
