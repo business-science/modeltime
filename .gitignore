@@ -9,3 +9,5 @@ logs
 vignettes/derby.log
 vignettes/logs/
 docs
+/doc/
+/Meta/
