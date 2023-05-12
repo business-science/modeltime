@@ -107,7 +107,7 @@ make_exp_smoothing <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "ets_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "ets_fit_impl"),
             defaults  = list()
         )
     )
@@ -170,7 +170,7 @@ make_exp_smoothing <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "croston_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "croston_fit_impl"),
             defaults  = list()
         )
     )
@@ -223,7 +223,7 @@ make_exp_smoothing <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "theta_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "theta_fit_impl"),
             defaults  = list()
         )
     )
@@ -349,7 +349,7 @@ make_exp_smoothing <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "smooth_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "smooth_fit_impl"),
             defaults  = list()
         )
     )

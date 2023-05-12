@@ -196,7 +196,7 @@ make_adam_reg <- function(){
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "adam_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "adam_fit_impl"),
             defaults  = list()
         )
     )
@@ -405,7 +405,7 @@ make_adam_reg <- function(){
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "auto_adam_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "auto_adam_fit_impl"),
             defaults  = list()
         )
     )
