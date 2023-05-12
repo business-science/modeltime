@@ -148,7 +148,7 @@ make_prophet_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "prophet_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "prophet_fit_impl"),
             defaults  = list(
                 uncertainty.samples = 0
             )

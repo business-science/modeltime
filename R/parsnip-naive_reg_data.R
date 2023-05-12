@@ -57,7 +57,7 @@ make_naive_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "naive_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "naive_fit_impl"),
             defaults  = list()
         )
     )
@@ -126,7 +126,7 @@ make_naive_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fun = "snaive_fit_impl"),
+            func      = c(pkg = "modeltime", fun = "snaive_fit_impl"),
             defaults  = list()
         )
     )
