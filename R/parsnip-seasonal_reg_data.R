@@ -67,7 +67,7 @@ make_seasonal_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "tbats_fit_impl"),
+            func      = c(fun = "tbats_fit_impl"),
             defaults  = list(use.parallel = FALSE)
         )
     )
@@ -147,7 +147,7 @@ make_seasonal_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "stlm_ets_fit_impl"),
+            func      = c(fun = "stlm_ets_fit_impl"),
             defaults  = list()
         )
     )
@@ -227,7 +227,7 @@ make_seasonal_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "stlm_arima_fit_impl"),
+            func      = c(fun = "stlm_arima_fit_impl"),
             defaults  = list()
         )
     )

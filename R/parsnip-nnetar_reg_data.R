@@ -105,7 +105,7 @@ make_nnetar_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(fpkg = "modeltime", un = "nnetar_fit_impl"),
+            func      = c(fun = "nnetar_fit_impl"),
             defaults  = list()
         )
     )

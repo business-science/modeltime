@@ -216,7 +216,7 @@ make_prophet_boost <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "prophet_xgboost_fit_impl"),
+            func      = c(fun = "prophet_xgboost_fit_impl"),
             defaults  = list(uncertainty.samples = 0,
                              objective = "reg:squarederror",
                              nthread = 1,

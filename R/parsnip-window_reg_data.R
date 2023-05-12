@@ -66,7 +66,7 @@ make_window_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "window_function_fit_impl"),
+            func      = c(fun = "window_function_fit_impl"),
             defaults  = list()
         )
     )

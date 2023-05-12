@@ -103,7 +103,7 @@ make_arima_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "Arima_fit_impl"),
+            func      = c(fun = "Arima_fit_impl"),
             defaults  = list(method = "ML")
         )
     )
@@ -218,7 +218,7 @@ make_arima_reg <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "auto_arima_fit_impl"),
+            func      = c(fun = "auto_arima_fit_impl"),
             defaults  = list()
         )
     )

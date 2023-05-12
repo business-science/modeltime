@@ -68,7 +68,7 @@ make_temporal_hierarchy <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "temporal_hier_fit_impl"),
+            func      = c(fun = "temporal_hier_fit_impl"),
             defaults  = list()
         )
     )

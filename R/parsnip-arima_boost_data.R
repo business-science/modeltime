@@ -164,7 +164,7 @@ make_arima_boost <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "auto_arima_xgboost_fit_impl"),
+            func      = c(fun = "auto_arima_xgboost_fit_impl"),
             defaults  = list(objective = "reg:squarederror", nthread = 1, verbose = 0)
         )
     )
@@ -343,7 +343,7 @@ make_arima_boost <- function() {
         value         = list(
             interface = "data.frame",
             protect   = c("x", "y"),
-            func      = c(pkg = "modeltime", fun = "arima_xgboost_fit_impl"),
+            func      = c(fun = "arima_xgboost_fit_impl"),
             defaults  = list(objective = "reg:squarederror", nthread = 1, verbose = 0)
         )
     )
