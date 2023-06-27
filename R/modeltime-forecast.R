@@ -704,9 +704,18 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
                 }
             }
 
+            # Issure #228 - fix `.pred_res`
             data_formatted <- actual_data %>%
-                dplyr::bind_rows(data_formatted) %>%
-                dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred))
+                dplyr::bind_rows(data_formatted)
+
+            if (".pred_res" %in% colnames(data_formatted)) {
+                data_formatted <- data_formatted %>%
+                    dplyr::rename(.pred = .pred_res)
+            }
+
+            data_formatted <- data_formatted %>%
+                dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred)) %>%
+                dplyr::select(!!! rlang::syms(nms_final))
 
         } else {
             # XY Interface
@@ -998,8 +1007,17 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
         if (!is.null(actual_data_prepped)) {
             target_sym <- rlang::sym(names(actual_data_prepped)[1])
 
+            # Issue #228 - fix .pred_res
             data_formatted <- actual_data_prepped %>%
-                dplyr::bind_rows(data_formatted) %>%
+                dplyr::bind_rows(data_formatted)
+
+
+            if (".pred_res" %in% colnames(data_formatted)) {
+                data_formatted <- data_formatted %>%
+                    dplyr::rename(.pred = .pred_res)
+            }
+
+            data_formatted <- data_formatted %>%
                 dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred)) %>%
                 dplyr::select(!!! rlang::syms(nms_final))
         }
