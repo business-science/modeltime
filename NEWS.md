@@ -1,3 +1,11 @@
+# modeltime 1.2.7
+
+- Fixes for R4.3+ which returns `lm` models as `pred_res`. #228
+
+# modeltim 1.2.6
+
+- Fixes to get `modeltime` back on CRAN following inadvertent `timetk` archival. 
+
 # modeltime 1.2.5
 
 - Fixes for Smooth `es()` model #221
