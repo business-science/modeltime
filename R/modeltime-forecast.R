@@ -659,6 +659,8 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
         # setup
         nms_final     <- names(data_formatted)
 
+        # print(nms_final)
+
         if (length(object$preproc$y_var) > 0) {
             fit_interface <-  "formula"
         } else {
@@ -713,6 +715,10 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
                     dplyr::rename(.pred = .pred_res)
             }
 
+            if (".pred_res" %in% nms_final) {
+                nms_final <- stringr::str_replace(nms_final, ".pred_res", ".pred")
+            }
+
             data_formatted <- data_formatted %>%
                 dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred)) %>%
                 dplyr::select(!!! rlang::syms(nms_final))
@@ -727,6 +733,16 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
             #     dplyr::mutate(.key = "actual") %>%
             #     dplyr::rename(.index = !! rlang::sym(nms_time_stamp_predictors))
 
+        }
+
+        # Issue #228 - fix .pred_res
+        if (".pred_res" %in% colnames(data_formatted)) {
+            data_formatted <- data_formatted %>%
+                dplyr::rename(.pred = .pred_res)
+        }
+
+        if (".pred_res" %in% nms_final) {
+            nms_final <- stringr::str_replace(nms_final, ".pred_res", ".pred")
         }
 
         data_formatted <- data_formatted %>%
@@ -1017,6 +1033,10 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
                     dplyr::rename(.pred = .pred_res)
             }
 
+            if (".pred_res" %in% nms_final) {
+                nms_final <- stringr::str_replace(nms_final, ".pred_res", ".pred")
+            }
+
             data_formatted <- data_formatted %>%
                 dplyr::mutate(.pred = ifelse(is.na(.pred), !! target_sym, .pred)) %>%
                 dplyr::select(!!! rlang::syms(nms_final))
@@ -1025,6 +1045,13 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     }
 
     # FINALIZE
+
+    # Issue #228 - fix .pred_res
+    if (".pred_res" %in% colnames(data_formatted)) {
+        data_formatted <- data_formatted %>%
+            dplyr::rename(.pred = .pred_res)
+    }
+
     ret <- data_formatted %>%
         dplyr::rename(.value = .pred) %>%
         dplyr::select(.key, .index, .value) %>%
