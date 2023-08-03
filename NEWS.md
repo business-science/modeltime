@@ -1,3 +1,7 @@
+# modeltime 1.2.7.9000
+
+- Integrate Conformal Predictions. #173
+
 # modeltime 1.2.7
 
 - Fixes for R4.3+ which returns `lm` models as `pred_res`. #228
