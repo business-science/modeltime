@@ -18,7 +18,7 @@ forecasting future data."><meta property="og:image" content="https://business-sc
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.7.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,6 +129,7 @@ forecasting future data.</p>
 <span>  actual_data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conf_interval <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  conf_by_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  conf_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
 <span>  keep_data <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  arrange_index <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -165,6 +166,12 @@ This is designed to estimate future confidence from <em>out-of-sample prediction
 <dd><p>Whether or not to produce confidence interval estimates by an ID feature.</p><ul><li><p>When <code>FALSE</code>, a global model confidence interval is provided.</p></li>
 <li><p>If <code>TRUE</code>, a local confidence interval is provided group-wise for each time series ID.
 To enable local confidence interval, an <code>id</code> must be provided during <code><a href="modeltime_calibrate.html">modeltime_calibrate()</a></code>.</p></li>
+</ul></dd>
+
+
+<dt>conf_method</dt>
+<dd><p>Algorithm used to produce confidence intervals. Choose one of:</p><ul><li><p><code>quantile</code>: Uses <code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm()</a></code> to compute quantiles from out-of-sample (test set) residuals.</p></li>
+<li><p><code>conformal_split</code>: Uses the split method split conformal inference method described by Lei <em>et al</em> (2018)</p></li>
 </ul></dd>
 
 
@@ -242,12 +249,20 @@ actual data is extended into the future periods that are defined by <code>h</cod
 the testing errors (out of sample) from <code><a href="modeltime_calibrate.html">modeltime_calibrate()</a></code>.
 The out-of-sample error estimates are then carried through and
 applied to applied to any future forecasts.</p>
-<p>The confidence interval can be adjusted with the <code>conf_interval</code> parameter. An
-80% confidence interval estimates a normal (Gaussian distribution) that assumes that
-80% of the future data will fall within the upper and lower confidence limits.</p>
+<p>The confidence interval can be adjusted with the <code>conf_interval</code> parameter. The algorithm used
+to produce confidence intervals can be changed with the <code>conf_method</code> parameter.</p>
+<p><em>Quantile Method (Default):</em></p>
+<p>When <code>conf_method = "quantile"</code> (default), this method uses <code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm()</a></code>
+to produce a 95% confidence interval.
+It estimates a normal (Gaussian distribution).</p>
 <p>The confidence interval is <em>mean-adjusted</em>, meaning that if the mean of the residuals
 is non-zero, the confidence interval is adjusted to widen the interval to capture
 the difference in means.</p>
+<p><em>Conformal Split Method:</em></p>
+<p>When <code>conf_method = "conformal_split</code>, this method uses the split conformal inference method
+described by Lei <em>et al</em> (2018). This is also implemented in the <code>probably</code> R package's
+<code>int_conformal_split()</code> function. However, modeltime does not include the dependency on <code>probably</code>.</p>
+<p><em>What happens to the confidence interval after refitting models?</em></p>
 <p>Refitting has no affect on the confidence interval since this is calculated independently of
 the refitted model (on data with a smaller sample size). New observations typically improve
 future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.</p>
@@ -259,6 +274,11 @@ ID features related to the time series group that the forecast belongs to.</p>
 <p><strong>Arrange Index</strong></p>
 <p>By default, <code>modeltime_forecast()</code> keeps the original order of the data.
 If desired, the user can sort the output by <code>.key</code>, <code>.model_id</code> and <code>.index</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Lei, Jing, et al. "Distribution-free predictive inference for regression."
+<em>Journal of the American Statistical Association</em> 113.523 (2018): 1094-1111.</p>
     </div>
 
     <div class="section level2">
