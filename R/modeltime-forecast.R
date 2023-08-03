@@ -512,21 +512,25 @@ safe_conf_interval_map <- function(data, data_calibration, conf_interval, conf_m
 
 safe_conf_interval_map_by_id <- function(data, data_calibration, conf_interval, id, conf_method) {
 
+    empty_ci_tbl <- tibble::tibble(
+        .conf_lo = NA,
+        .conf_hi = NA
+    )
+
     if (conf_method == "quantile") {
-        ci_func <- centered_residuals
+        safe_ci <- purrr::safely(
+            centered_residuals,
+            otherwise = empty_ci_tbl,
+            quiet = FALSE
+        )
     }
     if (conf_method == "conformal_split") {
-        ci_func <- conformal_split_func
+        safe_ci <- purrr::safely(
+            conformal_split_func,
+            otherwise = empty_ci_tbl,
+            quiet = FALSE
+        )
     }
-
-    safe_ci <- purrr::safely(
-        ci_func,
-        otherwise = tibble::tibble(
-            .conf_lo = NA,
-            .conf_hi = NA
-        ),
-        quiet = FALSE
-    )
 
     forecast_nested_tbl <- data %>%
         tibble::rowid_to_column(var = "..rowid") %>%
@@ -572,12 +576,14 @@ centered_residuals <- function(data_1, data_2, conf_interval) {
         residuals <- c(data_2$.residuals, -data_2$.residuals)
         s <- stats::sd(residuals)
 
-        data_1 %>%
+        ci_tbl <- data_1 %>%
             dplyr::mutate(
                 .conf_lo = stats::qnorm((1-conf_interval)/2, mean = .value, sd = s),
                 .conf_hi = stats::qnorm((1+conf_interval)/2, mean = .value, sd = s)
             ) %>%
             dplyr::select(.conf_lo, .conf_hi)
+
+        ci_tbl
 
     }, error = function(e) {
         tibble::tibble(
@@ -597,9 +603,7 @@ conformal_split_func <- function(data_1, data_2, conf_interval) {
     # Collect absolute residuals
     ret <- tryCatch({
 
-        predictions <- data_2$.prediction
-        residuals   <- data_2$.residuals
-
+        residuals        <- data_2$.residuals
         residuals_sorted <- residuals %>% sort(decreasing = FALSE)
 
         n     <- nrow(data_2)
@@ -608,8 +612,8 @@ conformal_split_func <- function(data_1, data_2, conf_interval) {
 
         ci_tbl <- data_1 %>%
             dplyr::mutate(
-                .conf_lo = predictions - q_val,
-                .conf_hi = predictions + q_val
+                .conf_lo = .value - q_val,
+                .conf_hi = .value + q_val
             ) %>%
             dplyr::select(.conf_lo, .conf_hi)
 
