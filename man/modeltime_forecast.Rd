@@ -11,7 +11,7 @@ modeltime_forecast(
   actual_data = NULL,
   conf_interval = 0.95,
   conf_by_id = FALSE,
-  conf_method = "quantile",
+  conf_method = "conformal_default",
   keep_data = FALSE,
   arrange_index = FALSE,
   ...
@@ -39,9 +39,9 @@ This is designed to estimate future confidence from \emph{out-of-sample predicti
 To enable local confidence interval, an \code{id} must be provided during \code{modeltime_calibrate()}.
 }}
 
-\item{conf_method}{Algorithm used to produce confidence intervals. Choose one of:
+\item{conf_method}{Algorithm used to produce confidence intervals. All CI's are Conformal Predictions. Choose one of:
 \itemize{
-\item \code{quantile}: Uses \code{qnorm()} to compute quantiles from out-of-sample (test set) residuals.
+\item \code{conformal_default}: Uses \code{qnorm()} to compute quantiles from out-of-sample (test set) residuals.
 \item \code{conformal_split}: Uses the split method split conformal inference method described by Lei \emph{et al} (2018)
 }}
 
@@ -147,11 +147,11 @@ applied to applied to any future forecasts.
 The confidence interval can be adjusted with the \code{conf_interval} parameter. The algorithm used
 to produce confidence intervals can be changed with the \code{conf_method} parameter.
 
-\emph{Quantile Method (Default):}
+\emph{Conformal Default Method:}
 
-When \code{conf_method = "quantile"} (default), this method uses \code{qnorm()}
-to produce a 95\% confidence interval.
-It estimates a normal (Gaussian distribution).
+When \code{conf_method = "conformal_default"} (default), this method uses \code{qnorm()}
+to produce a 95\% confidence interval by default. It estimates a normal (Gaussian distribution)
+based on the out-of-sample errors (residuals).
 
 The confidence interval is \emph{mean-adjusted}, meaning that if the mean of the residuals
 is non-zero, the confidence interval is adjusted to widen the interval to capture
@@ -161,12 +161,12 @@ the difference in means.
 
 When \verb{conf_method = "conformal_split}, this method uses the split conformal inference method
 described by Lei \emph{et al} (2018). This is also implemented in the \code{probably} R package's
-\code{int_conformal_split()} function. However, modeltime does not include the dependency on \code{probably}.
+\code{int_conformal_split()} function.
 
 \emph{What happens to the confidence interval after refitting models?}
 
 Refitting has no affect on the confidence interval since this is calculated independently of
-the refitted model (on data with a smaller sample size). New observations typically improve
+the refitted model. New observations typically improve
 future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.
 
 \strong{Keep Data}

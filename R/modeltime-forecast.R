@@ -21,9 +21,9 @@
 #'  - If `TRUE`, a local confidence interval is provided group-wise for each time series ID.
 #'    To enable local confidence interval, an `id` must be provided during `modeltime_calibrate()`.
 #'
-#' @param conf_method Algorithm used to produce confidence intervals. Choose one of:
+#' @param conf_method Algorithm used to produce confidence intervals. All CI's are Conformal Predictions. Choose one of:
 #'
-#'  - `quantile`: Uses `qnorm()` to compute quantiles from out-of-sample (test set) residuals.
+#'  - `conformal_default`: Uses `qnorm()` to compute quantiles from out-of-sample (test set) residuals.
 #'
 #'  - `conformal_split`: Uses the split method split conformal inference method described by Lei _et al_ (2018)
 #'
@@ -117,11 +117,11 @@
 #' The confidence interval can be adjusted with the `conf_interval` parameter. The algorithm used
 #' to produce confidence intervals can be changed with the `conf_method` parameter.
 #'
-#' _Quantile Method (Default):_
+#' _Conformal Default Method:_
 #'
-#' When `conf_method = "quantile"` (default), this method uses `qnorm()`
-#' to produce a 95% confidence interval.
-#' It estimates a normal (Gaussian distribution).
+#' When `conf_method = "conformal_default"` (default), this method uses `qnorm()`
+#' to produce a 95% confidence interval by default. It estimates a normal (Gaussian distribution)
+#' based on the out-of-sample errors (residuals).
 #'
 #' The confidence interval is _mean-adjusted_, meaning that if the mean of the residuals
 #' is non-zero, the confidence interval is adjusted to widen the interval to capture
@@ -131,12 +131,12 @@
 #'
 #' When `conf_method = "conformal_split`, this method uses the split conformal inference method
 #' described by Lei _et al_ (2018). This is also implemented in the `probably` R package's
-#' `int_conformal_split()` function. However, modeltime does not include the dependency on `probably`.
+#' `int_conformal_split()` function.
 #'
 #' _What happens to the confidence interval after refitting models?_
 #'
 #' Refitting has no affect on the confidence interval since this is calculated independently of
-#' the refitted model (on data with a smaller sample size). New observations typically improve
+#' the refitted model. New observations typically improve
 #' future accuracy, which in most cases makes the out-of-sample confidence intervals conservative.
 #'
 #' __Keep Data__
@@ -226,7 +226,7 @@ NULL
 #' @export
 #' @rdname modeltime_forecast
 modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = NULL,
-                               conf_interval = 0.95, conf_by_id = FALSE, conf_method = "quantile",
+                               conf_interval = 0.95, conf_by_id = FALSE, conf_method = "conformal_default",
                                keep_data = FALSE, arrange_index = FALSE, ...) {
 
     # Required arguments & messages
@@ -272,8 +272,8 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
         }
     }
 
-    if (!conf_method %in% c("quantile", "conformal_split")) {
-        rlang::abort('conf_method must be one of "quantile", "conformal_split"')
+    if (!conf_method %in% c("conformal_default", "conformal_split")) {
+        rlang::abort('conf_method must be one of "conformal_default", "conformal_split"')
     }
 
     UseMethod("modeltime_forecast")
@@ -281,14 +281,14 @@ modeltime_forecast <- function(object, new_data = NULL, h = NULL, actual_data = 
 
 #' @export
 modeltime_forecast.default <- function(object, new_data = NULL, h = NULL, actual_data = NULL,
-                                       conf_interval = 0.95, conf_by_id = FALSE,  conf_method = "quantile",
+                                       conf_interval = 0.95, conf_by_id = FALSE,  conf_method = "conformal_default",
                                        keep_data = FALSE, arrange_index = FALSE, ...) {
     glubort("Received an object of class: {class(object)[1]}. Expected an object of class:\n 1. 'mdl_time_tbl' - A Model Time Table made with 'modeltime_table()' and calibrated with 'modeltime_calibrate()'.")
 }
 
 #' @export
 modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, actual_data = NULL,
-                                            conf_interval = 0.95, conf_by_id = FALSE, conf_method = "quantile",
+                                            conf_interval = 0.95, conf_by_id = FALSE, conf_method = "conformal_default",
                                             keep_data = FALSE, arrange_index = FALSE, ...) {
 
     data <- object
@@ -481,9 +481,9 @@ safe_conf_interval_map <- function(data, data_calibration, conf_interval, conf_m
         .conf_hi = NA
     )
 
-    if (conf_method == "quantile") {
+    if (conf_method == "conformal_default") {
         safe_ci <- purrr::safely(
-            centered_residuals,
+            conformal_default_func,
             otherwise = empty_ci_tbl,
             quiet = FALSE
         )
@@ -517,9 +517,9 @@ safe_conf_interval_map_by_id <- function(data, data_calibration, conf_interval, 
         .conf_hi = NA
     )
 
-    if (conf_method == "quantile") {
+    if (conf_method == "conformal_default") {
         safe_ci <- purrr::safely(
-            centered_residuals,
+            conformal_default_func,
             otherwise = empty_ci_tbl,
             quiet = FALSE
         )
@@ -567,8 +567,8 @@ safe_conf_interval_map_by_id <- function(data, data_calibration, conf_interval, 
         )
 }
 
-# * DEFAULT CI METHOD: QUANTILE OF NORMAL DISTRIBUTION ----
-centered_residuals <- function(data_1, data_2, conf_interval) {
+# * DEFAULT CI METHOD: QUANTILE OF NORMAL DISTRIBUTION AROUND PREDICTIONS ----
+conformal_default_func <- function(data_1, data_2, conf_interval) {
 
     # Collect absolute residuals
     ret <- tryCatch({
