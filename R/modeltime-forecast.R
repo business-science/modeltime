@@ -604,7 +604,9 @@ conformal_split_func <- function(data_1, data_2, conf_interval) {
     ret <- tryCatch({
 
         residuals        <- data_2$.residuals
-        residuals_sorted <- residuals %>% sort(decreasing = FALSE)
+        residuals_sorted <- residuals %>%
+            abs() %>%
+            sort(decreasing = FALSE)
 
         n     <- nrow(data_2)
         q_ind <- ceiling(conf_interval * n)
