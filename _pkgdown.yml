@@ -32,6 +32,8 @@ navbar:
       href: articles/nested-forecasting.html
     - text: '---'
     - text: Advanced Topics
+    - text: Conformal Prediction Interval Forecasting
+      href: articles/modeltime-conformal-prediction.html
     - text: Autoregressive (Recursive) Forecasting
       href: articles/recursive-forecasting.html
     - text: Hyperparameter Tuning & Parallel Processing
