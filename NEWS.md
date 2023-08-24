@@ -1,6 +1,7 @@
 # modeltime 1.2.7.9000
 
 - Integrate Conformal Predictions. #173
+- New Vignette: Conformal Forecast Prediction Intervals in Modeltime
 
 # modeltime 1.2.7
 
