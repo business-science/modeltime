@@ -29,9 +29,7 @@ of "auto" or time-based phrase of "2 weeks" can be used if a date or date-time v
 non-seasonal lags used as inputs. For non-seasonal time series, the default
 is the optimal number of lags (according to the AIC) for a linear AR(p)
 model. For seasonal time series, the same method is used but applied to
-seasonally adjusted data (from an stl decomposition). If set to zero to
-indicate that no non-seasonal lags should be included, then P must be at
-least 1 and a model with only seasonal lags will be fit.}
+seasonally adjusted data (from an stl decomposition).}
 
 \item{P}{Number of seasonal lags used as inputs.}
 
