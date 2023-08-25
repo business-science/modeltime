@@ -20,7 +20,7 @@ different packages. Currently the only package is smooth."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.7.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -279,9 +279,9 @@ in lieu of recreating the object from scratch.</p>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", </span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", </span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL, </span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", </span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "none"), silent = TRUE, parallel = FALSE, ...)</span></span></code></pre><p></p></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     silent = TRUE, parallel = FALSE, ...)</span></span></code></pre><p></p></div>
 <p>The <em>MAXIMUM</em> nonseasonal ARIMA terms (<code>max.p</code>, <code>max.d</code>, <code>max.q</code>) and
 seasonal ARIMA terms (<code>max.P</code>, <code>max.D</code>, <code>max.Q</code>) are provided to
 <code><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html" class="external-link">forecast::auto.arima()</a></code> via <code><a href="arima_reg.html">arima_reg()</a></code> parameters.
@@ -301,9 +301,9 @@ The <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-lin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", </span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", </span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, </span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL, </span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", </span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "none"), silent = TRUE, ...)</span></span></code></pre><p></p></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), </span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     silent = TRUE, ...)</span></span></code></pre><p></p></div>
 <p>The nonseasonal ARIMA terms (<code>orders</code>) and seasonal ARIMA terms (<code>orders</code>)
 are provided to <code><a href="https://rdrr.io/pkg/smooth/man/adam.html" class="external-link">smooth::adam()</a></code> via <code>adam_reg()</code> parameters.
 Other options and argument can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
@@ -405,7 +405,7 @@ There are 3 ways to specify:</p><ol><li><p><code>seasonal_period = "auto"</code>
 <span class="r-in"><span><span class="va">model_fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 2.61 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 2.13 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model estimated using auto.adam() function: ETS(AAdN)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution assumed in the model: S</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loss function type: likelihood; Loss function value: -471.3768</span>
@@ -441,7 +441,7 @@ There are 3 ways to specify:</p><ol><li><p><code>seasonal_period = "auto"</code>
 <span class="r-in"><span><span class="va">model_fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.96 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time elapsed: 0.78 seconds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model estimated using adam() function: ETS(ANN)+ARIMA(3,1,3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution assumed in the model: Normal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loss function type: likelihood; Loss function value: -447.6852</span>
