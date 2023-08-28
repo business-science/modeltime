@@ -41,6 +41,7 @@ model_spec <- prophet_boost(
 
 test_that("prophet_boost: No Xregs", {
 
+    testthat::skip_on_cran()
 
     # ** MODEL FIT ----
 
@@ -198,23 +199,24 @@ test_that("prophet_boost: prophet, XREGS", {
 
 # ---- WORKFLOWS ----
 
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE) %>%
-    step_date(date, features = "month") %>%
-    step_mutate(date_num = as.numeric(date))
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-
-
-
 
 # TESTS
 test_that("prophet_boost: prophet_xgboost (workflow)", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE) %>%
+        step_date(date, features = "month") %>%
+        step_mutate(date_num = as.numeric(date))
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
 
     # Fitted Workflow
     wflw_fit <- wflw %>%
@@ -307,6 +309,8 @@ test_that("prophet_boost: prophet_xgboost (workflow)", {
 
 test_that("prophet_reg: prophet, Logistic Growth", {
 
+
+    testthat::skip_on_cran()
 
     # ** MODEL FIT ----
 

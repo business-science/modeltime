@@ -52,18 +52,21 @@ model_spec <- arima_boost(
 
 # * NO XREGS ----
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
 test_that("arima_boost: Arima, (No xregs), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "arima_xgboost_fit_impl")
 
@@ -86,10 +89,7 @@ test_that("arima_boost: Arima, (No xregs), Test Model Fit Object", {
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
 
-
-})
-
-test_that("arima_boost: Arima, (No xregs), Test Predictions", {
+    # arima_boost: Arima, (No xregs), Test Predictions
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -109,18 +109,22 @@ test_that("arima_boost: Arima, (No xregs), Test Predictions", {
 
 # * XREGS ----
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE), data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
 test_that("arima_boost: Arima, (XREGS), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    #
+
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE), data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "arima_xgboost_fit_impl")
 
@@ -158,9 +162,8 @@ test_that("arima_boost: Arima, (XREGS), Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
 
-test_that("arima_boost: Arima (XREGS), Test Predictions", {
+    # arima_boost: Arima (XREGS), Test Predictions
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -181,49 +184,53 @@ test_that("arima_boost: Arima (XREGS), Test Predictions", {
 
 # ---- WORKFLOWS ----
 
-# Model Spec
-model_spec <- arima_boost(
-    seasonal_period          = 12,
-    non_seasonal_ar          = 3,
-    non_seasonal_differences = 1,
-    non_seasonal_ma          = 3,
-    seasonal_ar              = 1,
-    seasonal_differences     = 0,
-    seasonal_ma              = 1,
-    mtry  = 25,
-    trees = 250,
-    min_n = 4,
-    learn_rate = 0.1,
-    tree_depth = 7,
-    loss_reduction = 0.4,
-    sample_size = 0.9
-) %>%
-    set_engine("arima_xgboost")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE) %>%
-    step_date(date, features = "month") %>%
-    step_mutate(date_num = as.numeric(date))
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
-
 
 # TESTS
 test_that("arima_boost: Arima (workflow), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    # Model Spec
+    model_spec <- arima_boost(
+        seasonal_period          = 12,
+        non_seasonal_ar          = 3,
+        non_seasonal_differences = 1,
+        non_seasonal_ma          = 3,
+        seasonal_ar              = 1,
+        seasonal_differences     = 0,
+        seasonal_ma              = 1,
+        mtry  = 25,
+        trees = 250,
+        min_n = 4,
+        learn_rate = 0.1,
+        tree_depth = 7,
+        loss_reduction = 0.4,
+        sample_size = 0.9
+    ) %>%
+        set_engine("arima_xgboost")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE) %>%
+        step_date(date, features = "month") %>%
+        step_mutate(date_num = as.numeric(date))
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "arima_xgboost_fit_impl")
 
@@ -262,9 +269,8 @@ test_that("arima_boost: Arima (workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
 
-test_that("arima_boost: Arima (workflow), Test Predictions", {
+    # arima_boost: Arima (workflow), Test Predictions
 
     full_data <- bind_rows(training(splits), testing(splits))
 

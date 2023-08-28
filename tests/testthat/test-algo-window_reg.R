@@ -21,6 +21,8 @@ data_prepared_tbl <- full_data_tbl %>% filter(!is.na(value))
 
 testthat::test_that("NAIVE - Single Time Series (No ID)", {
 
+    testthat::skip_on_cran()
+
     model_fit <- naive_reg() %>%
         set_engine("naive") %>%
         fit(value ~ date, data = training(splits))
@@ -64,6 +66,8 @@ testthat::test_that("NAIVE - Single Time Series (No ID)", {
 
 testthat::test_that("NAIVE - Multiple Time Series (Panel uses ID)", {
 
+    testthat::skip_on_cran()
+
     model_fit_panel <- naive_reg(id = "id") %>%
         set_engine("naive") %>%
         fit(value ~ date + id, data = data_prepared_tbl)
@@ -92,6 +96,8 @@ testthat::test_that("NAIVE - Multiple Time Series (Panel uses ID)", {
 # * UNSEEN PANEL DATA ----
 
 testthat::test_that("NAIVE - Check New Factors", {
+
+    testthat::skip_on_cran()
 
     wflw_fit_panel <- workflow() %>%
         add_model(naive_reg(id = "id") %>% set_engine("naive")) %>%
@@ -144,6 +150,8 @@ testthat::test_that("NAIVE - Check New Factors", {
 
 testthat::test_that("SNAIVE - Single Time Series (No ID)", {
 
+    testthat::skip_on_cran()
+
     model_fit <- naive_reg() %>%
         set_engine("snaive") %>%
         fit(value ~ date, data = training(splits))
@@ -195,6 +203,8 @@ testthat::test_that("SNAIVE - Single Time Series (No ID)", {
 
 testthat::test_that("SNAIVE - Multiple Time Series (Panel ID)", {
 
+    testthat::skip_on_cran()
+
     model_fit_panel <- naive_reg(id = "id") %>%
         set_engine("snaive") %>%
         fit(value ~ date + id, data = data_prepared_tbl)
@@ -229,6 +239,8 @@ testthat::test_that("SNAIVE - Multiple Time Series (Panel ID)", {
 # * UNSEEN PANEL DATA ----
 
 testthat::test_that("SNAIVE - Check New Factors", {
+
+    testthat::skip_on_cran()
 
     wflw_fit_panel <- workflow() %>%
         add_model(naive_reg(id = "id") %>% set_engine("snaive")) %>%
@@ -280,6 +292,8 @@ testthat::test_that("SNAIVE - Check New Factors", {
 # * SINGLE TIME SERIES -----
 
 testthat::test_that("WINDOW - Single Time Series (No ID)", {
+
+    testthat::skip_on_cran()
 
     model_fit_1 <- window_reg(
         window_size     = 24
@@ -349,6 +363,9 @@ testthat::test_that("WINDOW - Single Time Series (No ID)", {
 
 testthat::test_that("WINDOW - Multiple Time Series (Panel ID)", {
 
+    testthat::skip_on_cran()
+
+
     model_fit_panel <- window_reg(
             id = "id",
             window_size = 12
@@ -386,6 +403,9 @@ testthat::test_that("WINDOW - Multiple Time Series (Panel ID)", {
 # * UNSEEN PANEL DATA ----
 
 testthat::test_that("SNAIVE - Check New Factors", {
+
+    testthat::skip_on_cran()
+
 
     wflw_fit_panel <- workflow() %>%
         add_model(window_reg(id = "id") %>% set_engine("window_function")) %>%

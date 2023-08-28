@@ -3,35 +3,42 @@ context("TEST DEVELOPER TOOLS - CONSTRUCTORS")
 
 # NEW MODELTIME BRIDGE ----
 
-lm_model <- lm(value ~ as.numeric(date) + hour(date) + wday(date, label = TRUE),
-               data = taylor_30_min)
-
-data = tibble(
-    date        = taylor_30_min$date, # Important - The column name must match the modeled data
-    # These are standardized names: .value, .fitted, .resid
-    .actual     = taylor_30_min$value,
-    .fitted     = lm_model$fitted.values %>% as.numeric(),
-    .residuals  = lm_model$residuals %>% as.numeric()
-)
-
-bridge <- new_modeltime_bridge(
-    class  = "lm_time_series_impl",
-    models = list(model_1 = lm_model),
-    data   = data,
-    extras = NULL,
-    desc   = NULL
-)
-
 # Tests ----
 
 test_that("modeltime bridge: Good Structure", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    lm_model <- lm(value ~ as.numeric(date) + hour(date) + wday(date, label = TRUE),
+                   data = taylor_30_min)
+
+    data = tibble(
+        date        = taylor_30_min$date, # Important - The column name must match the modeled data
+        # These are standardized names: .value, .fitted, .resid
+        .actual     = taylor_30_min$value,
+        .fitted     = lm_model$fitted.values %>% as.numeric(),
+        .residuals  = lm_model$residuals %>% as.numeric()
+    )
+
+    bridge <- new_modeltime_bridge(
+        class  = "lm_time_series_impl",
+        models = list(model_1 = lm_model),
+        data   = data,
+        extras = NULL,
+        desc   = NULL
+    )
+
+
+    # modeltime bridge: Good Structure
+
     expect_s3_class(bridge, "lm_time_series_impl")
 
     expect_s3_class(bridge$models$model_1, "lm")
 
-})
 
-test_that("modeltime bridge: Bad Structures", {
+    # modeltime bridge: Bad Structures
 
     # Class missing
     expect_error({

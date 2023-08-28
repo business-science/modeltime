@@ -38,6 +38,8 @@ model_spec <- arima_boost(
 # TESTS
 test_that("arima_boost: Arima, (No xregs), Test Model Fit Object", {
 
+    testthat::skip_on_cran()
+
     # Fit Spec
     model_fit <- model_spec %>%
         fit(log(value) ~ date, data = training(splits))

@@ -7,7 +7,7 @@ context("TEST seasonal_reg() - stlm_ets")
 # CHECKS ----
 test_that("seasonal_reg: stlm_ets", {
 
-
+    testthat::skip_on_cran()
 
     # SETUP ----
 

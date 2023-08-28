@@ -1,97 +1,98 @@
-
+testthat::context("MODELTIME NESTED (ITERATIVE) FORECASTING")
 
 # MODELTIME NESTED (ITERATIVE) FORECASTING -----
-
-# Requires the modeltime_nested branch until merge
-# remotes::install_github("business-science/modeltime@modeltime_nested")
-
-
-library(testthat)
-library(tidymodels)
-library(modeltime)
-library(tidyverse)
-library(timetk)
-
-
-# DATA PREP FUNCTIONS ----
-
-data_prep_tbl <- walmart_sales_weekly %>%
-    select(id, Date, Weekly_Sales) %>%
-    set_names(c("id", "date", "value"))
-
-tib_1 <- data_prep_tbl %>%
-    filter(id %in% c("1_1", "1_3"))
-
-tib_2 <- data_prep_tbl %>%
-    filter(id %in% c("1_8")) %>%
-    slice_tail( n= 10)
-
-data_start_tbl <- bind_rows(tib_1, tib_2)
-
-
-
-# NESTED DATA ----
-
-nested_data_tbl <- data_start_tbl %>%
-
-    extend_timeseries(
-        .id_var        = id,
-        .date_var      = date,
-        .length_future = 52
-    ) %>%
-
-    # >> Can add xregs in here <<
-
-    nest_timeseries(
-        .id_var        = id,
-        .length_future = 52,
-        .length_actual = 52*2
-    ) %>%
-
-    split_nested_timeseries(
-        .length_test = 52
-    )
-
-
-# MODELING ----
-
-# * XGBoost ----
-
-rec_xgb <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl)) %>%
-    step_timeseries_signature(date) %>%
-    step_rm(date) %>%
-    step_zv(all_predictors()) %>%
-    step_dummy(all_nominal_predictors(), one_hot = TRUE)
-
-wflw_xgb <- workflow() %>%
-    add_model(boost_tree("regression") %>% set_engine("xgboost")) %>%
-    add_recipe(rec_xgb)
-
-# * Bad Model ----
-#   - Xgboost can't handle dates
-
-recipe_bad <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl))
-
-wflw_bad <- workflow() %>%
-    add_model(boost_tree("regression") %>% set_engine("xgboost")) %>%
-    add_recipe(recipe_bad)
-
-# * Prophet ----
-# rec_prophet <- recipe(value ~ date, extract_nested_train_split(nested_data_tbl))
-#
-# wflw_prophet <- workflow() %>%
-#     add_model(
-#         prophet_reg("regression", seasonality_yearly = TRUE) %>%
-#             set_engine("prophet")
-#     ) %>%
-#     add_recipe(rec_prophet)
 
 
 # NESTED WORKFLOW ----
 
-# * Test 1: Good + Bad Model ----
+testthat::test_that("MODELTIME NESTED (ITERATIVE) FORECASTING", {
 
-testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
+    testthat::skip_on_cran()
+
+    # SETUP
+
+    library(testthat)
+    library(tidymodels)
+    library(modeltime)
+    library(tidyverse)
+    library(timetk)
+
+
+    # DATA PREP FUNCTIONS ----
+
+    data_prep_tbl <- walmart_sales_weekly %>%
+        select(id, Date, Weekly_Sales) %>%
+        set_names(c("id", "date", "value"))
+
+    tib_1 <- data_prep_tbl %>%
+        filter(id %in% c("1_1", "1_3"))
+
+    tib_2 <- data_prep_tbl %>%
+        filter(id %in% c("1_8")) %>%
+        slice_tail( n= 10)
+
+    data_start_tbl <- bind_rows(tib_1, tib_2)
+
+
+
+    # NESTED DATA ----
+
+    nested_data_tbl <- data_start_tbl %>%
+
+        extend_timeseries(
+            .id_var        = id,
+            .date_var      = date,
+            .length_future = 52
+        ) %>%
+
+        # >> Can add xregs in here <<
+
+        nest_timeseries(
+            .id_var        = id,
+            .length_future = 52,
+            .length_actual = 52*2
+        ) %>%
+
+        split_nested_timeseries(
+            .length_test = 52
+        )
+
+
+    # MODELING ----
+
+    # * XGBoost ----
+
+    rec_xgb <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl)) %>%
+        step_timeseries_signature(date) %>%
+        step_rm(date) %>%
+        step_zv(all_predictors()) %>%
+        step_dummy(all_nominal_predictors(), one_hot = TRUE)
+
+    wflw_xgb <- workflow() %>%
+        add_model(boost_tree("regression") %>% set_engine("xgboost")) %>%
+        add_recipe(rec_xgb)
+
+    # * Bad Model ----
+    #   - Xgboost can't handle dates
+
+    recipe_bad <- recipe(value ~ ., extract_nested_train_split(nested_data_tbl))
+
+    wflw_bad <- workflow() %>%
+        add_model(boost_tree("regression") %>% set_engine("xgboost")) %>%
+        add_recipe(recipe_bad)
+
+    # * Prophet ----
+    # rec_prophet <- recipe(value ~ date, extract_nested_train_split(nested_data_tbl))
+    #
+    # wflw_prophet <- workflow() %>%
+    #     add_model(
+    #         prophet_reg("regression", seasonality_yearly = TRUE) %>%
+    #             set_engine("prophet")
+    #     ) %>%
+    #     add_recipe(rec_prophet)
+
+
+    # "modeltime_nested_fit: Good + Bad Model"
 
     # ** Fit ----
     expect_warning({
@@ -182,11 +183,8 @@ testthat::test_that("modeltime_nested_fit: Good + Bad Model", {
     # fcast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
 
 
-})
 
-
-# * Test 2: Bad Model ----
-testthat::test_that("modeltime_nested_fit: Bad Model Only", {
+    # modeltime_nested_fit: Bad Model Only
 
     # ** Fit ----
     expect_warning({

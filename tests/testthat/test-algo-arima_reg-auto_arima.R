@@ -14,22 +14,23 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 # ** NO XREGS ----
 
-# Model Spec
-model_spec <- arima_reg(seasonal_period = 12) %>%
-    set_engine("auto_arima")
-
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
 test_that("arima_reg: auto.arima (No xregs), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    # Model Spec
+    model_spec <- arima_reg(seasonal_period = 12) %>%
+        set_engine("auto_arima")
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "auto_arima_fit_impl")
 
@@ -47,9 +48,9 @@ test_that("arima_reg: auto.arima (No xregs), Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
 
-test_that("arima_reg: auto.arima (No xregs), Test Predictions", {
+
+    # arima_reg: auto.arima (No xregs), Test Predictions
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -69,22 +70,27 @@ test_that("arima_reg: auto.arima (No xregs), Test Predictions", {
 
 # ** XREGS ----
 
-# Model Spec
-model_spec <- arima_reg(seasonal_period = 12) %>%
-    set_engine("auto_arima")
-
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date + month(date, label = TRUE), data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
 test_that("arima_reg: auto.arima (XREGS), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    # build models
+
+    # Model Spec
+    model_spec <- arima_reg(seasonal_period = 12) %>%
+        set_engine("auto_arima")
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date + month(date, label = TRUE), data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
+
+    # Test model fit
 
     testthat::expect_s3_class(model_fit$fit, "auto_arima_fit_impl")
 
@@ -102,9 +108,9 @@ test_that("arima_reg: auto.arima (XREGS), Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
 
-test_that("arima_reg: auto.arima (XREGS), Test Predictions", {
+
+    # arima_reg: auto.arima (XREGS), Test Predictions
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -125,32 +131,34 @@ test_that("arima_reg: auto.arima (XREGS), Test Predictions", {
 
 # ---- WORKFLOWS ----
 
-# Model Spec
-model_spec <- arima_reg(seasonal_period = 12) %>%
-    set_engine("auto_arima")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
-
-
 # TESTS
 test_that("arima_reg: auto.arima (Workflow), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    # Model Spec
+    model_spec <- arima_reg(seasonal_period = 12) %>%
+        set_engine("auto_arima")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE)
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
+    # TEST ---
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "auto_arima_fit_impl")
 
@@ -168,9 +176,8 @@ test_that("arima_reg: auto.arima (Workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
 
-test_that("arima_reg: auto.arima (Workflow), Test Predictions", {
+    # arima_reg: auto.arima (Workflow), Test Predictions
 
     full_data <- bind_rows(training(splits), testing(splits))
 

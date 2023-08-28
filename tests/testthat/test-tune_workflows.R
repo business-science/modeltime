@@ -1,22 +1,23 @@
 context("TEST TUNE WORKFLOWS")
 
-m750 <- m4_monthly %>% filter(id == "M750")
-
-# RESAMPLE SPEC ----
-resample_spec <- time_series_cv(data = m750,
-                                initial     = "10 years",
-                                assess      = "2 years",
-                                skip        = "2 years",
-                                cumulative  = FALSE,
-                                slice_limit = 2)
-
-
 # TESTS ----
 
 # 1. ARIMA BOOST ----
 test_that("Tuning, arima_boost", {
 
     skip_on_cran()
+
+    #
+
+    m750 <- m4_monthly %>% filter(id == "M750")
+
+    # RESAMPLE SPEC ----
+    resample_spec <- time_series_cv(data = m750,
+                                    initial     = "10 years",
+                                    assess      = "2 years",
+                                    skip        = "2 years",
+                                    cumulative  = FALSE,
+                                    slice_limit = 2)
 
     # Recipe
     recipe_spec <- recipe(value ~ date, data = m750) %>%

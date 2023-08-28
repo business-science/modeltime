@@ -21,10 +21,9 @@ context("TEST DEVELOPER TOOLS - XREG TOOLS")
 #
 # })
 
-
-
-
 test_that("create_xreg_recipe: dummy_encode = FALSE returns factors", {
+
+    testthat::skip_on_cran()
 
     # Month
     predictors <- m4_monthly %>%
@@ -44,6 +43,8 @@ test_that("create_xreg_recipe: dummy_encode = FALSE returns factors", {
 })
 
 test_that("create_xreg_recipe: dummy_encode = TRUE returns dummies", {
+
+    testthat::skip_on_cran()
 
     # Month
     predictors <- m4_monthly %>%

@@ -15,11 +15,13 @@ splits <- initial_time_split(m750, prop = 0.9)
 
 # * Auto ARIMA (Parsnip) ----
 
-model_fit_no_boost <- arima_reg() %>%
-    set_engine(engine = "auto_arima") %>%
-    fit(log(value) ~ date, data = training(splits))
-
 test_that("Auto ARIMA (Parsnip)", {
+
+    testthat::skip_on_cran()
+
+    model_fit_no_boost <- arima_reg() %>%
+        set_engine(engine = "auto_arima") %>%
+        fit(log(value) ~ date, data = training(splits))
 
 
     # ** Model Table ----
@@ -65,7 +67,6 @@ test_that("Auto ARIMA (Parsnip)", {
 
 
     # ** Refit ----
-    # TODO
     future_forecast_tbl <- calibrated_tbl %>%
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
@@ -77,19 +78,24 @@ test_that("Auto ARIMA (Parsnip)", {
 
 # * Auto ARIMA (Workflow) -----
 
-wflw_fit_arima <- workflow() %>%
-    add_model(
-        spec = arima_reg() %>%
-            set_engine("auto_arima")
-    ) %>%
-    add_recipe(
-        recipe = recipe(value ~ date, data = training(splits)) %>%
-            step_date(date, features = "month") %>%
-            step_log(value)
-    ) %>%
-    fit(training(splits))
-
 test_that("Auto ARIMA (Workflow)", {
+
+
+    testthat::skip_on_cran()
+
+    #
+
+    wflw_fit_arima <- workflow() %>%
+        add_model(
+            spec = arima_reg() %>%
+                set_engine("auto_arima")
+        ) %>%
+        add_recipe(
+            recipe = recipe(value ~ date, data = training(splits)) %>%
+                step_date(date, features = "month") %>%
+                step_log(value)
+        ) %>%
+        fit(training(splits))
 
     # ** Model Table ----
     model_table <- modeltime_table(wflw_fit_arima)
@@ -128,7 +134,6 @@ test_that("Auto ARIMA (Workflow)", {
 
 
     # ** Refit ----
-    # TODO
     future_forecast_tbl <- calibrated_tbl %>%
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
@@ -142,6 +147,24 @@ test_that("Auto ARIMA (Workflow)", {
 test_that("Models for Mega Test", {
 
     skip_on_cran()
+
+    # * Auto ARIMA (Parsnip) ----
+    model_fit_no_boost <- arima_reg() %>%
+        set_engine(engine = "auto_arima") %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # * Auto ARIMA (Workflow) -----
+    wflw_fit_arima <- workflow() %>%
+        add_model(
+            spec = arima_reg() %>%
+                set_engine("auto_arima")
+        ) %>%
+        add_recipe(
+            recipe = recipe(value ~ date, data = training(splits)) %>%
+                step_date(date, features = "month") %>%
+                step_log(value)
+        ) %>%
+        fit(training(splits))
 
     # * ARIMA Boosted (Parsnip) ----
 

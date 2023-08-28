@@ -19,18 +19,21 @@ model_spec <- exp_smoothing() %>%
 
 # * NO XREGS ----
 
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
-
-
 # TESTS
 test_that("exp_smoothing: ets, Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
 
     testthat::expect_s3_class(model_fit$fit, "ets_fit_impl")
 
@@ -48,9 +51,8 @@ test_that("exp_smoothing: ets, Test Model Fit Object", {
 
     testthat::expect_equal(model_fit$preproc$y_var, "value")
 
-})
 
-test_that("exp_smoothing: ets, Test Predictions", {
+    # exp_smoothing: ets, Test Predictions
 
     # Structure
     testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
@@ -73,38 +75,43 @@ test_that("exp_smoothing: ets, Test Predictions", {
 
 # ---- ETS WORKFLOWS ----
 
-# Model Spec
-model_spec <- exp_smoothing(
-    seasonal_period = 12,
-    error = "multiplicative", trend = "additive", season = "multiplicative"
-    ,
-    smooth_level = 0.2, smooth_trend = 0.1, smooth_seasonal = 0.1
-    ) %>%
-    set_engine("ets")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits),
-                       actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
-
-
 
 # TESTS
 test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    # Model Spec
+    model_spec <- exp_smoothing(
+        seasonal_period = 12,
+        error = "multiplicative", trend = "additive", season = "multiplicative"
+        ,
+        smooth_level = 0.2, smooth_trend = 0.1, smooth_seasonal = 0.1
+    ) %>%
+        set_engine("ets")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE)
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits),
+                           actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
+
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "ets_fit_impl")
 
@@ -122,9 +129,8 @@ test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
 
-test_that("exp_smoothing: ets (workflow), Test Predictions", {
+    # exp_smoothing: ets (workflow), Test Predictions
 
     full_data <- bind_rows(training(splits), testing(splits))
 
@@ -146,34 +152,41 @@ test_that("exp_smoothing: ets (workflow), Test Predictions", {
 
 # ---- CROSTON WORKFLOWS ----
 
-# Model Spec
-model_spec <- exp_smoothing(
-    smooth_level = 0.2
-) %>%
-    set_engine("croston")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
-
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits),
-                       actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
 
 # TESTS
 test_that("exp_smoothing: CROSTON", {
+
+    testthat::skip_on_cran()
+
+    #
+
+
+    # Model Spec
+    model_spec <- exp_smoothing(
+        smooth_level = 0.2
+    ) %>%
+        set_engine("croston")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE)
+
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits),
+                           actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "croston_fit_impl")
 
@@ -214,32 +227,40 @@ test_that("exp_smoothing: CROSTON", {
 
 # ---- THETA WORKFLOWS ----
 
-# Model Spec
-model_spec <- exp_smoothing() %>%
-    set_engine("theta")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE)
-
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-wflw_fit <- wflw %>%
-    fit(training(splits))
-
-# Forecast
-predictions_tbl <- wflw_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits),
-                       actual_data = training(splits)) %>%
-    mutate_at(vars(.value), exp)
 
 # TESTS
 test_that("exp_smoothing: Theta", {
+
+    testthat::skip_on_cran()
+
+    #
+
+
+    # Model Spec
+    model_spec <- exp_smoothing() %>%
+        set_engine("theta")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE)
+
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    wflw_fit <- wflw %>%
+        fit(training(splits))
+
+    # Forecast
+    predictions_tbl <- wflw_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits),
+                           actual_data = training(splits)) %>%
+        mutate_at(vars(.value), exp)
+
+    #
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "theta_fit_impl")
 
@@ -283,21 +304,28 @@ test_that("exp_smoothing: Theta", {
 
 # * NO XREGS ----
 
-model_spec <- exp_smoothing() %>%
-    set_engine("smooth_es")
-
-# Fit Spec
-model_fit <- model_spec %>%
-    fit(log(value) ~ date, data = training(splits))
-
-# Predictions
-predictions_tbl <- model_fit %>%
-    modeltime_calibrate(testing(splits)) %>%
-    modeltime_forecast(new_data = testing(splits))
 
 
 # TESTS
 test_that("exp_smoothing: smooth", {
+
+    testthat::skip_on_cran()
+
+    #
+
+    model_spec <- exp_smoothing() %>%
+        set_engine("smooth_es")
+
+    # Fit Spec
+    model_fit <- model_spec %>%
+        fit(log(value) ~ date, data = training(splits))
+
+    # Predictions
+    predictions_tbl <- model_fit %>%
+        modeltime_calibrate(testing(splits)) %>%
+        modeltime_forecast(new_data = testing(splits))
+
+    #
 
     testthat::expect_s3_class(model_fit$fit, "smooth_fit_impl")
 
@@ -339,44 +367,49 @@ test_that("exp_smoothing: smooth", {
 
 # * WORKFLOWS XREGS ----
 
-# Model Spec
-model_spec <- exp_smoothing(
-    seasonal_period = 12,
-    error = "multiplicative", trend = "additive", season = "multiplicative"
-    ,
-    smooth_level = 0.2, smooth_trend = 0.1, smooth_seasonal = 0.1
-) %>%
-    set_engine("smooth_es")
-
-# Recipe spec
-recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-    step_log(value, skip = FALSE) %>%
-    step_date(date, features = "month")
-
-# Workflow
-wflw <- workflow() %>%
-    add_recipe(recipe_spec) %>%
-    add_model(model_spec)
-
-# xreg did not contain values for the holdout, so we had to predict missing values.
-suppressWarnings({
-    wflw_fit <- wflw %>%
-        fit(training(splits))
-})
-
-
-# Forecast
-suppressWarnings({
-    predictions_tbl <- wflw_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits),
-                           actual_data = training(splits)) %>%
-        mutate_at(vars(.value, .conf_lo, .conf_hi), exp)
-})
-
-
 # TESTS
 test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
+
+    testthat::skip_on_cran()
+
+    #
+
+
+    # Model Spec
+    model_spec <- exp_smoothing(
+        seasonal_period = 12,
+        error = "multiplicative", trend = "additive", season = "multiplicative"
+        ,
+        smooth_level = 0.2, smooth_trend = 0.1, smooth_seasonal = 0.1
+    ) %>%
+        set_engine("smooth_es")
+
+    # Recipe spec
+    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
+        step_log(value, skip = FALSE) %>%
+        step_date(date, features = "month")
+
+    # Workflow
+    wflw <- workflow() %>%
+        add_recipe(recipe_spec) %>%
+        add_model(model_spec)
+
+    # xreg did not contain values for the holdout, so we had to predict missing values.
+    suppressWarnings({
+        wflw_fit <- wflw %>%
+            fit(training(splits))
+    })
+
+    # Forecast
+    suppressWarnings({
+        predictions_tbl <- wflw_fit %>%
+            modeltime_calibrate(testing(splits)) %>%
+            modeltime_forecast(new_data = testing(splits),
+                               actual_data = training(splits)) %>%
+            mutate_at(vars(.value, .conf_lo, .conf_hi), exp)
+    })
+
+    #
 
     testthat::expect_s3_class(wflw_fit$fit$fit$fit, "smooth_fit_impl")
 
@@ -394,9 +427,8 @@ test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
     mld <- wflw_fit %>% workflows::extract_mold()
     testthat::expect_equal(names(mld$outcomes), "value")
 
-})
 
-test_that("exp_smoothing: ets (workflow), Test Predictions", {
+    # exp_smoothing: ets (workflow), Test Predictions
 
     full_data <- bind_rows(training(splits), testing(splits))
 

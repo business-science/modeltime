@@ -17,6 +17,8 @@ model_spec <- seasonal_reg() %>%
 # CHECKS ----
 test_that("seasonal_reg: checks", {
 
+    testthat::skip_on_cran()
+
     # external regressors message
     expect_error({
         seasonal_reg(seasonal_period_1 = 1) %>%

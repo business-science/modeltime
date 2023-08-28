@@ -7,6 +7,8 @@ library(timetk)
 
 test_that("default_forecast_accuracy_metric_set works", {
 
+    testthat::skip_on_cran()
+
     set.seed(1)
     data <- tibble(
         time  = tk_make_timeseries("2020", by = "sec", length_out = 10),
@@ -24,6 +26,8 @@ test_that("default_forecast_accuracy_metric_set works", {
 })
 
 test_that("summarize_accuracy_metrics works", {
+
+    testthat::skip_on_cran()
 
     predictions_tbl <- tibble(
         group = c(rep("model_1", 4),
