@@ -117,7 +117,20 @@
 <h2 class="pkg-version" data-toc-text="1.2.8" id="modeltime-128">modeltime 1.2.8<a class="anchor" aria-label="anchor" href="#modeltime-128"></a></h2>
 <ul><li>Integrate Conformal Predictions. <a href="https://github.com/business-science/modeltime/issues/173" class="external-link">#173</a></li>
 <li>New Vignette: Conformal Forecast Prediction Intervals in Modeltime</li>
+</ul><div class="section level5">
+<h5 id="other-changes-1-2-8">Other Changes:<a class="anchor" aria-label="anchor" href="#other-changes-1-2-8"></a></h5>
+<ul><li>Reduced test times on CRAN</li>
+<li>CRAN Vignettes &amp; Tests: Enforce no parallel cores <code>Sys.setenv("OMP_THREAD_LIMIT" = 1)</code>
+</li>
+<li>Change the default parallel processing to one (1) core from all available cores (-1):
+<ul><li><code><a href="../reference/control_modeltime.html">control_refit()</a></code></li>
+<li><code><a href="../reference/control_modeltime.html">control_fit_workflowset()</a></code></li>
+<li><code><a href="../reference/control_modeltime.html">control_nested_fit()</a></code></li>
+<li><code><a href="../reference/control_modeltime.html">control_nested_refit()</a></code></li>
+<li><code><a href="../reference/control_modeltime.html">control_nested_forecast()</a></code></li>
+</ul></li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.7" id="modeltime-127">modeltime 1.2.7<a class="anchor" aria-label="anchor" href="#modeltime-127"></a></h2><p class="text-muted">CRAN release: 2023-07-03</p>
 <ul><li>Fixes for R4.3+ which returns <code>lm</code> models as <code>pred_res</code>. <a href="https://github.com/business-science/modeltime/issues/228" class="external-link">#228</a></li>

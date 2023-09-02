@@ -141,33 +141,33 @@ training functions:</p><ul><li><p><code>control_refit()</code>: Used with <code>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">control_refit</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span>, allow_par <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, packages <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">control_refit</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span>, allow_par <span class="op">=</span> <span class="cn">FALSE</span>, cores <span class="op">=</span> <span class="fl">1</span>, packages <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">control_fit_workflowset</span><span class="op">(</span></span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  allow_par <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cores <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  packages <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">control_nested_fit</span><span class="op">(</span></span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  allow_par <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cores <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  packages <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">control_nested_refit</span><span class="op">(</span></span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  allow_par <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cores <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  packages <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">control_nested_forecast</span><span class="op">(</span></span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  allow_par <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cores <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  packages <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -184,7 +184,7 @@ training functions:</p><ul><li><p><code>control_refit()</code>: Used with <code>
 
 <dt>cores</dt>
 <dd><p>Number of cores for computation. If -1, uses all available physical cores.
-Default: <code>-1</code>.</p></dd>
+Default: <code>1</code>.</p></dd>
 
 
 <dt>packages</dt>
@@ -223,8 +223,8 @@ during parallel processing.</p><ul><li><p>Packages in your namespace are loaded 
 <span class="r-out co"><span class="r-pr">#&gt;</span> cores     : 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> verbose   : FALSE </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Allow parallel processing</span></span></span>
-<span class="r-in"><span><span class="fu">control_refit</span><span class="op">(</span>allow_par <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Allow parallel processing and use all cores</span></span></span>
+<span class="r-in"><span><span class="fu">control_refit</span><span class="op">(</span>allow_par <span class="op">=</span> <span class="cn">TRUE</span>, cores <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> refit control object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> allow_par : TRUE </span>
@@ -248,7 +248,7 @@ during parallel processing.</p><ul><li><p>Packages in your namespace are loaded 
 <span class="r-out co"><span class="r-pr">#&gt;</span> refit control object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> allow_par : TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cores     : 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cores     : 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> verbose   : FALSE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> packages  : modeltime parsnip workflows dplyr stats lubridate tidymodels timetk rsample recipes yardstick dials tune forcats stringr readr tidyverse workflowsets tidyr tibble purrr modeldata infer ggplot2 scales broom smooth greybox graphics grDevices utils datasets methods base thief </span>
 <span class="r-in"><span></span></span>
