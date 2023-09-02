@@ -169,7 +169,7 @@ get_operator <- function(allow_par = TRUE) {
 #'
 #' @param allow_par Logical to allow parallel computation. Default: `FALSE` (single threaded).
 #' @param cores Number of cores for computation. If -1, uses all available physical cores.
-#'  Default: `-1`.
+#'  Default: `1`.
 #' @param packages An optional character string of additional R package names that should be loaded
 #'  during parallel processing.
 #'
@@ -192,8 +192,8 @@ get_operator <- function(allow_par = TRUE) {
 #' # No parallel processing by default
 #' control_refit()
 #'
-#' # Allow parallel processing
-#' control_refit(allow_par = TRUE)
+#' # Allow parallel processing and use all cores
+#' control_refit(allow_par = TRUE, cores = -1)
 #'
 #' # Set verbosity to show additional training information
 #' control_refit(verbose = TRUE)
@@ -212,7 +212,7 @@ get_operator <- function(allow_par = TRUE) {
 #' @rdname control_modeltime
 control_refit <- function(verbose = FALSE,
                           allow_par = FALSE,
-                          cores = -1,
+                          cores = 1,
                           packages = NULL) {
 
     ret <- control_modeltime_objects(
@@ -240,7 +240,7 @@ print.control_refit <- function(x, ...) {
 #' @rdname control_modeltime
 control_fit_workflowset <- function(verbose = FALSE,
                                     allow_par = FALSE,
-                                    cores = -1,
+                                    cores = 1,
                                     packages = NULL) {
 
     ret <- control_modeltime_objects(
@@ -270,7 +270,7 @@ print.control_fit_workflowset <- function(x, ...) {
 #' @rdname control_modeltime
 control_nested_fit <- function(verbose = FALSE,
                                allow_par = FALSE,
-                               cores = -1,
+                               cores = 1,
                                packages = NULL) {
 
     ret <- control_modeltime_objects(
@@ -301,7 +301,7 @@ print.control_nested_fit <- function(x, ...) {
 #' @rdname control_modeltime
 control_nested_refit <- function(verbose = FALSE,
                                  allow_par = FALSE,
-                                 cores = -1,
+                                 cores = 1,
                                  packages = NULL) {
 
     ret <- control_modeltime_objects(
@@ -332,7 +332,7 @@ print.control_nested_refit <- function(x, ...) {
 #' @rdname control_modeltime
 control_nested_forecast <- function(verbose = FALSE,
                                  allow_par = FALSE,
-                                 cores = -1,
+                                 cores = 1,
                                  packages = NULL) {
 
     ret <- control_modeltime_objects(
@@ -362,7 +362,7 @@ print.control_nested_refit <- function(x, ...) {
 control_modeltime_objects <- function(
     verbose = FALSE,
     allow_par = FALSE,
-    cores = -1,
+    cores = 1,
     packages = NULL,
     func = NULL
 ) {

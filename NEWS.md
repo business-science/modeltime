@@ -3,6 +3,18 @@
 - Integrate Conformal Predictions. #173
 - New Vignette: Conformal Forecast Prediction Intervals in Modeltime
 
+
+#### Other Changes:
+
+- Reduced test times on CRAN
+- CRAN Vignettes & Tests: Enforce no parallel cores `Sys.setenv("OMP_THREAD_LIMIT" = 1)`
+- Change the default parallel processing to one (1) core from all available cores (-1):
+    - `control_refit()`
+    - `control_fit_workflowset()`
+    - `control_nested_fit()`
+    - `control_nested_refit()`
+    - `control_nested_forecast()`
+
 # modeltime 1.2.7
 
 - Fixes for R4.3+ which returns `lm` models as `pred_res`. #228

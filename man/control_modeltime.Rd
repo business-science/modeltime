@@ -9,33 +9,33 @@
 \alias{control_nested_forecast}
 \title{Control aspects of the training process}
 \usage{
-control_refit(verbose = FALSE, allow_par = FALSE, cores = -1, packages = NULL)
+control_refit(verbose = FALSE, allow_par = FALSE, cores = 1, packages = NULL)
 
 control_fit_workflowset(
   verbose = FALSE,
   allow_par = FALSE,
-  cores = -1,
+  cores = 1,
   packages = NULL
 )
 
 control_nested_fit(
   verbose = FALSE,
   allow_par = FALSE,
-  cores = -1,
+  cores = 1,
   packages = NULL
 )
 
 control_nested_refit(
   verbose = FALSE,
   allow_par = FALSE,
-  cores = -1,
+  cores = 1,
   packages = NULL
 )
 
 control_nested_forecast(
   verbose = FALSE,
   allow_par = FALSE,
-  cores = -1,
+  cores = 1,
   packages = NULL
 )
 }
@@ -45,7 +45,7 @@ control_nested_forecast(
 \item{allow_par}{Logical to allow parallel computation. Default: \code{FALSE} (single threaded).}
 
 \item{cores}{Number of cores for computation. If -1, uses all available physical cores.
-Default: \code{-1}.}
+Default: \code{1}.}
 
 \item{packages}{An optional character string of additional R package names that should be loaded
 during parallel processing.
@@ -73,8 +73,8 @@ training functions:
 # No parallel processing by default
 control_refit()
 
-# Allow parallel processing
-control_refit(allow_par = TRUE)
+# Allow parallel processing and use all cores
+control_refit(allow_par = TRUE, cores = -1)
 
 # Set verbosity to show additional training information
 control_refit(verbose = TRUE)
