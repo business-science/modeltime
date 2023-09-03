@@ -1,6 +1,6 @@
 # modeltime 1.2.8.9000
 
-- Integrate Conformal Predictions into Nested Forecast Workflow: `modeltime_nested_fit()`. #173
+- Integrate Conformal Predictions into Nested Forecast Workflow: `modeltime_nested_fit()` and `modeltime_nested_refit()`. #173
 
 #### Other Changes:
 

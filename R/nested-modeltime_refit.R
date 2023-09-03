@@ -66,6 +66,9 @@ modeltime_nested_refit_parallel <- function(object, control) {
 
     conf_interval <- attr(object, "conf_interval")
 
+    conf_method <- attr(object, "conf_method")
+    if (is.null(conf_method)) {conf_method <- "conformal_default"}
+
     # SETUP ITERABLES ----
 
     model_list  = object$.modeltime_tables
@@ -163,7 +166,8 @@ modeltime_nested_refit_parallel <- function(object, control) {
                         object        = ret,
                         new_data      = f,
                         actual_data   = d,
-                        conf_interval = conf_interval
+                        conf_interval = conf_interval,
+                        conf_method   = conf_method
                     ) %>%
                         tibble::add_column(!! id_text := id, .before = 1)
 
@@ -266,6 +270,9 @@ modeltime_nested_refit_sequential <- function(object, control) {
 
     conf_interval <- attr(object, "conf_interval")
 
+    conf_method <- attr(object, "conf_method")
+    if (is.null(conf_method)) {conf_method <- "conformal_default"}
+
 
     # SETUP LOGGING ENV ----
     logging_env <- rlang::env(
@@ -366,7 +373,8 @@ modeltime_nested_refit_sequential <- function(object, control) {
                                 object        = ret,
                                 new_data      = f,
                                 actual_data   = d,
-                                conf_interval = conf_interval
+                                conf_interval = conf_interval,
+                                conf_method   = conf_method
                             ) %>%
                                 tibble::add_column(!! id_text := id, .before = 1)
 
