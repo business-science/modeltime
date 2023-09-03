@@ -35,7 +35,7 @@ seasonal_period <- function(values = c("none", "daily", "weekly", "yearly")) {
     dials::new_qual_param(
         type     = c("character"),
         values   = values,
-        default  = "none",
+        # default  = "none",
         label    = c(period = "Period (Seasonal Frequency)"),
         finalize = NULL
     )

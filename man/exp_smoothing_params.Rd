@@ -24,7 +24,7 @@ trend_smooth(
 
 season(values = c("additive", "multiplicative", "none"))
 
-damping(values = c("damped", "none"))
+damping(values = c("none", "damped"))
 
 damping_smooth(range = c(0, 2), trans = NULL)
 

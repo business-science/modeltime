@@ -38,7 +38,7 @@
 use_constant <- function(values = c(FALSE, TRUE)) {
     dials::new_qual_param(
         type      = "logical",
-        default   = FALSE,
+        # default   = FALSE,
         values    = values,
         label     = c(use_constant = "Logical, determining, whether the constant is needed in the model or not"),
         finalize  = NULL
@@ -52,7 +52,7 @@ use_constant <- function(values = c(FALSE, TRUE)) {
 regressors_treatment <- function(values = c("use", "select", "adapt")) {
     dials::new_qual_param(
         type      = "character",
-        default   = "use",
+        # default   = "use",
         values    = values,
         label     = c(regressors_treatment = "The variable defines what to do with the provided explanatory variables."),
         finalize  = NULL
@@ -66,7 +66,7 @@ outliers_treatment <- function(values = c( "ignore", "use", "select")) {
     dials::new_qual_param(
         type      = "character",
         values    = values,
-        default   = "ignore",
+        # default   = "ignore",
         label     = c(outliers_treatment = "Defines what to do with outliers."),
         finalize  = NULL
     )
@@ -78,7 +78,7 @@ outliers_treatment <- function(values = c( "ignore", "use", "select")) {
 probability_model <- function(values= c("none", "auto", "fixed", "general", "odds-ratio", "inverse-odds-ratio", "direct")) {
     dials::new_qual_param(
         type      = "character",
-        default   = "none",
+        # default   = "none",
         values    = values,
         label     = c(probability_model = "The type of model used in probability estimation."),
         finalize  = NULL
@@ -91,7 +91,7 @@ probability_model <- function(values= c("none", "auto", "fixed", "general", "odd
 distribution <- function(values = c("default", "dnorm", "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma")) {
     dials::new_qual_param(
         type      = "character",
-        default   = "default",
+        # default   = "default",
         values    = values,
         label     = c(distribution = "What density function to assume for the error term."),
         finalize  = NULL
@@ -105,7 +105,7 @@ information_criteria <- function(values    = c("AICc", "AIC", "BICc", "BIC")) {
     dials::new_qual_param(
         type      = "character",
         values    = values,
-        default   = "AICc",
+        # default   = "AICc",
         label     = c(information_criteria = "The information criterion to use in the model selection / combination procedure."),
         finalize  = NULL
     )
@@ -117,7 +117,7 @@ information_criteria <- function(values    = c("AICc", "AIC", "BICc", "BIC")) {
 select_order <- function(values = c(FALSE, TRUE)) {
     dials::new_qual_param(
         type      = "logical",
-        default   = FALSE,
+        # default   = FALSE,
         values    = values,
         label     = c(select_order = "If TRUE, then the function will select the most appropriate order."),
         finalize  = NULL

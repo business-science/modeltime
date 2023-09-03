@@ -45,7 +45,7 @@ growth <- function(values = c("linear", "logistic")) {
     dials::new_qual_param(
         type     = c("character"),
         values   = values,
-        default  = "linear",
+        # default  = "linear",
         label    = c(growth = "Growth Trend"),
         finalize = NULL
     )
@@ -83,7 +83,7 @@ seasonality_yearly <- function(values = c(TRUE, FALSE)) {
     dials::new_qual_param(
         type     = c("logical"),
         values   = values,
-        default  = TRUE,
+        # default  = TRUE,
         label    = c(seasonality_yearly = "Use Yearly Seasonality"),
         finalize = NULL
     )
@@ -95,7 +95,7 @@ seasonality_weekly <- function(values = c(TRUE, FALSE)) {
     dials::new_qual_param(
         type     = c("logical"),
         values   = values,
-        default  = TRUE,
+        # default  = TRUE,
         label    = c(seasonality_weekly = "Use Weekly Seasonality"),
         finalize = NULL
     )
@@ -107,7 +107,7 @@ seasonality_daily <- function(values = c(TRUE, FALSE)) {
     dials::new_qual_param(
         type     = c("logical"),
         values   = values,
-        default  = TRUE,
+        # default  = TRUE,
         label    = c(seasonality_daily = "Use Daily Seasonality"),
         finalize = NULL
     )
