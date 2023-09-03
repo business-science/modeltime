@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.8.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,8 +114,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.2.8" id="modeltime-128">modeltime 1.2.8<a class="anchor" aria-label="anchor" href="#modeltime-128"></a></h2>
-<ul><li>Integrate Conformal Predictions. <a href="https://github.com/business-science/modeltime/issues/173" class="external-link">#173</a></li>
+<h2 class="pkg-version" data-toc-text="1.2.8.9000" id="modeltime-1289000">modeltime 1.2.8.9000<a class="anchor" aria-label="anchor" href="#modeltime-1289000"></a></h2>
+<ul><li>Integrate Conformal Predictions into Nested Forecast Workflow: <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code>. <a href="https://github.com/business-science/modeltime/issues/173" class="external-link">#173</a></li>
+</ul><div class="section level5">
+<h5 id="other-changes-1-2-8-9000">Other Changes:<a class="anchor" aria-label="anchor" href="#other-changes-1-2-8-9000"></a></h5>
+<ul><li>Dials Parameters: Remove deprecated <code>default</code> inside <code>new_qual_param()</code>.</li>
+<li>Fix warning in dev-xregs: Use <code><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of()</a></code> inside <code>prepare_xreg_recipe_from_predictors()</code>
+</li>
+<li>Fix broken test: <code>test-tune_workflows</code> Unused argument: <code>cores = 2</code>
+</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.8" id="modeltime-128">modeltime 1.2.8<a class="anchor" aria-label="anchor" href="#modeltime-128"></a></h2><p class="text-muted">CRAN release: 2023-09-02</p>
+<ul><li>Integrate Conformal Predictions into Standard Modeltime Forecast Workflow: <code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code> <a href="https://github.com/business-science/modeltime/issues/173" class="external-link">#173</a></li>
 <li>New Vignette: Conformal Forecast Prediction Intervals in Modeltime</li>
 </ul><div class="section level5">
 <h5 id="other-changes-1-2-8">Other Changes:<a class="anchor" aria-label="anchor" href="#other-changes-1-2-8"></a></h5>
