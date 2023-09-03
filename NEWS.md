@@ -1,3 +1,7 @@
+# modeltime 1.2.8.9000
+
+- Dials Parameters: Remove deprecated `default` inside `new_qual_param()`.
+
 # modeltime 1.2.8
 
 - Integrate Conformal Predictions. #173
