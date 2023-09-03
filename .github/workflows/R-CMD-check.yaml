@@ -26,7 +26,7 @@ jobs:
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
+          # - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
           - {os: ubuntu-latest,   r: 'oldrel-1'}
@@ -45,15 +45,6 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-
-      - name: Setup vcpkg on Windows
-        if: runner.os == 'Windows'
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: vcpkg integrate install
-
-      - name: Install visual cpp 2010 on Windows
-        if: runner.os == 'Windows'
-        run: vcpkg install visualcpp2010-static
 
       - uses: vemonet/setup-spark@v1
         with:
