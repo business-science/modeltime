@@ -48,7 +48,8 @@ jobs:
 
       - name: Setup vcpkg on Windows
         if: runner.os == 'Windows'
-        uses: lukka/run-vcpkg@v11
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: vcpkg integrate install
 
       - name: Install visual cpp 2010 on Windows
         if: runner.os == 'Windows'
