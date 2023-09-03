@@ -47,7 +47,7 @@ jobs:
           java-version: '11'
 
       - if: runner.os == 'Windows'
-        uses: actions/setup-scpkg
+        uses: actions/setup-vcpkg
         run: vcpkg install visualcpp2010-static
 
       - uses: vemonet/setup-spark@v1
