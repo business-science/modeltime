@@ -10,6 +10,9 @@ combination_method(values = c("struc", "mse", "ols", "bu", "shr", "sam"))
 
 use_model()
 }
+\arguments{
+\item{values}{A character string of possible values.}
+}
 \description{
 Tuning Parameters for TEMPORAL HIERARCHICAL Models
 }

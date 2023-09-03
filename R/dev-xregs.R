@@ -216,7 +216,7 @@ prepare_xreg_recipe_from_predictors <- function(data, prepare = TRUE,
 
             if (length(names_ordered) > 0) {
                 recipe_spec <- recipe_spec %>%
-                    recipes::step_mutate_at(names_ordered,
+                    recipes::step_mutate_at(dplyr::all_of(names_ordered),
                                             fn = ~ factor(., ordered = FALSE))
             }
 
@@ -241,7 +241,7 @@ prepare_xreg_recipe_from_predictors <- function(data, prepare = TRUE,
 
             if (length(c(names_date)) > 0) {
                 recipe_spec <- recipe_spec %>%
-                    recipes::step_rm(names_date)
+                    recipes::step_rm(dplyr::all_of(names_date))
             }
 
             # Remove any zero variance predictors

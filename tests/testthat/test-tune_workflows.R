@@ -48,6 +48,8 @@ test_that("Tuning, arima_boost", {
         size = 3
     )
 
+    parallel_start(2)
+
     # Tune
     tune_results_boosted <- workflow() %>%
         add_recipe(recipe_spec) %>%
@@ -55,13 +57,14 @@ test_that("Tuning, arima_boost", {
         tune_grid(
             resamples = resample_spec,
             grid      = grid_spec,
-            metrics   = metric_set(mae, mape, smape, mase, rmse, rsq),
+            metrics   = default_forecast_accuracy_metric_set(),
             control   = control_grid(
-                verbose   = FALSE,
+                verbose   = TRUE,
                 allow_par = TRUE,
-                cores     = 2
             )
         )
+
+    parallel_stop()
 
 
     # structure

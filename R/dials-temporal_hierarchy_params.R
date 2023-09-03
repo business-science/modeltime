@@ -1,6 +1,6 @@
 #' Tuning Parameters for TEMPORAL HIERARCHICAL Models
 #'
-#'
+#' @param values A character string of possible values.
 #'
 #' @details
 #' The main parameters for Temporal Hierarchical models are:
