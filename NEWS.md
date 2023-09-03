@@ -1,10 +1,16 @@
 # modeltime 1.2.8.9000
 
+- Integrate Conformal Predictions into Nested Forecast Workflow: `modeltime_nested_fit()`. #173
+
+#### Other Changes:
+
 - Dials Parameters: Remove deprecated `default` inside `new_qual_param()`.
+- Fix warning in dev-xregs: Use `all_of()` inside `prepare_xreg_recipe_from_predictors()`
+- Fix broken test: `test-tune_workflows` Unused argument: `cores = 2`
 
 # modeltime 1.2.8
 
-- Integrate Conformal Predictions. #173
+- Integrate Conformal Predictions into Standard Modeltime Forecast Workflow: `modeltime_forecast()` #173
 - New Vignette: Conformal Forecast Prediction Intervals in Modeltime
 
 

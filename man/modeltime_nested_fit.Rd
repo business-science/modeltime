@@ -10,6 +10,7 @@ modeltime_nested_fit(
   model_list = NULL,
   metric_set = default_forecast_accuracy_metric_set(),
   conf_interval = 0.95,
+  conf_method = "conformal_default",
   control = control_nested_fit()
 )
 }
@@ -25,6 +26,12 @@ forecast accuracy (regression) metrics.}
 
 \item{conf_interval}{An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
+
+\item{conf_method}{Algorithm used to produce confidence intervals. All CI's are Conformal Predictions. Choose one of:
+\itemize{
+\item \code{conformal_default}: Uses \code{qnorm()} to compute quantiles from out-of-sample (test set) residuals.
+\item \code{conformal_split}: Uses the split method split conformal inference method described by Lei \emph{et al} (2018)
+}}
 
 \item{control}{Used to control verbosity and parallel processing. See \code{\link[=control_nested_fit]{control_nested_fit()}}.}
 }
