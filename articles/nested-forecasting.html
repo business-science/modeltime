@@ -438,13 +438,14 @@ column.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■                           </span>  14% | ETA:…</span></span>
 <span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | ETA:…</span></span>
-<span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  71% | ETA:…</span></span>
+<span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  86% | ETA:…</span></span>
 <span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:…</span></span>
 <span></span>
 <span><span class="va">nested_modeltime_tbl</span></span>
 <span><span class="co">#&gt; # Nested Modeltime Table</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">Trained on: .splits | Model Errors: [0]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Trained on: .splits | Forecast Errors: [0] | Conf Method: conformal_default |</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Conf Interval: 0.95</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 5</span></span></span>
 <span><span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            </span></span>
@@ -477,23 +478,23 @@ model performs best on which time series.</p>
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<div id="qzmnmlyxvg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qzmnmlyxvg table {
+<div id="fmzeyvxlnn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fmzeyvxlnn table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qzmnmlyxvg thead, #qzmnmlyxvg tbody, #qzmnmlyxvg tfoot, #qzmnmlyxvg tr, #qzmnmlyxvg td, #qzmnmlyxvg th {
+#fmzeyvxlnn thead, #fmzeyvxlnn tbody, #fmzeyvxlnn tfoot, #fmzeyvxlnn tr, #fmzeyvxlnn td, #fmzeyvxlnn th {
   border-style: none;
 }
 
-#qzmnmlyxvg p {
+#fmzeyvxlnn p {
   margin: 0;
   padding: 0;
 }
 
-#qzmnmlyxvg .gt_table {
+#fmzeyvxlnn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -519,12 +520,12 @@ model performs best on which time series.</p>
   border-left-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_caption {
+#fmzeyvxlnn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qzmnmlyxvg .gt_title {
+#fmzeyvxlnn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -536,7 +537,7 @@ model performs best on which time series.</p>
   border-bottom-width: 0;
 }
 
-#qzmnmlyxvg .gt_subtitle {
+#fmzeyvxlnn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -548,7 +549,7 @@ model performs best on which time series.</p>
   border-top-width: 0;
 }
 
-#qzmnmlyxvg .gt_heading {
+#fmzeyvxlnn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -560,13 +561,13 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_bottom_border {
+#fmzeyvxlnn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_col_headings {
+#fmzeyvxlnn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -581,7 +582,7 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_col_heading {
+#fmzeyvxlnn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -601,7 +602,7 @@ model performs best on which time series.</p>
   overflow-x: hidden;
 }
 
-#qzmnmlyxvg .gt_column_spanner_outer {
+#fmzeyvxlnn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -613,15 +614,15 @@ model performs best on which time series.</p>
   padding-right: 4px;
 }
 
-#qzmnmlyxvg .gt_column_spanner_outer:first-child {
+#fmzeyvxlnn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qzmnmlyxvg .gt_column_spanner_outer:last-child {
+#fmzeyvxlnn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qzmnmlyxvg .gt_column_spanner {
+#fmzeyvxlnn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -633,11 +634,11 @@ model performs best on which time series.</p>
   width: 100%;
 }
 
-#qzmnmlyxvg .gt_spanner_row {
+#fmzeyvxlnn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qzmnmlyxvg .gt_group_heading {
+#fmzeyvxlnn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -663,7 +664,7 @@ model performs best on which time series.</p>
   text-align: left;
 }
 
-#qzmnmlyxvg .gt_empty_group_heading {
+#fmzeyvxlnn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -678,15 +679,15 @@ model performs best on which time series.</p>
   vertical-align: middle;
 }
 
-#qzmnmlyxvg .gt_from_md > :first-child {
+#fmzeyvxlnn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qzmnmlyxvg .gt_from_md > :last-child {
+#fmzeyvxlnn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qzmnmlyxvg .gt_row {
+#fmzeyvxlnn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -705,7 +706,7 @@ model performs best on which time series.</p>
   overflow-x: hidden;
 }
 
-#qzmnmlyxvg .gt_stub {
+#fmzeyvxlnn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -718,7 +719,7 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#qzmnmlyxvg .gt_stub_row_group {
+#fmzeyvxlnn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -732,15 +733,15 @@ model performs best on which time series.</p>
   vertical-align: top;
 }
 
-#qzmnmlyxvg .gt_row_group_first td {
+#fmzeyvxlnn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qzmnmlyxvg .gt_row_group_first th {
+#fmzeyvxlnn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qzmnmlyxvg .gt_summary_row {
+#fmzeyvxlnn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -750,16 +751,16 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#qzmnmlyxvg .gt_first_summary_row {
+#fmzeyvxlnn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_first_summary_row.thick {
+#fmzeyvxlnn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qzmnmlyxvg .gt_last_summary_row {
+#fmzeyvxlnn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -769,7 +770,7 @@ model performs best on which time series.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_grand_summary_row {
+#fmzeyvxlnn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -779,7 +780,7 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#qzmnmlyxvg .gt_first_grand_summary_row {
+#fmzeyvxlnn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -789,7 +790,7 @@ model performs best on which time series.</p>
   border-top-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_last_grand_summary_row_top {
+#fmzeyvxlnn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -799,11 +800,11 @@ model performs best on which time series.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_striped {
+#fmzeyvxlnn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qzmnmlyxvg .gt_table_body {
+#fmzeyvxlnn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -812,7 +813,7 @@ model performs best on which time series.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_footnotes {
+#fmzeyvxlnn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -826,7 +827,7 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_footnote {
+#fmzeyvxlnn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -835,7 +836,7 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#qzmnmlyxvg .gt_sourcenotes {
+#fmzeyvxlnn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -849,7 +850,7 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#qzmnmlyxvg .gt_sourcenote {
+#fmzeyvxlnn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -857,63 +858,63 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#qzmnmlyxvg .gt_left {
+#fmzeyvxlnn .gt_left {
   text-align: left;
 }
 
-#qzmnmlyxvg .gt_center {
+#fmzeyvxlnn .gt_center {
   text-align: center;
 }
 
-#qzmnmlyxvg .gt_right {
+#fmzeyvxlnn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qzmnmlyxvg .gt_font_normal {
+#fmzeyvxlnn .gt_font_normal {
   font-weight: normal;
 }
 
-#qzmnmlyxvg .gt_font_bold {
+#fmzeyvxlnn .gt_font_bold {
   font-weight: bold;
 }
 
-#qzmnmlyxvg .gt_font_italic {
+#fmzeyvxlnn .gt_font_italic {
   font-style: italic;
 }
 
-#qzmnmlyxvg .gt_super {
+#fmzeyvxlnn .gt_super {
   font-size: 65%;
 }
 
-#qzmnmlyxvg .gt_footnote_marks {
+#fmzeyvxlnn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qzmnmlyxvg .gt_asterisk {
+#fmzeyvxlnn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qzmnmlyxvg .gt_indent_1 {
+#fmzeyvxlnn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qzmnmlyxvg .gt_indent_2 {
+#fmzeyvxlnn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qzmnmlyxvg .gt_indent_3 {
+#fmzeyvxlnn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qzmnmlyxvg .gt_indent_4 {
+#fmzeyvxlnn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qzmnmlyxvg .gt_indent_5 {
+#fmzeyvxlnn .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1232,7 +1233,7 @@ and future forecast logging using the
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [7/7] Starting Modeltime Table: ID 1_95...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> [7/7] Finished Modeltime Table: ID 1_95</span></span>
-<span><span class="co">#&gt; Finished in: 3.6635 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 3.50908 secs.</span></span></code></pre></div>
 <p>Note that we used <code>control_nested_refit(verbose = TRUE)</code>
 to display the modeling results as each model is refit. This is not
 necessary, but can be useful to follow the nested model fitting
@@ -1243,7 +1244,8 @@ now been trained on <code>.actual_data</code>.</p>
 <code class="sourceCode R"><span><span class="va">nested_modeltime_refit_tbl</span></span>
 <span><span class="co">#&gt; # Nested Modeltime Table</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">Trained on: .actual_data | Model Errors: [0]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Trained on: .actual_data | Forecast Errors: [0] | Conf Method:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">conformal_default | Conf Interval: 0.95</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 5</span></span></span>
 <span><span class="co">#&gt;   id    .actual_data       .future_data      .splits         .modeltime_tables </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            </span></span>

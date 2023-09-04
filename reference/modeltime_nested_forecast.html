@@ -125,6 +125,7 @@
 <span>  h <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  include_actual <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  conf_interval <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  conf_method <span class="op">=</span> <span class="st">"conformal_default"</span>,</span>
 <span>  id_subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="control_modeltime.html">control_nested_forecast</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -149,6 +150,12 @@ If FALSE, just returns the forecast predictions.</p></dd>
 <dt>conf_interval</dt>
 <dd><p>An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from <em>out-of-sample prediction error</em>.</p></dd>
+
+
+<dt>conf_method</dt>
+<dd><p>Algorithm used to produce confidence intervals. All CI's are Conformal Predictions. Choose one of:</p><ul><li><p><code>conformal_default</code>: Uses <code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm()</a></code> to compute quantiles from out-of-sample (test set) residuals.</p></li>
+<li><p><code>conformal_split</code>: Uses the split method split conformal inference method described by Lei <em>et al</em> (2018)</p></li>
+</ul></dd>
 
 
 <dt>id_subset</dt>
