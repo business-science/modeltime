@@ -115,8 +115,21 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.8.9000" id="modeltime-1289000">modeltime 1.2.8.9000<a class="anchor" aria-label="anchor" href="#modeltime-1289000"></a></h2>
+<div class="section level5">
+<h5 id="overview-1-2-8-9000">Overview<a class="anchor" aria-label="anchor" href="#overview-1-2-8-9000"></a></h5>
+<p>This version and modeltime 1.2.8 (previous version) include changes to incorporate Conformal Prediction Intervals. There are a number of changes that include new “conformal” confidence methods and Tibble (Data Frame) table display improvements of forecasts aimed at helping the user understand what confidence method is being used and the confidence interval being used throughout the forecasting process in both Standard and Nested Modeltime Forecasting Workflows.</p>
+</div>
+<div class="section level5">
+<h5 id="conformal-predictions-1-2-8-9000">Conformal Predictions:<a class="anchor" aria-label="anchor" href="#conformal-predictions-1-2-8-9000"></a></h5>
 <ul><li>Integrate Conformal Predictions into Nested Forecast Workflow: <code><a href="../reference/modeltime_nested_fit.html">modeltime_nested_fit()</a></code> and <code><a href="../reference/modeltime_nested_refit.html">modeltime_nested_refit()</a></code>. <a href="https://github.com/business-science/modeltime/issues/173" class="external-link">#173</a></li>
-</ul><div class="section level5">
+<li>Updated the <code>print</code> display for conformal prediction Conf Method, Conf Interval:
+<ul><li><code><a href="../reference/modeltime_forecast.html">modeltime_forecast()</a></code></li>
+<li><code><a href="../reference/log_extractors.html">extract_nested_test_forecast()</a></code></li>
+<li><code><a href="../reference/log_extractors.html">extract_nested_future_forecast()</a></code></li>
+<li><code><a href="../reference/modeltime_nested_forecast.html">modeltime_nested_forecast()</a></code></li>
+</ul></li>
+</ul></div>
+<div class="section level5">
 <h5 id="other-changes-1-2-8-9000">Other Changes:<a class="anchor" aria-label="anchor" href="#other-changes-1-2-8-9000"></a></h5>
 <ul><li>Dials Parameters: Remove deprecated <code>default</code> inside <code>new_qual_param()</code>.</li>
 <li>Fix warning in dev-xregs: Use <code><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of()</a></code> inside <code>prepare_xreg_recipe_from_predictors()</code>
