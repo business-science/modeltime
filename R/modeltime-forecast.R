@@ -431,7 +431,37 @@ modeltime_forecast.mdl_time_tbl <- function(object, new_data = NULL, h = NULL, a
     ret <- ret %>%
         dplyr::filter(.model_desc == "ACTUAL" | .key == "prediction")
 
+
+    # STRUCTURE ----
+    class(ret) <- c("mdl_forecast_tbl", class(ret))
+
+    attr(ret, "conf_interval")       <- conf_interval
+    attr(ret, "conf_method")         <- conf_method
+    attr(ret, "conf_by_id")          <- conf_by_id
+
     return(ret)
+}
+
+#' @export
+print.mdl_forecast_tbl <- function(x, ...) {
+
+    # Collect inputs
+    conf_interval <- attr(x, 'conf_interval')
+    conf_method   <- attr(x, 'conf_method')
+    conf_by_id    <- attr(x, 'conf_by_id')
+
+    conf_by_id_desc <- if (conf_by_id) {
+        "LOCAL CONFIDENCE"
+    } else {
+        "GLOBAL CONFIDENCE"
+    }
+
+    cat("# Forecast Results\n")
+    cat("  ")
+    cli::cli_text(cli::col_grey("Conf Method: {conf_method} | Conf Interval: {conf_interval} | Conf By ID: {conf_by_id} ({conf_by_id_desc})"))
+    # cli::cli_rule()
+    class(x) <- class(x)[!(class(x) %in% c("mdl_forecast_tbl"))]
+    print(x, ...)
 }
 
 
