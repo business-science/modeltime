@@ -1,6 +1,17 @@
 # modeltime 1.2.8.9000
 
+#### Overview
+
+This version and modeltime 1.2.8 (previous version) include changes to incorporate Conformal Prediction Intervals. There are a number of changes that include new "conformal" confidence methods and Tibble (Data Frame) table display improvements of forecasts aimed at helping the user understand what confidence method is being used and the confidence interval being used throughout the forecasting process in both Standard and Nested Modeltime Forecasting Workflows. 
+
+#### Conformal Predictions:
+
 - Integrate Conformal Predictions into Nested Forecast Workflow: `modeltime_nested_fit()` and `modeltime_nested_refit()`. #173
+- Updated the `print` display for conformal prediction Conf Method, Conf Interval:
+   - `modeltime_forecast()`
+   - `extract_nested_test_forecast()`
+   - `extract_nested_future_forecast()`
+   - `modeltime_nested_forecast()`
 
 #### Other Changes:
 
