@@ -25,7 +25,16 @@ extract_nested_test_accuracy <- function(object) {
 #' @export
 #' @rdname log_extractors
 extract_nested_test_forecast <- function(object, .include_actual = TRUE, .id_subset = NULL) {
+
     ret <- attr(object, "test_forecast_tbl")
+
+    fit_col       <- attr(object, 'fit_column')
+    time_elapsed  <- attr(object, 'time_elapsed')
+    error_tbl     <- attr(object, 'error_tbl')
+    conf_interval <- attr(object, 'conf_interval')
+    conf_method   <- attr(object, 'conf_method')
+    if (is.null(conf_method)) {conf_method <- "conformal_default"}
+
 
     if (!is.null(ret)) {
         ret <- fcast_extract(
@@ -34,6 +43,16 @@ extract_nested_test_forecast <- function(object, .include_actual = TRUE, .id_sub
             .id_subset      = .id_subset,
             .id_text        = attr(object, "id")
         )
+
+        # STRUCTURE
+
+        class(ret) <- c("mdl_forecast_tbl", class(ret))
+
+        attr(ret, "fit_column")       <- fit_col
+        attr(ret, "conf_interval")    <- conf_interval
+        attr(ret, "conf_method")      <- conf_method
+        attr(ret, "error_tbl")        <- error_tbl
+        attr(ret, "time_elapsed")     <- time_elapsed
     }
 
     return(ret)
@@ -58,6 +77,13 @@ extract_nested_future_forecast <- function(object, .include_actual = TRUE, .id_s
 
     ret <- attr(object, "future_forecast_tbl")
 
+    fit_col       <- attr(object, 'fit_column')
+    time_elapsed  <- attr(object, 'time_elapsed')
+    error_tbl     <- attr(object, 'error_tbl')
+    conf_interval <- attr(object, 'conf_interval')
+    conf_method   <- attr(object, 'conf_method')
+    if (is.null(conf_method)) {conf_method <- "conformal_default"}
+
     if (!is.null(ret)) {
         ret <- fcast_extract(
             fcast_tbl       = ret,
@@ -65,6 +91,16 @@ extract_nested_future_forecast <- function(object, .include_actual = TRUE, .id_s
             .id_subset      = .id_subset,
             .id_text        = attr(object, "id")
         )
+
+        # STRUCTURE
+
+        class(ret) <- c("mdl_forecast_tbl", class(ret))
+
+        attr(ret, "fit_column")       <- fit_col
+        attr(ret, "conf_interval")    <- conf_interval
+        attr(ret, "conf_method")      <- conf_method
+        attr(ret, "error_tbl")        <- error_tbl
+        attr(ret, "time_elapsed")     <- time_elapsed
     }
 
     return(ret)
@@ -121,8 +157,6 @@ fcast_extract <- function(fcast_tbl, .include_actual = TRUE, .id_subset = NULL, 
         }
 
     }
-
-
 
     return(ret)
 }

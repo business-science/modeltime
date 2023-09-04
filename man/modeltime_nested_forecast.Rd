@@ -9,6 +9,7 @@ modeltime_nested_forecast(
   h = NULL,
   include_actual = TRUE,
   conf_interval = 0.95,
+  conf_method = "conformal_default",
   id_subset = NULL,
   control = control_nested_forecast()
 )
@@ -24,6 +25,12 @@ If FALSE, just returns the forecast predictions.}
 
 \item{conf_interval}{An estimated confidence interval based on the calibration data.
 This is designed to estimate future confidence from \emph{out-of-sample prediction error}.}
+
+\item{conf_method}{Algorithm used to produce confidence intervals. All CI's are Conformal Predictions. Choose one of:
+\itemize{
+\item \code{conformal_default}: Uses \code{qnorm()} to compute quantiles from out-of-sample (test set) residuals.
+\item \code{conformal_split}: Uses the split method split conformal inference method described by Lei \emph{et al} (2018)
+}}
 
 \item{id_subset}{A sequence of ID's from the modeltime table to subset the forecasting process.
 This can speed forecasts up.}

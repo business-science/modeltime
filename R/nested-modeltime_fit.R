@@ -592,13 +592,18 @@ print.nested_mdl_time <- function(x, ...) {
         dplyr::pull(.model_id) %>%
         unique() %>%
         length()
+    conf_interval <- attr(x, 'conf_interval')
+    conf_method   <- attr(x, 'conf_method')
+    if (is.null(conf_method)) {conf_method <- "conformal_default"}
 
     cat("# Nested Modeltime Table\n")
     cat("  ")
-    cli::cli_text(cli::col_grey("Trained on: {fit_col} | Model Errors: [{n_models_with_errors}]"))
+    cli::cli_text(cli::col_grey("Trained on: {fit_col} | Forecast Errors: [{n_models_with_errors}] | Conf Method: {conf_method} | Conf Interval: {conf_interval}"))
     # cli::cli_rule()
     class(x) <- class(x)[!(class(x) %in% c("nested_mdl_time"))]
     print(x, ...)
+
+
 }
 
 
