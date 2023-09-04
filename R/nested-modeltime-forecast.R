@@ -246,7 +246,7 @@ modeltime_nested_forecast_sequential <- function(object, h, include_actual, conf
             tidyr::drop_na(.error_desc)
     }
 
-    class(ret) <- c("mdl_forecast_tbl", class(ret))
+    class(ret) <- c("mdl_nested_forecast_tbl", class(ret))
 
     attr(ret, "conf_interval")       <- conf_interval
     attr(ret, "conf_method")         <- conf_method
@@ -390,7 +390,7 @@ modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_i
 
     ret <- fcast_tbl
 
-    class(ret) <- c("mdl_forecast_tbl", class(ret))
+    class(ret) <- c("mdl_nested_forecast_tbl", class(ret))
 
     attr(ret, "conf_interval")       <- conf_interval
     attr(ret, "conf_method")         <- conf_method
@@ -406,7 +406,7 @@ modeltime_nested_forecast_parallel <- function(object, h, include_actual, conf_i
 }
 
 #' @export
-print.mdl_forecast_tbl <- function(x, ...) {
+print.mdl_nested_forecast_tbl <- function(x, ...) {
 
     # Collect inputs
     fit_col <- attr(x, 'fit_column')
@@ -416,10 +416,10 @@ print.mdl_forecast_tbl <- function(x, ...) {
     conf_method   <- attr(x, 'conf_method')
     if (is.null(conf_method)) {conf_method <- "conformal_default"}
 
-    cat("# Forecast Results\n")
+    cat("# Nested Forecast Results\n")
     cat("  ")
     cli::cli_text(cli::col_grey("Trained on: {fit_col} | Forecast Errors: [{n_models_with_errors}] | Conf Method: {conf_method} | Conf Interval: {conf_interval}"))
     # cli::cli_rule()
-    class(x) <- class(x)[!(class(x) %in% c("mdl_forecast_tbl"))]
+    class(x) <- class(x)[!(class(x) %in% c("mdl_nested_forecast_tbl"))]
     print(x, ...)
 }

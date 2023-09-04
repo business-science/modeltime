@@ -46,7 +46,7 @@ extract_nested_test_forecast <- function(object, .include_actual = TRUE, .id_sub
 
         # STRUCTURE
 
-        class(ret) <- c("mdl_forecast_tbl", class(ret))
+        class(ret) <- c("mdl_nested_forecast_tbl", class(ret))
 
         attr(ret, "fit_column")       <- fit_col
         attr(ret, "conf_interval")    <- conf_interval
@@ -94,7 +94,7 @@ extract_nested_future_forecast <- function(object, .include_actual = TRUE, .id_s
 
         # STRUCTURE
 
-        class(ret) <- c("mdl_forecast_tbl", class(ret))
+        class(ret) <- c("mdl_nested_forecast_tbl", class(ret))
 
         attr(ret, "fit_column")       <- fit_col
         attr(ret, "conf_interval")    <- conf_interval
