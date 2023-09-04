@@ -367,7 +367,8 @@ intervals.</p>
 <span></span>
 <span><span class="co"># Last 7 data points for (1 for each time series)</span></span>
 <span><span class="va">forecast_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
+<span><span class="co">#&gt; # Forecast Results</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
 <span><span class="co">#&gt;   .model_id .model_desc .key       .index      .value .conf_lo .conf_hi id   </span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">24</span>996.   <span style="text-decoration: underline;">10</span>825.   <span style="text-decoration: underline;">39</span>167. 1_1  </span></span>
@@ -410,7 +411,8 @@ is also implemented in the <code>probably</code> R package’s
 <span></span>
 <span><span class="co"># Last 7 data points for (1 for each time series)</span></span>
 <span><span class="va">forecast_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
+<span><span class="co">#&gt; # Forecast Results</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
 <span><span class="co">#&gt;   .model_id .model_desc .key       .index      .value .conf_lo .conf_hi id   </span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">24</span>996.    <span style="text-decoration: underline;">8</span>291.   <span style="text-decoration: underline;">41</span>701. 1_1  </span></span>

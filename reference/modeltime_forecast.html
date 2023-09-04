@@ -334,6 +334,10 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 <span class="r-in"><span>        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>        actual_data <span class="op">=</span> <span class="va">m750</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Forecast Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">Conf Method: conformal_default | Conf Interval: 0.95 | Conf By ID: FALSE</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">(GLOBAL CONFIDENCE)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 337 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model_id .model_desc .key   .index     .value .conf_lo .conf_hi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -357,6 +361,10 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 <span class="r-in"><span>        new_data    <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>        actual_data <span class="op">=</span> <span class="va">m750</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Forecast Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">Conf Method: conformal_default | Conf Interval: | Conf By ID: FALSE (GLOBAL</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">CONFIDENCE)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 337 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model_id .model_desc .key   .index     .value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -381,6 +389,10 @@ If desired, the user can sort the output by <code>.key</code>, <code>.model_id</
 <span class="r-in"><span>        new_data      <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>        keep_data     <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Forecast Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">Conf Method: conformal_default | Conf Interval: 0.95 | Conf By ID: FALSE</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">(GLOBAL CONFIDENCE)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 31 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model_id .model_desc .key       .index     .value .conf_lo .conf_hi id   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
