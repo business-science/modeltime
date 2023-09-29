@@ -13,7 +13,11 @@
 coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://app.codecov.io/gh/business-science/modeltime?branch=master)
 <!-- badges: end -->
 
-> Tidy time series forecasting with `tidymodels`.
+> Tidy time series forecasting in `R`.
+
+Mission: Our number 1 goal is to make high-performance time series
+analysis easier, faster, and more scalable. Modeltime solves this with a
+simple to use infrastructure for modeling and forecasting time series.
 
 ## Quickstart Video
 
