@@ -4,12 +4,6 @@
     <loc>https://business-science.github.io/modeltime/404.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/LICENSE.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/articles/extending-modeltime.html</loc>
   </url>
   <url>
@@ -20,6 +14,9 @@
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/articles/modeling-panel-data.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/articles/modeltime-conformal-prediction.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/articles/modeltime-model-list.html</loc>
@@ -43,25 +40,22 @@
     <loc>https://business-science.github.io/modeltime/index.html</loc>
   </url>
   <url>
+    <loc>https://business-science.github.io/modeltime/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>https://business-science.github.io/modeltime/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/Adam_predict_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/Arima_fit_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/Arima_predict_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/Auto_adam_predict_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/adam_fit_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/adam_params.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/reference/Adam_predict_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/adam_reg.html</loc>
@@ -73,7 +67,13 @@
     <loc>https://business-science.github.io/modeltime/reference/arima_boost.html</loc>
   </url>
   <url>
+    <loc>https://business-science.github.io/modeltime/reference/Arima_fit_impl.html</loc>
+  </url>
+  <url>
     <loc>https://business-science.github.io/modeltime/reference/arima_params.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/reference/Arima_predict_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/arima_reg.html</loc>
@@ -86,6 +86,9 @@
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/auto_adam_fit_impl.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/reference/Auto_adam_predict_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/auto_arima_fit_impl.html</loc>
@@ -113,6 +116,9 @@
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/dot_prepare_transform.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/reference/drop_modeltime_model.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/ets_fit_impl.html</loc>
@@ -352,16 +358,16 @@
     <loc>https://business-science.github.io/modeltime/reference/tbats_predict_impl.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/temporal_hier_fit_impl.html</loc>
-  </url>
-  <url>
-    <loc>https://business-science.github.io/modeltime/reference/temporal_hier_predict_impl.html</loc>
-  </url>
-  <url>
     <loc>https://business-science.github.io/modeltime/reference/temporal_hierarchy.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/temporal_hierarchy_params.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/reference/temporal_hier_fit_impl.html</loc>
+  </url>
+  <url>
+    <loc>https://business-science.github.io/modeltime/reference/temporal_hier_predict_impl.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/theta_fit_impl.html</loc>
@@ -379,10 +385,10 @@
     <loc>https://business-science.github.io/modeltime/reference/type_sum.mdl_time_tbl.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/update_model_description.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/update_modeltime_model.html</loc>
   </url>
   <url>
-    <loc>https://business-science.github.io/modeltime/reference/update_modeltime_model.html</loc>
+    <loc>https://business-science.github.io/modeltime/reference/update_model_description.html</loc>
   </url>
   <url>
     <loc>https://business-science.github.io/modeltime/reference/window_function_fit_impl.html</loc>

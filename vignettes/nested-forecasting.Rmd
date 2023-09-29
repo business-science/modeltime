@@ -233,7 +233,7 @@ This adds a new column with `.modeltime_tables` for each of the data sets and ha
 
 ### Step 3: Logged Attributes
 
-During the forecasting, the iterative modeltime fitting process logs important information that enable us to evaluate the models. These logged attributes are accessable with "extract" functions. 
+During the forecasting, the iterative modeltime fitting process logs important information that enable us to evaluate the models. These logged attributes are accessible with "extract" functions. 
 
 #### Extract Nested Test Accuracy
 
