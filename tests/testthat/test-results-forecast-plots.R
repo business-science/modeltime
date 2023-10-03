@@ -11,7 +11,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 test_that("modeltime plotting", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # SETUP
 
@@ -49,14 +49,14 @@ test_that("modeltime plotting", {
     # "modeltime plot, Test Static ggplot
 
     # Structure
-    testthat::expect_s3_class(g, "ggplot")
-    testthat::expect_s3_class(g$layers[[1]]$geom, "GeomRibbon")
+    expect_s3_class(g, "ggplot")
+    expect_s3_class(g$layers[[1]]$geom, "GeomRibbon")
 
 
     # modeltime plot, Test Interactive plotly
 
     # Structure
-    testthat::expect_s3_class(p, "plotly")
+    expect_s3_class(p, "plotly")
 
 
     # # PLOTS WITHOUT CONF INTERVALS -----
@@ -71,12 +71,12 @@ test_that("modeltime plotting", {
         plot_modeltime_forecast(.interactive = TRUE, .conf_interval_show = FALSE)
 
     # Structure
-    testthat::expect_s3_class(g, "ggplot")
-    testthat::expect_s3_class(g$layers[[1]]$geom, "GeomLine")
+    expect_s3_class(g, "ggplot")
+    expect_s3_class(g$layers[[1]]$geom, "GeomLine")
 
 
     # Structure
-    testthat::expect_s3_class(p, "plotly")
+    expect_s3_class(p, "plotly")
 
 })
 
@@ -84,7 +84,7 @@ test_that("modeltime plotting", {
 
 test_that("modeltime plot - workflow, Test Static ggplot", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # SETUP
 
@@ -120,11 +120,11 @@ test_that("modeltime plot - workflow, Test Static ggplot", {
 
 
     # Structure
-    testthat::expect_s3_class(g, "ggplot")
-    testthat::expect_s3_class(g$layers[[1]]$geom, "GeomRibbon")
+    expect_s3_class(g, "ggplot")
+    expect_s3_class(g$layers[[1]]$geom, "GeomRibbon")
 
 
     # Structure
-    testthat::expect_s3_class(p, "plotly")
+    expect_s3_class(p, "plotly")
 
 })

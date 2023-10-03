@@ -20,7 +20,6 @@ Get model descriptions for parsnip, workflows & modeltime objects
 library(dplyr)
 library(timetk)
 library(parsnip)
-library(modeltime)
 
 # Model Specification ----
 

@@ -34,35 +34,35 @@ test_that("adam_reg: Auto ADAM, (No xregs), Test Model Fit Object", {
         modeltime_calibrate(testing(splits), quiet = FALSE) %>%
         modeltime_forecast(new_data = testing(splits))
 
-    testthat::expect_s3_class(model_fit$fit, "Auto_adam_fit_impl")
+    expect_s3_class(model_fit$fit, "Auto_adam_fit_impl")
 
     # $fit
 
-    testthat::expect_s3_class(model_fit$fit$models$model_1, "adam")
+    expect_s3_class(model_fit$fit$models$model_1, "adam")
 
-    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
+    expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+    expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
 
     # $preproc
 
-    testthat::expect_equal(model_fit$preproc$y_var, "value")
+    expect_equal(model_fit$preproc$y_var, "value")
 
     # Structure
-    testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    testthat::expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
+    expect_identical(testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 3000)
+    expect_lte(max(abs(resid)), 3000)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 1000)
+    expect_lte(mean(abs(resid)), 1000)
 
 })
 
@@ -72,7 +72,7 @@ test_that("adam_reg: Auto ADAM, (No xregs), Test Model Fit Object", {
 # TESTS
 test_that("adam_reg: Auto ADAM, (XREGS)", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
 
     # Data
@@ -96,37 +96,37 @@ test_that("adam_reg: Auto ADAM, (XREGS)", {
         modeltime_calibrate(testing(splits)) %>%
         modeltime_forecast(new_data = testing(splits))
 
-    testthat::expect_s3_class(model_fit$fit, "Auto_adam_fit_impl")
+    expect_s3_class(model_fit$fit, "Auto_adam_fit_impl")
 
     # $fit
 
-    testthat::expect_s3_class(model_fit$fit$models$model_1, "adam")
+    expect_s3_class(model_fit$fit$models$model_1, "adam")
 
-    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
+    expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+    expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(!is.null(model_fit$fit$extras$xreg_recipe))
+    expect_true(!is.null(model_fit$fit$extras$xreg_recipe))
 
     # $preproc
 
-    testthat::expect_equal(model_fit$preproc$y_var, "value")
+    expect_equal(model_fit$preproc$y_var, "value")
 
 
 
     # Structure
-    testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    testthat::expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
+    expect_identical(testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 3000)
+    expect_lte(max(abs(resid)), 3000)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 1000)
+    expect_lte(mean(abs(resid)), 1000)
 
 })
 
@@ -173,38 +173,38 @@ test_that("adam_reg: Auto ADAM (workflow), Test Model Fit Object", {
         modeltime_forecast(new_data = testing(splits), actual_data = training(splits))
 
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit, "Auto_adam_fit_impl")
+    expect_s3_class(wflw_fit$fit$fit$fit, "Auto_adam_fit_impl")
 
     # $fit
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "adam")
+    expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "adam")
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$data, "tbl_df")
+    expect_s3_class(wflw_fit$fit$fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
+    expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
 
     # $preproc
     mld <- wflw_fit %>% workflows::extract_mold()
-    testthat::expect_equal(names(mld$outcomes), "value")
+    expect_equal(names(mld$outcomes), "value")
 
 
     full_data <- bind_rows(training(splits), testing(splits))
 
     # Structure
-    testthat::expect_identical(nrow(full_data), nrow(predictions_tbl))
-    testthat::expect_identical(full_data$date, predictions_tbl$.index)
+    expect_identical(nrow(full_data), nrow(predictions_tbl))
+    expect_identical(full_data$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
     predictions_tbl <- predictions_tbl %>% filter(.key == "prediction")
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 3000)
+    expect_lte(max(abs(resid)), 3000)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 1000)
+    expect_lte(mean(abs(resid)), 1000)
 
 })
 

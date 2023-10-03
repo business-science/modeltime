@@ -74,7 +74,7 @@ A character phrase of "auto" or time-based phrase of "2 weeks"
 can be used if a date or date-time variable is provided.
 See Fit Details below.}
 
-\item{select_order}{If TRUE, then the function will select the most appropriate order. The values list(ar=...,i=...,ma=...)
+\item{select_order}{If \code{TRUE}, then the function will select the most appropriate order. The values list(ar=...,i=...,ma=...)
 specify the maximum orders to check in this case.}
 }
 \description{
@@ -130,18 +130,15 @@ The engine uses \code{\link[smooth:adam]{smooth::auto.adam()}}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{#> Registered S3 method overwritten by 'greybox':
-#>   method     from
-#>   print.pcor lava
-#> function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(0), 
-#>     i = c(0), ma = c(0), select = FALSE), formula = NULL, regressors = c("use", 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (data, model = "ZXZ", lags = c(frequency(data)), orders = list(ar = c(3, 
+#>     3), i = c(2, 1), ma = c(3, 3), select = TRUE), formula = NULL, regressors = c("use", 
 #>     "select", "adapt"), occurrence = c("none", "auto", "fixed", "general", 
 #>     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm", 
 #>     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore", 
 #>     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
-#>     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
-#>         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
-#>     silent = TRUE, parallel = FALSE, ...)
+#>     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL, 
+#>     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", 
+#>         "none"), silent = TRUE, parallel = FALSE, ...)
 }\if{html}{\out{</div>}}
 
 The \emph{MAXIMUM} nonseasonal ARIMA terms (\code{max.p}, \code{max.d}, \code{max.q}) and
@@ -171,9 +168,9 @@ Function Parameters:
 #>         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM", 
 #>         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore", 
 #>         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL, 
-#>     phi = NULL, initial = c("optimal", "backcasting"), arma = NULL, ic = c("AICc", 
-#>         "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", "none"), 
-#>     silent = TRUE, ...)
+#>     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL, 
+#>     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible", 
+#>         "none"), silent = TRUE, ...)
 }\if{html}{\out{</div>}}
 
 The nonseasonal ARIMA terms (\code{orders}) and seasonal ARIMA terms (\code{orders})
@@ -241,12 +238,13 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("smooth")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
 \donttest{
 library(dplyr)
 library(parsnip)
 library(rsample)
 library(timetk)
-library(modeltime)
 library(smooth)
 
 # Data
@@ -287,7 +285,7 @@ model_fit <- model_spec \%>\%
     fit(log(value) ~ date, data = training(splits))
 model_fit
 }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}

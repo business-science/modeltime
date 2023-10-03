@@ -8,9 +8,9 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeltime)](https://cran.r-project.org/package=modeltime)
 ![](http://cranlogs.r-pkg.org/badges/modeltime?color=brightgreen)
 ![](http://cranlogs.r-pkg.org/badges/grand-total/modeltime?color=brightgreen)
-[![R-CMD-check](https://github.com/business-science/modeltime/workflows/R-CMD-check/badge.svg)](https://github.com/business-science/modeltime/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/business-science/modeltime/branch/master/graph/badge.svg)](https://app.codecov.io/gh/business-science/modeltime?branch=master)
+[![R-CMD-check](https://github.com/business-science/modeltime/workflows/R-CMD-check/badge.svg)](https://github.com/business-science/modeltime/actions)
 <!-- badges: end -->
 
 > Tidy time series forecasting in `R`.
@@ -89,7 +89,14 @@ for using best practices to forecast.
 
 <hr>
 
-<img src="vignettes/modeltime_workflow.jpg" title="A streamlined workflow for forecasting" alt="A streamlined workflow for forecasting" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+
+<img src="vignettes/modeltime_workflow.jpg" alt="A streamlined workflow for forecasting" width="100%" />
+<p class="caption">
+A streamlined workflow for forecasting
+</p>
+
+</div>
 
 <hr>
 
@@ -97,7 +104,14 @@ for using best practices to forecast.
 
 > Learn a growing ecosystem of forecasting packages
 
-<img src="man/figures/modeltime_ecosystem.jpg" title="The modeltime ecosystem is growing" alt="The modeltime ecosystem is growing" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/modeltime_ecosystem.jpg" alt="The modeltime ecosystem is growing" width="100%" />
+<p class="caption">
+The modeltime ecosystem is growing
+</p>
+
+</div>
 
 Modeltime is part of a **growing ecosystem** of Modeltime forecasting
 packages.

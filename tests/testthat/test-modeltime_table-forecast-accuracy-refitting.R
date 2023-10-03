@@ -17,7 +17,7 @@ splits <- initial_time_split(m750, prop = 0.9)
 
 test_that("Auto ARIMA (Parsnip)", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     model_fit_no_boost <- arima_reg() %>%
         set_engine(engine = "auto_arima") %>%
@@ -81,7 +81,7 @@ test_that("Auto ARIMA (Parsnip)", {
 test_that("Auto ARIMA (Workflow)", {
 
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 

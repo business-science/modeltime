@@ -109,11 +109,11 @@ This model is not set up for use with exogenous regressors.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("thief")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 library(parsnip)
 library(rsample)
 library(timetk)
-library(modeltime)
 library(thief)
 
 # Data
@@ -137,7 +137,7 @@ model_fit
 
 
 
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \itemize{

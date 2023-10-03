@@ -12,7 +12,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 
 test_that("Test Modeltime Accuracy", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 
@@ -124,15 +124,15 @@ test_that("Test Modeltime Accuracy", {
     # accuracy table, GT - Parsnip Interface
 
     # Structure
-    testthat::expect_s3_class(gt_tab, "gt_tbl")
-    testthat::expect_equal(gt_tab$`_heading`$title, "Accuracy Table")
+    expect_s3_class(gt_tab, "gt_tbl")
+    expect_equal(gt_tab$`_heading`$title, "Accuracy Table")
 
 
 
     # accuracy table, Reactable - Parnsip Interface
 
     # Structure
-    testthat::expect_s3_class(react, "reactable")
+    expect_s3_class(react, "reactable")
 
 })
 
@@ -146,7 +146,7 @@ test_that("Test Modeltime Accuracy", {
 
 test_that("accuracy table, GT - Workflow Interface", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 
@@ -183,15 +183,15 @@ test_that("accuracy table, GT - Workflow Interface", {
     # accuracy table, GT - Workflow Interface
 
     # Structure
-    testthat::expect_s3_class(gt_tab, "gt_tbl")
-    testthat::expect_equal(gt_tab$`_heading`$title, "Accuracy Table")
+    expect_s3_class(gt_tab, "gt_tbl")
+    expect_equal(gt_tab$`_heading`$title, "Accuracy Table")
 
 
 
     # accuracy table, Reactable - Workflow Interface
 
     # Structure
-    testthat::expect_s3_class(react, "reactable")
+    expect_s3_class(react, "reactable")
 
 })
 

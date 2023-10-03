@@ -15,8 +15,7 @@ m750_models
 Three (3) Models trained on the M750 Data (Training Set)
 }
 \details{
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(modeltime)
-m750_models <- modeltime_table(
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{m750_models <- modeltime_table(
     wflw_fit_arima,
     wflw_fit_prophet,
     wflw_fit_glmnet
@@ -24,11 +23,6 @@ m750_models <- modeltime_table(
 }\if{html}{\out{</div>}}
 }
 \examples{
-library(modeltime)
-
 m750_models
-
-
-
 }
 \keyword{datasets}

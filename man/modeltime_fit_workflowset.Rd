@@ -30,7 +30,6 @@ time series either sequentially or in parallel.
 }
 \examples{
 library(tidymodels)
-library(modeltime)
 library(workflowsets)
 library(tidyverse)
 library(lubridate)

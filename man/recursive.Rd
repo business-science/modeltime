@@ -80,7 +80,6 @@ The \code{recursive()} function can be used for Panel Data with the following mo
 
 \donttest{
 # Libraries & Setup ----
-library(modeltime)
 library(tidymodels)
 library(tidyverse)
 library(lubridate)

@@ -12,7 +12,6 @@
 #' library(dplyr)
 #' library(timetk)
 #' library(parsnip)
-#' library(modeltime)
 #'
 #' # Model Specification ----
 #'

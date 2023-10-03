@@ -5,7 +5,7 @@ context("PANEL DATA")
 
 test_that("Panel Data - Forecast Jumbled", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 

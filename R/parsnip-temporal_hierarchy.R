@@ -50,7 +50,7 @@
 #' The standardized parameter names in `modeltime` can be mapped to their original
 #' names in each engine:
 #'
-#' ```{r echo = FALSE}
+#' ```{r echo = FALSE, eval = rlang::is_installed("thief")}
 #' # parsnip::convert_args("temporal_hierarchy")
 #' tibble::tribble(
 #'     ~ "modeltime", ~ "thief::thief()",
@@ -65,7 +65,7 @@
 #' The engine uses `thief::thief()`.
 #'
 #' Function Parameters:
-#' ```{r echo = FALSE}
+#' ```{r echo = FALSE, eval = rlang::is_installed("thief")}
 #' str(thief::thief)
 #' ```
 #' Other options and argument can be set using `set_engine()`.
@@ -98,12 +98,11 @@
 #'
 #' @seealso [fit.model_spec()], [set_engine()]
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("thief")
 #' library(dplyr)
 #' library(parsnip)
 #' library(rsample)
 #' library(timetk)
-#' library(modeltime)
 #' library(thief)
 #'
 #' # Data

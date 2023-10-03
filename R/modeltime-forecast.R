@@ -161,7 +161,6 @@
 #' library(timetk)
 #' library(parsnip)
 #' library(rsample)
-#' library(modeltime)
 #'
 #' # Data
 #' m750 <- m4_monthly %>% filter(id == "M750")
@@ -772,8 +771,7 @@ mdl_time_forecast.model_fit <- function(object, calibration_data, new_data = NUL
 
     # Format data
     data_formatted <- modeltime_forecast %>%
-        dplyr::mutate(.key = "prediction") %>%
-        dplyr::select(.key, dplyr::everything())
+        dplyr::mutate(.key = "prediction", .before = 0)
 
     # COMBINE ACTUAL DATA
 
@@ -1072,8 +1070,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
 
     data_formatted <- data_formatted %>%
         dplyr::bind_cols(time_stamp_predictors_tbl) %>%
-        dplyr::mutate(.key = "prediction") %>%
-        dplyr::select(.key, dplyr::everything())
+        dplyr::mutate(.key = "prediction", .before = 0)
 
 
     # COMBINE ACTUAL DATA

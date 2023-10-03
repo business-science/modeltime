@@ -70,7 +70,6 @@
 #'
 #' \donttest{
 #' # Libraries & Setup ----
-#' library(modeltime)
 #' library(tidymodels)
 #' library(tidyverse)
 #' library(lubridate)

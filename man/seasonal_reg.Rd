@@ -160,7 +160,6 @@ library(dplyr)
 library(parsnip)
 library(rsample)
 library(timetk)
-library(modeltime)
 
 # Data
 taylor_30_min

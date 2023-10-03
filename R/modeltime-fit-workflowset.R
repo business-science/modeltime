@@ -16,7 +16,6 @@
 #'
 #' @examples
 #' library(tidymodels)
-#' library(modeltime)
 #' library(workflowsets)
 #' library(tidyverse)
 #' library(lubridate)
@@ -254,7 +253,6 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
 #' @examples
 #'
 #' library(tidymodels)
-#' library(modeltime)
 #'
 #' # Parameters that get optimized
 #' grid_tbl <- grid_regular(

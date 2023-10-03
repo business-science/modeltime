@@ -153,14 +153,12 @@ The engine uses \code{\link[smooth:es]{smooth::es()}}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, model = "ZZZ", persistence = NULL, phi = NULL, initial = c("optimal", 
-#>     "backcasting"), initialSeason = NULL, ic = c("AICc", "AIC", "BIC", 
-#>     "BICc"), loss = c("likelihood", "MSE", "MAE", "HAM", "MSEh", "TMSE", 
-#>     "GTMSE", "MSCE"), h = 10, holdout = FALSE, cumulative = FALSE, interval = c("none", 
-#>     "parametric", "likelihood", "semiparametric", "nonparametric"), level = 0.95, 
-#>     bounds = c("usual", "admissible", "none"), silent = c("all", "graph", 
-#>         "legend", "output", "none"), xreg = NULL, xregDo = c("use", "select"), 
-#>     initialX = NULL, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, model = "ZZZ", lags = c(frequency(y)), persistence = NULL, 
+#>     phi = NULL, initial = c("optimal", "backcasting", "complete"), initialSeason = NULL, 
+#>     ic = c("AICc", "AIC", "BIC", "BICc"), loss = c("likelihood", "MSE", 
+#>         "MAE", "HAM", "MSEh", "TMSE", "GTMSE", "MSCE"), h = 10, holdout = FALSE, 
+#>     bounds = c("usual", "admissible", "none"), silent = TRUE, xreg = NULL, 
+#>     regressors = c("use", "select"), initialX = NULL, ...)
 }\if{html}{\out{</div>}}
 
 The main arguments \code{model} and \code{phi} are defined using:
@@ -244,11 +242,11 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("smooth")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 library(parsnip)
 library(rsample)
 library(timetk)
-library(modeltime)
 library(smooth)
 
 # Data
@@ -335,7 +333,7 @@ model_fit <- model_spec \%>\%
     fit(value ~ date, data = training(splits))
 model_fit
 }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
