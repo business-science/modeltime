@@ -5,10 +5,10 @@ context("TEST prophet_boost: prophet_xgboost")
 # SETUP ----
 
 # Data
-m750 <- m4_monthly %>% filter(id == "M750")
+m750 <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
 
 # Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- rsample::initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- prophet_boost(
@@ -32,7 +32,7 @@ model_spec <- prophet_boost(
     loss_reduction = 0.4,
     sample_size = 0.9
 ) %>%
-    set_engine("prophet_xgboost")
+    parsnip::set_engine("prophet_xgboost")
 
 
 # PARSNIP ----
@@ -47,7 +47,7 @@ test_that("prophet_boost: No Xregs", {
 
     # Model Fit
     model_fit <- model_spec %>%
-        fit(log(value) ~ date, data = training(splits))
+        fit(log(value) ~ date, data = rsample::training(splits))
 
     # Structure
 
@@ -88,16 +88,16 @@ test_that("prophet_boost: No Xregs", {
 
     # Predictions
     predictions_tbl <- model_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits))
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits))
 
     # Structure
-    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(rsample::testing(splits)), nrow(predictions_tbl))
+    expect_identical(rsample::testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
-    resid <- testing(splits)$value - exp(predictions_tbl$.value)
+    resid <- rsample::testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 1500)
@@ -117,7 +117,7 @@ test_that("prophet_boost: prophet, XREGS", {
     # Model Fit
     model_fit <- model_spec %>%
         fit(log(value) ~ date + as.numeric(date) + factor(month(date, label = TRUE), ordered = F),
-            data = training(splits))
+            data = rsample::training(splits))
 
     # Structure
 
@@ -177,16 +177,16 @@ test_that("prophet_boost: prophet, XREGS", {
 
     # Predictions
     predictions_tbl <- model_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits))
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits))
 
     # Structure
-    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(rsample::testing(splits)), nrow(predictions_tbl))
+    expect_identical(rsample::testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
-    resid <- testing(splits)$value - exp(predictions_tbl$.value)
+    resid <- rsample::testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 1500)
@@ -208,19 +208,19 @@ test_that("prophet_boost: prophet_xgboost (workflow)", {
     #
 
     # Recipe spec
-    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-        step_log(value, skip = FALSE) %>%
-        step_date(date, features = "month") %>%
-        step_mutate(date_num = as.numeric(date))
+    recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
+        recipes::step_log(value, skip = FALSE) %>%
+        recipes::step_date(date, features = "month") %>%
+        recipes::step_mutate(date_num = as.numeric(date))
 
     # Workflow
-    wflw <- workflow() %>%
-        add_recipe(recipe_spec) %>%
-        add_model(model_spec)
+    wflw <- workflows::workflow() %>%
+        workflows::add_recipe(recipe_spec) %>%
+        workflows::add_model(model_spec)
 
     # Fitted Workflow
     wflw_fit <- wflw %>%
-        fit(training(splits))
+        fit(rsample::training(splits))
 
 
     # Structure
@@ -281,19 +281,19 @@ test_that("prophet_boost: prophet_xgboost (workflow)", {
 
     # Forecast
     predictions_tbl <- wflw_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-        mutate_at(vars(.value), exp)
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
+        dplyr::mutate_at(dplyr::vars(.value), exp)
 
-    full_data <- bind_rows(training(splits), testing(splits))
+    full_data <- dplyr::bind_rows(rsample::training(splits), rsample::testing(splits))
 
     # Structure
     expect_identical(nrow(full_data), nrow(predictions_tbl))
     expect_identical(full_data$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
-    predictions_tbl <- predictions_tbl %>% filter(.key == "prediction")
-    resid <- testing(splits)$value - predictions_tbl$.value
+    predictions_tbl <- predictions_tbl %>% dplyr::filter(.key == "prediction")
+    resid <- rsample::testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 1500)
@@ -322,10 +322,10 @@ test_that("prophet_reg: prophet, Logistic Growth", {
         seasonality_weekly = FALSE,
         seasonality_daily  = FALSE
     ) %>%
-        set_engine(engine = "prophet_xgboost") %>%
+        parsnip::set_engine(engine = "prophet_xgboost") %>%
         fit(value ~ date
             + as.numeric(date)
-            + month(date, label = TRUE)
+            + lubridate::month(date, label = TRUE)
             + fourier_vec(date, period = 12),
             data = m750)
 
@@ -375,7 +375,7 @@ test_that("prophet_reg: prophet, Logistic Growth", {
         prophet_boost(
             growth = "logistic"
         ) %>%
-            set_engine(engine = "prophet_xgboost") %>%
+            parsnip::set_engine(engine = "prophet_xgboost") %>%
             fit(value ~ date, m750)
     })
 

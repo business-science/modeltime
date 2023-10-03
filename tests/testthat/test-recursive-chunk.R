@@ -21,7 +21,7 @@ test_that("Chunked Recursive Tests ", {
     # recursive 1 - single / recipe / parsnip ----
 
     # Lag Recipe
-    recipe_lag <- recipe(value ~ date, m750_extended) %>%
+    recipe_lag <- recipes::recipe(value ~ date, m750_extended) %>%
         step_lag(value, lag = c(3,6,9,12))
 
     # Data Transformation
@@ -36,11 +36,11 @@ test_that("Chunked Recursive Tests ", {
 
     # * Recursive Modeling ----
     model_fit_lm <- linear_reg() %>%
-        set_engine("lm") %>%
+        parsnip::set_engine("lm") %>%
         fit(value ~ date, data = train_data)
 
     model_fit_lm_recursive <- linear_reg() %>%
-        set_engine("lm") %>%
+        parsnip::set_engine("lm") %>%
         fit(value ~ ., data = train_data) %>%
         recursive(
             transform  = recipe_lag,
@@ -64,7 +64,7 @@ test_that("Chunked Recursive Tests ", {
     # Visualize
     # forecast_tbl %>% plot_modeltime_forecast()
 
-    preds <- forecast_tbl %>% filter(.model_id == 2) %>% pull(.value)
+    preds <- forecast_tbl %>% dplyr::filter(.model_id == 2) %>% dplyr::pull(.value)
     expect_equal(
         length(future_data$value),
         length(preds)
@@ -93,7 +93,7 @@ test_that("Chunked Recursive Tests ", {
 
     # forecast_refit_tbl %>% plot_modeltime_forecast()
 
-    preds <- forecast_refit_tbl %>% filter(.model_id == 1) %>% pull(.value)
+    preds <- forecast_refit_tbl %>% dplyr::filter(.model_id == 1) %>% dplyr::pull(.value)
     expect_equal(
         length(future_tbl$value),
         length(preds)
@@ -128,14 +128,14 @@ test_that("Chunked Recursive Tests ", {
         filter(is.na(value))
 
     # * Recursive Modeling ----
-    wflw_fit_lm <- workflow() %>%
-        add_recipe(recipe(value ~ date, train_data)) %>%
-        add_model(linear_reg() %>% set_engine("lm")) %>%
+    wflw_fit_lm <- workflows::workflow() %>%
+        workflows::add_recipe(recipes::recipe(value ~ date, train_data)) %>%
+        workflows::add_model(linear_reg() %>% parsnip::set_engine("lm")) %>%
         fit(train_data)
 
-    wflw_fit_lm_recursive <- workflow() %>%
-        add_recipe(recipe(value ~ ., train_data)) %>%
-        add_model(linear_reg() %>% set_engine("lm")) %>%
+    wflw_fit_lm_recursive <- workflows::workflow() %>%
+        workflows::add_recipe(recipes::recipe(value ~ ., train_data)) %>%
+        workflows::add_model(linear_reg() %>% parsnip::set_engine("lm")) %>%
         fit(train_data) %>%
         recursive(
             transform  = lag_transformer,
@@ -158,7 +158,7 @@ test_that("Chunked Recursive Tests ", {
 
     # forecast_tbl %>% plot_modeltime_forecast()
 
-    preds <- forecast_tbl %>% filter(.model_id == 2) %>% pull(.value)
+    preds <- forecast_tbl %>% dplyr::filter(.model_id == 2) %>% dplyr::pull(.value)
     expect_equal(
         length(future_data$value),
         length(preds)
@@ -189,7 +189,7 @@ test_that("Chunked Recursive Tests ", {
 
     # forecast_refit_tbl %>% plot_modeltime_forecast()
 
-    preds <- forecast_refit_tbl %>% filter(.model_id == 1) %>% pull(.value)
+    preds <- forecast_refit_tbl %>% dplyr::filter(.model_id == 1) %>% dplyr::pull(.value)
     expect_equal(
         length(future_tbl$value),
         length(preds)
@@ -204,7 +204,7 @@ test_that("Chunked Recursive Tests ", {
     # recursive 3 - panel / function / parsnip + workflow
 
     # Jumble the data to make sure it forecasts properly
-    m4_monthly_updated <- m4_monthly %>%
+    m4_monthly_updated <- timetk::m4_monthly %>%
         arrange(desc(id), date) %>%
         mutate(id = as_factor(as.character(id)))
 
@@ -237,7 +237,7 @@ test_that("Chunked Recursive Tests ", {
     # * Recursive Modeling ----
 
     model_fit_lm_recursive <- linear_reg() %>%
-        set_engine("lm") %>%
+        parsnip::set_engine("lm") %>%
         fit(value ~ ., data = train_data) %>%
         recursive(
             id         = "id",
@@ -246,9 +246,9 @@ test_that("Chunked Recursive Tests ", {
             chunk_size = 3
         )
 
-    wflw_fit_lm_recursive <- workflow() %>%
-        add_recipe(recipe(value ~ ., train_data)) %>%
-        add_model(linear_reg() %>% set_engine("lm")) %>%
+    wflw_fit_lm_recursive <- workflows::workflow() %>%
+        workflows::add_recipe(recipes::recipe(value ~ ., train_data)) %>%
+        workflows::add_model(linear_reg() %>% parsnip::set_engine("lm")) %>%
         fit(train_data) %>%
         recursive(
             id         = "id",
@@ -269,13 +269,13 @@ test_that("Chunked Recursive Tests ", {
     ) %>%
         modeltime_forecast(
             new_data    = future_data,
-            actual_data = m4_monthly,
+            actual_data = timetk::m4_monthly,
             keep_data   = TRUE
         )
 
     # forecast_tbl %>% group_by(id) %>% plot_modeltime_forecast()
-    preds_1 <- forecast_tbl %>% filter(.model_id == 1) %>% pull(.value)
-    preds_2 <- forecast_tbl %>% filter(.model_id == 2) %>% pull(.value)
+    preds_1 <- forecast_tbl %>% dplyr::filter(.model_id == 1) %>% dplyr::pull(.value)
+    preds_2 <- forecast_tbl %>% dplyr::filter(.model_id == 2) %>% dplyr::pull(.value)
     expect_equal(
         length(future_data$value),
         length(preds_1),
@@ -319,8 +319,8 @@ test_that("Chunked Recursive Tests ", {
 
     # forecast_refit_tbl %>% group_by(id) %>% plot_modeltime_forecast()
 
-    preds_1 <- forecast_refit_tbl %>% filter(.model_id == 1) %>% pull(.value)
-    preds_2 <- forecast_refit_tbl %>% filter(.model_id == 2) %>% pull(.value)
+    preds_1 <- forecast_refit_tbl %>% dplyr::filter(.model_id == 1) %>% dplyr::pull(.value)
+    preds_2 <- forecast_refit_tbl %>% dplyr::filter(.model_id == 2) %>% dplyr::pull(.value)
 
     expect_equal(
         length(future_tbl$value),

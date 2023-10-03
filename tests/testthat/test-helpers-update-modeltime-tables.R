@@ -11,42 +11,42 @@ test_that("TEST MODELTIME TABLE HELPERS", {
     # SETUP
 
     # Data
-    m750   <- m4_monthly %>% filter(id == "M750")
-    splits <- initial_time_split(m750, prop = 0.8)
+    m750   <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
+    splits <- rsample::initial_time_split(m750, prop = 0.8)
 
     # Model Specs
 
     # This model updates
     model_spec_arima_1 <- arima_reg(seasonal_period = 1) %>%
-        set_engine("auto_arima")
+        parsnip::set_engine("auto_arima")
 
     # This model does not update
     model_spec_arima_12 <- arima_reg(seasonal_period = 12) %>%
-        set_engine("auto_arima")
+        parsnip::set_engine("auto_arima")
 
 
 
     # PARSNIP INTERFACE ----
 
     model_fit_arima_1 <- model_spec_arima_1 %>%
-        fit(log(value) ~ date, data = training(splits))
+        fit(log(value) ~ date, data = rsample::training(splits))
 
     model_fit_arima_12 <- model_spec_arima_12 %>%
-        fit(log(value) ~ date, data = training(splits))
+        fit(log(value) ~ date, data = rsample::training(splits))
 
     # WORKFLOW INTERFACE ----
-    recipe_spec <- recipe(value ~ date, training(splits)) %>%
-        step_log(value)
+    recipe_spec <- recipes::recipe(value ~ date, rsample::training(splits)) %>%
+        recipes::step_log(value)
 
-    workflow_fit_arima_1 <- workflow() %>%
-        add_model(model_spec_arima_1) %>%
-        add_recipe(recipe_spec) %>%
-        fit(training(splits))
+    workflow_fit_arima_1 <- workflows::workflow() %>%
+        workflows::add_model(model_spec_arima_1) %>%
+        workflows::add_recipe(recipe_spec) %>%
+        fit(rsample::training(splits))
 
-    workflow_fit_arima_12 <- workflow() %>%
-        add_model(model_spec_arima_12) %>%
-        add_recipe(recipe_spec) %>%
-        fit(training(splits))
+    workflow_fit_arima_12 <- workflows::workflow() %>%
+        workflows::add_model(model_spec_arima_12) %>%
+        workflows::add_recipe(recipe_spec) %>%
+        fit(rsample::training(splits))
 
     # TESTS ----
 
@@ -102,7 +102,7 @@ test_that("TEST MODELTIME TABLE HELPERS", {
     # Description Updates, Post Refit
 
     refit_tbl <- updated_model_tbl %>%
-        modeltime_calibrate(training(splits)) %>%
+        modeltime_calibrate(rsample::training(splits)) %>%
         modeltime_refit(m750)
 
     expected <- c(

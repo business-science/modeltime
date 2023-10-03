@@ -5,10 +5,10 @@ context("TEST arima_boost: auto_arima_xgboost")
 # SETUP ----
 
 # Data
-m750 <- m4_monthly %>% filter(id == "M750")
+m750 <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
 
 # Split Data 80/20
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- rsample::initial_time_split(m750, prop = 0.8)
 
 # Model Spec
 model_spec <- arima_boost(
@@ -27,7 +27,7 @@ model_spec <- arima_boost(
     loss_reduction = 0.4,
     sample_size = 0.9
 ) %>%
-    set_engine("auto_arima_xgboost")
+    parsnip::set_engine("auto_arima_xgboost")
 
 
 # PARSNIP ----
@@ -42,12 +42,12 @@ test_that("arima_boost: Arima, (No xregs), Test Model Fit Object", {
 
     # Fit Spec
     model_fit <- model_spec %>%
-        fit(log(value) ~ date, data = training(splits))
+        fit(log(value) ~ date, data = rsample::training(splits))
 
     # Predictions
     predictions_tbl <- model_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits))
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits))
 
     # TEST
 
@@ -75,12 +75,12 @@ test_that("arima_boost: Arima, (No xregs), Test Model Fit Object", {
     # PREDICTIONS
 
     # Structure
-    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(rsample::testing(splits)), nrow(predictions_tbl))
+    expect_identical(rsample::testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
-    resid <- testing(splits)$value - exp(predictions_tbl$.value)
+    resid <- rsample::testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 1500)
@@ -101,12 +101,12 @@ test_that("arima_boost: Arima, (XREGS), Test Model Fit Object", {
 
     # Fit Spec
     model_fit <- model_spec %>%
-        fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE), data = training(splits))
+        fit(log(value) ~ date + as.numeric(date) + lubridate::month(date, label = TRUE), data = rsample::training(splits))
 
     # Predictions
     predictions_tbl <- model_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits))
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits))
 
     expect_s3_class(model_fit$fit, "auto_arima_xgboost_fit_impl")
 
@@ -147,12 +147,12 @@ test_that("arima_boost: Arima, (XREGS), Test Model Fit Object", {
     # PREDICTIONS
 
     # Structure
-    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(rsample::testing(splits)), nrow(predictions_tbl))
+    expect_identical(rsample::testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
-    resid <- testing(splits)$value - exp(predictions_tbl$.value)
+    resid <- rsample::testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 1500)
@@ -189,27 +189,27 @@ test_that("arima_boost: Arima (workflow), Test Model Fit Object", {
         loss_reduction = 0.4,
         sample_size = 0.9
     ) %>%
-        set_engine("auto_arima_xgboost")
+        parsnip::set_engine("auto_arima_xgboost")
 
     # Recipe spec
-    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-        step_log(value, skip = FALSE) %>%
-        step_date(date, features = "month") %>%
-        step_mutate(date_num = as.numeric(date))
+    recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
+        recipes::step_log(value, skip = FALSE) %>%
+        recipes::step_date(date, features = "month") %>%
+        recipes::step_mutate(date_num = as.numeric(date))
 
     # Workflow
-    wflw <- workflow() %>%
-        add_recipe(recipe_spec) %>%
-        add_model(model_spec)
+    wflw <- workflows::workflow() %>%
+        workflows::add_recipe(recipe_spec) %>%
+        workflows::add_model(model_spec)
 
     wflw_fit <- wflw %>%
-        fit(training(splits))
+        fit(rsample::training(splits))
 
     # Forecast
     predictions_tbl <- wflw_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits), actual_data = training(splits)) %>%
-        mutate_at(vars(.value), exp)
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
+        dplyr::mutate_at(dplyr::vars(.value), exp)
 
 
     # TESTS
@@ -253,15 +253,15 @@ test_that("arima_boost: Arima (workflow), Test Model Fit Object", {
 
     # PREDICTIONS
 
-    full_data <- bind_rows(training(splits), testing(splits))
+    full_data <- dplyr::bind_rows(rsample::training(splits), rsample::testing(splits))
 
     # Structure
     expect_identical(nrow(full_data), nrow(predictions_tbl))
     expect_identical(full_data$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
-    predictions_tbl <- predictions_tbl %>% filter(.key == "prediction")
-    resid <- testing(splits)$value - predictions_tbl$.value
+    predictions_tbl <- predictions_tbl %>% dplyr::filter(.key == "prediction")
+    resid <- rsample::testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 1500)

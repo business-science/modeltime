@@ -6,7 +6,6 @@ test_that("modeltime_residuals(): Returns correct order", {
     skip_on_cran()
 
     library(tidymodels)
-    library(modeltime)
     library(tidyverse)
     library(timetk)
 
@@ -19,31 +18,31 @@ test_that("modeltime_residuals(): Returns correct order", {
     splits <- data %>% time_series_split(assess = "3 months", cumulative = TRUE)
 
 
-    rec_obj <- recipe(value ~ ., training(splits)) %>%
-        step_mutate(ID = droplevels(ID)) %>%
+    rec_obj <- recipes::recipe(value ~ ., rsample::training(splits)) %>%
+        recipes::step_mutate(ID = droplevels(ID)) %>%
         step_timeseries_signature(date) %>%
-        step_rm(date) %>%
-        step_zv(all_predictors()) %>%
-        step_dummy(all_nominal_predictors(), one_hot = TRUE)
+        recipes::step_rm(date) %>%
+        recipes::step_zv(recipes::all_predictors()) %>%
+        recipes::step_dummy(recipes::all_nominal_predictors(), one_hot = TRUE)
 
 
 
     # Workflow
-    wflw_xgb <- workflow() %>%
-        add_model(
-            boost_tree("regression") %>% set_engine("xgboost")
+    wflw_xgb <- workflows::workflow() %>%
+        workflows::add_model(
+            boost_tree("regression") %>% parsnip::set_engine("xgboost")
         ) %>%
-        add_recipe(rec_obj) %>%
-        fit(training(splits))
+        workflows::add_recipe(rec_obj) %>%
+        fit(rsample::training(splits))
 
-
-    wflw_glmnet <- workflow() %>%
-        add_model(
+    skip_if_not_installed("glmnet")
+    wflw_glmnet <- workflows::workflow() %>%
+        workflows::add_model(
             linear_reg(penalty = 1) %>%
-                set_engine("glmnet")
+                parsnip::set_engine("glmnet")
         ) %>%
-        add_recipe(rec_obj) %>%
-        fit(training(splits))
+        workflows::add_recipe(rec_obj) %>%
+        fit(rsample::training(splits))
 
 
     model_tbl <- modeltime_table(
@@ -57,10 +56,10 @@ test_that("modeltime_residuals(): Returns correct order", {
     # Order is not changed for the training set
     calib_tbl_train <- model_tbl %>%
         modeltime_calibrate(
-            training(splits)
+            rsample::training(splits)
         )
 
-    expect_equal(training(splits)$value, calib_tbl_train$.calibration_data[[1]]$.actual)
+    expect_equal(rsample::training(splits)$value, calib_tbl_train$.calibration_data[[1]]$.actual)
 
 
     # Usage of the full data set

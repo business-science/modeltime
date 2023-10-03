@@ -12,12 +12,12 @@ test_that("modeltime bridge: Good Structure", {
     #
 
     lm_model <- lm(value ~ as.numeric(date) + hour(date) + wday(date, label = TRUE),
-                   data = taylor_30_min)
+                   data = timetk::taylor_30_min)
 
     data = tibble(
-        date        = taylor_30_min$date, # Important - The column name must match the modeled data
+        date        = timetk::taylor_30_min$date, # Important - The column name must match the modeled data
         # These are standardized names: .value, .fitted, .resid
-        .actual     = taylor_30_min$value,
+        .actual     = timetk::taylor_30_min$value,
         .fitted     = lm_model$fitted.values %>% as.numeric(),
         .residuals  = lm_model$residuals %>% as.numeric()
     )

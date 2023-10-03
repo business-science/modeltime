@@ -6,46 +6,46 @@ context("PANEL DATA")
 test_that("Panel Data - Forecast Jumbled", {
 
     skip_on_cran()
-
+    skip_if_not_installed("kernlab")
     #
 
-    m4_monthly_jumbled <- m4_monthly %>%
+    m4_monthly_jumbled <- timetk::m4_monthly %>%
         arrange(desc(date))
 
     data_set <- m4_monthly_jumbled
 
-    recipe_spec <- recipe(value ~ date + id, data_set) %>%
-        step_mutate(date_num = as.numeric(date)) %>%
-        step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
-        step_dummy(all_nominal(), one_hot = TRUE)
+    recipe_spec <- recipes::recipe(value ~ date + id, data_set) %>%
+        recipes::step_mutate(date_num = as.numeric(date)) %>%
+        recipes::step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
+        recipes::step_dummy(all_nominal(), one_hot = TRUE)
 
     set.seed(123)
-    wflw_fit_prophet <- workflow() %>%
-        add_model(
+    wflw_fit_prophet <- workflows::workflow() %>%
+        workflows::add_model(
             prophet_boost(
                 seasonality_yearly = F,
                 seasonality_weekly = F,
                 seasonality_daily  = F
             ) %>%
-                set_engine(
+                parsnip::set_engine(
                     "prophet_xgboost"
                     # ,
                     # colsample_bytree = 1
                 )
         ) %>%
-        add_recipe(recipe_spec) %>%
+        workflows::add_recipe(recipe_spec) %>%
         fit(data_set)
 
     set.seed(123)
-    wflw_fit_svm <- workflow() %>%
-        add_model(svm_rbf(mode = "regression") %>% set_engine("kernlab")) %>%
-        add_recipe(recipe_spec %>% step_rm(date)) %>%
+    wflw_fit_svm <- workflows::workflow() %>%
+        workflows::add_model(svm_rbf(mode = "regression") %>% parsnip::set_engine("kernlab")) %>%
+        workflows::add_recipe(recipe_spec %>% step_rm(date)) %>%
         fit(data_set)
 
     # set.seed(123)
-    # wflw_fit_xgb <- workflow() %>%
-    #     add_model(boost_tree() %>% set_engine("xgboost")) %>%
-    #     add_recipe(recipe_spec %>% step_rm(date)) %>%
+    # wflw_fit_xgb <- workflows::workflow() %>%
+    #     workflows::add_model(boost_tree() %>% parsnip::set_engine("xgboost")) %>%
+    #     workflows::add_recipe(recipe_spec %>% step_rm(date)) %>%
     #     fit(data_set)
 
     # Panel Data - Forecast Jumbled
@@ -90,7 +90,7 @@ test_that("Panel Data - Forecast Jumbled", {
 
     # * Test Model ----
     svm_tbl <- forecast_tbl %>%
-        filter(.model_id == 2)
+        dplyr::filter(.model_id == 2)
 
     expect_equal(nrow(svm_tbl), nrow(data_set))
     expect_equal(svm_tbl$.index, svm_tbl$date)
