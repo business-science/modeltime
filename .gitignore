@@ -5,6 +5,7 @@ inst/doc
 doc
 Meta
 derby.log
+.DS_Store
 logs
 vignettes/derby.log
 vignettes/logs/
