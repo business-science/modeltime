@@ -94,7 +94,6 @@ preprocessing recipes using the \code{recipes} package.
 
 library(tidyverse)
 library(timetk)
-library(modeltime)
 
 
 nested_data_tbl <- walmart_sales_weekly \%>\%

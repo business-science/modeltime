@@ -35,7 +35,7 @@
 #' provided, starting with the letter "d" - "density".
 #' @param loss The type of Loss Function used in optimization.
 #' @param information_criteria The information criterion to use in the model selection / combination procedure.
-#' @param select_order If TRUE, then the function will select the most appropriate order. The values list(ar=...,i=...,ma=...)
+#' @param select_order If `TRUE`, then the function will select the most appropriate order. The values list(ar=...,i=...,ma=...)
 #' specify the maximum orders to check in this case.
 #'
 #'
@@ -86,7 +86,7 @@
 #' The engine uses [smooth::auto.adam()].
 #'
 #' Function Parameters:
-#' ```{r echo = FALSE}
+#' ```{r echo = FALSE, eval = rlang::is_installed("smooth")}
 #' str(smooth::auto.adam)
 #' ```
 #' The _MAXIMUM_ nonseasonal ARIMA terms (`max.p`, `max.d`, `max.q`) and
@@ -105,7 +105,7 @@
 #' The engine uses [smooth::adam()].
 #'
 #' Function Parameters:
-#' ```{r echo = FALSE}
+#' ```{r echo = FALSE, eval = rlang::is_installed("smooth")}
 #' str(smooth::adam)
 #' ```
 #'
@@ -167,13 +167,13 @@
 #'
 #' @seealso [fit.model_spec()], [set_engine()]
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("smooth")
+#'
 #' \donttest{
 #' library(dplyr)
 #' library(parsnip)
 #' library(rsample)
 #' library(timetk)
-#' library(modeltime)
 #' library(smooth)
 #'
 #' # Data

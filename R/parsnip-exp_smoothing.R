@@ -114,7 +114,7 @@
 #' The engine uses [smooth::es()].
 #'
 #' Function Parameters:
-#' ```{r echo = FALSE}
+#' ```{r echo = FALSE, eval = rlang::is_installed("smooth")}
 #' str(smooth::es)
 #' ```
 #' The main arguments `model` and `phi` are defined using:
@@ -188,12 +188,11 @@
 #'
 #' @seealso [fit.model_spec()], [set_engine()]
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("smooth")
 #' library(dplyr)
 #' library(parsnip)
 #' library(rsample)
 #' library(timetk)
-#' library(modeltime)
 #' library(smooth)
 #'
 #' # Data

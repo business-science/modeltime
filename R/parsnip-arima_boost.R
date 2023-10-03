@@ -196,12 +196,11 @@
 #' @seealso [fit.model_spec()], [set_engine()]
 #'
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' library(lubridate)
 #' library(parsnip)
 #' library(rsample)
 #' library(timetk)
-#' library(modeltime)
 #'
 #'
 #' # Data

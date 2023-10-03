@@ -257,12 +257,11 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(parsnip)
 library(rsample)
 library(timetk)
-library(modeltime)
 
 
 # Data

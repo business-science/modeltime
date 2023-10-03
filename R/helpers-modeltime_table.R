@@ -36,7 +36,6 @@
 #' - [pull_modeltime_model()]: Extracts a model from a Modeltime Table
 #'
 #' @examples
-#' library(modeltime)
 #' library(tidymodels)
 #' library(tidyverse)
 #' library(timetk)

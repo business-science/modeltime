@@ -44,7 +44,6 @@ of models inside the \code{workflow_set()} function.
 \examples{
 
 library(tidymodels)
-library(modeltime)
 
 # Parameters that get optimized
 grid_tbl <- grid_regular(
