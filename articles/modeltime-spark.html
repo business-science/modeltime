@@ -374,10 +374,10 @@ distributed computation.</p>
 <span>        control <span class="op">=</span> <span class="fu"><a href="../reference/control_modeltime.html">control_nested_fit</a></span><span class="op">(</span>allow_par <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span></span>
-<span><span class="co">#&gt;  Beginning Parallel Loop | 0.008 seconds</span></span>
-<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 32.306 seconds</span></span>
+<span><span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span></span>
+<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 26.112 seconds</span></span>
 <span><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
-<span><span class="co">#&gt; Finished in: 32.30669 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 26.11308 secs.</span></span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span></span>
@@ -401,23 +401,23 @@ model</p>
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<div id="wbreeunfgo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wbreeunfgo table {
+<div id="zsffsafquj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zsffsafquj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#wbreeunfgo thead, #wbreeunfgo tbody, #wbreeunfgo tfoot, #wbreeunfgo tr, #wbreeunfgo td, #wbreeunfgo th {
+#zsffsafquj thead, #zsffsafquj tbody, #zsffsafquj tfoot, #zsffsafquj tr, #zsffsafquj td, #zsffsafquj th {
   border-style: none;
 }
 
-#wbreeunfgo p {
+#zsffsafquj p {
   margin: 0;
   padding: 0;
 }
 
-#wbreeunfgo .gt_table {
+#zsffsafquj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -443,12 +443,12 @@ model</p>
   border-left-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_caption {
+#zsffsafquj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wbreeunfgo .gt_title {
+#zsffsafquj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -460,7 +460,7 @@ model</p>
   border-bottom-width: 0;
 }
 
-#wbreeunfgo .gt_subtitle {
+#zsffsafquj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -472,7 +472,7 @@ model</p>
   border-top-width: 0;
 }
 
-#wbreeunfgo .gt_heading {
+#zsffsafquj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -484,13 +484,13 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_bottom_border {
+#zsffsafquj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_col_headings {
+#zsffsafquj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -505,7 +505,7 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_col_heading {
+#zsffsafquj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -525,7 +525,7 @@ model</p>
   overflow-x: hidden;
 }
 
-#wbreeunfgo .gt_column_spanner_outer {
+#zsffsafquj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -537,15 +537,15 @@ model</p>
   padding-right: 4px;
 }
 
-#wbreeunfgo .gt_column_spanner_outer:first-child {
+#zsffsafquj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wbreeunfgo .gt_column_spanner_outer:last-child {
+#zsffsafquj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wbreeunfgo .gt_column_spanner {
+#zsffsafquj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -557,11 +557,11 @@ model</p>
   width: 100%;
 }
 
-#wbreeunfgo .gt_spanner_row {
+#zsffsafquj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#wbreeunfgo .gt_group_heading {
+#zsffsafquj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -587,7 +587,7 @@ model</p>
   text-align: left;
 }
 
-#wbreeunfgo .gt_empty_group_heading {
+#zsffsafquj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -602,15 +602,15 @@ model</p>
   vertical-align: middle;
 }
 
-#wbreeunfgo .gt_from_md > :first-child {
+#zsffsafquj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wbreeunfgo .gt_from_md > :last-child {
+#zsffsafquj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wbreeunfgo .gt_row {
+#zsffsafquj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -629,7 +629,7 @@ model</p>
   overflow-x: hidden;
 }
 
-#wbreeunfgo .gt_stub {
+#zsffsafquj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -642,7 +642,7 @@ model</p>
   padding-right: 5px;
 }
 
-#wbreeunfgo .gt_stub_row_group {
+#zsffsafquj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -656,15 +656,15 @@ model</p>
   vertical-align: top;
 }
 
-#wbreeunfgo .gt_row_group_first td {
+#zsffsafquj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wbreeunfgo .gt_row_group_first th {
+#zsffsafquj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#wbreeunfgo .gt_summary_row {
+#zsffsafquj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -674,16 +674,16 @@ model</p>
   padding-right: 5px;
 }
 
-#wbreeunfgo .gt_first_summary_row {
+#zsffsafquj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_first_summary_row.thick {
+#zsffsafquj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wbreeunfgo .gt_last_summary_row {
+#zsffsafquj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -693,7 +693,7 @@ model</p>
   border-bottom-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_grand_summary_row {
+#zsffsafquj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -703,7 +703,7 @@ model</p>
   padding-right: 5px;
 }
 
-#wbreeunfgo .gt_first_grand_summary_row {
+#zsffsafquj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -713,7 +713,7 @@ model</p>
   border-top-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_last_grand_summary_row_top {
+#zsffsafquj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -723,11 +723,11 @@ model</p>
   border-bottom-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_striped {
+#zsffsafquj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wbreeunfgo .gt_table_body {
+#zsffsafquj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -736,7 +736,7 @@ model</p>
   border-bottom-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_footnotes {
+#zsffsafquj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -750,7 +750,7 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_footnote {
+#zsffsafquj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -759,7 +759,7 @@ model</p>
   padding-right: 5px;
 }
 
-#wbreeunfgo .gt_sourcenotes {
+#zsffsafquj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -773,7 +773,7 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#wbreeunfgo .gt_sourcenote {
+#zsffsafquj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -781,63 +781,63 @@ model</p>
   padding-right: 5px;
 }
 
-#wbreeunfgo .gt_left {
+#zsffsafquj .gt_left {
   text-align: left;
 }
 
-#wbreeunfgo .gt_center {
+#zsffsafquj .gt_center {
   text-align: center;
 }
 
-#wbreeunfgo .gt_right {
+#zsffsafquj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wbreeunfgo .gt_font_normal {
+#zsffsafquj .gt_font_normal {
   font-weight: normal;
 }
 
-#wbreeunfgo .gt_font_bold {
+#zsffsafquj .gt_font_bold {
   font-weight: bold;
 }
 
-#wbreeunfgo .gt_font_italic {
+#zsffsafquj .gt_font_italic {
   font-style: italic;
 }
 
-#wbreeunfgo .gt_super {
+#zsffsafquj .gt_super {
   font-size: 65%;
 }
 
-#wbreeunfgo .gt_footnote_marks {
+#zsffsafquj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#wbreeunfgo .gt_asterisk {
+#zsffsafquj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wbreeunfgo .gt_indent_1 {
+#zsffsafquj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wbreeunfgo .gt_indent_2 {
+#zsffsafquj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wbreeunfgo .gt_indent_3 {
+#zsffsafquj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wbreeunfgo .gt_indent_4 {
+#zsffsafquj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wbreeunfgo .gt_indent_5 {
+#zsffsafquj .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
