@@ -3,7 +3,6 @@ context("TEST FORECASTING WITH NO CALIBRATION")
 
 # SIMPLE PREDICTION ----
 
-# library(modeltime)
 # library(tidymodels)
 # library(tidyverse)
 # library(timetk)
@@ -17,19 +16,19 @@ test_that("No Calibration", {
     skip_on_cran()
 
     # SETUP ----
-    m750 <- m4_monthly %>%
-        filter(id == "M750")
+    m750 <- timetk::m4_monthly %>%
+        dplyr::filter(id == "M750")
 
     model_fit_arima <- arima_reg() %>%
-        set_engine("auto_arima") %>%
+        parsnip::set_engine("auto_arima") %>%
         fit(value ~ date, m750)
 
     model_fit_lm <- linear_reg() %>%
-        set_engine("lm") %>%
-        fit(value ~ splines::ns(date, df = 5) + month(date, label = TRUE), m750)
+        parsnip::set_engine("lm") %>%
+        fit(value ~ splines::ns(date, df = 5) + lubridate::month(date, label = TRUE), m750)
 
     model_fit_prophet <- prophet_reg() %>%
-        set_engine("prophet") %>%
+        parsnip::set_engine("prophet") %>%
         fit(value ~ date, m750)
 
     # Non-Calibration 1: h = 3 years, actual_data = m750 ----

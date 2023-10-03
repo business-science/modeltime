@@ -1,19 +1,19 @@
 context("TEST window_reg() and naive_reg()")
 
 # Data - Single Time Series
-m750 <- m4_monthly %>% filter(id == "M750")
+m750 <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
 
-splits <- initial_time_split(m750, prop = 0.8)
+splits <- rsample::initial_time_split(m750, prop = 0.8)
 
 # Data - Multiple Time Series (Panel)
-full_data_tbl <- m4_monthly %>%
-    group_by(id) %>%
+full_data_tbl <- timetk::m4_monthly %>%
+    dplyr::group_by(id) %>%
     future_frame(date, .length_out = 60, .bind_data = TRUE) %>%
-    ungroup()
+    dplyr::ungroup()
 
-future_tbl <- full_data_tbl %>% filter(is.na(value))
+future_tbl <- full_data_tbl %>% dplyr::filter(is.na(value))
 
-data_prepared_tbl <- full_data_tbl %>% filter(!is.na(value))
+data_prepared_tbl <- full_data_tbl %>% dplyr::filter(!is.na(value))
 
 # 1.0 NAIVE ----
 
@@ -24,34 +24,34 @@ test_that("NAIVE - Single Time Series (No ID)", {
     skip_on_cran()
 
     model_fit <- naive_reg() %>%
-        set_engine("naive") %>%
-        fit(value ~ date, data = training(splits))
+        parsnip::set_engine("naive") %>%
+        fit(value ~ date, data = rsample::training(splits))
 
     calibration_tbl <- modeltime_table(
         model_fit
     ) %>%
-        modeltime_calibrate(testing(splits))
+        modeltime_calibrate(rsample::testing(splits))
 
     forecast_tbl <- calibration_tbl %>%
         modeltime_forecast(
-            new_data    = testing(splits),
+            new_data    = rsample::testing(splits),
             actual_data = m750
         )
 
     forecast_vec <- forecast_tbl %>%
-        filter(.model_id == 1) %>%
-        pull(.value)
+        dplyr::filter(.model_id == 1) %>%
+        dplyr::pull(.value)
 
     future_forecast_tbl <- calibration_tbl %>%
         modeltime_refit(m750) %>%
         modeltime_forecast(
-            h = nrow(testing(splits)),
+            h = nrow(rsample::testing(splits)),
             actual_data = m750
         )
 
     future_forecast_vec <- future_forecast_tbl %>%
-        filter(.model_id == 1) %>%
-        pull(.value)
+        dplyr::filter(.model_id == 1) %>%
+        dplyr::pull(.value)
 
     expect_equal(nrow(forecast_tbl), 368)
     expect_equal(forecast_vec, rep_len(10810, 62))
@@ -69,7 +69,7 @@ test_that("NAIVE - Multiple Time Series (Panel uses ID)", {
     skip_on_cran()
 
     model_fit_panel <- naive_reg(id = "id") %>%
-        set_engine("naive") %>%
+        parsnip::set_engine("naive") %>%
         fit(value ~ date + id, data = data_prepared_tbl)
 
 
@@ -83,9 +83,9 @@ test_that("NAIVE - Multiple Time Series (Panel uses ID)", {
         )
 
     future_vec <- future_forecast_panel_tbl %>%
-        filter(!is.na(.model_id)) %>%
-        filter(id == "M1") %>%
-        pull(.value)
+        dplyr::filter(!is.na(.model_id)) %>%
+        dplyr::filter(id == "M1") %>%
+        dplyr::pull(.value)
 
 
     expect_equal(nrow(future_forecast_panel_tbl), 1814)
@@ -99,15 +99,15 @@ test_that("NAIVE - Check New Factors", {
 
     skip_on_cran()
 
-    wflw_fit_panel <- workflow() %>%
-        add_model(naive_reg(id = "id") %>% set_engine("naive")) %>%
-        add_recipe(recipe(value ~ date + id, data = data_prepared_tbl)) %>%
+    wflw_fit_panel <- workflows::workflow() %>%
+        workflows::add_model(naive_reg(id = "id") %>% parsnip::set_engine("naive")) %>%
+        workflows::add_recipe(recipes::recipe(value ~ date + id, data = data_prepared_tbl)) %>%
         fit(data_prepared_tbl)
 
     # FOR SOME REASON PARSNIP MODELS FAIL
     # Error: Problem occurred during prediction. Error in model.frame.default(mod_terms, new_data, na.action = na.action, : factor id has new levels UNSEEN
     # model_fit_panel <- naive_reg(id = "id") %>%
-    #     set_engine("naive") %>%
+    #     parsnip::set_engine("naive") %>%
     #     fit(value ~ date + id, data = data_prepared_tbl)
 
     expect_warning({
@@ -116,17 +116,17 @@ test_that("NAIVE - Check New Factors", {
             wflw_fit_panel
         ) %>%
             modeltime_forecast(
-                new_data    = bind_rows(
+                new_data    = dplyr::bind_rows(
                     future_tbl,
                     future_tbl %>%
-                        filter(id == "M1") %>%
-                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                        dplyr::filter(id == "M1") %>%
+                        dplyr::mutate(id = forcats::fct_recode(id, UNSEEN = "M1"))
                 ),
-                actual_data = bind_rows(
+                actual_data = dplyr::bind_rows(
                     data_prepared_tbl,
                     data_prepared_tbl %>%
-                        filter(id == "M1") %>%
-                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                        dplyr::filter(id == "M1") %>%
+                        dplyr::mutate(id = forcats::fct_recode(id, UNSEEN = "M1"))
                 ),
                 keep_data   = TRUE
             )
@@ -135,9 +135,9 @@ test_that("NAIVE - Check New Factors", {
 
 
     future_forecast_vec <- future_forecast_panel_tbl %>%
-        filter(!is.na(.model_id)) %>%
-        filter(id == "UNSEEN") %>%
-        pull(.value)
+        dplyr::filter(!is.na(.model_id)) %>%
+        dplyr::filter(id == "UNSEEN") %>%
+        dplyr::pull(.value)
 
 
     expect_equal(future_forecast_vec, rep_len(NA_real_, 60))
@@ -153,42 +153,42 @@ test_that("SNAIVE - Single Time Series (No ID)", {
     skip_on_cran()
 
     model_fit <- naive_reg() %>%
-        set_engine("snaive") %>%
-        fit(value ~ date, data = training(splits))
+        parsnip::set_engine("snaive") %>%
+        fit(value ~ date, data = rsample::training(splits))
 
     calibration_tbl <- modeltime_table(
         model_fit
     ) %>%
-        modeltime_calibrate(testing(splits))
+        modeltime_calibrate(rsample::testing(splits))
 
     forecast_tbl <- calibration_tbl %>%
         modeltime_forecast(
-            new_data    = testing(splits),
+            new_data    = rsample::testing(splits),
             actual_data = m750
         )
 
     forecast_vec <- forecast_tbl %>%
-        filter(.model_id == 1) %>%
-        pull(.value)
+        dplyr::filter(.model_id == 1) %>%
+        dplyr::pull(.value)
 
-    last_series <- training(splits) %>%
-        slice_tail(n = 12) %>%
-        pull(value)
+    last_series <- rsample::training(splits) %>%
+        dplyr::slice_tail(n = 12) %>%
+        dplyr::pull(value)
 
     future_forecast_tbl <- calibration_tbl %>%
         modeltime_refit(m750) %>%
         modeltime_forecast(
-            h = nrow(testing(splits)),
+            h = nrow(rsample::testing(splits)),
             actual_data = m750
         )
 
     future_forecast_vec <- future_forecast_tbl %>%
-        filter(.model_id == 1) %>%
-        pull(.value)
+        dplyr::filter(.model_id == 1) %>%
+        dplyr::pull(.value)
 
     future_last_series <- m750 %>%
-        slice_tail(n = 12) %>%
-        pull(value)
+        dplyr::slice_tail(n = 12) %>%
+        dplyr::pull(value)
 
 
     expect_equal(model_fit$fit$extras$period, 12)
@@ -206,7 +206,7 @@ test_that("SNAIVE - Multiple Time Series (Panel ID)", {
     skip_on_cran()
 
     model_fit_panel <- naive_reg(id = "id") %>%
-        set_engine("snaive") %>%
+        parsnip::set_engine("snaive") %>%
         fit(value ~ date + id, data = data_prepared_tbl)
 
     future_forecast_panel_tbl <- modeltime_table(
@@ -219,15 +219,13 @@ test_that("SNAIVE - Multiple Time Series (Panel ID)", {
         )
 
     future_vec <- future_forecast_panel_tbl %>%
-        filter(!is.na(.model_id)) %>%
-        filter(id == "M1") %>%
-        pull(.value)
+        dplyr::filter(id == "M1", !is.na(.model_id)) %>%
+        dplyr::pull(.value)
 
     last_series_vec <- future_forecast_panel_tbl %>%
-        filter(is.na(.model_id)) %>%
-        filter(id == "M1") %>%
-        slice_tail(n = 12) %>%
-        pull(.value)
+        dplyr::filter(id == "M1", is.na(.model_id)) %>%
+        dplyr::slice_tail(n = 12) %>%
+        dplyr::pull(.value)
 
 
     expect_equal(nrow(future_forecast_panel_tbl), 1814)
@@ -242,15 +240,15 @@ test_that("SNAIVE - Check New Factors", {
 
     skip_on_cran()
 
-    wflw_fit_panel <- workflow() %>%
-        add_model(naive_reg(id = "id") %>% set_engine("snaive")) %>%
-        add_recipe(recipe(value ~ date + id, data = data_prepared_tbl)) %>%
+    wflw_fit_panel <- workflows::workflow() %>%
+        workflows::add_model(naive_reg(id = "id") %>% parsnip::set_engine("snaive")) %>%
+        workflows::add_recipe(recipes::recipe(value ~ date + id, data = data_prepared_tbl)) %>%
         fit(data_prepared_tbl)
 
     # FOR SOME REASON PARSNIP MODELS FAIL
     # Error: Problem occurred during prediction. Error in model.frame.default(mod_terms, new_data, na.action = na.action, : factor id has new levels UNSEEN
     # model_fit_panel <- naive_reg(id = "id") %>%
-    #     set_engine("snaive") %>%
+    #     parsnip::set_engine("snaive") %>%
     #     fit(value ~ date + id, data = data_prepared_tbl)
 
     expect_warning({
@@ -259,17 +257,17 @@ test_that("SNAIVE - Check New Factors", {
             wflw_fit_panel
         ) %>%
             modeltime_forecast(
-                new_data    = bind_rows(
+                new_data    = dplyr::bind_rows(
                     future_tbl,
                     future_tbl %>%
-                        filter(id == "M1") %>%
-                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                        dplyr::filter(id == "M1") %>%
+                        dplyr::mutate(id = forcats::fct_recode(id, UNSEEN = "M1"))
                 ),
-                actual_data = bind_rows(
+                actual_data = dplyr::bind_rows(
                     data_prepared_tbl,
                     data_prepared_tbl %>%
-                        filter(id == "M1") %>%
-                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                        dplyr::filter(id == "M1") %>%
+                        dplyr::mutate(id = forcats::fct_recode(id, UNSEEN = "M1"))
                 ),
                 keep_data   = TRUE
             )
@@ -277,9 +275,8 @@ test_that("SNAIVE - Check New Factors", {
 
 
     future_forecast_vec <- future_forecast_panel_tbl %>%
-        filter(!is.na(.model_id)) %>%
-        filter(id == "UNSEEN") %>%
-        pull(.value)
+        dplyr::filter(id == "UNSEEN", !is.na(.model_id)) %>%
+        dplyr::pull(.value)
 
 
     expect_equal(future_forecast_vec, rep_len(NA_real_, 60))
@@ -298,57 +295,57 @@ test_that("WINDOW - Single Time Series (No ID)", {
     model_fit_1 <- window_reg(
         window_size     = 24
     ) %>%
-        set_engine("window_function", window_function = ~ mean(.x, na.rm = TRUE),) %>%
-        fit(value ~ date, data = training(splits))
+        parsnip::set_engine("window_function", window_function = ~ mean(.x, na.rm = TRUE),) %>%
+        fit(value ~ date, data = rsample::training(splits))
 
     model_fit_2 <- window_reg(
         window_size     = 36
     ) %>%
-        set_engine("window_function", window_function = median, na.rm = TRUE) %>%
-        fit(value ~ date, data = training(splits))
+        parsnip::set_engine("window_function", window_function = median, na.rm = TRUE) %>%
+        fit(value ~ date, data = rsample::training(splits))
 
     model_fit_3 <- window_reg() %>%
-        set_engine("window_function",
+        parsnip::set_engine("window_function",
                    window_function = ~ tail(.x, 12),
                    na.rm = TRUE) %>%
-        fit(value ~ date, data = training(splits))
+        fit(value ~ date, data = rsample::training(splits))
 
     calibration_tbl <- modeltime_table(
         model_fit_1,
         model_fit_2,
         model_fit_3
     ) %>%
-        modeltime_calibrate(testing(splits))
+        modeltime_calibrate(rsample::testing(splits))
 
     forecast_tbl <- calibration_tbl %>%
         modeltime_forecast(
-            new_data    = testing(splits),
+            new_data    = rsample::testing(splits),
             actual_data = m750
         )
 
     forecast_vec <- forecast_tbl %>%
-        filter(.model_id == 1) %>%
-        pull(.value)
+        dplyr::filter(.model_id == 1) %>%
+        dplyr::pull(.value)
 
-    last_series <- training(splits) %>%
-        slice_tail(n = 12) %>%
-        pull(value)
+    last_series <- rsample::training(splits) %>%
+        dplyr::slice_tail(n = 12) %>%
+        dplyr::pull(value)
 
     future_forecast_tbl <- calibration_tbl %>%
         modeltime_refit(m750) %>%
         modeltime_forecast(
-            h = nrow(testing(splits)),
+            h = nrow(rsample::testing(splits)),
             actual_data = m750,
             keep_data = TRUE
         )
 
     future_forecast_vec <- future_forecast_tbl %>%
-        filter(.model_id == 1) %>%
-        pull(.value)
+        dplyr::filter(.model_id == 1) %>%
+        dplyr::pull(.value)
 
     future_last_series <- m750 %>%
-        slice_tail(n = 12) %>%
-        pull(value)
+        dplyr::slice_tail(n = 12) %>%
+        dplyr::pull(value)
 
 
     expect_equal(model_fit_1$fit$extras$period, 24)
@@ -370,7 +367,7 @@ test_that("WINDOW - Multiple Time Series (Panel ID)", {
             id = "id",
             window_size = 12
         ) %>%
-        set_engine("window_function", window_function = mean) %>%
+        parsnip::set_engine("window_function", window_function = mean) %>%
         fit(value ~ date + id, data = data_prepared_tbl)
 
     future_forecast_panel_tbl <- modeltime_table(
@@ -383,15 +380,13 @@ test_that("WINDOW - Multiple Time Series (Panel ID)", {
         )
 
     future_vec <- future_forecast_panel_tbl %>%
-        filter(!is.na(.model_id)) %>%
-        filter(id == "M1") %>%
-        pull(.value)
+        dplyr::filter(id == "M1", !is.na(.model_id)) %>%
+        dplyr::pull(.value)
 
     last_series_vec <- future_forecast_panel_tbl %>%
-        filter(is.na(.model_id)) %>%
-        filter(id == "M1") %>%
-        slice_tail(n = 12) %>%
-        pull(.value)
+        dplyr::filter(id == "M1", is.na(.model_id)) %>%
+        dplyr::slice_tail(n = 12) %>%
+        dplyr::pull(.value)
 
 
     expect_equal(nrow(future_forecast_panel_tbl), 1814)
@@ -407,15 +402,15 @@ test_that("SNAIVE - Check New Factors", {
     skip_on_cran()
 
 
-    wflw_fit_panel <- workflow() %>%
-        add_model(window_reg(id = "id") %>% set_engine("window_function")) %>%
-        add_recipe(recipe(value ~ date + id, data = data_prepared_tbl)) %>%
+    wflw_fit_panel <- workflows::workflow() %>%
+        workflows::add_model(window_reg(id = "id") %>% parsnip::set_engine("window_function")) %>%
+        workflows::add_recipe(recipes::recipe(value ~ date + id, data = data_prepared_tbl)) %>%
         fit(data_prepared_tbl)
 
     # FOR SOME REASON PARSNIP MODELS FAIL
     # Error: Problem occurred during prediction. Error in model.frame.default(mod_terms, new_data, na.action = na.action, : factor id has new levels UNSEEN
     # model_fit_panel <- naive_reg(id = "id") %>%
-    #     set_engine("snaive") %>%
+    #     parsnip::set_engine("snaive") %>%
     #     fit(value ~ date + id, data = data_prepared_tbl)
 
     expect_warning({
@@ -424,17 +419,17 @@ test_that("SNAIVE - Check New Factors", {
             wflw_fit_panel
         ) %>%
             modeltime_forecast(
-                new_data    = bind_rows(
+                new_data    = dplyr::bind_rows(
                     future_tbl,
                     future_tbl %>%
-                        filter(id == "M1") %>%
-                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                        dplyr::filter(id == "M1") %>%
+                        mutate(id = forcats::fct_recode(id, UNSEEN = "M1"))
                 ),
-                actual_data = bind_rows(
+                actual_data = dplyr::bind_rows(
                     data_prepared_tbl,
                     data_prepared_tbl %>%
-                        filter(id == "M1") %>%
-                        mutate(id = fct_recode(id, UNSEEN = "M1"))
+                        dplyr::filter(id == "M1") %>%
+                        dplyr::mutate(id = forcats::fct_recode(id, UNSEEN = "M1"))
                 ),
                 keep_data   = TRUE
             )
@@ -442,9 +437,8 @@ test_that("SNAIVE - Check New Factors", {
 
 
     future_forecast_vec <- future_forecast_panel_tbl %>%
-        filter(!is.na(.model_id)) %>%
-        filter(id == "UNSEEN") %>%
-        pull(.value)
+        dplyr::filter(id == "UNSEEN", !is.na(.model_id)) %>%
+        dplyr::pull(.value)
 
 
     expect_equal(future_forecast_vec, rep_len(NA_real_, 60))

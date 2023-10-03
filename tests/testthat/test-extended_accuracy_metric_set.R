@@ -1,4 +1,3 @@
-library(testthat)
 library(tidymodels)
 library(tibble)
 library(dplyr)
@@ -9,7 +8,7 @@ test_that("extended_forecast_accuracy_metric_set works", {
     skip_on_cran()
 
     set.seed(1)
-    data <- tibble(
+    data <- dplyr::tibble(
         time  = tk_make_timeseries("2020", by = "sec", length_out = 10),
         y     = 1:10 + rnorm(10),
         y_hat = 1:10 + rnorm(10)
@@ -19,16 +18,17 @@ test_that("extended_forecast_accuracy_metric_set works", {
     calc_default_metrics <- extended_forecast_accuracy_metric_set(yardstick::mae)
 
     # Apply the metric summarizer to new data
+    skip_if_not_installed("TSrepr")
     ret <- calc_default_metrics(data, y, y_hat)
 
     expect_equal(nrow(ret), 8)
 })
 
 test_that("summarize_accuracy_metrics works", {
-
+    skip_if_not_installed("TSrepr")
     skip_on_cran()
 
-    predictions_tbl <- tibble(
+    predictions_tbl <- dplyr::tibble(
         group = c(rep("model_1", 4),
                   rep("model_2", 4)),
         truth = c(1, 2, 3, 4,
@@ -38,7 +38,7 @@ test_that("summarize_accuracy_metrics works", {
     )
 
     accuracy_tbl <- predictions_tbl %>%
-        group_by(group) %>%
+        dplyr::group_by(group) %>%
         summarize_accuracy_metrics(
             truth, estimate,
             metric_set = extended_forecast_accuracy_metric_set()
@@ -48,7 +48,7 @@ test_that("summarize_accuracy_metrics works", {
 
 
     accuracy_tbl <- predictions_tbl %>%
-        group_by(group) %>%
+        dplyr::group_by(group) %>%
         summarize_accuracy_metrics(
             truth, estimate,
             metric_set = extended_forecast_accuracy_metric_set(

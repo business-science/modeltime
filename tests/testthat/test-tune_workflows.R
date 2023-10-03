@@ -9,7 +9,7 @@ test_that("Tuning, arima_boost", {
 
     #
 
-    m750 <- m4_monthly %>% filter(id == "M750")
+    m750 <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
 
     # RESAMPLE SPEC ----
     resample_spec <- time_series_cv(data = m750,
@@ -20,9 +20,9 @@ test_that("Tuning, arima_boost", {
                                     slice_limit = 2)
 
     # Recipe
-    recipe_spec <- recipe(value ~ date, data = m750) %>%
-        step_mutate(as.numeric(date)) %>%
-        step_date(date, features = "month")
+    recipe_spec <- recipes::recipe(value ~ date, data = m750) %>%
+        recipes::step_mutate(as.numeric(date)) %>%
+        recipes::step_date(date, features = "month")
 
     # Model
     model_spec <- arima_boost(
@@ -37,13 +37,13 @@ test_that("Tuning, arima_boost", {
         seasonal_ma              = 0,
 
         # XGBoost Tuning Params
-        min_n      = tune()
+        min_n      = tune::tune()
     ) %>%
-        set_engine("arima_xgboost")
+        parsnip::set_engine("arima_xgboost")
 
     # Grid
     set.seed(3)
-    grid_spec <- grid_latin_hypercube(
+    grid_spec <- dials::grid_latin_hypercube(
         parameters(min_n()),
         size = 3
     )
@@ -51,14 +51,15 @@ test_that("Tuning, arima_boost", {
     parallel_start(2)
 
     # Tune
-    tune_results_boosted <- workflow() %>%
-        add_recipe(recipe_spec) %>%
-        add_model(model_spec) %>%
-        tune_grid(
+    # This fails if no previous versions of modeltime exist.
+    tune_results_boosted <- workflows::workflow() %>%
+        workflows::add_recipe(recipe_spec) %>%
+        workflows::add_model(model_spec) %>%
+        tune::tune_grid(
             resamples = resample_spec,
             grid      = grid_spec,
             metrics   = default_forecast_accuracy_metric_set(),
-            control   = control_grid(
+            control   = tune::control_grid(
                 verbose   = TRUE,
                 allow_par = TRUE,
             )
@@ -71,8 +72,8 @@ test_that("Tuning, arima_boost", {
     expect_equal(ncol(tune_results_boosted), 4)
 
     tune_results_boosted_metrics <- tune_results_boosted %>%
-        select(.metrics) %>%
-        unnest(.metrics)
+        dplyr::select(.metrics) %>%
+        tidyr::unnest(.metrics)
 
     expect_equal(nrow(tune_results_boosted_metrics), 36)
 

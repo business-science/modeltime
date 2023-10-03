@@ -1,8 +1,6 @@
 context("WORKFLOWSETS")
 
-library(testthat)
 library(tidymodels)
-library(modeltime)
 library(workflowsets)
 library(tidyverse)
 library(timetk)
@@ -16,26 +14,26 @@ test_that("Workflowsets Tests", {
 
     # Sequential - workflowset is correct order ----
 
-    data_set <- m4_monthly
+    data_set <- timetk::m4_monthly
 
     # SETUP WORKFLOWSETS
 
-    rec1 <- recipe(value ~ date + id, data_set) %>%
-        step_mutate(date_num = as.numeric(date)) %>%
-        step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
+    rec1 <- recipes::recipe(value ~ date + id, data_set) %>%
+        recipes::step_mutate(date_num = as.numeric(date)) %>%
+        recipes::step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
         step_dummy(all_nominal(), one_hot = TRUE)
 
-    rec2 <- recipe(value ~ date + id, data_set) %>%
-        step_mutate(date_num = as.numeric(date)) %>%
-        step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
+    rec2 <- recipes::recipe(value ~ date + id, data_set) %>%
+        recipes::step_mutate(date_num = as.numeric(date)) %>%
+        recipes::step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
         step_dummy(all_nominal(), one_hot = TRUE) %>%
         step_ts_clean(value)
 
     mod_spec_prophet <- prophet_reg() %>%
-        set_engine("prophet")
+        parsnip::set_engine("prophet")
 
     mod_spec_ets <- exp_smoothing() %>%
-        set_engine("ets")
+        parsnip::set_engine("ets")
 
     wfsets <- workflowsets::workflow_set(
         preproc = list(rec1 = rec1, rec2 = rec2),
@@ -132,7 +130,7 @@ test_that("Workflowsets Tests", {
 
 
     # "Parallel - workflowset is correct order" ----
-
+    # Note: this call fails if no previous versions of modeltime exist.
     model_par_tbl <- wfsets %>% modeltime_fit_workflowset(
         data_set,
         control = control_fit_workflowset(allow_par = TRUE, cores = 2)

@@ -12,14 +12,14 @@ test_that("thief", {
     # SETUP ----
 
     # Data
-    m750 <- m4_monthly %>% filter(id == "M750")
+    m750 <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
 
     # Split Data 80/20
-    splits <- initial_time_split(m750, prop = 0.9)
+    splits <- rsample::initial_time_split(m750, prop = 0.9)
 
     # Model Spec
     model_spec <- temporal_hierarchy() %>%
-        set_engine("thief")
+        parsnip::set_engine("thief")
 
 
     # HIERARCHICAL PARSNIP ----
@@ -28,12 +28,12 @@ test_that("thief", {
 
     # Fit Spec
     model_fit <- model_spec %>%
-        fit(log(value) ~ date, data = training(splits))
+        fit(log(value) ~ date, data = rsample::training(splits))
 
     # Predictions
     predictions_tbl <- model_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits))
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits))
 
     expect_s3_class(model_fit$fit, "temporal_hier_fit_impl")
 
@@ -53,12 +53,12 @@ test_that("thief", {
 
 
     # Structure
-    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(rsample::testing(splits)), nrow(predictions_tbl))
+    expect_identical(rsample::testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
-    resid <- testing(splits)$value - exp(predictions_tbl$.value)
+    resid <- rsample::testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 320)
@@ -73,26 +73,26 @@ test_that("thief", {
 
     # Model Spec
     model_spec <- temporal_hierarchy() %>%
-        set_engine("thief")
+        parsnip::set_engine("thief")
 
     # Recipe spec
-    recipe_spec <- recipe(value ~ date, data = training(splits)) %>%
-        step_log(value, skip = FALSE)
+    recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
+        recipes::step_log(value, skip = FALSE)
 
     # Workflow
-    wflw <- workflow() %>%
-        add_recipe(recipe_spec) %>%
-        add_model(model_spec)
+    wflw <- workflows::workflow() %>%
+        workflows::add_recipe(recipe_spec) %>%
+        workflows::add_model(model_spec)
 
     wflw_fit <- wflw %>%
-        fit(training(splits))
+        fit(rsample::training(splits))
 
     # Forecast
     predictions_tbl <- wflw_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
-        modeltime_forecast(new_data = testing(splits),
-                           actual_data = training(splits)) %>%
-        mutate_at(vars(.value), exp)
+        modeltime_calibrate(rsample::testing(splits)) %>%
+        modeltime_forecast(new_data = rsample::testing(splits),
+                           actual_data = rsample::training(splits)) %>%
+        dplyr::mutate_at(dplyr::vars(.value), exp)
 
     # Tests
 
@@ -113,15 +113,15 @@ test_that("thief", {
     expect_equal(names(mld$outcomes), "value")
 
 
-    full_data <- bind_rows(training(splits), testing(splits))
+    full_data <- dplyr::bind_rows(rsample::training(splits), rsample::testing(splits))
 
     # Structure
     expect_identical(nrow(full_data), nrow(predictions_tbl))
     expect_identical(full_data$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
-    predictions_tbl <- predictions_tbl %>% filter(.key == "prediction")
-    resid <- testing(splits)$value - predictions_tbl$.value
+    predictions_tbl <- predictions_tbl %>% dplyr::filter(.key == "prediction")
+    resid <- rsample::testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
     expect_lte(max(abs(resid)), 320)

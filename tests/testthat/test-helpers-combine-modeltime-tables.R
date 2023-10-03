@@ -9,22 +9,22 @@ test_that("combine_modeltime_table(): succeeds with mdl_time_tbl classes", {
 
     #
 
-    m750 <- m4_monthly %>%
-        filter(id == "M750")
+    m750 <- timetk::m4_monthly %>%
+        dplyr::filter(id == "M750")
 
     splits <- time_series_split(m750, assess = "3 years", cumulative = TRUE)
 
     model_fit_arima <- arima_reg() %>%
-        set_engine("auto_arima") %>%
-        fit(value ~ date, training(splits))
+        parsnip::set_engine("auto_arima") %>%
+        fit(value ~ date, rsample::training(splits))
 
     model_fit_prophet <- prophet_reg() %>%
-        set_engine("prophet") %>%
-        fit(value ~ date, training(splits))
+        parsnip::set_engine("prophet") %>%
+        fit(value ~ date, rsample::training(splits))
 
     model_fit_ets <- exp_smoothing() %>%
-        set_engine("ets") %>%
-        fit(value ~ date, training(splits))
+        parsnip::set_engine("ets") %>%
+        fit(value ~ date, rsample::training(splits))
 
     # Make 3 separate modeltime tables
     model_tbl_1 <- modeltime_table(model_fit_arima)
@@ -34,7 +34,7 @@ test_that("combine_modeltime_table(): succeeds with mdl_time_tbl classes", {
     model_tbl_3 <- modeltime_table(model_fit_ets)
 
     calib_tbl <- model_tbl_1 %>%
-        modeltime_calibrate(testing(splits))
+        modeltime_calibrate(rsample::testing(splits))
 
 
     # combine_modeltime_table(): succeeds with mdl_time_tbl classes
