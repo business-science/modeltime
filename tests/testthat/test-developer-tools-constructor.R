@@ -7,7 +7,7 @@ context("TEST DEVELOPER TOOLS - CONSTRUCTORS")
 
 test_that("modeltime bridge: Good Structure", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 

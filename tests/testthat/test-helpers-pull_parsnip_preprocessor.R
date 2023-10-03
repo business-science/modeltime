@@ -11,7 +11,7 @@ splits <- initial_time_split(m750, prop = 0.9)
 
 test_that("arima - matrix interface", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     form <- stats::formula("log(value) ~ date")
 
@@ -30,7 +30,7 @@ test_that("arima - matrix interface", {
 
 test_that("MARS - S3 FORMULA", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     form <- stats::formula("log(value) ~ as.numeric(date) + month(date, label = TRUE)")
 
@@ -49,7 +49,7 @@ test_that("MARS - S3 FORMULA", {
 
 test_that("SVM - S4 FORMULA", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     form <- stats::formula("log(value) ~ as.numeric(date) + month(date, label = TRUE)")
 
@@ -67,7 +67,7 @@ test_that("SVM - S4 FORMULA", {
 
 test_that("pull_parsnip_preprocessor error", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     expect_error(pull_parsnip_preprocessor(1))
 

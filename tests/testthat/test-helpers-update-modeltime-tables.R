@@ -6,7 +6,7 @@ context("TEST MODELTIME TABLE HELPERS")
 
 test_that("TEST MODELTIME TABLE HELPERS", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # SETUP
 
@@ -62,7 +62,7 @@ test_that("TEST MODELTIME TABLE HELPERS", {
     mdl_1 <- model_tbl %>%
         pluck_modeltime_model(1)
 
-    testthat::expect_s3_class(mdl_1, "model_fit")
+    expect_s3_class(mdl_1, "model_fit")
 
     expect_error({
         "Hi" %>%

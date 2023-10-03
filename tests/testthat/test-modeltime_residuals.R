@@ -1,9 +1,9 @@
-testthat::context("Modeltime Residuals")
+context("Modeltime Residuals")
 
 
-testthat::test_that("modeltime_residuals(): Returns correct order", {
+test_that("modeltime_residuals(): Returns correct order", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     library(tidymodels)
     library(modeltime)
@@ -60,7 +60,7 @@ testthat::test_that("modeltime_residuals(): Returns correct order", {
             training(splits)
         )
 
-    testthat::expect_equal(training(splits)$value, calib_tbl_train$.calibration_data[[1]]$.actual)
+    expect_equal(training(splits)$value, calib_tbl_train$.calibration_data[[1]]$.actual)
 
 
     # Usage of the full data set
@@ -73,6 +73,6 @@ testthat::test_that("modeltime_residuals(): Returns correct order", {
             data
         )
 
-    testthat::expect_equal(data$value, calib_tbl$.calibration_data[[1]]$.actual)
+    expect_equal(data$value, calib_tbl$.calibration_data[[1]]$.actual)
 
 })

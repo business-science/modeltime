@@ -5,7 +5,7 @@ context("TEST COMBINING MULTIPLE MODELTIME TABLES")
 
 test_that("combine_modeltime_table(): succeeds with mdl_time_tbl classes", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 

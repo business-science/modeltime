@@ -1,8 +1,8 @@
 
 
-testthat::test_that("refit works in parallel", {
+test_that("refit works in parallel", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     m4_monthly_jumbled <- m4_monthly %>%
         arrange(desc(date))
@@ -48,6 +48,6 @@ testthat::test_that("refit works in parallel", {
             )
         )
 
-    testthat::expect_equal(nrow(refit_tbl), 2)
+    expect_equal(nrow(refit_tbl), 2)
 
 })

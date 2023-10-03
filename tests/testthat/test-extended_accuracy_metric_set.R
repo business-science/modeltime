@@ -6,7 +6,7 @@ library(timetk)
 
 test_that("extended_forecast_accuracy_metric_set works", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     set.seed(1)
     data <- tibble(
@@ -26,7 +26,7 @@ test_that("extended_forecast_accuracy_metric_set works", {
 
 test_that("summarize_accuracy_metrics works", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     predictions_tbl <- tibble(
         group = c(rep("model_1", 4),

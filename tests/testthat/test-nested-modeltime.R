@@ -1,13 +1,13 @@
-testthat::context("MODELTIME NESTED (ITERATIVE) FORECASTING")
+context("MODELTIME NESTED (ITERATIVE) FORECASTING")
 
 # MODELTIME NESTED (ITERATIVE) FORECASTING -----
 
 
 # NESTED WORKFLOW ----
 
-testthat::test_that("MODELTIME NESTED (ITERATIVE) FORECASTING", {
+test_that("MODELTIME NESTED (ITERATIVE) FORECASTING", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # SETUP
 

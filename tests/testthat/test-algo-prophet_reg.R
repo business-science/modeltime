@@ -32,7 +32,7 @@ model_spec <- prophet_reg(
 
 test_that("prophet_reg: prophet, (NO XREGS), Test Model Fit Object", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # ** MODEL FIT ----
 
@@ -42,37 +42,37 @@ test_that("prophet_reg: prophet, (NO XREGS), Test Model Fit Object", {
 
     # Structure
 
-    testthat::expect_s3_class(model_fit$fit, "prophet_fit_impl")
+    expect_s3_class(model_fit$fit, "prophet_fit_impl")
 
-    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
+    expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+    expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
 
     # $fit PROPHET
 
-    testthat::expect_s3_class(model_fit$fit$models$model_1, "prophet")
+    expect_s3_class(model_fit$fit$models$model_1, "prophet")
 
-    testthat::expect_identical(model_fit$fit$models$model_1$growth, "linear")
-    testthat::expect_identical(model_fit$fit$models$model_1$n.changepoints, 10)
+    expect_identical(model_fit$fit$models$model_1$growth, "linear")
+    expect_identical(model_fit$fit$models$model_1$n.changepoints, 10)
 
-    testthat::expect_identical(model_fit$fit$models$model_1$changepoint.range, 0.75)
-    testthat::expect_identical(model_fit$fit$models$model_1$yearly.seasonality, TRUE)
-    testthat::expect_identical(model_fit$fit$models$model_1$weekly.seasonality, FALSE)
-    testthat::expect_identical(model_fit$fit$models$model_1$daily.seasonality, FALSE)
+    expect_identical(model_fit$fit$models$model_1$changepoint.range, 0.75)
+    expect_identical(model_fit$fit$models$model_1$yearly.seasonality, TRUE)
+    expect_identical(model_fit$fit$models$model_1$weekly.seasonality, FALSE)
+    expect_identical(model_fit$fit$models$model_1$daily.seasonality, FALSE)
 
-    testthat::expect_identical(model_fit$fit$models$model_1$seasonality.mode, 'multiplicative')
-    testthat::expect_identical(model_fit$fit$models$model_1$seasonality.prior.scale, 20)
-    testthat::expect_identical(model_fit$fit$models$model_1$changepoint.prior.scale, 20)
-    testthat::expect_identical(model_fit$fit$models$model_1$holidays.prior.scale, 20)
+    expect_identical(model_fit$fit$models$model_1$seasonality.mode, 'multiplicative')
+    expect_identical(model_fit$fit$models$model_1$seasonality.prior.scale, 20)
+    expect_identical(model_fit$fit$models$model_1$changepoint.prior.scale, 20)
+    expect_identical(model_fit$fit$models$model_1$holidays.prior.scale, 20)
 
 
-    testthat::expect_identical(model_fit$fit$models$model_1$uncertainty.samples, 0)
+    expect_identical(model_fit$fit$models$model_1$uncertainty.samples, 0)
 
     # $preproc
 
-    testthat::expect_equal(model_fit$preproc$y_var, "value")
+    expect_equal(model_fit$preproc$y_var, "value")
 
 
     # ** PREDICTIONS ----
@@ -83,18 +83,18 @@ test_that("prophet_reg: prophet, (NO XREGS), Test Model Fit Object", {
         modeltime_forecast(new_data = testing(splits))
 
     # Structure
-    testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    testthat::expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
+    expect_identical(testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
     resid <- testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 1500)
+    expect_lte(max(abs(resid)), 1500)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 700)
+    expect_lte(mean(abs(resid)), 700)
 
 })
 
@@ -102,7 +102,7 @@ test_that("prophet_reg: prophet, (NO XREGS), Test Model Fit Object", {
 
 test_that("prophet_reg: prophet, (XREGS), Test Model Fit Object", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # ** MODEL FIT ----
 
@@ -113,37 +113,37 @@ test_that("prophet_reg: prophet, (XREGS), Test Model Fit Object", {
 
     # Structure
 
-    testthat::expect_s3_class(model_fit$fit, "prophet_fit_impl")
+    expect_s3_class(model_fit$fit, "prophet_fit_impl")
 
-    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
+    expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+    expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_true(!is.null(model_fit$fit$extras$xreg_recipe))
+    expect_true(!is.null(model_fit$fit$extras$xreg_recipe))
 
     # $fit PROPHET
 
-    testthat::expect_s3_class(model_fit$fit$models$model_1, "prophet")
+    expect_s3_class(model_fit$fit$models$model_1, "prophet")
 
-    testthat::expect_identical(model_fit$fit$models$model_1$growth, "linear")
-    testthat::expect_identical(model_fit$fit$models$model_1$n.changepoints, 10)
+    expect_identical(model_fit$fit$models$model_1$growth, "linear")
+    expect_identical(model_fit$fit$models$model_1$n.changepoints, 10)
 
-    testthat::expect_identical(model_fit$fit$models$model_1$changepoint.range, 0.75)
-    testthat::expect_identical(model_fit$fit$models$model_1$yearly.seasonality, TRUE)
-    testthat::expect_identical(model_fit$fit$models$model_1$weekly.seasonality, FALSE)
-    testthat::expect_identical(model_fit$fit$models$model_1$daily.seasonality, FALSE)
+    expect_identical(model_fit$fit$models$model_1$changepoint.range, 0.75)
+    expect_identical(model_fit$fit$models$model_1$yearly.seasonality, TRUE)
+    expect_identical(model_fit$fit$models$model_1$weekly.seasonality, FALSE)
+    expect_identical(model_fit$fit$models$model_1$daily.seasonality, FALSE)
 
-    testthat::expect_identical(model_fit$fit$models$model_1$seasonality.mode, 'multiplicative')
-    testthat::expect_identical(model_fit$fit$models$model_1$seasonality.prior.scale, 20)
-    testthat::expect_identical(model_fit$fit$models$model_1$changepoint.prior.scale, 20)
-    testthat::expect_identical(model_fit$fit$models$model_1$holidays.prior.scale, 20)
+    expect_identical(model_fit$fit$models$model_1$seasonality.mode, 'multiplicative')
+    expect_identical(model_fit$fit$models$model_1$seasonality.prior.scale, 20)
+    expect_identical(model_fit$fit$models$model_1$changepoint.prior.scale, 20)
+    expect_identical(model_fit$fit$models$model_1$holidays.prior.scale, 20)
 
 
-    testthat::expect_identical(model_fit$fit$models$model_1$uncertainty.samples, 0)
+    expect_identical(model_fit$fit$models$model_1$uncertainty.samples, 0)
 
     # $preproc
 
-    testthat::expect_equal(model_fit$preproc$y_var, "value")
+    expect_equal(model_fit$preproc$y_var, "value")
 
 
     # ** PREDICTIONS ----
@@ -154,18 +154,18 @@ test_that("prophet_reg: prophet, (XREGS), Test Model Fit Object", {
         modeltime_forecast(new_data = testing(splits))
 
     # Structure
-    testthat::expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
-    testthat::expect_identical(testing(splits)$date, predictions_tbl$.index)
+    expect_identical(nrow(testing(splits)), nrow(predictions_tbl))
+    expect_identical(testing(splits)$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
 
     resid <- testing(splits)$value - exp(predictions_tbl$.value)
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 1500)
+    expect_lte(max(abs(resid)), 1500)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 700)
+    expect_lte(mean(abs(resid)), 700)
 
 })
 
@@ -175,7 +175,7 @@ test_that("prophet_reg: prophet, (XREGS), Test Model Fit Object", {
 # TESTS
 test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     #
 
@@ -197,37 +197,37 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
 
     # Structure
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit, "prophet_fit_impl")
+    expect_s3_class(wflw_fit$fit$fit$fit, "prophet_fit_impl")
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$data, "tbl_df")
+    expect_s3_class(wflw_fit$fit$fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
+    expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    testthat::expect_true(!is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_true(!is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
 
     # $fit prophet
 
-    testthat::expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "prophet")
+    expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "prophet")
 
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$growth, "linear")
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$n.changepoints, 10)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$growth, "linear")
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$n.changepoints, 10)
 
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$changepoint.range, 0.75)
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$yearly.seasonality, TRUE)
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$weekly.seasonality, FALSE)
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$daily.seasonality, FALSE)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$changepoint.range, 0.75)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$yearly.seasonality, TRUE)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$weekly.seasonality, FALSE)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$daily.seasonality, FALSE)
 
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$seasonality.mode, 'multiplicative')
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$seasonality.prior.scale, 20)
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$changepoint.prior.scale, 20)
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$holidays.prior.scale, 20)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$seasonality.mode, 'multiplicative')
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$seasonality.prior.scale, 20)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$changepoint.prior.scale, 20)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$holidays.prior.scale, 20)
 
 
-    testthat::expect_identical(wflw_fit$fit$fit$fit$models$model_1$uncertainty.samples, 0)
+    expect_identical(wflw_fit$fit$fit$fit$models$model_1$uncertainty.samples, 0)
 
     # $preproc
     mld <- wflw_fit %>% workflows::extract_mold()
-    testthat::expect_equal(names(mld$outcomes), "value")
+    expect_equal(names(mld$outcomes), "value")
 
 
     # ** PREDICTIONS ----
@@ -241,18 +241,18 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
     full_data <- bind_rows(training(splits), testing(splits))
 
     # Structure
-    testthat::expect_identical(nrow(full_data), nrow(predictions_tbl))
-    testthat::expect_identical(full_data$date, predictions_tbl$.index)
+    expect_identical(nrow(full_data), nrow(predictions_tbl))
+    expect_identical(full_data$date, predictions_tbl$.index)
 
     # Out-of-Sample Accuracy Tests
     predictions_tbl <- predictions_tbl %>% filter(.key == "prediction")
     resid <- testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    testthat::expect_lte(max(abs(resid)), 1500)
+    expect_lte(max(abs(resid)), 1500)
 
     # - MAE less than 700
-    testthat::expect_lte(mean(abs(resid)), 700)
+    expect_lte(mean(abs(resid)), 700)
 
 })
 
@@ -263,7 +263,7 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
 
 test_that("prophet_reg: prophet, Logistic Growth", {
 
-    testthat::skip_on_cran()
+    skip_on_cran()
 
     # ** MODEL FIT ----
 
@@ -277,27 +277,27 @@ test_that("prophet_reg: prophet, Logistic Growth", {
 
     # Structure
 
-    testthat::expect_s3_class(model_fit$fit, "prophet_fit_impl")
+    expect_s3_class(model_fit$fit, "prophet_fit_impl")
 
-    testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
+    expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+    expect_equal(names(model_fit$fit$data)[1], "date")
 
-    testthat::expect_false(is.null(model_fit$fit$extras$logistic_params$logistic_cap))
+    expect_false(is.null(model_fit$fit$extras$logistic_params$logistic_cap))
 
     # $fit PROPHET
 
-    testthat::expect_s3_class(model_fit$fit$models$model_1, "prophet")
+    expect_s3_class(model_fit$fit$models$model_1, "prophet")
 
-    testthat::expect_identical(model_fit$fit$models$model_1$growth, "logistic")
+    expect_identical(model_fit$fit$models$model_1$growth, "logistic")
 
-    testthat::expect_identical(model_fit$fit$extras$logistic_params$growth, "logistic")
-    testthat::expect_identical(model_fit$fit$extras$logistic_params$logistic_cap, 11000)
-    testthat::expect_true(is.null(model_fit$fit$extras$logistic_params$logistic_floor))
+    expect_identical(model_fit$fit$extras$logistic_params$growth, "logistic")
+    expect_identical(model_fit$fit$extras$logistic_params$logistic_cap, 11000)
+    expect_true(is.null(model_fit$fit$extras$logistic_params$logistic_floor))
 
     # $preproc
 
-    testthat::expect_equal(model_fit$preproc$y_var, "value")
+    expect_equal(model_fit$preproc$y_var, "value")
 
 
     # ** PREDICTIONS ----
