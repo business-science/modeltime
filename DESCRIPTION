@@ -35,7 +35,7 @@ Imports:
     ggplot2,
     tibble,
     tidyr,
-    dplyr,
+    dplyr (>= 1.1.0),
     purrr,
     stringr,
     forcats,
@@ -62,9 +62,7 @@ Suggests:
     rsample,
     tune (>= 0.2.0),
     lubridate,
-    progress,
     testthat,
-    roxygen2,
     kernlab,
     glmnet,
     thief,
@@ -77,7 +75,6 @@ Suggests:
     rmarkdown (>= 2.9),
     webshot,
     qpdf,
-    covr,
     TSrepr
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
