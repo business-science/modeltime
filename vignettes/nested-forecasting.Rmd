@@ -71,7 +71,7 @@ library(tidyverse)
 library(timetk)
 ```
 
-```{r. echo = FALSE}
+```{r, echo = FALSE}
 library(modeltime)
 library(tidymodels)
 library(dplyr)

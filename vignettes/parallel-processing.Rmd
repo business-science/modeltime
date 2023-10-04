@@ -62,7 +62,7 @@ library(tidyverse)
 library(timetk)
 ```
 
-```{r. include = FALSE}
+```{r, include = FALSE}
 # Machine Learning
 library(modeltime)
 library(tidymodels)
