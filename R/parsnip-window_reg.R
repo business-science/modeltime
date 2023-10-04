@@ -505,7 +505,7 @@ predict.window_function_fit_impl <- function(object, new_data, ...) {
 #
 #     # APPLY WINDOW
 #     window_df <- window_df %>%
-#         dplyr::arrange(dplyr::all_of(idx_col)) %>%
+#         dplyr::arrange(dplyr::pick(dplyr::all_of(idx_col))) %>%
 #         dplyr::slice_tail(n = period) %>%
 #         dplyr::ungroup()
 #
