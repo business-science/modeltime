@@ -197,10 +197,10 @@ installed.</p></li>
 <p>Load the following libraries.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://spark.rstudio.com/" class="external-link">sparklyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/modeltime" class="external-link">modeltime</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/business-science/timetk" class="external-link">timetk</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="spark-connection">Spark Connection<a class="anchor" aria-label="anchor" href="#spark-connection"></a>
@@ -244,17 +244,15 @@ Walmart store-department combination.</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">walmart_sales_weekly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, date <span class="op">=</span> <span class="va">Date</span>, value <span class="op">=</span> <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modeltime-spark_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We prepare as nested data using the Nested Forecasting preparation
 functions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nested_data_tbl</span> <span class="op">&lt;-</span> <span class="va">walmart_sales_weekly</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">Date</span>, <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, date <span class="op">=</span> <span class="va">Date</span>, value <span class="op">=</span> <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/prep_nested.html">extend_timeseries</a></span><span class="op">(</span></span>
 <span>        .id_var        <span class="op">=</span> <span class="va">id</span>,</span>
 <span>        .date_var      <span class="op">=</span> <span class="va">date</span>,</span>
@@ -375,9 +373,9 @@ distributed computation.</p>
 <span>    <span class="op">)</span></span>
 <span><span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span></span>
 <span><span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span></span>
-<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 26.112 seconds</span></span>
+<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 26.752 seconds</span></span>
 <span><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
-<span><span class="co">#&gt; Finished in: 26.11308 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 26.7523 secs.</span></span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span></span>
@@ -401,23 +399,23 @@ model</p>
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<div id="zsffsafquj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zsffsafquj table {
+<div id="krkyznjqqj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#krkyznjqqj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zsffsafquj thead, #zsffsafquj tbody, #zsffsafquj tfoot, #zsffsafquj tr, #zsffsafquj td, #zsffsafquj th {
+#krkyznjqqj thead, #krkyznjqqj tbody, #krkyznjqqj tfoot, #krkyznjqqj tr, #krkyznjqqj td, #krkyznjqqj th {
   border-style: none;
 }
 
-#zsffsafquj p {
+#krkyznjqqj p {
   margin: 0;
   padding: 0;
 }
 
-#zsffsafquj .gt_table {
+#krkyznjqqj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -443,12 +441,12 @@ model</p>
   border-left-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_caption {
+#krkyznjqqj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zsffsafquj .gt_title {
+#krkyznjqqj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -460,7 +458,7 @@ model</p>
   border-bottom-width: 0;
 }
 
-#zsffsafquj .gt_subtitle {
+#krkyznjqqj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -472,7 +470,7 @@ model</p>
   border-top-width: 0;
 }
 
-#zsffsafquj .gt_heading {
+#krkyznjqqj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -484,13 +482,13 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_bottom_border {
+#krkyznjqqj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_col_headings {
+#krkyznjqqj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -505,7 +503,7 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_col_heading {
+#krkyznjqqj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -525,7 +523,7 @@ model</p>
   overflow-x: hidden;
 }
 
-#zsffsafquj .gt_column_spanner_outer {
+#krkyznjqqj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -537,15 +535,15 @@ model</p>
   padding-right: 4px;
 }
 
-#zsffsafquj .gt_column_spanner_outer:first-child {
+#krkyznjqqj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zsffsafquj .gt_column_spanner_outer:last-child {
+#krkyznjqqj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zsffsafquj .gt_column_spanner {
+#krkyznjqqj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -557,11 +555,11 @@ model</p>
   width: 100%;
 }
 
-#zsffsafquj .gt_spanner_row {
+#krkyznjqqj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zsffsafquj .gt_group_heading {
+#krkyznjqqj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -587,7 +585,7 @@ model</p>
   text-align: left;
 }
 
-#zsffsafquj .gt_empty_group_heading {
+#krkyznjqqj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -602,15 +600,15 @@ model</p>
   vertical-align: middle;
 }
 
-#zsffsafquj .gt_from_md > :first-child {
+#krkyznjqqj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zsffsafquj .gt_from_md > :last-child {
+#krkyznjqqj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zsffsafquj .gt_row {
+#krkyznjqqj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -629,7 +627,7 @@ model</p>
   overflow-x: hidden;
 }
 
-#zsffsafquj .gt_stub {
+#krkyznjqqj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -642,7 +640,7 @@ model</p>
   padding-right: 5px;
 }
 
-#zsffsafquj .gt_stub_row_group {
+#krkyznjqqj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -656,15 +654,15 @@ model</p>
   vertical-align: top;
 }
 
-#zsffsafquj .gt_row_group_first td {
+#krkyznjqqj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zsffsafquj .gt_row_group_first th {
+#krkyznjqqj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zsffsafquj .gt_summary_row {
+#krkyznjqqj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -674,16 +672,16 @@ model</p>
   padding-right: 5px;
 }
 
-#zsffsafquj .gt_first_summary_row {
+#krkyznjqqj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_first_summary_row.thick {
+#krkyznjqqj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zsffsafquj .gt_last_summary_row {
+#krkyznjqqj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -693,7 +691,7 @@ model</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_grand_summary_row {
+#krkyznjqqj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -703,7 +701,7 @@ model</p>
   padding-right: 5px;
 }
 
-#zsffsafquj .gt_first_grand_summary_row {
+#krkyznjqqj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -713,7 +711,7 @@ model</p>
   border-top-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_last_grand_summary_row_top {
+#krkyznjqqj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -723,11 +721,11 @@ model</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_striped {
+#krkyznjqqj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zsffsafquj .gt_table_body {
+#krkyznjqqj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -736,7 +734,7 @@ model</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_footnotes {
+#krkyznjqqj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -750,7 +748,7 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_footnote {
+#krkyznjqqj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -759,7 +757,7 @@ model</p>
   padding-right: 5px;
 }
 
-#zsffsafquj .gt_sourcenotes {
+#krkyznjqqj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -773,7 +771,7 @@ model</p>
   border-right-color: #D3D3D3;
 }
 
-#zsffsafquj .gt_sourcenote {
+#krkyznjqqj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -781,63 +779,63 @@ model</p>
   padding-right: 5px;
 }
 
-#zsffsafquj .gt_left {
+#krkyznjqqj .gt_left {
   text-align: left;
 }
 
-#zsffsafquj .gt_center {
+#krkyznjqqj .gt_center {
   text-align: center;
 }
 
-#zsffsafquj .gt_right {
+#krkyznjqqj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zsffsafquj .gt_font_normal {
+#krkyznjqqj .gt_font_normal {
   font-weight: normal;
 }
 
-#zsffsafquj .gt_font_bold {
+#krkyznjqqj .gt_font_bold {
   font-weight: bold;
 }
 
-#zsffsafquj .gt_font_italic {
+#krkyznjqqj .gt_font_italic {
   font-style: italic;
 }
 
-#zsffsafquj .gt_super {
+#krkyznjqqj .gt_super {
   font-size: 65%;
 }
 
-#zsffsafquj .gt_footnote_marks {
+#krkyznjqqj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zsffsafquj .gt_asterisk {
+#krkyznjqqj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zsffsafquj .gt_indent_1 {
+#krkyznjqqj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zsffsafquj .gt_indent_2 {
+#krkyznjqqj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zsffsafquj .gt_indent_3 {
+#krkyznjqqj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zsffsafquj .gt_indent_4 {
+#krkyznjqqj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zsffsafquj .gt_indent_5 {
+#krkyznjqqj .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1039,7 +1037,7 @@ model</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modeltime-spark_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
