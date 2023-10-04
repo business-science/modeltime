@@ -76,7 +76,7 @@ find_parsnip_formula_form <- function(object) {
             formula_found <- TRUE
         }
 
-        if (formula_found == FALSE){
+        if (!formula_found){
             check_formula_second_level <- object %>%
                 purrr::map_dfr(~ rlang::is_formula(.)) %>%
                 tidyr::gather() %>%

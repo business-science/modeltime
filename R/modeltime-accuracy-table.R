@@ -118,7 +118,7 @@ table_modeltime_accuracy <- function(.data, .round_digits = 2,
 
     if (!is.null(round)) {
             data_formatted <- data_formatted %>%
-                dplyr::mutate(dplyr::across(where(is.double), .fns = ~ round(.x, digits = .round_digits)))
+                dplyr::mutate(dplyr::across(dplyr::where(is.double), .fns = ~ round(.x, digits = .round_digits)))
     }
 
     # Output either reactable() or gt()

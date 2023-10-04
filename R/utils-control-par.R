@@ -98,7 +98,7 @@ setup_parallel_processing <- function(control, is_par_setup, t1) {
         }
 
     } else if (!is_par_setup) {
-        # Run sequentially if parallel is not set up, cores == 1 or allow_par == FALSE
+        # Run sequentially if parallel is not set up, cores == 1 or allow_par = FALSE
         if (control$verbose) message(stringr::str_glue("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`."))
         foreach::registerDoSEQ()
     } else {
@@ -420,7 +420,7 @@ control_modeltime_objects <- function(
     }
 
     class_cores <- check_class_integer(cores)
-    if (class_cores == F) {
+    if (!class_cores) {
         rlang::abort(
             stringr::str_glue("{if (!is.null(func)) paste0(func, ': ') }Argument 'cores' should be a single integer value")
         )
