@@ -44,22 +44,20 @@ This tutorial requires:
 
 Load the following libraries. 
 
-```r
-library(modeltime)
-library(tidymodels)
-library(tidyverse)
-library(timetk)
-```
 ```{r}
 library(sparklyr)
+library(modeltime)
+library(timetk)
 ```
 
+```r
+library(tidymodels)
+library(tidyverse)
+```
 
 ```{r. include = FALSE}
-library(modeltime)
 library(tidymodels)
 library(dplyr)
-library(timetk)
 ```
 
 # Spark Connection
