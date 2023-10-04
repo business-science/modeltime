@@ -49,15 +49,17 @@ library(modeltime)
 library(tidymodels)
 library(tidyverse)
 library(timetk)
+```
+```{r}
 library(sparklyr)
 ```
+
 
 ```{r. include = FALSE}
 library(modeltime)
 library(tidymodels)
 library(dplyr)
 library(timetk)
-library(sparklyr)
 ```
 
 # Spark Connection
