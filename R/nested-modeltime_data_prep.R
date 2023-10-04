@@ -75,8 +75,7 @@
 #'
 #'
 #' nested_data_tbl <- walmart_sales_weekly %>%
-#'     select(id, Date, Weekly_Sales) %>%
-#'     set_names(c("id", "date", "value")) %>%
+#'     select(id, date = Date, value = Weekly_Sales)
 #'
 #'     # Step 1: Extends the time series by id
 #'     extend_timeseries(

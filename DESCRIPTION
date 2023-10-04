@@ -79,4 +79,3 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
-

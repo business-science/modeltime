@@ -103,8 +103,7 @@ Next, let's use the `walmart_sales_weekly` dataset that comes with `timetk`.
 
 ```{r}
 data_tbl <- walmart_sales_weekly %>%
-    select(id, Date, Weekly_Sales) %>%
-    set_names(c("id", "date", "value"))
+    select(id, date = Date, value = Weekly_Sales)
 
 data_tbl
 ```

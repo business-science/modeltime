@@ -1173,8 +1173,7 @@ mdl_time_forecast.workflow <- function(object, calibration_data, new_data = NULL
     }
 
     ret <- data_formatted %>%
-        dplyr::rename(.value = .pred) %>%
-        dplyr::select(.key, .index, .value) %>%
+        dplyr::select(.key, .index, .value = .pred) %>%
         dplyr::mutate(.key = factor(.key, levels = c("actual", "prediction")))
 
     # Keep Data

@@ -60,7 +60,7 @@ We'll start with the Walmart Sales data set from `timetk`.
 
 walmart_sales_tbl <- timetk::walmart_sales_weekly %>%
     select(id, Date, Weekly_Sales) %>%
-    mutate(id = as_factor(id))
+    mutate(id = forcats::as_factor(id))
 ```
 
 We can visualize the data set. 

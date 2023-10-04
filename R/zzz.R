@@ -2,7 +2,7 @@
 # StanHeaders - Used to prevent issues with Prophet dynload error
 
 #' @import StanHeaders
-
+NULL
 
 # ON LOAD ----
 
