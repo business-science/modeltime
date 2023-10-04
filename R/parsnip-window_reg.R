@@ -344,18 +344,23 @@ window_function_fit_impl <- function(x, y, id = NULL,
 
     if (is_grouped) {
         window_model <- constructed_tbl %>%
-            dplyr::group_by(!! rlang::sym(id))
+            dplyr::group_by(!!rlang::sym(id))
     } else {
         window_model <- constructed_tbl
     }
 
     window_model <- window_model %>%
-        dplyr::arrange(dplyr::all_of(idx_col)) %>%
-        dplyr::slice_tail(n = period) %>%
-        dplyr::summarise(
-            dplyr::across(value, .fns = window_function, ...),
-            .groups = "drop") %>%
-        dplyr::ungroup()
+        dplyr::arrange(dplyr::pick(dplyr::all_of(idx_col))) %>%
+        dplyr::slice_tail(n = period)
+
+    window_function <- rlang::as_function(window_function)
+
+
+    window_model <-
+        dplyr::reframe(
+            window_model,
+            dplyr::across(value, .fns = function(.x) window_function(.x, ...)),
+            )
 
     # return(window_model)
 
