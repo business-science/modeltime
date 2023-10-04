@@ -83,7 +83,7 @@ Table customization is implemented using a piping workflow (\verb{\%>\%}).
 For more information, refer to the \href{https://gt.rstudio.com/index.html}{GT Documentation}.
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 library(parsnip)

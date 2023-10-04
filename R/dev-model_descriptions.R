@@ -37,7 +37,7 @@ get_model_description <- function(object, indicate_training = FALSE, upper_case 
 
 #' @export
 get_model_description.default <- function(object, indicate_training = FALSE, upper_case = TRUE) {
-    glubort("No method for class '{class(object)[1]}'. Expecting an object of class 'workflow', 'model_spec', or 'model_fit'.")
+    cli::cli_abort("No method for class {.obj_type_friendly {object}}. Expecting an object of class 'workflow', 'model_spec', or 'model_fit'.")
 }
 
 #' @export
@@ -223,7 +223,7 @@ get_arima_description <- function(object, padding = FALSE) {
 
 #' @export
 get_arima_description.default <- function(object, padding = FALSE) {
-    glubort("No method for class '{class(object)[1]}'. Expecting an object of class 'Arima'.")
+    cli::cli_abort("No method for class {.obj_type_friendly {object}}. Expecting an object of class 'Arima'.")
 }
 
 #' @export
@@ -284,8 +284,8 @@ get_arima_description.Arima <- function(object, padding = FALSE) {
 #' @export
 get_tbats_description <- function(object) {
 
-    if (!(inherits(object, "tbats") || inherits(object, "bats"))) {
-        glubort("No method for class '{class(object)[1]}'. Expecting an object of class 'bats' or 'tbats'.")
+    if (!rlang::inherits_any(object, c("tbats", "bats"))) {
+        cli::cli_abort("No method for class {.obj_type_friendly {object}}. Expecting an object of class 'bats' or 'tbats'.")
     }
 
     as.character(object)

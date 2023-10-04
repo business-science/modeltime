@@ -22,8 +22,7 @@
 #' Modeltime Tables from models stored in a `list`.
 #'
 #' @examples
-#' library(tidyverse)
-#' library(lubridate)
+#' library(dplyr)
 #' library(timetk)
 #' library(parsnip)
 #' library(rsample)

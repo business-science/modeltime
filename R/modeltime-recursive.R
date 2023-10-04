@@ -71,8 +71,8 @@
 #' \donttest{
 #' # Libraries & Setup ----
 #' library(tidymodels)
-#' library(tidyverse)
-#' library(lubridate)
+#' library(dplyr)
+#' library(tidyr)
 #' library(timetk)
 #' library(slider)
 #'

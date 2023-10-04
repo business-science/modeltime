@@ -45,7 +45,7 @@ test_that("thief", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $preproc
 
@@ -92,7 +92,7 @@ test_that("thief", {
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits),
                            actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
     # Tests
 
@@ -106,7 +106,7 @@ test_that("thief", {
 
     expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_null(wflw_fit$fit$fit$fit$extras$xreg_recipe)
 
     # $preproc
     mld <- wflw_fit %>% workflows::extract_mold()

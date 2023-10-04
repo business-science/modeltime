@@ -50,7 +50,8 @@ Let's go through a common __Hyperparameter Tuning__ workflow that shows off the 
 
 Load the following libraries.
 
-```{r, message=FALSE, warning=FALSE}
+
+```r
 # Machine Learning
 library(modeltime)
 library(tidymodels)
@@ -60,6 +61,19 @@ library(workflowsets)
 library(tidyverse)
 library(timetk)
 ```
+
+```{r, include = FALSE}
+# Machine Learning
+library(modeltime)
+library(tidymodels)
+library(workflowsets)
+
+# Core
+library(dplyr)
+library(tidyr)
+library(timetk)
+```
+
 
 ## Setup Parallel Backend
 

@@ -24,8 +24,7 @@ These functions are used to construct new \code{modeltime} bridge functions that
 connect the \code{tidymodels} infrastructure to time-series models containing date or date-time features.
 }
 \examples{
-library(stats)
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 

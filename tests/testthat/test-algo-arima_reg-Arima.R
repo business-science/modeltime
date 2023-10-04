@@ -56,7 +56,7 @@ test_that("arima_reg: Arima, (No xregs), Test Model Fit Object", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $preproc
 
@@ -173,7 +173,7 @@ test_that("arima_reg: Arima (workflow), Test Model Fit Object", {
     predictions_tbl <- wflw_fit %>%
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
 
     expect_s3_class(wflw_fit$fit$fit$fit, "Arima_fit_impl")
@@ -186,7 +186,7 @@ test_that("arima_reg: Arima (workflow), Test Model Fit Object", {
 
     expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_null(wflw_fit$fit$fit$fit$extras$xreg_recipe)
 
     # $preproc
     mld <- wflw_fit %>% workflows::extract_mold()

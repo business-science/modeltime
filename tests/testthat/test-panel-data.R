@@ -10,7 +10,7 @@ test_that("Panel Data - Forecast Jumbled", {
     #
 
     m4_monthly_jumbled <- timetk::m4_monthly %>%
-        arrange(desc(date))
+        dplyr::arrange(dplyr::desc(date))
 
     data_set <- m4_monthly_jumbled
 
@@ -23,9 +23,9 @@ test_that("Panel Data - Forecast Jumbled", {
     wflw_fit_prophet <- workflows::workflow() %>%
         workflows::add_model(
             prophet_boost(
-                seasonality_yearly = F,
-                seasonality_weekly = F,
-                seasonality_daily  = F
+                seasonality_yearly = FALSE,
+                seasonality_weekly = FALSE,
+                seasonality_daily  = FALSE
             ) %>%
                 parsnip::set_engine(
                     "prophet_xgboost"

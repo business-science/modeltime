@@ -34,8 +34,7 @@ Converts a \code{list} of models to a modeltime table. Useful if programatically
 Modeltime Tables from models stored in a \code{list}.
 }
 \examples{
-library(tidyverse)
-library(lubridate)
+library(dplyr)
 library(timetk)
 library(parsnip)
 library(rsample)

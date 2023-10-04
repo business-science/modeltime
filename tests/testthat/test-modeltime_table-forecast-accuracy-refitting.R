@@ -56,7 +56,7 @@ test_that("Auto ARIMA (Parsnip)", {
 
     # ** Accuracy ----
     accuracy_tbl <- calibrated_tbl %>%
-        modeltime_accuracy(metric_set = metric_set(rsq, yardstick::mae))
+        modeltime_accuracy(metric_set = yardstick::metric_set(rsq, yardstick::mae))
 
     expect_equal(nrow(accuracy_tbl), 1)
 
@@ -71,7 +71,7 @@ test_that("Auto ARIMA (Parsnip)", {
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
 
-    expect_equal(future_forecast_tbl$.index[1], ymd("2015-07-01"))
+    expect_equal(future_forecast_tbl$.index[1], lubridate::ymd("2015-07-01"))
 })
 
 
@@ -91,7 +91,7 @@ test_that("Auto ARIMA (Workflow)", {
                 parsnip::set_engine("auto_arima")
         ) %>%
         workflows::add_recipe(
-            recipe = recipe(value ~ date, data = rsample::training(splits)) %>%
+            recipe = recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
                 recipes::step_date(date, features = "month") %>%
                 recipes::step_log(value)
         ) %>%
@@ -123,7 +123,7 @@ test_that("Auto ARIMA (Workflow)", {
 
     # ** Accuracy ----
     accuracy_tbl <- calibrated_tbl %>%
-        modeltime_accuracy(metric_set = metric_set(rsq, yardstick::mae))
+        modeltime_accuracy(metric_set = yardstick::metric_set(rsq, yardstick::mae))
 
     expect_equal(nrow(accuracy_tbl), 1)
 
@@ -138,7 +138,7 @@ test_that("Auto ARIMA (Workflow)", {
         modeltime_refit(data = m750) %>%
         modeltime_forecast(h = "3 years")
 
-    expect_equal(future_forecast_tbl$.index[1], ymd("2015-07-01"))
+    expect_equal(future_forecast_tbl$.index[1], lubridate::ymd("2015-07-01"))
 })
 
 
@@ -160,7 +160,7 @@ test_that("Models for Mega Test", {
                 parsnip::set_engine("auto_arima")
         ) %>%
         workflows::add_recipe(
-            recipe = recipe(value ~ date, data = rsample::training(splits)) %>%
+            recipe = recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
                 recipes::step_date(date, features = "month") %>%
                 recipes::step_log(value)
         ) %>%
@@ -215,7 +215,7 @@ test_that("Models for Mega Test", {
 
     # * LM (Parsnip Model) ----
 
-    model_fit_lm <- linear_reg() %>%
+    model_fit_lm <- parsnip::linear_reg() %>%
         parsnip::set_engine("lm") %>%
         fit(log(value) ~ as.numeric(date) + lubridate::month(date, label = TRUE),
             data = rsample::training(splits))
@@ -223,7 +223,7 @@ test_that("Models for Mega Test", {
 
     # * LM workflow -----
 
-    model_spec <- linear_reg() %>%
+    model_spec <- parsnip::linear_reg() %>%
         parsnip::set_engine("lm")
 
     recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
@@ -239,7 +239,7 @@ test_that("Models for Mega Test", {
 
     # * MARS (Parsnip Model) ----
     skip_if_not_installed("earth")
-    model_fit_mars <- mars(mode = "regression") %>%
+    model_fit_mars <- parsnip::mars(mode = "regression") %>%
         parsnip::set_engine("earth") %>%
         fit(log(value) ~ as.numeric(date) + lubridate::month(date, label = TRUE),
             data = rsample::training(splits))
@@ -249,7 +249,7 @@ test_that("Models for Mega Test", {
 
     # * MARS (Workflow) -----
 
-    model_spec <- mars(mode = "regression") %>%
+    model_spec <- parsnip::mars(mode = "regression") %>%
         parsnip::set_engine("earth")
 
     recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
@@ -268,8 +268,8 @@ test_that("Models for Mega Test", {
 
 
     # * SVM (Parsnip Model) ----
-
-    model_fit_svm <- svm_rbf(mode = "regression") %>%
+    skip_if_not_installed("kernlab")
+    model_fit_svm <- parsnip::svm_rbf(mode = "regression") %>%
         parsnip::set_engine("kernlab") %>%
         fit(log(value) ~ as.numeric(date) + lubridate::month(date, label = TRUE),
             data = rsample::training(splits))
@@ -280,14 +280,14 @@ test_that("Models for Mega Test", {
     # * SVM (Workflow) -----
     skip_if_not_installed("kernlab")
 
-    model_spec <- svm_rbf(mode = "regression") %>%
+    model_spec <- parsnip::svm_rbf(mode = "regression") %>%
         parsnip::set_engine("kernlab")
 
     recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
         recipes::step_date(date, features = "month") %>%
-        step_rm(date) %>%
+        recipes::step_rm(date) %>%
         # SVM requires dummy variables
-        step_dummy(all_nominal()) %>%
+        recipes::step_dummy(recipes::all_nominal()) %>%
         recipes::step_log(value)
 
     wflw_fit_svm <- workflows::workflow() %>%
@@ -302,7 +302,7 @@ test_that("Models for Mega Test", {
     # - Not using GLMnet because of requirement for R3.6+
 
     # # Error if penalty value is not included
-    # model_fit_glmnet <- linear_reg(
+    # model_fit_glmnet <- parsnip::linear_reg(
     #     penalty = 0.000388
     #     ) %>%
     #     parsnip::set_engine("glmnet") %>%
@@ -322,8 +322,8 @@ test_that("Models for Mega Test", {
     # recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
     #     recipes::step_date(date, features = "month") %>%
     #     recipes::step_mutate(date_num = as.numeric(date)) %>%
-    #     step_rm(date) %>%
-    #     step_dummy(all_nominal()) %>%
+    #     recipes::step_rm(date) %>%
+    #     recipes::step_dummy(recipes::all_nominal()) %>%
     #     recipes::step_log(value)
     #
     # wflw_fit_glmnet <- workflows::workflow() %>%
@@ -337,7 +337,7 @@ test_that("Models for Mega Test", {
 
     # * randomForest (parsnip) ----
 
-    model_fit_randomForest <- rand_forest(mode = "regression") %>%
+    model_fit_randomForest <- parsnip::rand_forest(mode = "regression") %>%
         parsnip::set_engine("randomForest") %>%
         fit(log(value) ~ as.numeric(date) + lubridate::month(date, label = TRUE),
             data = rsample::training(splits))
@@ -347,14 +347,14 @@ test_that("Models for Mega Test", {
 
     # * randomForest (workflow) ----
 
-    model_spec <- rand_forest("regression") %>%
+    model_spec <- parsnip::rand_forest("regression") %>%
         parsnip::set_engine("randomForest")
 
     recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
         recipes::step_date(date, features = "month") %>%
         recipes::step_mutate(date_num = as.numeric(date)) %>%
-        step_rm(date) %>%
-        step_dummy(all_nominal()) %>%
+        recipes::step_rm(date) %>%
+        recipes::step_dummy(recipes::all_nominal()) %>%
         recipes::step_log(value)
 
     wflw_fit_randomForest <- workflows::workflow() %>%
@@ -366,7 +366,7 @@ test_that("Models for Mega Test", {
 
     # * XGBoost (parsnip) ----
 
-    model_fit_xgboost <- boost_tree(mode = "regression") %>%
+    model_fit_xgboost <- parsnip::boost_tree(mode = "regression") %>%
         parsnip::set_engine("xgboost", objective = "reg:squarederror") %>%
         fit(log(value) ~ as.numeric(date) + lubridate::month(date, label = TRUE),
             data = rsample::training(splits))
@@ -375,14 +375,14 @@ test_that("Models for Mega Test", {
 
     # * XGBoost (workflow) ----
 
-    model_spec <- boost_tree("regression") %>%
+    model_spec <- parsnip::boost_tree("regression") %>%
         parsnip::set_engine("xgboost", objective = "reg:squarederror")
 
     recipe_spec <- recipes::recipe(value ~ date, data = rsample::training(splits)) %>%
         recipes::step_date(date, features = "month") %>%
         recipes::step_mutate(date_num = as.numeric(date)) %>%
-        step_rm(date) %>%
-        step_dummy(all_nominal()) %>%
+        recipes::step_rm(date) %>%
+        recipes::step_dummy(recipes::all_nominal()) %>%
         recipes::step_log(value)
 
     wflw_fit_xgboost <- workflows::workflow() %>%
@@ -497,7 +497,6 @@ test_that("Models for Mega Test", {
     future_predictions_tbl <- forecast_tbl %>% dplyr::filter(.model_desc != "ACTUAL")
 
     expect_true(all(tail(actual_tbl$.index, 1) < future_predictions_tbl$.index))
-
 
 
 })

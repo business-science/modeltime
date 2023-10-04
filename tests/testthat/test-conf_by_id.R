@@ -7,12 +7,11 @@ test_that("Confidence and Accuracy by ID", {
 
     library(tidymodels)
     library(timetk)
-    library(tidyverse)
+    library(dplyr)
 
     # Data
     data <- walmart_sales_weekly %>%
-        select(id, Date, Weekly_Sales) %>%
-        set_names(c("ID", "date", "value"))
+        dplyr::select(ID = id, date = Date, value = Weekly_Sales)
 
     splits <- data %>% time_series_split(assess = "3 months", cumulative = TRUE)
 
@@ -39,7 +38,7 @@ test_that("Confidence and Accuracy by ID", {
 
     # CALIBRATION BY ID ----
 
-    test_data <- rsample::testing(splits) %>% arrange(ID, date)
+    test_data <- rsample::testing(splits) %>% dplyr::arrange(ID, date)
 
     calib_tbl <- model_tbl %>%
         modeltime_calibrate(new_data = test_data, id = "ID")
@@ -50,7 +49,7 @@ test_that("Confidence and Accuracy by ID", {
     expect_equal(names(df)[5], "ID")
 
     expect_equal(
-        df %>% select(ID, date, .actual) %>% rename(value = .actual),
+        df %>% dplyr::select(ID, date, value = .actual),
         test_data
     )
 

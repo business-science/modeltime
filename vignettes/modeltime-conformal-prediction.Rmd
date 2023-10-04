@@ -41,15 +41,23 @@ Modeltime integrates Conformal Prediction Intervals as part of its time series f
 
 Load libraries to complete this short tutorial.
 
+```r
+library(tidyverse)
+```
+
 ```{r}
 library(tidymodels)
 library(modeltime)
 library(timetk)
-library(tidyverse)
 
 # This toggles plots from plotly (interactive) to ggplot (static)
 interactive <- FALSE
 ```
+
+```{r, include=FALSE}
+library(dplyr)
+```
+
 
 ### Step 1 - Collect data and split into training, test, and future data sets. 
 
@@ -60,7 +68,7 @@ We'll start with the Walmart Sales data set from `timetk`.
 
 walmart_sales_tbl <- timetk::walmart_sales_weekly %>%
     select(id, Date, Weekly_Sales) %>%
-    mutate(id = as_factor(id))
+    mutate(id = forcats::as_factor(id))
 ```
 
 We can visualize the data set. 

@@ -1,5 +1,4 @@
 library(tidymodels)
-library(tibble)
 library(dplyr)
 library(timetk)
 
@@ -9,7 +8,7 @@ test_that("extended_forecast_accuracy_metric_set works", {
 
     set.seed(1)
     data <- dplyr::tibble(
-        time  = tk_make_timeseries("2020", by = "sec", length_out = 10),
+        time  = timetk::tk_make_timeseries("2020", by = "sec", length_out = 10),
         y     = 1:10 + rnorm(10),
         y_hat = 1:10 + rnorm(10)
     )

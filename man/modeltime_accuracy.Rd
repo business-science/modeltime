@@ -53,7 +53,7 @@ The following accuracy metrics are included by default via \code{\link[=default_
 }
 \examples{
 library(tidymodels)
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 

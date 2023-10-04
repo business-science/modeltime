@@ -11,27 +11,26 @@ test_that("Chunked Recursive Tests ", {
     FORECAST_HORIZON <- 24
 
     m750_extended <- m750 %>%
-        group_by(id) %>%
-        future_frame(
+        dplyr::group_by(id) %>%
+        timetk::future_frame(
             .length_out = FORECAST_HORIZON,
             .bind_data  = TRUE
         ) %>%
-        ungroup()
+        dplyr::ungroup()
 
     # recursive 1 - single / recipe / parsnip ----
 
     # Lag Recipe
     recipe_lag <- recipes::recipe(value ~ date, m750_extended) %>%
-        step_lag(value, lag = c(3,6,9,12))
+        recipes::step_lag(value, lag = c(3,6,9,12))
 
     # Data Transformation
-    m750_lagged <- recipe_lag %>% prep() %>% juice()
+    m750_lagged <- recipe_lag %>% recipes::prep() %>% recipes::juice()
 
-    train_data <- m750_lagged %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
 
     # * Recursive Modeling ----
@@ -113,19 +112,18 @@ test_that("Chunked Recursive Tests ", {
     lag_transformer <- function(data){
         data %>%
             # Lags
-            tk_augment_lags(value, .lags = c(3,6,9,12))
+            timetk::tk_augment_lags(value, .lags = c(3,6,9,12))
     }
 
     # Data Preparation
     m750_lagged <- m750_extended %>%
         lag_transformer() %>%
-        select(-id)
+        dplyr::select(-id)
 
-    train_data <- m750_lagged %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
     # * Recursive Modeling ----
     wflw_fit_lm <- workflows::workflow() %>%
@@ -169,8 +167,8 @@ test_that("Chunked Recursive Tests ", {
 
     # * Modeltime Refit ----
 
-    retrain_tbl <- train_data %>% slice(1:200)
-    future_tbl  <- train_data %>% slice(201:224)
+    retrain_tbl <- train_data %>% dplyr::slice_head(n = 200)
+    future_tbl  <- train_data %>% dplyr::slice(201:224)
 
     # wflw_fit_lm_recursive %>% mdl_time_refit(retrain_tbl)
 
@@ -205,34 +203,33 @@ test_that("Chunked Recursive Tests ", {
 
     # Jumble the data to make sure it forecasts properly
     m4_monthly_updated <- timetk::m4_monthly %>%
-        arrange(desc(id), date) %>%
-        mutate(id = as_factor(as.character(id)))
+        dplyr::arrange(desc(id), date) %>%
+        dplyr::mutate(id = forcats::as_factor(as.character(id)))
 
     m4_extended <- m4_monthly_updated %>%
-        group_by(id) %>%
-        future_frame(
+        dplyr::group_by(id) %>%
+        timetk::future_frame(
             .length_out = FORECAST_HORIZON,
             .bind_data  = TRUE
         ) %>%
-        ungroup()
+        dplyr::ungroup()
 
     # Transformation Function
     lag_transformer_grouped <- function(data){
         data %>%
-            group_by(id) %>%
+            dplyr::group_by(id) %>%
             # Lags
-            tk_augment_lags(value, .lags = c(3,6,9,12)) %>%
-            ungroup()
+            timetk::tk_augment_lags(value, .lags = c(3,6,9,12)) %>%
+            dplyr::ungroup()
     }
 
     m4_lags <- m4_extended %>%
         lag_transformer_grouped()
 
-    train_data <- m4_lags %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m4_lags)
 
     future_data <- m4_lags %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
     # * Recursive Modeling ----
 

@@ -24,7 +24,7 @@ xgboost_impl <- function(x, y,
 
     if (!is.null(colsample_bytree)) {
         if (colsample_bytree == 1) {
-            if (counts == TRUE) {
+            if (counts) {
                 rlang::warn("`colsample_bytree = 1` with `counts = TRUE` will only sample a single column.
                             Set `counts = FALSE` to use a proportion (100% of columns).")
             }
@@ -32,7 +32,7 @@ xgboost_impl <- function(x, y,
     }
     if (!is.null(colsample_bynode)) {
         if (colsample_bynode == 1) {
-            if (counts == TRUE) {
+            if (counts) {
                 rlang::warn("`colsample_bynode = 1` with `counts = TRUE` will only sample a single column.
                             Set `counts = FALSE` to use a proportion (100% of columns).")
             }

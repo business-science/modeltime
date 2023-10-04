@@ -46,10 +46,10 @@ Load the following libraries.
 
 ```{r}
 library(sparklyr)
-library(tidymodels)
 library(modeltime)
-library(tidyverse)
 library(timetk)
+library(tidymodels)
+library(dplyr)
 ```
 
 # Spark Connection
@@ -88,18 +88,16 @@ The dataset we'll be forecasting is the `walmart_sales_weekly`, which we modify 
 
 ```{r}
 walmart_sales_weekly %>%
-    select(id, Date, Weekly_Sales) %>%
-    set_names(c("id", "date", "value")) %>%
-    group_by(id) %>%
-    plot_time_series(date, value, .facet_ncol = 2, .interactive = F)
+    dplyr::select(id, date = Date, value = Weekly_Sales) %>%
+    dplyr::group_by(id) %>%
+    plot_time_series(date, value, .facet_ncol = 2, .interactive = FALSE)
 ```
 
 We prepare as nested data using the Nested Forecasting preparation functions. 
 
 ```{r}
 nested_data_tbl <- walmart_sales_weekly %>%
-    select(id, Date, Weekly_Sales) %>%
-    set_names(c("id", "date", "value")) %>%
+    dplyr::select(id, date = Date, value = Weekly_Sales) %>%
     extend_timeseries(
         .id_var        = id,
         .date_var      = date,
@@ -194,7 +192,7 @@ Next, we can examine the test forecast for each of the models.
 ```{r}
 nested_modeltime_tbl %>%
   extract_nested_test_forecast() %>%
-  group_by(id) %>%
+  dplyr::group_by(id) %>%
   plot_modeltime_forecast(.facet_ncol = 2, .interactive = F)
 ```
 

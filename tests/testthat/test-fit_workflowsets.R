@@ -2,7 +2,7 @@ context("WORKFLOWSETS")
 
 library(tidymodels)
 library(workflowsets)
-library(tidyverse)
+library(dplyr)
 library(timetk)
 
 
@@ -21,12 +21,12 @@ test_that("Workflowsets Tests", {
     rec1 <- recipes::recipe(value ~ date + id, data_set) %>%
         recipes::step_mutate(date_num = as.numeric(date)) %>%
         recipes::step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
-        step_dummy(all_nominal(), one_hot = TRUE)
+        recipes::step_dummy(recipes::all_nominal(), one_hot = TRUE)
 
     rec2 <- recipes::recipe(value ~ date + id, data_set) %>%
         recipes::step_mutate(date_num = as.numeric(date)) %>%
         recipes::step_mutate(month_lbl = lubridate::month(date, label = TRUE)) %>%
-        step_dummy(all_nominal(), one_hot = TRUE) %>%
+        recipes::step_dummy(recipes::all_nominal(), one_hot = TRUE) %>%
         step_ts_clean(value)
 
     mod_spec_prophet <- prophet_reg() %>%
@@ -43,7 +43,7 @@ test_that("Workflowsets Tests", {
         ),
         cross   = TRUE
     ) %>%
-        mutate(.model_id = row_number()) # Generate ID for linking to the fitted modeltime tabe
+        mutate(.model_id = dplyr::row_number()) # Generate ID for linking to the fitted modeltime tabe
 
 
 

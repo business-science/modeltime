@@ -57,7 +57,7 @@ test_that("seasonal_reg - tbats: parsnip", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $fit xgboost
 
@@ -111,7 +111,7 @@ test_that("seasonal_reg: workflow", {
     predictions_tbl <- wflw_fit %>%
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
     # TEST
 
@@ -123,7 +123,7 @@ test_that("seasonal_reg: workflow", {
 
     expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_null(wflw_fit$fit$fit$fit$extras$xreg_recipe)
 
     # $fit
     expect_s3_class(wflw_fit$fit$fit$fit$models$model_1, "tbats")

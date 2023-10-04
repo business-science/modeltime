@@ -18,7 +18,7 @@
 #'
 #'
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' library(lubridate)
 #' library(timetk)
 #' library(parsnip)
@@ -79,17 +79,21 @@ plot_modeltime_forecast <- function(
 
     # Checks
     if (!inherits(.data, "data.frame")) {
-        glubort("No method for {class(.data)[1]}. Expecting the output of 'modeltime_forecast()'.")
+        cli::cli_abort("No method for {.obj_type_friendly {(.data)}}. Expecting the output of 'modeltime_forecast()'.")
     }
 
     if (!all(c(".model_id", ".model_desc", ".key", ".index", ".value") %in% names(.data))) {
-        rlang::abort("Expecting the following names to be in the data frame: .key, .index, .value. Try using 'modeltime_forecast()' to return a data frame in the appropriate structure.")
+        rlang::abort(c("Expecting the following names to be in the data frame: `.key`, `.index`, `.value.`.",
+                     "Try using 'modeltime_forecast()' to return a data frame in the appropriate structure."))
     }
 
     if (.conf_interval_show) {
         if (!all(c(".conf_lo", ".conf_hi") %in% names(.data))) {
             .conf_interval_show <- FALSE
-            rlang::warn("Expecting the following names to be in the data frame: .conf_hi, .conf_lo. \nProceeding with '.conf_interval_show = FALSE' to visualize the forecast without confidence intervals.\nAlternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals.")
+            rlang::warn(c(
+                x = "Expecting the following names to be in the data frame: .conf_hi, .conf_lo.",
+                i = "Proceeding with '.conf_interval_show = FALSE' to visualize the forecast without confidence intervals.",
+                "Alternatively, try using `modeltime_calibrate()` before forecasting to add confidence intervals."))
         }
     }
 

@@ -48,7 +48,7 @@ test_that("prophet_reg: prophet, (NO XREGS), Test Model Fit Object", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $fit PROPHET
 
@@ -236,7 +236,7 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
     predictions_tbl <- wflw_fit %>%
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
     full_data <- dplyr::bind_rows(rsample::training(splits), rsample::testing(splits))
 
@@ -293,7 +293,7 @@ test_that("prophet_reg: prophet, Logistic Growth", {
 
     expect_identical(model_fit$fit$extras$logistic_params$growth, "logistic")
     expect_identical(model_fit$fit$extras$logistic_params$logistic_cap, 11000)
-    expect_true(is.null(model_fit$fit$extras$logistic_params$logistic_floor))
+    expect_null(model_fit$fit$extras$logistic_params$logistic_floor)
 
     # $preproc
 

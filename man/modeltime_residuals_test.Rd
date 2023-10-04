@@ -64,8 +64,7 @@ The Durbin Watson test reports a test statistic, with a value from 0 to 4, where
 }
 }
 \examples{
-library(tidyverse)
-library(lubridate)
+library(dplyr)
 library(timetk)
 library(parsnip)
 library(rsample)

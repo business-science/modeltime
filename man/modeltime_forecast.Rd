@@ -182,8 +182,7 @@ By default, \code{modeltime_forecast()} keeps the original order of the data.
 If desired, the user can sort the output by \code{.key}, \code{.model_id} and \code{.index}.
 }
 \examples{
-library(tidyverse)
-library(lubridate)
+library(dplyr)
 library(timetk)
 library(parsnip)
 library(rsample)

@@ -51,7 +51,6 @@ Imports:
     prophet,
     methods,
     cli,
-    tidyverse,
     tidymodels
 Suggests:
     rstan,
@@ -79,4 +78,3 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
-

@@ -60,8 +60,7 @@ This is a wrapper for examining residuals using:
 }
 }
 \examples{
-library(tidyverse)
-library(lubridate)
+library(dplyr)
 library(timetk)
 library(parsnip)
 library(rsample)

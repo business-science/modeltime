@@ -93,9 +93,17 @@ We'll cover a short tutorial on global forecasting. The first thing to do is to 
 ```{r}
 library(tidymodels)
 library(modeltime)
-library(tidyverse)
 library(timetk)
 ```
+
+```r
+library(tidyverse)
+```
+
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+```
+
 
 ## Dataset
 
@@ -103,8 +111,7 @@ Next, let's use the `walmart_sales_weekly` dataset that comes with `timetk`.
 
 ```{r}
 data_tbl <- walmart_sales_weekly %>%
-    select(id, Date, Weekly_Sales) %>%
-    set_names(c("id", "date", "value"))
+    select(id, date = Date, value = Weekly_Sales)
 
 data_tbl
 ```

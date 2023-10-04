@@ -58,10 +58,18 @@ A solution that `recursive()` implements is to iteratively fill these missing va
 
 Load the following libraries.
 
-```{r}
+```r
 library(modeltime)
 library(tidymodels)
 library(tidyverse)
+library(timetk)
+```
+
+```{r, include = FALSE}
+library(modeltime)
+library(tidymodels)
+library(dplyr)
+library(tidyr)
 library(lubridate)
 library(timetk)
 ```
@@ -84,11 +92,11 @@ We can visualize the data with `plot_time_series()`.
 ```{r}
 m750 %>% 
   plot_time_series(
-    .date_var    = date, 
-    .value       = value, 
-    .facet_var   = id, 
-    .smooth      = F, 
-    .interactive = F
+    .date_var    = date,
+    .value       = value,
+    .facet_var   = id,
+    .smooth      = FALSE,
+    .interactive = FALSE
   )
 ```
 
@@ -118,7 +126,7 @@ lag_roll_transformer <- function(data){
         tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
         tk_augment_slidify(
           contains("lag12"),
-          .f = ~mean(.x, na.rm = T),
+          .f = ~mean(.x, na.rm = TRUE),
           .period  = 12,
           .partial = TRUE
         ) 
@@ -265,8 +273,8 @@ m4_monthly %>%
     .value       = value, 
     .facet_var   = id, 
     .facet_ncol  = 2,
-    .smooth      = F, 
-    .interactive = F
+    .smooth      = FALSE, 
+    .interactive = FALSE
 )
 ```
 

@@ -69,14 +69,12 @@
 #' preprocessing recipes using the `recipes` package.
 #'
 #' @examples
-#'
-#' library(tidyverse)
+#' library(dplyr)
 #' library(timetk)
 #'
 #'
 #' nested_data_tbl <- walmart_sales_weekly %>%
-#'     select(id, Date, Weekly_Sales) %>%
-#'     set_names(c("id", "date", "value")) %>%
+#'     select(id, date = Date, value = Weekly_Sales) %>%
 #'
 #'     # Step 1: Extends the time series by id
 #'     extend_timeseries(
@@ -91,7 +89,7 @@
 #'         .length_future = 52
 #'     ) %>%
 #'
-#'     # Step 3: Adds a column .splits that contains training/testing indicies
+#'     # Step 3: Adds a column .splits that contains training/testing indices
 #'     split_nested_timeseries(
 #'         .length_test = 52
 #'     )
@@ -102,7 +100,7 @@
 #' extract_nested_train_split(nested_data_tbl, .row_id = 1)
 #'
 #' @name prep_nested
-
+NULL
 
 #' @export
 #' @rdname prep_nested

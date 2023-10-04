@@ -53,7 +53,7 @@ The \code{modeltime_refit()} function is used to retrain models trained with \co
 The XY format is not supported at this time.
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 library(parsnip)

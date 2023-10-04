@@ -37,8 +37,8 @@
 #'
 #' @examples
 #' library(tidymodels)
-#' library(tidyverse)
 #' library(timetk)
+#' library(dplyr)
 #' library(lubridate)
 #'
 #' # Setup

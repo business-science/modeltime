@@ -27,11 +27,10 @@ test_that("Recursive Tests ", {
   # Data Transformation
   m750_lagged <- recipe_lag %>% prep() %>% juice()
 
-  train_data <- m750_lagged %>%
-    drop_na()
+  train_data <- tidyr::drop_na(m750_lagged)
 
   future_data <- m750_lagged %>%
-    filter(is.na(value))
+    dplyr::filter(is.na(value))
 
 
   # * Recursive Modeling ----
@@ -118,13 +117,12 @@ test_that("Recursive Tests ", {
   # Data Preparation
   m750_lagged <- m750_extended %>%
     lag_transformer() %>%
-    select(-id)
+    dplyr::select(-id)
 
-  train_data <- m750_lagged %>%
-    drop_na()
+  train_data <- tidyr::drop_na(m750_lagged)
 
   future_data <- m750_lagged %>%
-    filter(is.na(value))
+    dplyr::filter(is.na(value))
 
   # * Recursive Modeling ----
   wflw_fit_lm <- workflows::workflow() %>%
@@ -203,34 +201,33 @@ test_that("Recursive Tests ", {
 
   # Jumble the data to make sure it forecasts properly
   m4_monthly_updated <- timetk::m4_monthly %>%
-    arrange(desc(id), date) %>%
-    mutate(id = as_factor(as.character(id)))
+    dplyr::arrange(desc(id), date) %>%
+    dplyr::mutate(id = forcats::as_factor(as.character(id)))
 
   m4_extended <- m4_monthly_updated %>%
-    group_by(id) %>%
-    future_frame(
+    dplyr::group_by(id) %>%
+    timetk::future_frame(
       .length_out = FORECAST_HORIZON,
       .bind_data  = TRUE
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 
   # Transformation Function
   lag_transformer_grouped <- function(data){
     data %>%
-      group_by(id) %>%
+      dplyr::group_by(id) %>%
       # Lags
-      tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
-      ungroup()
+      timetk::tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
+      dplyr::ungroup()
   }
 
   m4_lags <- m4_extended %>%
     lag_transformer_grouped()
 
-  train_data <- m4_lags %>%
-    drop_na()
+  train_data <- drop_na(m4_lags)
 
   future_data <- m4_lags %>%
-    filter(is.na(value))
+    dplyr::filter(is.na(value))
 
   # * Recursive Modeling ----
 

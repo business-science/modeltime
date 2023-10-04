@@ -20,7 +20,6 @@ forecast accuracy (regression) metrics.}
 This is an internal function used by \code{modeltime_accuracy()}.
 }
 \examples{
-library(tibble)
 library(dplyr)
 
 predictions_tbl <- tibble(

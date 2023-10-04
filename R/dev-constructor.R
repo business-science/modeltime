@@ -13,8 +13,7 @@
 #'
 #'
 #' @examples
-#' library(stats)
-#' library(tidyverse)
+#' library(dplyr)
 #' library(lubridate)
 #' library(timetk)
 #'

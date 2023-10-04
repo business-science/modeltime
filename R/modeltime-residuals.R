@@ -13,7 +13,7 @@
 #' @return A tibble with residuals.
 #'
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' library(lubridate)
 #' library(timetk)
 #' library(parsnip)
@@ -90,7 +90,7 @@ modeltime_residuals.mdl_time_tbl <- function(object, new_data = NULL, quiet = TR
     # Residuals Extraction ----
     ret <- data %>%
         dplyr::ungroup() %>%
-        dplyr::select(-.model) %>%
+        dplyr::select(-".model") %>%
         tidyr::unnest(.calibration_data) %>%
         dplyr::rename(.index = 4)
 

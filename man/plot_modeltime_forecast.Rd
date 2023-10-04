@@ -84,7 +84,7 @@ This is a wrapper for \code{\link[=plot_time_series]{plot_time_series()}} that g
 (\code{ggplot2}) plot with the forecasted data.
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 library(parsnip)

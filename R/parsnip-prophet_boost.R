@@ -460,7 +460,7 @@ prophet_xgboost_fit_impl <- function(x, y,
 
     if (growth == "logistic") {
         if (all(c(is.null(logistic_cap), is.null(logistic_floor)))) {
-            glubort("Capacities must be supplied for `growth = 'logistic'`. Try specifying at least one of 'logistic_cap' or 'logistic_floor'")
+            cli::cli_abort("Capacities must be supplied for `growth = 'logistic'`. Try specifying at least one of 'logistic_cap' or 'logistic_floor'")
         }
     }
 

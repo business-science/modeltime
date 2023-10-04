@@ -58,7 +58,7 @@ calculated from \code{new_data} (Test Data)
 }
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 library(parsnip)

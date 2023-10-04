@@ -57,8 +57,7 @@
 #' @return A tibble with with the p-values of the calculated statistical tests.
 #'
 #' @examples
-#' library(tidyverse)
-#' library(lubridate)
+#' library(dplyr)
 #' library(timetk)
 #' library(parsnip)
 #' library(rsample)
@@ -103,7 +102,6 @@ NULL
 
 #' @export
 #' @rdname modeltime_residuals_test
-#'
 modeltime_residuals_test <- function(object,
                                       new_data = NULL,
                                       lag = 1,

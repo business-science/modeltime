@@ -35,14 +35,14 @@ test_that("modeltime plotting", {
 
     # * ggplot2 visualization ----
     g <- forecast_tbl %>%
-        dplyr::mutate_at(dplyr::vars(.value:.conf_hi), exp) %>%
+        dplyr::mutate(dplyr::across(.value:.conf_hi, exp)) %>%
         plot_modeltime_forecast(.interactive = FALSE)
 
     # * plotly visualization ----
     suppressWarnings({
         # Needed until plotly is resolved: https://github.com/ropensci/plotly/issues/1783
         p <- forecast_tbl %>%
-            dplyr::mutate_at(dplyr::vars(.value:.conf_hi), exp) %>%
+            dplyr::mutate(dplyr::across(.value:.conf_hi, exp)) %>%
             plot_modeltime_forecast(.interactive = TRUE)
     })
 
@@ -62,12 +62,12 @@ test_that("modeltime plotting", {
     # # PLOTS WITHOUT CONF INTERVALS -----
 
     g <- forecast_tbl %>%
-        dplyr::mutate_at(dplyr::vars(.value:.conf_hi), exp) %>%
+        dplyr::mutate(dplyr::across(.value:.conf_hi, exp)) %>%
         plot_modeltime_forecast(.interactive = FALSE, .conf_interval_show = FALSE)
 
 
     p <- forecast_tbl %>%
-        dplyr::mutate_at(dplyr::vars(.value:.conf_hi), exp) %>%
+        dplyr::mutate(dplyr::across(.value:.conf_hi, exp)) %>%
         plot_modeltime_forecast(.interactive = TRUE, .conf_interval_show = FALSE)
 
     # Structure
@@ -110,12 +110,12 @@ test_that("modeltime plot - workflow, Test Static ggplot", {
 
     # * ggplot2 visualization ----
     g <- forecast_tbl %>%
-        dplyr::mutate_at(dplyr::vars(.value:.conf_hi), exp) %>%
+        dplyr::mutate(dplyr::across(.value:.conf_hi, exp)) %>%
         plot_modeltime_forecast(.conf_interval_show = TRUE, .interactive = FALSE)
 
     # * plotly visualization ----
     p <- forecast_tbl %>%
-        dplyr::mutate_at(dplyr::vars(.value:.conf_hi), exp) %>%
+        dplyr::mutate(dplyr::across(.value:.conf_hi, exp)) %>%
         plot_modeltime_forecast(.conf_interval_show = TRUE, .interactive = TRUE)
 
 
