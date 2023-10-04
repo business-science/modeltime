@@ -8,7 +8,7 @@ splits <- rsample::initial_time_split(m750, prop = 0.8)
 # Data - Multiple Time Series (Panel)
 full_data_tbl <- timetk::m4_monthly %>%
     dplyr::group_by(id) %>%
-    future_frame(date, .length_out = 60, .bind_data = TRUE) %>%
+    timetk::future_frame(date, .length_out = 60, .bind_data = TRUE) %>%
     dplyr::ungroup()
 
 future_tbl <- full_data_tbl %>% dplyr::filter(is.na(value))

@@ -38,7 +38,7 @@ test_that("Confidence and Accuracy by ID", {
 
     # CALIBRATION BY ID ----
 
-    test_data <- rsample::testing(splits) %>% arrange(ID, date)
+    test_data <- rsample::testing(splits) %>% dplyr::arrange(ID, date)
 
     calib_tbl <- model_tbl %>%
         modeltime_calibrate(new_data = test_data, id = "ID")
@@ -49,7 +49,7 @@ test_that("Confidence and Accuracy by ID", {
     expect_equal(names(df)[5], "ID")
 
     expect_equal(
-        df %>% select(ID, date, .actual) %>% rename(value = .actual),
+        df %>% dplyr::select(ID, date, value = .actual),
         test_data
     )
 

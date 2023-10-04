@@ -203,24 +203,24 @@ test_that("Recursive Tests ", {
 
   # Jumble the data to make sure it forecasts properly
   m4_monthly_updated <- timetk::m4_monthly %>%
-    arrange(desc(id), date) %>%
-    mutate(id = as_factor(as.character(id)))
+    dplyr::arrange(desc(id), date) %>%
+    dplyr::mutate(id = forcats::as_factor(as.character(id)))
 
   m4_extended <- m4_monthly_updated %>%
-    group_by(id) %>%
-    future_frame(
+    dplyr::group_by(id) %>%
+    timetk::future_frame(
       .length_out = FORECAST_HORIZON,
       .bind_data  = TRUE
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 
   # Transformation Function
   lag_transformer_grouped <- function(data){
     data %>%
-      group_by(id) %>%
+      dplyr::group_by(id) %>%
       # Lags
-      tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
-      ungroup()
+      timetk::tk_augment_lags(value, .lags = 1:FORECAST_HORIZON) %>%
+      dplyr::ungroup()
   }
 
   m4_lags <- m4_extended %>%
