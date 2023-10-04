@@ -91,7 +91,7 @@ test_that("Test Modeltime Accuracy", {
     # Modifying Default Forecast Accuracy Metric Set
 
     my_metric_set <- default_forecast_accuracy_metric_set(
-        metric_tweak("mase12", yardstick::mase, m = 12)
+        yardstick::metric_tweak("mase12", yardstick::mase, m = 12)
     )
 
     acc_tbl_6 <- calibration_tbl %>%

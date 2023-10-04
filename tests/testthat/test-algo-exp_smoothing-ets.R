@@ -109,7 +109,7 @@ test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits),
                            actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
 
 
@@ -185,7 +185,7 @@ test_that("exp_smoothing: CROSTON", {
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits),
                            actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
 
     expect_s3_class(wflw_fit$fit$fit$fit, "croston_fit_impl")
@@ -258,7 +258,7 @@ test_that("exp_smoothing: Theta", {
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits),
                            actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
     #
 
@@ -406,7 +406,7 @@ test_that("exp_smoothing: Arima (workflow), Test Model Fit Object", {
             modeltime_calibrate(rsample::testing(splits)) %>%
             modeltime_forecast(new_data = rsample::testing(splits),
                                actual_data = rsample::training(splits)) %>%
-            dplyr::mutate_at(dplyr::vars(.value, .conf_lo, .conf_hi), exp)
+            dplyr::mutate(dplyr::across(c(.value, .conf_lo, .conf_hi), exp))
     })
 
     #

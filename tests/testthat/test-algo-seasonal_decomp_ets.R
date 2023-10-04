@@ -102,7 +102,7 @@ test_that("seasonal_reg: stlm_ets", {
     predictions_tbl <- wflw_fit %>%
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
 
     expect_s3_class(wflw_fit$fit$fit$fit, "stlm_ets_fit_impl")

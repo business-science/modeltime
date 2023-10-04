@@ -236,7 +236,7 @@ test_that("prophet_reg: prophet (workflow), Test Model Fit Object", {
     predictions_tbl <- wflw_fit %>%
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
     full_data <- dplyr::bind_rows(rsample::training(splits), rsample::testing(splits))
 

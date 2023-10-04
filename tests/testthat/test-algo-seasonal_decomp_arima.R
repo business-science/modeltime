@@ -104,7 +104,7 @@ test_that("seasonal_reg - arima: parnip", {
     predictions_tbl <- wflw_fit %>%
         modeltime_calibrate(rsample::testing(splits)) %>%
         modeltime_forecast(new_data = rsample::testing(splits), actual_data = rsample::training(splits)) %>%
-        dplyr::mutate_at(dplyr::vars(.value), exp)
+        dplyr::mutate(dplyr::across(.value, exp))
 
 
     # TEST
