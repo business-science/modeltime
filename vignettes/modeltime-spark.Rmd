@@ -55,7 +55,7 @@ library(tidymodels)
 library(tidyverse)
 ```
 
-```{r. include = FALSE}
+```{r. echo = FALSE}
 library(tidymodels)
 library(dplyr)
 ```

@@ -49,7 +49,6 @@ Imports:
     forecast,
     xgboost (>= 1.2.0.1),
     prophet,
-    lubridate,
     methods,
     cli,
     tidymodels
@@ -61,6 +60,7 @@ Suggests:
     recipes,
     rsample,
     tune (>= 0.2.0),
+    lubridate,
     testthat,
     kernlab,
     glmnet,
