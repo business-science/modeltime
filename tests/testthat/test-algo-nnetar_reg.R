@@ -186,7 +186,7 @@ test_that("nnetar_reg: (workflow)", {
 
     expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_null(wflw_fit$fit$fit$fit$extras$xreg_recipe)
 
     expect_identical(wflw_fit$fit$fit$fit$models$model_1$p, 3)
     expect_identical(wflw_fit$fit$fit$fit$models$model_1$P, 1)

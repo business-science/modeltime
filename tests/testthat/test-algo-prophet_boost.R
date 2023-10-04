@@ -57,7 +57,7 @@ test_that("prophet_boost: No Xregs", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $fit PROPHET
 
@@ -347,7 +347,7 @@ test_that("prophet_reg: prophet, Logistic Growth", {
 
     expect_identical(model_fit$fit$extras$logistic_params$growth, "logistic")
     expect_identical(model_fit$fit$extras$logistic_params$logistic_cap, 11000)
-    expect_true(is.null(model_fit$fit$extras$logistic_params$logistic_floor))
+    expect_null(model_fit$fit$extras$logistic_params$logistic_floor)
 
     # $preproc
 

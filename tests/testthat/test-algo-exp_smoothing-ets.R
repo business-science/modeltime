@@ -337,7 +337,7 @@ test_that("exp_smoothing: smooth", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $preproc
 
