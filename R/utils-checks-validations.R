@@ -202,11 +202,10 @@ validate_models_are_trained <- function(data) {
         bad_msg    <- glue::glue("- Model {bad_models}: Is not trained. Try using `fit()` to train the model.")
         bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
 
-        glubort(
+        cli::cli_abort(c(
             "All objects must be fitted workflow or parsnip models. The following are not:",
-            "\n",
             "{bad_msg}"
-        )
+        ))
     }
 
 }
@@ -242,7 +241,7 @@ validate_models_are_not_null <- function(data, type = c("none", "warn", "error")
             "{cli::rule('End Model Failure Report', width = 60)}",
             "\n\n"
         )
-        message(msg)
+        cli::cli_inform(msg)
 
 
         if (type == "warn") {
@@ -320,11 +319,9 @@ validate_non_bad_class_data <- function(data, bad_classes = c("character")) {
         bad_msg    <- glue::glue("{bad_cols}: Is class {bad_values}")
         bad_msg    <- glue::glue_collapse(bad_msg, sep = "\n")
 
-        rlang::abort(glue::glue(
+        cli::cli_abort(c(
             "All variables must be categorical (factor) or date-like, but the following are not:",
-            "\n",
-            "{bad_msg}")
-        )
+            "{bad_msg}"))
     }
 
 }
@@ -393,10 +390,6 @@ is_trained <- function(x) {
 
 glue_quote_collapse <- function(x) {
     glue::glue_collapse(glue::single_quote(x), sep = ", ")
-}
-
-glubort <- function(..., .sep = "", .envir = parent.frame()) {
-    rlang::abort(glue::glue(..., .sep = .sep, .envir = .envir))
 }
 
 

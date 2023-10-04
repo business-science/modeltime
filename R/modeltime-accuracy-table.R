@@ -102,8 +102,11 @@ table_modeltime_accuracy <- function(.data, .round_digits = 2,
                                      .interactive = TRUE, ...) {
 
     # Checks
+    # If using an argument inside cli inline markup that starts with . like `.data`,
+    # we must use {(.data)} for it. https://cli.r-lib.org/reference/inline-markup.html
+
     if (!inherits(.data, "data.frame")) {
-        glubort("No method for {class(.data)[1]}. Expecting the output of 'modeltime_accuracy()'.")
+        cli::cli_abort("No method for {.obj_type_friendly {(.data)}}. Expecting the output of 'modeltime_accuracy()'.")
     }
 
     if (!all(c(".model_id", ".model_desc") %in% names(.data))) {
@@ -114,11 +117,8 @@ table_modeltime_accuracy <- function(.data, .round_digits = 2,
     data_formatted <- .data
 
     if (!is.null(round)) {
-        suppressMessages({
-            # If grouped, avoid message: `mutate_if()` ignored the following grouping variables
             data_formatted <- data_formatted %>%
-                dplyr::mutate_if(is.double, .funs = ~ round(., digits = .round_digits))
-        })
+                dplyr::mutate(dplyr::across(where(is.double), .fns = ~ round(.x, digits = .round_digits)))
     }
 
     # Output either reactable() or gt()

@@ -246,12 +246,14 @@ prepare_xreg_recipe_from_predictors <- function(data, prepare = TRUE,
             }
 
         }, error = function(e) {
-            rlang::warn(
-                paste0("Failed to return valid external regressors. Proceeding without regressors.\n---",
-                       '\nWhat most likely happened: \nIf all of the regressors have zero variance (meaning they add no predictive value to the model), they are removed leaving no valid regressors.')
-            )
-            recipe_spec <- NULL
-            return(recipe_spec)
+            cli::cli_warn(c(
+                "Failed to return valid external regressors. Proceeding without regressors.",
+                "---",
+                "What most likely happened:",
+                i = "If all of the regressors have zero variance (meaning they add no predictive value to the model), they are removed leaving no valid regressors."
+                ))
+            # recipe_spec
+            return(NULL)
         })
 
     } else {

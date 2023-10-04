@@ -319,7 +319,7 @@ mdl_time_refit <- function(object, data, ..., control = NULL) {
 
 #' @export
 mdl_time_refit.default <- function(object, data, ..., control = NULL) {
-    glubort("No method for an object of class: {class(object)[1]}. .")
+    cli::cli_abort("No method for an object of class: {.obj_type_friendly {object}}. .")
 }
 
 #' @export

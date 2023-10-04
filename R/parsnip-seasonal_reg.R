@@ -286,7 +286,7 @@ tbats_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3 = 
     predictor  <- x
 
     if (is.null(period_1) || period_1 == "none" || period_1 <=1) {
-        glubort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
+        cli::cli_abort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
     }
 
     # INDEX & PERIOD
@@ -411,7 +411,7 @@ stlm_ets_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period_3
     predictor  <- x
 
     if (is.null(period_1) || period_1 == "none" || period_1 <=1) {
-        glubort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
+        cli::cli_abort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
     }
 
     # INDEX & PERIOD
@@ -548,7 +548,7 @@ stlm_arima_fit_impl <- function(x, y, period_1 = "auto", period_2 = NULL, period
     predictor  <- x
 
     if (is.null(period_1) || period_1 == "none" || period_1 <=1) {
-        glubort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
+        cli::cli_abort("The 'seasonal_period_1' must be greater than 1 (i.e. have seasonality). Try increasing the seasonality.")
     }
 
     # INDEX & PERIOD
