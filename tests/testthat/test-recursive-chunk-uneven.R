@@ -22,16 +22,15 @@ test_that("Chunked Recursive Tests - Uneven ", {
 
     # Lag Recipe
     recipe_lag <- recipes::recipe(value ~ date, m750_extended) %>%
-        step_lag(value, lag = c(3,6,9,12))
+        recipes::step_lag(value, lag = c(3,6,9,12))
 
     # Data Transformation
-    m750_lagged <- recipe_lag %>% prep() %>% juice()
+    m750_lagged <- recipe_lag %>% recipes::prep() %>% recipes::juice()
 
-    train_data <- m750_lagged %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
 
     # * Recursive Modeling ----
@@ -114,13 +113,12 @@ test_that("Chunked Recursive Tests - Uneven ", {
     # Data Preparation
     m750_lagged <- m750_extended %>%
         lag_transformer() %>%
-        select(-id)
+        dplyr::select(-id)
 
-    train_data <- m750_lagged %>%
-        drop_na()
+    train_data <- drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
     # * Recursive Modeling ----
     wflw_fit_lm <- workflows::workflow() %>%
@@ -216,15 +214,14 @@ test_that("Chunked Recursive Tests - Uneven ", {
         data %>%
             dplyr::group_by(id) %>%
             # Lags
-            tk_augment_lags(value, .lags = c(3,6,9,12)) %>%
+            timetk::tk_augment_lags(value, .lags = c(3,6,9,12)) %>%
             dplyr::ungroup()
     }
 
     m4_lags <- m4_extended %>%
         lag_transformer_grouped()
 
-    train_data <- m4_lags %>%
-        tidyr::drop_na()
+    train_data <- tidyr::drop_na(m4_lags)
 
     future_data <- m4_lags %>%
         dplyr::filter(is.na(value))
@@ -352,11 +349,10 @@ test_that("Chunked Recursive Tests - Single ", {
     # Data Transformation
     m750_lagged <- recipe_lag %>% prep() %>% juice()
 
-    train_data <- m750_lagged %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
 
     # * Recursive Modeling ----
@@ -439,13 +435,12 @@ test_that("Chunked Recursive Tests - Single ", {
     # Data Preparation
     m750_lagged <- m750_extended %>%
         lag_transformer() %>%
-        select(-id)
+        dplyr::select(-id)
 
-    train_data <- m750_lagged %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
     # * Recursive Modeling ----
     wflw_fit_lm <- workflows::workflow() %>%

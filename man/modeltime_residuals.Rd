@@ -23,7 +23,7 @@ A tibble with residuals.
 This is a convenience function to unnest model residuals
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 library(parsnip)

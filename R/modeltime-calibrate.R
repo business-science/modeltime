@@ -39,7 +39,7 @@
 #'
 #'
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' library(lubridate)
 #' library(timetk)
 #' library(parsnip)

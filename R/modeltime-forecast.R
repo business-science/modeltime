@@ -156,8 +156,7 @@
 #' _Journal of the American Statistical Association_ 113.523 (2018): 1094-1111.
 #'
 #' @examples
-#' library(tidyverse)
-#' library(lubridate)
+#' library(dplyr)
 #' library(timetk)
 #' library(parsnip)
 #' library(rsample)

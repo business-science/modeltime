@@ -21,6 +21,4 @@ library(slider)
 library(timetk)
 library(modeltime)
 
-library(tidyverse)
-
 test_check("modeltime")

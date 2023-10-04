@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' library(tidymodels)
-#' library(tidyverse)
+#' library(dplyr)
 #' library(lubridate)
 #' library(timetk)
 #'

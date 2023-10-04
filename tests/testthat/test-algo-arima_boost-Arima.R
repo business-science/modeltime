@@ -15,7 +15,7 @@ library(tune)
 library(dials)
 library(yardstick)
 library(timetk)
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 
 
@@ -77,7 +77,7 @@ test_that("arima_boost: Arima, (No xregs), Test Model Fit Object", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $fit xgboost
 

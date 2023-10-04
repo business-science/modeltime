@@ -56,7 +56,7 @@ test_that("arima_reg: Arima, (No xregs), Test Model Fit Object", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
     # $preproc
 
@@ -186,7 +186,7 @@ test_that("arima_reg: Arima (workflow), Test Model Fit Object", {
 
     expect_equal(names(wflw_fit$fit$fit$fit$data)[1], "date")
 
-    expect_true(is.null(wflw_fit$fit$fit$fit$extras$xreg_recipe))
+    expect_null(wflw_fit$fit$fit$fit$extras$xreg_recipe)
 
     # $preproc
     mld <- wflw_fit %>% workflows::extract_mold()

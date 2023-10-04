@@ -51,7 +51,6 @@ Imports:
     prophet,
     methods,
     cli,
-    tidyverse,
     tidymodels
 Suggests:
     rstan,

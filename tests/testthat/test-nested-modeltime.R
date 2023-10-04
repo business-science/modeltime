@@ -12,7 +12,7 @@ test_that("MODELTIME NESTED (ITERATIVE) FORECASTING", {
     # SETUP
 
     library(tidymodels)
-    library(tidyverse)
+    library(dplyr)
     library(timetk)
 
 

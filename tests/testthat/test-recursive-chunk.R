@@ -27,8 +27,7 @@ test_that("Chunked Recursive Tests ", {
     # Data Transformation
     m750_lagged <- recipe_lag %>% recipes::prep() %>% recipes::juice()
 
-    train_data <- m750_lagged %>%
-        tidyr::drop_na()
+    train_data <- tidyr::drop_na(m750_lagged)
 
     future_data <- m750_lagged %>%
         dplyr::filter(is.na(value))
@@ -227,11 +226,10 @@ test_that("Chunked Recursive Tests ", {
     m4_lags <- m4_extended %>%
         lag_transformer_grouped()
 
-    train_data <- m4_lags %>%
-        drop_na()
+    train_data <- tidyr::drop_na(m4_lags)
 
     future_data <- m4_lags %>%
-        filter(is.na(value))
+        dplyr::filter(is.na(value))
 
     # * Recursive Modeling ----
 

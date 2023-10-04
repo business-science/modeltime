@@ -67,7 +67,7 @@ __Note - I've added a `seasonal_reg()` function that includes the functionality 
 
 To use the code in this tutorial, you'll need to have the following packages installed. 
 
-```{r setup}
+```r
 library(parsnip)
 library(forecast)
 library(rsample)
@@ -76,6 +76,18 @@ library(tidyverse)
 library(timetk)
 library(rlang)
 ```
+
+```{r setup, include=FALSE}
+library(parsnip)
+library(forecast)
+library(rsample)
+library(modeltime)
+library(dplyr)
+library(stringr)
+library(timetk)
+library(rlang)
+```
+
 
 ### Data
 
@@ -243,7 +255,7 @@ bridge_stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seas
   outcome_msts <- forecast::msts(outcome, seasonal.periods = seasonal.periods)
   
   # 2. Predictors - Handle Dates 
-  index_tbl <- modeltime::parse_index_from_data(predictors)
+  index_tbl <- parse_index_from_data(predictors)
   idx_col   <- names(index_tbl)
   idx       <- timetk::tk_index(index_tbl)
   
@@ -260,14 +272,14 @@ bridge_stlm_ets_fit_impl <- function(x, y, period_seasonal_1 = NULL, period_seas
   new_modeltime_bridge(
     class  = "bridge_stlm_ets_fit_impl",
     models = list(model_1 = model_1),
-    data   = tibble::tibble(
+    data   = tibble(
       idx_col   := idx,
       .actual    = y,
       .fitted    = model_1$fitted,
       .residuals = model_1$residuals
     ),
     extras = list(NULL), # Can add xreg preprocessors here
-    desc   = stringr::str_c("STLM Model: ", model_1$model$method)
+    desc   = str_c("STLM Model: ", model_1$model$method)
   )
   
 }
@@ -379,21 +391,17 @@ We're now ready to register the prediction function we've created.
 
 ```{r, paged.print = FALSE}
 set_pred(
-    model         = "decomposition_reg",
-    eng           = "stlm_ets",
-    mode          = "regression",
-    type          = "numeric",
-    value         = list(
-        pre       = NULL,
-        post      = NULL,
-        func      = c(fun = "predict"),
-        args      =
-            list(
-                object   = rlang::expr(object$fit),
-                new_data = rlang::expr(new_data)
-            )
+    model = "decomposition_reg",
+    eng   = "stlm_ets",
+    mode  = "regression",
+    type  = "numeric",
+    value = list(pre  = NULL,
+                 post = NULL,
+                 func = c(fun = "predict"),
+                 args = list(object   = rlang::expr(object$fit),
+                             new_data = rlang::expr(new_data))
+                 )
     )
-)
 
 show_model_info("decomposition_reg")
 ```

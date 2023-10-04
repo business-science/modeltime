@@ -31,7 +31,7 @@ time series either sequentially or in parallel.
 \examples{
 library(tidymodels)
 library(workflowsets)
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(timetk)
 

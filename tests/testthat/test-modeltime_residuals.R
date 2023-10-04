@@ -6,7 +6,7 @@ test_that("modeltime_residuals(): Returns correct order", {
     skip_on_cran()
 
     library(tidymodels)
-    library(tidyverse)
+    library(dplyr)
     library(timetk)
 
 

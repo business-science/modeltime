@@ -7,11 +7,11 @@ test_that("Confidence and Accuracy by ID", {
 
     library(tidymodels)
     library(timetk)
-    library(tidyverse)
+    library(dplyr)
 
     # Data
     data <- walmart_sales_weekly %>%
-        select(ID = id, date = Date, value = Weekly_Sales)
+        dplyr::select(ID = id, date = Date, value = Weekly_Sales)
 
     splits <- data %>% time_series_split(assess = "3 months", cumulative = TRUE)
 

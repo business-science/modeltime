@@ -78,11 +78,22 @@ Let's go through a guided tour to kick the tires on `modeltime`.
 
 Load libraries to complete this short tutorial.
 
-```{r}
+```r
 library(xgboost)
 library(tidymodels)
 library(modeltime)
 library(tidyverse)
+library(timetk)
+
+# This toggles plots from plotly (interactive) to ggplot (static)
+interactive <- FALSE
+```
+
+```{r, include=FALSE}
+library(xgboost)
+library(tidymodels)
+library(modeltime)
+library(dplyr)
 library(lubridate)
 library(timetk)
 
@@ -203,6 +214,7 @@ We can model a Multivariate Adaptive Regression Spline model using `mars()`. I'v
 
 ```{r, message=TRUE}
 # Model 6: earth ----
+
 model_spec_mars <- mars(mode = "regression") %>%
     set_engine("earth") 
 

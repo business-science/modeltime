@@ -52,7 +52,7 @@ test_that("nnetar_reg: Parsnip", {
 
     expect_equal(names(model_fit$fit$data)[1], "date")
 
-    expect_true(is.null(model_fit$fit$extras$xreg_recipe))
+    expect_null(model_fit$fit$extras$xreg_recipe)
 
 
     expect_identical(model_fit$fit$models$model_1$p, 3)

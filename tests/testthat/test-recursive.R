@@ -27,11 +27,10 @@ test_that("Recursive Tests ", {
   # Data Transformation
   m750_lagged <- recipe_lag %>% prep() %>% juice()
 
-  train_data <- m750_lagged %>%
-    drop_na()
+  train_data <- tidyr::drop_na(m750_lagged)
 
   future_data <- m750_lagged %>%
-    filter(is.na(value))
+    dplyr::filter(is.na(value))
 
 
   # * Recursive Modeling ----
@@ -118,13 +117,12 @@ test_that("Recursive Tests ", {
   # Data Preparation
   m750_lagged <- m750_extended %>%
     lag_transformer() %>%
-    select(-id)
+    dplyr::select(-id)
 
-  train_data <- m750_lagged %>%
-    drop_na()
+  train_data <- tidyr::drop_na(m750_lagged)
 
   future_data <- m750_lagged %>%
-    filter(is.na(value))
+    dplyr::filter(is.na(value))
 
   # * Recursive Modeling ----
   wflw_fit_lm <- workflows::workflow() %>%
@@ -226,11 +224,10 @@ test_that("Recursive Tests ", {
   m4_lags <- m4_extended %>%
     lag_transformer_grouped()
 
-  train_data <- m4_lags %>%
-    drop_na()
+  train_data <- drop_na(m4_lags)
 
   future_data <- m4_lags %>%
-    filter(is.na(value))
+    dplyr::filter(is.na(value))
 
   # * Recursive Modeling ----
 
