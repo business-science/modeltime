@@ -142,6 +142,13 @@ table_modeltime_accuracy <- function(.data, .round_digits = 2,
                 defaultExpanded = .expand_groups,
                 ...
             )
+        # TODO gt now allows opt_interactive
+       # gt %>%
+       #      gt::opt_interactive(
+       #          use_sorting = .show_sortable,
+       #          use_filters = .filterable,
+       #          use_search = .searchable,
+       #      )
 
     } else {
         # gt()

@@ -73,8 +73,8 @@
 #'
 #'
 #' @name metric_sets
-
-#' @importFrom yardstick mae mape mase smape rmse rsq metric_tweak
+NULL
+#' @importFrom yardstick mae mape mase smape rmse rsq
 #' @export
 #' @rdname metric_sets
 default_forecast_accuracy_metric_set <- function(...) {
@@ -93,7 +93,7 @@ default_forecast_accuracy_metric_set <- function(...) {
 # EXTENDED FORECAST ACCURACY METRIC SET ----
 
 
-#' @importFrom yardstick mae mape mase smape rmse rsq metric_tweak
+#' @importFrom yardstick mae mape mase smape rmse rsq
 #' @export
 #' @rdname metric_sets
 extended_forecast_accuracy_metric_set <- function(...) {
@@ -122,7 +122,6 @@ extended_forecast_accuracy_metric_set <- function(...) {
 #' @param estimate The column identifier for the predicted results (that is also numeric).
 #'
 #' @examples
-#' library(tibble)
 #' library(dplyr)
 #'
 #' predictions_tbl <- tibble(
@@ -155,12 +154,10 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 
     data_tbl %>%
         metric_summarizer_fun(!! truth_expr, !! estimate_expr) %>%
-        dplyr::select(-.estimator) %>%
-
+        dplyr::select(-".estimator") %>%
         dplyr::group_by(!!! rlang::syms(group_nms)) %>%
         dplyr::mutate(.metric = make.unique(.metric, sep = "_")) %>%
         dplyr::ungroup() %>%
-
         tidyr::pivot_wider(
             names_from  = .metric,
             values_from = .estimate
@@ -219,12 +216,12 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, by_
 #'
 #' @param truth The column identifier for the true results (that is numeric).
 #' @param estimate The column identifier for the predicted results (that is also numeric).
-#' @param na_rm Not in use...NA values managed by TSrepr::maape
+#' @param na_rm Not in use... `NA` values managed by `TSrepr::maape()`
 #' @param ... Not currently in use
 #'
 #' @export
 maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
-
+    rlang::check_installed("TSrepr")
     maape_impl <- function(truth, estimate) {
         TSrepr::maape(truth, estimate)
     }
