@@ -1,4 +1,8 @@
 
+.navbar-brand {
+    color: "white" !important;
+}
+
 .navbar-dark .navbar-nav .active>.nav-link {
     background-color: #18bc9c;
 }
