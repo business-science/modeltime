@@ -96,7 +96,7 @@
 #' This model is not set up for use with exogenous regressors.
 #'
 #'
-#' @seealso [fit.model_spec()], [set_engine()]
+#' @seealso `fit.model_spec()`, `set_engine()`
 #'
 #' @examplesIf rlang::is_installed("thief")
 #' library(dplyr)

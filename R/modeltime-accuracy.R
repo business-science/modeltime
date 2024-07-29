@@ -27,12 +27,12 @@
 #'
 #' The following accuracy metrics are included by default via [default_forecast_accuracy_metric_set()]:
 #'
-#' - MAE - Mean absolute error, [mae()]
-#' - MAPE - Mean absolute percentage error, [mape()]
-#' - MASE  - Mean absolute scaled error, [mase()]
-#' - SMAPE - Symmetric mean absolute percentage error, [smape()]
-#' - RMSE  - Root mean squared error, [rmse()]
-#' - RSQ   - R-squared, [rsq()]
+#' - MAE - Mean absolute error, `mae()`
+#' - MAPE - Mean absolute percentage error, `mape()`
+#' - MASE  - Mean absolute scaled error, `mase()`
+#' - SMAPE - Symmetric mean absolute percentage error, `smape()`
+#' - RMSE  - Root mean squared error, `rmse()`
+#' - RSQ   - R-squared, `rsq()`
 #'
 #'
 #'

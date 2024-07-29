@@ -3,7 +3,7 @@
 #' Forecast Accuracy Metrics Sets
 #'
 #'
-#' This is a wrapper for [metric_set()] with several common forecast / regression
+#' This is a wrapper for `metric_set()` with several common forecast / regression
 #' accuracy metrics included. These are the default time series accuracy
 #' metrics used with [modeltime_accuracy()].
 #'
@@ -16,12 +16,12 @@
 #' The primary purpose is to use the default accuracy metrics to calculate the following
 #' forecast accuracy metrics using [modeltime_accuracy()]:
 #'
-#' - MAE   - Mean absolute error, [mae()]
-#' - MAPE  - Mean absolute percentage error, [mape()]
-#' - MASE  - Mean absolute scaled error, [mase()]
-#' - SMAPE - Symmetric mean absolute percentage error, [smape()]
-#' - RMSE  - Root mean squared error, [rmse()]
-#' - RSQ   - R-squared, [rsq()]
+#' - MAE   - Mean absolute error, `mae()`
+#' - MAPE  - Mean absolute percentage error, `mape()`
+#' - MASE  - Mean absolute scaled error, `mase()`
+#' - SMAPE - Symmetric mean absolute percentage error, `smape()`
+#' - RMSE  - Root mean squared error, `rmse()`
+#' - RSQ   - R-squared, `rsq()`
 #'
 #' Adding additional metrics is possible via `...`.
 #'

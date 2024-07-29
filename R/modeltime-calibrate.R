@@ -7,8 +7,8 @@
 #'
 #' @param object A fitted model object that is either:
 #' 1. A modeltime table that has been created using [modeltime_table()]
-#' 2. A workflow that has been fit by [fit.workflow()] or
-#' 3. A parsnip model that has been fit using [fit.model_spec()]
+#' 2. A workflow that has been fit by `fit.workflow()` or
+#' 3. A parsnip model that has been fit using `fit.model_spec()`
 #' @param new_data A test data set `tibble` containing future information (timestamps and actual values).
 #' @param id A quoted column name containing an identifier column identifying time series that are grouped.
 #' @param quiet Hide errors (`TRUE`, the default), or display them as they occur?

@@ -43,9 +43,9 @@ Can save space with long model descriptions.}
 
 \item{...}{Additional arguments passed to:
 \itemize{
-\item Time Plot: \code{\link[=plot_time_series]{plot_time_series()}}
-\item ACF Plot: \code{\link[=plot_acf_diagnostics]{plot_acf_diagnostics()}}
-\item Seasonality Plot: \code{\link[=plot_seasonal_diagnostics]{plot_seasonal_diagnostics()}}
+\item Time Plot: \code{timetk::plot_time_series()}
+\item ACF Plot: \code{timetk::plot_acf_diagnostics()}
+\item Seasonality Plot: \code{timetk::plot_seasonal_diagnostics()}
 }}
 }
 \value{
@@ -54,9 +54,9 @@ A static \code{ggplot2} plot or an interactive \code{plotly} plot containing res
 \description{
 This is a wrapper for examining residuals using:
 \itemize{
-\item Time Plot: \code{\link[=plot_time_series]{plot_time_series()}}
-\item ACF Plot: \code{\link[=plot_acf_diagnostics]{plot_acf_diagnostics()}}
-\item Seasonality Plot: \code{\link[=plot_seasonal_diagnostics]{plot_seasonal_diagnostics()}}
+\item Time Plot: \code{timetk::plot_time_series()}
+\item ACF Plot: \code{timetk::plot_acf_diagnostics()}
+\item Seasonality Plot: \code{timetk::plot_seasonal_diagnostics()}
 }
 }
 \examples{

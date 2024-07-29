@@ -14,7 +14,7 @@ extended_forecast_accuracy_metric_set(...)
 \item{...}{Add additional \code{yardstick} metrics}
 }
 \description{
-This is a wrapper for \code{\link[=metric_set]{metric_set()}} with several common forecast / regression
+This is a wrapper for \code{metric_set()} with several common forecast / regression
 accuracy metrics included. These are the default time series accuracy
 metrics used with \code{\link[=modeltime_accuracy]{modeltime_accuracy()}}.
 }
@@ -22,12 +22,12 @@ metrics used with \code{\link[=modeltime_accuracy]{modeltime_accuracy()}}.
 The primary purpose is to use the default accuracy metrics to calculate the following
 forecast accuracy metrics using \code{\link[=modeltime_accuracy]{modeltime_accuracy()}}:
 \itemize{
-\item MAE   - Mean absolute error, \code{\link[=mae]{mae()}}
-\item MAPE  - Mean absolute percentage error, \code{\link[=mape]{mape()}}
-\item MASE  - Mean absolute scaled error, \code{\link[=mase]{mase()}}
-\item SMAPE - Symmetric mean absolute percentage error, \code{\link[=smape]{smape()}}
-\item RMSE  - Root mean squared error, \code{\link[=rmse]{rmse()}}
-\item RSQ   - R-squared, \code{\link[=rsq]{rsq()}}
+\item MAE   - Mean absolute error, \code{mae()}
+\item MAPE  - Mean absolute percentage error, \code{mape()}
+\item MASE  - Mean absolute scaled error, \code{mase()}
+\item SMAPE - Symmetric mean absolute percentage error, \code{smape()}
+\item RMSE  - Root mean squared error, \code{rmse()}
+\item RSQ   - R-squared, \code{rsq()}
 }
 
 Adding additional metrics is possible via \code{...}.

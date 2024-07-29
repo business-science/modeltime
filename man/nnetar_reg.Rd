@@ -191,5 +191,5 @@ model_fit
 
 }
 \seealso{
-\code{\link[=fit.model_spec]{fit.model_spec()}}, \code{\link[=set_engine]{set_engine()}}
+\code{fit.model_spec()}, \code{set_engine()}
 }

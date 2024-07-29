@@ -80,7 +80,7 @@ The only parameters that cannot be passed are:
 A static \code{ggplot2} plot or an interactive \code{plotly} plot containing a forecast
 }
 \description{
-This is a wrapper for \code{\link[=plot_time_series]{plot_time_series()}} that generates an interactive (\code{plotly}) or static
+This is a wrapper for \code{timetk::plot_time_series()} that generates an interactive (\code{plotly}) or static
 (\code{ggplot2}) plot with the forecasted data.
 }
 \examples{

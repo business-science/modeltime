@@ -10,8 +10,8 @@ modeltime_calibrate(object, new_data, id = NULL, quiet = TRUE, ...)
 \item{object}{A fitted model object that is either:
 \enumerate{
 \item A modeltime table that has been created using \code{\link[=modeltime_table]{modeltime_table()}}
-\item A workflow that has been fit by \code{\link[=fit.workflow]{fit.workflow()}} or
-\item A parsnip model that has been fit using \code{\link[=fit.model_spec]{fit.model_spec()}}
+\item A workflow that has been fit by \code{fit.workflow()} or
+\item A parsnip model that has been fit using \code{fit.model_spec()}
 }}
 
 \item{new_data}{A test data set \code{tibble} containing future information (timestamps and actual values).}

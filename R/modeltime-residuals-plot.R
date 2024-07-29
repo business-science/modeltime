@@ -1,9 +1,9 @@
 #' Interactive Residuals Visualization
 #'
 #' This is a wrapper for examining residuals using:
-#' - Time Plot: [plot_time_series()]
-#' - ACF Plot: [plot_acf_diagnostics()]
-#' - Seasonality Plot: [plot_seasonal_diagnostics()]
+#' - Time Plot: `timetk::plot_time_series()`
+#' - ACF Plot: `timetk::plot_acf_diagnostics()`
+#' - Seasonality Plot: `timetk::plot_seasonal_diagnostics()`
 #'
 #'
 #' @inheritParams timetk::plot_time_series
@@ -13,9 +13,9 @@
 #'  Can save space with long model descriptions.
 #' @param .legend_max_width Numeric. The width of truncation to apply to the legend text.
 #' @param ... Additional arguments passed to:
-#' - Time Plot: [plot_time_series()]
-#' - ACF Plot: [plot_acf_diagnostics()]
-#' - Seasonality Plot: [plot_seasonal_diagnostics()]
+#' - Time Plot: `timetk::plot_time_series()`
+#' - ACF Plot: `timetk::plot_acf_diagnostics()`
+#' - Seasonality Plot: `timetk::plot_seasonal_diagnostics()`
 #'
 #' @return A static `ggplot2` plot or an interactive `plotly` plot containing residuals vs time
 #'

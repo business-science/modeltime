@@ -1,6 +1,6 @@
 #' Interactive Forecast Visualization
 #'
-#' This is a wrapper for [plot_time_series()] that generates an interactive (`plotly`) or static
+#' This is a wrapper for `timetk::plot_time_series()` that generates an interactive (`plotly`) or static
 #' (`ggplot2`) plot with the forecasted data.
 #'
 #' @inheritParams timetk::plot_time_series

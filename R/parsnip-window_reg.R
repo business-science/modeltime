@@ -103,7 +103,7 @@
 #' These models are univariate. No xregs are used in the modeling process.
 #'
 #'
-#' @seealso [fit.model_spec()], [set_engine()]
+#' @seealso `fit.model_spec()`, `set_engine()`
 #'
 #' @examples
 #' library(dplyr)

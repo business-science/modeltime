@@ -165,7 +165,7 @@
 #'
 #'  Note that date or date-time class values are excluded from `xreg`.
 #'
-#' @seealso [fit.model_spec()], [set_engine()]
+#' @seealso `fit.model_spec()`, `set_engine()`
 #'
 #' @examplesIf rlang::is_installed("smooth")
 #'

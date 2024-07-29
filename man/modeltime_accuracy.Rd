@@ -43,12 +43,12 @@ calculations from a fitted \code{workflow} (trained workflow) or \code{model_fit
 \details{
 The following accuracy metrics are included by default via \code{\link[=default_forecast_accuracy_metric_set]{default_forecast_accuracy_metric_set()}}:
 \itemize{
-\item MAE - Mean absolute error, \code{\link[=mae]{mae()}}
-\item MAPE - Mean absolute percentage error, \code{\link[=mape]{mape()}}
-\item MASE  - Mean absolute scaled error, \code{\link[=mase]{mase()}}
-\item SMAPE - Symmetric mean absolute percentage error, \code{\link[=smape]{smape()}}
-\item RMSE  - Root mean squared error, \code{\link[=rmse]{rmse()}}
-\item RSQ   - R-squared, \code{\link[=rsq]{rsq()}}
+\item MAE - Mean absolute error, \code{mae()}
+\item MAPE - Mean absolute percentage error, \code{mape()}
+\item MASE  - Mean absolute scaled error, \code{mase()}
+\item SMAPE - Symmetric mean absolute percentage error, \code{smape()}
+\item RMSE  - Root mean squared error, \code{rmse()}
+\item RSQ   - R-squared, \code{rsq()}
 }
 }
 \examples{

@@ -14,7 +14,7 @@ A \code{tibble} with 306 rows and 3 variables:
 }
 \source{
 \itemize{
-\item \href{https://mofc.unic.ac.cy/m4/}{M4 Competition Website}
+\item M4 Competition Website: https://www.unic.ac.cy/iff/research/forecasting/m-competitions/m4/
 }
 }
 \usage{
