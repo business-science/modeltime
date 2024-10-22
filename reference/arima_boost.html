@@ -27,7 +27,7 @@ ARIMA + XGBoost Errors (engine = arima_xgboost)
 
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -360,11 +360,33 @@ and the <code>date</code> feature. Only <code>month.lbl</code> will be used as a
 <span class="r-in"><span><span class="co"># FIT ----</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Boosting - Happens by adding numeric date and month features</span></span></span>
-<span class="r-in"><span><span class="co"># model_fit_boosted &lt;- model_spec %&gt;%</span></span></span>
-<span class="r-in"><span><span class="co">#     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),</span></span></span>
-<span class="r-in"><span><span class="co">#         data = training(splits))</span></span></span>
-<span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co"># model_fit_boosted</span></span></span>
+<span class="r-in"><span><span class="va">model_fit_boosted</span> <span class="op">&lt;-</span> <span class="va">model_spec</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">date</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model_fit_boosted</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parsnip model object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARIMA(0,1,1)(0,1,1)[12] w/ XGBoost Errors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model 1: Standard ARIMA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Series: outcome </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARIMA(0,1,1)(0,1,1)[12] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ma1     sma1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       -0.3405  -0.4781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> s.e.   0.0652   0.0628</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma^2 = 25114:  log likelihood = -1699.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC=3405.1   AICc=3405.19   BIC=3415.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model 2: XGBoost Errors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> xgboost::xgb.train(params = list(eta = 0.1, max_depth = 6, gamma = 0, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     subsample = 1), data = x$data, nrounds = 15, watchlist = x$watchlist, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     verbose = 0, objective = "reg:squarederror", nthread = 1)</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
