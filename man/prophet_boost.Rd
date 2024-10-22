@@ -291,6 +291,7 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
+\donttest{
 library(dplyr)
 library(lubridate)
 library(parsnip)
@@ -313,7 +314,7 @@ model_spec <- prophet_boost(
     set_engine("prophet_xgboost")
 
 # Fit Spec
-\donttest{
+
 model_fit <- model_spec \%>\%
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))

@@ -257,12 +257,12 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
+\donttest{
 library(dplyr)
 library(lubridate)
 library(parsnip)
 library(rsample)
 library(timetk)
-
 
 # Data
 m750 <- m4_monthly \%>\% filter(id == "M750")
@@ -292,7 +292,6 @@ model_spec <- arima_boost(
 
 # FIT ----
 
-\donttest{
 # Boosting - Happens by adding numeric date and month features
 model_fit_boosted <- model_spec \%>\%
     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),

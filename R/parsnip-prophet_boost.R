@@ -194,6 +194,7 @@
 #' @seealso `fit.model_spec()`, `set_engine()`
 #'
 #' @examples
+#' \donttest{
 #' library(dplyr)
 #' library(lubridate)
 #' library(parsnip)
@@ -216,7 +217,7 @@
 #'     set_engine("prophet_xgboost")
 #'
 #' # Fit Spec
-#' \donttest{
+#'
 #' model_fit <- model_spec %>%
 #'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
 #'         data = training(splits))
