@@ -293,11 +293,11 @@ model_spec <- arima_boost(
 # FIT ----
 
 # Boosting - Happens by adding numeric date and month features
-model_fit_boosted <- model_spec \%>\%
-    fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
-        data = training(splits))
-
-model_fit_boosted
+# model_fit_boosted <- model_spec \%>\%
+#     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
+#         data = training(splits))
+#
+# model_fit_boosted
 }
 
 
