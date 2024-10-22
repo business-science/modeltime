@@ -1,10 +1,11 @@
-# modeltime 1.3.0.9000
+# modeltime 1.3.1
 
 Parallel Computation:
 - `parallel_start()`: New parameters `.export_vars` and `.packages` allows passing environment variables and packages to the parallel workers. 
 
 Fixes:
 - Adam (`adam_reg()`): Fixes #254 
+- Adam: Add new dials parameters: `ets_model` and `loss`
 
 # modeltime 1.3.0
 
