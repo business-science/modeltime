@@ -84,7 +84,33 @@ parallel_start <- function(..., .method = c("parallel", "spark"),
     }
 
     if (meth == "spark") {
+        # Step 1: Start Sparklyr session
         sparklyr::registerDoSpark(...)
+
+        # Step 2: Export variables and packages to Spark workers using spark_apply (if needed)
+        if (!is.null(.export_vars) || !is.null(.packages)) {
+            # Define a function that loads packages and applies variables
+            spark_apply_function <- function(partition, context) {
+                # Load the packages
+                if (!is.null(context$packages)) {
+                    lapply(context$packages, function(pkg) {
+                        if (!requireNamespace(pkg, quietly = TRUE)) {
+                            stop(paste("Package", pkg, "is not installed."))
+                        }
+                        library(pkg, character.only = TRUE)
+                    })
+                }
+                # Use the exported variables
+                context$export_vars  # Access the variables
+
+                # Example: Return the data (or perform operations using exported variables)
+                partition
+            }
+
+            # Step 3: Broadcast the variables and packages to Spark workers
+            context <- list(export_vars = .export_vars, packages = .packages)
+            sparklyr::spark_apply(spark_session, spark_apply_function, context = context)
+        }
     }
 
 }
