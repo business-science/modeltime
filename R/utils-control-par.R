@@ -109,7 +109,7 @@ parallel_start <- function(..., .method = c("parallel", "spark"),
 
             # Step 3: Broadcast the variables and packages to Spark workers
             context <- list(export_vars = .export_vars, packages = .packages)
-            sparklyr::spark_apply(spark_session, spark_apply_function, context = context)
+            sparklyr::spark_apply(sparklyr::spark_session, spark_apply_function, context = context)
         }
     }
 
