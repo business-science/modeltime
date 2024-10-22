@@ -14,6 +14,8 @@
 #'  - `seasonal_ma`: The order of the seasonal moving average (SMA) terms.
 #'
 #' @examples
+#' ets_model()
+#'
 #' non_seasonal_ar()
 #'
 #' non_seasonal_differences()

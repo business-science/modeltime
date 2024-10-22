@@ -47,6 +47,8 @@ The main parameters for ARIMA models are:
 }
 }
 \examples{
+ets_model()
+
 non_seasonal_ar()
 
 non_seasonal_differences()
