@@ -5,6 +5,26 @@
 #' @details
 #' The main parameters for ADAM models are:
 #'
+#'  - `ets_model`:
+#'      - model="ZZZ" means that the model will be selected based on the chosen information criteria type. The Branch and Bound is used in the process.
+#'      - model="XXX" means that only additive components are tested, using Branch and Bound.
+#'      - model="YYY" implies selecting between multiplicative components.
+#'      - model="CCC" triggers the combination of forecasts of models using information criteria weights (Kolassa, 2011).
+#'      - combinations between these four and the classical components are also accepted. For example, model="CAY" will combine models with additive trend and either none or multiplicative seasonality.
+#'      - model="PPP" will produce the selection between pure additive and pure multiplicative models. "P" stands for "Pure". This cannot be mixed with other types of components.
+#'      - model="FFF" will select between all the 30 types of models. "F" stands for "Full". This cannot be mixed with other types of components.
+#'      - The parameter model can also be a vector of names of models for a finer tuning (pool of models). For example, model=c("ANN","AAA") will estimate only two models and select the best of them.
+#'  - `loss`:
+#'      - likelihood - the model is estimated via the maximization of the likelihood of the function specified in distribution;
+#'      - MSE (Mean Squared Error),
+#'      - MAE (Mean Absolute Error),
+#'      - HAM (Half Absolute Moment),
+#'      - LASSO - use LASSO to shrink the parameters of the model;
+#'      - RIDGE - use RIDGE to shrink the parameters of the model;
+#'      - TMSE - Trace Mean Squared Error,
+#'      - GTMSE - Geometric Trace Mean Squared Error,
+#'      - MSEh - optimisation using only h-steps ahead error,
+#'      - MSCE - Mean Squared Cumulative Error.
 #'  - `non_seasonal_ar`: The order of the non-seasonal auto-regressive (AR) terms.
 #'  - `non_seasonal_differences`: The order of integration for non-seasonal differencing.
 #'  - `non_seasonal_ma`: The order of the non-seasonal moving average (MA) terms.
@@ -30,6 +50,33 @@
 #'
 #'
 #' @name adam_params
+
+
+#' @export
+#' @return A parameter
+#' @rdname adam_params
+ets_model <- function(values = c("ZZZ", "XXX", "YYY", "CCC", "PPP", "FFF")) {
+    dials::new_qual_param(
+        type      = "character",
+        # default   = FALSE,
+        values    = values,
+        label     = c(ets_model = "ETS Model"),
+        finalize  = NULL
+    )
+}
+
+#' @export
+#' @return A parameter
+#' @rdname adam_params
+loss <- function(values = c("likelihood", "MSE", "MAE", "HAM", "LASSO", "RIDGE", "TMSE", "GTMSE", "MSEh", "MSCE")) {
+    dials::new_qual_param(
+        type      = "character",
+        # default   = FALSE,
+        values    = values,
+        label     = c(ets_model = "Loss Function"),
+        finalize  = NULL
+    )
+}
 
 
 #' @export
