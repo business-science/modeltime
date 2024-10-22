@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -411,7 +411,7 @@ column.</p>
 <span>  <span class="va">wflw_xgb</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■                           </span>  14% | ETA:…</span></span>
-<span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  57% | ETA:…</span></span>
+<span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  71% | ETA:…</span></span>
 <span><span class="co">#&gt; Fitting models on training data... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:…</span></span>
 <span></span>
 <span><span class="va">nested_modeltime_tbl</span></span>
@@ -907,9 +907,9 @@ model performs best on which time series.</p>
     </tr>
 <tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="id">id</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id=".model_id">.model_id</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=".model_desc">.model_desc</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=".type">.type</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="a.model_id">.model_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a.model_desc">.model_desc</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a.type">.type</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mae">mae</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mape">mape</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mase">mase</th>
@@ -1147,7 +1147,8 @@ With the models selected, we can make the future forecast.</p>
 <code class="sourceCode R"><span><span class="va">best_nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_best_model_report</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Nested Modeltime Table</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
 <span><span class="co">#&gt;   id    .model_id .model_desc .type    mae  mape  mase smape   rmse   rsq</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1_1           2 XGBOOST     Test   <span style="text-decoration: underline;">6</span>224. 25.2  1.23  24.5   <span style="text-decoration: underline;">9</span>026. 0.189</span></span>
@@ -1215,7 +1216,7 @@ and future forecast logging using the
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [7/7] Starting Modeltime Table: ID 1_95...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> [7/7] Finished Modeltime Table: ID 1_95</span></span>
-<span><span class="co">#&gt; Finished in: 1.973755 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 1.912032 secs.</span></span></code></pre></div>
 <p>Note that we used <code>control_nested_refit(verbose = TRUE)</code>
 to display the modeling results as each model is refit. This is not
 necessary, but can be useful to follow the nested model fitting
@@ -1334,7 +1335,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
