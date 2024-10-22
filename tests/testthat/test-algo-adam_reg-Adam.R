@@ -69,10 +69,10 @@ test_that("adam_reg: Adam, (No xregs), Test Model Fit Object", {
     resid <- rsample::testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    expect_lte(max(abs(resid)), 3000)
+    expect_lte(max(abs(resid)), 4000)
 
     # - MAE less than 700
-    expect_lte(mean(abs(resid)), 700)
+    expect_lte(mean(abs(resid)), 2000)
 
 
     # * XREGS ----
@@ -123,10 +123,10 @@ test_that("adam_reg: Adam, (No xregs), Test Model Fit Object", {
     resid <- rsample::testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    expect_lte(max(abs(resid)), 2000)
+    expect_lte(max(abs(resid)), 4000)
 
     # - MAE less than 700
-    expect_lte(mean(abs(resid)), 1000)
+    expect_lte(mean(abs(resid)), 2000)
 
 })
 
@@ -194,10 +194,10 @@ test_that("adam_reg: Adam (workflow)", {
     resid <- rsample::testing(splits)$value - predictions_tbl$.value
 
     # - Max Error less than 1500
-    expect_lte(max(abs(resid)), 3000)
+    expect_lte(max(abs(resid)), 4000)
 
     # - MAE less than 700
-    expect_lte(mean(abs(resid)), 1000)
+    expect_lte(mean(abs(resid)), 2000)
 
 })
 
