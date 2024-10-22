@@ -374,7 +374,8 @@ translate.adam_reg <- function(x, engine = x$engine, ...) {
 #' @keywords internal
 #' @export
 adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
-                          model = "ZXZ", constant = FALSE, regressors =  c("use", "select", "adapt"),
+                          model = "ZXZ", constant = FALSE,
+                          regressors =  c("use", "select", "adapt"),
                           outliers = c("ignore", "use", "select"), level = 0.99,
                           occurrence = c("none", "auto", "fixed", "general", "odds-ratio",
                                          "inverse-odds-ratio", "direct"),
@@ -408,11 +409,11 @@ adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D =
     }
 
     if (!any(names(args) == "regressors")){
-        args[["regressors"]] <- regressors
+        args[["regressors"]] <- regressors[1]
     }
 
     if (!any(names(args) == "outliers")){
-        args[["outliers"]] <- outliers
+        args[["outliers"]] <- outliers[1]
     }
 
     if (!any(names(args) == "level")){
@@ -420,19 +421,19 @@ adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D =
     }
 
     if (!any(names(args) == "occurrence")){
-        args[["occurrence"]] <- occurrence
+        args[["occurrence"]] <- occurrence[1]
     }
 
     if (!any(names(args) == "distribution")){
-        args[["distribution"]] <- distribution
+        args[["distribution"]] <- distribution[1]
     }
 
     if (!any(names(args) == "loss")){
-        args[["loss"]] <- loss
+        args[["loss"]] <- loss[1]
     }
 
     if (!any(names(args) == "ic")){
-        args[["ic"]] <- ic
+        args[["ic"]] <- ic[1]
     }
 
 
@@ -455,8 +456,6 @@ adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D =
         xreg_tbl
     ) %>%
         as.data.frame()
-
-
 
     fit_call <- parsnip::make_call(fun  = "adam",
                                    ns   = "smooth",
@@ -572,18 +571,22 @@ Adam_predict_impl <- function(object, new_data, ...) {
 #'
 #' @keywords internal
 #' @export
-auto_adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
-                          model = "ZXZ", constant = FALSE, regressors =  c("use", "select", "adapt"),
-                          outliers = c("ignore", "use", "select"), level = 0.99,
-                          occurrence = c("none", "auto", "fixed", "general", "odds-ratio",
-                                         "inverse-odds-ratio", "direct"),
-                          distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm",
-                                           "dlnorm", "dinvgauss", "dgamma"),
-                          loss = c("likelihood", "MSE", "MAE", "HAM", "LASSO", "RIDGE", "MSEh",
-                                   "TMSE", "GTMSE", "MSCE"),
-                          ic   = c("AICc", "AIC", "BIC", "BICc"),
-                          select_order = FALSE,
-                          ...) {
+auto_adam_fit_impl <- function(
+      x, y, period = "auto",
+      p = 0, d = 0, q = 0, P = 0, D = 0, Q = 0,
+      model = "ZXZ",
+      constant = FALSE,
+      regressors =  c("use", "select", "adapt"),
+      outliers = c("ignore", "use", "select"), level = 0.99,
+      occurrence = c("none", "auto", "fixed", "general", "odds-ratio",
+                     "inverse-odds-ratio", "direct"),
+      distribution = c("default", "dnorm", "dlaplace", "ds", "dgnorm",
+                       "dlnorm", "dinvgauss", "dgamma"),
+      loss = c("likelihood", "MSE", "MAE", "HAM", "LASSO", "RIDGE", "MSEh",
+               "TMSE", "GTMSE", "MSCE"),
+      ic   = c("AICc", "AIC", "BIC", "BICc"),
+      select_order = FALSE,
+      ...) {
 
 
     # X & Y
@@ -607,11 +610,11 @@ auto_adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0
     }
 
     if (!any(names(args) == "regressors")){
-        args[["regressors"]] <- regressors
+        args[["regressors"]] <- regressors[1]
     }
 
     if (!any(names(args) == "outliers")){
-        args[["outliers"]] <- outliers
+        args[["outliers"]] <- outliers[1]
     }
 
     if (!any(names(args) == "level")){
@@ -619,19 +622,19 @@ auto_adam_fit_impl <- function(x, y, period = "auto", p = 0, d = 0, q = 0, P = 0
     }
 
     if (!any(names(args) == "occurrence")){
-        args[["occurrence"]] <- occurrence
+        args[["occurrence"]] <- occurrence[1]
     }
 
     if (!any(names(args) == "distribution")){
-        args[["distribution"]] <- distribution
+        args[["distribution"]] <- distribution[1]
     }
 
     if (!any(names(args) == "loss")){
-        args[["loss"]] <- loss
+        args[["loss"]] <- loss[1]
     }
 
     if (!any(names(args) == "ic")){
-        args[["ic"]] <- ic
+        args[["ic"]] <- ic[1]
     }
 
 
