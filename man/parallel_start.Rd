@@ -5,7 +5,12 @@
 \alias{parallel_stop}
 \title{Start parallel clusters using \code{parallel} package}
 \usage{
-parallel_start(..., .method = c("parallel", "spark"))
+parallel_start(
+  ...,
+  .method = c("parallel", "spark"),
+  .export_vars = NULL,
+  .packages = NULL
+)
 
 parallel_stop()
 }
@@ -17,6 +22,10 @@ parallel_stop()
 \item "parallel" - Uses the \code{parallel} and \code{doParallel} packages
 \item "spark" - Uses the \code{sparklyr} package
 }}
+
+\item{.export_vars}{Environment variables that can be sent to the workers}
+
+\item{.packages}{Packages that can be sent to the workers}
 }
 \description{
 Start parallel clusters using \code{parallel} package

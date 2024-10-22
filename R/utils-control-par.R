@@ -8,6 +8,8 @@
 #'
 #'  - "parallel" - Uses the `parallel` and `doParallel` packages
 #'  - "spark" - Uses the `sparklyr` package
+#' @param .export_vars Environment variables that can be sent to the workers
+#' @param .packages Packages that can be sent to the workers
 #'
 #'
 #' @details
@@ -44,7 +46,8 @@
 
 #' @export
 #' @rdname parallel_start
-parallel_start <- function(..., .method = c("parallel", "spark")) {
+parallel_start <- function(..., .method = c("parallel", "spark"),
+                           .export_vars = NULL, .packages = NULL) {
 
     meth <- tolower(.method[1])
 
@@ -53,11 +56,31 @@ parallel_start <- function(..., .method = c("parallel", "spark")) {
     }
 
     if (meth == "parallel") {
+        # Step 1: Create the cluster
         cl <- parallel::makeCluster(...)
+
+        # Step 2: Register the cluster
         doParallel::registerDoParallel(cl)
-        invisible(
-            parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        )
+
+        # Step 3: Export variables (if provided)
+        if (!is.null(.export_vars)) {
+            parallel::clusterExport(cl, varlist = .export_vars)
+        }
+
+        # Step 4: Load .packages (if provided)
+        if (!is.null(.packages)) {
+            parallel::clusterCall(cl, function(pkgs) {
+                lapply(pkgs, function(pkg) {
+                    if (!requireNamespace(pkg, quietly = TRUE)) {
+                        stop(paste("Package", pkg, "is not installed."))
+                    }
+                    library(pkg, character.only = TRUE)
+                })
+            }, .packages)
+        }
+
+        # Step 5: Set the library paths for each worker
+        invisible(parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths()))
     }
 
     if (meth == "spark") {
