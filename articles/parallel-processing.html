@@ -6,16 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Hyperparameter Tuning with Parallel Processing • modeltime</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Hyperparameter Tuning with Parallel Processing">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-20GDZ5LL77"></script><script>
@@ -239,7 +238,7 @@ sales demand by department.</p>
 <span></span>
 <span><span class="va">dataset_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
 <span>    .date_var    <span class="op">=</span> <span class="va">Date</span>, </span>
 <span>    .value       <span class="op">=</span> <span class="va">Weekly_Sales</span>, </span>
 <span>    .facet_ncol  <span class="op">=</span> <span class="fl">2</span>, </span>
@@ -250,18 +249,18 @@ sales demand by department.</p>
 <div class="section level3">
 <h3 id="train-test-splits">Train / Test Splits<a class="anchor" aria-label="anchor" href="#train-test-splits"></a>
 </h3>
-<p>Use <code><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">time_series_split()</a></code> to make a temporal split for all
+<p>Use <code><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split()</a></code> to make a temporal split for all
 seven time series.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/time_series_split.html" class="external-link">time_series_split</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split</a></span><span class="op">(</span></span>
 <span>  <span class="va">dataset_tbl</span>, </span>
 <span>  assess     <span class="op">=</span> <span class="st">"6 months"</span>, </span>
 <span>  cumulative <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">splits</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <p><img src="parallel-processing_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -270,7 +269,7 @@ seven time series.</p>
 <p>Make a preprocessing recipe that generates time series features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recipe_spec_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">Weekly_Sales</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">training</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">Date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_normalize.html" class="external-link">step_normalize</a></span><span class="op">(</span><span class="va">Date_index.num</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -498,10 +497,10 @@ workflowset in parallel.</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Using existing parallel backend with 2 clusters (cores)...</span></span>
-<span><span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span></span>
-<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 8.748 seconds</span></span>
+<span><span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span></span>
+<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 3.141 seconds</span></span>
 <span><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
-<span><span class="co">#&gt;  Total time | 8.749 seconds</span></span></code></pre></div>
+<span><span class="co">#&gt;  Total time | 3.142 seconds</span></span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_parallel_tbl</span></span>
@@ -543,7 +542,7 @@ training task.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #555555;">Model Successfully Fitted: 5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Fitting Model: 6</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #555555;">Model Successfully Fitted: 6</span></span></span>
-<span><span class="co">#&gt; Total time | 14.416 seconds</span></span></code></pre></div>
+<span><span class="co">#&gt; Total time | 3.662 seconds</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -556,23 +555,23 @@ lowest MAE.</p>
 <span>  <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div id="aamrewkadg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aamrewkadg table {
+<div id="nduwpkhymb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nduwpkhymb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#aamrewkadg thead, #aamrewkadg tbody, #aamrewkadg tfoot, #aamrewkadg tr, #aamrewkadg td, #aamrewkadg th {
+#nduwpkhymb thead, #nduwpkhymb tbody, #nduwpkhymb tfoot, #nduwpkhymb tr, #nduwpkhymb td, #nduwpkhymb th {
   border-style: none;
 }
 
-#aamrewkadg p {
+#nduwpkhymb p {
   margin: 0;
   padding: 0;
 }
 
-#aamrewkadg .gt_table {
+#nduwpkhymb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -598,12 +597,12 @@ lowest MAE.</p>
   border-left-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_caption {
+#nduwpkhymb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#aamrewkadg .gt_title {
+#nduwpkhymb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -615,7 +614,7 @@ lowest MAE.</p>
   border-bottom-width: 0;
 }
 
-#aamrewkadg .gt_subtitle {
+#nduwpkhymb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -627,7 +626,7 @@ lowest MAE.</p>
   border-top-width: 0;
 }
 
-#aamrewkadg .gt_heading {
+#nduwpkhymb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -639,13 +638,13 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_bottom_border {
+#nduwpkhymb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_col_headings {
+#nduwpkhymb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -660,7 +659,7 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_col_heading {
+#nduwpkhymb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -680,7 +679,7 @@ lowest MAE.</p>
   overflow-x: hidden;
 }
 
-#aamrewkadg .gt_column_spanner_outer {
+#nduwpkhymb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -692,15 +691,15 @@ lowest MAE.</p>
   padding-right: 4px;
 }
 
-#aamrewkadg .gt_column_spanner_outer:first-child {
+#nduwpkhymb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aamrewkadg .gt_column_spanner_outer:last-child {
+#nduwpkhymb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aamrewkadg .gt_column_spanner {
+#nduwpkhymb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -712,11 +711,11 @@ lowest MAE.</p>
   width: 100%;
 }
 
-#aamrewkadg .gt_spanner_row {
+#nduwpkhymb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#aamrewkadg .gt_group_heading {
+#nduwpkhymb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -742,7 +741,7 @@ lowest MAE.</p>
   text-align: left;
 }
 
-#aamrewkadg .gt_empty_group_heading {
+#nduwpkhymb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -757,15 +756,15 @@ lowest MAE.</p>
   vertical-align: middle;
 }
 
-#aamrewkadg .gt_from_md > :first-child {
+#nduwpkhymb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aamrewkadg .gt_from_md > :last-child {
+#nduwpkhymb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aamrewkadg .gt_row {
+#nduwpkhymb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -784,7 +783,7 @@ lowest MAE.</p>
   overflow-x: hidden;
 }
 
-#aamrewkadg .gt_stub {
+#nduwpkhymb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -797,7 +796,7 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#aamrewkadg .gt_stub_row_group {
+#nduwpkhymb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -811,15 +810,15 @@ lowest MAE.</p>
   vertical-align: top;
 }
 
-#aamrewkadg .gt_row_group_first td {
+#nduwpkhymb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aamrewkadg .gt_row_group_first th {
+#nduwpkhymb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#aamrewkadg .gt_summary_row {
+#nduwpkhymb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -829,16 +828,16 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#aamrewkadg .gt_first_summary_row {
+#nduwpkhymb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_first_summary_row.thick {
+#nduwpkhymb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aamrewkadg .gt_last_summary_row {
+#nduwpkhymb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -848,7 +847,7 @@ lowest MAE.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_grand_summary_row {
+#nduwpkhymb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -858,7 +857,7 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#aamrewkadg .gt_first_grand_summary_row {
+#nduwpkhymb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -868,7 +867,7 @@ lowest MAE.</p>
   border-top-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_last_grand_summary_row_top {
+#nduwpkhymb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -878,11 +877,11 @@ lowest MAE.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_striped {
+#nduwpkhymb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aamrewkadg .gt_table_body {
+#nduwpkhymb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -891,7 +890,7 @@ lowest MAE.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_footnotes {
+#nduwpkhymb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -905,7 +904,7 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_footnote {
+#nduwpkhymb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -914,7 +913,7 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#aamrewkadg .gt_sourcenotes {
+#nduwpkhymb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -928,7 +927,7 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#aamrewkadg .gt_sourcenote {
+#nduwpkhymb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -936,72 +935,72 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#aamrewkadg .gt_left {
+#nduwpkhymb .gt_left {
   text-align: left;
 }
 
-#aamrewkadg .gt_center {
+#nduwpkhymb .gt_center {
   text-align: center;
 }
 
-#aamrewkadg .gt_right {
+#nduwpkhymb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aamrewkadg .gt_font_normal {
+#nduwpkhymb .gt_font_normal {
   font-weight: normal;
 }
 
-#aamrewkadg .gt_font_bold {
+#nduwpkhymb .gt_font_bold {
   font-weight: bold;
 }
 
-#aamrewkadg .gt_font_italic {
+#nduwpkhymb .gt_font_italic {
   font-style: italic;
 }
 
-#aamrewkadg .gt_super {
+#nduwpkhymb .gt_super {
   font-size: 65%;
 }
 
-#aamrewkadg .gt_footnote_marks {
+#nduwpkhymb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#aamrewkadg .gt_asterisk {
+#nduwpkhymb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aamrewkadg .gt_indent_1 {
+#nduwpkhymb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#aamrewkadg .gt_indent_2 {
+#nduwpkhymb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#aamrewkadg .gt_indent_3 {
+#nduwpkhymb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#aamrewkadg .gt_indent_4 {
+#nduwpkhymb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#aamrewkadg .gt_indent_5 {
+#nduwpkhymb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#aamrewkadg .katex-display {
+#nduwpkhymb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#aamrewkadg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nduwpkhymb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1027,66 +1026,66 @@ lowest MAE.</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_1</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">55572.50</td>
-<td headers="mape" class="gt_row gt_right">98.52</td>
+<td headers="mae" class="gt_row gt_right">55576.09</td>
+<td headers="mape" class="gt_row gt_right">98.54</td>
 <td headers="mase" class="gt_row gt_right">1.63</td>
-<td headers="smape" class="gt_row gt_right">194.17</td>
-<td headers="rmse" class="gt_row gt_right">66953.92</td>
+<td headers="smape" class="gt_row gt_right">194.25</td>
+<td headers="rmse" class="gt_row gt_right">66954.88</td>
 <td headers="rsq" class="gt_row gt_right">0.96</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">2</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_2</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">48819.23</td>
-<td headers="mape" class="gt_row gt_right">86.15</td>
+<td headers="mae" class="gt_row gt_right">48839.75</td>
+<td headers="mape" class="gt_row gt_right">86.24</td>
 <td headers="mase" class="gt_row gt_right">1.43</td>
-<td headers="smape" class="gt_row gt_right">151.49</td>
-<td headers="rmse" class="gt_row gt_right">58992.30</td>
+<td headers="smape" class="gt_row gt_right">151.74</td>
+<td headers="rmse" class="gt_row gt_right">58998.12</td>
 <td headers="rsq" class="gt_row gt_right">0.96</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">3</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_3</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">13286.28</td>
-<td headers="mape" class="gt_row gt_right">21.41</td>
+<td headers="mae" class="gt_row gt_right">13339.53</td>
+<td headers="mape" class="gt_row gt_right">21.62</td>
 <td headers="mase" class="gt_row gt_right">0.39</td>
-<td headers="smape" class="gt_row gt_right">24.70</td>
-<td headers="rmse" class="gt_row gt_right">17271.50</td>
+<td headers="smape" class="gt_row gt_right">24.94</td>
+<td headers="rmse" class="gt_row gt_right">17308.96</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">4</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_4</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3802.13</td>
-<td headers="mape" class="gt_row gt_right">8.11</td>
-<td headers="mase" class="gt_row gt_right">0.11</td>
-<td headers="smape" class="gt_row gt_right">8.05</td>
-<td headers="rmse" class="gt_row gt_right">5558.56</td>
+<td headers="mae" class="gt_row gt_right">3992.38</td>
+<td headers="mape" class="gt_row gt_right">9.15</td>
+<td headers="mase" class="gt_row gt_right">0.12</td>
+<td headers="smape" class="gt_row gt_right">8.96</td>
+<td headers="rmse" class="gt_row gt_right">5765.32</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">5</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_5</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3361.45</td>
-<td headers="mape" class="gt_row gt_right">7.01</td>
-<td headers="mase" class="gt_row gt_right">0.10</td>
-<td headers="smape" class="gt_row gt_right">7.08</td>
-<td headers="rmse" class="gt_row gt_right">5233.28</td>
+<td headers="mae" class="gt_row gt_right">3658.78</td>
+<td headers="mape" class="gt_row gt_right">8.09</td>
+<td headers="mase" class="gt_row gt_right">0.11</td>
+<td headers="smape" class="gt_row gt_right">8.41</td>
+<td headers="rmse" class="gt_row gt_right">5557.38</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">6</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_6</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3645.01</td>
-<td headers="mape" class="gt_row gt_right">8.76</td>
+<td headers="mae" class="gt_row gt_right">3690.55</td>
+<td headers="mape" class="gt_row gt_right">9.30</td>
 <td headers="mase" class="gt_row gt_right">0.11</td>
-<td headers="smape" class="gt_row gt_right">9.20</td>
-<td headers="rmse" class="gt_row gt_right">5420.95</td>
+<td headers="smape" class="gt_row gt_right">9.75</td>
+<td headers="rmse" class="gt_row gt_right">5397.65</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 </tbody>
@@ -1207,7 +1206,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

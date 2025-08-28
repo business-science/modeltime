@@ -6,16 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Nested Forecasting • modeltime</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Nested Forecasting">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-20GDZ5LL77"></script><script>
@@ -241,7 +240,7 @@ in sales by department.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
 <span>    <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="nested-forecasting_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -383,7 +382,7 @@ results. Note that we use the
 build preprocessing features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rec_xgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu"><a href="../reference/log_extractors.html">extract_nested_train_split</a></span><span class="op">(</span><span class="va">nested_data_tbl</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/timetk/man/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://business-science.github.io/timetk/reference/step_timeseries_signature.html" class="external-link">step_timeseries_signature</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_rm.html" class="external-link">step_rm</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html" class="external-link">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_nominal_predictors</a></span><span class="op">(</span><span class="op">)</span>, one_hot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -451,23 +450,23 @@ model performs best on which time series.</p>
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<div id="ucmrwtkdbi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ucmrwtkdbi table {
+<div id="mabcrqximn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mabcrqximn table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ucmrwtkdbi thead, #ucmrwtkdbi tbody, #ucmrwtkdbi tfoot, #ucmrwtkdbi tr, #ucmrwtkdbi td, #ucmrwtkdbi th {
+#mabcrqximn thead, #mabcrqximn tbody, #mabcrqximn tfoot, #mabcrqximn tr, #mabcrqximn td, #mabcrqximn th {
   border-style: none;
 }
 
-#ucmrwtkdbi p {
+#mabcrqximn p {
   margin: 0;
   padding: 0;
 }
 
-#ucmrwtkdbi .gt_table {
+#mabcrqximn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -493,12 +492,12 @@ model performs best on which time series.</p>
   border-left-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_caption {
+#mabcrqximn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ucmrwtkdbi .gt_title {
+#mabcrqximn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -510,7 +509,7 @@ model performs best on which time series.</p>
   border-bottom-width: 0;
 }
 
-#ucmrwtkdbi .gt_subtitle {
+#mabcrqximn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -522,7 +521,7 @@ model performs best on which time series.</p>
   border-top-width: 0;
 }
 
-#ucmrwtkdbi .gt_heading {
+#mabcrqximn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -534,13 +533,13 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_bottom_border {
+#mabcrqximn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_col_headings {
+#mabcrqximn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -555,7 +554,7 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_col_heading {
+#mabcrqximn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -575,7 +574,7 @@ model performs best on which time series.</p>
   overflow-x: hidden;
 }
 
-#ucmrwtkdbi .gt_column_spanner_outer {
+#mabcrqximn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -587,15 +586,15 @@ model performs best on which time series.</p>
   padding-right: 4px;
 }
 
-#ucmrwtkdbi .gt_column_spanner_outer:first-child {
+#mabcrqximn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ucmrwtkdbi .gt_column_spanner_outer:last-child {
+#mabcrqximn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ucmrwtkdbi .gt_column_spanner {
+#mabcrqximn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -607,11 +606,11 @@ model performs best on which time series.</p>
   width: 100%;
 }
 
-#ucmrwtkdbi .gt_spanner_row {
+#mabcrqximn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ucmrwtkdbi .gt_group_heading {
+#mabcrqximn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -637,7 +636,7 @@ model performs best on which time series.</p>
   text-align: left;
 }
 
-#ucmrwtkdbi .gt_empty_group_heading {
+#mabcrqximn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -652,15 +651,15 @@ model performs best on which time series.</p>
   vertical-align: middle;
 }
 
-#ucmrwtkdbi .gt_from_md > :first-child {
+#mabcrqximn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ucmrwtkdbi .gt_from_md > :last-child {
+#mabcrqximn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ucmrwtkdbi .gt_row {
+#mabcrqximn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -679,7 +678,7 @@ model performs best on which time series.</p>
   overflow-x: hidden;
 }
 
-#ucmrwtkdbi .gt_stub {
+#mabcrqximn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -692,7 +691,7 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#ucmrwtkdbi .gt_stub_row_group {
+#mabcrqximn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -706,15 +705,15 @@ model performs best on which time series.</p>
   vertical-align: top;
 }
 
-#ucmrwtkdbi .gt_row_group_first td {
+#mabcrqximn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ucmrwtkdbi .gt_row_group_first th {
+#mabcrqximn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ucmrwtkdbi .gt_summary_row {
+#mabcrqximn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -724,16 +723,16 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#ucmrwtkdbi .gt_first_summary_row {
+#mabcrqximn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_first_summary_row.thick {
+#mabcrqximn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ucmrwtkdbi .gt_last_summary_row {
+#mabcrqximn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -743,7 +742,7 @@ model performs best on which time series.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_grand_summary_row {
+#mabcrqximn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -753,7 +752,7 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#ucmrwtkdbi .gt_first_grand_summary_row {
+#mabcrqximn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -763,7 +762,7 @@ model performs best on which time series.</p>
   border-top-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_last_grand_summary_row_top {
+#mabcrqximn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -773,11 +772,11 @@ model performs best on which time series.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_striped {
+#mabcrqximn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ucmrwtkdbi .gt_table_body {
+#mabcrqximn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -786,7 +785,7 @@ model performs best on which time series.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_footnotes {
+#mabcrqximn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -800,7 +799,7 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_footnote {
+#mabcrqximn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -809,7 +808,7 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#ucmrwtkdbi .gt_sourcenotes {
+#mabcrqximn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -823,7 +822,7 @@ model performs best on which time series.</p>
   border-right-color: #D3D3D3;
 }
 
-#ucmrwtkdbi .gt_sourcenote {
+#mabcrqximn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -831,72 +830,72 @@ model performs best on which time series.</p>
   padding-right: 5px;
 }
 
-#ucmrwtkdbi .gt_left {
+#mabcrqximn .gt_left {
   text-align: left;
 }
 
-#ucmrwtkdbi .gt_center {
+#mabcrqximn .gt_center {
   text-align: center;
 }
 
-#ucmrwtkdbi .gt_right {
+#mabcrqximn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ucmrwtkdbi .gt_font_normal {
+#mabcrqximn .gt_font_normal {
   font-weight: normal;
 }
 
-#ucmrwtkdbi .gt_font_bold {
+#mabcrqximn .gt_font_bold {
   font-weight: bold;
 }
 
-#ucmrwtkdbi .gt_font_italic {
+#mabcrqximn .gt_font_italic {
   font-style: italic;
 }
 
-#ucmrwtkdbi .gt_super {
+#mabcrqximn .gt_super {
   font-size: 65%;
 }
 
-#ucmrwtkdbi .gt_footnote_marks {
+#mabcrqximn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ucmrwtkdbi .gt_asterisk {
+#mabcrqximn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ucmrwtkdbi .gt_indent_1 {
+#mabcrqximn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ucmrwtkdbi .gt_indent_2 {
+#mabcrqximn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ucmrwtkdbi .gt_indent_3 {
+#mabcrqximn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ucmrwtkdbi .gt_indent_4 {
+#mabcrqximn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ucmrwtkdbi .gt_indent_5 {
+#mabcrqximn .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ucmrwtkdbi .katex-display {
+#mabcrqximn .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ucmrwtkdbi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mabcrqximn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1216,7 +1215,7 @@ and future forecast logging using the
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> [7/7] Starting Modeltime Table: ID 1_95...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Model 2 Passed XGBOOST.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> [7/7] Finished Modeltime Table: ID 1_95</span></span>
-<span><span class="co">#&gt; Finished in: 2.014361 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 2.077672 secs.</span></span></code></pre></div>
 <p>Note that we used <code>control_nested_refit(verbose = TRUE)</code>
 to display the modeling results as each model is refit. This is not
 necessary, but can be useful to follow the nested model fitting
@@ -1335,7 +1334,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
