@@ -1,34 +1,30 @@
 
 # PARALLEL START/STOP ----
 
-#' Start parallel clusters using `parallel` package
+#' Start parallel clusters / plans
 #'
 #' @param ... Parameters passed to underlying functions (See Details Section)
 #' @param .method The method to create the parallel backend. Supports:
 #'
-#'  - "parallel" - Uses the `parallel` and `doParallel` packages
-#'  - "spark" - Uses the `sparklyr` package
-#' @param .export_vars Environment variables that can be sent to the workers
-#' @param .packages Packages that can be sent to the workers
-#'
+#'  - "future"   - Uses the `future` package; foreach bridged via `doFuture`
+#'  - "parallel" - Uses the `parallel` + `doParallel` packages
+#'  - "spark"    - Uses the `sparklyr` package
+#' @param .export_vars Environment variables that can be sent to the workers (not needed for "future")
+#' @param .packages Packages that can be sent to the workers (auto-handled by "future")
 #'
 #' @details
+#' ## future (`.method = "future"`)
+#' Sets a `future::multisession` plan (portable across OSes) and registers a foreach
+#' backend via `doFuture::registerDoFuture()`. This avoids the `tune` foreach/future warning.
+#' - Pass the first unnamed `...` argument as worker count (numeric) or omit to
+#'   default to `parallelly::availableCores(logical = FALSE)` or 2 if unknown.
 #'
-#' # Parallel (`.method = "parallel"`)
+#' ## parallel (`.method = "parallel"`)
+#' 1) `parallel::makeCluster(...)`  2) `doParallel::registerDoParallel(cl)`
+#' 3) Set `.libPaths()` on workers; optional `clusterExport` and package loads.
 #'
-#' Performs 3 Steps:
-#'
-#' 1. Makes clusters using `parallel::makeCluster(...)`. The `parallel_start(...)`
-#'   are passed to `parallel::makeCluster(...)`.
-#' 2. Registers clusters using `doParallel::registerDoParallel()`.
-#' 3. Adds `.libPaths()` using `parallel::clusterCall()`.
-#'
-#' # Spark (`.method = "spark"`)
-#'
-#'  - Important, make sure to create a spark connection using `sparklyr::spark_connect()`.
-#'  - Pass the connection object as the first argument.
-#'    For example, `parallel_start(sc, .method = "spark")`.
-#'  - The `parallel_start(...)` are passed to `sparklyr::registerDoSpark(...)`.
+#' ## spark (`.method = "spark"`)
+#' Requires `sparklyr::spark_connect()`; registers foreach via `sparklyr::registerDoSpark(...)`.
 #'
 #' @examples
 #'
@@ -46,27 +42,58 @@
 
 #' @export
 #' @rdname parallel_start
-parallel_start <- function(..., .method = c("parallel", "spark"),
+parallel_start <- function(..., .method = c("parallel", "spark", "future"),
                            .export_vars = NULL, .packages = NULL) {
 
     meth <- tolower(.method[1])
 
-    if (!meth %in% .method) {
-        rlang::abort("`.method` is not an available method. Available values are one of 'parallel' or 'spark'.")
+    if (!meth %in% c("parallel","spark","future")) {
+        rlang::abort("`.method` must be one of 'future', 'parallel', or 'spark'.")
+    }
+
+    if (meth == "future") {
+        if (!requireNamespace("future", quietly = TRUE)) {
+            rlang::abort("The 'future' package is required for `.method = 'future'`.")
+        }
+        # optional foreach bridge
+        has_doFuture <- requireNamespace("doFuture", quietly = TRUE)
+        # choose workers: first unnamed arg if numeric; else physical cores; else 2
+        dots <- list(...)
+        workers <- tryCatch(
+            {
+                if (length(dots) >= 1 && is.numeric(dots[[1]]) && length(dots[[1]]) == 1) {
+                    as.integer(dots[[1]])
+                } else if (requireNamespace("parallelly", quietly = TRUE)) {
+                    parallelly::availableCores(logical = FALSE)
+                } else {
+                    2L
+                }
+            },
+            error = function(e) 2L
+        )
+        # set plan
+        future::plan(future::multisession, workers = workers)
+        if (has_doFuture) {
+            doFuture::registerDoFuture()
+        }
+        # 'future' auto-exports globals and attaches needed packages from the calling env.
+        # We keep .export_vars / .packages for API compatibility but they are not required here.
+        return(invisible(TRUE))
     }
 
     if (meth == "parallel") {
+        if (!requireNamespace("parallel", quietly = TRUE) ||
+            !requireNamespace("doParallel", quietly = TRUE)) {
+            rlang::abort("The 'parallel' and 'doParallel' packages are required for `.method = 'parallel'`.")
+        }
         # Step 1: Create the cluster
         cl <- parallel::makeCluster(...)
-
         # Step 2: Register the cluster
         doParallel::registerDoParallel(cl)
-
         # Step 3: Export variables (if provided)
         if (!is.null(.export_vars)) {
             parallel::clusterExport(cl, varlist = .export_vars)
         }
-
         # Step 4: Load .packages (if provided)
         if (!is.null(.packages)) {
             parallel::clusterCall(cl, function(pkgs) {
@@ -78,20 +105,19 @@ parallel_start <- function(..., .method = c("parallel", "spark"),
                 })
             }, .packages)
         }
-
         # Step 5: Set the library paths for each worker
         invisible(parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths()))
+        return(invisible(TRUE))
     }
 
     if (meth == "spark") {
-        # Step 1: Start Sparklyr session
+        if (!requireNamespace("sparklyr", quietly = TRUE)) {
+            rlang::abort("The 'sparklyr' package is required for `.method = 'spark'`.")
+        }
         sparklyr::registerDoSpark(...)
-
-        # Step 2: Export variables and packages to Spark workers using spark_apply (if needed)
         if (!is.null(.export_vars) || !is.null(.packages)) {
-            # Define a function that loads packages and applies variables
+            # Best effort: context broadcast
             spark_apply_function <- function(partition, context) {
-                # Load the packages
                 if (!is.null(context$packages)) {
                     lapply(context$packages, function(pkg) {
                         if (!requireNamespace(pkg, quietly = TRUE)) {
@@ -100,26 +126,30 @@ parallel_start <- function(..., .method = c("parallel", "spark"),
                         library(pkg, character.only = TRUE)
                     })
                 }
-                # Use the exported variables
-                context$export_vars  # Access the variables
-
-                # Example: Return the data (or perform operations using exported variables)
+                context$export_vars
                 partition
             }
-
-            # Step 3: Broadcast the variables and packages to Spark workers
             context <- list(export_vars = .export_vars, packages = .packages)
             sparklyr::spark_apply(sparklyr::spark_session, spark_apply_function, context = context)
         }
+        return(invisible(TRUE))
     }
-
 }
+
 
 #' @export
 #' @rdname parallel_start
 parallel_stop <- function() {
-    foreach::registerDoSEQ()
+    if (requireNamespace("future", quietly = TRUE)) {
+        # best-effort reset; ignore errors if no plan was set
+        try(future::plan(future::sequential), silent = TRUE)
+    }
+    if (requireNamespace("foreach", quietly = TRUE)) {
+        foreach::registerDoSEQ()
+    }
+    invisible(TRUE)
 }
+
 
 # USED TO SET UP THE PARALLEL BACKENDS IF NOT SET UP ALREADY
 setup_parallel_processing <- function(control, is_par_setup, t1) {
@@ -127,40 +157,61 @@ setup_parallel_processing <- function(control, is_par_setup, t1) {
     clusters_made <- FALSE
     cl            <- NULL
 
-    if ((control$cores > 1) && control$allow_par && (!is_par_setup)){
-        if (control$verbose) {
-            message(
-                stringr::str_glue(" No existing backend detected. It's more efficient to setup a Parallel Backend with `parallel_start()`...")
-            )
-            message(
-                stringr::str_glue(" Starting parallel backend with {control$cores} clusters (cores)...")
-            )
-        }
-        cl <- parallel::makeCluster(control$cores)
-        doParallel::registerDoParallel(cl)
-        parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
-        clusters_made <- TRUE
+    # already set up externally?
+    if ((control$cores > 1) && control$allow_par && (!is_par_setup)) {
 
-        if (control$verbose) {
-            t <- Sys.time()
-            message(stringr::str_glue(" Parallel Backend Setup | {round(t-t1, 3)} seconds"))
+        # Prefer future if present (no foreach-only warning in `tune`)
+        if (requireNamespace("future", quietly = TRUE)) {
+
+            if (control$verbose) {
+                message(stringr::str_glue(" Starting future multisession backend with {control$cores} workers..."))
+            }
+
+            # set plan
+            future::plan(future::multisession, workers = control$cores)
+            # bridge foreach -> future if available
+            if (requireNamespace("doFuture", quietly = TRUE)) {
+                doFuture::registerDoFuture()
+            }
+
+            # No clusters to track/close
+            clusters_made <- FALSE
+
+            if (control$verbose) {
+                t <- Sys.time()
+                message(stringr::str_glue(" Parallel Backend Setup (future) | {round(t - t1, 3)} seconds"))
+            }
+
+        } else {
+            # Fallback to legacy parallel backend
+            if (control$verbose) {
+                message(stringr::str_glue(" Starting parallel backend (doParallel) with {control$cores} clusters (cores)..."))
+            }
+            cl <- parallel::makeCluster(control$cores)
+            doParallel::registerDoParallel(cl)
+            parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths())
+            clusters_made <- TRUE
+
+            if (control$verbose) {
+                t <- Sys.time()
+                message(stringr::str_glue(" Parallel Backend Setup | {round(t - t1, 3)} seconds"))
+            }
         }
 
     } else if (!is_par_setup) {
-        # Run sequentially if parallel is not set up, cores == 1 or allow_par = FALSE
-        if (control$verbose) message(stringr::str_glue("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`."))
-        foreach::registerDoSEQ()
+        # sequential
+        if (control$verbose) message("Running sequential backend. If parallel was intended, set `allow_par = TRUE` and `cores > 1`.")
+        if (requireNamespace("foreach", quietly = TRUE)) foreach::registerDoSEQ()
     } else {
-        # Parallel was set up externally by user - Do nothing.
-        if (control$verbose) message(stringr::str_glue("Using existing parallel backend with {foreach::getDoParWorkers()} clusters (cores)..."))
+        if (control$verbose) message(stringr::str_glue("Using existing parallel backend with {foreach::getDoParWorkers()} workers..."))
     }
 
-    return(list(
+    list(
         clusters_made = clusters_made,
         cl            = cl
-    ))
-
+    )
 }
+
 
 # USED TO SHUT DOWN THE PARALLEL BACKENDS IF WE SET UP
 finish_parallel_processing <- function(control, clusters_made, cl, t1) {

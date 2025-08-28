@@ -3,11 +3,11 @@
 \name{parallel_start}
 \alias{parallel_start}
 \alias{parallel_stop}
-\title{Start parallel clusters using \code{parallel} package}
+\title{Start parallel clusters / plans}
 \usage{
 parallel_start(
   ...,
-  .method = c("parallel", "spark"),
+  .method = c("parallel", "spark", "future"),
   .export_vars = NULL,
   .packages = NULL
 )
@@ -19,36 +19,41 @@ parallel_stop()
 
 \item{.method}{The method to create the parallel backend. Supports:
 \itemize{
-\item "parallel" - Uses the \code{parallel} and \code{doParallel} packages
-\item "spark" - Uses the \code{sparklyr} package
+\item "future"   - Uses the \code{future} package; foreach bridged via \code{doFuture}
+\item "parallel" - Uses the \code{parallel} + \code{doParallel} packages
+\item "spark"    - Uses the \code{sparklyr} package
 }}
 
-\item{.export_vars}{Environment variables that can be sent to the workers}
+\item{.export_vars}{Environment variables that can be sent to the workers (not needed for "future")}
 
-\item{.packages}{Packages that can be sent to the workers}
+\item{.packages}{Packages that can be sent to the workers (auto-handled by "future")}
 }
 \description{
-Start parallel clusters using \code{parallel} package
+Start parallel clusters / plans
 }
-\section{Parallel (\code{.method = "parallel"})}{
-Performs 3 Steps:
-\enumerate{
-\item Makes clusters using \code{parallel::makeCluster(...)}. The \code{parallel_start(...)}
-are passed to \code{parallel::makeCluster(...)}.
-\item Registers clusters using \code{doParallel::registerDoParallel()}.
-\item Adds \code{.libPaths()} using \code{parallel::clusterCall()}.
-}
-}
+\details{
+\subsection{future (\code{.method = "future"})}{
 
-\section{Spark (\code{.method = "spark"})}{
+Sets a \code{future::multisession} plan (portable across OSes) and registers a foreach
+backend via \code{doFuture::registerDoFuture()}. This avoids the \code{tune} foreach/future warning.
 \itemize{
-\item Important, make sure to create a spark connection using \code{sparklyr::spark_connect()}.
-\item Pass the connection object as the first argument.
-For example, \code{parallel_start(sc, .method = "spark")}.
-\item The \code{parallel_start(...)} are passed to \code{sparklyr::registerDoSpark(...)}.
+\item Pass the first unnamed \code{...} argument as worker count (numeric) or omit to
+default to \code{parallelly::availableCores(logical = FALSE)} or 2 if unknown.
 }
 }
 
+\subsection{parallel (\code{.method = "parallel"})}{
+\enumerate{
+\item \code{parallel::makeCluster(...)}  2) \code{doParallel::registerDoParallel(cl)}
+\item Set \code{.libPaths()} on workers; optional \code{clusterExport} and package loads.
+}
+}
+
+\subsection{spark (\code{.method = "spark"})}{
+
+Requires \code{sparklyr::spark_connect()}; registers foreach via \code{sparklyr::registerDoSpark(...)}.
+}
+}
 \examples{
 
 # Starts 2 clusters

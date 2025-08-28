@@ -6,8 +6,7 @@ context("TEST TUNE WORKFLOWS")
 test_that("Tuning, arima_boost", {
 
     skip_on_cran()
-
-    #
+    testthat::skip_if_not_installed("future")
 
     m750 <- timetk::m4_monthly %>% dplyr::filter(id == "M750")
 
@@ -43,12 +42,12 @@ test_that("Tuning, arima_boost", {
 
     # Grid
     set.seed(3)
-    grid <- dials::grid_space_filling(
+    grid_spec <- dials::grid_space_filling(
         x    = dials::parameters(dials::min_n()),
         size = 3
     )
 
-    parallel_start(2)
+    parallel_start(2, .method = "future")
 
     # Tune
     # This fails if no previous versions of modeltime exist.

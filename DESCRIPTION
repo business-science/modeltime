@@ -74,7 +74,9 @@ Suggests:
     rmarkdown (>= 2.9),
     webshot,
     qpdf,
-    TSrepr
+    TSrepr,
+    future,
+    doFuture
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
