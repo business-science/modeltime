@@ -7,11 +7,8 @@
 maape(data, ...)
 }
 \arguments{
-\item{data}{A \code{data.frame} containing the truth and estimate columns.}
-
-\item{...}{Not currently in use.}
+\item{data}{A data frame.}
 }
 \description{
-Useful when MAPE returns Inf typically due to intermittent data containing zeros.
-This is a wrapper to the function of \code{TSrepr::maape()}.
+Mean Arctangent Absolute Percentage Error
 }

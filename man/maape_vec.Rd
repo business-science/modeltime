@@ -7,14 +7,14 @@
 maape_vec(truth, estimate, na_rm = TRUE, ...)
 }
 \arguments{
-\item{truth}{The column identifier for the true results (that is numeric).}
+\item{truth}{Numeric vector of ground-truth values.}
 
-\item{estimate}{The column identifier for the predicted results (that is also numeric).}
+\item{estimate}{Numeric vector of predicted values.}
 
-\item{na_rm}{Should \code{NA} values be removed? (Handled consistently across yardstick versions.)}
+\item{na_rm}{Remove missing values before computation.}
 
-\item{...}{Not currently in use}
+\item{...}{Unused.}
 }
 \description{
-This is basically a wrapper to the function of \code{TSrepr::maape()}.
+Mean Arctangent Absolute Percentage Error
 }

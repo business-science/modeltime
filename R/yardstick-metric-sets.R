@@ -136,7 +136,6 @@ extended_forecast_accuracy_metric_set <- function(...) {
 #'
 #' @export
 summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
-
     data_tbl <- data
 
     truth_expr    <- rlang::enquo(truth)
@@ -147,9 +146,9 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
     group_nms <- dplyr::group_vars(data_tbl)
 
     data_tbl %>%
-        metric_summarizer_fun(!! truth_expr, !! estimate_expr) %>%
-        dplyr::select(-".estimator") %>%
-        dplyr::group_by(!!! rlang::syms(group_nms)) %>%
+        metric_summarizer_fun(!!truth_expr, !!estimate_expr) %>%
+        dplyr::select(-dplyr::any_of(".estimator")) %>%
+        dplyr::group_by(!!!rlang::syms(group_nms)) %>%
         dplyr::mutate(.metric = make.unique(.metric, sep = "_")) %>%
         dplyr::ungroup() %>%
         tidyr::pivot_wider(
@@ -159,80 +158,102 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
 }
 
 # -------------------------------------------------------------------------
-# yardstick 1.2.0+ compatibility helpers (to avoid deprecation warnings)
+# yardstick 1.2.0+ compatibility helpers (no deprecation warnings)
 # -------------------------------------------------------------------------
 
-.yardstick_numeric_summarizer <- function(...) {
-    if (utils::packageVersion("yardstick") >= "1.2.0") {
-        yardstick::numeric_metric_summarizer(...)
+.yardstick_numeric_summarizer <- function(metric_nm, metric_fn,
+                                          data, truth, estimate,
+                                          na_rm = TRUE,
+                                          case_weights = NULL,
+                                          ...) {
+    ys_ver <- tryCatch(utils::packageVersion("yardstick"),
+                       error = function(e) numeric_version("0.0.0"))
+
+    if (!is.na(ys_ver) && ys_ver >= "1.2.0") {
+        # New API: explicitly pass case_weights (NULL by default)
+        yardstick::numeric_metric_summarizer(
+            name         = metric_nm,
+            fn           = metric_fn,
+            data         = data,
+            truth        = {{ truth }},
+            estimate     = {{ estimate }},
+            na_rm        = na_rm,
+            case_weights = case_weights,
+            fn_options   = list()
+        )
     } else {
-        yardstick::metric_summarizer(...)
+        # Legacy API (no case_weights argument)
+        yardstick::metric_summarizer(
+            metric_nm = metric_nm,
+            metric_fn = metric_fn,
+            data      = data,
+            truth     = {{ truth }},
+            estimate  = {{ estimate }},
+            na_rm     = na_rm
+        )
     }
 }
 
 .yardstick_check_and_remove_missing <- function(truth, estimate, na_rm = TRUE) {
-    if (utils::packageVersion("yardstick") >= "1.2.0") {
-        yardstick::check_numeric_metric(truth, estimate)
-        rm <- yardstick::yardstick_remove_missing(truth, estimate, na_rm = na_rm)
-        list(truth = rm$truth, estimate = rm$estimate)
+    ys_ver <- tryCatch(utils::packageVersion("yardstick"),
+                       error = function(e) numeric_version("0.0.0"))
+
+    if (!is.na(ys_ver) && ys_ver >= "1.2.0") {
+        yardstick::check_numeric_metric(truth, estimate, case_weights = NULL)
+        if (isTRUE(na_rm) && yardstick::yardstick_any_missing(truth, estimate)) {
+            rm <- yardstick::yardstick_remove_missing(
+                truth, estimate, case_weights = NULL
+            )
+            list(truth = rm$truth, estimate = rm$estimate)
+        } else {
+            list(truth = truth, estimate = estimate)
+        }
     } else {
         yardstick::metric_vec_template(truth = truth, estimate = estimate, na_rm = na_rm)
         list(truth = truth, estimate = estimate)
     }
 }
 
-# MAAPE ----
+# ---- MAAPE vector metric ------------------------------------------------------
 
 #' Mean Arctangent Absolute Percentage Error
-#'
-#' This is basically a wrapper to the function of `TSrepr::maape()`.
-#'
-#' @param truth The column identifier for the true results (that is numeric).
-#' @param estimate The column identifier for the predicted results (that is also numeric).
-#' @param na_rm Should `NA` values be removed? (Handled consistently across yardstick versions.)
-#' @param ... Not currently in use
-#'
+#' @param truth Numeric vector of ground-truth values.
+#' @param estimate Numeric vector of predicted values.
+#' @param na_rm Remove missing values before computation.
+#' @param ... Unused.
 #' @export
 maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
     rlang::check_installed("TSrepr")
 
-    # Validate & remove missings in a way that works on yardstick <1.2.0 and >=1.2.0
     chk <- .yardstick_check_and_remove_missing(truth, estimate, na_rm = na_rm)
     truth    <- chk$truth
     estimate <- chk$estimate
 
-    # Delegate computation
     TSrepr::maape(truth, estimate)
 }
 
-# MAAPE ----
+# ---- MAAPE data.frame metric --------------------------------------------------
 
 #' Mean Arctangent Absolute Percentage Error
-#'
-#' Useful when MAPE returns Inf typically due to intermittent data containing zeros.
-#' This is a wrapper to the function of `TSrepr::maape()`.
-#'
-#' @param data  A `data.frame` containing the truth and estimate columns.
-#' @param ... Not currently in use.
-#'
+#' @param data A data frame.
 #' @export
 maape <- function(data, ...) {
     UseMethod("maape")
 }
-
 maape <- yardstick::new_numeric_metric(maape, direction = "minimize")
 
-# MAAPE ----
-
 #' @export
-maape.data.frame <- function(data, truth, estimate, na_rm = TRUE, ...) {
+maape.data.frame <- function(data, truth, estimate, na_rm = TRUE,
+                             case_weights = NULL, ...) {
     .yardstick_numeric_summarizer(
-        metric_nm = "maape",
-        metric_fn = maape_vec,
-        data      = data,
-        truth     = !! rlang::enquo(truth),
-        estimate  = !! rlang::enquo(estimate),
-        na_rm     = na_rm,
-        ...
+        metric_nm     = "maape",
+        metric_fn     = maape_vec,
+        data          = data,
+        truth         = {{ truth }},
+        estimate      = {{ estimate }},
+        na_rm         = na_rm,
+        case_weights  = case_weights
     )
 }
+
+
