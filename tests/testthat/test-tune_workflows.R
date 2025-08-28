@@ -43,8 +43,8 @@ test_that("Tuning, arima_boost", {
 
     # Grid
     set.seed(3)
-    grid_spec <- dials::grid_latin_hypercube(
-        parameters(min_n()),
+    grid <- dials::grid_space_filling(
+        x    = dials::parameters(dials::min_n()),
         size = 3
     )
 
