@@ -2,13 +2,29 @@
 % Please edit documentation in R/yardstick-metric-sets.R
 \name{maape}
 \alias{maape}
+\alias{maape.data.frame}
 \title{Mean Arctangent Absolute Percentage Error}
 \usage{
 maape(data, ...)
+
+\method{maape}{data.frame}(data, truth, estimate, na_rm = TRUE, case_weights = NULL, ...)
 }
 \arguments{
-\item{data}{A data frame.}
+\item{data}{A data frame containing the truth and estimate columns.}
+
+\item{...}{Additional arguments (not used).}
+
+\item{truth}{The column identifier for the true results (numeric).}
+
+\item{estimate}{The column identifier for the predicted results (numeric).}
+
+\item{na_rm}{Logical, whether to remove missing values before computation.}
+
+\item{case_weights}{Optional column identifier for non-negative case weights (not used by \code{maape}).}
+}
+\value{
+A tibble with columns \code{.metric}, \code{.estimator}, and \code{.estimate}.
 }
 \description{
-Mean Arctangent Absolute Percentage Error
+Useful when MAPE returns Inf (e.g., intermittent data with zeros).
 }

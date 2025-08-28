@@ -9,12 +9,15 @@ summarize_accuracy_metrics(data, truth, estimate, metric_set)
 \arguments{
 \item{data}{A \code{data.frame} containing the truth and estimate columns.}
 
-\item{truth}{The column identifier for the true results (that is numeric).}
+\item{truth}{The column identifier for the true results (numeric).}
 
-\item{estimate}{The column identifier for the predicted results (that is also numeric).}
+\item{estimate}{The column identifier for the predicted results (numeric).}
 
-\item{metric_set}{A \code{yardstick::metric_set()} that is used to summarize one or more
-forecast accuracy (regression) metrics.}
+\item{metric_set}{A \code{yardstick::metric_set} object specifying the metrics to compute.}
+}
+\value{
+A tibble with columns \code{.metric}, \code{.estimator}, and \code{.estimate}, pivoted wider
+by metric and grouped by any grouping variables in the input data.
 }
 \description{
 This is an internal function used by \code{modeltime_accuracy()}.
@@ -23,19 +26,19 @@ This is an internal function used by \code{modeltime_accuracy()}.
 library(dplyr)
 
 predictions_tbl <- tibble(
-    group = c("model 1", "model 1", "model 1",
-              "model 2", "model 2", "model 2"),
-    truth = c(1, 2, 3,
-              1, 2, 3),
-    estimate = c(1.2, 2.0, 2.5,
-                 0.9, 1.9, 3.3)
+  group = c("model 1", "model 1", "model 1",
+            "model 2", "model 2", "model 2"),
+  truth = c(1, 2, 3,
+            1, 2, 3),
+  estimate = c(1.2, 2.0, 2.5,
+               0.9, 1.9, 3.3)
 )
 
 predictions_tbl \%>\%
-    dplyr::group_by(group) \%>\%
-    summarize_accuracy_metrics(
-        truth, estimate,
-        metric_set = default_forecast_accuracy_metric_set()
-    )
+  dplyr::group_by(group) \%>\%
+  summarize_accuracy_metrics(
+    truth, estimate,
+    metric_set = default_forecast_accuracy_metric_set()
+  )
 
 }

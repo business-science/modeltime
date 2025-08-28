@@ -22,12 +22,12 @@ metrics used with \code{\link[=modeltime_accuracy]{modeltime_accuracy()}}.
 The primary purpose is to use the default accuracy metrics to calculate the following
 forecast accuracy metrics using \code{\link[=modeltime_accuracy]{modeltime_accuracy()}}:
 \itemize{
-\item MAE   - Mean absolute error, \code{mae()}
-\item MAPE  - Mean absolute percentage error, \code{mape()}
-\item MASE  - Mean absolute scaled error, \code{mase()}
+\item MAE - Mean absolute error, \code{mae()}
+\item MAPE - Mean absolute percentage error, \code{mape()}
+\item MASE - Mean absolute scaled error, \code{mase()}
 \item SMAPE - Symmetric mean absolute percentage error, \code{smape()}
-\item RMSE  - Root mean squared error, \code{rmse()}
-\item RSQ   - R-squared, \code{rsq()}
+\item RMSE - Root mean squared error, \code{rmse()}
+\item RSQ - R-squared, \code{rsq()}
 }
 
 Adding additional metrics is possible via \code{...}.
@@ -48,8 +48,8 @@ library(timetk)
 library(yardstick)
 
 fake_data <- tibble(
-    y    = c(1:12, 2*1:12),
-    yhat = c(1 + 1:12, 2*1:12 - 1)
+  y = c(1:12, 2*1:12),
+  yhat = c(1 + 1:12, 2*1:12 - 1)
 )
 
 # ---- HOW IT WORKS ----
