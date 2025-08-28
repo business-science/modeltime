@@ -11,7 +11,7 @@ maape_vec(truth, estimate, na_rm = TRUE, ...)
 
 \item{estimate}{The column identifier for the predicted results (that is also numeric).}
 
-\item{na_rm}{Not in use... \code{NA} values managed by \code{TSrepr::maape()}}
+\item{na_rm}{Should \code{NA} values be removed? (Handled consistently across yardstick versions.)}
 
 \item{...}{Not currently in use}
 }

@@ -2,7 +2,6 @@
 
 #' Forecast Accuracy Metrics Sets
 #'
-#'
 #' This is a wrapper for `metric_set()` with several common forecast / regression
 #' accuracy metrics included. These are the default time series accuracy
 #' metrics used with [modeltime_accuracy()].
@@ -31,8 +30,6 @@
 #'
 #' - MAAPE - Mean Arctangent Absolute Percentage Error, [maape()].
 #'   MAAPE is designed for intermittent data where MAPE returns `Inf`.
-#'
-#'
 #'
 #' @seealso
 #' - [yardstick::metric_tweak()] - For modifying `yardstick` metrics
@@ -71,9 +68,9 @@
 #' # Apply the newly created metric set
 #' my_metric_set(fake_data, y, yhat)
 #'
-#'
 #' @name metric_sets
 NULL
+
 #' @importFrom yardstick mae mape mase smape rmse rsq
 #' @export
 #' @rdname metric_sets
@@ -89,9 +86,7 @@ default_forecast_accuracy_metric_set <- function(...) {
     )
 }
 
-
 # EXTENDED FORECAST ACCURACY METRIC SET ----
-
 
 #' @importFrom yardstick mae mape mase smape rmse rsq
 #' @export
@@ -108,7 +103,6 @@ extended_forecast_accuracy_metric_set <- function(...) {
         ...
     )
 }
-
 
 # SUMMARIZE ACCURACY ----
 
@@ -134,7 +128,7 @@ extended_forecast_accuracy_metric_set <- function(...) {
 #' )
 #'
 #' predictions_tbl %>%
-#'     group_by(group) %>%
+#'     dplyr::group_by(group) %>%
 #'     summarize_accuracy_metrics(
 #'         truth, estimate,
 #'         metric_set = default_forecast_accuracy_metric_set()
@@ -162,51 +156,30 @@ summarize_accuracy_metrics <- function(data, truth, estimate, metric_set) {
             names_from  = .metric,
             values_from = .estimate
         )
-
 }
 
+# -------------------------------------------------------------------------
+# yardstick 1.2.0+ compatibility helpers (to avoid deprecation warnings)
+# -------------------------------------------------------------------------
 
-# UTILITIES ----
-
-calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, by_id = FALSE, ...) {
-
-    metrics <- metric_set
-
-    # Training Metrics
-    train_metrics_tbl <- tibble::tibble()
-
-    # Testing Metrics
-    test_metrics_tbl <- tibble::tibble()
-
-    # Check by_id
-    if (by_id) {
-        if (length(names(test_data)) == 5) {
-            id_col_text <- names(test_data)[5]
-            test_data <- test_data %>%
-                dplyr::group_by(!! rlang::ensym(id_col_text))
-        } else {
-            rlang::warn("The 'id' column in calibration data was not detected. Global accuracy is being returned.")
-        }
-
+.yardstick_numeric_summarizer <- function(...) {
+    if (utils::packageVersion("yardstick") >= "1.2.0") {
+        yardstick::numeric_metric_summarizer(...)
+    } else {
+        yardstick::metric_summarizer(...)
     }
-
-    if (!is.null(test_data)) {
-
-        test_metrics_tbl <- test_data %>%
-            summarize_accuracy_metrics(
-                truth      = .actual,
-                estimate   = .prediction,
-                metric_set = metrics
-            ) %>%
-            dplyr::ungroup()
-
-    }
-
-    metrics_tbl <- dplyr::bind_rows(train_metrics_tbl, test_metrics_tbl)
-
-    return(metrics_tbl)
 }
 
+.yardstick_check_and_remove_missing <- function(truth, estimate, na_rm = TRUE) {
+    if (utils::packageVersion("yardstick") >= "1.2.0") {
+        yardstick::check_numeric_metric(truth, estimate)
+        rm <- yardstick::yardstick_remove_missing(truth, estimate, na_rm = na_rm)
+        list(truth = rm$truth, estimate = rm$estimate)
+    } else {
+        yardstick::metric_vec_template(truth = truth, estimate = estimate, na_rm = na_rm)
+        list(truth = truth, estimate = estimate)
+    }
+}
 
 # MAAPE ----
 
@@ -216,27 +189,21 @@ calc_accuracy_2 <- function(train_data = NULL, test_data = NULL, metric_set, by_
 #'
 #' @param truth The column identifier for the true results (that is numeric).
 #' @param estimate The column identifier for the predicted results (that is also numeric).
-#' @param na_rm Not in use... `NA` values managed by `TSrepr::maape()`
+#' @param na_rm Should `NA` values be removed? (Handled consistently across yardstick versions.)
 #' @param ... Not currently in use
 #'
 #' @export
 maape_vec <- function(truth, estimate, na_rm = TRUE, ...) {
     rlang::check_installed("TSrepr")
-    maape_impl <- function(truth, estimate) {
-        TSrepr::maape(truth, estimate)
-    }
 
-    yardstick::metric_vec_template(
-        metric_impl = maape_impl,
-        truth = truth,
-        estimate = estimate,
-        na_rm = na_rm,
-        cls = "numeric",
-        ...
-    )
+    # Validate & remove missings in a way that works on yardstick <1.2.0 and >=1.2.0
+    chk <- .yardstick_check_and_remove_missing(truth, estimate, na_rm = na_rm)
+    truth    <- chk$truth
+    estimate <- chk$estimate
 
+    # Delegate computation
+    TSrepr::maape(truth, estimate)
 }
-
 
 # MAAPE ----
 
@@ -259,15 +226,13 @@ maape <- yardstick::new_numeric_metric(maape, direction = "minimize")
 
 #' @export
 maape.data.frame <- function(data, truth, estimate, na_rm = TRUE, ...) {
-
-    yardstick::metric_summarizer(
+    .yardstick_numeric_summarizer(
         metric_nm = "maape",
         metric_fn = maape_vec,
-        data = data,
-        truth = !! enquo(truth),
-        estimate = !! enquo(estimate),
-        na_rm = na_rm,
+        data      = data,
+        truth     = !! rlang::enquo(truth),
+        estimate  = !! rlang::enquo(estimate),
+        na_rm     = na_rm,
         ...
     )
-
 }

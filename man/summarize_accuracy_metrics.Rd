@@ -32,7 +32,7 @@ predictions_tbl <- tibble(
 )
 
 predictions_tbl \%>\%
-    group_by(group) \%>\%
+    dplyr::group_by(group) \%>\%
     summarize_accuracy_metrics(
         truth, estimate,
         metric_set = default_forecast_accuracy_metric_set()

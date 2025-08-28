@@ -1,5 +1,8 @@
 # modeltime 1.3.1.9000 (Development Version)
 
+- `yardstick` deprecations: Add patches for `metric_summarizer()`, `metric_vec_template()`
+- Fix Tests: adam_reg
+
 # modeltime 1.3.1
 
 Parallel Computation:

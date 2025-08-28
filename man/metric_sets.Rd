@@ -75,7 +75,6 @@ my_metric_set
 # Apply the newly created metric set
 my_metric_set(fake_data, y, yhat)
 
-
 }
 \seealso{
 \itemize{
