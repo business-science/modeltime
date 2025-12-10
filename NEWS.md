@@ -4,6 +4,7 @@
 - `yardstick` deprecations: Add patches for `metric_summarizer()`, `metric_vec_template()`
 - `dials` deprecations: `grid_latin_hypercube()` -> `grid_space_filling()`
 - Fix Tests: adam_reg
+- Make package work with all versions of xgboost. (#263)
 
 # modeltime 1.3.1
 
