@@ -747,7 +747,8 @@ print.arima_xgboost_fit_impl <- function(x, ...) {
     print(x$models$model_1)
     cat("\n---\n")
     cat("Model 2: XGBoost Errors\n\n")
-    print(x$models$model_2$call)
+    # to work for all xgboost versions
+    print(x$models$model_2$call %||% attr(x$models$model_2, "call"))
     invisible(x)
 }
 

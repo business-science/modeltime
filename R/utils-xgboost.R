@@ -72,11 +72,19 @@ xgboost_predict <- function(object, newdata, ...) {
 
     res <- stats::predict(object, newdata, ...)
 
+    # to work for all xgboost versions
+    if (is.null(object$params)) {
+        objective <- attr(object, "params")$objective
+        num_class <- attr(object, "params")$num_class
+    } else {
+        objective <- object$params$objective
+        num_class <- object$params$num_class
+    }
     x = switch(
-        object$params$objective,
+        objective,
         "reg:linear" = , "reg:logistic" = , "binary:logistic" = res,
         "binary:logitraw" = stats::binomial()$linkinv(res),
-        "multi:softprob" = matrix(res, ncol = object$params$num_class, byrow = TRUE),
+        "multi:softprob" = matrix(res, ncol = num_class, byrow = TRUE),
         res
     )
     x
