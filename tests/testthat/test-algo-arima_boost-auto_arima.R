@@ -124,21 +124,26 @@ test_that("arima_boost: Arima, (XREGS), Test Model Fit Object", {
 
     # $fit xgboost
 
-    expect_s3_class(model_fit$fit$models$model_2, "xgb.Booster")
+    model_2 <- model_fit$fit$models$model_2
 
-    expect_identical(model_fit$fit$models$model_2$params$eta, 0.1)
+    expect_s3_class(model_2, "xgb.Booster")
+    
+    # to work for all xgboost versions
+    model_2_params <- model_2$params %||% attr(model_2, "params")
 
-    expect_identical(model_fit$fit$models$model_2$params$max_depth, 7)
+    expect_identical(model_2_params$eta,  0.1)
 
-    expect_identical(model_fit$fit$models$model_2$params$gamma, 0.4)
+    expect_identical(model_2_params$max_depth, 7)
 
-    expect_identical(model_fit$fit$models$model_2$params$colsample_bytree, 1)
+    expect_identical(model_2_params$gamma, 0.4)
 
-    expect_identical(model_fit$fit$models$model_2$params$min_child_weight, 4)
+    expect_identical(model_2_params$colsample_bytree, 1)
 
-    expect_identical(model_fit$fit$models$model_2$params$subsample, 0.9)
+    expect_identical(model_2_params$min_child_weight, 4)
 
-    expect_identical(model_fit$fit$models$model_2$params$objective, "reg:squarederror")
+    expect_identical(model_2_params$subsample, 0.9)
+
+    expect_identical(model_2_params$objective, "reg:squarederror")
 
     # $preproc
 
@@ -230,21 +235,26 @@ test_that("arima_boost: Arima (workflow), Test Model Fit Object", {
 
     # $fit xgboost
 
-    expect_s3_class(wflw_fit$fit$fit$fit$models$model_2, "xgb.Booster")
+    model_2 <- wflw_fit$fit$fit$fit$models$model_2
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$eta, 0.1)
+    expect_s3_class(model_2, "xgb.Booster")
+    
+    # to work for all xgboost versions
+    model_2_params <- model_2$params %||% attr(model_2, "params")
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$max_depth, 7)
+    expect_identical(model_2_params$eta,  0.1)
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$gamma, 0.4)
+    expect_identical(model_2_params$max_depth, 7)
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$colsample_bytree, 1)
+    expect_identical(model_2_params$gamma, 0.4)
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$min_child_weight, 4)
+    expect_identical(model_2_params$colsample_bytree, 1)
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$subsample, 0.9)
+    expect_identical(model_2_params$min_child_weight, 4)
 
-    expect_identical(wflw_fit$fit$fit$fit$models$model_2$params$objective, "reg:squarederror")
+    expect_identical(model_2_params$subsample, 0.9)
+
+    expect_identical(model_2_params$objective, "reg:squarederror")
 
 
     # $preproc
