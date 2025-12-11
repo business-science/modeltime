@@ -1,0 +1,28 @@
+# Modeltime Algorithm Roadmap
+
+The **`modeltime` project roadmap** ([Follow GitHub Issue
+\#5](https://github.com/business-science/modeltime/issues/5)) tracks the
+overall development of the Modeltime Ecosystem of forecasting packages.
+
+## Modeltime Roadmap
+
+**Modeltime is a growing ecosystem.** Learn about what’s been
+incorporated and what’s coming soon by [following GitHub Issue
+\#5](https://github.com/business-science/modeltime/issues/5).
+
+[![Modeltime
+Roadmap](modeltime_roadmap.jpg)](https://github.com/business-science/modeltime/issues/5)
+
+(Click to View on GitHub)
+
+## Learning Modeltime
+
+> Modeltime is a cutting-edge ecosystem for forecasting using strategies
+> and best practices that won or placed highly in major forecasting
+> competitions.
+
+We have a state-of-the-art [Time Series Forecasting Course (DS4B
+203-R)](https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/)
+that teaches the `modeltime` ecosystem and `timetk` (Machine Learning,
+Deep Learning, and Feature Engineering for Time Series). Take this
+course to become the forecasting expert for your organization.

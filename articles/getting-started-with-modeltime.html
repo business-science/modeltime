@@ -125,7 +125,7 @@
 
     
     
-<p><img src="forecast_plot.jpg" width="100%" style="display: block; margin: auto;"><br><img src="logo-modeltime.png" width="147" height="170" align="right"></p>
+<p><img src="forecast_plot.jpg" class="r-plt" width="100%" style="display: block; margin: auto;"><br><img src="logo-modeltime.png" width="147" height="170" align="right"></p>
 <p>Forecasting with <code>tidymodels</code> made easy! This short
 tutorial shows how you can use:</p>
 <ul>
@@ -159,7 +159,7 @@ Video</a> that walks you through the Modeltime Workflow.</p>
 </h2>
 <p>Here’s the general process and where the functions fit.</p>
 <div class="figure" style="text-align: center">
-<img src="modeltime_workflow.jpg" alt="The Modeltime Workflow" width="100%"><p class="caption">
+<img src="modeltime_workflow.jpg" class="r-plt" alt="The Modeltime Workflow" width="100%"><p class="caption">
 The Modeltime Workflow
 </p>
 </div>
@@ -204,7 +204,7 @@ Evaluation</li>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m750</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="va">interactive</span><span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 <p>Let’s split the data into training and test sets using
 <code><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">initial_time_split()</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -440,7 +440,7 @@ the models using the Legend).</strong></p>
 <span>      .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span></span>
 <span>      .interactive      <span class="op">=</span> <span class="va">interactive</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 <p>From visualizing the test set forecast:</p>
 <ul>
 <li>
@@ -509,23 +509,23 @@ tables.</p>
 <span>    <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span></span>
 <span>        .interactive <span class="op">=</span> <span class="va">interactive</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<div id="ayorehalsp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ayorehalsp table {
+<div id="bqtxvafbsn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bqtxvafbsn table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ayorehalsp thead, #ayorehalsp tbody, #ayorehalsp tfoot, #ayorehalsp tr, #ayorehalsp td, #ayorehalsp th {
+#bqtxvafbsn thead, #bqtxvafbsn tbody, #bqtxvafbsn tfoot, #bqtxvafbsn tr, #bqtxvafbsn td, #bqtxvafbsn th {
   border-style: none;
 }
 
-#ayorehalsp p {
+#bqtxvafbsn p {
   margin: 0;
   padding: 0;
 }
 
-#ayorehalsp .gt_table {
+#bqtxvafbsn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -551,12 +551,12 @@ tables.</p>
   border-left-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_caption {
+#bqtxvafbsn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ayorehalsp .gt_title {
+#bqtxvafbsn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -568,7 +568,7 @@ tables.</p>
   border-bottom-width: 0;
 }
 
-#ayorehalsp .gt_subtitle {
+#bqtxvafbsn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -580,7 +580,7 @@ tables.</p>
   border-top-width: 0;
 }
 
-#ayorehalsp .gt_heading {
+#bqtxvafbsn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -592,13 +592,13 @@ tables.</p>
   border-right-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_bottom_border {
+#bqtxvafbsn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_col_headings {
+#bqtxvafbsn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -613,7 +613,7 @@ tables.</p>
   border-right-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_col_heading {
+#bqtxvafbsn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -633,7 +633,7 @@ tables.</p>
   overflow-x: hidden;
 }
 
-#ayorehalsp .gt_column_spanner_outer {
+#bqtxvafbsn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -645,15 +645,15 @@ tables.</p>
   padding-right: 4px;
 }
 
-#ayorehalsp .gt_column_spanner_outer:first-child {
+#bqtxvafbsn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ayorehalsp .gt_column_spanner_outer:last-child {
+#bqtxvafbsn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ayorehalsp .gt_column_spanner {
+#bqtxvafbsn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -665,11 +665,11 @@ tables.</p>
   width: 100%;
 }
 
-#ayorehalsp .gt_spanner_row {
+#bqtxvafbsn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ayorehalsp .gt_group_heading {
+#bqtxvafbsn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -695,7 +695,7 @@ tables.</p>
   text-align: left;
 }
 
-#ayorehalsp .gt_empty_group_heading {
+#bqtxvafbsn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -710,15 +710,15 @@ tables.</p>
   vertical-align: middle;
 }
 
-#ayorehalsp .gt_from_md > :first-child {
+#bqtxvafbsn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ayorehalsp .gt_from_md > :last-child {
+#bqtxvafbsn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ayorehalsp .gt_row {
+#bqtxvafbsn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -737,7 +737,7 @@ tables.</p>
   overflow-x: hidden;
 }
 
-#ayorehalsp .gt_stub {
+#bqtxvafbsn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -750,7 +750,7 @@ tables.</p>
   padding-right: 5px;
 }
 
-#ayorehalsp .gt_stub_row_group {
+#bqtxvafbsn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -764,15 +764,15 @@ tables.</p>
   vertical-align: top;
 }
 
-#ayorehalsp .gt_row_group_first td {
+#bqtxvafbsn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ayorehalsp .gt_row_group_first th {
+#bqtxvafbsn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ayorehalsp .gt_summary_row {
+#bqtxvafbsn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -782,16 +782,16 @@ tables.</p>
   padding-right: 5px;
 }
 
-#ayorehalsp .gt_first_summary_row {
+#bqtxvafbsn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_first_summary_row.thick {
+#bqtxvafbsn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ayorehalsp .gt_last_summary_row {
+#bqtxvafbsn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -801,7 +801,7 @@ tables.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_grand_summary_row {
+#bqtxvafbsn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -811,7 +811,7 @@ tables.</p>
   padding-right: 5px;
 }
 
-#ayorehalsp .gt_first_grand_summary_row {
+#bqtxvafbsn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -821,7 +821,7 @@ tables.</p>
   border-top-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_last_grand_summary_row_top {
+#bqtxvafbsn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -831,11 +831,11 @@ tables.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_striped {
+#bqtxvafbsn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ayorehalsp .gt_table_body {
+#bqtxvafbsn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -844,7 +844,7 @@ tables.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_footnotes {
+#bqtxvafbsn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -858,7 +858,7 @@ tables.</p>
   border-right-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_footnote {
+#bqtxvafbsn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -867,7 +867,7 @@ tables.</p>
   padding-right: 5px;
 }
 
-#ayorehalsp .gt_sourcenotes {
+#bqtxvafbsn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -881,7 +881,7 @@ tables.</p>
   border-right-color: #D3D3D3;
 }
 
-#ayorehalsp .gt_sourcenote {
+#bqtxvafbsn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -889,72 +889,72 @@ tables.</p>
   padding-right: 5px;
 }
 
-#ayorehalsp .gt_left {
+#bqtxvafbsn .gt_left {
   text-align: left;
 }
 
-#ayorehalsp .gt_center {
+#bqtxvafbsn .gt_center {
   text-align: center;
 }
 
-#ayorehalsp .gt_right {
+#bqtxvafbsn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ayorehalsp .gt_font_normal {
+#bqtxvafbsn .gt_font_normal {
   font-weight: normal;
 }
 
-#ayorehalsp .gt_font_bold {
+#bqtxvafbsn .gt_font_bold {
   font-weight: bold;
 }
 
-#ayorehalsp .gt_font_italic {
+#bqtxvafbsn .gt_font_italic {
   font-style: italic;
 }
 
-#ayorehalsp .gt_super {
+#bqtxvafbsn .gt_super {
   font-size: 65%;
 }
 
-#ayorehalsp .gt_footnote_marks {
+#bqtxvafbsn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ayorehalsp .gt_asterisk {
+#bqtxvafbsn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ayorehalsp .gt_indent_1 {
+#bqtxvafbsn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ayorehalsp .gt_indent_2 {
+#bqtxvafbsn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ayorehalsp .gt_indent_3 {
+#bqtxvafbsn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ayorehalsp .gt_indent_4 {
+#bqtxvafbsn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ayorehalsp .gt_indent_5 {
+#bqtxvafbsn .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ayorehalsp .katex-display {
+#bqtxvafbsn .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ayorehalsp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#bqtxvafbsn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -991,11 +991,11 @@ tables.</p>
 <td headers=".model_id" class="gt_row gt_right">2</td>
 <td headers=".model_desc" class="gt_row gt_left">ARIMA(0,1,1)(0,1,1)[12] W/ XGBOOST ERRORS</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">147.04</td>
-<td headers="mape" class="gt_row gt_right">1.37</td>
-<td headers="mase" class="gt_row gt_right">0.50</td>
-<td headers="smape" class="gt_row gt_right">1.39</td>
-<td headers="rmse" class="gt_row gt_right">191.84</td>
+<td headers="mae" class="gt_row gt_right">149.34</td>
+<td headers="mape" class="gt_row gt_right">1.40</td>
+<td headers="mase" class="gt_row gt_right">0.51</td>
+<td headers="smape" class="gt_row gt_right">1.41</td>
+<td headers="rmse" class="gt_row gt_right">194.39</td>
 <td headers="rsq" class="gt_row gt_right">0.93</td>
 </tr>
 <tr>
@@ -1070,7 +1070,7 @@ comes out in the R-Squared of 0.55.</li>
 <span>      .legend_max_width <span class="op">=</span> <span class="fl">25</span>, <span class="co"># For mobile screens</span></span>
 <span>      .interactive      <span class="op">=</span> <span class="va">interactive</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="getting-started-with-modeltime_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -1201,7 +1201,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

@@ -170,7 +170,7 @@ sets.<a class="anchor" aria-label="anchor" href="#step-1---collect-data-and-spli
 <span>        .facet_ncol  <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>        .interactive <span class="op">=</span> <span class="va">interactive</span>,</span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 <p>Let’s split the data into training and test sets using
 <code><a href="https://business-science.github.io/timetk/reference/time_series_split.html" class="external-link">time_series_split()</a></code></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -237,29 +237,23 @@ training dataset.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ##### xgb.Booster</span></span>
-<span><span class="co">#&gt; raw: 46 Kb </span></span>
 <span><span class="co">#&gt; call:</span></span>
 <span><span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, </span></span>
 <span><span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span></span>
-<span><span class="co">#&gt;     subsample = 1), data = x$data, nrounds = 15, watchlist = x$watchlist, </span></span>
-<span><span class="co">#&gt;     verbose = 0, nthread = 1, objective = "reg:squarederror")</span></span>
-<span><span class="co">#&gt; params (as set within xgb.train):</span></span>
-<span><span class="co">#&gt;   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "1", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"</span></span>
-<span><span class="co">#&gt; xgb.attributes:</span></span>
-<span><span class="co">#&gt;   niter</span></span>
-<span><span class="co">#&gt; callbacks:</span></span>
-<span><span class="co">#&gt;   cb.evaluation.log()</span></span>
+<span><span class="co">#&gt;     subsample = 1, nthread = 1, objective = "reg:squarederror"), </span></span>
+<span><span class="co">#&gt;     data = x$data, nrounds = 15, evals = x$watchlist, verbose = 0)</span></span>
 <span><span class="co">#&gt; # of features: 3375 </span></span>
-<span><span class="co">#&gt; niter: 15</span></span>
-<span><span class="co">#&gt; nfeatures : 3375 </span></span>
+<span><span class="co">#&gt; # of rounds:  15 </span></span>
+<span><span class="co">#&gt; callbacks:</span></span>
+<span><span class="co">#&gt;    evaluation_log </span></span>
 <span><span class="co">#&gt; evaluation_log:</span></span>
 <span><span class="co">#&gt;   iter training_rmse</span></span>
-<span><span class="co">#&gt;  &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt;      1     45887.587</span></span>
-<span><span class="co">#&gt;      2     32733.759</span></span>
+<span><span class="co">#&gt;  &lt;int&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt;      1     25736.090</span></span>
+<span><span class="co">#&gt;      2     18642.080</span></span>
 <span><span class="co">#&gt;    ---           ---</span></span>
-<span><span class="co">#&gt;     14      3300.856</span></span>
-<span><span class="co">#&gt;     15      3053.462</span></span></code></pre></div>
+<span><span class="co">#&gt;     14      3026.162</span></span>
+<span><span class="co">#&gt;     15      2638.004</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -348,13 +342,13 @@ intervals.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
 <span><span class="co">#&gt;   .model_id .model_desc .key       .index      .value .conf_lo .conf_hi id   </span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">24</span>786.    <span style="text-decoration: underline;">9</span>597.   <span style="text-decoration: underline;">39</span>976. 1_1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">10</span>975.    <span style="text-decoration: underline;">5</span>531.   <span style="text-decoration: underline;">16</span>419. 1_3  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">33</span>931.   <span style="text-decoration: underline;">26</span>251.   <span style="text-decoration: underline;">41</span>610. 1_8  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">37</span>810.   <span style="text-decoration: underline;">32</span>559.   <span style="text-decoration: underline;">43</span>062. 1_13 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">69</span>416.   <span style="text-decoration: underline;">50</span>318.   <span style="text-decoration: underline;">88</span>513. 1_38 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">64</span>345.   <span style="text-decoration: underline;">48</span>751.   <span style="text-decoration: underline;">79</span>938. 1_93 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         1 XGBOOST     prediction 2012-10-26 <span style="text-decoration: underline;">108</span>946.   <span style="text-decoration: underline;">87</span>796.  <span style="text-decoration: underline;">130</span>097. 1_95 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">25</span>747.   <span style="text-decoration: underline;">10</span>798.   <span style="text-decoration: underline;">40</span>696. 1_1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">10</span>273.    <span style="text-decoration: underline;">5</span>409.   <span style="text-decoration: underline;">15</span>137. 1_3  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">34</span>225.   <span style="text-decoration: underline;">27</span>038.   <span style="text-decoration: underline;">41</span>412. 1_8  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">37</span>819.   <span style="text-decoration: underline;">32</span>126.   <span style="text-decoration: underline;">43</span>512. 1_13 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">69</span>153.   <span style="text-decoration: underline;">48</span>586.   <span style="text-decoration: underline;">89</span>720. 1_38 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">65</span>262.   <span style="text-decoration: underline;">49</span>876.   <span style="text-decoration: underline;">80</span>648. 1_93 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         1 XGBOOST     prediction 2012-10-26 <span style="text-decoration: underline;">108</span>383.   <span style="text-decoration: underline;">88</span>660.  <span style="text-decoration: underline;">128</span>107. 1_95 </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: Date &lt;date&gt;, Weekly_Sales &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We can visualize the probability intervals for the Conformal Default
 method.</p>
@@ -366,7 +360,7 @@ method.</p>
 <span>        .interactive <span class="op">=</span> <span class="va">interactive</span>,</span>
 <span>        .title       <span class="op">=</span> <span class="st">"Conformal Default"</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="conformal-split-method">Conformal Split Method<a class="anchor" aria-label="anchor" href="#conformal-split-method"></a>
@@ -393,13 +387,13 @@ is also implemented in the <code>probably</code> R package’s
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 10</span></span></span>
 <span><span class="co">#&gt;   .model_id .model_desc .key       .index      .value .conf_lo .conf_hi id   </span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">24</span>786.    <span style="text-decoration: underline;">4</span>115.   <span style="text-decoration: underline;">45</span>458. 1_1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">10</span>975.    <span style="text-decoration: underline;">3</span>007.   <span style="text-decoration: underline;">18</span>943. 1_3  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">33</span>931.   <span style="text-decoration: underline;">26</span>971.   <span style="text-decoration: underline;">40</span>890. 1_8  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">37</span>810.   <span style="text-decoration: underline;">32</span>749.   <span style="text-decoration: underline;">42</span>871. 1_13 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">69</span>416.   <span style="text-decoration: underline;">51</span>392.   <span style="text-decoration: underline;">87</span>440. 1_38 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">64</span>345.   <span style="text-decoration: underline;">46</span>879.   <span style="text-decoration: underline;">81</span>811. 1_93 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         1 XGBOOST     prediction 2012-10-26 <span style="text-decoration: underline;">108</span>946.   <span style="text-decoration: underline;">90</span>283.  <span style="text-decoration: underline;">127</span>610. 1_95 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">25</span>747.    <span style="text-decoration: underline;">4</span>665.   <span style="text-decoration: underline;">46</span>829. 1_1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">10</span>273.    <span style="text-decoration: underline;">4</span>925.   <span style="text-decoration: underline;">15</span>621. 1_3  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">34</span>225.   <span style="text-decoration: underline;">27</span>898.   <span style="text-decoration: underline;">40</span>551. 1_8  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">37</span>819.   <span style="text-decoration: underline;">32</span>716.   <span style="text-decoration: underline;">42</span>922. 1_13 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">69</span>153.   <span style="text-decoration: underline;">50</span>310.   <span style="text-decoration: underline;">87</span>996. 1_38 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         1 XGBOOST     prediction 2012-10-26  <span style="text-decoration: underline;">65</span>262.   <span style="text-decoration: underline;">45</span>404.   <span style="text-decoration: underline;">85</span>119. 1_93 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         1 XGBOOST     prediction 2012-10-26 <span style="text-decoration: underline;">108</span>383.   <span style="text-decoration: underline;">86</span>524.  <span style="text-decoration: underline;">130</span>243. 1_95 </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: Date &lt;date&gt;, Weekly_Sales &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We can visualize the probability intervals for the Conformal Split
 method.</p>
@@ -411,7 +405,7 @@ method.</p>
 <span>        .interactive <span class="op">=</span> <span class="va">interactive</span>,</span>
 <span>        .title       <span class="op">=</span> <span class="st">"Conformal Split"</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -445,7 +439,7 @@ and the 95% conformal probability region.</p>
 <span>        .interactive <span class="op">=</span> <span class="va">interactive</span>,</span>
 <span>        .title       <span class="op">=</span> <span class="st">"Conformal Split"</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeltime-conformal-prediction_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
@@ -535,7 +529,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

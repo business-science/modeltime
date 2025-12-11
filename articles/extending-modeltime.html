@@ -228,7 +228,7 @@ packages installed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">taylor_30_min</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="stlm-model---a-quick-overview">STLM Model - A quick overview<a class="anchor" aria-label="anchor" href="#stlm-model---a-quick-overview"></a>
@@ -253,14 +253,14 @@ interval. The second seasonality is at 7-days, so we just use
 <span>  <span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html" class="external-link">stlm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">stlm_model</span><span class="op">$</span><span class="va">stl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>The <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast()</a></code> function is used to generate predictions,
 much like the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stlm_model</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">7</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>Looks like it’s doing a pretty decent job of forecasting the Taylor
 30-Min Data.</p>
 </div>
@@ -592,7 +592,7 @@ of forecast points.</p>
 <code class="sourceCode R"><span><span class="va">stlm_test</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">taylor_30_min</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://business-science.github.io/timetk/reference/future_frame.html" class="external-link">future_frame</a></span><span class="op">(</span>.length_out <span class="op">=</span> <span class="st">"1 week"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>Excellent. We have predictions!</p>
 </div>
 <div class="section level4">
@@ -718,7 +718,7 @@ model bridge, <code>bridge_stlm_ets_fit_impl()</code> (shown next).</p>
 <code class="sourceCode R"><span><span class="va">refit_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/modeltime_forecast.html">modeltime_forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"1 week"</span>, actual_data <span class="op">=</span> <span class="va">taylor_30_min</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="extending-modeltime_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>And now you’ve just created a new model. Just wrap it up in a package
 and you’ve extended <code>parsnip</code> and <code>modeltime</code>.
 Congrats!</p>
@@ -743,7 +743,7 @@ implemented inside a package.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

@@ -214,7 +214,7 @@ Walmart store-department combination.</li>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, date <span class="op">=</span> <span class="va">Date</span>, value <span class="op">=</span> <span class="va">Weekly_Sales</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="modeltime-spark_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeltime-spark_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 <p>We prepare as nested data using the Nested Forecasting preparation
 functions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -340,9 +340,9 @@ distributed computation.</p>
 <span>    <span class="op">)</span></span>
 <span><span class="co">#&gt; Using existing parallel backend with 4 workers...</span></span>
 <span><span class="co">#&gt;  Beginning Parallel Loop | 0.003 seconds</span></span>
-<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 22.92 seconds</span></span>
+<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 23.108 seconds</span></span>
 <span><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
-<span><span class="co">#&gt; Finished in: 22.92145 secs.</span></span></code></pre></div>
+<span><span class="co">#&gt; Finished in: 23.10903 secs.</span></span></code></pre></div>
 <p>The nested modeltime object has now fit the models using Spark.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nested_modeltime_tbl</span></span>
@@ -840,12 +840,12 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">4552.79</td>
-<td headers="mape" class="gt_row gt_right">18.14</td>
-<td headers="mase" class="gt_row gt_right">0.90</td>
-<td headers="smape" class="gt_row gt_right">17.03</td>
-<td headers="rmse" class="gt_row gt_right">7902.54</td>
-<td headers="rsq" class="gt_row gt_right">0.39</td>
+<td headers="mae" class="gt_row gt_right">4440.43</td>
+<td headers="mape" class="gt_row gt_right">17.61</td>
+<td headers="mase" class="gt_row gt_right">0.88</td>
+<td headers="smape" class="gt_row gt_right">15.94</td>
+<td headers="rmse" class="gt_row gt_right">8127.40</td>
+<td headers="rsq" class="gt_row gt_right">0.35</td>
 </tr>
 <tr>
 <td headers="id" class="gt_row gt_center">1_1</td>
@@ -864,11 +864,11 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">1586.62</td>
-<td headers="mape" class="gt_row gt_right">10.75</td>
-<td headers="mase" class="gt_row gt_right">0.62</td>
-<td headers="smape" class="gt_row gt_right">11.38</td>
-<td headers="rmse" class="gt_row gt_right">2374.57</td>
+<td headers="mae" class="gt_row gt_right">1463.47</td>
+<td headers="mape" class="gt_row gt_right">10.00</td>
+<td headers="mase" class="gt_row gt_right">0.57</td>
+<td headers="smape" class="gt_row gt_right">10.28</td>
+<td headers="rmse" class="gt_row gt_right">2265.28</td>
 <td headers="rsq" class="gt_row gt_right">0.94</td>
 </tr>
 <tr>
@@ -888,12 +888,12 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3620.53</td>
-<td headers="mape" class="gt_row gt_right">9.41</td>
-<td headers="mase" class="gt_row gt_right">1.54</td>
-<td headers="smape" class="gt_row gt_right">10.00</td>
-<td headers="rmse" class="gt_row gt_right">4090.53</td>
-<td headers="rsq" class="gt_row gt_right">0.23</td>
+<td headers="mae" class="gt_row gt_right">3127.58</td>
+<td headers="mape" class="gt_row gt_right">8.16</td>
+<td headers="mase" class="gt_row gt_right">1.33</td>
+<td headers="smape" class="gt_row gt_right">8.55</td>
+<td headers="rmse" class="gt_row gt_right">3560.40</td>
+<td headers="rsq" class="gt_row gt_right">0.10</td>
 </tr>
 <tr>
 <td headers="id" class="gt_row gt_center">1_8</td>
@@ -912,12 +912,12 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">2775.75</td>
-<td headers="mape" class="gt_row gt_right">6.89</td>
-<td headers="mase" class="gt_row gt_right">1.02</td>
-<td headers="smape" class="gt_row gt_right">7.18</td>
-<td headers="rmse" class="gt_row gt_right">3190.80</td>
-<td headers="rsq" class="gt_row gt_right">0.45</td>
+<td headers="mae" class="gt_row gt_right">2268.98</td>
+<td headers="mape" class="gt_row gt_right">5.64</td>
+<td headers="mase" class="gt_row gt_right">0.84</td>
+<td headers="smape" class="gt_row gt_right">5.81</td>
+<td headers="rmse" class="gt_row gt_right">2733.12</td>
+<td headers="rsq" class="gt_row gt_right">0.47</td>
 </tr>
 <tr>
 <td headers="id" class="gt_row gt_center">1_13</td>
@@ -936,12 +936,12 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">7865.35</td>
-<td headers="mape" class="gt_row gt_right">9.62</td>
-<td headers="mase" class="gt_row gt_right">0.67</td>
-<td headers="smape" class="gt_row gt_right">10.14</td>
-<td headers="rmse" class="gt_row gt_right">10496.79</td>
-<td headers="rsq" class="gt_row gt_right">0.24</td>
+<td headers="mae" class="gt_row gt_right">6863.76</td>
+<td headers="mape" class="gt_row gt_right">8.59</td>
+<td headers="mase" class="gt_row gt_right">0.59</td>
+<td headers="smape" class="gt_row gt_right">8.71</td>
+<td headers="rmse" class="gt_row gt_right">8883.45</td>
+<td headers="rsq" class="gt_row gt_right">0.32</td>
 </tr>
 <tr>
 <td headers="id" class="gt_row gt_center">1_38</td>
@@ -960,12 +960,12 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">6575.86</td>
-<td headers="mape" class="gt_row gt_right">8.21</td>
-<td headers="mase" class="gt_row gt_right">0.66</td>
-<td headers="smape" class="gt_row gt_right">8.74</td>
-<td headers="rmse" class="gt_row gt_right">8489.78</td>
-<td headers="rsq" class="gt_row gt_right">0.54</td>
+<td headers="mae" class="gt_row gt_right">5956.44</td>
+<td headers="mape" class="gt_row gt_right">7.40</td>
+<td headers="mase" class="gt_row gt_right">0.60</td>
+<td headers="smape" class="gt_row gt_right">7.81</td>
+<td headers="rmse" class="gt_row gt_right">8076.68</td>
+<td headers="rsq" class="gt_row gt_right">0.51</td>
 </tr>
 <tr>
 <td headers="id" class="gt_row gt_center">1_93</td>
@@ -984,12 +984,12 @@ model</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">6463.79</td>
-<td headers="mape" class="gt_row gt_right">5.15</td>
-<td headers="mase" class="gt_row gt_right">0.78</td>
-<td headers="smape" class="gt_row gt_right">5.33</td>
-<td headers="rmse" class="gt_row gt_right">8502.73</td>
-<td headers="rsq" class="gt_row gt_right">0.60</td>
+<td headers="mae" class="gt_row gt_right">6741.05</td>
+<td headers="mape" class="gt_row gt_right">5.47</td>
+<td headers="mase" class="gt_row gt_right">0.81</td>
+<td headers="smape" class="gt_row gt_right">5.52</td>
+<td headers="rmse" class="gt_row gt_right">8448.20</td>
+<td headers="rsq" class="gt_row gt_right">0.40</td>
 </tr>
 <tr>
 <td headers="id" class="gt_row gt_center">1_95</td>
@@ -1016,7 +1016,7 @@ model</p>
 <span>  <span class="fu"><a href="../reference/log_extractors.html">extract_nested_test_forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/plot_modeltime_forecast.html">plot_modeltime_forecast</a></span><span class="op">(</span>.facet_ncol <span class="op">=</span> <span class="fl">2</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<p><img src="modeltime-spark_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeltime-spark_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -1111,7 +1111,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

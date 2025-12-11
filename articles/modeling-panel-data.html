@@ -125,7 +125,7 @@
 
     
     
-<p><img src="panel_data_success.jpg" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="panel_data_success.jpg" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 <p><br><img src="logo-modeltime.png" width="147" height="170" align="right"></p>
 <p><strong>Why is global modeling important for time series?</strong>
 For starters, the ability to forecast many time series with a single
@@ -171,7 +171,7 @@ global modeling. In it’s simplest form, <em>Panel Data</em> is a time
 series dataset that has more than one series. Each time series is
 stacked row-wise (on-top) of each other.</p>
 <div class="figure" style="text-align: center">
-<img src="panel_data.jpg" alt="Panel Data Structure" width="100%"><p class="caption">
+<img src="panel_data.jpg" class="r-plt" alt="Panel Data Structure" width="100%"><p class="caption">
 Panel Data Structure
 </p>
 </div>
@@ -188,7 +188,7 @@ the number of products in a database. As the number of time series
 approaches the range of 1000-10,000, <strong>the iterative approach
 becomes unscalable.</strong></p>
 <div class="figure" style="text-align: center">
-<img src="panel_data_arima.jpg" alt="Problem: 1000 ARIMA Models Needed for 1000 Time Series" width="100%"><p class="caption">
+<img src="panel_data_arima.jpg" class="r-plt" alt="Problem: 1000 ARIMA Models Needed for 1000 Time Series" width="100%"><p class="caption">
 Problem: 1000 ARIMA Models Needed for 1000 Time Series
 </p>
 </div>
@@ -203,7 +203,7 @@ problem of 1-10,000 time series. An example is an XGBoost Model, which
 can determine relationships for all 1000 time series panels with a
 single model.</p>
 <div class="figure" style="text-align: center">
-<img src="panel_data_xgboost.jpg" alt="Solution: A Single XGBOOST Model can Model 1000 Time Series" width="100%"><p class="caption">
+<img src="panel_data_xgboost.jpg" class="r-plt" alt="Solution: A Single XGBOOST Model can Model 1000 Time Series" width="100%"><p class="caption">
 Solution: A Single XGBOOST Model can Model 1000 Time Series
 </p>
 </div>
@@ -218,7 +218,7 @@ large-scale forecasting success. We recommend learning feature
 engineering techniques that are proven to get results in our <a href="https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/" class="external-link">Time
 Series Forecasting Course</a>.</p>
 <div class="figure" style="text-align: center">
-<img src="panel_data_success.jpg" alt="Modeling Panel Data" width="100%"><p class="caption">
+<img src="panel_data_success.jpg" class="r-plt" alt="Modeling Panel Data" width="100%"><p class="caption">
 Modeling Panel Data
 </p>
 </div>
@@ -276,7 +276,7 @@ in sales by department.</p>
 <span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series.html" class="external-link">plot_time_series</a></span><span class="op">(</span></span>
 <span>    <span class="va">date</span>, <span class="va">value</span>, .interactive <span class="op">=</span> <span class="cn">F</span>, .facet_ncol <span class="op">=</span> <span class="fl">2</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 <p>We can clearly see that there are 7 time series groups with different
 weekly sales patterns.</p>
 </div>
@@ -391,29 +391,23 @@ series.</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Model ───────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ##### xgb.Booster</span></span>
-<span><span class="co">#&gt; raw: 45.6 Kb </span></span>
 <span><span class="co">#&gt; call:</span></span>
 <span><span class="co">#&gt;   xgboost::xgb.train(params = list(eta = 0.3, max_depth = 6, gamma = 0, </span></span>
 <span><span class="co">#&gt;     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, </span></span>
-<span><span class="co">#&gt;     subsample = 1), data = x$data, nrounds = 15, watchlist = x$watchlist, </span></span>
-<span><span class="co">#&gt;     verbose = 0, nthread = 1, objective = "reg:squarederror")</span></span>
-<span><span class="co">#&gt; params (as set within xgb.train):</span></span>
-<span><span class="co">#&gt;   eta = "0.3", max_depth = "6", gamma = "0", colsample_bytree = "1", colsample_bynode = "1", min_child_weight = "1", subsample = "1", nthread = "1", objective = "reg:squarederror", validate_parameters = "TRUE"</span></span>
-<span><span class="co">#&gt; xgb.attributes:</span></span>
-<span><span class="co">#&gt;   niter</span></span>
-<span><span class="co">#&gt; callbacks:</span></span>
-<span><span class="co">#&gt;   cb.evaluation.log()</span></span>
+<span><span class="co">#&gt;     subsample = 1, nthread = 1, objective = "reg:squarederror"), </span></span>
+<span><span class="co">#&gt;     data = x$data, nrounds = 15, evals = x$watchlist, verbose = 0)</span></span>
 <span><span class="co">#&gt; # of features: 37 </span></span>
-<span><span class="co">#&gt; niter: 15</span></span>
-<span><span class="co">#&gt; nfeatures : 37 </span></span>
+<span><span class="co">#&gt; # of rounds:  15 </span></span>
+<span><span class="co">#&gt; callbacks:</span></span>
+<span><span class="co">#&gt;    evaluation_log </span></span>
 <span><span class="co">#&gt; evaluation_log:</span></span>
 <span><span class="co">#&gt;   iter training_rmse</span></span>
-<span><span class="co">#&gt;  &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt;      1     46311.229</span></span>
-<span><span class="co">#&gt;      2     32998.036</span></span>
+<span><span class="co">#&gt;  &lt;int&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt;      1     25945.548</span></span>
+<span><span class="co">#&gt;      2     18766.761</span></span>
 <span><span class="co">#&gt;    ---           ---</span></span>
-<span><span class="co">#&gt;     14      3622.633</span></span>
-<span><span class="co">#&gt;     15      3410.785</span></span></code></pre></div>
+<span><span class="co">#&gt;     14      3171.807</span></span>
+<span><span class="co">#&gt;     15      3044.555</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="modeltime-workflow">Modeltime Workflow<a class="anchor" aria-label="anchor" href="#modeltime-workflow"></a>
@@ -421,7 +415,7 @@ series.</p></li>
 <p>We’ll step through the modeltime workflow, which is used to test many
 different models on the time series and organize the entire process.</p>
 <div class="figure" style="text-align: center">
-<img src="modeltime_workflow.jpg" alt="Modeltime Workflow" width="100%"><p class="caption">
+<img src="modeltime_workflow.jpg" class="r-plt" alt="Modeltime Workflow" width="100%"><p class="caption">
 Modeltime Workflow
 </p>
 </div>
@@ -476,6 +470,498 @@ which returns a global model accuracy.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">calib_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div id="zgvmlhzgsd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zgvmlhzgsd table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#zgvmlhzgsd thead, #zgvmlhzgsd tbody, #zgvmlhzgsd tfoot, #zgvmlhzgsd tr, #zgvmlhzgsd td, #zgvmlhzgsd th {
+  border-style: none;
+}
+
+#zgvmlhzgsd p {
+  margin: 0;
+  padding: 0;
+}
+
+#zgvmlhzgsd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#zgvmlhzgsd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zgvmlhzgsd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zgvmlhzgsd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zgvmlhzgsd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zgvmlhzgsd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zgvmlhzgsd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zgvmlhzgsd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zgvmlhzgsd .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#zgvmlhzgsd .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#zgvmlhzgsd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zgvmlhzgsd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zgvmlhzgsd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zgvmlhzgsd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zgvmlhzgsd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zgvmlhzgsd .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#zgvmlhzgsd .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#zgvmlhzgsd .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#zgvmlhzgsd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zgvmlhzgsd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#zgvmlhzgsd .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zgvmlhzgsd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zgvmlhzgsd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zgvmlhzgsd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zgvmlhzgsd .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zgvmlhzgsd .gt_left {
+  text-align: left;
+}
+
+#zgvmlhzgsd .gt_center {
+  text-align: center;
+}
+
+#zgvmlhzgsd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zgvmlhzgsd .gt_font_normal {
+  font-weight: normal;
+}
+
+#zgvmlhzgsd .gt_font_bold {
+  font-weight: bold;
+}
+
+#zgvmlhzgsd .gt_font_italic {
+  font-style: italic;
+}
+
+#zgvmlhzgsd .gt_super {
+  font-size: 65%;
+}
+
+#zgvmlhzgsd .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#zgvmlhzgsd .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#zgvmlhzgsd .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#zgvmlhzgsd .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#zgvmlhzgsd .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#zgvmlhzgsd .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#zgvmlhzgsd .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#zgvmlhzgsd .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#zgvmlhzgsd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading">
+<td colspan="9" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</td>
+    </tr>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="a.model_id">.model_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a.model_desc">.model_desc</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a.type">.type</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mae">mae</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mape">mape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mase">mase</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="smape">smape</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="rmse">rmse</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="rsq">rsq</th>
+    </tr>
+</thead>
+<tbody class="gt_table_body"><tr>
+<td headers=".model_id" class="gt_row gt_right">1</td>
+<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
+<td headers=".type" class="gt_row gt_left">Test</td>
+<td headers="mae" class="gt_row gt_right">3878.54</td>
+<td headers="mape" class="gt_row gt_right">10.7</td>
+<td headers="mase" class="gt_row gt_right">0.12</td>
+<td headers="smape" class="gt_row gt_right">9.43</td>
+<td headers="rmse" class="gt_row gt_right">5589.75</td>
+<td headers="rsq" class="gt_row gt_right">0.98</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div class="section level5">
+<h5 id="local-accuracy">Local Accuracy<a class="anchor" aria-label="anchor" href="#local-accuracy"></a>
+</h5>
+<p>By toggling <code>modeltime_accuracy(acc_by_id = TRUE)</code>, we can
+obtain the local model accuracy. This can be useful for identifying
+specifically which time series the model does well on (and which it does
+poorly on). We can then <strong>apply model selection logic</strong> to
+select specific global models for specific IDs.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">calib_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div id="gxeibkbeux" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#gxeibkbeux table {
@@ -929,498 +1415,6 @@ which returns a global model accuracy.</p>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_heading">
-<td colspan="9" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</td>
-    </tr>
-<tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="a.model_id">.model_id</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a.model_desc">.model_desc</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a.type">.type</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mae">mae</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mape">mape</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mase">mase</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="smape">smape</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="rmse">rmse</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="rsq">rsq</th>
-    </tr>
-</thead>
-<tbody class="gt_table_body"><tr>
-<td headers=".model_id" class="gt_row gt_right">1</td>
-<td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
-<td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3614.88</td>
-<td headers="mape" class="gt_row gt_right">8.89</td>
-<td headers="mase" class="gt_row gt_right">0.11</td>
-<td headers="smape" class="gt_row gt_right">8.31</td>
-<td headers="rmse" class="gt_row gt_right">4948.89</td>
-<td headers="rsq" class="gt_row gt_right">0.98</td>
-</tr></tbody>
-</table>
-</div>
-</div>
-<div class="section level5">
-<h5 id="local-accuracy">Local Accuracy<a class="anchor" aria-label="anchor" href="#local-accuracy"></a>
-</h5>
-<p>By toggling <code>modeltime_accuracy(acc_by_id = TRUE)</code>, we can
-obtain the local model accuracy. This can be useful for identifying
-specifically which time series the model does well on (and which it does
-poorly on). We can then <strong>apply model selection logic</strong> to
-select specific global models for specific IDs.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">calib_tbl</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span>acc_by_id <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div id="lluygiofox" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lluygiofox table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#lluygiofox thead, #lluygiofox tbody, #lluygiofox tfoot, #lluygiofox tr, #lluygiofox td, #lluygiofox th {
-  border-style: none;
-}
-
-#lluygiofox p {
-  margin: 0;
-  padding: 0;
-}
-
-#lluygiofox .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#lluygiofox .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#lluygiofox .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#lluygiofox .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#lluygiofox .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#lluygiofox .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lluygiofox .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#lluygiofox .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#lluygiofox .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#lluygiofox .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#lluygiofox .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#lluygiofox .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#lluygiofox .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#lluygiofox .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#lluygiofox .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#lluygiofox .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#lluygiofox .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#lluygiofox .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#lluygiofox .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lluygiofox .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#lluygiofox .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#lluygiofox .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#lluygiofox .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lluygiofox .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#lluygiofox .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#lluygiofox .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lluygiofox .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lluygiofox .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#lluygiofox .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lluygiofox .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#lluygiofox .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lluygiofox .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#lluygiofox .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lluygiofox .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#lluygiofox .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lluygiofox .gt_left {
-  text-align: left;
-}
-
-#lluygiofox .gt_center {
-  text-align: center;
-}
-
-#lluygiofox .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#lluygiofox .gt_font_normal {
-  font-weight: normal;
-}
-
-#lluygiofox .gt_font_bold {
-  font-weight: bold;
-}
-
-#lluygiofox .gt_font_italic {
-  font-style: italic;
-}
-
-#lluygiofox .gt_super {
-  font-size: 65%;
-}
-
-#lluygiofox .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#lluygiofox .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#lluygiofox .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#lluygiofox .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#lluygiofox .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#lluygiofox .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#lluygiofox .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#lluygiofox .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#lluygiofox div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_heading">
 <td colspan="10" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Accuracy Table</td>
     </tr>
 <tr class="gt_col_headings">
@@ -1442,84 +1436,84 @@ select specific global models for specific IDs.</p>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_1</td>
-<td headers="mae" class="gt_row gt_right">1695.01</td>
-<td headers="mape" class="gt_row gt_right">8.76</td>
-<td headers="mase" class="gt_row gt_right">1.27</td>
-<td headers="smape" class="gt_row gt_right">8.63</td>
-<td headers="rmse" class="gt_row gt_right">1993.15</td>
-<td headers="rsq" class="gt_row gt_right">0.70</td>
+<td headers="mae" class="gt_row gt_right">1255.78</td>
+<td headers="mape" class="gt_row gt_right">6.47</td>
+<td headers="mase" class="gt_row gt_right">0.94</td>
+<td headers="smape" class="gt_row gt_right">6.45</td>
+<td headers="rmse" class="gt_row gt_right">1487.28</td>
+<td headers="rsq" class="gt_row gt_right">0.85</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_3</td>
-<td headers="mae" class="gt_row gt_right">3803.65</td>
-<td headers="mape" class="gt_row gt_right">26.68</td>
-<td headers="mase" class="gt_row gt_right">0.64</td>
-<td headers="smape" class="gt_row gt_right">22.14</td>
-<td headers="rmse" class="gt_row gt_right">4508.79</td>
-<td headers="rsq" class="gt_row gt_right">0.93</td>
+<td headers="mae" class="gt_row gt_right">5517.90</td>
+<td headers="mape" class="gt_row gt_right">40.95</td>
+<td headers="mase" class="gt_row gt_right">0.93</td>
+<td headers="smape" class="gt_row gt_right">31.56</td>
+<td headers="rmse" class="gt_row gt_right">5977.40</td>
+<td headers="rsq" class="gt_row gt_right">0.97</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_8</td>
-<td headers="mae" class="gt_row gt_right">1687.98</td>
-<td headers="mape" class="gt_row gt_right">4.41</td>
-<td headers="mase" class="gt_row gt_right">0.77</td>
-<td headers="smape" class="gt_row gt_right">4.50</td>
-<td headers="rmse" class="gt_row gt_right">1961.60</td>
-<td headers="rsq" class="gt_row gt_right">0.58</td>
+<td headers="mae" class="gt_row gt_right">1626.32</td>
+<td headers="mape" class="gt_row gt_right">4.24</td>
+<td headers="mase" class="gt_row gt_right">0.74</td>
+<td headers="smape" class="gt_row gt_right">4.33</td>
+<td headers="rmse" class="gt_row gt_right">1967.48</td>
+<td headers="rsq" class="gt_row gt_right">0.51</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_13</td>
-<td headers="mae" class="gt_row gt_right">1453.29</td>
-<td headers="mape" class="gt_row gt_right">3.48</td>
-<td headers="mase" class="gt_row gt_right">0.64</td>
-<td headers="smape" class="gt_row gt_right">3.58</td>
-<td headers="rmse" class="gt_row gt_right">1826.28</td>
-<td headers="rsq" class="gt_row gt_right">0.72</td>
+<td headers="mae" class="gt_row gt_right">1203.46</td>
+<td headers="mape" class="gt_row gt_right">2.91</td>
+<td headers="mase" class="gt_row gt_right">0.53</td>
+<td headers="smape" class="gt_row gt_right">2.96</td>
+<td headers="rmse" class="gt_row gt_right">1447.33</td>
+<td headers="rsq" class="gt_row gt_right">0.74</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_38</td>
-<td headers="mae" class="gt_row gt_right">7554.05</td>
-<td headers="mape" class="gt_row gt_right">9.70</td>
-<td headers="mase" class="gt_row gt_right">0.93</td>
-<td headers="smape" class="gt_row gt_right">9.91</td>
-<td headers="rmse" class="gt_row gt_right">9210.69</td>
-<td headers="rsq" class="gt_row gt_right">0.00</td>
+<td headers="mae" class="gt_row gt_right">9818.34</td>
+<td headers="mape" class="gt_row gt_right">12.66</td>
+<td headers="mase" class="gt_row gt_right">1.21</td>
+<td headers="smape" class="gt_row gt_right">13.05</td>
+<td headers="rmse" class="gt_row gt_right">11486.56</td>
+<td headers="rsq" class="gt_row gt_right">0.06</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_93</td>
-<td headers="mae" class="gt_row gt_right">4349.44</td>
-<td headers="mape" class="gt_row gt_right">5.47</td>
-<td headers="mase" class="gt_row gt_right">0.43</td>
-<td headers="smape" class="gt_row gt_right">5.64</td>
-<td headers="rmse" class="gt_row gt_right">5367.10</td>
-<td headers="rsq" class="gt_row gt_right">0.75</td>
+<td headers="mae" class="gt_row gt_right">3143.20</td>
+<td headers="mape" class="gt_row gt_right">4.04</td>
+<td headers="mase" class="gt_row gt_right">0.31</td>
+<td headers="smape" class="gt_row gt_right">4.09</td>
+<td headers="rmse" class="gt_row gt_right">4335.14</td>
+<td headers="rsq" class="gt_row gt_right">0.76</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">XGBOOST</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
 <td headers="id" class="gt_row gt_center">1_95</td>
-<td headers="mae" class="gt_row gt_right">4760.73</td>
-<td headers="mape" class="gt_row gt_right">3.74</td>
-<td headers="mase" class="gt_row gt_right">0.60</td>
-<td headers="smape" class="gt_row gt_right">3.75</td>
-<td headers="rmse" class="gt_row gt_right">5129.63</td>
-<td headers="rsq" class="gt_row gt_right">0.60</td>
+<td headers="mae" class="gt_row gt_right">4584.76</td>
+<td headers="mape" class="gt_row gt_right">3.62</td>
+<td headers="mase" class="gt_row gt_right">0.58</td>
+<td headers="smape" class="gt_row gt_right">3.60</td>
+<td headers="rmse" class="gt_row gt_right">4906.70</td>
+<td headers="rsq" class="gt_row gt_right">0.70</td>
 </tr>
 </tbody>
 </table>
@@ -1548,7 +1542,7 @@ by time series identifier. Note, that the
 <span>        .facet_ncol  <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>        .interactive <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="step-5-refit-and-forecast-the-future">Step 5: Refit and Forecast the Future<a class="anchor" aria-label="anchor" href="#step-5-refit-and-forecast-the-future"></a>
@@ -1617,7 +1611,7 @@ for our global forecast model.</p>
 <span>    .interactive <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>    .facet_ncol  <span class="op">=</span> <span class="fl">2</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="modeling-panel-data_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
@@ -1701,7 +1695,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

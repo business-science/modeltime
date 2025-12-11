@@ -244,7 +244,7 @@ sales demand by department.</p>
 <span>    .facet_ncol  <span class="op">=</span> <span class="fl">2</span>, </span>
 <span>    .interactive <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="train-test-splits">Train / Test Splits<a class="anchor" aria-label="anchor" href="#train-test-splits"></a>
@@ -261,7 +261,7 @@ seven time series.</p>
 <span><span class="va">splits</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/tk_time_series_cv_plan.html" class="external-link">tk_time_series_cv_plan</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://business-science.github.io/timetk/reference/plot_time_series_cv_plan.html" class="external-link">plot_time_series_cv_plan</a></span><span class="op">(</span><span class="va">Date</span>, <span class="va">Weekly_Sales</span>, .interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="recipe">Recipe<a class="anchor" aria-label="anchor" href="#recipe"></a>
@@ -479,7 +479,7 @@ sent to each of the workers.</p></li>
 <span><span class="co">#&gt; allow_par : TRUE </span></span>
 <span><span class="co">#&gt; cores     : 2 </span></span>
 <span><span class="co">#&gt; verbose   : TRUE </span></span>
-<span><span class="co">#&gt; packages  : modeltime parsnip workflows dplyr stats lubridate tidymodels timetk rsample recipes yardstick dials tune workflowsets tidyr tibble purrr modeldata infer ggplot2 scales broom graphics grDevices utils datasets methods base</span></span></code></pre></div>
+<span><span class="co">#&gt; packages  : modeltime parsnip workflows dplyr stats lubridate tidymodels timetk rsample recipes yardstick dials tune workflowsets tidyr tailor purrr modeldata infer ggplot2 scales broom graphics grDevices utils datasets methods base</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="fitting-using-parallel-backend">Fitting Using Parallel Backend<a class="anchor" aria-label="anchor" href="#fitting-using-parallel-backend"></a>
@@ -497,10 +497,10 @@ workflowset in parallel.</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Using existing parallel backend with 2 workers...</span></span>
-<span><span class="co">#&gt;  Beginning Parallel Loop | 0.007 seconds</span></span>
-<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 3.142 seconds</span></span>
+<span><span class="co">#&gt;  Beginning Parallel Loop | 0.006 seconds</span></span>
+<span><span class="co">#&gt;  Finishing parallel backend. Clusters are remaining open. | 2.953 seconds</span></span>
 <span><span class="co">#&gt;  Close clusters by running: `parallel_stop()`.</span></span>
-<span><span class="co">#&gt;  Total time | 3.143 seconds</span></span></code></pre></div>
+<span><span class="co">#&gt;  Total time | 2.954 seconds</span></span></code></pre></div>
 <p>This returns a modeltime table.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_parallel_tbl</span></span>
@@ -542,7 +542,7 @@ training task.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #555555;">Model Successfully Fitted: 5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Fitting Model: 6</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #555555;">Model Successfully Fitted: 6</span></span></span>
-<span><span class="co">#&gt; Total time | 3.64 seconds</span></span></code></pre></div>
+<span><span class="co">#&gt; Total time | 3.627 seconds</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -555,23 +555,23 @@ lowest MAE.</p>
 <span>  <span class="fu"><a href="../reference/modeltime_calibrate.html">modeltime_calibrate</a></span><span class="op">(</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/modeltime_accuracy.html">modeltime_accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/table_modeltime_accuracy.html">table_modeltime_accuracy</a></span><span class="op">(</span>.interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div id="nduwpkhymb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nduwpkhymb table {
+<div id="nrbfnzxmng" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nrbfnzxmng table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nduwpkhymb thead, #nduwpkhymb tbody, #nduwpkhymb tfoot, #nduwpkhymb tr, #nduwpkhymb td, #nduwpkhymb th {
+#nrbfnzxmng thead, #nrbfnzxmng tbody, #nrbfnzxmng tfoot, #nrbfnzxmng tr, #nrbfnzxmng td, #nrbfnzxmng th {
   border-style: none;
 }
 
-#nduwpkhymb p {
+#nrbfnzxmng p {
   margin: 0;
   padding: 0;
 }
 
-#nduwpkhymb .gt_table {
+#nrbfnzxmng .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -597,12 +597,12 @@ lowest MAE.</p>
   border-left-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_caption {
+#nrbfnzxmng .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nduwpkhymb .gt_title {
+#nrbfnzxmng .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -614,7 +614,7 @@ lowest MAE.</p>
   border-bottom-width: 0;
 }
 
-#nduwpkhymb .gt_subtitle {
+#nrbfnzxmng .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -626,7 +626,7 @@ lowest MAE.</p>
   border-top-width: 0;
 }
 
-#nduwpkhymb .gt_heading {
+#nrbfnzxmng .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -638,13 +638,13 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_bottom_border {
+#nrbfnzxmng .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_col_headings {
+#nrbfnzxmng .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -659,7 +659,7 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_col_heading {
+#nrbfnzxmng .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -679,7 +679,7 @@ lowest MAE.</p>
   overflow-x: hidden;
 }
 
-#nduwpkhymb .gt_column_spanner_outer {
+#nrbfnzxmng .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -691,15 +691,15 @@ lowest MAE.</p>
   padding-right: 4px;
 }
 
-#nduwpkhymb .gt_column_spanner_outer:first-child {
+#nrbfnzxmng .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nduwpkhymb .gt_column_spanner_outer:last-child {
+#nrbfnzxmng .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nduwpkhymb .gt_column_spanner {
+#nrbfnzxmng .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -711,11 +711,11 @@ lowest MAE.</p>
   width: 100%;
 }
 
-#nduwpkhymb .gt_spanner_row {
+#nrbfnzxmng .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nduwpkhymb .gt_group_heading {
+#nrbfnzxmng .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -741,7 +741,7 @@ lowest MAE.</p>
   text-align: left;
 }
 
-#nduwpkhymb .gt_empty_group_heading {
+#nrbfnzxmng .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -756,15 +756,15 @@ lowest MAE.</p>
   vertical-align: middle;
 }
 
-#nduwpkhymb .gt_from_md > :first-child {
+#nrbfnzxmng .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nduwpkhymb .gt_from_md > :last-child {
+#nrbfnzxmng .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nduwpkhymb .gt_row {
+#nrbfnzxmng .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -783,7 +783,7 @@ lowest MAE.</p>
   overflow-x: hidden;
 }
 
-#nduwpkhymb .gt_stub {
+#nrbfnzxmng .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -796,7 +796,7 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#nduwpkhymb .gt_stub_row_group {
+#nrbfnzxmng .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -810,15 +810,15 @@ lowest MAE.</p>
   vertical-align: top;
 }
 
-#nduwpkhymb .gt_row_group_first td {
+#nrbfnzxmng .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nduwpkhymb .gt_row_group_first th {
+#nrbfnzxmng .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nduwpkhymb .gt_summary_row {
+#nrbfnzxmng .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -828,16 +828,16 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#nduwpkhymb .gt_first_summary_row {
+#nrbfnzxmng .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_first_summary_row.thick {
+#nrbfnzxmng .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nduwpkhymb .gt_last_summary_row {
+#nrbfnzxmng .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -847,7 +847,7 @@ lowest MAE.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_grand_summary_row {
+#nrbfnzxmng .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -857,7 +857,7 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#nduwpkhymb .gt_first_grand_summary_row {
+#nrbfnzxmng .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -867,7 +867,7 @@ lowest MAE.</p>
   border-top-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_last_grand_summary_row_top {
+#nrbfnzxmng .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -877,11 +877,11 @@ lowest MAE.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_striped {
+#nrbfnzxmng .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nduwpkhymb .gt_table_body {
+#nrbfnzxmng .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -890,7 +890,7 @@ lowest MAE.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_footnotes {
+#nrbfnzxmng .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -904,7 +904,7 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_footnote {
+#nrbfnzxmng .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -913,7 +913,7 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#nduwpkhymb .gt_sourcenotes {
+#nrbfnzxmng .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -927,7 +927,7 @@ lowest MAE.</p>
   border-right-color: #D3D3D3;
 }
 
-#nduwpkhymb .gt_sourcenote {
+#nrbfnzxmng .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -935,72 +935,72 @@ lowest MAE.</p>
   padding-right: 5px;
 }
 
-#nduwpkhymb .gt_left {
+#nrbfnzxmng .gt_left {
   text-align: left;
 }
 
-#nduwpkhymb .gt_center {
+#nrbfnzxmng .gt_center {
   text-align: center;
 }
 
-#nduwpkhymb .gt_right {
+#nrbfnzxmng .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nduwpkhymb .gt_font_normal {
+#nrbfnzxmng .gt_font_normal {
   font-weight: normal;
 }
 
-#nduwpkhymb .gt_font_bold {
+#nrbfnzxmng .gt_font_bold {
   font-weight: bold;
 }
 
-#nduwpkhymb .gt_font_italic {
+#nrbfnzxmng .gt_font_italic {
   font-style: italic;
 }
 
-#nduwpkhymb .gt_super {
+#nrbfnzxmng .gt_super {
   font-size: 65%;
 }
 
-#nduwpkhymb .gt_footnote_marks {
+#nrbfnzxmng .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nduwpkhymb .gt_asterisk {
+#nrbfnzxmng .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nduwpkhymb .gt_indent_1 {
+#nrbfnzxmng .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nduwpkhymb .gt_indent_2 {
+#nrbfnzxmng .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nduwpkhymb .gt_indent_3 {
+#nrbfnzxmng .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nduwpkhymb .gt_indent_4 {
+#nrbfnzxmng .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nduwpkhymb .gt_indent_5 {
+#nrbfnzxmng .gt_indent_5 {
   text-indent: 25px;
 }
 
-#nduwpkhymb .katex-display {
+#nrbfnzxmng .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#nduwpkhymb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nrbfnzxmng div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1026,66 +1026,66 @@ lowest MAE.</p>
 <td headers=".model_id" class="gt_row gt_right">1</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_1</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">55576.09</td>
-<td headers="mape" class="gt_row gt_right">98.54</td>
-<td headers="mase" class="gt_row gt_right">1.63</td>
-<td headers="smape" class="gt_row gt_right">194.25</td>
-<td headers="rmse" class="gt_row gt_right">66954.88</td>
-<td headers="rsq" class="gt_row gt_right">0.96</td>
+<td headers="mae" class="gt_row gt_right">31288.52</td>
+<td headers="mape" class="gt_row gt_right">105.17</td>
+<td headers="mase" class="gt_row gt_right">0.92</td>
+<td headers="smape" class="gt_row gt_right">59.93</td>
+<td headers="rmse" class="gt_row gt_right">37400.76</td>
+<td headers="rsq" class="gt_row gt_right">0.97</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">2</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_2</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">48839.75</td>
-<td headers="mape" class="gt_row gt_right">86.24</td>
-<td headers="mase" class="gt_row gt_right">1.43</td>
-<td headers="smape" class="gt_row gt_right">151.74</td>
-<td headers="rmse" class="gt_row gt_right">58998.12</td>
-<td headers="rsq" class="gt_row gt_right">0.96</td>
+<td headers="mae" class="gt_row gt_right">27530.30</td>
+<td headers="mape" class="gt_row gt_right">92.35</td>
+<td headers="mase" class="gt_row gt_right">0.81</td>
+<td headers="smape" class="gt_row gt_right">54.17</td>
+<td headers="rmse" class="gt_row gt_right">33160.91</td>
+<td headers="rsq" class="gt_row gt_right">0.97</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">3</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_3</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">13339.53</td>
-<td headers="mape" class="gt_row gt_right">21.62</td>
-<td headers="mase" class="gt_row gt_right">0.39</td>
-<td headers="smape" class="gt_row gt_right">24.94</td>
-<td headers="rmse" class="gt_row gt_right">17308.96</td>
+<td headers="mae" class="gt_row gt_right">8084.02</td>
+<td headers="mape" class="gt_row gt_right">25.41</td>
+<td headers="mase" class="gt_row gt_right">0.24</td>
+<td headers="smape" class="gt_row gt_right">19.85</td>
+<td headers="rmse" class="gt_row gt_right">10685.21</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">4</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_4</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3992.38</td>
-<td headers="mape" class="gt_row gt_right">9.15</td>
-<td headers="mase" class="gt_row gt_right">0.12</td>
-<td headers="smape" class="gt_row gt_right">8.96</td>
-<td headers="rmse" class="gt_row gt_right">5765.32</td>
+<td headers="mae" class="gt_row gt_right">3437.31</td>
+<td headers="mape" class="gt_row gt_right">7.74</td>
+<td headers="mase" class="gt_row gt_right">0.10</td>
+<td headers="smape" class="gt_row gt_right">7.55</td>
+<td headers="rmse" class="gt_row gt_right">5099.09</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">5</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_5</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3658.78</td>
-<td headers="mape" class="gt_row gt_right">8.09</td>
-<td headers="mase" class="gt_row gt_right">0.11</td>
-<td headers="smape" class="gt_row gt_right">8.41</td>
-<td headers="rmse" class="gt_row gt_right">5557.38</td>
+<td headers="mae" class="gt_row gt_right">3355.56</td>
+<td headers="mape" class="gt_row gt_right">7.91</td>
+<td headers="mase" class="gt_row gt_right">0.10</td>
+<td headers="smape" class="gt_row gt_right">7.92</td>
+<td headers="rmse" class="gt_row gt_right">4884.80</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
 <td headers=".model_id" class="gt_row gt_right">6</td>
 <td headers=".model_desc" class="gt_row gt_left">RECIPE_BOOST_TREE_6</td>
 <td headers=".type" class="gt_row gt_left">Test</td>
-<td headers="mae" class="gt_row gt_right">3690.55</td>
-<td headers="mape" class="gt_row gt_right">9.30</td>
-<td headers="mase" class="gt_row gt_right">0.11</td>
-<td headers="smape" class="gt_row gt_right">9.75</td>
-<td headers="rmse" class="gt_row gt_right">5397.65</td>
+<td headers="mae" class="gt_row gt_right">3563.35</td>
+<td headers="mape" class="gt_row gt_right">8.46</td>
+<td headers="mase" class="gt_row gt_right">0.10</td>
+<td headers="smape" class="gt_row gt_right">8.41</td>
+<td headers="rmse" class="gt_row gt_right">5176.15</td>
 <td headers="rsq" class="gt_row gt_right">0.98</td>
 </tr>
 </tbody>
@@ -1108,7 +1108,7 @@ lowest MAE.</p>
 <span>    .facet_ncol  <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    .interactive <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="parallel-processing_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="parallel-processing_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="closing-clusters">Closing Clusters<a class="anchor" aria-label="anchor" href="#closing-clusters"></a>
@@ -1206,7 +1206,7 @@ the High-Performance Time Series Forecasting Course</a>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
