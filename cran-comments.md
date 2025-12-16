@@ -1,7 +1,5 @@
 ## Test environments
-* local R installation, R 4.0.2
-* ubuntu 16.04 (on travis-ci), R 3.6.1
-* win-builder (devel)
+* local macOS (aarch64-apple-darwin20), R 4.5.2
 
 ## R CMD check results
 
