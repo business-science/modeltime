@@ -1,6 +1,14 @@
 # Changelog
 
-## modeltime 1.3.1.9000 (Development Version)
+## modeltime 1.3.3
+
+- Make package robust to `xgboost` version changes
+  [\#263](https://github.com/business-science/modeltime/issues/263)
+- Correct (reproducible parallel RNG): declare RNG properly
+
+## modeltime 1.3.2
+
+CRAN release: 2025-08-28
 
 - Parallel Backends: Add `future` support; prepare for `tune` `foreach`
   deprecation; Prep
