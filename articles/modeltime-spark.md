@@ -227,10 +227,10 @@ nested_modeltime_tbl <- nested_data_tbl %>%
         control = control_nested_fit(allow_par = TRUE, verbose = TRUE)
     )
 #> Using existing parallel backend with 4 workers...
-#>  Beginning Parallel Loop | 0.013 seconds
-#>  Finishing parallel backend. Clusters are remaining open. | 23.573 seconds
+#>  Beginning Parallel Loop | 0.023 seconds
+#>  Finishing parallel backend. Clusters are remaining open. | 22.408 seconds
 #>  Close clusters by running: `parallel_stop()`.
-#> Finished in: 23.57369 secs.
+#> Finished in: 22.40924 secs.
 ```
 
 The nested modeltime object has now fit the models using Spark.

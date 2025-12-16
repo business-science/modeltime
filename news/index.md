@@ -1,5 +1,17 @@
 # Changelog
 
+## modeltime 1.3.3.9000
+
+- Updated
+  [`parallel_start()`](https://business-science.github.io/modeltime/reference/parallel_start.md)
+  /
+  [`parallel_stop()`](https://business-science.github.io/modeltime/reference/parallel_start.md)
+  to track the PSOCK cluster created by `.method = "parallel"` and
+  reliably close it in
+  [`parallel_stop()`](https://business-science.github.io/modeltime/reference/parallel_start.md)
+  (and before creating a new one), preventing the “closing unused
+  connection …” warnings/leaks.
+
 ## modeltime 1.3.3
 
 - Make package robust to `xgboost` version changes
