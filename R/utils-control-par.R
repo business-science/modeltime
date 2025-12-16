@@ -1,6 +1,10 @@
 
 # PARALLEL START/STOP ----
 
+.modeltime_parallel <- new.env(parent = emptyenv())
+.modeltime_parallel$cluster <- NULL
+.modeltime_parallel$created <- FALSE
+
 #' Start parallel clusters / plans
 #'
 #' @param ... Parameters passed to underlying functions (See Details Section)
@@ -86,6 +90,12 @@ parallel_start <- function(..., .method = c("parallel", "spark", "future"),
             !requireNamespace("doParallel", quietly = TRUE)) {
             rlang::abort("The 'parallel' and 'doParallel' packages are required for `.method = 'parallel'`.")
         }
+        # If we previously created a cluster, stop it before creating a new one
+        if (isTRUE(.modeltime_parallel$created) && !is.null(.modeltime_parallel$cluster)) {
+            try(parallel::stopCluster(.modeltime_parallel$cluster), silent = TRUE)
+            .modeltime_parallel$cluster <- NULL
+            .modeltime_parallel$created <- FALSE
+        }
         # Step 1: Create the cluster
         cl <- parallel::makeCluster(...)
         # Step 2: Register the cluster
@@ -107,6 +117,10 @@ parallel_start <- function(..., .method = c("parallel", "spark", "future"),
         }
         # Step 5: Set the library paths for each worker
         invisible(parallel::clusterCall(cl, function(x) .libPaths(x), .libPaths()))
+
+        # Track the cluster so parallel_stop() can close it
+        .modeltime_parallel$cluster <- cl
+        .modeltime_parallel$created <- TRUE
         return(invisible(TRUE))
     }
 
@@ -140,6 +154,14 @@ parallel_start <- function(..., .method = c("parallel", "spark", "future"),
 #' @export
 #' @rdname parallel_start
 parallel_stop <- function() {
+    # Stop any PSOCK cluster created by parallel_start(.method = "parallel")
+    if (isTRUE(.modeltime_parallel$created) && !is.null(.modeltime_parallel$cluster)) {
+        if (requireNamespace("parallel", quietly = TRUE)) {
+            try(parallel::stopCluster(.modeltime_parallel$cluster), silent = TRUE)
+        }
+        .modeltime_parallel$cluster <- NULL
+        .modeltime_parallel$created <- FALSE
+    }
     if (requireNamespace("future", quietly = TRUE)) {
         # best-effort reset; ignore errors if no plan was set
         try(future::plan(future::sequential), silent = TRUE)
