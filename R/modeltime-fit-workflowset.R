@@ -170,6 +170,7 @@ modeltime_fit_workflowset_parallel <- function(object, data, control, ...) {
         this_model          = .models,
         .inorder            = TRUE,
         .packages           = control$packages,
+        .options.future     = list(seed = TRUE),
         .verbose            = FALSE
     ) %op% {
 

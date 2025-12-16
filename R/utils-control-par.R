@@ -245,7 +245,11 @@ get_operator <- function(allow_par = TRUE) {
 
     cond <- allow_par && is_par
     if (cond) {
-        res <- foreach::`%dopar%`
+        if (requireNamespace("doRNG", quietly = TRUE)) {
+            res <- doRNG::`%dorng%`
+        } else {
+            res <- foreach::`%dopar%`
+        }
     } else {
         res <- foreach::`%do%`
     }
@@ -644,4 +648,3 @@ pretty_print_list <- function(x, header=NULL, justify="left", sep=":") {
 
     invisible(NULL)
 }
-

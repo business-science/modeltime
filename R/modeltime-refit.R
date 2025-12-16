@@ -239,6 +239,7 @@ modeltime_refit_parallel <- function(object, data, ..., control) {
             id                  = ret$.model_id,
             .inorder            = TRUE,
             .packages           = control$packages,
+            .options.future     = list(seed = TRUE),
             .verbose            = FALSE
         ) %op% {
 

@@ -1,4 +1,10 @@
-# modeltime 1.3.1.9000 (Development Version)
+# modeltime 1.3.3
+
+- Make package robust to `xgboost` version changes #263
+- Correct (reproducible parallel RNG): declare RNG properly
+
+
+# modeltime 1.3.2
 
 - Parallel Backends: Add `future` support; prepare for `tune` `foreach` deprecation; Prep `parallel_start()` and `parallel_stop`.
 - `yardstick` deprecations: Add patches for `metric_summarizer()`, `metric_vec_template()`
