@@ -218,9 +218,10 @@ Function Parameters:
     #>     "odds-ratio", "inverse-odds-ratio", "direct"), distribution = c("dnorm",
     #>     "dlaplace", "ds", "dgnorm", "dlnorm", "dinvgauss", "dgamma"), outliers = c("ignore",
     #>     "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL,
-    #>     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL,
-    #>     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible",
-    #>         "none"), silent = TRUE, parallel = FALSE, ...)
+    #>     phi = NULL, initial = c("backcasting", "optimal", "two-stage", "complete"),
+    #>     arma = NULL, ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual",
+    #>         "admissible", "none"), silent = TRUE, parallel = FALSE, ets = c("conventional",
+    #>         "adam"), ...)
 
 The *MAXIMUM* nonseasonal ARIMA terms (`max.p`, `max.d`, `max.q`) and
 seasonal ARIMA terms (`max.P`, `max.D`, `max.Q`) are provided to
@@ -255,9 +256,10 @@ Function Parameters:
     #>         "dinvgauss", "dgamma"), loss = c("likelihood", "MSE", "MAE", "HAM",
     #>         "LASSO", "RIDGE", "MSEh", "TMSE", "GTMSE", "MSCE"), outliers = c("ignore",
     #>         "use", "select"), level = 0.99, h = 0, holdout = FALSE, persistence = NULL,
-    #>     phi = NULL, initial = c("optimal", "backcasting", "complete"), arma = NULL,
-    #>     ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual", "admissible",
-    #>         "none"), silent = TRUE, ...)
+    #>     phi = NULL, initial = c("backcasting", "optimal", "two-stage", "complete"),
+    #>     arma = NULL, ic = c("AICc", "AIC", "BIC", "BICc"), bounds = c("usual",
+    #>         "admissible", "none"), silent = TRUE, ets = c("conventional", "adam"),
+    #>     ...)
 
 The nonseasonal ARIMA terms (`orders`) and seasonal ARIMA terms
 (`orders`) are provided to
@@ -436,7 +438,7 @@ model_fit <- model_spec %>%
 model_fit
 #> parsnip model object
 #> 
-#> Time elapsed: 1.09 seconds
+#> Time elapsed: 1.07 seconds
 #> Model estimated using adam() function: ETS(AAN)+ARIMA(3,1,3)
 #> With backcasting initialisation
 #> Distribution assumed in the model: Normal

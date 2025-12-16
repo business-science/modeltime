@@ -488,7 +488,7 @@ nested_modeltime_refit_tbl <- best_nested_modeltime_tbl %>%
 #> ℹ [7/7] Starting Modeltime Table: ID 1_95...
 #> ✔ Model 2 Passed XGBOOST.
 #> ✔ [7/7] Finished Modeltime Table: ID 1_95
-#> Finished in: 2.235729 secs.
+#> Finished in: 2.169926 secs.
 ```
 
 Note that we used `control_nested_refit(verbose = TRUE)` to display the

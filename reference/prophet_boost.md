@@ -303,8 +303,8 @@ Limitations:
 Model 2: XGBoost
 ([`xgboost::xgb.train`](https://rdrr.io/pkg/xgboost/man/xgb.train.html)):
 
-    #> function (params = list(), data, nrounds, watchlist = list(), obj = NULL,
-    #>     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL,
+    #> function (params = xgb.params(), data, nrounds, evals = list(), objective = NULL,
+    #>     custom_metric = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL,
     #>     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL,
     #>     callbacks = list(), ...)
 

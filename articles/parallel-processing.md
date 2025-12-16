@@ -389,9 +389,9 @@ model_parallel_tbl <- model_wfset %>%
   )
 #> Using existing parallel backend with 2 workers...
 #>  Beginning Parallel Loop | 0.017 seconds
-#>  Finishing parallel backend. Clusters are remaining open. | 3.205 seconds
+#>  Finishing parallel backend. Clusters are remaining open. | 3.202 seconds
 #>  Close clusters by running: `parallel_stop()`.
-#>  Total time | 3.206 seconds
+#>  Total time | 3.203 seconds
 ```
 
 This returns a modeltime table.
@@ -437,7 +437,7 @@ model_sequential_tbl <- model_wfset %>%
 #> ✔ Model Successfully Fitted: 5
 #> ℹ Fitting Model: 6
 #> ✔ Model Successfully Fitted: 6
-#> Total time | 3.743 seconds
+#> Total time | 3.769 seconds
 ```
 
 ### Accuracy Assessment
