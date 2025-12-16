@@ -109,7 +109,7 @@ This model is not set up for use with exogenous regressors.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("thief")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("thief")) withAutoprint(\{ # examplesIf}
 library(dplyr)
 library(parsnip)
 library(rsample)

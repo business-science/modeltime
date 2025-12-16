@@ -153,12 +153,12 @@ The engine uses \code{\link[smooth:es]{smooth::es()}}.
 
 Function Parameters:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, model = "ZZZ", lags = c(frequency(y)), persistence = NULL, 
-#>     phi = NULL, initial = c("optimal", "backcasting", "complete"), initialSeason = NULL, 
-#>     ic = c("AICc", "AIC", "BIC", "BICc"), loss = c("likelihood", "MSE", 
-#>         "MAE", "HAM", "MSEh", "TMSE", "GTMSE", "MSCE"), h = 10, holdout = FALSE, 
-#>     bounds = c("usual", "admissible", "none"), silent = TRUE, xreg = NULL, 
-#>     regressors = c("use", "select"), initialX = NULL, ...)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (y, model = "ZXZ", lags = c(frequency(y)), persistence = NULL, 
+#>     phi = NULL, initial = c("backcasting", "optimal", "two-stage", "complete"), 
+#>     initialSeason = NULL, ic = c("AICc", "AIC", "BIC", "BICc"), loss = c("likelihood", 
+#>         "MSE", "MAE", "HAM", "MSEh", "TMSE", "GTMSE", "MSCE"), h = 10, 
+#>     holdout = FALSE, bounds = c("usual", "admissible", "none"), silent = TRUE, 
+#>     xreg = NULL, regressors = c("use", "select"), initialX = NULL, ...)
 }\if{html}{\out{</div>}}
 
 The main arguments \code{model} and \code{phi} are defined using:
@@ -242,7 +242,7 @@ Note that date or date-time class values are excluded from \code{xreg}.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("smooth")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("smooth")) withAutoprint(\{ # examplesIf}
 library(dplyr)
 library(parsnip)
 library(rsample)

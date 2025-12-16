@@ -230,8 +230,8 @@ specify non-standard seasonalities using fourier series. An alternative is to us
 
 Model 2: XGBoost (\code{xgboost::xgb.train}):
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (params = list(), data, nrounds, watchlist = list(), obj = NULL, 
-#>     feval = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{#> function (params = xgb.params(), data, nrounds, evals = list(), objective = NULL, 
+#>     custom_metric = NULL, verbose = 1, print_every_n = 1L, early_stopping_rounds = NULL, 
 #>     maximize = NULL, save_period = NULL, save_name = "xgboost.model", xgb_model = NULL, 
 #>     callbacks = list(), ...)
 }\if{html}{\out{</div>}}
