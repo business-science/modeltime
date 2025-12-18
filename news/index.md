@@ -14,6 +14,8 @@
 
 ## modeltime 1.3.3
 
+CRAN release: 2025-12-17
+
 - Make package robust to `xgboost` version changes
   [\#263](https://github.com/business-science/modeltime/issues/263)
 - Correct (reproducible parallel RNG): declare RNG properly
