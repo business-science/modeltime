@@ -438,7 +438,7 @@ model_fit <- model_spec %>%
 model_fit
 #> parsnip model object
 #> 
-#> Time elapsed: 1.2 seconds
+#> Time elapsed: 1.09 seconds
 #> Model estimated using adam() function: ETS(AAN)+ARIMA(3,1,3)
 #> With backcasting initialisation
 #> Distribution assumed in the model: Normal

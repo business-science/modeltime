@@ -377,7 +377,7 @@ Note that date or date-time class values are excluded from `xreg`.
 ## Examples
 
 ``` r
-# \donttest{
+if (FALSE) { # \dontrun{
 library(dplyr)
 library(lubridate)
 library(parsnip)
@@ -408,20 +408,6 @@ on.exit({
 # Data
 m750 <- m4_monthly %>% filter(id == "M750")
 m750
-#> # A tibble: 306 × 3
-#>    id    date       value
-#>    <fct> <date>     <dbl>
-#>  1 M750  1990-01-01  6370
-#>  2 M750  1990-02-01  6430
-#>  3 M750  1990-03-01  6520
-#>  4 M750  1990-04-01  6580
-#>  5 M750  1990-05-01  6620
-#>  6 M750  1990-06-01  6690
-#>  7 M750  1990-07-01  6000
-#>  8 M750  1990-08-01  5450
-#>  9 M750  1990-09-01  6480
-#> 10 M750  1990-10-01  6820
-#> # ℹ 296 more rows
 
 # Split Data 80/20
 splits <- initial_time_split(m750, prop = 0.8)
@@ -439,32 +425,8 @@ model_spec <- prophet_boost(
 model_fit <- model_spec %>%
     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
-#> Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.
-#> Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.
 model_fit
-#> parsnip model object
-#> 
-#> PROPHET w/ XGBoost Errors
-#> ---
-#> Model 1: PROPHET
-#>  - growth: 'linear'
-#>  - n.changepoints: 25
-#>  - changepoint.range: 0.8
-#>  - yearly.seasonality: 'auto'
-#>  - weekly.seasonality: 'auto'
-#>  - daily.seasonality: 'auto'
-#>  - seasonality.mode: 'additive'
-#>  - changepoint.prior.scale: 0.05
-#>  - seasonality.prior.scale: 10
-#>  - holidays.prior.scale: 10
-#>  - logistic_cap: NULL
-#>  - logistic_floor: NULL
-#> 
-#> ---
-#> Model 2: XGBoost Errors
-#> 
-#> NULL
-# }
+} # }
 
 
 ```
