@@ -1,4 +1,4 @@
-# modeltime 1.3.3.9000
+# modeltime 1.3.4
 
 - Updated `parallel_start()` / `parallel_stop()` to track the PSOCK cluster created by `.method = "parallel"` and reliably close it in `parallel_stop()` (and before creating a new one), preventing the “closing unused connection …” warnings/leaks.
 

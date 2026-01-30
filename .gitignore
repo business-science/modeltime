@@ -13,3 +13,5 @@ docs
 /doc/
 /Meta/
 /temp
+modeltime.Rcheck/
+*.tar.gz
