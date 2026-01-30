@@ -1,6 +1,6 @@
 # Changelog
 
-## modeltime 1.3.3.9000
+## modeltime 1.3.4
 
 - Updated
   [`parallel_start()`](https://business-science.github.io/modeltime/reference/parallel_start.md)
