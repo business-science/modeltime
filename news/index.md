@@ -1,5 +1,12 @@
 # Changelog
 
+## modeltime 1.3.5
+
+- Fix
+  [`arima_boost()`](https://business-science.github.io/modeltime/reference/arima_boost.md)
+  example failure on R-devel by adding a default for `include.constant`
+  in the ARIMA-XGBoost bridge.
+
 ## modeltime 1.3.4
 
 - Updated
