@@ -227,10 +227,10 @@ nested_modeltime_tbl <- nested_data_tbl %>%
         control = control_nested_fit(allow_par = TRUE, verbose = TRUE)
     )
 #> Using existing parallel backend with 4 workers...
-#>  Beginning Parallel Loop | 0.022 seconds
-#>  Finishing parallel backend. Clusters are remaining open. | 22.027 seconds
+#>  Beginning Parallel Loop | 0.021 seconds
+#>  Finishing parallel backend. Clusters are remaining open. | 22.087 seconds
 #>  Close clusters by running: `parallel_stop()`.
-#> Finished in: 22.028 secs.
+#> Finished in: 22.08791 secs.
 ```
 
 The nested modeltime object has now fit the models using Spark.
@@ -276,7 +276,7 @@ nested_modeltime_tbl %>%
 | 1_38           | 1         | XGBOOST     | Test  | 6863.76  | 8.59  | 0.59 | 8.71  | 8883.45  | 0.32 |
 | 1_38           | 2         | PROPHET     | Test  | 16120.88 | 19.73 | 1.38 | 22.49 | 18856.72 | 0.05 |
 | 1_93           | 1         | XGBOOST     | Test  | 5956.44  | 7.40  | 0.60 | 7.81  | 8076.68  | 0.51 |
-| 1_93           | 2         | PROPHET     | Test  | 7304.08  | 10.00 | 0.74 | 9.57  | 9024.06  | 0.03 |
+| 1_93           | 2         | PROPHET     | Test  | 7304.08  | 10.00 | 0.74 | 9.57  | 9024.07  | 0.03 |
 | 1_95           | 1         | XGBOOST     | Test  | 6741.05  | 5.47  | 0.81 | 5.52  | 8448.20  | 0.40 |
 | 1_95           | 2         | PROPHET     | Test  | 5856.69  | 4.87  | 0.71 | 4.81  | 7540.48  | 0.49 |
 

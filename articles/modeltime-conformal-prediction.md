@@ -139,7 +139,7 @@ wflw_fit_xgb
 #>    evaluation_log 
 #> evaluation_log:
 #>   iter training_rmse
-#>  <int>         <num>
+#>  <num>         <num>
 #>      1     25736.090
 #>      2     18642.080
 #>    ---           ---

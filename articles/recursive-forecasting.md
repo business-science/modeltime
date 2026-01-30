@@ -556,7 +556,7 @@ model_fit_xgb_recursive
 #>    evaluation_log 
 #> evaluation_log:
 #>   iter training_rmse
-#>  <int>         <num>
+#>  <num>         <num>
 #>      1     2020.6031
 #>      2     1363.6807
 #>    ---           ---

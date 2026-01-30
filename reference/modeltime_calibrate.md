@@ -124,7 +124,7 @@ calibration_tbl %>%
 #> # A tibble: 1 × 9
 #>   .model_id .model_desc .type   mae  mape  mase smape  rmse   rsq
 #>       <int> <chr>       <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1         1 PROPHET     Test   263.  2.66 0.783  2.59  356. 0.813
+#> 1         1 PROPHET     Test   266.  2.68 0.791  2.62  359. 0.812
 
 # ---- FORECAST ----
 

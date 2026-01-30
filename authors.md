@@ -11,14 +11,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/business-science/modeltime/blob/master/DESCRIPTION)
 
-Dancho M (2025). *modeltime: The Tidymodels Extension for Time Series
-Modeling*. R package version 1.3.3.9000,
+Dancho M (2026). *modeltime: The Tidymodels Extension for Time Series
+Modeling*. R package version 1.3.4,
 <https://github.com/business-science/modeltime>.
 
     @Manual{,
       title = {modeltime: The Tidymodels Extension for Time Series Modeling},
       author = {Matt Dancho},
-      year = {2025},
-      note = {R package version 1.3.3.9000},
+      year = {2026},
+      note = {R package version 1.3.4},
       url = {https://github.com/business-science/modeltime},
     }

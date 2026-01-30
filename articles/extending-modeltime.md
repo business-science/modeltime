@@ -53,7 +53,7 @@ are a few key nuances:
 ## Example Integrating Multiple Seasonal Decomposition
 
 The `forecast` package includes the
-[`stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html)
+[`stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html)
 function for creating models using [time series
 decomposition](https://otexts.com/fpp2/complexseasonality.html). It’s a
 great approach based on the concept that you can decompose complex
@@ -105,7 +105,7 @@ We need to use 2 functions to create the model:
 
 - [`msts()`](https://pkg.robjhyndman.com/forecast/reference/msts.html) -
   Tracks the multiple-seasonality as an object
-- [`stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html) -
+- [`stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html) -
   Creates a model from the `msts` object.
 
 Note that we use seasonal periods (`24*2 = 48`) for daily seasonality
@@ -146,7 +146,7 @@ create:
 - [`msts()`](https://pkg.robjhyndman.com/forecast/reference/msts.html):
   Creates a multiple time series object. Key arguments:
   `seasonal.periods`.
-- [`stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html):
+- [`stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html):
   Creates the Multiple STL Model. Key arguments:
   - `method`: Either `ets` or `arima` (actually uses `auto.arima`)
   - We’ll handle this by creating a specific engine called “stlm_ets”

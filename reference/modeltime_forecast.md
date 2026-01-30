@@ -285,7 +285,7 @@ calibration_tbl %>%
 #> # A tibble: 1 × 9
 #>   .model_id .model_desc .type   mae  mape  mase smape  rmse   rsq
 #>       <int> <chr>       <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1         1 PROPHET     Test   177.  1.69 0.604  1.69  234. 0.880
+#> 1         1 PROPHET     Test   175.  1.67 0.596  1.67  232. 0.881
 
 # ---- FUTURE FORECAST ----
 
@@ -356,16 +356,16 @@ calibration_tbl %>%
 #> # A tibble: 31 × 10
 #>    .model_id .model_desc .key       .index     .value .conf_lo .conf_hi id   
 #>        <int> <chr>       <fct>      <date>      <dbl>    <dbl>    <dbl> <fct>
-#>  1         1 PROPHET     prediction 2012-12-01 10596.   10133.   11059. M750 
-#>  2         1 PROPHET     prediction 2013-01-01 10509.   10046.   10972. M750 
-#>  3         1 PROPHET     prediction 2013-02-01 10550.   10087.   11012. M750 
-#>  4         1 PROPHET     prediction 2013-03-01 10687.   10224.   11150. M750 
-#>  5         1 PROPHET     prediction 2013-04-01 10716.   10253.   11179. M750 
-#>  6         1 PROPHET     prediction 2013-05-01 10717.   10255.   11180. M750 
-#>  7         1 PROPHET     prediction 2013-06-01 10558.   10095.   11021. M750 
-#>  8         1 PROPHET     prediction 2013-07-01  9680.    9217.   10143. M750 
-#>  9         1 PROPHET     prediction 2013-08-01  9532.    9069.    9995. M750 
-#> 10         1 PROPHET     prediction 2013-09-01 10160.    9697.   10623. M750 
+#>  1         1 PROPHET     prediction 2012-12-01 10600.   10141.   11059. M750 
+#>  2         1 PROPHET     prediction 2013-01-01 10512.   10054.   10971. M750 
+#>  3         1 PROPHET     prediction 2013-02-01 10553.   10094.   11012. M750 
+#>  4         1 PROPHET     prediction 2013-03-01 10691.   10232.   11150. M750 
+#>  5         1 PROPHET     prediction 2013-04-01 10720.   10261.   11179. M750 
+#>  6         1 PROPHET     prediction 2013-05-01 10722.   10263.   11180. M750 
+#>  7         1 PROPHET     prediction 2013-06-01 10562.   10104.   11021. M750 
+#>  8         1 PROPHET     prediction 2013-07-01  9684.    9226.   10143. M750 
+#>  9         1 PROPHET     prediction 2013-08-01  9536.    9077.    9995. M750 
+#> 10         1 PROPHET     prediction 2013-09-01 10165.    9706.   10623. M750 
 #> # ℹ 21 more rows
 #> # ℹ 2 more variables: date <date>, value <dbl>
 ```

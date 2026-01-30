@@ -31,7 +31,7 @@ performed well in the M3 Competition
 
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -179,8 +179,8 @@ factor for exponential smoothing models.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Models can be created using the following <em>engines</em>:</p><ul><li><p>"ets" (default) - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/ets.html" class="external-link">forecast::ets()</a></code></p></li>
-<li><p>"croston" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/croston.html" class="external-link">forecast::croston()</a></code></p></li>
-<li><p>"theta" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/thetaf.html" class="external-link">forecast::thetaf()</a></code></p></li>
+<li><p>"croston" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.croston_model.html" class="external-link">forecast::croston()</a></code></p></li>
+<li><p>"theta" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.theta_model.html" class="external-link">forecast::thetaf()</a></code></p></li>
 <li><p>"smooth_es" - Connects to <code><a href="https://rdrr.io/pkg/smooth/man/es.html" class="external-link">smooth::es()</a></code></p></li>
 </ul></div>
     <div class="section level2">
@@ -212,14 +212,14 @@ automatically determined if not provided. They are mapped to "alpha", "beta" and
 <p>Parameter Notes:</p><ul><li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.</p></li>
 </ul><p><strong>croston</strong></p>
-<p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/croston.html" class="external-link">forecast::croston()</a></code>.</p>
+<p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.croston_model.html" class="external-link">forecast::croston()</a></code>.</p>
 <p>Function Parameters:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#&gt; function (y, h = 10, alpha = 0.1, x = y)</span></span></code></pre><p></p></div>
 <p>The main arguments are defined using:</p><ul><li><p><code><a href="exp_smoothing_params.html">smooth_level()</a></code>: The "alpha" parameter</p></li>
 </ul><p>Parameter Notes:</p><ul><li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.</p></li>
 </ul><p><strong>theta</strong></p>
-<p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/thetaf.html" class="external-link">forecast::thetaf()</a></code></p>
+<p>The engine uses <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.theta_model.html" class="external-link">forecast::thetaf()</a></code></p>
 <p>Parameter Notes:</p><ul><li><p><code>xreg</code> - This model is not set up to use exogenous regressors. Only univariate
 models will be fit.</p></li>
 </ul><p><strong>smooth_es</strong></p>

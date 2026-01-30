@@ -57,11 +57,11 @@ the following *engines*:
   [`forecast::tbats()`](https://pkg.robjhyndman.com/forecast/reference/tbats.html)
 
 - "stlm_ets" - Connects to
-  [`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html),
+  [`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html),
   `method = "ets"`
 
 - "stlm_arima" - Connects to
-  [`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html),
+  [`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html),
   `method = "arima"`
 
 ## Engine Details
@@ -78,7 +78,7 @@ Other options can be set using
 [`set_engine()`](https://parsnip.tidymodels.org/reference/set_engine.html).
 
 The engines use
-[`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html).
+[`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html).
 
 Function Parameters:
 

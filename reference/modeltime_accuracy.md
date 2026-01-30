@@ -122,6 +122,6 @@ models_tbl %>%
 #> # A tibble: 1 × 6
 #>   .model_id .model_desc .type   mae  rmse   rsq
 #>       <int> <chr>       <chr> <dbl> <dbl> <dbl>
-#> 1         1 PROPHET     Test   263.  356. 0.813
+#> 1         1 PROPHET     Test   266.  359. 0.812
 
 ```

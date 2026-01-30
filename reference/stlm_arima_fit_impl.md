@@ -46,4 +46,4 @@ stlm_arima_fit_impl(
 - ...:
 
   Additional arguments passed to
-  [`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html)
+  [`forecast::stlm()`](https://pkg.robjhyndman.com/forecast/reference/stlm.html)

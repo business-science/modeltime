@@ -19,7 +19,7 @@ different packages. Currently the only package is forecast."><meta property="og:
 
     <a class="navbar-brand me-2" href="../index.html">modeltime</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,8 +148,8 @@ to determine the <em>mode</em> of the model. For <code>seasonal_reg()</code>, th
 mode will always be "regression".</p>
 <p>The model can be created using the <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> function using the
 following <em>engines</em>:</p><ul><li><p>"tbats" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/tbats.html" class="external-link">forecast::tbats()</a></code></p></li>
-<li><p>"stlm_ets" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html" class="external-link">forecast::stlm()</a></code>, <code>method = "ets"</code></p></li>
-<li><p>"stlm_arima" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html" class="external-link">forecast::stlm()</a></code>, <code>method = "arima"</code></p></li>
+<li><p>"stlm_ets" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/stlm.html" class="external-link">forecast::stlm()</a></code>, <code>method = "ets"</code></p></li>
+<li><p>"stlm_arima" - Connects to <code><a href="https://pkg.robjhyndman.com/forecast/reference/stlm.html" class="external-link">forecast::stlm()</a></code>, <code>method = "arima"</code></p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="engine-details">Engine Details<a class="anchor" aria-label="anchor" href="#engine-details"></a></h2>
@@ -158,7 +158,7 @@ following <em>engines</em>:</p><ul><li><p>"tbats" - Connects to <code><a href="h
 
 <p>The standardized parameter names in <code>modeltime</code> can be mapped to their original
 names in each engine:</p><table class="table table"><tr><td>modeltime</td><td>forecast::stlm</td><td>forecast::tbats</td></tr><tr><td>seasonal_period_1, seasonal_period_2, seasonal_period_3</td><td>msts(seasonal.periods)</td><td>msts(seasonal.periods)</td></tr></table><p>Other options can be set using <code><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine()</a></code>.</p>
-<p>The engines use <code><a href="https://pkg.robjhyndman.com/forecast/reference/forecast.stl.html" class="external-link">forecast::stlm()</a></code>.</p>
+<p>The engines use <code><a href="https://pkg.robjhyndman.com/forecast/reference/stlm.html" class="external-link">forecast::stlm()</a></code>.</p>
 <p>Function Parameters:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#&gt; function (y, s.window = 7 + 4 * seq(6), robust = FALSE, method = c("ets",</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt;     "arima"), modelfunction = NULL, model = NULL, etsmodel = "ZZN", lambda = NULL,</span></span>

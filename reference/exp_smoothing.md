@@ -84,10 +84,10 @@ Models can be created using the following *engines*:
   [`forecast::ets()`](https://pkg.robjhyndman.com/forecast/reference/ets.html)
 
 - "croston" - Connects to
-  [`forecast::croston()`](https://pkg.robjhyndman.com/forecast/reference/croston.html)
+  [`forecast::croston()`](https://pkg.robjhyndman.com/forecast/reference/forecast.croston_model.html)
 
 - "theta" - Connects to
-  [`forecast::thetaf()`](https://pkg.robjhyndman.com/forecast/reference/thetaf.html)
+  [`forecast::thetaf()`](https://pkg.robjhyndman.com/forecast/reference/forecast.theta_model.html)
 
 - "smooth_es" - Connects to
   [`smooth::es()`](https://rdrr.io/pkg/smooth/man/es.html)
@@ -165,7 +165,7 @@ Parameter Notes:
 **croston**
 
 The engine uses
-[`forecast::croston()`](https://pkg.robjhyndman.com/forecast/reference/croston.html).
+[`forecast::croston()`](https://pkg.robjhyndman.com/forecast/reference/forecast.croston_model.html).
 
 Function Parameters:
 
@@ -184,7 +184,7 @@ Parameter Notes:
 **theta**
 
 The engine uses
-[`forecast::thetaf()`](https://pkg.robjhyndman.com/forecast/reference/thetaf.html)
+[`forecast::thetaf()`](https://pkg.robjhyndman.com/forecast/reference/forecast.theta_model.html)
 
 Parameter Notes:
 

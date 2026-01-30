@@ -387,30 +387,9 @@ model_spec <- arima_boost(
 model_fit_boosted <- model_spec %>%
     fit(value ~ date + as.numeric(date) + month(date, label = TRUE),
         data = training(splits))
+#> Error in arima_xgboost_fit_impl(x = maybe_data_frame(x), y = y, period = ~12,     p = ~0, d = ~1, q = ~1, P = ~0, D = ~1, Q = ~1, max_depth = ~6,     eta = ~0.1, objective = "reg:squarederror", nthread = 1,     verbose = 0): argument "include.constant" is missing, with no default
 model_fit_boosted
-#> parsnip model object
-#> 
-#> ARIMA(0,1,1)(0,1,1)[12] w/ XGBoost Errors
-#> ---
-#> Model 1: Standard ARIMA
-#> Series: outcome 
-#> ARIMA(0,1,1)(0,1,1)[12] 
-#> 
-#> Coefficients:
-#>           ma1     sma1
-#>       -0.3405  -0.4781
-#> s.e.   0.0652   0.0628
-#> 
-#> sigma^2 = 25114:  log likelihood = -1699.55
-#> AIC=3405.1   AICc=3405.19   BIC=3415.8
-#> 
-#> ---
-#> Model 2: XGBoost Errors
-#> 
-#> xgboost::xgb.train(params = list(eta = 0.1, max_depth = 6, gamma = 0, 
-#>     colsample_bytree = 1, colsample_bynode = 1, min_child_weight = 1, 
-#>     subsample = 1, objective = "reg:squarederror", nthread = 1), 
-#>     data = x$data, nrounds = 15, evals = x$watchlist, verbose = 0)
+#> Error: object 'model_fit_boosted' not found
 # }
 
 ```

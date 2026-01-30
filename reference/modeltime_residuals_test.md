@@ -126,7 +126,7 @@ models_tbl %>%
 #> # A tibble: 1 × 6
 #>   .model_id .model_desc shapiro_wilk box_pierce ljung_box durbin_watson
 #>       <int> <chr>              <dbl>      <dbl>     <dbl>         <dbl>
-#> 1         1 PROPHET        0.0000495          0         0         0.922
+#> 1         1 PROPHET        0.0000486          0         0         0.921
 
 # Out-of-Sample
 models_tbl %>%
@@ -136,6 +136,6 @@ models_tbl %>%
 #> # A tibble: 1 × 6
 #>   .model_id .model_desc shapiro_wilk box_pierce ljung_box durbin_watson
 #>       <int> <chr>              <dbl>      <dbl>     <dbl>         <dbl>
-#> 1         1 PROPHET          0.00198      0.185     0.165          1.32
+#> 1         1 PROPHET          0.00185      0.190     0.170          1.34
 
 ```

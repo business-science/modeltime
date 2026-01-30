@@ -288,7 +288,7 @@ wflw_xgb
 #>    evaluation_log 
 #> evaluation_log:
 #>   iter training_rmse
-#>  <int>         <num>
+#>  <num>         <num>
 #>      1     25945.548
 #>      2     18766.761
 #>    ---           ---

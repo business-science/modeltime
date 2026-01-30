@@ -358,7 +358,7 @@ library(rsample)
 library(timetk)
 library(smooth)
 #> Loading required package: greybox
-#> Package "greybox", v2.0.6 loaded.
+#> Package "greybox", v2.0.7 loaded.
 #> By the way, have you already tried temporaldummy() function from greybox?
 #> This is package "smooth", v4.3.1
 #> 
@@ -438,7 +438,7 @@ model_fit <- model_spec %>%
 model_fit
 #> parsnip model object
 #> 
-#> Time elapsed: 1.35 seconds
+#> Time elapsed: 0.8 seconds
 #> Model estimated using adam() function: ETS(AAN)+ARIMA(3,1,3)
 #> With backcasting initialisation
 #> Distribution assumed in the model: Normal
