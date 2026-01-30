@@ -384,6 +384,27 @@ library(parsnip)
 library(rsample)
 library(timetk)
 
+# Ensure single-threaded execution for checks
+old_env <- Sys.getenv(
+    c("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+      "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"),
+    unset = NA
+)
+Sys.setenv(
+    OMP_NUM_THREADS = 1,
+    OPENBLAS_NUM_THREADS = 1,
+    MKL_NUM_THREADS = 1,
+    VECLIB_MAXIMUM_THREADS = 1,
+    NUMEXPR_NUM_THREADS = 1
+)
+old_opts <- options(mc.cores = 1)
+on.exit({
+    to_unset <- is.na(old_env)
+    if (any(to_unset)) Sys.unsetenv(names(old_env)[to_unset])
+    if (any(!to_unset)) do.call(Sys.setenv, as.list(old_env[!to_unset]))
+    options(old_opts)
+}, add = TRUE)
+
 # Data
 m750 <- m4_monthly %>% filter(id == "M750")
 m750
@@ -411,7 +432,7 @@ splits <- initial_time_split(m750, prop = 0.8)
 model_spec <- prophet_boost(
     learn_rate = 0.1
 ) %>%
-    set_engine("prophet_xgboost")
+    set_engine("prophet_xgboost", nthread = 1)
 
 # Fit Spec
 
