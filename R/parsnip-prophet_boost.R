@@ -194,7 +194,7 @@
 #' @seealso `fit.model_spec()`, `set_engine()`
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(dplyr)
 #' library(lubridate)
 #' library(parsnip)
