@@ -619,7 +619,7 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
                                    P = 0, D = 0, Q = 0,
                                    include.mean = TRUE,
                                    include.drift = FALSE,
-                                   include.constant,
+                                   include.constant = NULL,
                                    lambda = model$lambda,
                                    biasadj = FALSE,
                                    method = c("CSS-ML", "ML", "CSS"),
@@ -661,17 +661,27 @@ arima_xgboost_fit_impl <- function(x, y, period = "auto",
     outcome <- stats::ts(outcome, frequency = period)
 
     # auto.arima
-    fit_arima   <- forecast::Arima(outcome,
-                                   order = c(p, d, q),
-                                   seasonal = c(P, D, Q),
-                                   include.mean = include.mean,
-                                   include.drift = include.drift,
-                                   include.constant = include.constant,
-                                   lambda = model$lambda,
-                                   biasadj = biasadj,
-                                   method = method,
-                                   model = model
+    if (!is.null(method)) {
+        method <- match.arg(method)
+    }
+
+    arima_args <- list(
+        outcome,
+        order = c(p, d, q),
+        seasonal = c(P, D, Q),
+        include.mean = include.mean,
+        include.drift = include.drift,
+        lambda = model$lambda,
+        biasadj = biasadj,
+        method = method,
+        model = model
     )
+
+    if (!is.null(include.constant)) {
+        arima_args$include.constant <- include.constant
+    }
+
+    fit_arima <- do.call(forecast::Arima, arima_args)
 
     arima_residuals <- as.numeric(fit_arima$residuals)
     arima_fitted    <- as.numeric(fit_arima$fitted)
@@ -806,5 +816,3 @@ arima_xgboost_predict_impl <- function(object, new_data, ...) {
     return(preds)
 
 }
-
-

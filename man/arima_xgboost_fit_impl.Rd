@@ -16,7 +16,7 @@ arima_xgboost_fit_impl(
   Q = 0,
   include.mean = TRUE,
   include.drift = FALSE,
-  include.constant,
+  include.constant = NULL,
   lambda = model$lambda,
   biasadj = FALSE,
   method = c("CSS-ML", "ML", "CSS"),

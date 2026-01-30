@@ -1,3 +1,7 @@
+# modeltime 1.3.5
+
+- Fix `arima_boost()` example failure on R-devel by adding a default for `include.constant` in the ARIMA-XGBoost bridge.
+
 # modeltime 1.3.4
 
 - Updated `parallel_start()` / `parallel_stop()` to track the PSOCK cluster created by `.method = "parallel"` and reliably close it in `parallel_stop()` (and before creating a new one), preventing the “closing unused connection …” warnings/leaks.
